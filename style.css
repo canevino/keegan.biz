@@ -1,13 +1,17 @@
 /* =========================================================
    KEEGAN.BIZ
-   barebones version
+   folk / archive / indie — barebones
    ========================================================= */
 
 :root {
-  --paper: #eee9d8;
-  --ink: #15130f;
-  --green: #6c7840;
-  --rule: 2px solid var(--ink);
+  --paper: #e8e1c8;
+  --ink: #191b16;
+
+  --moss: #53633d;
+  --lichen: #9aa36a;
+  --oxblood: #6b2c2b;
+
+  --rule: 1.5px solid var(--ink);
 }
 
 
@@ -28,17 +32,12 @@ body {
 body {
   background: var(--paper);
   color: var(--ink);
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
 }
 
 
 /* PAGE */
 
-.home {
+.page {
   min-height: 100vh;
 
   display: grid;
@@ -47,24 +46,41 @@ body {
     1fr
     auto;
 
-  padding: 22px;
+  padding: 18px;
 }
 
 
-/* TOP */
+/* SMALL ARCHIVAL TYPE */
 
-.topline {
+.top,
+.bottom {
   display: flex;
   justify-content: space-between;
 
-  padding-bottom: 10px;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
-  border-bottom: var(--rule);
-
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
 
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.top {
+  padding-bottom: 9px;
+
+  border-bottom: var(--rule);
+}
+
+.bottom {
+  align-items: flex-end;
+
+  padding-top: 9px;
+
+  border-top: var(--rule);
 }
 
 
@@ -76,70 +92,102 @@ body {
   display: flex;
   align-items: center;
 
+  min-height: 0;
+
   overflow: hidden;
 }
 
-h1 {
+.title-wrap {
   position: relative;
-  z-index: 2;
 
+  width: 100%;
+}
+
+
+/* TITLE */
+
+h1 {
   margin: 0;
 
-  font-size: clamp(82px, 18vw, 260px);
+  font-weight: normal;
+
   line-height: 0.72;
 
-  letter-spacing: -0.085em;
-
-  font-weight: 900;
+  letter-spacing: -0.07em;
 }
 
 h1 span {
   display: block;
 }
 
+.keegan {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      90px,
+      20vw,
+      285px
+    );
+
+  font-style: italic;
+}
+
 .biz {
-  position: relative;
+  width: fit-content;
 
-  margin-left: 13vw;
+  margin-left: 17vw;
+  margin-top: 0.04em;
 
-  color: var(--green);
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size:
+    clamp(
+      75px,
+      15vw,
+      220px
+    );
+
+  font-weight: 900;
+
+  color: var(--moss);
+
+  transform: rotate(-1.5deg);
 }
 
 
-/* SIMPLE GEOMETRIC INTERRUPTION */
+/* SMALL DECORATIVE INTERRUPTION */
 
-.mark {
+.ornament {
   position: absolute;
 
-  width: clamp(80px, 13vw, 180px);
-  aspect-ratio: 1;
+  right: 4vw;
+  top: 7%;
 
-  right: 3vw;
-  top: 18%;
+  color: var(--oxblood);
 
-  background: var(--green);
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
 
-  border-radius: 50%;
+  font-size:
+    clamp(
+      14px,
+      2vw,
+      28px
+    );
 
-  mix-blend-mode: multiply;
-}
+  letter-spacing: 0.2em;
 
-
-/* BOTTOM */
-
-.bottomline {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-
-  padding-top: 10px;
-
-  border-top: var(--rule);
-
-  font-size: 11px;
-  font-weight: 700;
-
-  letter-spacing: 0.04em;
+  transform: rotate(90deg);
+  transform-origin: right top;
 }
 
 
@@ -147,31 +195,41 @@ h1 span {
 
 @media (max-width: 600px) {
 
-  .home {
-    padding: 14px;
+  .page {
+    padding: 12px;
   }
 
   .hero {
-    min-height: 70vh;
+    min-height: 72vh;
   }
 
-  h1 {
-    font-size: clamp(72px, 25vw, 150px);
+  .keegan {
+    font-size:
+      clamp(
+        78px,
+        26vw,
+        145px
+      );
   }
 
   .biz {
-    margin-left: 7vw;
+    margin-left: 10vw;
+
+    font-size:
+      clamp(
+        65px,
+        21vw,
+        120px
+      );
   }
 
-  .mark {
-    width: 90px;
-
-    right: -20px;
-    top: 25%;
+  .ornament {
+    right: 0;
+    top: 5%;
   }
 
-  .bottomline {
-    gap: 20px;
+  .bottom {
+    gap: 30px;
   }
 
 }
