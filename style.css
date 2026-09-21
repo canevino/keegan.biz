@@ -1,21 +1,32 @@
 /* =========================================================
    KEEGAN.BIZ
-   folk / archive / indie — barebones
+   BASE SYSTEM
+   vernacular / folk / riso / record sleeve / collage
+   ========================================================= */
+
+
+/* =========================================================
+   VARIABLES
    ========================================================= */
 
 :root {
-  --paper: #e8e1c8;
-  --ink: #191b16;
 
-  --moss: #53633d;
-  --lichen: #9aa36a;
-  --oxblood: #6b2c2b;
+  --paper: #ece6d5;
+  --ink: #171713;
 
-  --rule: 1.5px solid var(--ink);
+  --green: #174d35;
+  --red: #9a352f;
+  --yellow: #d6aa31;
+  --blue: #284b85;
+
+  --edge: 18px;
+
 }
 
 
-/* RESET */
+/* =========================================================
+   RESET
+   ========================================================= */
 
 *,
 *::before,
@@ -30,206 +41,534 @@ body {
 }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
-}
-
-
-/* PAGE */
-
-.page {
   min-height: 100vh;
 
-  display: grid;
-  grid-template-rows:
-    auto
-    1fr
-    auto;
+  background: var(--paper);
+  color: var(--ink);
 
-  padding: 18px;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 
-/* SMALL ARCHIVAL TYPE */
+/* =========================================================
+   SCARF HEADER
+   ========================================================= */
 
-.top,
-.bottom {
-  display: flex;
-  justify-content: space-between;
+.site-header {
+  position: fixed;
 
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+  top: var(--edge);
+  left: var(--edge);
 
-  font-size: 10px;
-  font-weight: 700;
-
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.top {
-  padding-bottom: 9px;
-
-  border-bottom: var(--rule);
-}
-
-.bottom {
-  align-items: flex-end;
-
-  padding-top: 9px;
-
-  border-top: var(--rule);
+  z-index: 100;
 }
 
 
-/* HERO */
+/*
+   TEMPORARY ONLY.
+   Your real scarf PNG will eventually replace this.
+*/
 
-.hero {
+.scarf-placeholder {
   position: relative;
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
-  min-height: 0;
+  width: clamp(190px, 20vw, 275px);
+  height: clamp(42px, 4.5vw, 60px);
+
+  padding-right: 12px;
+
+  background: var(--green);
+  color: var(--paper);
+
+  font-family:
+    "Archivo Black",
+    Arial,
+    sans-serif;
+
+  font-size:
+    clamp(
+      15px,
+      1.6vw,
+      22px
+    );
+
+  letter-spacing: -0.04em;
+
+  transform: rotate(-1deg);
+
+  box-shadow:
+    4px
+    4px
+    0
+    var(--ink);
+
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.scarf-placeholder:hover {
+  transform:
+    rotate(0.5deg)
+    translate(-2px, -2px);
+
+  box-shadow:
+    6px
+    6px
+    0
+    var(--ink);
+}
+
+
+/* SCARF END STRIP */
+
+.scarf-placeholder::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  width: 13%;
+  height: 100%;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--yellow) 0 7px,
+      var(--red) 7px 14px,
+      var(--green) 14px 21px
+    );
+
+  transform: translateX(100%);
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page {
+  min-height: 100vh;
+
+  padding: var(--edge);
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+  position: relative;
+
+  min-height:
+    calc(
+      100vh - (var(--edge) * 2)
+    );
 
   overflow: hidden;
 }
 
-.title-wrap {
-  position: relative;
 
-  width: 100%;
+/* =========================================================
+   PAGE CODE
+   ========================================================= */
+
+.page-code {
+  position: absolute;
+
+  top: 50%;
+  left: 0;
+
+  z-index: 10;
+
+  font-family:
+    "IBM Plex Mono",
+    monospace;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 0.08em;
+
+  transform:
+    translateY(-50%)
+    rotate(-90deg);
+
+  transform-origin: left center;
 }
 
 
-/* TITLE */
+/* =========================================================
+   BIG TYPE
+   ========================================================= */
+
+.hero-title {
+  position: absolute;
+
+  left: 5vw;
+  top: 50%;
+
+  z-index: 4;
+
+  width: 94%;
+
+  transform: translateY(-50%);
+}
+
 
 h1 {
   margin: 0;
 
-  font-weight: normal;
+  font-family:
+    "Archivo Black",
+    Arial,
+    sans-serif;
 
-  line-height: 0.72;
+  font-weight: 400;
 
-  letter-spacing: -0.07em;
+  line-height: 0.68;
+
+  letter-spacing: -0.09em;
 }
+
 
 h1 span {
   display: block;
 }
 
+
+/* KEEGAN */
+
 .keegan {
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  position: relative;
 
   font-size:
     clamp(
       90px,
       20vw,
-      285px
+      305px
     );
 
-  font-style: italic;
+  color: var(--ink);
+
+  text-shadow:
+    4px 2px 0 var(--red);
 }
 
+
+/* .BIZ */
+
 .biz {
+  position: relative;
+
   width: fit-content;
 
-  margin-left: 17vw;
-  margin-top: 0.04em;
+  margin-top: -0.14em;
+  margin-left: 27vw;
 
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+  color: var(--green);
 
   font-size:
     clamp(
-      75px,
-      15vw,
-      220px
+      90px,
+      18vw,
+      270px
     );
 
-  font-weight: 900;
+  transform: rotate(-2deg);
 
-  color: var(--moss);
-
-  transform: rotate(-1.5deg);
+  text-shadow:
+    -3px 3px 0 var(--yellow);
 }
 
 
-/* SMALL DECORATIVE INTERRUPTION */
+/* =========================================================
+   SMALL LIST
+   ========================================================= */
 
-.ornament {
+.side-note {
   position: absolute;
 
-  right: 4vw;
-  top: 7%;
+  right: 0;
+  top: 22%;
 
-  color: var(--oxblood);
+  z-index: 8;
+
+  display: flex;
+  flex-direction: column;
 
   font-family:
+    "IBM Plex Mono",
+    monospace;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  line-height: 1.55;
+
+  text-transform: uppercase;
+
+  text-align: right;
+}
+
+
+/* =========================================================
+   SERIF NOTE
+   ========================================================= */
+
+.intro-note {
+  position: absolute;
+
+  left: 4vw;
+  bottom: 7%;
+
+  z-index: 8;
+
+  margin: 0;
+
+  max-width: 230px;
+
+  font-family:
+    "EB Garamond",
     Georgia,
-    "Times New Roman",
     serif;
 
   font-size:
     clamp(
-      14px,
-      2vw,
-      28px
+      18px,
+      1.6vw,
+      24px
     );
 
-  letter-spacing: 0.2em;
+  line-height: 1;
 
-  transform: rotate(90deg);
-  transform-origin: right top;
+  font-style: italic;
+
+  transform: rotate(-2deg);
 }
 
 
-/* MOBILE */
+/* =========================================================
+   LITTLE PRINT LABEL
+   ========================================================= */
+
+.issue-label {
+  position: absolute;
+
+  right: 3vw;
+  bottom: 5%;
+
+  z-index: 8;
+
+  display: flex;
+  gap: 18px;
+
+  padding:
+    7px
+    9px;
+
+  background: var(--yellow);
+
+  border:
+    2px
+    solid
+    var(--ink);
+
+  font-family:
+    "IBM Plex Mono",
+    monospace;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 0.05em;
+
+  transform: rotate(2deg);
+}
+
+
+/* =========================================================
+   COLLAGE STAGE
+   ========================================================= */
+
+/*
+   This currently contains nothing.
+
+   Later, images can be absolutely positioned inside the
+   hero without forcing us to rebuild the page structure.
+*/
+
+.collage-stage {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 3;
+
+  pointer-events: none;
+}
+
+
+/*
+   GENERIC COLLAGE ASSET CLASS
+
+   Any future scan/photo/cutout can start with this class.
+*/
+
+.collage {
+  position: absolute;
+
+  display: block;
+
+  max-width: none;
+
+  user-select: none;
+}
+
+
+/* =========================================================
+   FUTURE EXAMPLES
+   These do nothing until matching images exist.
+   ========================================================= */
+
+.collage-bird {
+  width: 220px;
+
+  right: 10%;
+  top: 15%;
+
+  transform: rotate(7deg);
+}
+
+
+.collage-photo {
+  width: 340px;
+
+  left: 7%;
+  bottom: 7%;
+
+  transform: rotate(-4deg);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
 @media (max-width: 600px) {
 
-  .page {
-    padding: 12px;
+  :root {
+    --edge: 12px;
   }
 
+
+  /* HEADER */
+
+  .scarf-placeholder {
+    width: 168px;
+    height: 40px;
+
+    font-size: 14px;
+
+    box-shadow:
+      3px
+      3px
+      0
+      var(--ink);
+  }
+
+
+  /* PAGE */
+
   .hero {
-    min-height: 72vh;
+    min-height:
+      calc(
+        100vh - 24px
+      );
+  }
+
+
+  /* HERO TYPE */
+
+  .hero-title {
+    left: 2vw;
+
+    width: 98%;
   }
 
   .keegan {
     font-size:
       clamp(
-        78px,
-        26vw,
-        145px
+        73px,
+        25vw,
+        140px
       );
+
+    text-shadow:
+      2px
+      1px
+      0
+      var(--red);
   }
 
   .biz {
-    margin-left: 10vw;
+    margin-left: 15vw;
 
     font-size:
       clamp(
-        65px,
-        21vw,
-        120px
+        70px,
+        23vw,
+        130px
       );
+
+    text-shadow:
+      -2px
+      2px
+      0
+      var(--yellow);
   }
 
-  .ornament {
+
+  /* META */
+
+  .page-code {
+    display: none;
+  }
+
+  .side-note {
+    top: 22px;
+
+    font-size: 8px;
+  }
+
+  .intro-note {
+    left: 3px;
+    bottom: 12px;
+
+    max-width: 170px;
+
+    font-size: 16px;
+  }
+
+  .issue-label {
     right: 0;
-    top: 5%;
-  }
+    bottom: 12px;
 
-  .bottom {
-    gap: 30px;
+    gap: 10px;
+
+    font-size: 8px;
   }
 
 }
