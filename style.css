@@ -1,23 +1,24 @@
 /* =========================================================
    KEEGAN.BIZ
-   BASE SYSTEM
-   vernacular / folk / riso / record sleeve / collage
-   ========================================================= */
-
-
-/* =========================================================
-   VARIABLES
+   BASE
    ========================================================= */
 
 :root {
 
-  --paper: #ece6d5;
-  --ink: #171713;
+  --paper: #ece7d7;
 
-  --green: #174d35;
-  --red: #9a352f;
-  --yellow: #d6aa31;
-  --blue: #284b85;
+  --ink: #11110f;
+
+  --green: #155b3b;
+  --green-dark: #10472f;
+
+  --gold: #d5a42b;
+  --red: #b43a34;
+
+  --cream: #f7f1df;
+
+  --line: rgba(17, 17, 15, 0.18);
+  --shadow: rgba(17, 17, 15, 0.13);
 
   --edge: 18px;
 
@@ -40,23 +41,52 @@ body {
   padding: 0;
 }
 
+html {
+  font-size: 16px;
+}
+
 body {
   min-height: 100vh;
 
-  background: var(--paper);
-  color: var(--ink);
+  background:
+    var(--paper);
+
+  color:
+    var(--ink);
+
+  font-family:
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing:
+    antialiased;
 
   overflow-x: hidden;
 }
 
 a {
   color: inherit;
-  text-decoration: none;
 }
 
 
 /* =========================================================
-   SCARF HEADER
+   PAGE
+   ========================================================= */
+
+.page-shell {
+  position: relative;
+
+  min-height: 100vh;
+
+  padding:
+    var(--edge);
+}
+
+
+/* =========================================================
+   HEADER / SCARF PLACEHOLDER
    ========================================================= */
 
 .site-header {
@@ -65,103 +95,220 @@ a {
   top: var(--edge);
   left: var(--edge);
 
-  z-index: 100;
+  z-index: 50;
 }
 
 
 /*
-   TEMPORARY ONLY.
-   Your real scarf PNG will eventually replace this.
+   This is temporary.
+
+   Later this gets replaced with your actual
+   photographed / edited scarf asset.
 */
 
-.scarf-placeholder {
+.scarf-tag {
   position: relative;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-flex;
 
-  width: clamp(190px, 20vw, 275px);
-  height: clamp(42px, 4.5vw, 60px);
+  align-items: stretch;
 
-  padding-right: 12px;
+  min-height: 56px;
 
-  background: var(--green);
-  color: var(--paper);
+  text-decoration: none;
 
-  font-family:
-    "Archivo Black",
-    Arial,
-    sans-serif;
+  background:
+    var(--green);
 
-  font-size:
-    clamp(
-      15px,
-      1.6vw,
-      22px
-    );
+  color:
+    var(--cream);
 
-  letter-spacing: -0.04em;
-
-  transform: rotate(-1deg);
+  border:
+    1.5px solid
+    var(--ink);
 
   box-shadow:
     4px
     4px
     0
-    var(--ink);
+    var(--shadow);
+
+  overflow: visible;
+
+  transform:
+    rotate(-0.8deg);
 
   transition:
-    transform 160ms ease,
-    box-shadow 160ms ease;
+    transform 150ms ease;
 }
 
-.scarf-placeholder:hover {
+
+/* WORD */
+
+.scarf-tag__text {
+  display: flex;
+
+  align-items: center;
+
+  min-width: 250px;
+
+  padding:
+    0 24px;
+
+  font-size:
+    18px;
+
+  font-weight:
+    700;
+
+  letter-spacing:
+    -0.035em;
+
+  white-space:
+    nowrap;
+}
+
+
+/* STRIPES */
+
+.scarf-tag__stripes {
+  display: flex;
+
+  width: 34px;
+
+  flex-shrink: 0;
+}
+
+.scarf-tag__stripes span {
+  flex: 1;
+}
+
+.scarf-tag__stripes span:nth-child(1) {
+  background:
+    var(--gold);
+}
+
+.scarf-tag__stripes span:nth-child(2) {
+  background:
+    var(--green-dark);
+}
+
+.scarf-tag__stripes span:nth-child(3) {
+  background:
+    var(--red);
+}
+
+
+/* HOVER */
+
+.scarf-tag:hover {
   transform:
     rotate(0.5deg)
     translate(-2px, -2px);
-
-  box-shadow:
-    6px
-    6px
-    0
-    var(--ink);
-}
-
-
-/* SCARF END STRIP */
-
-.scarf-placeholder::after {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  right: 0;
-
-  width: 13%;
-  height: 100%;
-
-  background:
-    repeating-linear-gradient(
-      90deg,
-      var(--yellow) 0 7px,
-      var(--red) 7px 14px,
-      var(--green) 14px 21px
-    );
-
-  transform: translateX(100%);
 }
 
 
 /* =========================================================
-   PAGE
+   CATEGORY NAV
    ========================================================= */
 
-.page {
-  min-height: 100vh;
+.section-nav {
+  position: fixed;
 
-  padding: var(--edge);
+  top: 50%;
+  right: var(--edge);
+
+  z-index: 40;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  transform:
+    translateY(-50%);
+}
+
+
+.section-nav a {
+  position: relative;
+
+  display: block;
+
+  min-width: 110px;
+
+  padding:
+    5px 8px;
+
+  text-align: right;
+
+  text-decoration: none;
+
+  font-size:
+    13px;
+
+  font-weight:
+    600;
+
+  line-height:
+    1;
+
+  letter-spacing:
+    -0.02em;
+
+  text-transform:
+    lowercase;
+
+  transition:
+    transform 120ms ease,
+    color 120ms ease;
+}
+
+
+/* LITTLE COLOR BAR */
+
+.section-nav a::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 50%;
+
+  width: 5px;
+  height: 5px;
+
+  background:
+    var(--gold);
+
+  transform:
+    translateY(-50%);
+}
+
+
+/* ROTATING COLORS */
+
+.section-nav a:nth-child(2)::before,
+.section-nav a:nth-child(5)::before {
+  background:
+    var(--red);
+}
+
+.section-nav a:nth-child(3)::before,
+.section-nav a:nth-child(6)::before {
+  background:
+    var(--green);
+}
+
+
+/* NAV HOVER */
+
+.section-nav a:hover {
+  transform:
+    translateX(-5px);
+
+  color:
+    var(--green);
 }
 
 
@@ -170,43 +317,22 @@ a {
    ========================================================= */
 
 .hero {
-  position: relative;
-
   min-height:
     calc(
-      100vh - (var(--edge) * 2)
+      100vh
+      -
+      (var(--edge) * 2)
     );
 
-  overflow: hidden;
-}
+  display: flex;
 
+  align-items: center;
 
-/* =========================================================
-   PAGE CODE
-   ========================================================= */
-
-.page-code {
-  position: absolute;
-
-  top: 50%;
-  left: 0;
-
-  z-index: 10;
-
-  font-family:
-    "IBM Plex Mono",
-    monospace;
-
-  font-size: 10px;
-  font-weight: 600;
-
-  letter-spacing: 0.08em;
-
-  transform:
-    translateY(-50%)
-    rotate(-90deg);
-
-  transform-origin: left center;
+  padding:
+    7vh
+    8vw
+    7vh
+    5vw;
 }
 
 
@@ -215,251 +341,156 @@ a {
    ========================================================= */
 
 .hero-title {
-  position: absolute;
-
-  left: 5vw;
-  top: 50%;
-
-  z-index: 4;
-
-  width: 94%;
-
-  transform: translateY(-50%);
-}
-
-
-h1 {
   margin: 0;
 
-  font-family:
-    "Archivo Black",
-    Arial,
-    sans-serif;
+  max-width: 100%;
 
-  font-weight: 400;
+  line-height:
+    0.69;
 
-  line-height: 0.68;
-
-  letter-spacing: -0.09em;
+  letter-spacing:
+    -0.085em;
 }
 
 
-h1 span {
+.hero-title__main,
+.hero-title__sub {
   display: block;
+
+  width: fit-content;
 }
 
 
 /* KEEGAN */
 
-.keegan {
+.hero-title__main {
   position: relative;
 
   font-size:
     clamp(
       90px,
       20vw,
-      305px
+      310px
     );
 
-  color: var(--ink);
+  font-weight:
+    900;
+
+  color:
+    var(--ink);
+
+  text-transform:
+    lowercase;
 
   text-shadow:
-    4px 2px 0 var(--red);
+    3px
+    3px
+    0
+    rgba(180, 58, 52, 0.8);
 }
 
 
 /* .BIZ */
 
-.biz {
+.hero-title__sub {
   position: relative;
 
-  width: fit-content;
+  margin-top:
+    -0.12em;
 
-  margin-top: -0.14em;
-  margin-left: 27vw;
-
-  color: var(--green);
+  margin-left:
+    clamp(
+      60px,
+      29vw,
+      450px
+    );
 
   font-size:
     clamp(
-      90px,
-      18vw,
+      80px,
+      17vw,
       270px
     );
 
-  transform: rotate(-2deg);
+  font-weight:
+    900;
+
+  color:
+    var(--green);
+
+  text-transform:
+    lowercase;
 
   text-shadow:
-    -3px 3px 0 var(--yellow);
+    -3px
+    3px
+    0
+    var(--gold);
+
+  transform:
+    rotate(-2deg);
 }
 
 
 /* =========================================================
-   SMALL LIST
+   BEHANCE
    ========================================================= */
 
-.side-note {
-  position: absolute;
+.site-footer {
+  position: fixed;
 
-  right: 0;
-  top: 22%;
+  right: var(--edge);
+  bottom: var(--edge);
 
-  z-index: 8;
-
-  display: flex;
-  flex-direction: column;
-
-  font-family:
-    "IBM Plex Mono",
-    monospace;
-
-  font-size: 10px;
-  font-weight: 600;
-
-  line-height: 1.55;
-
-  text-transform: uppercase;
-
-  text-align: right;
+  z-index: 40;
 }
 
 
-/* =========================================================
-   SERIF NOTE
-   ========================================================= */
+.behance-link {
+  display: inline-flex;
 
-.intro-note {
-  position: absolute;
-
-  left: 4vw;
-  bottom: 7%;
-
-  z-index: 8;
-
-  margin: 0;
-
-  max-width: 230px;
-
-  font-family:
-    "EB Garamond",
-    Georgia,
-    serif;
-
-  font-size:
-    clamp(
-      18px,
-      1.6vw,
-      24px
-    );
-
-  line-height: 1;
-
-  font-style: italic;
-
-  transform: rotate(-2deg);
-}
-
-
-/* =========================================================
-   LITTLE PRINT LABEL
-   ========================================================= */
-
-.issue-label {
-  position: absolute;
-
-  right: 3vw;
-  bottom: 5%;
-
-  z-index: 8;
-
-  display: flex;
-  gap: 18px;
+  align-items: center;
 
   padding:
     7px
-    9px;
+    10px;
 
-  background: var(--yellow);
+  background:
+    var(--gold);
 
-  border:
-    2px
-    solid
+  color:
     var(--ink);
 
-  font-family:
-    "IBM Plex Mono",
-    monospace;
+  border:
+    1.5px solid
+    var(--ink);
 
-  font-size: 9px;
-  font-weight: 600;
+  box-shadow:
+    3px
+    3px
+    0
+    var(--shadow);
 
-  letter-spacing: 0.05em;
+  text-decoration:
+    none;
 
-  transform: rotate(2deg);
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    lowercase;
+
+  transition:
+    transform 120ms ease;
 }
 
 
-/* =========================================================
-   COLLAGE STAGE
-   ========================================================= */
-
-/*
-   This currently contains nothing.
-
-   Later, images can be absolutely positioned inside the
-   hero without forcing us to rebuild the page structure.
-*/
-
-.collage-stage {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 3;
-
-  pointer-events: none;
-}
-
-
-/*
-   GENERIC COLLAGE ASSET CLASS
-
-   Any future scan/photo/cutout can start with this class.
-*/
-
-.collage {
-  position: absolute;
-
-  display: block;
-
-  max-width: none;
-
-  user-select: none;
-}
-
-
-/* =========================================================
-   FUTURE EXAMPLES
-   These do nothing until matching images exist.
-   ========================================================= */
-
-.collage-bird {
-  width: 220px;
-
-  right: 10%;
-  top: 15%;
-
-  transform: rotate(7deg);
-}
-
-
-.collage-photo {
-  width: 340px;
-
-  left: 7%;
-  bottom: 7%;
-
-  transform: rotate(-4deg);
+.behance-link:hover {
+  transform:
+    translate(-2px, -2px);
 }
 
 
@@ -467,108 +498,119 @@ h1 span {
    MOBILE
    ========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
 
   :root {
     --edge: 12px;
   }
 
 
-  /* HEADER */
+  /* SCARF */
 
-  .scarf-placeholder {
-    width: 168px;
-    height: 40px;
+  .scarf-tag {
+    min-height: 44px;
+  }
 
-    font-size: 14px;
+  .scarf-tag__text {
+    min-width: 170px;
 
-    box-shadow:
-      3px
-      3px
-      0
-      var(--ink);
+    padding:
+      0 16px;
+
+    font-size:
+      15px;
+  }
+
+  .scarf-tag__stripes {
+    width: 26px;
   }
 
 
-  /* PAGE */
+  /* NAV */
+
+  .section-nav {
+    position: fixed;
+
+    top: auto;
+    right: 12px;
+    bottom: 62px;
+
+    transform: none;
+
+    gap: 3px;
+  }
+
+  .section-nav a {
+    min-width: auto;
+
+    padding:
+      4px
+      6px
+      4px
+      18px;
+
+    font-size:
+      11px;
+  }
+
+
+  /* HERO */
 
   .hero {
     min-height:
       calc(
-        100vh - 24px
+        100vh
+        -
+        24px
       );
+
+    padding:
+      80px
+      0
+      110px;
   }
 
 
-  /* HERO TYPE */
-
-  .hero-title {
-    left: 2vw;
-
-    width: 98%;
-  }
-
-  .keegan {
+  .hero-title__main {
     font-size:
       clamp(
-        73px,
-        25vw,
+        70px,
+        24vw,
         140px
       );
 
     text-shadow:
       2px
-      1px
+      2px
       0
-      var(--red);
+      rgba(180, 58, 52, 0.8);
   }
 
-  .biz {
-    margin-left: 15vw;
+
+  .hero-title__sub {
+    margin-left:
+      16vw;
 
     font-size:
       clamp(
-        70px,
-        23vw,
-        130px
+        65px,
+        21vw,
+        125px
       );
 
     text-shadow:
       -2px
       2px
       0
-      var(--yellow);
+      var(--gold);
   }
 
 
-  /* META */
+  /* BEHANCE */
 
-  .page-code {
-    display: none;
-  }
-
-  .side-note {
-    top: 22px;
-
-    font-size: 8px;
-  }
-
-  .intro-note {
-    left: 3px;
-    bottom: 12px;
-
-    max-width: 170px;
-
-    font-size: 16px;
-  }
-
-  .issue-label {
-    right: 0;
-    bottom: 12px;
-
-    gap: 10px;
-
-    font-size: 8px;
+  .behance-link {
+    font-size:
+      11px;
   }
 
 }
