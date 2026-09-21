@@ -1,118 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
-  >
+  />
 
   <title>keegan.biz</title>
 
-  <!-- TYPE -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=EB+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  >
-
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-  <!-- =====================================================
-       FUTURE FOOTBALL-SCARF HEADER
-       ===================================================== -->
+  <div class="page-shell">
 
-  <header class="site-header">
+    <!-- =========================================
+         HEADER / FUTURE SCARF
+         ========================================= -->
 
-    <a
-      class="scarf-placeholder"
-      href="index.html"
-      aria-label="Keegan.biz home"
+    <header class="site-header">
+
+      <a
+        class="scarf-tag"
+        href="index.html"
+        aria-label="Keegan.biz home"
+      >
+
+        <span class="scarf-tag__text">
+          keegan.biz
+        </span>
+
+        <span
+          class="scarf-tag__stripes"
+          aria-hidden="true"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+
+      </a>
+
+    </header>
+
+
+    <!-- =========================================
+         CATEGORY NAV
+         ========================================= -->
+
+    <nav
+      class="section-nav"
+      aria-label="Site sections"
     >
-      <span>KEEGAN.BIZ</span>
-    </a>
 
-  </header>
+      <a href="illustration.html">
+        illustration
+      </a>
+
+      <a href="photo.html">
+        photo
+      </a>
+
+      <a href="design.html">
+        design
+      </a>
+
+      <a href="music.html">
+        music
+      </a>
+
+      <a href="motion.html">
+        motion
+      </a>
+
+      <a href="misc.html">
+        misc
+      </a>
+
+    </nav>
 
 
-  <main class="page">
-
-    <!-- =====================================================
+    <!-- =========================================
          HOME
-         ===================================================== -->
+         ========================================= -->
 
-    <section class="hero">
+    <main class="hero">
 
-      <div class="page-code">
-        HOME / 001
-      </div>
+      <h1 class="hero-title">
 
+        <span class="hero-title__main">
+          keegan
+        </span>
 
-      <div class="hero-title">
+        <span class="hero-title__sub">
+          .biz
+        </span>
 
-        <h1>
+      </h1>
 
-          <span class="keegan">
-            KEEGAN
-          </span>
-
-          <span class="biz">
-            .BIZ
-          </span>
-
-        </h1>
-
-      </div>
+    </main>
 
 
-      <div class="side-note">
-        <span>things</span>
-        <span>pictures</span>
-        <span>sounds</span>
-        <span>scraps</span>
-      </div>
+    <!-- =========================================
+         BEHANCE
+         ========================================= -->
 
+    <footer class="site-footer">
 
-      <p class="intro-note">
-        a place for whatever ends up here
-      </p>
+      <a
+        class="behance-link"
+        href="https://www.behance.net/keeganandrulis"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        behance ↗
+      </a>
 
+    </footer>
 
-      <div class="issue-label">
-        <span>VOL. 01</span>
-        <span>2026</span>
-      </div>
-
-
-      <!--
-        FUTURE COLLAGE ASSETS GO HERE.
-
-        Example:
-
-        <img
-          class="collage collage-bird"
-          src="assets/images/cutouts/bird.png"
-          alt=""
-        >
-
-        <img
-          class="collage collage-photo"
-          src="assets/images/photos/woods.jpg"
-          alt=""
-        >
-      -->
-
-      <div class="collage-stage" aria-hidden="true"></div>
-
-    </section>
-
-  </main>
+  </div>
 
 </body>
 </html>
