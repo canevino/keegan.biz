@@ -97,7 +97,7 @@ a {
 .scarf-link {
   display: block;
 
-  width: 260px !important;
+  width: 300px !important;
   max-width: calc(100vw - 28px);
 
   text-decoration: none;
@@ -116,7 +116,7 @@ a {
 .scarf-image {
   display: block;
 
-  width: 260px !important;
+  width: 300px !important;
   max-width: 100% !important;
   height: auto !important;
 
@@ -362,7 +362,7 @@ a {
 
   .scarf-link,
   .scarf-image {
-    width: 225px !important;
+    width: 255px !important;
   }
 
   .hero {
@@ -417,8 +417,8 @@ a {
 
   .scarf-link,
   .scarf-image {
-    width: 180px !important;
-    max-width: 58vw !important;
+    width: 200px !important;
+    max-width: 62vw !important;
   }
 
   .scarf-link {
@@ -451,7 +451,7 @@ a {
     align-items: center;
 
     padding:
-      82px
+      88px
       0
       155px;
   }
@@ -559,12 +559,12 @@ a {
 
   .scarf-link,
   .scarf-image {
-    width: 155px !important;
-    max-width: 55vw !important;
+    width: 170px !important;
+    max-width: 58vw !important;
   }
 
   .hero {
-    padding-top: 68px;
+    padding-top: 74px;
     padding-bottom: 145px;
   }
 
