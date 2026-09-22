@@ -1,12 +1,9 @@
 /* =========================================================
    KEEGAN.BIZ
-   BASE
    ========================================================= */
 
 :root {
-
   --paper: #ece7d7;
-
   --ink: #11110f;
 
   --green: #155b3b;
@@ -21,7 +18,6 @@
   --shadow: rgba(17, 17, 15, 0.13);
 
   --edge: 18px;
-
 }
 
 
@@ -48,11 +44,8 @@ html {
 body {
   min-height: 100vh;
 
-  background:
-    var(--paper);
-
-  color:
-    var(--ink);
+  background: var(--paper);
+  color: var(--ink);
 
   font-family:
     "Helvetica Neue",
@@ -60,8 +53,7 @@ body {
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing:
-    antialiased;
+  -webkit-font-smoothing: antialiased;
 
   overflow-x: hidden;
 }
@@ -80,136 +72,73 @@ a {
 
   min-height: 100vh;
 
-  padding:
-    var(--edge);
+  padding: var(--edge);
 }
 
 
 /* =========================================================
-   HEADER / SCARF PLACEHOLDER
+   REAL SCARF
    ========================================================= */
 
 .site-header {
   position: fixed;
 
-  top: var(--edge);
-  left: var(--edge);
+  top: 10px;
+  left: 12px;
 
   z-index: 50;
+
+  pointer-events: none;
 }
 
+.scarf-link {
+  display: block;
 
-/*
-   This is temporary.
-
-   Later this gets replaced with your actual
-   photographed / edited scarf asset.
-*/
-
-.scarf-tag {
-  position: relative;
-
-  display: inline-flex;
-
-  align-items: stretch;
-
-  min-height: 56px;
+  width: clamp(250px, 25vw, 390px);
 
   text-decoration: none;
 
-  background:
-    var(--green);
+  pointer-events: auto;
 
-  color:
-    var(--cream);
+  transform: rotate(-1.25deg);
 
-  border:
-    1.5px solid
-    var(--ink);
-
-  box-shadow:
-    4px
-    4px
-    0
-    var(--shadow);
-
-  overflow: visible;
-
-  transform:
-    rotate(-0.8deg);
+  transform-origin: center;
 
   transition:
-    transform 150ms ease;
+    transform 180ms ease,
+    filter 180ms ease;
 }
 
+.scarf-image {
+  display: block;
 
-/* WORD */
+  width: 100%;
+  height: auto;
 
-.scarf-tag__text {
-  display: flex;
+  object-fit: contain;
 
-  align-items: center;
+  user-select: none;
 
-  min-width: 250px;
+  -webkit-user-drag: none;
 
-  padding:
-    0 24px;
-
-  font-size:
-    18px;
-
-  font-weight:
-    700;
-
-  letter-spacing:
-    -0.035em;
-
-  white-space:
-    nowrap;
+  filter:
+    drop-shadow(2px 3px 2px rgba(17, 17, 15, 0.14));
 }
 
-
-/* STRIPES */
-
-.scarf-tag__stripes {
-  display: flex;
-
-  width: 34px;
-
-  flex-shrink: 0;
-}
-
-.scarf-tag__stripes span {
-  flex: 1;
-}
-
-.scarf-tag__stripes span:nth-child(1) {
-  background:
-    var(--gold);
-}
-
-.scarf-tag__stripes span:nth-child(2) {
-  background:
-    var(--green-dark);
-}
-
-.scarf-tag__stripes span:nth-child(3) {
-  background:
-    var(--red);
-}
-
-
-/* HOVER */
-
-.scarf-tag:hover {
+.scarf-link:hover {
   transform:
-    rotate(0.5deg)
+    rotate(-0.25deg)
     translate(-2px, -2px);
+}
+
+.scarf-link:hover .scarf-image {
+  filter:
+    drop-shadow(3px 5px 3px rgba(17, 17, 15, 0.17));
 }
 
 
 /* =========================================================
-   CATEGORY NAV
+   SECTION NAV
    ========================================================= */
 
 .section-nav {
@@ -225,10 +154,8 @@ a {
 
   gap: 4px;
 
-  transform:
-    translateY(-50%);
+  transform: translateY(-50%);
 }
-
 
 .section-nav a {
   position: relative;
@@ -237,35 +164,25 @@ a {
 
   min-width: 110px;
 
-  padding:
-    5px 8px;
+  padding: 5px 8px;
 
   text-align: right;
 
   text-decoration: none;
 
-  font-size:
-    13px;
+  font-size: 13px;
+  font-weight: 600;
 
-  font-weight:
-    600;
+  line-height: 1;
 
-  line-height:
-    1;
+  letter-spacing: -0.02em;
 
-  letter-spacing:
-    -0.02em;
-
-  text-transform:
-    lowercase;
+  text-transform: lowercase;
 
   transition:
     transform 120ms ease,
     color 120ms ease;
 }
-
-
-/* LITTLE COLOR BAR */
 
 .section-nav a::before {
   content: "";
@@ -278,37 +195,25 @@ a {
   width: 5px;
   height: 5px;
 
-  background:
-    var(--gold);
+  background: var(--gold);
 
-  transform:
-    translateY(-50%);
+  transform: translateY(-50%);
 }
-
-
-/* ROTATING COLORS */
 
 .section-nav a:nth-child(2)::before,
 .section-nav a:nth-child(5)::before {
-  background:
-    var(--red);
+  background: var(--red);
 }
 
 .section-nav a:nth-child(3)::before,
 .section-nav a:nth-child(6)::before {
-  background:
-    var(--green);
+  background: var(--green);
 }
 
-
-/* NAV HOVER */
-
 .section-nav a:hover {
-  transform:
-    translateX(-5px);
+  transform: translateX(-5px);
 
-  color:
-    var(--green);
+  color: var(--green);
 }
 
 
@@ -317,15 +222,9 @@ a {
    ========================================================= */
 
 .hero {
-  min-height:
-    calc(
-      100vh
-      -
-      (var(--edge) * 2)
-    );
+  min-height: calc(100vh - (var(--edge) * 2));
 
   display: flex;
-
   align-items: center;
 
   padding:
@@ -335,23 +234,15 @@ a {
     5vw;
 }
 
-
-/* =========================================================
-   BIG TYPE
-   ========================================================= */
-
 .hero-title {
   margin: 0;
 
   max-width: 100%;
 
-  line-height:
-    0.69;
+  line-height: 0.69;
 
-  letter-spacing:
-    -0.085em;
+  letter-spacing: -0.085em;
 }
-
 
 .hero-title__main,
 .hero-title__sub {
@@ -360,27 +251,16 @@ a {
   width: fit-content;
 }
 
-
-/* KEEGAN */
-
 .hero-title__main {
   position: relative;
 
-  font-size:
-    clamp(
-      90px,
-      20vw,
-      310px
-    );
+  font-size: clamp(90px, 20vw, 310px);
 
-  font-weight:
-    900;
+  font-weight: 900;
 
-  color:
-    var(--ink);
+  color: var(--ink);
 
-  text-transform:
-    lowercase;
+  text-transform: lowercase;
 
   text-shadow:
     3px
@@ -389,37 +269,19 @@ a {
     rgba(180, 58, 52, 0.8);
 }
 
-
-/* .BIZ */
-
 .hero-title__sub {
   position: relative;
 
-  margin-top:
-    -0.12em;
+  margin-top: -0.12em;
+  margin-left: clamp(60px, 29vw, 450px);
 
-  margin-left:
-    clamp(
-      60px,
-      29vw,
-      450px
-    );
+  font-size: clamp(80px, 17vw, 270px);
 
-  font-size:
-    clamp(
-      80px,
-      17vw,
-      270px
-    );
+  font-weight: 900;
 
-  font-weight:
-    900;
+  color: var(--green);
 
-  color:
-    var(--green);
-
-  text-transform:
-    lowercase;
+  text-transform: lowercase;
 
   text-shadow:
     -3px
@@ -427,13 +289,12 @@ a {
     0
     var(--gold);
 
-  transform:
-    rotate(-2deg);
+  transform: rotate(-2deg);
 }
 
 
 /* =========================================================
-   BEHANCE
+   FOOTER
    ========================================================= */
 
 .site-footer {
@@ -445,25 +306,16 @@ a {
   z-index: 40;
 }
 
-
 .behance-link {
   display: inline-flex;
-
   align-items: center;
 
-  padding:
-    7px
-    10px;
+  padding: 7px 10px;
 
-  background:
-    var(--gold);
+  background: var(--gold);
+  color: var(--ink);
 
-  color:
-    var(--ink);
-
-  border:
-    1.5px solid
-    var(--ink);
+  border: 1.5px solid var(--ink);
 
   box-shadow:
     3px
@@ -471,26 +323,19 @@ a {
     0
     var(--shadow);
 
-  text-decoration:
-    none;
+  text-decoration: none;
 
-  font-size:
-    12px;
+  font-size: 12px;
+  font-weight: 700;
 
-  font-weight:
-    700;
-
-  text-transform:
-    lowercase;
+  text-transform: lowercase;
 
   transition:
     transform 120ms ease;
 }
 
-
 .behance-link:hover {
-  transform:
-    translate(-2px, -2px);
+  transform: translate(-2px, -2px);
 }
 
 
@@ -507,22 +352,20 @@ a {
 
   /* SCARF */
 
-  .scarf-tag {
-    min-height: 44px;
+  .site-header {
+    top: 8px;
+    left: 7px;
   }
 
-  .scarf-tag__text {
-    min-width: 170px;
+  .scarf-link {
+    width: clamp(190px, 58vw, 270px);
 
-    padding:
-      0 16px;
-
-    font-size:
-      15px;
+    transform: rotate(-1.25deg);
   }
 
-  .scarf-tag__stripes {
-    width: 26px;
+  .scarf-image {
+    filter:
+      drop-shadow(1px 2px 1.5px rgba(17, 17, 15, 0.14));
   }
 
 
@@ -549,20 +392,14 @@ a {
       4px
       18px;
 
-    font-size:
-      11px;
+    font-size: 11px;
   }
 
 
   /* HERO */
 
   .hero {
-    min-height:
-      calc(
-        100vh
-        -
-        24px
-      );
+    min-height: calc(100vh - 24px);
 
     padding:
       80px
@@ -570,14 +407,8 @@ a {
       110px;
   }
 
-
   .hero-title__main {
-    font-size:
-      clamp(
-        70px,
-        24vw,
-        140px
-      );
+    font-size: clamp(70px, 24vw, 140px);
 
     text-shadow:
       2px
@@ -586,17 +417,10 @@ a {
       rgba(180, 58, 52, 0.8);
   }
 
-
   .hero-title__sub {
-    margin-left:
-      16vw;
+    margin-left: 16vw;
 
-    font-size:
-      clamp(
-        65px,
-        21vw,
-        125px
-      );
+    font-size: clamp(65px, 21vw, 125px);
 
     text-shadow:
       -2px
@@ -606,11 +430,9 @@ a {
   }
 
 
-  /* BEHANCE */
+  /* FOOTER */
 
   .behance-link {
-    font-size:
-      11px;
+    font-size: 11px;
   }
-
 }
