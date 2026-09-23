@@ -2,126 +2,130 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
   <title>keegan.biz</title>
-
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-
   <div class="page-shell">
 
-    <!-- HOME SCARF -->
-    <header class="site-header">
-      <a class="scarf-link" href="index.html" aria-label="keegan.biz home">
+    <!-- SCARF MENU -->
+    <nav class="scarf-rack" aria-label="Site sections">
+
+      <a
+        href="index.html"
+        class="scarf-rack__item scarf-rack__item--home"
+        aria-label="Home"
+        title="Home"
+      >
         <img
-          class="scarf-image"
           src="assets/home/home-scarf-update.png"
-          alt="keegan.biz"
+          alt="keegan.biz home scarf"
         />
       </a>
-    </header>
-
-
-    <!-- SMALL SCARF MENU -->
-    <nav class="scarf-menu" aria-label="Site sections">
 
       <a
         href="illustration.html"
-        class="scarf-menu__item"
+        class="scarf-rack__item"
         aria-label="Illustration"
         title="Illustration"
       >
         <img
           src="assets/home/scarf-illustration.png"
-          alt=""
+          alt="Illustration"
         />
       </a>
 
       <a
         href="photo.html"
-        class="scarf-menu__item"
-        aria-label="Photo"
-        title="Photo"
+        class="scarf-rack__item"
+        aria-label="Photography"
+        title="Photography"
       >
         <img
           src="assets/home/scarf-photography.png"
-          alt=""
+          alt="Photography"
         />
       </a>
 
       <a
         href="design.html"
-        class="scarf-menu__item"
+        class="scarf-rack__item"
         aria-label="Design"
         title="Design"
       >
         <img
           src="assets/home/scarf-design.png"
-          alt=""
+          alt="Design"
         />
       </a>
 
       <a
         href="music.html"
-        class="scarf-menu__item"
+        class="scarf-rack__item"
         aria-label="Music"
         title="Music"
       >
         <img
           src="assets/home/scarf-music.png"
-          alt=""
+          alt="Music"
         />
       </a>
 
       <a
         href="motion.html"
-        class="scarf-menu__item"
+        class="scarf-rack__item"
         aria-label="Motion"
         title="Motion"
       >
         <img
           src="assets/home/scarf-motion.png"
-          alt=""
+          alt="Motion"
         />
       </a>
 
       <a
         href="misc.html"
-        class="scarf-menu__item"
+        class="scarf-rack__item"
         aria-label="Misc"
         title="Misc"
       >
         <img
           src="assets/home/scarf-misc.png"
-          alt=""
+          alt="Misc"
         />
       </a>
 
     </nav>
 
 
-    <!-- WELCOME -->
+    <!-- HERO -->
     <main class="hero">
+      <div class="hero-inner">
 
-      <h1 class="welcome-title">
+        <p class="welcome-line">
+          <span
+            id="welcome-word"
+            class="welcome-word"
+            dir="auto"
+          >
+            Welcome
+          </span>
+        </p>
 
-        <span
-          class="welcome-word"
-          id="welcome-word"
-          dir="auto"
-        >
-          Welcome
-        </span>
+        <h1 class="brand-title" aria-label="keegan.biz">
+          <span class="brand-title__keegan">keegan</span><span class="brand-title__dot">.</span><span class="brand-title__biz">biz</span>
+        </h1>
 
-        <span class="welcome-rest">
-          to keegan's page
-        </span>
+        <p class="progress-line">
+          <span id="progress-text">SITE STILL IN PROGRESS!!</span>
+        </p>
 
-      </h1>
-
+      </div>
     </main>
 
 
@@ -141,128 +145,96 @@
 
 
   <script>
-    const welcomes = [
-      { text: "Welcome", lang: "English" },
-      { text: "Ласкаво просимо", lang: "Ukrainian" },
-      { text: "Benvenuti", lang: "Italian" },
-      { text: "Fáilte", lang: "Irish" },
-      { text: "Bienvenidos", lang: "Spanish" },
-      { text: "欢迎", lang: "Chinese" },
-      { text: "Benvinguts", lang: "Catalan" },
-
-      /* Wingdings uses the English word but renders it as symbols */
-      {
-        text: "WELCOME",
-        lang: "Wingdings",
-        className: "is-wingdings"
-      },
-
-      { text: "Sveiki atvykę", lang: "Lithuanian" },
-
-      /* Navajo greeting equivalent */
-      { text: "Yá’át’ééh", lang: "Navajo" },
-
-      { text: "Velkomin", lang: "Icelandic" },
-      { text: "Willkommen", lang: "German" },
-      { text: "ようこそ", lang: "Japanese" },
-      { text: "Bienvenue", lang: "French" },
-      { text: "Bem-vindos", lang: "Portuguese" },
-      { text: "أهلاً وسهلاً", lang: "Arabic" },
-
-      /* Tolkien-attested Sindarin greeting: "well met" */
-      { text: "Mae govannen", lang: "Sindarin" },
-
-      { text: "Croeso", lang: "Welsh" },
-
+    const welcomeEntries = [
+      { text: "Welcome" },                // English
+      { text: "Ласкаво просимо" },        // Ukrainian
+      { text: "Benvenuti" },              // Italian
+      { text: "Fáilte" },                 // Irish
+      { text: "Bienvenidos" },            // Spanish
+      { text: "欢迎" },                    // Chinese
+      { text: "Benvinguts" },             // Catalan
+      { text: "WELCOME", className: "is-wingdings" }, // Wingdings
+      { text: "Sveiki atvykę" },          // Lithuanian
+      { text: "Yá’át’ééh" },              // Navajo
+      { text: "Velkomin" },               // Icelandic
+      { text: "Willkommen" },             // German
+      { text: "ようこそ" },                // Japanese
+      { text: "Bienvenue" },              // French
+      { text: "Bem-vindos" },             // Portuguese
+      { text: "أهلاً وسهلاً" },           // Arabic
+      { text: "Mae govannen" },           // Sindarin
+      { text: "Croeso" },                 // Welsh
       {
         text: "01010111 01100101 01101100 01100011 01101111 01101101 01100101",
-        lang: "Binary",
         className: "is-binary"
       },
-
-      /* African languages */
-      { text: "Karibu", lang: "Swahili" },
-      { text: "Siyakwamukela", lang: "Zulu" },
-      { text: "Ẹ káàbọ̀", lang: "Yoruba" },
-      { text: "እንኳን ደህና መጡ", lang: "Amharic" },
-
-      { text: "स्वागत", lang: "Hindi" },
-      { text: "خوش آمدید", lang: "Persian" }
+      { text: "Karibu" },                 // Swahili
+      { text: "Ẹ káàbọ̀" },               // Yoruba
+      { text: "Siyakwamukela" },          // Zulu
+      { text: "स्वागत है" },               // Hindi
+      { text: "خوش آمدید" },              // Persian
+      { text: "እንኳን ደህና መጡ" }         // Amharic
     ];
 
-
-    const lithuanianColors = [
-      "#FDB913", /* gold */
-      "#006A44", /* green */
-      "#C1272D"  /* red */
+    const palette = [
+      "#FDB913", // yellow
+      "#006A44", // green
+      "#C1272D"  // red
     ];
-
 
     const welcomeWord = document.getElementById("welcome-word");
+    const progressText = document.getElementById("progress-text");
 
-    let previousIndex = -1;
+    let lastWelcomeIndex = -1;
+    let lastProgressColor = "";
 
-
-    function chooseDifferentIndex() {
-      let index;
-
+    function randomIndex(length, lastIndex) {
+      let next;
       do {
-        index = Math.floor(Math.random() * welcomes.length);
-      } while (
-        welcomes.length > 1 &&
-        index === previousIndex
-      );
-
-      previousIndex = index;
-
-      return index;
+        next = Math.floor(Math.random() * length);
+      } while (length > 1 && next === lastIndex);
+      return next;
     }
 
+    function randomColor(exclude = "") {
+      let color;
+      do {
+        color = palette[Math.floor(Math.random() * palette.length)];
+      } while (palette.length > 1 && color === exclude);
+      return color;
+    }
 
-    function changeWelcome() {
-      const entry = welcomes[chooseDifferentIndex()];
+    function updateWelcome() {
+      const nextIndex = randomIndex(welcomeEntries.length, lastWelcomeIndex);
+      const entry = welcomeEntries[nextIndex];
 
       welcomeWord.classList.add("is-changing");
 
       setTimeout(() => {
-
         welcomeWord.textContent = entry.text;
-        welcomeWord.dataset.language = entry.lang;
-
-        welcomeWord.classList.remove(
-          "is-wingdings",
-          "is-binary"
-        );
+        welcomeWord.classList.remove("is-wingdings", "is-binary");
 
         if (entry.className) {
           welcomeWord.classList.add(entry.className);
         }
 
-        const randomColor =
-          lithuanianColors[
-            Math.floor(
-              Math.random() *
-              lithuanianColors.length
-            )
-          ];
-
-        welcomeWord.style.color = randomColor;
-
-        requestAnimationFrame(() => {
-          welcomeWord.classList.remove("is-changing");
-        });
-
-      }, 220);
+        welcomeWord.style.color = randomColor();
+        welcomeWord.classList.remove("is-changing");
+        lastWelcomeIndex = nextIndex;
+      }, 160);
     }
 
+    function updateProgressColor() {
+      const nextColor = randomColor(lastProgressColor);
+      progressText.style.color = nextColor;
+      lastProgressColor = nextColor;
+    }
 
-    /* Start with a random language */
-    changeWelcome();
+    updateWelcome();
+    updateProgressColor();
 
-
-    /* Change every 2.4 seconds */
-    setInterval(changeWelcome, 2400);
+    setInterval(updateWelcome, 2400);
+    setInterval(updateProgressColor, 900);
   </script>
-
 </body>
 </html>
