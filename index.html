@@ -26,7 +26,7 @@
       <a
         href="#"
         class="scarf-rack__item scarf-rack__item--home audio-trigger"
-        aria-label="Play soundtrack"
+        aria-label="Home"
       >
         <img
           src="assets/home/home-scarf-update.png"
@@ -111,8 +111,6 @@
 
       <div class="hero-inner">
 
-        <!-- SLOT MACHINE -->
-
         <div
           class="welcome-slot"
           aria-live="polite"
@@ -145,11 +143,16 @@
         </div>
 
 
-        <!-- STATIC TITLE -->
-
         <h1 class="main-title">
-          <span class="main-title__to">to</span>
-          <span class="main-title__brand">keegan.biz</span>
+
+          <span class="main-title__to">
+            to
+          </span>
+
+          <span class="main-title__brand">
+            keegan.biz
+          </span>
+
         </h1>
 
       </div>
@@ -158,8 +161,7 @@
 
 
     <!-- =====================================================
-         YOUTUBE PLAYER
-         appears only after scarf click
+         WORK IN PROGRESS / YOUTUBE POPUP
          ===================================================== -->
 
     <div
@@ -168,14 +170,22 @@
       aria-hidden="true"
     >
 
-      <button
-        class="player-close"
-        id="player-close"
-        type="button"
-        aria-label="Close soundtrack"
-      >
-        ×
-      </button>
+      <div class="player-header">
+
+        <p class="player-message">
+          sorry i'm still working on this
+        </p>
+
+        <button
+          class="player-close"
+          id="player-close"
+          type="button"
+          aria-label="Close and stop music"
+        >
+          ×
+        </button>
+
+      </div>
 
       <div id="youtube-player"></div>
 
@@ -259,7 +269,10 @@
       let next;
 
       do {
-        next = Math.floor(Math.random() * length);
+        next =
+          Math.floor(
+            Math.random() * length
+          );
       }
       while (
         length > 1 &&
@@ -270,7 +283,10 @@
     }
 
 
-    function applyWelcome(element, entry) {
+    function applyWelcome(
+      element,
+      entry
+    ) {
 
       element.classList.remove(
         "is-wingdings",
@@ -280,10 +296,13 @@
       element.textContent =
         entry.text;
 
+
       if (entry.className) {
+
         element.classList.add(
           entry.className
         );
+
       }
 
     }
@@ -294,6 +313,7 @@
       if (rolling) {
         return;
       }
+
 
       rolling = true;
 
@@ -381,7 +401,7 @@
 
 
     /* =======================================================
-       YOUTUBE SOUNDTRACK
+       YOUTUBE PLAYER
        ======================================================= */
 
     const playerShell =
@@ -389,10 +409,12 @@
         "player-shell"
       );
 
+
     const playerClose =
       document.getElementById(
         "player-close"
       );
+
 
     const scarfTriggers =
       document.querySelectorAll(
@@ -401,7 +423,9 @@
 
 
     let youtubePlayer = null;
+
     let youtubeReady = false;
+
     let playRequested = false;
 
 
@@ -412,7 +436,8 @@
           "youtube-player",
           {
 
-            width: 300,
+            width: 320,
+
             height: 200,
 
             videoId:
@@ -441,8 +466,11 @@
 
                 youtubeReady = true;
 
+
                 if (playRequested) {
+
                   startSoundtrack();
+
                 }
 
               }
@@ -457,17 +485,18 @@
 
     function startSoundtrack() {
 
+      playRequested = true;
+
+
       playerShell.classList.add(
         "is-visible"
       );
+
 
       playerShell.setAttribute(
         "aria-hidden",
         "false"
       );
-
-
-      playRequested = true;
 
 
       if (
@@ -480,6 +509,39 @@
         youtubePlayer.playVideo();
 
       }
+
+    }
+
+
+    function stopSoundtrack() {
+
+      playRequested = false;
+
+
+      if (
+        youtubeReady &&
+        youtubePlayer
+      ) {
+
+        /*
+          stopVideo rather than pauseVideo:
+          closes it out completely.
+        */
+
+        youtubePlayer.stopVideo();
+
+      }
+
+
+      playerShell.classList.remove(
+        "is-visible"
+      );
+
+
+      playerShell.setAttribute(
+        "aria-hidden",
+        "true"
+      );
 
     }
 
@@ -504,29 +566,7 @@
 
     playerClose.addEventListener(
       "click",
-      function() {
-
-        if (
-          youtubeReady &&
-          youtubePlayer
-        ) {
-
-          youtubePlayer.pauseVideo();
-
-        }
-
-
-        playerShell.classList.remove(
-          "is-visible"
-        );
-
-
-        playerShell.setAttribute(
-          "aria-hidden",
-          "true"
-        );
-
-      }
+      stopSoundtrack
     );
 
   </script>
