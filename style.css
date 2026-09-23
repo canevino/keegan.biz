@@ -528,7 +528,7 @@ a {
 
 
 /* =========================================================
-   COLLAGE STAGE
+   STAGE
    ========================================================= */
 
 .collage-stage {
@@ -561,11 +561,14 @@ a {
     none;
 
   /*
-    Darker, dirtier starting point.
+    Slightly lighter than the last version.
+
+    Gives the pigment somewhere to go without
+    making the square feel clean.
   */
 
   background:
-    #d8d1c4;
+    #d4d0c5;
 
   opacity:
     var(--visual-reveal);
@@ -586,12 +589,9 @@ a {
 }
 
 
-/*
-  Static stained-paper field beneath everything.
-
-  This gives the box roughness even during moments
-  when texture images are crossfading.
-*/
+/* =========================================================
+   STATIC STAIN FIELD
+   ========================================================= */
 
 .collage-stage::before {
   content:
@@ -612,7 +612,7 @@ a {
   background:
     radial-gradient(
       circle at 18% 22%,
-      rgba(0, 0, 0, 0.16),
+      rgba(0, 0, 0, 0.14),
       transparent 32%
     ),
     radial-gradient(
@@ -622,26 +622,26 @@ a {
     ),
     radial-gradient(
       circle at 57% 38%,
-      rgba(0, 0, 0, 0.11),
+      rgba(0, 0, 0, 0.10),
       transparent 40%
     ),
     linear-gradient(
       125deg,
-      rgba(0, 0, 0, 0.10),
+      rgba(0, 0, 0, 0.09),
       transparent 38%,
-      rgba(255, 255, 255, 0.09)
+      rgba(255, 255, 255, 0.08)
     );
 
   mix-blend-mode:
     multiply;
 
   opacity:
-    0.78;
+    0.72;
 }
 
 
 /* =========================================================
-   SLOTS
+   TEXTURE SLOTS
    ========================================================= */
 
 .texture-slot {
@@ -703,13 +703,6 @@ a {
   transition-property:
     opacity;
 
-  /*
-    Very plain easing.
-
-    Less "digital animation";
-    more straightforward optical dissolve.
-  */
-
   transition-timing-function:
     ease-in-out;
 
@@ -767,12 +760,6 @@ a {
 }
 
 
-/*
-  Color lives here.
-
-  No changing blend modes.
-*/
-
 .horse-main {
   z-index:
     2;
@@ -797,10 +784,6 @@ a {
     hidden;
 }
 
-
-/*
-  Tiny misregistered copy on desktop.
-*/
 
 .horse-offset {
   z-index:
@@ -853,7 +836,7 @@ a {
   filter:
     grayscale(1)
     saturate(0)
-    contrast(1.55);
+    contrast(1.5);
 
   pointer-events:
     none;
@@ -867,7 +850,7 @@ a {
 
 
 /* =========================================================
-   STATIC GRAIN
+   GRAIN
    ========================================================= */
 
 .stage-grain {
@@ -1178,19 +1161,11 @@ a {
   }
 
 
-  /*
-    No harsh overprint above horse on mobile.
-  */
-
   .over-slot-1 {
     display:
       none;
   }
 
-
-  /*
-    No second colored registration copy.
-  */
 
   .horse-offset {
     display:
@@ -1198,23 +1173,15 @@ a {
   }
 
 
-  /*
-    Less geometric variation on small screen.
-  */
-
   .morph-frame {
     inset:
       -5%;
   }
 
 
-  /*
-    Still rough, but not crushed.
-  */
-
   .collage-stage::before {
     opacity:
-      0.56;
+      0.54;
   }
 
 
@@ -1231,7 +1198,7 @@ a {
     filter:
       grayscale(1)
       saturate(0)
-      contrast(1.35);
+      contrast(1.3);
   }
 
 }
