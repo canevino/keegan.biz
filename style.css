@@ -1,8 +1,5 @@
 /* =========================================================
    KEEGAN.BIZ
-   GOLDEN-RATIO TYPE SCALE
-
-   26 → 42 → 68 → 110
    ========================================================= */
 
 :root {
@@ -13,15 +10,7 @@
   --lt-green: #006a44;
   --lt-red: #c1272d;
 
-  --shadow:
-    rgba(17, 17, 15, 0.14);
-
   --edge: 18px;
-
-  --type-1: 26px;
-  --type-2: 42px;
-  --type-3: 68px;
-  --type-4: 110px;
 }
 
 
@@ -36,229 +25,70 @@
 }
 
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-
 html {
-  font-size: 16px;
+  min-height: 100%;
 }
 
 
 body {
   min-height: 100vh;
+
+  margin: 0;
+
+  overflow-x: hidden;
 
   background: var(--paper);
   color: var(--ink);
 
   font-family:
-    "Helvetica Neue",
     Helvetica,
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing:
-    antialiased;
-
-  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
 
-a {
-  color: inherit;
-  text-decoration: none;
+img {
+  max-width: 100%;
 }
 
 
 /* =========================================================
-   PAGE
+   HOME
    ========================================================= */
 
-.page-shell {
-  position: relative;
-
+.home {
   min-height: 100vh;
-
-  padding: var(--edge);
 }
 
 
-/* =========================================================
-   SCARF RACK
-   ========================================================= */
-
-.scarf-rack {
-  position: fixed;
-
-  top: 14px;
-  right: 12px;
-
-  z-index: 60;
+.hero {
+  min-height: 100vh;
 
   display: flex;
   flex-direction: column;
-
-  align-items: flex-end;
-
-  gap: 8px;
-}
-
-
-.scarf-rack__item {
-  display: block;
-
-  width:
-    clamp(
-      360px,
-      29vw,
-      455px
-    );
-
-  transform-origin:
-    right center;
-
-  transition:
-    transform
-      180ms
-      cubic-bezier(.2, .8, .2, 1),
-    filter
-      180ms
-      ease;
-}
-
-
-.scarf-rack__item--home {
-  width:
-    clamp(
-      390px,
-      31vw,
-      490px
-    );
-
-  margin-bottom:
-    4px;
-}
-
-
-.scarf-rack__item img {
-  display: block;
-
-  width: 100%;
-  height: auto;
-
-  user-select: none;
-
-  -webkit-user-drag: none;
-
-  filter:
-    drop-shadow(
-      2px
-      3px
-      2px
-      rgba(17, 17, 15, 0.12)
-    );
-}
-
-
-/* slight irregularity */
-
-.scarf-rack__item:nth-child(1) {
-  transform: rotate(-0.8deg);
-}
-
-.scarf-rack__item:nth-child(2) {
-  transform: rotate(0.5deg);
-}
-
-.scarf-rack__item:nth-child(3) {
-  transform: rotate(-0.4deg);
-}
-
-.scarf-rack__item:nth-child(4) {
-  transform: rotate(0.6deg);
-}
-
-.scarf-rack__item:nth-child(5) {
-  transform: rotate(-0.5deg);
-}
-
-.scarf-rack__item:nth-child(6) {
-  transform: rotate(0.4deg);
-}
-
-.scarf-rack__item:nth-child(7) {
-  transform: rotate(-0.6deg);
-}
-
-
-/* hover */
-
-.scarf-rack__item:hover {
-  z-index: 4;
-
-  transform:
-    translateX(-42px)
-    scale(1.07)
-    rotate(-1deg);
-}
-
-
-.scarf-rack__item:hover img {
-  filter:
-    drop-shadow(
-      5px
-      7px
-      4px
-      rgba(17, 17, 15, 0.18)
-    );
-}
-
-
-/* =========================================================
-   HERO
-   ========================================================= */
-
-.hero {
-  min-height:
-    calc(
-      100vh -
-      (var(--edge) * 2)
-    );
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content:
-    flex-start;
+  justify-content: center;
+  align-items: flex-start;
 
   padding:
     7vh
-    535px
+    clamp(390px, 37vw, 540px)
     7vh
     6vw;
 }
 
 
-.hero-inner {
-  width: 100%;
-
-  max-width: 920px;
+.welcome-slot {
+  width: min(100%, 920px);
 }
 
 
-/* =========================================================
-   WELCOME SLOT
-   ========================================================= */
-
-.welcome-slot {
+.welcome-track {
   position: relative;
 
   width: 100%;
-
   height: 124px;
 
   overflow: hidden;
@@ -267,20 +97,16 @@ a {
 }
 
 
-.welcome-track {
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-}
-
-
 .welcome-word {
   position: absolute;
-
+  top: 0;
   left: 0;
 
-  width: 100%;
+  display: block;
+
+  max-width: 100%;
+
+  white-space: nowrap;
 
   font-size:
     clamp(
@@ -289,107 +115,102 @@ a {
       110px
     );
 
-  font-weight: 800;
-
+  font-weight: 700;
   line-height: 1;
 
-  letter-spacing:
-    -0.055em;
+  letter-spacing: -0.065em;
+
+  transform:
+    translateY(0);
 
   transition:
     transform
-      540ms
-      cubic-bezier(.55, 0, .15, 1);
+    540ms
+    cubic-bezier(.76, 0, .24, 1);
 }
 
 
-.welcome-word--current {
-  top: 0;
-
+.welcome-next {
   transform:
-    translateY(0);
-}
-
-
-.welcome-word--next {
-  top: 100%;
-
-  transform:
-    translateY(0);
+    translateY(100%);
 }
 
 
 .welcome-track.is-rolling
-.welcome-word--current {
-  transform:
-    translateY(-110%);
-}
-
-
-.welcome-track.is-rolling
-.welcome-word--next {
+.welcome-current {
   transform:
     translateY(-100%);
 }
 
 
+.welcome-track.is-rolling
+.welcome-next {
+  transform:
+    translateY(0);
+}
+
+
 .welcome-track.no-transition
 .welcome-word {
-  transition:
-    none !important;
+  transition: none !important;
 }
 
 
-/* Wingdings */
+/* long languages */
 
-.welcome-word.is-wingdings {
-  font-family:
-    Wingdings,
-    Webdings,
-    "Zapf Dingbats",
-    sans-serif;
+.welcome-long {
+  font-size:
+    clamp(
+      48px,
+      5.2vw,
+      84px
+    );
 
-  letter-spacing:
-    0.02em;
+  letter-spacing: -0.055em;
 }
 
 
-/* Binary */
+/* binary */
 
-.welcome-word.is-binary {
+.welcome-word.binary {
+  max-width: 860px;
+
+  white-space: normal;
+
   font-family:
     "Courier New",
-    Courier,
     monospace;
 
   font-size:
     clamp(
-      26px,
+      24px,
       2.7vw,
       42px
     );
 
-  line-height: 1.05;
+  font-weight: 700;
+  line-height: 1.04;
 
-  letter-spacing:
-    -0.04em;
+  letter-spacing: -0.035em;
 }
 
 
-/* =========================================================
-   TO KEEGAN.BIZ
-   ========================================================= */
+/* wingdings */
 
-.main-title {
-  margin: 0;
+.welcome-word.wingdings {
+  font-family:
+    Wingdings,
+    "Zapf Dingbats",
+    sans-serif;
 
-  display: flex;
+  letter-spacing: 0;
+}
 
-  flex-wrap: wrap;
 
-  align-items: baseline;
+/* keegan.biz */
 
-  gap: 0.16em;
+.site-title {
+  color: var(--ink);
 
   font-size:
     clamp(
@@ -398,120 +219,221 @@ a {
       68px
     );
 
-  font-weight: 900;
+  font-weight: 700;
+  line-height: 0.95;
 
-  line-height: 0.92;
-
-  letter-spacing:
-    -0.075em;
-
-  color: var(--ink);
-}
-
-
-.main-title__to,
-.main-title__brand {
-  color: var(--ink);
-}
-
-
-.main-title__brand {
-  white-space: nowrap;
+  letter-spacing: -0.06em;
 }
 
 
 /* =========================================================
-   WORK IN PROGRESS PLAYER
+   SCARF RACK — DESKTOP
    ========================================================= */
 
-.player-shell {
+.scarf-rack {
   position: fixed;
-
-  left: 18px;
-  bottom: 18px;
-
-  z-index: 100;
-
-  display: none;
-
-  width: 320px;
-
-  background:
-    var(--paper);
-
-  border:
-    1.5px solid
-    var(--ink);
-
-  box-shadow:
-    6px
-    6px
-    0
-    rgba(17, 17, 15, 0.15);
-}
-
-
-.player-shell.is-visible {
-  display: block;
-}
-
-
-/* popup header */
-
-.player-header {
-  position: relative;
+  top: 14px;
+  right: 12px;
+  z-index: 30;
 
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 
-  align-items: center;
+  gap: 5px;
 
-  justify-content:
-    space-between;
-
-  min-height: 46px;
-
-  padding:
-    9px
-    42px
-    9px
-    12px;
-
-  border-bottom:
-    1.5px solid
-    var(--ink);
+  margin: 0;
+  padding: 0;
 }
 
 
-.player-message {
+.scarf-item {
+  position: relative;
+
+  display: block;
+
+  height:
+    clamp(
+      72px,
+      calc((100vh - 77px) / 8),
+      105px
+    );
+
+  text-decoration: none;
+
+  transform-origin:
+    right center;
+
+  transition:
+    transform
+    220ms
+    cubic-bezier(.2,.8,.2,1),
+    filter
+    220ms ease;
+}
+
+
+.scarf-item img {
+  display: block;
+
+  width: auto;
+  height: 100%;
+
+  object-fit: contain;
+
+  border: 0;
+
+  filter:
+    drop-shadow(
+      0 2px 1px
+      rgba(17,17,15,0.06)
+    );
+}
+
+
+.scarf-home {
+  transform:
+    scale(1.045);
+}
+
+
+/* intentionally restrained hover */
+
+.scarf-item:hover {
+  z-index: 5;
+
+  transform:
+    translateX(-24px)
+    rotate(-0.6deg)
+    scale(1.035);
+}
+
+
+.scarf-home:hover {
+  transform:
+    translateX(-24px)
+    rotate(-0.6deg)
+    scale(1.075);
+}
+
+
+/* keyboard */
+
+.scarf-item:focus-visible {
+  outline:
+    2px solid
+    var(--ink);
+
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   WIP OVERLAY
+   ========================================================= */
+
+.wip-overlay {
+  --horse-progress: 0;
+
+  --shift-x: 0px;
+  --shift-y: 0px;
+  --shift-r: 0deg;
+  --horse-hue: 0deg;
+
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: var(--paper);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 180ms ease,
+    visibility 180ms ease;
+}
+
+
+.wip-overlay.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+
+/* =========================================================
+   WIP MESSAGE
+   ========================================================= */
+
+.wip-text {
+  position: relative;
+  z-index: 20;
+
+  max-width:
+    calc(100vw - 48px);
+
   margin: 0;
+  padding:
+    18px
+    22px;
 
-  max-width: 230px;
+  background:
+    rgba(
+      236,
+      231,
+      215,
+      0.88
+    );
 
-  font-size: 15px;
+  border:
+    1px solid
+    var(--ink);
 
-  font-weight: 800;
+  color:
+    var(--ink);
 
-  line-height: 1.05;
+  font-size:
+    clamp(
+      20px,
+      2.1vw,
+      30px
+    );
+
+  font-weight: 700;
+  line-height: 1;
 
   letter-spacing:
-    -0.035em;
+    -0.045em;
 
-  text-transform:
-    lowercase;
+  text-align: center;
+
+  backdrop-filter:
+    blur(3px);
+
+  -webkit-backdrop-filter:
+    blur(3px);
 }
 
 
-/* close */
+/* =========================================================
+   CLOSE
+   ========================================================= */
 
-.player-close {
-  position: absolute;
+.wip-close {
+  position: fixed;
+  top: 16px;
+  right: 20px;
+  z-index: 50;
 
-  top: 50%;
-  right: 8px;
-
-  width: 28px;
-  height: 28px;
-
+  margin: 0;
   padding: 0;
 
   border: 0;
@@ -522,37 +444,335 @@ a {
   color:
     var(--ink);
 
-  font: inherit;
+  font-family:
+    Helvetica,
+    Arial,
+    sans-serif;
 
-  font-size: 27px;
-
-  font-weight: 500;
-
+  font-size: 36px;
+  font-weight: 400;
   line-height: 1;
 
   cursor: pointer;
 
-  transform:
-    translateY(-50%);
-
   transition:
-    transform 120ms ease;
+    transform 160ms ease;
 }
 
 
-.player-close:hover {
+.wip-close:hover {
   transform:
-    translateY(-50%)
     rotate(8deg)
     scale(1.1);
 }
 
 
-#youtube-player {
-  display: block;
+/* =========================================================
+   HORSE STAGE
+   ========================================================= */
 
-  width: 320px;
-  height: 200px;
+.horse-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  z-index: 2;
+
+  width:
+    min(
+      78vmin,
+      760px
+    );
+
+  aspect-ratio: 1;
+
+  pointer-events: none;
+
+  isolation: isolate;
+
+  transform:
+    translate(-50%, -50%)
+    scale(
+      calc(
+        0.92 +
+        var(--horse-progress) * 0.08
+      )
+    );
+
+  transition:
+    transform 300ms ease;
+}
+
+
+.horse {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  pointer-events: none;
+  user-select: none;
+
+  transform-origin:
+    center;
+
+  transition:
+    transform 700ms ease,
+    opacity 400ms linear,
+    filter 700ms ease;
+}
+
+
+/* =========================================================
+   PRIMARY HORSE
+   ========================================================= */
+
+.horse-base {
+  z-index: 4;
+
+  opacity:
+    var(--horse-progress);
+
+  mix-blend-mode:
+    multiply;
+
+  filter:
+    contrast(1.08)
+    saturate(1.08)
+    hue-rotate(
+      var(--horse-hue)
+    );
+
+  animation:
+    horse-float
+    7s
+    ease-in-out
+    infinite
+    alternate;
+}
+
+
+/* =========================================================
+   RED GHOST
+   ========================================================= */
+
+.horse-red {
+  z-index: 3;
+
+  opacity:
+    calc(
+      var(--horse-progress)
+      * 0.48
+    );
+
+  mix-blend-mode:
+    multiply;
+
+  filter:
+    hue-rotate(-20deg)
+    saturate(2)
+    contrast(1.12);
+
+  transform:
+    translate(
+      var(--shift-x),
+      var(--shift-y)
+    )
+    rotate(
+      var(--shift-r)
+    )
+    scale(1.008);
+}
+
+
+/* =========================================================
+   DIFFERENCE GHOST
+   ========================================================= */
+
+.horse-weird {
+  z-index: 2;
+
+  opacity:
+    calc(
+      var(--horse-progress)
+      * 0.18
+    );
+
+  mix-blend-mode:
+    difference;
+
+  filter:
+    invert(0.88)
+    hue-rotate(100deg)
+    saturate(1.7);
+
+  transform:
+    translate(
+      calc(
+        var(--shift-x) * -1.4
+      ),
+      calc(
+        var(--shift-y) * 1.2
+      )
+    )
+    rotate(
+      calc(
+        var(--shift-r) * -1.3
+      )
+    )
+    scale(1.02);
+}
+
+
+/* =========================================================
+   BLURRED AFTERIMAGE
+   ========================================================= */
+
+.horse-blur {
+  z-index: 1;
+
+  opacity:
+    calc(
+      var(--horse-progress)
+      * 0.2
+    );
+
+  mix-blend-mode:
+    exclusion;
+
+  filter:
+    blur(5px)
+    hue-rotate(210deg)
+    saturate(1.5);
+
+  transform:
+    translate(
+      calc(
+        var(--shift-x) * 0.6
+      ),
+      calc(
+        var(--shift-y) * -0.8
+      )
+    )
+    rotate(
+      calc(
+        var(--shift-r) * 0.4
+      )
+    )
+    scale(1.05);
+}
+
+
+/* =========================================================
+   HORSE MOVEMENT
+   ========================================================= */
+
+@keyframes horse-float {
+
+  from {
+    transform:
+      translate(-2px, 1px)
+      rotate(-0.15deg)
+      scale(0.995);
+  }
+
+  to {
+    transform:
+      translate(2px, -2px)
+      rotate(0.18deg)
+      scale(1.015);
+  }
+
+}
+
+
+/* =========================================================
+   COLOR CONTAMINATION
+   ========================================================= */
+
+.wip-overlay::after {
+  content: "";
+
+  position: absolute;
+  inset: -12%;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  opacity:
+    calc(
+      var(--horse-progress)
+      * 0.12
+    );
+
+  background:
+
+    radial-gradient(
+      circle at 25% 40%,
+      rgba(
+        193,
+        39,
+        45,
+        0.85
+      ),
+      transparent 22%
+    ),
+
+    radial-gradient(
+      circle at 72% 60%,
+      rgba(
+        0,
+        106,
+        68,
+        0.72
+      ),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 55% 18%,
+      rgba(
+        253,
+        185,
+        19,
+        0.65
+      ),
+      transparent 18%
+    );
+
+  filter:
+    blur(70px);
+
+  mix-blend-mode:
+    multiply;
+
+  animation:
+    color-drift
+    10s
+    ease-in-out
+    infinite
+    alternate;
+}
+
+
+@keyframes color-drift {
+
+  from {
+    transform:
+      translate(-2%, 1%)
+      scale(1);
+  }
+
+  to {
+    transform:
+      translate(3%, -2%)
+      scale(1.07);
+  }
+
 }
 
 
@@ -562,23 +782,14 @@ a {
 
 @media (max-width: 1100px) {
 
-  .scarf-rack__item {
-    width: 300px;
-  }
-
-
-  .scarf-rack__item--home {
-    width: 330px;
-  }
-
-
   .hero {
-    padding-right: 370px;
+    padding-right:
+      370px;
   }
 
 
-  .welcome-slot {
-    height: 100px;
+  .welcome-track {
+    height: 103px;
   }
 
 
@@ -586,17 +797,37 @@ a {
     font-size:
       clamp(
         55px,
-        6.2vw,
+        7vw,
         89px
       );
   }
 
 
-  .main-title {
+  .welcome-long {
+    font-size:
+      clamp(
+        42px,
+        5vw,
+        68px
+      );
+  }
+
+
+  .welcome-word.binary {
+    font-size:
+      clamp(
+        21px,
+        2.7vw,
+        34px
+      );
+  }
+
+
+  .site-title {
     font-size:
       clamp(
         34px,
-        3.8vw,
+        4.3vw,
         55px
       );
   }
@@ -610,61 +841,28 @@ a {
 
 @media (max-width: 700px) {
 
-  :root {
-    --edge: 12px;
-  }
-
-
   body {
-    min-height:
-      100svh;
+    overflow-x: hidden;
   }
 
 
-  .page-shell {
-    min-height:
-      100svh;
-
-    padding:
-      max(
-        12px,
-        env(safe-area-inset-top)
-      )
-      12px
-      max(
-        12px,
-        env(safe-area-inset-bottom)
-      );
-  }
-
-
-  /* -------------------------------------------------------
-     HORIZONTAL SCARF SCROLLER
-     ------------------------------------------------------- */
+  /* scarf rail */
 
   .scarf-rack {
-    position: fixed;
-
-    top:
-      max(
-        8px,
-        env(safe-area-inset-top)
-      );
-
+    top: 10px;
     left: 0;
     right: 0;
 
     flex-direction: row;
-
     align-items: center;
 
-    gap: 14px;
+    gap: 5px;
 
     width: 100%;
 
     padding:
-      6px
-      10px
+      4px
+      14px
       12px;
 
     overflow-x: auto;
@@ -682,63 +880,62 @@ a {
   }
 
 
-  .scarf-rack__item {
+  .scarf-item {
     flex:
       0 0 auto;
 
     width: 285px;
+    height: auto;
 
-    transform:
-      none !important;
+    transform: none;
   }
 
 
-  .scarf-rack__item--home {
+  .scarf-item img {
+    width: 100%;
+    height: auto;
+  }
+
+
+  .scarf-home {
     width: 315px;
 
-    margin: 0;
+    transform: none;
   }
 
 
-  .scarf-rack__item:hover {
-    transform:
-      none !important;
+  .scarf-item:hover,
+  .scarf-home:hover {
+    transform: none;
   }
 
 
-  .scarf-rack__item:active {
-    transform:
-      scale(1.025)
-      !important;
-  }
-
-
-  /* -------------------------------------------------------
-     HERO
-     ------------------------------------------------------- */
+  /* hero */
 
   .hero {
+    justify-content:
+      flex-start;
+
     min-height:
       100svh;
 
-    align-items: center;
-
     padding:
       175px
-      4px
-      90px;
-  }
-
-
-  .hero-inner {
-    max-width: none;
+      22px
+      50px;
   }
 
 
   .welcome-slot {
-    height: 76px;
+    width: 100%;
+  }
 
-    margin-bottom: 13px;
+
+  .welcome-track {
+    height: 78px;
+
+    margin-bottom:
+      12px;
   }
 
 
@@ -746,76 +943,73 @@ a {
     font-size:
       clamp(
         42px,
-        12vw,
+        13vw,
         68px
       );
   }
 
 
-  .welcome-word.is-binary {
+  .welcome-long {
+    font-size:
+      clamp(
+        32px,
+        9.5vw,
+        50px
+      );
+  }
+
+
+  .welcome-word.binary {
+    max-width: 100%;
+
     font-size:
       clamp(
         16px,
-        5vw,
+        4.7vw,
         26px
       );
   }
 
 
-  .main-title {
-    display: block;
-
+  .site-title {
     font-size:
       clamp(
         26px,
-        7.4vw,
+        8vw,
         42px
       );
-
-    line-height: 0.94;
   }
 
 
-  .main-title__to {
-    display: block;
+  /* WIP */
 
-    margin-bottom:
-      0.08em;
-  }
-
-
-  .main-title__brand {
-    display: block;
-  }
-
-
-  /* -------------------------------------------------------
-     PLAYER
-     ------------------------------------------------------- */
-
-  .player-shell {
-    left: 10px;
-    bottom: 10px;
-
+  .horse-stage {
     width:
       min(
-        320px,
-        calc(100vw - 20px)
+        96vw,
+        620px
       );
   }
 
 
-  .player-message {
+  .wip-text {
     max-width:
-      calc(100vw - 95px);
+      calc(
+        100vw - 42px
+      );
 
-    font-size: 14px;
+    padding:
+      16px
+      18px;
+
+    font-size:
+      21px;
   }
 
 
-  #youtube-player {
-    width: 100%;
-    height: 200px;
+  .wip-close {
+    top: 13px;
+    right: 15px;
   }
 
 }
@@ -827,23 +1021,24 @@ a {
 
 @media (max-width: 420px) {
 
-  .scarf-rack__item {
+  .scarf-item {
     width: 250px;
   }
 
 
-  .scarf-rack__item--home {
+  .scarf-home {
     width: 280px;
   }
 
 
   .hero {
-    padding-top: 160px;
+    padding-top:
+      160px;
   }
 
 
-  .welcome-slot {
-    height: 58px;
+  .welcome-track {
+    height: 53px;
   }
 
 
@@ -851,17 +1046,23 @@ a {
     font-size:
       clamp(
         36px,
-        10vw,
+        11vw,
         42px
       );
   }
 
 
-  .main-title {
+  .welcome-long {
+    font-size:
+      30px;
+  }
+
+
+  .site-title {
     font-size:
       clamp(
         22px,
-        6.5vw,
+        7vw,
         26px
       );
   }
@@ -878,9 +1079,13 @@ a {
   reduce
 ) {
 
-  .scarf-rack__item,
-  .welcome-word,
-  .player-close {
+  .horse-base,
+  .wip-overlay::after {
+    animation: none;
+  }
+
+
+  .scarf-item {
     transition: none;
   }
 
