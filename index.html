@@ -24,10 +24,9 @@
     <nav class="scarf-rack" aria-label="Site sections">
 
       <a
-        href="index.html"
-        class="scarf-rack__item scarf-rack__item--home"
-        aria-label="Home"
-        title="Home"
+        href="#"
+        class="scarf-rack__item scarf-rack__item--home audio-trigger"
+        aria-label="Play soundtrack"
       >
         <img
           src="assets/home/home-scarf-update.png"
@@ -36,10 +35,9 @@
       </a>
 
       <a
-        href="illustration.html"
-        class="scarf-rack__item"
+        href="#"
+        class="scarf-rack__item audio-trigger"
         aria-label="Illustration"
-        title="Illustration"
       >
         <img
           src="assets/home/scarf-illustration.png"
@@ -48,10 +46,9 @@
       </a>
 
       <a
-        href="photo.html"
-        class="scarf-rack__item"
+        href="#"
+        class="scarf-rack__item audio-trigger"
         aria-label="Photography"
-        title="Photography"
       >
         <img
           src="assets/home/scarf-photography.png"
@@ -60,22 +57,20 @@
       </a>
 
       <a
-        href="design.html"
-        class="scarf-rack__item"
-        aria-label="Design"
-        title="Design"
+        href="#"
+        class="scarf-rack__item audio-trigger"
+        aria-label="Graphic design"
       >
         <img
           src="assets/home/scarf-design.png"
-          alt="Design"
+          alt="Graphic design"
         />
       </a>
 
       <a
-        href="music.html"
-        class="scarf-rack__item"
+        href="#"
+        class="scarf-rack__item audio-trigger"
         aria-label="Music"
-        title="Music"
       >
         <img
           src="assets/home/scarf-music.png"
@@ -84,10 +79,9 @@
       </a>
 
       <a
-        href="motion.html"
-        class="scarf-rack__item"
+        href="#"
+        class="scarf-rack__item audio-trigger"
         aria-label="Motion"
-        title="Motion"
       >
         <img
           src="assets/home/scarf-motion.png"
@@ -96,10 +90,9 @@
       </a>
 
       <a
-        href="misc.html"
-        class="scarf-rack__item"
+        href="#"
+        class="scarf-rack__item audio-trigger"
         aria-label="Misc"
-        title="Misc"
       >
         <img
           src="assets/home/scarf-misc.png"
@@ -118,15 +111,19 @@
 
       <div class="hero-inner">
 
+        <!-- SLOT MACHINE -->
+
         <div
           class="welcome-slot"
           aria-live="polite"
           aria-atomic="true"
         >
+
           <div
             class="welcome-track"
             id="welcome-track"
           >
+
             <span
               class="welcome-word welcome-word--current"
               id="welcome-current"
@@ -142,20 +139,17 @@
             >
               Welcome
             </span>
+
           </div>
+
         </div>
 
 
+        <!-- STATIC TITLE -->
+
         <h1 class="main-title">
-
-          <span class="main-title__to">
-            to
-          </span>
-
-          <span class="main-title__brand">
-            <span class="brand-keegan">keegan</span><span class="brand-dot">.</span><span class="brand-biz">biz</span>
-          </span>
-
+          <span class="main-title__to">to</span>
+          <span class="main-title__brand">keegan.biz</span>
         </h1>
 
       </div>
@@ -164,46 +158,33 @@
 
 
     <!-- =====================================================
-         BEHANCE
+         YOUTUBE PLAYER
+         appears only after scarf click
          ===================================================== -->
 
-    <footer class="site-footer">
-
-      <a
-        class="behance-link"
-        href="https://www.behance.net/keeganandrulis"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        behance ↗
-      </a>
-
-    </footer>
-
-
-    <!-- =====================================================
-         OPTIONAL LOCAL BACKGROUND AUDIO
-
-         When you have an audio file you are allowed to host,
-         put it at:
-         assets/audio/background.mp3
-
-         Then remove "disabled" from this element in JS logic
-         by simply leaving the src as-is.
-         ===================================================== -->
-
-    <audio
-      id="background-audio"
-      preload="auto"
-      loop
+    <div
+      class="player-shell"
+      id="player-shell"
+      aria-hidden="true"
     >
-      <source
-        src="assets/audio/background.mp3"
-        type="audio/mpeg"
-      />
-    </audio>
+
+      <button
+        class="player-close"
+        id="player-close"
+        type="button"
+        aria-label="Close soundtrack"
+      >
+        ×
+      </button>
+
+      <div id="youtube-player"></div>
+
+    </div>
 
   </div>
+
+
+  <script src="https://www.youtube.com/iframe_api"></script>
 
 
   <script>
@@ -273,7 +254,8 @@
     let rolling = false;
 
 
-    function getDifferentIndex(length, previous) {
+    function differentIndex(length, previous) {
+
       let next;
 
       do {
@@ -288,7 +270,7 @@
     }
 
 
-    function applyEntry(element, entry) {
+    function applyWelcome(element, entry) {
 
       element.classList.remove(
         "is-wingdings",
@@ -317,20 +299,20 @@
 
 
       const nextWelcome =
-        getDifferentIndex(
+        differentIndex(
           welcomes.length,
           currentWelcome
         );
 
 
       const nextColor =
-        getDifferentIndex(
+        differentIndex(
           welcomeColors.length,
           currentColor
         );
 
 
-      applyEntry(
+      applyWelcome(
         welcomeNext,
         welcomes[nextWelcome]
       );
@@ -347,7 +329,7 @@
 
       setTimeout(() => {
 
-        applyEntry(
+        applyWelcome(
           welcomeCurrent,
           welcomes[nextWelcome]
         );
@@ -399,56 +381,152 @@
 
 
     /* =======================================================
-       FIRST-INTERACTION AUDIO
+       YOUTUBE SOUNDTRACK
        ======================================================= */
 
-    const backgroundAudio =
+    const playerShell =
       document.getElementById(
-        "background-audio"
+        "player-shell"
+      );
+
+    const playerClose =
+      document.getElementById(
+        "player-close"
+      );
+
+    const scarfTriggers =
+      document.querySelectorAll(
+        ".audio-trigger"
       );
 
 
-    let audioStarted = false;
+    let youtubePlayer = null;
+    let youtubeReady = false;
+    let playRequested = false;
 
 
-    async function startBackgroundAudio() {
+    function onYouTubeIframeAPIReady() {
+
+      youtubePlayer =
+        new YT.Player(
+          "youtube-player",
+          {
+
+            width: 300,
+            height: 200,
+
+            videoId:
+              "Hqxdn-MbpE0",
+
+            playerVars: {
+
+              autoplay: 0,
+
+              controls: 1,
+
+              playsinline: 1,
+
+              rel: 0,
+
+              loop: 1,
+
+              playlist:
+                "Hqxdn-MbpE0"
+
+            },
+
+            events: {
+
+              onReady: function() {
+
+                youtubeReady = true;
+
+                if (playRequested) {
+                  startSoundtrack();
+                }
+
+              }
+
+            }
+
+          }
+        );
+
+    }
+
+
+    function startSoundtrack() {
+
+      playerShell.classList.add(
+        "is-visible"
+      );
+
+      playerShell.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      playRequested = true;
+
 
       if (
-        audioStarted ||
-        !backgroundAudio
+        youtubeReady &&
+        youtubePlayer
       ) {
-        return;
-      }
 
+        youtubePlayer.setVolume(35);
 
-      try {
-
-        backgroundAudio.volume = 0.35;
-
-        await backgroundAudio.play();
-
-        audioStarted = true;
-
-      }
-      catch (error) {
-
-        /* Browser still blocked playback.
-           Another interaction can try again. */
+        youtubePlayer.playVideo();
 
       }
 
     }
 
 
-    document.addEventListener(
-      "pointerdown",
-      startBackgroundAudio
+    scarfTriggers.forEach(
+      function(trigger) {
+
+        trigger.addEventListener(
+          "click",
+          function(event) {
+
+            event.preventDefault();
+
+            startSoundtrack();
+
+          }
+        );
+
+      }
     );
 
 
-    document.addEventListener(
-      "keydown",
-      startBackgroundAudio
+    playerClose.addEventListener(
+      "click",
+      function() {
+
+        if (
+          youtubeReady &&
+          youtubePlayer
+        ) {
+
+          youtubePlayer.pauseVideo();
+
+        }
+
+
+        playerShell.classList.remove(
+          "is-visible"
+        );
+
+
+        playerShell.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+      }
     );
 
   </script>
