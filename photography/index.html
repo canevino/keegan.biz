@@ -162,10 +162,10 @@
           class="fuji-interactive"
           id="fuji-interactive"
           tabindex="0"
-          aria-label="Interactive landscape photograph with architectural drawing"
+          aria-label="Interactive landscape photograph with architectural drawing and generative sound"
         >
 
-          <!-- BASE -->
+          <!-- BASE PHOTOGRAPH -->
 
           <img
             class="fuji-base"
@@ -294,7 +294,20 @@
           </div>
 
 
-          <!-- FILTERS -->
+          <!-- SOUND CONTROL -->
+
+          <button
+            class="fuji-sound-toggle"
+            id="fuji-sound-toggle"
+            type="button"
+            disabled
+            aria-label="Sound control"
+          >
+            sound
+          </button>
+
+
+          <!-- SVG FILTER DEFINITIONS -->
 
           <svg
             class="fuji-filter-defs"
@@ -396,7 +409,7 @@
 
 
   <!-- =====================================================
-       WIP
+       EXISTING WIP SYSTEM
        ===================================================== -->
 
   <audio
@@ -516,22 +529,18 @@
         "photo-title"
       );
 
-
     const colors = [
       "#c1272d",
       "#006a44",
       "#fdb913"
     ];
 
-
-    let current =
-      0;
+    let current = 0;
 
 
     function changeTitle() {
 
       let next;
-
 
       do {
 
@@ -552,16 +561,13 @@
       );
 
 
-      setTimeout(
+      window.setTimeout(
         () => {
 
-          current =
-            next;
-
+          current = next;
 
           title.style.color =
             colors[current];
-
 
           title.classList.remove(
             "is-fading"
@@ -578,7 +584,7 @@
       colors[current];
 
 
-    setInterval(
+    window.setInterval(
       changeTitle,
       2300
     );
@@ -588,7 +594,7 @@
 
 
   <!-- =====================================================
-       FUJI INTERACTION
+       FUJI VISUAL + GENERATIVE AUDIO
        ===================================================== -->
 
   <script>
@@ -603,12 +609,15 @@
         "fuji-interactive"
       );
 
-
     const base =
       document.getElementById(
         "fuji-base"
       );
 
+    const soundToggle =
+      document.getElementById(
+        "fuji-sound-toggle"
+      );
 
     const buildings =
       Array.from(
@@ -617,7 +626,6 @@
         )
       );
 
-
     const lines =
       Array.from(
         document.querySelectorAll(
@@ -625,7 +633,6 @@
         )
       ).map(
         layer => ({
-
           layer,
 
           source:
@@ -638,9 +645,9 @@
               ".fuji-line-texture"
             ),
 
-          visible:
-            false
+          visible: false,
 
+          lastMutation: 0
         })
       );
 
@@ -650,7 +657,6 @@
         "(hover: hover) and (pointer: fine)"
       );
 
-
     const reducedMotion =
       window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -658,81 +664,7 @@
 
 
     /* =====================================================
-       MATERIAL
-       ===================================================== */
-
-    const TEXTURES = [
-
-      "../assets/home/Texturelabs_Grunge_173S.jpg",
-      "../assets/home/Texturelabs_Grunge_279L.jpg",
-      "../assets/home/Texturelabs_Grunge_334S.jpg",
-      "../assets/home/Texturelabs_Grunge_341S.jpg",
-
-      "../assets/home/Texturelabs_InkPaint_126S.jpg",
-      "../assets/home/Texturelabs_InkPaint_320S.jpg",
-      "../assets/home/Texturelabs_InkPaint_332S.jpg",
-      "../assets/home/Texturelabs_InkPaint_356S.jpg",
-
-      "../assets/home/Texturelabs_Concrete_150S.jpg",
-      "../assets/home/Texturelabs_Concrete_155S.jpg",
-      "../assets/home/Texturelabs_Concrete_179S.jpg",
-      "../assets/home/Texturelabs_Concrete_205S.jpg",
-
-      "../assets/home/Texturelabs_Film_181S.jpg",
-      "../assets/home/Texturelabs_Film_183S.jpg",
-      "../assets/home/Texturelabs_Film_187S.jpg",
-
-      "../assets/home/Texturelabs_Metal_129S.jpg",
-      "../assets/home/Texturelabs_Metal_165S.jpg",
-
-      "../assets/home/Texturelabs_Paper_280S.jpg",
-      "../assets/home/Texturelabs_Paper_286S.jpg",
-
-      "../assets/home/Texturelabs_Wood_135S.jpg",
-      "../assets/home/Texturelabs_Wood_280S.jpg"
-
-    ];
-
-
-    const COLORS = [
-
-      ["#ff214f", "#ff7538"],
-
-      ["#00dfff", "#2868ff"],
-
-      ["#ff29c8", "#7044ff"],
-
-      ["#00efb2", "#7ee83b"],
-
-      ["#ffe100", "#ff482a"],
-
-      ["#ff355e", "#00c8ff"],
-
-      ["#00ffd0", "#ed179b"],
-
-      ["#9cff22", "#277dff"],
-
-      ["#eaff00", "#ff254f"]
-
-    ];
-
-
-    const POSTERIZE = [
-      "#fuji-posterize-3",
-      "#fuji-posterize-4",
-      "#fuji-posterize-6"
-    ];
-
-
-    const THRESHOLD = [
-      "#fuji-threshold-low",
-      "#fuji-threshold-mid",
-      "#fuji-threshold-high"
-    ];
-
-
-    /* =====================================================
-       HELPERS
+       GENERAL HELPERS
        ===================================================== */
 
     const clamp =
@@ -763,6 +695,19 @@
         );
 
 
+    const randomInt =
+      (
+        min,
+        max
+      ) =>
+        Math.floor(
+          random(
+            min,
+            max + 1
+          )
+        );
+
+
     const pick =
       array =>
         array[
@@ -773,9 +718,7 @@
         ];
 
 
-    function shuffle(
-      array
-    ) {
+    function shuffle(array) {
 
       const result =
         [...array];
@@ -816,11 +759,18 @@
 
 
     function weightedPick(
-      choices
+      entries
     ) {
 
+      const usable =
+        entries.filter(
+          entry =>
+            entry.weight > 0
+        );
+
+
       const total =
-        choices.reduce(
+        usable.reduce(
           (
             sum,
             item
@@ -831,13 +781,23 @@
         );
 
 
+      if (
+        !usable.length ||
+        total <= 0
+      ) {
+
+        return null;
+
+      }
+
+
       let value =
         Math.random() *
         total;
 
 
       for (
-        const item of choices
+        const item of usable
       ) {
 
         value -=
@@ -855,9 +815,63 @@
       }
 
 
-      return choices[
-        choices.length - 1
+      return usable[
+        usable.length - 1
       ].value;
+
+    }
+
+
+    function weightedObject(
+      entries
+    ) {
+
+      const usable =
+        entries.filter(
+          entry =>
+            entry.weight > 0
+        );
+
+
+      const total =
+        usable.reduce(
+          (
+            sum,
+            item
+          ) =>
+            sum +
+            item.weight,
+          0
+        );
+
+
+      let value =
+        Math.random() *
+        total;
+
+
+      for (
+        const item of usable
+      ) {
+
+        value -=
+          item.weight;
+
+
+        if (
+          value <= 0
+        ) {
+
+          return item;
+
+        }
+
+      }
+
+
+      return usable[
+        usable.length - 1
+      ];
 
     }
 
@@ -868,7 +882,7 @@
 
       if (
         image.complete &&
-        image.naturalWidth
+        image.naturalWidth > 0
       ) {
 
         return Promise.resolve();
@@ -903,6 +917,159 @@
       );
 
     }
+
+
+    /* =====================================================
+       VISUAL MATERIAL
+       ===================================================== */
+
+    const VISUAL_TEXTURES = [
+
+      "../assets/home/Texturelabs_Grunge_173S.jpg",
+      "../assets/home/Texturelabs_Grunge_279L.jpg",
+      "../assets/home/Texturelabs_Grunge_334S.jpg",
+      "../assets/home/Texturelabs_Grunge_341S.jpg",
+
+      "../assets/home/Texturelabs_InkPaint_126S.jpg",
+      "../assets/home/Texturelabs_InkPaint_320S.jpg",
+      "../assets/home/Texturelabs_InkPaint_332S.jpg",
+      "../assets/home/Texturelabs_InkPaint_356S.jpg",
+
+      "../assets/home/Texturelabs_Concrete_150S.jpg",
+      "../assets/home/Texturelabs_Concrete_155S.jpg",
+      "../assets/home/Texturelabs_Concrete_179S.jpg",
+      "../assets/home/Texturelabs_Concrete_205S.jpg",
+
+      "../assets/home/Texturelabs_Film_181S.jpg",
+      "../assets/home/Texturelabs_Film_183S.jpg",
+      "../assets/home/Texturelabs_Film_187S.jpg",
+
+      "../assets/home/Texturelabs_Metal_129S.jpg",
+      "../assets/home/Texturelabs_Metal_165S.jpg",
+
+      "../assets/home/Texturelabs_Paper_280S.jpg",
+      "../assets/home/Texturelabs_Paper_286S.jpg",
+
+      "../assets/home/Texturelabs_Wood_135S.jpg",
+      "../assets/home/Texturelabs_Wood_280S.jpg"
+
+    ];
+
+
+    const LINE_COLORS = [
+
+      ["#ff214f", "#ff7538"],
+      ["#00dfff", "#2868ff"],
+      ["#ff29c8", "#7044ff"],
+      ["#00efb2", "#7ee83b"],
+      ["#ffe100", "#ff482a"],
+      ["#ff355e", "#00c8ff"],
+      ["#00ffd0", "#ed179b"],
+      ["#9cff22", "#277dff"],
+      ["#eaff00", "#ff254f"]
+
+    ];
+
+
+    const POSTERIZE = [
+      "#fuji-posterize-3",
+      "#fuji-posterize-4",
+      "#fuji-posterize-6"
+    ];
+
+
+    const THRESHOLD = [
+      "#fuji-threshold-low",
+      "#fuji-threshold-mid",
+      "#fuji-threshold-high"
+    ];
+
+
+    /*
+      Muted, landscape-adjacent building palette.
+    */
+
+    const BUILDING_LOOKS = [
+
+      {
+        name: "fog-blue",
+        blend: "screen",
+        weight: 22,
+        grayscale: [0.08, 0.20],
+        sepia: [0.08, 0.18],
+        saturate: [0.68, 0.96],
+        hue: [176, 202],
+        brightness: [1.02, 1.12],
+        contrast: [1.02, 1.11],
+        opacity: [0.08, 0.21]
+      },
+
+      {
+        name: "slate",
+        blend: "soft-light",
+        weight: 20,
+        grayscale: [0.12, 0.25],
+        sepia: [0.08, 0.20],
+        saturate: [0.62, 0.92],
+        hue: [184, 211],
+        brightness: [0.94, 1.05],
+        contrast: [1.05, 1.16],
+        opacity: [0.08, 0.23]
+      },
+
+      {
+        name: "moss-stone",
+        blend: "overlay",
+        weight: 18,
+        grayscale: [0.08, 0.20],
+        sepia: [0.24, 0.42],
+        saturate: [0.68, 0.98],
+        hue: [76, 104],
+        brightness: [0.90, 1.00],
+        contrast: [1.04, 1.14],
+        opacity: [0.07, 0.19]
+      },
+
+      {
+        name: "warm-stone",
+        blend: "lighten",
+        weight: 16,
+        grayscale: [0.12, 0.25],
+        sepia: [0.28, 0.48],
+        saturate: [0.58, 0.88],
+        hue: [5, 24],
+        brightness: [0.97, 1.08],
+        contrast: [1.02, 1.11],
+        opacity: [0.07, 0.18]
+      },
+
+      {
+        name: "peat",
+        blend: "multiply",
+        weight: 12,
+        grayscale: [0.08, 0.20],
+        sepia: [0.34, 0.54],
+        saturate: [0.70, 1.00],
+        hue: [-8, 10],
+        brightness: [0.78, 0.91],
+        contrast: [1.06, 1.16],
+        opacity: [0.05, 0.15]
+      },
+
+      {
+        name: "mist",
+        blend: "screen",
+        weight: 12,
+        grayscale: [0.20, 0.38],
+        sepia: [0.02, 0.10],
+        saturate: [0.38, 0.66],
+        hue: [166, 196],
+        brightness: [1.04, 1.14],
+        contrast: [1.00, 1.07],
+        opacity: [0.06, 0.16]
+      }
+
+    ];
 
 
     /* =====================================================
@@ -950,8 +1117,7 @@
           canvas.getContext(
             "2d",
             {
-              willReadFrequently:
-                true
+              willReadFrequently: true
             }
           );
 
@@ -985,8 +1151,7 @@
         ) {
 
           if (
-            data[i] <
-            235
+            data[i] < 235
           ) {
 
             translucent++;
@@ -1015,19 +1180,11 @@
     }
 
 
-    /* =====================================================
-       PREPARE
-       ===================================================== */
-
-    let validLines =
-      [];
+    let validLines = [];
+    let buildingValid = true;
 
 
-    let buildingValid =
-      true;
-
-
-    async function prepare() {
+    async function prepareVisuals() {
 
       try {
 
@@ -1078,10 +1235,8 @@
           item => {
 
             if (
-              item.source.naturalWidth !==
-                width ||
-              item.source.naturalHeight !==
-                height
+              item.source.naturalWidth !== width ||
+              item.source.naturalHeight !== height
             ) {
 
               item.layer.style.display =
@@ -1131,10 +1286,8 @@
       buildingValid =
         buildings.every(
           building =>
-            building.naturalWidth ===
-              width &&
-            building.naturalHeight ===
-              height
+            building.naturalWidth === width &&
+            building.naturalHeight === height
         );
 
 
@@ -1162,7 +1315,7 @@
 
 
     /* =====================================================
-       LINE DESIGN
+       LINE PROCESSING
        ===================================================== */
 
     function chooseLineBlend(
@@ -1179,22 +1332,17 @@
         return weightedPick([
 
           {
-            value:
-              "multiply",
-            weight:
-              48
+            value: "multiply",
+            weight: 48
           },
 
           {
-            value:
-              "darken",
-            weight:
-              30
+            value: "darken",
+            weight: 30
           },
 
           {
-            value:
-              "color-burn",
+            value: "color-burn",
             weight:
               10 +
               intensity *
@@ -1209,36 +1357,27 @@
       return weightedPick([
 
         {
-          value:
-            "screen",
-          weight:
-            17
+          value: "screen",
+          weight: 17
         },
 
         {
-          value:
-            "hard-light",
-          weight:
-            17
+          value: "hard-light",
+          weight: 17
         },
 
         {
-          value:
-            "overlay",
-          weight:
-            16
+          value: "overlay",
+          weight: 16
         },
 
         {
-          value:
-            "multiply",
-          weight:
-            14
+          value: "multiply",
+          weight: 14
         },
 
         {
-          value:
-            "difference",
+          value: "difference",
           weight:
             3 +
             intensity *
@@ -1246,8 +1385,7 @@
         },
 
         {
-          value:
-            "exclusion",
+          value: "exclusion",
           weight:
             5 +
             intensity *
@@ -1255,8 +1393,7 @@
         },
 
         {
-          value:
-            "color-dodge",
+          value: "color-dodge",
           weight:
             4 +
             intensity *
@@ -1275,22 +1412,17 @@
       return weightedPick([
 
         {
-          value:
-            "normal",
-          weight:
-            24
+          value: "normal",
+          weight: 24
         },
 
         {
-          value:
-            "exposed",
-          weight:
-            24
+          value: "exposed",
+          weight: 24
         },
 
         {
-          value:
-            "posterize",
+          value: "posterize",
           weight:
             13 +
             intensity *
@@ -1298,8 +1430,7 @@
         },
 
         {
-          value:
-            "threshold",
+          value: "threshold",
           weight:
             4 +
             intensity *
@@ -1307,8 +1438,7 @@
         },
 
         {
-          value:
-            "hard",
+          value: "hard",
           weight:
             12 +
             intensity *
@@ -1316,15 +1446,12 @@
         },
 
         {
-          value:
-            "bleached",
-          weight:
-            10
+          value: "bleached",
+          weight: 10
         },
 
         {
-          value:
-            "invert",
+          value: "invert",
           weight:
             intensity *
             5
@@ -1348,8 +1475,7 @@
 
 
       if (
-        processing ===
-        "posterize"
+        processing === "posterize"
       ) {
 
         return `
@@ -1363,8 +1489,7 @@
 
 
       if (
-        processing ===
-        "threshold"
+        processing === "threshold"
       ) {
 
         return `
@@ -1377,14 +1502,18 @@
 
 
       if (
-        processing ===
-        "exposed"
+        processing === "exposed"
       ) {
 
         return `
           hue-rotate(${hue}deg)
           saturate(${random(1.2, 2.5)})
-          brightness(${random(1.15, 1.55 + intensity * 0.45)})
+          brightness(${random(
+            1.15,
+            1.55 +
+            intensity *
+            0.45
+          )})
           contrast(${random(1.05, 1.45)})
         `;
 
@@ -1392,8 +1521,7 @@
 
 
       if (
-        processing ===
-        "hard"
+        processing === "hard"
       ) {
 
         return `
@@ -1407,8 +1535,7 @@
 
 
       if (
-        processing ===
-        "bleached"
+        processing === "bleached"
       ) {
 
         return `
@@ -1422,8 +1549,7 @@
 
 
       if (
-        processing ===
-        "invert"
+        processing === "invert"
       ) {
 
         return `
@@ -1455,19 +1581,19 @@
         colorB
       ] =
         pick(
-          COLORS
+          LINE_COLORS
         );
 
 
       const textureA =
         pick(
-          TEXTURES
+          VISUAL_TEXTURES
         );
 
 
       const textureB =
         pick(
-          TEXTURES
+          VISUAL_TEXTURES
         );
 
 
@@ -1541,29 +1667,22 @@
           weightedPick([
 
             {
-              value:
-                "screen",
-              weight:
-                24
+              value: "screen",
+              weight: 24
             },
 
             {
-              value:
-                "hard-light",
-              weight:
-                22
+              value: "hard-light",
+              weight: 22
             },
 
             {
-              value:
-                "overlay",
-              weight:
-                20
+              value: "overlay",
+              weight: 20
             },
 
             {
-              value:
-                "difference",
+              value: "difference",
               weight:
                 3 +
                 intensity *
@@ -1571,8 +1690,7 @@
             },
 
             {
-              value:
-                "color-dodge",
+              value: "color-dodge",
               weight:
                 5 +
                 intensity *
@@ -1615,8 +1733,7 @@
       item.texture.style.backgroundSize =
         `
           100% 100%,
-          ${random(120, 180)}%
-          ${random(120, 180)}%,
+          ${random(120, 180)}% ${random(120, 180)}%,
           cover,
           cover
         `;
@@ -1625,23 +1742,16 @@
       item.texture.style.backgroundPosition =
         `
           center,
-          ${random(0, 100)}%
-          ${random(0, 100)}%,
-          ${random(0, 100)}%
-          ${random(0, 100)}%,
-          ${random(0, 100)}%
-          ${random(0, 100)}%
+          ${random(0, 100)}% ${random(0, 100)}%,
+          ${random(0, 100)}% ${random(0, 100)}%,
+          ${random(0, 100)}% ${random(0, 100)}%
         `;
 
 
       item.texture.style.filter =
         `
-          contrast(
-            ${random(1.05, 1.6)}
-          )
-          saturate(
-            ${random(1, 1.6)}
-          )
+          contrast(${random(1.05, 1.6)})
+          saturate(${random(1, 1.6)})
         `;
 
 
@@ -1669,14 +1779,6 @@
         );
 
 
-      /*
-        IMPORTANT:
-        NO RANDOM LINE POSITIONING.
-
-        Geometry remains registered exactly where it was
-        exported from Photoshop.
-      */
-
       item.layer.style.transform =
         "none";
 
@@ -1684,7 +1786,7 @@
 
 
     /* =====================================================
-       BUILDING
+       NATURAL BUILDING PROCESSING
        ===================================================== */
 
     function configureBuildingLayer(
@@ -1692,112 +1794,87 @@
       intensity
     ) {
 
+      const look =
+        weightedObject(
+          BUILDING_LOOKS
+        );
+
+
+      const grayscale =
+        random(
+          look.grayscale[0],
+          look.grayscale[1]
+        );
+
+
+      const sepia =
+        random(
+          look.sepia[0],
+          look.sepia[1]
+        );
+
+
+      const saturate =
+        random(
+          look.saturate[0],
+          look.saturate[1]
+        );
+
+
+      const hue =
+        random(
+          look.hue[0],
+          look.hue[1]
+        );
+
+
+      const brightness =
+        random(
+          look.brightness[0],
+          look.brightness[1]
+        ) +
+        intensity *
+        0.025;
+
+
+      const contrast =
+        random(
+          look.contrast[0],
+          look.contrast[1]
+        ) +
+        intensity *
+        0.025;
+
+
+      building.style.transitionDuration =
+        "170ms";
+
+
       building.style.mixBlendMode =
-        weightedPick([
-
-          {
-            value:
-              "screen",
-            weight:
-              18
-          },
-
-          {
-            value:
-              "hard-light",
-            weight:
-              18
-          },
-
-          {
-            value:
-              "overlay",
-            weight:
-              15
-          },
-
-          {
-            value:
-              "lighten",
-            weight:
-              10
-          },
-
-          {
-            value:
-              "difference",
-            weight:
-              5 +
-              intensity *
-              12
-          },
-
-          {
-            value:
-              "exclusion",
-            weight:
-              7 +
-              intensity *
-              9
-          },
-
-          {
-            value:
-              "color-dodge",
-            weight:
-              6 +
-              intensity *
-              9
-          },
-
-          {
-            value:
-              "color-burn",
-            weight:
-              4
-          }
-
-        ]);
+        look.blend;
 
 
       building.style.filter =
         `
-          hue-rotate(
-            ${random(0, 360)}deg
-          )
-          saturate(
-            ${random(
-              1.05,
-              1.6 +
-              intensity
-            )}
-          )
-          brightness(
-            ${random(
-              0.90,
-              1.20 +
-              intensity * 0.25
-            )}
-          )
-          contrast(
-            ${random(
-              1,
-              1.3 +
-              intensity * 0.25
-            )}
-          )
+          grayscale(${grayscale})
+          sepia(${sepia})
+          saturate(${saturate})
+          hue-rotate(${hue}deg)
+          brightness(${brightness})
+          contrast(${contrast})
         `;
 
 
       /*
-        Tiny print-registration offset only.
+        Extremely small print-registration deviation.
       */
 
       building.style.transform =
         `
-          translate(
-            ${random(-1.2, 1.2)}px,
-            ${random(-1.2, 1.2)}px
+          translate3d(
+            ${random(-0.65, 0.65)}px,
+            ${random(-0.65, 0.65)}px,
+            0
           )
         `;
 
@@ -1805,13 +1882,13 @@
       building.dataset.targetOpacity =
         clamp(
           random(
-            0.10,
-            0.24 +
+            look.opacity[0],
+            look.opacity[1] +
             intensity *
-            0.40
+            0.07
           ),
-          0.06,
-          0.70
+          0.04,
+          0.32
         ).toFixed(
           3
         );
@@ -1832,19 +1909,12 @@
       }
 
 
-      /*
-        Number of simultaneously-visible building copies
-        rises with mouse speed.
-      */
-
       const count =
-        intensity < 0.30
+        intensity < 0.34
           ? 1
-          : intensity < 0.58
+          : intensity < 0.62
             ? 2
-            : intensity < 0.82
-              ? 3
-              : 4;
+            : 3;
 
 
       const selected =
@@ -1891,11 +1961,7 @@
 
 
     /* =====================================================
-       MOVEMENT ENGINE
-
-       NO AUTONOMOUS TIMER.
-
-       Mouse movement is the clock.
+       MOVEMENT-DRIVEN VISUAL ENGINE
        ===================================================== */
 
     let pointerInside =
@@ -1929,12 +1995,9 @@
       0;
 
 
-    /*
-      Speed thresholds in px/ms.
+    let lastBuildingUpdateTime =
+      0;
 
-      Extremely slow movement falls below STILL_SPEED and
-      therefore does absolutely nothing.
-    */
 
     const STILL_SPEED =
       0.055;
@@ -2013,6 +2076,10 @@
           true;
 
 
+        item.lastMutation =
+          performance.now();
+
+
         item.layer.style.transitionDuration =
           `${random(
             160,
@@ -2037,15 +2104,23 @@
       count
     ) {
 
-      const visible =
+      const now =
+        performance.now();
+
+
+      const available =
         validLines.filter(
           item =>
-            item.visible
+            item.visible &&
+            (
+              now -
+              item.lastMutation
+            ) > 180
         );
 
 
       if (
-        !visible.length
+        !available.length
       ) {
 
         return;
@@ -2054,23 +2129,17 @@
 
 
       shuffle(
-        visible
+        available
       )
         .slice(
           0,
           Math.min(
             count,
-            visible.length
+            available.length
           )
         )
         .forEach(
           item => {
-
-            /*
-              Change processing in place.
-
-              No positional jumping.
-            */
 
             configureLine(
               item,
@@ -2078,10 +2147,14 @@
             );
 
 
+            item.lastMutation =
+              now;
+
+
             item.layer.style.transitionDuration =
               intensity > 0.72
                 ? `${random(
-                    90,
+                    100,
                     220
                   )}ms`
                 : `${random(
@@ -2123,6 +2196,7 @@
       ) {
 
         lastPointer = {
+
           x:
             event.clientX,
 
@@ -2131,6 +2205,7 @@
 
           time:
             now
+
         };
 
 
@@ -2170,6 +2245,7 @@
 
 
       lastPointer = {
+
         x:
           event.clientX,
 
@@ -2178,18 +2254,13 @@
 
         time:
           now
+
       };
 
 
       /*
-        CRITICAL:
-
-        Slow mouse = FREEZE.
-
-        No opacity updates.
-        No mutations.
-        No building changes.
-        No line changes.
+        If the pointer is nearly still, the entire
+        current visual state freezes exactly as-is.
       */
 
       if (
@@ -2208,13 +2279,6 @@
         );
 
 
-      /*
-        Physical mouse distance also matters.
-
-        This means someone actually moving around the image
-        gradually draws more of the architecture into view.
-      */
-
       movementAccumulator +=
         distance *
         (
@@ -2224,22 +2288,10 @@
         );
 
 
-      /*
-        Reveal threshold becomes smaller at high speed.
-
-        Slow deliberate movement:
-        architecture arrives cautiously.
-
-        Fast movement:
-        several layers appear very quickly.
-      */
-
       const revealThreshold =
         95 -
-        (
-          intensity *
-          69
-        );
+        intensity *
+        69;
 
 
       if (
@@ -2252,13 +2304,11 @@
 
 
         if (
-          intensity >
-          0.68
+          intensity > 0.68
         ) {
 
           revealAmount =
-            Math.random() <
-              0.42
+            Math.random() < 0.42
               ? 2
               : 1;
 
@@ -2266,13 +2316,11 @@
 
 
         if (
-          intensity >
-          0.88
+          intensity > 0.88
         ) {
 
           revealAmount =
-            Math.random() <
-              0.36
+            Math.random() < 0.36
               ? 3
               : 2;
 
@@ -2291,18 +2339,10 @@
       }
 
 
-      /*
-        MUTATION RATE IS ALSO DIRECTLY CONTROLLED BY SPEED.
-
-        There is no setInterval ticking in the background.
-      */
-
       const minimumMutationGap =
         620 -
-        (
-          intensity *
-          535
-        );
+        intensity *
+        535;
 
 
       if (
@@ -2316,13 +2356,11 @@
 
 
         if (
-          intensity >
-          0.62
+          intensity > 0.62
         ) {
 
           mutationCount =
-            Math.random() <
-              0.55
+            Math.random() < 0.55
               ? 2
               : 1;
 
@@ -2330,13 +2368,11 @@
 
 
         if (
-          intensity >
-          0.84
+          intensity > 0.84
         ) {
 
           mutationCount =
-            Math.random() <
-              0.38
+            Math.random() < 0.38
               ? 3
               : 2;
 
@@ -2349,30 +2385,38 @@
         );
 
 
-        /*
-          Building changes along with movement.
-
-          Slow movement changes it infrequently.
-          Fast movement reprocesses it rapidly.
-        */
-
-        if (
-          Math.random() <
-          (
-            0.34 +
-            intensity *
-            0.55
-          )
-        ) {
-
-          wakeBuilding(
-            intensity
-          );
-
-        }
-
-
         lastMutationTime =
+          now;
+
+      }
+
+
+      /*
+        Building has its own throttled update rate.
+        This is deliberately slower than the line processing
+        to reduce Chrome compositing flicker / instability.
+      */
+
+      const buildingGap =
+        intensity > 0.75
+          ? 150
+          : intensity > 0.45
+            ? 210
+            : 280;
+
+
+      if (
+        now -
+        lastBuildingUpdateTime >=
+        buildingGap
+      ) {
+
+        wakeBuilding(
+          intensity
+        );
+
+
+        lastBuildingUpdateTime =
           now;
 
       }
@@ -2380,15 +2424,8 @@
     }
 
 
-    /* =====================================================
-       CLEAR
-
-       Pointer leaves = photograph only.
-       ===================================================== */
-
     function clearArtwork(
-      instant =
-        false
+      instant = false
     ) {
 
       currentSpeed =
@@ -2407,6 +2444,10 @@
         0;
 
 
+      lastBuildingUpdateTime =
+        0;
+
+
       activeOrder =
         shuffle(
           validLines
@@ -2418,6 +2459,10 @@
 
           item.visible =
             false;
+
+
+          item.lastMutation =
+            0;
 
 
           item.layer.style.transitionDuration =
@@ -2451,15 +2496,19 @@
 
 
           building.style.transform =
-            "translate(0,0)";
+            "translate3d(0,0,0)";
+
+
+          building.style.filter =
+            "none";
+
+
+          building.style.mixBlendMode =
+            "normal";
 
         }
       );
 
-
-      /*
-        Base is always untouched once interaction ends.
-      */
 
       base.style.filter =
         "none";
@@ -2467,8 +2516,103 @@
     }
 
 
+    /*
+      Click-synced visual gestures used by the
+      musical state machine.
+    */
+
+    function visualChordPulse() {
+
+      if (
+        reducedMotion.matches
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        visibleCount < 4
+      ) {
+
+        revealNextLines(
+          3,
+          0.78
+        );
+
+      }
+
+      else {
+
+        revealNextLines(
+          1,
+          0.78
+        );
+
+      }
+
+
+      mutateVisibleLines(
+        0.82,
+        3
+      );
+
+
+      wakeBuilding(
+        0.82
+      );
+
+    }
+
+
+    function visualConnectionPulse() {
+
+      if (
+        reducedMotion.matches
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        visibleCount === 0
+      ) {
+
+        revealNextLines(
+          1,
+          0.38
+        );
+
+      }
+
+      else {
+
+        mutateVisibleLines(
+          0.38,
+          1
+        );
+
+      }
+
+
+      if (
+        Math.random() < 0.42
+      ) {
+
+        wakeBuilding(
+          0.34
+        );
+
+      }
+
+    }
+
+
     /* =====================================================
-       DESKTOP EVENTS
+       DESKTOP MOVEMENT
        ===================================================== */
 
     artwork.addEventListener(
@@ -2489,11 +2633,8 @@
           true;
 
 
-        /*
-          Entering by itself changes NOTHING.
-        */
-
         lastPointer = {
+
           x:
             event.clientX,
 
@@ -2502,6 +2643,7 @@
 
           time:
             performance.now()
+
         };
 
       }
@@ -2550,10 +2692,6 @@
           0;
 
 
-        /*
-          Everything except the photograph disappears.
-        */
-
         clearArtwork(
           false
         );
@@ -2563,20 +2701,2813 @@
 
 
     /* =====================================================
-       TOUCH
+       AUDIO CONFIGURATION
 
-       A tap acts as one medium-energy gesture.
+       Tune this section later rather than rewriting
+       the engine.
+       ===================================================== */
 
-       Repeated taps bring in more layers.
+    const AUDIO_CONFIG = {
+
+      masterGain:
+        0.65,
+
+      eventCooldownMs:
+        420,
+
+      maxVoices:
+        22,
+
+      cloud: {
+
+        minVoices:
+          5,
+
+        maxVoices:
+          8,
+
+        harmonicChance:
+          0.17,
+
+        maxSamePitch:
+          3,
+
+        maxSameInstrument:
+          3,
+
+        entrySpreadMs:
+          120
+
+      },
+
+      connection: {
+
+        minVoices:
+          1,
+
+        maxVoices:
+          4,
+
+        harmonicChance:
+          0.34,
+
+        entrySpreadMs:
+          160
+
+      },
+
+      gainRanges: {
+
+        concertina:
+          [0.12, 0.22],
+
+        guitar:
+          [0.12, 0.20],
+
+        mandolin:
+          [0.09, 0.17],
+
+        harmonic:
+          [0.07, 0.14],
+
+        cello:
+          [0.10, 0.16]
+
+      },
+
+      instrumentWeights: {
+
+        concertina:
+          1.10,
+
+        guitar:
+          1.00,
+
+        mandolin:
+          0.90
+
+      },
+
+      registerWeights: {
+
+        1:
+          1.00,
+
+        2:
+          0.88,
+
+        3:
+          0.18
+
+      },
+
+      panRanges: {
+
+        1:
+          0.25,
+
+        2:
+          0.40,
+
+        3:
+          0.55,
+
+        harmonic:
+          0.55
+
+      },
+
+      drone: {
+
+        fadeIn:
+          2.6,
+
+        preferredCrossfade:
+          3.0
+
+      }
+
+    };
+
+
+    /* =====================================================
+       SAMPLE MANIFEST
+
+       Registers are project-relative labels, not MIDI
+       octave numbers.
+       ===================================================== */
+
+    const AUDIO_ROOT =
+      "/photography/assets/audio/";
+
+
+    const PITCHES = [
+      "D",
+      "E",
+      "F",
+      "G",
+      "A",
+      "B",
+      "C"
+    ];
+
+
+    const SCALE =
+      [
+        "D",
+        "E",
+        "F",
+        "G",
+        "A",
+        "B",
+        "C"
+      ];
+
+
+    const SAMPLE_MANIFEST =
+      [];
+
+
+    function addSample(
+      instrument,
+      pitchClass,
+      register,
+      filename,
+      isHarmonic = false
+    ) {
+
+      SAMPLE_MANIFEST.push({
+
+        id:
+          filename.replace(
+            ".mp3",
+            ""
+          ),
+
+        instrument,
+
+        pitchClass,
+
+        register,
+
+        isHarmonic,
+
+        path:
+          AUDIO_ROOT +
+          filename
+
+      });
+
+    }
+
+
+    /*
+      Concertina
+    */
+
+    PITCHES.forEach(
+      pitch => {
+
+        const lower =
+          pitch.toLowerCase();
+
+
+        addSample(
+          "concertina",
+          pitch,
+          1,
+          `concertina_${lower}1.mp3`
+        );
+
+
+        addSample(
+          "concertina",
+          pitch,
+          2,
+          `concertina_${lower}2.mp3`
+        );
+
+      }
+    );
+
+
+    addSample(
+      "concertina",
+      "D",
+      3,
+      "concertina_d3.mp3"
+    );
+
+
+    /*
+      Guitar
+    */
+
+    PITCHES.forEach(
+      pitch => {
+
+        const lower =
+          pitch.toLowerCase();
+
+
+        addSample(
+          "guitar",
+          pitch,
+          1,
+          `guitar_${lower}1.mp3`
+        );
+
+
+        addSample(
+          "guitar",
+          pitch,
+          2,
+          `guitar_${lower}2.mp3`
+        );
+
+      }
+    );
+
+
+    addSample(
+      "guitar",
+      "D",
+      3,
+      "guitar_d3.mp3"
+    );
+
+
+    /*
+      Mandolin
+    */
+
+    PITCHES.forEach(
+      pitch => {
+
+        const lower =
+          pitch.toLowerCase();
+
+
+        addSample(
+          "mandolin",
+          pitch,
+          1,
+          `mandolin_${lower}1.mp3`
+        );
+
+
+        addSample(
+          "mandolin",
+          pitch,
+          2,
+          `mandolin_${lower}2.mp3`
+        );
+
+      }
+    );
+
+
+    /*
+      Harmonics
+    */
+
+    addSample(
+      "guitar",
+      "D",
+      3,
+      "guitar_hd.mp3",
+      true
+    );
+
+
+    addSample(
+      "guitar",
+      "G",
+      3,
+      "guitar_hg.mp3",
+      true
+    );
+
+
+    addSample(
+      "guitar",
+      "B",
+      3,
+      "guitar_hb.mp3",
+      true
+    );
+
+
+    addSample(
+      "guitar",
+      "E",
+      3,
+      "guitar_he.mp3",
+      true
+    );
+
+
+    const DRONE_PATH =
+      AUDIO_ROOT +
+      "cello_drone_d.mp3";
+
+
+    /* =====================================================
+       HARMONIC MATERIAL
+
+       Open modal structures are deliberately weighted
+       heavily.
+       ===================================================== */
+
+    const HARMONIES = [
+
+      {
+        pitches:
+          ["D", "A", "E"],
+        weight:
+          16
+      },
+
+      {
+        pitches:
+          ["D", "F", "A"],
+        weight:
+          13
+      },
+
+      {
+        pitches:
+          ["G", "B", "D"],
+        weight:
+          14
+      },
+
+      {
+        pitches:
+          ["C", "G", "D"],
+        weight:
+          11
+      },
+
+      {
+        pitches:
+          ["G", "D", "A"],
+        weight:
+          11
+      },
+
+      {
+        pitches:
+          ["D", "G", "A"],
+        weight:
+          10
+      },
+
+      {
+        pitches:
+          ["D", "C", "G"],
+        weight:
+          9
+      },
+
+      {
+        pitches:
+          ["C", "E", "G"],
+        weight:
+          8
+      },
+
+      {
+        pitches:
+          ["E", "B", "D"],
+        weight:
+          7
+      },
+
+      {
+        pitches:
+          ["A", "E", "G"],
+        weight:
+          7
+      },
+
+      {
+        pitches:
+          ["E", "G", "B"],
+        weight:
+          6
+      },
+
+      {
+        pitches:
+          ["F", "A", "C"],
+        weight:
+          5
+      },
+
+      {
+        pitches:
+          ["A", "C", "E"],
+        weight:
+          5
+      },
+
+      {
+        pitches:
+          ["B", "D", "F"],
+        weight:
+          1
+      }
+
+    ];
+
+
+    /* =====================================================
+       AUDIO STATE
+       ===================================================== */
+
+    const audioState = {
+
+      context:
+        null,
+
+      masterBus:
+        null,
+
+      compressor:
+        null,
+
+      masterGain:
+        null,
+
+      muted:
+        false,
+
+      overlayMuted:
+        false,
+
+      droneStarted:
+        false,
+
+      droneLoading:
+        false,
+
+      droneBuffer:
+        null,
+
+      droneNextStart:
+        0,
+
+      droneTimer:
+        null,
+
+      currentHarmony:
+        null,
+
+      nextHarmony:
+        null,
+
+      eventType:
+        "drone",
+
+      eventPending:
+        false,
+
+      lastClickTime:
+        0,
+
+      activeVoices:
+        new Set(),
+
+      bufferCache:
+        new Map(),
+
+      loadPromises:
+        new Map(),
+
+      preloadStarted:
+        false
+
+    };
+
+
+    /* =====================================================
+       AUDIO CONTEXT / MASTER CHAIN
+       ===================================================== */
+
+    function ensureAudioContext() {
+
+      if (
+        audioState.context
+      ) {
+
+        return audioState.context;
+
+      }
+
+
+      const Context =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+
+      if (
+        !Context
+      ) {
+
+        console.warn(
+          "Web Audio API is not supported in this browser."
+        );
+
+
+        return null;
+
+      }
+
+
+      const context =
+        new Context();
+
+
+      const masterBus =
+        context.createGain();
+
+
+      const compressor =
+        context.createDynamicsCompressor();
+
+
+      const masterGain =
+        context.createGain();
+
+
+      compressor.threshold.value =
+        -12;
+
+
+      compressor.knee.value =
+        12;
+
+
+      compressor.ratio.value =
+        2.4;
+
+
+      compressor.attack.value =
+        0.018;
+
+
+      compressor.release.value =
+        0.32;
+
+
+      masterGain.gain.value =
+        AUDIO_CONFIG.masterGain;
+
+
+      masterBus.connect(
+        compressor
+      );
+
+
+      compressor.connect(
+        masterGain
+      );
+
+
+      masterGain.connect(
+        context.destination
+      );
+
+
+      audioState.context =
+        context;
+
+
+      audioState.masterBus =
+        masterBus;
+
+
+      audioState.compressor =
+        compressor;
+
+
+      audioState.masterGain =
+        masterGain;
+
+
+      return context;
+
+    }
+
+
+    function updateMasterGain(
+      immediate = false
+    ) {
+
+      if (
+        !audioState.context ||
+        !audioState.masterGain
+      ) {
+
+        return;
+
+      }
+
+
+      const now =
+        audioState.context.currentTime;
+
+
+      const shouldMute =
+        audioState.muted ||
+        audioState.overlayMuted;
+
+
+      const target =
+        shouldMute
+          ? 0.0001
+          : AUDIO_CONFIG.masterGain;
+
+
+      audioState.masterGain.gain
+        .cancelScheduledValues(
+          now
+        );
+
+
+      audioState.masterGain.gain
+        .setValueAtTime(
+          Math.max(
+            0.0001,
+            audioState.masterGain.gain.value
+          ),
+          now
+        );
+
+
+      if (
+        immediate
+      ) {
+
+        audioState.masterGain.gain
+          .setValueAtTime(
+            target,
+            now
+          );
+
+      }
+
+      else {
+
+        audioState.masterGain.gain
+          .exponentialRampToValueAtTime(
+            target,
+            now +
+            0.24
+          );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       BUFFER LOADING
+       ===================================================== */
+
+    async function loadBuffer(
+      path
+    ) {
+
+      if (
+        audioState.bufferCache.has(
+          path
+        )
+      ) {
+
+        return audioState.bufferCache.get(
+          path
+        );
+
+      }
+
+
+      if (
+        audioState.loadPromises.has(
+          path
+        )
+      ) {
+
+        return audioState.loadPromises.get(
+          path
+        );
+
+      }
+
+
+      const context =
+        ensureAudioContext();
+
+
+      if (
+        !context
+      ) {
+
+        throw new Error(
+          "No AudioContext available."
+        );
+
+      }
+
+
+      const promise =
+        fetch(
+          path
+        )
+          .then(
+            response => {
+
+              if (
+                !response.ok
+              ) {
+
+                throw new Error(
+                  `Failed to load ${path}`
+                );
+
+              }
+
+
+              return response.arrayBuffer();
+
+            }
+          )
+          .then(
+            arrayBuffer =>
+              context.decodeAudioData(
+                arrayBuffer
+              )
+          )
+          .then(
+            buffer => {
+
+              audioState.bufferCache.set(
+                path,
+                buffer
+              );
+
+
+              audioState.loadPromises.delete(
+                path
+              );
+
+
+              return buffer;
+
+            }
+          )
+          .catch(
+            error => {
+
+              audioState.loadPromises.delete(
+                path
+              );
+
+
+              console.warn(
+                error
+              );
+
+
+              throw error;
+
+            }
+          );
+
+
+      audioState.loadPromises.set(
+        path,
+        promise
+      );
+
+
+      return promise;
+
+    }
+
+
+    async function preloadAllSamples() {
+
+      if (
+        audioState.preloadStarted
+      ) {
+
+        return;
+
+      }
+
+
+      audioState.preloadStarted =
+        true;
+
+
+      const paths =
+        SAMPLE_MANIFEST.map(
+          sample =>
+            sample.path
+        );
+
+
+      const concurrency =
+        6;
+
+
+      for (
+        let i = 0;
+        i < paths.length;
+        i += concurrency
+      ) {
+
+        const group =
+          paths.slice(
+            i,
+            i +
+            concurrency
+          );
+
+
+        await Promise.allSettled(
+          group.map(
+            path =>
+              loadBuffer(
+                path
+              )
+          )
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       DRONE
+       ===================================================== */
+
+    function scheduleDroneSegment(
+      initial = false
+    ) {
+
+      if (
+        !audioState.context ||
+        !audioState.droneBuffer ||
+        !audioState.droneStarted
+      ) {
+
+        return;
+
+      }
+
+
+      const context =
+        audioState.context;
+
+
+      const buffer =
+        audioState.droneBuffer;
+
+
+      const duration =
+        buffer.duration;
+
+
+      const crossfade =
+        Math.min(
+          AUDIO_CONFIG.drone
+            .preferredCrossfade,
+          Math.max(
+            1,
+            duration *
+            0.22
+          )
+        );
+
+
+      let startTime =
+        audioState.droneNextStart;
+
+
+      /*
+        Recover cleanly if the tab was suspended and the
+        scheduler wakes up late.
+      */
+
+      if (
+        startTime <
+        context.currentTime +
+        0.05
+      ) {
+
+        startTime =
+          context.currentTime +
+          0.05;
+
+      }
+
+
+      const source =
+        context.createBufferSource();
+
+
+      const gain =
+        context.createGain();
+
+
+      source.buffer =
+        buffer;
+
+
+      const targetGain =
+        random(
+          AUDIO_CONFIG.gainRanges
+            .cello[0],
+          AUDIO_CONFIG.gainRanges
+            .cello[1]
+        );
+
+
+      const fadeIn =
+        initial
+          ? AUDIO_CONFIG.drone
+              .fadeIn
+          : crossfade;
+
+
+      const endTime =
+        startTime +
+        duration;
+
+
+      const fadeOutStart =
+        Math.max(
+          startTime +
+          fadeIn,
+          endTime -
+          crossfade
+        );
+
+
+      gain.gain.setValueAtTime(
+        0.0001,
+        startTime
+      );
+
+
+      gain.gain.linearRampToValueAtTime(
+        targetGain,
+        startTime +
+        fadeIn
+      );
+
+
+      gain.gain.setValueAtTime(
+        targetGain,
+        fadeOutStart
+      );
+
+
+      gain.gain.linearRampToValueAtTime(
+        0.0001,
+        endTime
+      );
+
+
+      source.connect(
+        gain
+      );
+
+
+      gain.connect(
+        audioState.masterBus
+      );
+
+
+      source.start(
+        startTime
+      );
+
+
+      source.stop(
+        endTime +
+        0.05
+      );
+
+
+      const nextStart =
+        endTime -
+        crossfade;
+
+
+      audioState.droneNextStart =
+        nextStart;
+
+
+      window.clearTimeout(
+        audioState.droneTimer
+      );
+
+
+      const schedulerDelay =
+        Math.max(
+          300,
+          (
+            nextStart -
+            context.currentTime -
+            0.75
+          ) *
+          1000
+        );
+
+
+      audioState.droneTimer =
+        window.setTimeout(
+          () => {
+
+            scheduleDroneSegment(
+              false
+            );
+
+          },
+          schedulerDelay
+        );
+
+    }
+
+
+    async function startDrone() {
+
+      if (
+        audioState.droneStarted ||
+        audioState.droneLoading
+      ) {
+
+        return;
+
+      }
+
+
+      audioState.droneLoading =
+        true;
+
+
+      const context =
+        ensureAudioContext();
+
+
+      if (
+        !context
+      ) {
+
+        return;
+
+      }
+
+
+      await context.resume();
+
+
+      /*
+        Begin loading the full instrument library in the
+        background without blocking the drone.
+      */
+
+      preloadAllSamples();
+
+
+      try {
+
+        const buffer =
+          await loadBuffer(
+            DRONE_PATH
+          );
+
+
+        audioState.droneBuffer =
+          buffer;
+
+
+        audioState.droneStarted =
+          true;
+
+
+        audioState.droneLoading =
+          false;
+
+
+        audioState.droneNextStart =
+          context.currentTime +
+          0.05;
+
+
+        scheduleDroneSegment(
+          true
+        );
+
+
+        soundToggle.disabled =
+          false;
+
+
+        soundToggle.textContent =
+          "sound: on";
+
+
+        audioState.eventType =
+          "cloud";
+
+      }
+
+      catch (error) {
+
+        audioState.droneLoading =
+          false;
+
+
+        console.warn(
+          "Unable to start cello drone.",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       HARMONY HELPERS
+       ===================================================== */
+
+    function harmonySignature(
+      harmony
+    ) {
+
+      return [...harmony]
+        .sort()
+        .join("-");
+
+    }
+
+
+    function sharedPitchCount(
+      a,
+      b
+    ) {
+
+      return a.filter(
+        pitch =>
+          b.includes(
+            pitch
+          )
+      ).length;
+
+    }
+
+
+    function scaleDistance(
+      a,
+      b
+    ) {
+
+      const ai =
+        SCALE.indexOf(
+          a
+        );
+
+
+      const bi =
+        SCALE.indexOf(
+          b
+        );
+
+
+      const raw =
+        Math.abs(
+          ai -
+          bi
+        );
+
+
+      return Math.min(
+        raw,
+        SCALE.length -
+        raw
+      );
+
+    }
+
+
+    function harmonyDistance(
+      current,
+      candidate
+    ) {
+
+      return candidate.reduce(
+        (
+          total,
+          pitch
+        ) => {
+
+          const nearest =
+            Math.min(
+              ...current.map(
+                currentPitch =>
+                  scaleDistance(
+                    currentPitch,
+                    pitch
+                  )
+              )
+            );
+
+
+          return total +
+            nearest;
+
+        },
+        0
+      );
+
+    }
+
+
+    function chooseWeightedHarmony(
+      candidates
+    ) {
+
+      return weightedObject(
+        candidates
+      ).pitches;
+
+    }
+
+
+    function chooseInitialHarmony() {
+
+      return chooseWeightedHarmony(
+        HARMONIES
+      );
+
+    }
+
+
+    function chooseNextHarmony(
+      current
+    ) {
+
+      const currentSignature =
+        harmonySignature(
+          current
+        );
+
+
+      const available =
+        HARMONIES.filter(
+          harmony =>
+            harmonySignature(
+              harmony.pitches
+            ) !==
+            currentSignature
+        );
+
+
+      const mode =
+        weightedPick([
+
+          {
+            value: "shared",
+            weight: 60
+          },
+
+          {
+            value: "close",
+            weight: 25
+          },
+
+          {
+            value: "free",
+            weight: 15
+          }
+
+        ]);
+
+
+      if (
+        mode === "shared"
+      ) {
+
+        const shared =
+          available.filter(
+            harmony =>
+              sharedPitchCount(
+                current,
+                harmony.pitches
+              ) > 0
+          );
+
+
+        if (
+          shared.length
+        ) {
+
+          return chooseWeightedHarmony(
+            shared.map(
+              harmony => ({
+
+                ...harmony,
+
+                weight:
+                  harmony.weight *
+                  (
+                    1 +
+                    sharedPitchCount(
+                      current,
+                      harmony.pitches
+                    ) *
+                    0.30
+                  )
+
+              })
+            )
+          );
+
+        }
+
+      }
+
+
+      if (
+        mode === "close"
+      ) {
+
+        const ranked =
+          [...available]
+            .sort(
+              (
+                a,
+                b
+              ) =>
+                harmonyDistance(
+                  current,
+                  a.pitches
+                ) -
+                harmonyDistance(
+                  current,
+                  b.pitches
+                )
+            )
+            .slice(
+              0,
+              5
+            );
+
+
+        return chooseWeightedHarmony(
+          ranked
+        );
+
+      }
+
+
+      return chooseWeightedHarmony(
+        available
+      );
+
+    }
+
+
+    /* =====================================================
+       SAMPLE SELECTION
+       ===================================================== */
+
+    function samplesForPitch(
+      pitchClass,
+      includeHarmonics = false
+    ) {
+
+      return SAMPLE_MANIFEST.filter(
+        sample =>
+          sample.pitchClass ===
+            pitchClass &&
+          (
+            includeHarmonics ||
+            !sample.isHarmonic
+          )
+      );
+
+    }
+
+
+    function weightedSample(
+      samples,
+      usedIds,
+      instrumentCounts,
+      preferredRegister = null
+    ) {
+
+      const candidates =
+        samples.filter(
+          sample =>
+            !usedIds.has(
+              sample.id
+            ) &&
+            (
+              sample.isHarmonic ||
+              (
+                instrumentCounts[
+                  sample.instrument
+                ] || 0
+              ) <
+              AUDIO_CONFIG.cloud
+                .maxSameInstrument
+            )
+        );
+
+
+      if (
+        !candidates.length
+      ) {
+
+        return null;
+
+      }
+
+
+      return weightedObject(
+        candidates.map(
+          sample => {
+
+            let weight =
+              AUDIO_CONFIG
+                .instrumentWeights[
+                  sample.instrument
+                ] || 1;
+
+
+            if (
+              sample.isHarmonic
+            ) {
+
+              weight =
+                0.45;
+
+            }
+
+            else {
+
+              weight *=
+                AUDIO_CONFIG
+                  .registerWeights[
+                    sample.register
+                  ] || 1;
+
+            }
+
+
+            if (
+              preferredRegister &&
+              sample.register ===
+                preferredRegister
+            ) {
+
+              weight *=
+                1.8;
+
+            }
+
+
+            /*
+              Mandolin naturally favors the upper part
+              slightly; lower guitar/concertina provide body.
+            */
+
+            if (
+              sample.instrument ===
+                "mandolin" &&
+              sample.register ===
+                2
+            ) {
+
+              weight *=
+                1.25;
+
+            }
+
+
+            if (
+              (
+                sample.instrument ===
+                  "guitar" ||
+                sample.instrument ===
+                  "concertina"
+              ) &&
+              sample.register ===
+                1
+            ) {
+
+              weight *=
+                1.12;
+
+            }
+
+
+            return {
+              ...sample,
+              weight
+            };
+
+          }
+        )
+      );
+
+    }
+
+
+    function addVoice(
+      voices,
+      sample,
+      pitchCounts,
+      instrumentCounts,
+      usedIds
+    ) {
+
+      if (
+        !sample
+      ) {
+
+        return false;
+
+      }
+
+
+      voices.push(
+        sample
+      );
+
+
+      usedIds.add(
+        sample.id
+      );
+
+
+      pitchCounts[
+        sample.pitchClass
+      ] =
+        (
+          pitchCounts[
+            sample.pitchClass
+          ] || 0
+        ) +
+        1;
+
+
+      instrumentCounts[
+        sample.instrument
+      ] =
+        (
+          instrumentCounts[
+            sample.instrument
+          ] || 0
+        ) +
+        1;
+
+
+      return true;
+
+    }
+
+
+    function generateCloudVoicing(
+      harmony
+    ) {
+
+      const targetVoices =
+        randomInt(
+          AUDIO_CONFIG.cloud
+            .minVoices,
+          AUDIO_CONFIG.cloud
+            .maxVoices
+        );
+
+
+      const voices =
+        [];
+
+
+      const usedIds =
+        new Set();
+
+
+      const pitchCounts =
+        {};
+
+
+      const instrumentCounts =
+        {};
+
+
+      /*
+        Guarantee each of the three pitch classes appears.
+        Prefer a broad low / upper / mixed distribution.
+      */
+
+      harmony.forEach(
+        (
+          pitch,
+          index
+        ) => {
+
+          const preferredRegister =
+            index === 0
+              ? 1
+              : index === 1
+                ? 2
+                : (
+                    Math.random() <
+                      0.5
+                      ? 1
+                      : 2
+                  );
+
+
+          const sample =
+            weightedSample(
+              samplesForPitch(
+                pitch,
+                false
+              ),
+              usedIds,
+              instrumentCounts,
+              preferredRegister
+            );
+
+
+          addVoice(
+            voices,
+            sample,
+            pitchCounts,
+            instrumentCounts,
+            usedIds
+          );
+
+        }
+      );
+
+
+      /*
+        Reserve room for an occasional harmonic accent.
+      */
+
+      const harmonicCandidates =
+        SAMPLE_MANIFEST.filter(
+          sample =>
+            sample.isHarmonic &&
+            harmony.includes(
+              sample.pitchClass
+            )
+        );
+
+
+      const wantsHarmonic =
+        harmonicCandidates.length > 0 &&
+        Math.random() <
+          AUDIO_CONFIG.cloud
+            .harmonicChance;
+
+
+      const normalTarget =
+        wantsHarmonic
+          ? Math.max(
+              harmony.length,
+              targetVoices -
+              1
+            )
+          : targetVoices;
+
+
+      let safety =
+        0;
+
+
+      while (
+        voices.length <
+          normalTarget &&
+        safety <
+          80
+      ) {
+
+        safety++;
+
+
+        const eligiblePitches =
+          harmony.filter(
+            pitch =>
+              (
+                pitchCounts[
+                  pitch
+                ] || 0
+              ) <
+              AUDIO_CONFIG.cloud
+                .maxSamePitch
+          );
+
+
+        if (
+          !eligiblePitches.length
+        ) {
+
+          break;
+
+        }
+
+
+        /*
+          Favor whichever chord tone currently has fewer
+          representatives.
+        */
+
+        const pitch =
+          weightedObject(
+            eligiblePitches.map(
+              pitchClass => ({
+
+                value:
+                  pitchClass,
+
+                weight:
+                  1 /
+                  (
+                    1 +
+                    (
+                      pitchCounts[
+                        pitchClass
+                      ] || 0
+                    )
+                  )
+
+              })
+            )
+          ).value;
+
+
+        const sample =
+          weightedSample(
+            samplesForPitch(
+              pitch,
+              false
+            ),
+            usedIds,
+            instrumentCounts,
+            null
+          );
+
+
+        if (
+          !sample
+        ) {
+
+          continue;
+
+        }
+
+
+        addVoice(
+          voices,
+          sample,
+          pitchCounts,
+          instrumentCounts,
+          usedIds
+        );
+
+      }
+
+
+      if (
+        wantsHarmonic &&
+        voices.length <
+          targetVoices
+      ) {
+
+        const availableHarmonics =
+          harmonicCandidates.filter(
+            sample =>
+              !usedIds.has(
+                sample.id
+              )
+          );
+
+
+        if (
+          availableHarmonics.length
+        ) {
+
+          const harmonic =
+            pick(
+              availableHarmonics
+            );
+
+
+          addVoice(
+            voices,
+            harmonic,
+            pitchCounts,
+            instrumentCounts,
+            usedIds
+          );
+
+        }
+
+      }
+
+
+      return voices;
+
+    }
+
+
+    /* =====================================================
+       CONNECTIVE PITCH GENERATOR
+       ===================================================== */
+
+    function unique(
+      array
+    ) {
+
+      return [
+        ...new Set(
+          array
+        )
+      ];
+
+    }
+
+
+    function approachPitches(
+      currentHarmony,
+      nextHarmony
+    ) {
+
+      const approaches =
+        [];
+
+
+      currentHarmony.forEach(
+        currentPitch => {
+
+          const ci =
+            SCALE.indexOf(
+              currentPitch
+            );
+
+
+          nextHarmony.forEach(
+            targetPitch => {
+
+              const ti =
+                SCALE.indexOf(
+                  targetPitch
+                );
+
+
+              const forward =
+                (
+                  ti -
+                  ci +
+                  SCALE.length
+                ) %
+                SCALE.length;
+
+
+              const backward =
+                (
+                  ci -
+                  ti +
+                  SCALE.length
+                ) %
+                SCALE.length;
+
+
+              /*
+                One Dorian scale tone between current and
+                target: E -> F -> G, etc.
+              */
+
+              if (
+                forward === 2
+              ) {
+
+                approaches.push(
+                  SCALE[
+                    (
+                      ci +
+                      1
+                    ) %
+                    SCALE.length
+                  ]
+                );
+
+              }
+
+
+              if (
+                backward === 2
+              ) {
+
+                approaches.push(
+                  SCALE[
+                    (
+                      ci -
+                      1 +
+                      SCALE.length
+                    ) %
+                    SCALE.length
+                  ]
+                );
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+
+      return unique(
+        approaches
+      );
+
+    }
+
+
+    function chooseConnectionPitches(
+      currentHarmony,
+      nextHarmony
+    ) {
+
+      const common =
+        currentHarmony.filter(
+          pitch =>
+            nextHarmony.includes(
+              pitch
+            )
+        );
+
+
+      const incoming =
+        nextHarmony.filter(
+          pitch =>
+            !currentHarmony.includes(
+              pitch
+            )
+        );
+
+
+      const approaches =
+        approachPitches(
+          currentHarmony,
+          nextHarmony
+        );
+
+
+      const strategy =
+        weightedPick([
+
+          {
+            value: "incoming",
+            weight: 34
+          },
+
+          {
+            value: "common",
+            weight:
+              common.length
+                ? 28
+                : 0
+          },
+
+          {
+            value: "approach",
+            weight:
+              approaches.length
+                ? 26
+                : 0
+          },
+
+          {
+            value: "pair",
+            weight: 12
+          }
+
+        ]);
+
+
+      if (
+        strategy === "common" &&
+        common.length
+      ) {
+
+        return [
+          pick(
+            common
+          )
+        ];
+
+      }
+
+
+      if (
+        strategy === "approach" &&
+        approaches.length
+      ) {
+
+        return [
+          pick(
+            approaches
+          )
+        ];
+
+      }
+
+
+      if (
+        strategy === "pair"
+      ) {
+
+        const firstPool =
+          common.length
+            ? common
+            : approaches.length
+              ? approaches
+              : currentHarmony;
+
+
+        const secondPool =
+          incoming.length
+            ? incoming
+            : nextHarmony;
+
+
+        return unique([
+          pick(
+            firstPool
+          ),
+          pick(
+            secondPool
+          )
+        ]).slice(
+          0,
+          2
+        );
+
+      }
+
+
+      return [
+        pick(
+          incoming.length
+            ? incoming
+            : nextHarmony
+        )
+      ];
+
+    }
+
+
+    function generateConnectionVoicing(
+      pitches
+    ) {
+
+      const targetVoices =
+        randomInt(
+          Math.max(
+            AUDIO_CONFIG.connection
+              .minVoices,
+            pitches.length
+          ),
+          AUDIO_CONFIG.connection
+            .maxVoices
+        );
+
+
+      const voices =
+        [];
+
+
+      const usedIds =
+        new Set();
+
+
+      const pitchCounts =
+        {};
+
+
+      const instrumentCounts =
+        {};
+
+
+      pitches.forEach(
+        pitch => {
+
+          const regular =
+            weightedSample(
+              samplesForPitch(
+                pitch,
+                false
+              ),
+              usedIds,
+              instrumentCounts,
+              Math.random() < 0.68
+                ? 2
+                : 1
+            );
+
+
+          addVoice(
+            voices,
+            regular,
+            pitchCounts,
+            instrumentCounts,
+            usedIds
+          );
+
+        }
+      );
+
+
+      /*
+        Harmonics are more likely in the connective gesture.
+      */
+
+      if (
+        voices.length <
+          targetVoices &&
+        Math.random() <
+          AUDIO_CONFIG.connection
+            .harmonicChance
+      ) {
+
+        const harmonicCandidates =
+          SAMPLE_MANIFEST.filter(
+            sample =>
+              sample.isHarmonic &&
+              pitches.includes(
+                sample.pitchClass
+              ) &&
+              !usedIds.has(
+                sample.id
+              )
+          );
+
+
+        if (
+          harmonicCandidates.length
+        ) {
+
+          addVoice(
+            voices,
+            pick(
+              harmonicCandidates
+            ),
+            pitchCounts,
+            instrumentCounts,
+            usedIds
+          );
+
+        }
+
+      }
+
+
+      let safety =
+        0;
+
+
+      while (
+        voices.length <
+          targetVoices &&
+        safety <
+          40
+      ) {
+
+        safety++;
+
+
+        const pitch =
+          pick(
+            pitches
+          );
+
+
+        const sample =
+          weightedSample(
+            samplesForPitch(
+              pitch,
+              false
+            ),
+            usedIds,
+            instrumentCounts,
+            Math.random() <
+              0.62
+              ? 2
+              : null
+          );
+
+
+        if (
+          !sample
+        ) {
+
+          continue;
+
+        }
+
+
+        addVoice(
+          voices,
+          sample,
+          pitchCounts,
+          instrumentCounts,
+          usedIds
+        );
+
+      }
+
+
+      return voices;
+
+    }
+
+
+    /* =====================================================
+       SAMPLE PLAYBACK
+       ===================================================== */
+
+    function gainRangeForSample(
+      sample
+    ) {
+
+      if (
+        sample.isHarmonic
+      ) {
+
+        return AUDIO_CONFIG
+          .gainRanges
+          .harmonic;
+
+      }
+
+
+      return AUDIO_CONFIG
+        .gainRanges[
+          sample.instrument
+        ];
+
+    }
+
+
+    function panRangeForSample(
+      sample
+    ) {
+
+      if (
+        sample.isHarmonic
+      ) {
+
+        return AUDIO_CONFIG
+          .panRanges
+          .harmonic;
+
+      }
+
+
+      return AUDIO_CONFIG
+        .panRanges[
+          sample.register
+        ] || 0.30;
+
+    }
+
+
+    function scheduleBufferVoice(
+      sample,
+      buffer,
+      startTime,
+      gainScale = 1
+    ) {
+
+      if (
+        audioState.activeVoices.size >=
+        AUDIO_CONFIG.maxVoices
+      ) {
+
+        return false;
+
+      }
+
+
+      const context =
+        audioState.context;
+
+
+      const source =
+        context.createBufferSource();
+
+
+      const gain =
+        context.createGain();
+
+
+      const panner =
+        context.createStereoPanner();
+
+
+      source.buffer =
+        buffer;
+
+
+      source.playbackRate.value =
+        1;
+
+
+      const range =
+        gainRangeForSample(
+          sample
+        );
+
+
+      const sourceGain =
+        random(
+          range[0],
+          range[1]
+        ) *
+        gainScale;
+
+
+      gain.gain.setValueAtTime(
+        sourceGain,
+        startTime
+      );
+
+
+      const panRange =
+        panRangeForSample(
+          sample
+        );
+
+
+      panner.pan.setValueAtTime(
+        random(
+          -panRange,
+          panRange
+        ),
+        startTime
+      );
+
+
+      source.connect(
+        gain
+      );
+
+
+      gain.connect(
+        panner
+      );
+
+
+      panner.connect(
+        audioState.masterBus
+      );
+
+
+      audioState.activeVoices.add(
+        source
+      );
+
+
+      source.onended =
+        () => {
+
+          audioState.activeVoices.delete(
+            source
+          );
+
+
+          try {
+
+            source.disconnect();
+            gain.disconnect();
+            panner.disconnect();
+
+          }
+
+          catch {}
+
+        };
+
+
+      source.start(
+        startTime
+      );
+
+
+      return true;
+
+    }
+
+
+    async function playVoices(
+      voices,
+      spreadMs,
+      gainScale = 1
+    ) {
+
+      if (
+        !voices.length ||
+        !audioState.context
+      ) {
+
+        return;
+
+      }
+
+
+      const results =
+        await Promise.all(
+          voices.map(
+            async sample => {
+
+              try {
+
+                const buffer =
+                  await loadBuffer(
+                    sample.path
+                  );
+
+
+                return {
+                  sample,
+                  buffer
+                };
+
+              }
+
+              catch {
+
+                return null;
+
+              }
+
+            }
+          )
+        );
+
+
+      const playable =
+        results.filter(
+          Boolean
+        );
+
+
+      if (
+        !playable.length
+      ) {
+
+        return;
+
+      }
+
+
+      const baseStart =
+        audioState.context
+          .currentTime +
+        0.055;
+
+
+      /*
+        Slightly ordered random offsets reduce the chance
+        that eight samples all hit on precisely the same
+        sample.
+      */
+
+      const offsets =
+        playable
+          .map(
+            () =>
+              random(
+                0,
+                spreadMs
+              )
+          )
+          .sort(
+            (
+              a,
+              b
+            ) =>
+              a -
+              b
+          );
+
+
+      playable.forEach(
+        (
+          entry,
+          index
+        ) => {
+
+          if (
+            audioState.activeVoices.size >=
+            AUDIO_CONFIG.maxVoices
+          ) {
+
+            return;
+
+          }
+
+
+          scheduleBufferVoice(
+            entry.sample,
+            entry.buffer,
+            baseStart +
+            offsets[index] /
+            1000,
+            gainScale
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       MUSICAL EVENTS
+       ===================================================== */
+
+    async function playCloudEvent() {
+
+      if (
+        !audioState.currentHarmony
+      ) {
+
+        audioState.currentHarmony =
+          chooseInitialHarmony();
+
+      }
+
+      else if (
+        audioState.nextHarmony
+      ) {
+
+        audioState.currentHarmony =
+          audioState.nextHarmony;
+
+      }
+
+
+      const voices =
+        generateCloudVoicing(
+          audioState.currentHarmony
+        );
+
+
+      await playVoices(
+        voices,
+        AUDIO_CONFIG.cloud
+          .entrySpreadMs,
+        1
+      );
+
+
+      audioState.nextHarmony =
+        chooseNextHarmony(
+          audioState.currentHarmony
+        );
+
+
+      audioState.eventType =
+        "connection";
+
+
+      visualChordPulse();
+
+    }
+
+
+    async function playConnectionEvent() {
+
+      if (
+        !audioState.currentHarmony ||
+        !audioState.nextHarmony
+      ) {
+
+        return;
+
+      }
+
+
+      const pitches =
+        chooseConnectionPitches(
+          audioState.currentHarmony,
+          audioState.nextHarmony
+        );
+
+
+      const voices =
+        generateConnectionVoicing(
+          pitches
+        );
+
+
+      await playVoices(
+        voices,
+        AUDIO_CONFIG.connection
+          .entrySpreadMs,
+        0.92
+      );
+
+
+      audioState.eventType =
+        "cloud";
+
+
+      visualConnectionPulse();
+
+    }
+
+
+    async function handleMusicalClick() {
+
+      const now =
+        performance.now();
+
+
+      if (
+        now -
+        audioState.lastClickTime <
+        AUDIO_CONFIG.eventCooldownMs
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        audioState.eventPending
+      ) {
+
+        return;
+
+      }
+
+
+      audioState.lastClickTime =
+        now;
+
+
+      audioState.eventPending =
+        true;
+
+
+      try {
+
+        const context =
+          ensureAudioContext();
+
+
+        if (
+          !context
+        ) {
+
+          return;
+
+        }
+
+
+        await context.resume();
+
+
+        /*
+          CLICK 1:
+          cello drone only.
+        */
+
+        if (
+          !audioState.droneStarted &&
+          !audioState.droneLoading
+        ) {
+
+          await startDrone();
+
+
+          return;
+
+        }
+
+
+        if (
+          audioState.droneLoading
+        ) {
+
+          return;
+
+        }
+
+
+        /*
+          Subsequent clicks:
+          CLOUD → CONNECTION → CLOUD...
+        */
+
+        if (
+          audioState.eventType ===
+          "cloud"
+        ) {
+
+          await playCloudEvent();
+
+        }
+
+        else {
+
+          await playConnectionEvent();
+
+        }
+
+      }
+
+      finally {
+
+        audioState.eventPending =
+          false;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       ARTWORK CLICK
        ===================================================== */
 
     artwork.addEventListener(
       "click",
-      event => {
+      async event => {
 
         if (
-          finePointer.matches ||
-          reducedMotion.matches
+          event.target.closest(
+            ".fuji-sound-toggle"
+          )
         ) {
 
           return;
@@ -2584,54 +5515,33 @@
         }
 
 
-        event.preventDefault();
-
-
-        if (
-          !activeOrder.length
-        ) {
-
-          activeOrder =
-            shuffle(
-              validLines
-            );
-
-        }
-
-
-        revealNextLines(
-          2,
-          0.58
-        );
-
-
-        mutateVisibleLines(
-          0.58,
-          1
-        );
-
-
-        wakeBuilding(
-          0.58
-        );
+        await handleMusicalClick();
 
       }
     );
 
 
-    /* =====================================================
-       KEYBOARD
-       ===================================================== */
+    /*
+      Keyboard also progresses the musical state.
+    */
 
     artwork.addEventListener(
       "keydown",
-      event => {
+      async event => {
 
         if (
-          event.key !==
-            "Enter" &&
-          event.key !==
-            " "
+          event.key !== "Enter" &&
+          event.key !== " "
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          event.target ===
+          soundToggle
         ) {
 
           return;
@@ -2642,8 +5552,35 @@
         event.preventDefault();
 
 
+        await handleMusicalClick();
+
+      }
+    );
+
+
+    /* =====================================================
+       TOUCH VISUAL RESPONSE
+
+       Audio event itself supplies the major cloud/connection
+       pulse. A touch does not create a second independent
+       visual animation.
+       ===================================================== */
+
+
+    /* =====================================================
+       MUTE CONTROL
+       ===================================================== */
+
+    soundToggle.addEventListener(
+      "click",
+      event => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+
         if (
-          reducedMotion.matches
+          !audioState.droneStarted
         ) {
 
           return;
@@ -2651,36 +5588,24 @@
         }
 
 
-        revealNextLines(
-          2,
-          0.50
-        );
+        audioState.muted =
+          !audioState.muted;
 
 
-        mutateVisibleLines(
-          0.50,
-          1
-        );
+        updateMasterGain();
 
 
-        wakeBuilding(
-          0.50
-        );
-
-      }
-    );
+        soundToggle.textContent =
+          audioState.muted
+            ? "sound: off"
+            : "sound: on";
 
 
-    /* =====================================================
-       REDUCED MOTION
-       ===================================================== */
-
-    reducedMotion.addEventListener(
-      "change",
-      () => {
-
-        clearArtwork(
-          false
+        soundToggle.setAttribute(
+          "aria-label",
+          audioState.muted
+            ? "Turn sound on"
+            : "Turn sound off"
         );
 
       }
@@ -2688,50 +5613,127 @@
 
 
     /* =====================================================
-       START
+       API FOR WIP OVERLAY
+
+       Prevents Fuji audio and cricket audio playing loudly
+       on top of one another.
        ===================================================== */
 
-    prepare();
+    window.fujiAudio = {
+
+      setOverlayMuted(
+        muted
+      ) {
+
+        audioState.overlayMuted =
+          Boolean(
+            muted
+          );
+
+
+        updateMasterGain();
+
+      }
+
+    };
+
+
+    /* =====================================================
+       START VISUAL PREPARATION
+       ===================================================== */
+
+    prepareVisuals();
 
   })();
   </script>
 
 
   <!-- =====================================================
-       HORSE WIP
+       EXISTING HORSE / WIP
        ===================================================== -->
 
   <script>
   (() => {
 
-    const clamp = (value, min, max) =>
-      Math.min(Math.max(value, min), max);
+    const clamp =
+      (
+        value,
+        min,
+        max
+      ) =>
+        Math.min(
+          Math.max(
+            value,
+            min
+          ),
+          max
+        );
 
-    const lerp = (a, b, t) =>
-      a + ((b - a) * t);
 
-    const random = (min, max) =>
-      min + Math.random() * (max - min);
+    const lerp =
+      (
+        a,
+        b,
+        t
+      ) =>
+        a +
+        (
+          (
+            b -
+            a
+          ) *
+          t
+        );
 
-    const pick = array =>
-      array[Math.floor(Math.random() * array.length)];
+
+    const random =
+      (
+        min,
+        max
+      ) =>
+        min +
+        Math.random() *
+        (
+          max -
+          min
+        );
 
 
-    function shuffle(array) {
+    const pick =
+      array =>
+        array[
+          Math.floor(
+            Math.random() *
+            array.length
+          )
+        ];
 
-      const result = [...array];
+
+    function shuffle(
+      array
+    ) {
+
+      const result =
+        [...array];
+
 
       for (
-        let i = result.length - 1;
+        let i =
+          result.length - 1;
+
         i > 0;
+
         i--
       ) {
 
         const j =
           Math.floor(
             Math.random() *
-            (i + 1)
+            (
+              i + 1
+            )
           );
+
 
         [
           result[i],
@@ -2743,22 +5745,31 @@
 
       }
 
+
       return result;
 
     }
 
 
-    function smoothStep(value) {
+    function smoothStep(
+      value
+    ) {
 
       const t =
-        clamp(value, 0, 1);
+        clamp(
+          value,
+          0,
+          1
+        );
+
 
       return (
         t *
         t *
         (
           3 -
-          2 * t
+          2 *
+          t
         )
       );
 
@@ -2772,7 +5783,9 @@
 
 
     function isMobile() {
+
       return mobileQuery.matches;
+
     }
 
 
@@ -2781,35 +5794,42 @@
         "page-shell"
       );
 
+
     const overlay =
       document.getElementById(
         "wip-overlay"
       );
+
 
     const audio =
       document.getElementById(
         "wip-audio"
       );
 
+
     const closeButton =
       document.getElementById(
         "wip-close"
       );
+
 
     const stage =
       document.getElementById(
         "collage-stage"
       );
 
+
     const horseMain =
       document.getElementById(
         "horse-main"
       );
 
+
     const horseOffset =
       document.getElementById(
         "horse-offset"
       );
+
 
     const horseKey =
       document.getElementById(
@@ -2897,40 +5917,60 @@
       ALL_TEXTURES.filter(
         src =>
           /Grunge|Concrete|Soil|Stone|Wood|Metal|Film|Brick|Paper|InkPaint/i
-            .test(src)
+            .test(
+              src
+            )
       );
 
 
     const SOFTER_TEXTURES =
       ALL_TEXTURES.filter(
         src =>
-          !DIRTY_TEXTURES.includes(src)
+          !DIRTY_TEXTURES.includes(
+            src
+          )
       );
 
 
-    let sessionTextures = [];
-    let readyTextures = [];
-    let recentTextures = [];
+    let sessionTextures =
+      [];
+
+
+    let readyTextures =
+      [];
+
+
+    let recentTextures =
+      [];
 
 
     function prepareTextures() {
 
       sessionTextures = [
 
-        ...shuffle(DIRTY_TEXTURES).slice(
+        ...shuffle(
+          DIRTY_TEXTURES
+        ).slice(
           0,
-          isMobile() ? 13 : 18
+          isMobile()
+            ? 13
+            : 18
         ),
 
-        ...shuffle(SOFTER_TEXTURES).slice(
+        ...shuffle(
+          SOFTER_TEXTURES
+        ).slice(
           0,
-          isMobile() ? 3 : 6
+          isMobile()
+            ? 3
+            : 6
         )
 
       ];
 
 
-      readyTextures = [];
+      readyTextures =
+        [];
 
 
       sessionTextures.forEach(
@@ -2939,21 +5979,28 @@
           const image =
             new Image();
 
+
           image.decoding =
             "async";
+
 
           image.onload =
             () => {
 
               if (
-                !readyTextures.includes(src)
+                !readyTextures.includes(
+                  src
+                )
               ) {
 
-                readyTextures.push(src);
+                readyTextures.push(
+                  src
+                );
 
               }
 
             };
+
 
           image.src =
             src;
@@ -2969,7 +6016,9 @@
       const dirty =
         readyTextures.filter(
           src =>
-            DIRTY_TEXTURES.includes(src)
+            DIRTY_TEXTURES.includes(
+              src
+            )
         );
 
 
@@ -2987,24 +6036,34 @@
 
 
       let result;
-      let attempts = 0;
+
+
+      let attempts =
+        0;
 
 
       do {
 
         result =
-          pick(pool);
+          pick(
+            pool
+          );
+
 
         attempts++;
 
       }
       while (
-        recentTextures.includes(result) &&
+        recentTextures.includes(
+          result
+        ) &&
         attempts < 14
       );
 
 
-      recentTextures.push(result);
+      recentTextures.push(
+        result
+      );
 
 
       if (
@@ -3091,24 +6150,35 @@
     ];
 
 
-    let lastHorseColorName = "";
+    let lastHorseColorName =
+      "";
 
 
-    function differentHorseColor(pool) {
+    function differentHorseColor(
+      pool
+    ) {
 
       let result;
-      let attempts = 0;
+
+
+      let attempts =
+        0;
+
 
       do {
 
         result =
-          pick(pool);
+          pick(
+            pool
+          );
+
 
         attempts++;
 
       }
       while (
-        result.name === lastHorseColorName &&
+        result.name ===
+          lastHorseColorName &&
         attempts < 12
       );
 
@@ -3116,12 +6186,15 @@
       lastHorseColorName =
         result.name;
 
+
       return result;
 
     }
 
 
-    function nextHorseColor(time) {
+    function nextHorseColor(
+      time
+    ) {
 
       return differentHorseColor(
         time < 75
@@ -3138,7 +6211,10 @@
     ) {
 
       const element =
-        document.getElementById(id);
+        document.getElementById(
+          id
+        );
+
 
       return {
 
@@ -3245,34 +6321,44 @@
     ) {
 
       if (
-        slot.role === "foundation"
+        slot.role ===
+        "foundation"
       ) {
 
         return isMobile()
           ? random(
               0.48,
-              0.62 + intensity * 0.10
+              0.62 +
+              intensity *
+              0.10
             )
           : random(
               0.60,
-              0.78 + intensity * 0.10
+              0.78 +
+              intensity *
+              0.10
             );
 
       }
 
 
       if (
-        slot.role === "secondary"
+        slot.role ===
+        "secondary"
       ) {
 
         return isMobile()
           ? random(
               0.24,
-              0.35 + intensity * 0.13
+              0.35 +
+              intensity *
+              0.13
             )
           : random(
               0.34,
-              0.50 + intensity * 0.14
+              0.50 +
+              intensity *
+              0.14
             );
 
       }
@@ -3280,7 +6366,9 @@
 
       return random(
         0.08,
-        0.16 + intensity * 0.11
+        0.16 +
+        intensity *
+        0.11
       );
 
     }
@@ -3352,7 +6440,9 @@
         opacityForSlot(
           slot,
           intensity
-        ).toFixed(3);
+        ).toFixed(
+          3
+        );
 
     }
 
@@ -3371,6 +6461,7 @@
         slot.element.style.display =
           "none";
 
+
         return;
 
       }
@@ -3388,7 +6479,9 @@
 
 
       const fade =
-        isMobile() ? 6 : 7;
+        isMobile()
+          ? 6
+          : 7;
 
 
       first.style.transitionDuration =
@@ -3396,7 +6489,8 @@
 
 
       first.style.opacity =
-        first.dataset.targetOpacity;
+        first.dataset
+          .targetOpacity;
 
 
       slot.nextChange =
@@ -3478,7 +6572,9 @@
         () => {
 
           incoming.style.opacity =
-            incoming.dataset.targetOpacity;
+            incoming.dataset
+              .targetOpacity;
+
 
           outgoing.style.opacity =
             "0";
@@ -3493,7 +6589,8 @@
 
       slot.nextChange =
         time +
-        duration * 0.96;
+        duration *
+        0.96;
 
     }
 
@@ -3548,7 +6645,9 @@
               0.02,
               0.06,
               intensity
-            ).toFixed(3);
+            ).toFixed(
+              3
+            );
 
 
       horseKey.style.opacity =
@@ -3557,12 +6656,16 @@
               0.08,
               0.14,
               intensity
-            ).toFixed(3)
+            ).toFixed(
+              3
+            )
           : lerp(
               0.10,
               0.18,
               intensity
-            ).toFixed(3);
+            ).toFixed(
+              3
+            );
 
 
       nextHorseChange =
@@ -3624,14 +6727,18 @@
       horseMain.style.mixBlendMode =
         "normal";
 
+
       horseMain.style.filter =
         "none";
+
 
       horseMain.style.opacity =
         "1";
 
+
       horseOffset.style.opacity =
         "0";
+
 
       horseKey.style.opacity =
         "0";
@@ -3639,13 +6746,25 @@
     }
 
 
-    const HORSE_START = 12;
-    const HORSE_FULL = 20;
-    const COLLAGE_START = 30;
-    const NORMAL_TIME = 243;
+    const HORSE_START =
+      12;
 
 
-    function horseRevealAt(time) {
+    const HORSE_FULL =
+      20;
+
+
+    const COLLAGE_START =
+      30;
+
+
+    const NORMAL_TIME =
+      243;
+
+
+    function horseRevealAt(
+      time
+    ) {
 
       if (
         time < HORSE_START
@@ -3670,7 +6789,9 @@
     }
 
 
-    function intensityAt(time) {
+    function intensityAt(
+      time
+    ) {
 
       if (
         time < COLLAGE_START ||
@@ -3698,11 +6819,24 @@
     }
 
 
-    let overlayOpen = false;
-    let collageStarted = false;
-    let horseStarted = false;
-    let normalState = false;
-    let raf = null;
+    let overlayOpen =
+      false;
+
+
+    let collageStarted =
+      false;
+
+
+    let horseStarted =
+      false;
+
+
+    let normalState =
+      false;
+
+
+    let raf =
+      null;
 
 
     function clearSlots() {
@@ -3741,14 +6875,17 @@
 
 
       const time =
-        audio.currentTime || 0;
+        audio.currentTime ||
+        0;
 
 
       stage.style.setProperty(
         "--visual-reveal",
         horseRevealAt(
           time
-        ).toFixed(4)
+        ).toFixed(
+          4
+        )
       );
 
 
@@ -3757,7 +6894,9 @@
         !horseStarted
       ) {
 
-        horseStarted = true;
+        horseStarted =
+          true;
+
 
         prepareInitialHorse();
 
@@ -3770,15 +6909,20 @@
       ) {
 
         horseMain.style.opacity =
-          horseRevealAt(time);
+          horseRevealAt(
+            time
+          );
 
 
         if (
-          time >= nextHorseChange
+          time >=
+          nextHorseChange
         ) {
 
           applyHorseColor(
-            nextHorseColor(time),
+            nextHorseColor(
+              time
+            ),
             0.08,
             time
           );
@@ -3794,7 +6938,9 @@
       ) {
 
         const intensity =
-          intensityAt(time);
+          intensityAt(
+            time
+          );
 
 
         if (
@@ -3816,7 +6962,8 @@
 
 
           nextHorseChange =
-            time + 8;
+            time +
+            8;
 
         }
 
@@ -3825,7 +6972,8 @@
           slot => {
 
             if (
-              time >= slot.nextChange
+              time >=
+              slot.nextChange
             ) {
 
               morphSlot(
@@ -3841,11 +6989,14 @@
 
 
         if (
-          time >= nextHorseChange
+          time >=
+          nextHorseChange
         ) {
 
           applyHorseColor(
-            nextHorseColor(time),
+            nextHorseColor(
+              time
+            ),
             intensity,
             time
           );
@@ -3863,8 +7014,12 @@
         normalState =
           true;
 
+
         clearSlots();
+
+
         normalHorse();
+
 
         stage.classList.add(
           "is-normal"
@@ -3895,42 +7050,73 @@
       overlayOpen =
         true;
 
+
       collageStarted =
         false;
+
 
       horseStarted =
         false;
 
+
       normalState =
         false;
+
 
       recentTextures =
         [];
 
+
       lastHorseColorName =
         "";
 
+
       clearSlots();
+
+
       normalHorse();
+
 
       stage.classList.remove(
         "is-normal"
       );
+
 
       stage.style.setProperty(
         "--visual-reveal",
         "0"
       );
 
+
       prepareTextures();
+
+
+      /*
+        Quiet the generative Fuji piece while the WIP
+        soundtrack is running.
+      */
+
+      if (
+        window.fujiAudio
+      ) {
+
+        window.fujiAudio
+          .setOverlayMuted(
+            true
+          );
+
+      }
+
 
       pageShell.classList.add(
         "is-hidden"
       );
 
+
       overlay.classList.add(
         "is-visible"
       );
+
 
       overlay.setAttribute(
         "aria-hidden",
@@ -3940,6 +7126,7 @@
 
       audio.currentTime =
         0;
+
 
       audio.volume =
         0.72;
@@ -3967,30 +7154,51 @@
       overlayOpen =
         false;
 
+
       cancelAnimationFrame(
         raf
       );
 
+
       audio.pause();
+
 
       audio.currentTime =
         0;
 
+
       clearSlots();
+
+
       normalHorse();
+
 
       overlay.classList.remove(
         "is-visible"
       );
+
 
       overlay.setAttribute(
         "aria-hidden",
         "true"
       );
 
+
       pageShell.classList.remove(
         "is-hidden"
       );
+
+
+      if (
+        window.fujiAudio
+      ) {
+
+        window.fujiAudio
+          .setOverlayMuted(
+            false
+          );
+
+      }
 
     }
 
@@ -4000,7 +7208,9 @@
       event => {
 
         const link =
-          event.target.closest("a");
+          event.target.closest(
+            "a"
+          );
 
 
         if (
@@ -4024,6 +7234,7 @@
 
 
         event.preventDefault();
+
 
         openWip();
 
