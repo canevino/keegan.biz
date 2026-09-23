@@ -40,9 +40,11 @@ body {
 
   overflow-x: hidden;
 
-  background: var(--paper);
+  background:
+    var(--paper);
 
-  color: var(--ink);
+  color:
+    var(--ink);
 
   font-family:
     Helvetica,
@@ -119,7 +121,8 @@ a {
       100%
     );
 
-  margin-bottom: 22px;
+  margin-bottom:
+    22px;
 }
 
 
@@ -164,7 +167,8 @@ a {
    ========================================================= */
 
 .site-title {
-  color: var(--ink);
+  color:
+    var(--ink);
 
   font-size:
     clamp(
@@ -233,7 +237,8 @@ a {
   width: auto;
   height: 100%;
 
-  object-fit: contain;
+  object-fit:
+    contain;
 
   filter:
     drop-shadow(
@@ -334,7 +339,7 @@ a {
 
 
 /* =========================================================
-   HEADER
+   MESSAGE
    ========================================================= */
 
 .wip-header {
@@ -454,12 +459,11 @@ a {
 
 
 /* =========================================================
-   COLLAGE STAGE
+   STAGE
    ========================================================= */
 
 .collage-stage {
-  --visual-reveal:
-    0;
+  --visual-reveal: 0;
 
   position: relative;
 
@@ -473,11 +477,9 @@ a {
   aspect-ratio:
     1 / 1;
 
-  overflow:
-    hidden;
+  overflow: hidden;
 
-  isolation:
-    isolate;
+  isolation: isolate;
 
   border: 0;
 
@@ -506,7 +508,7 @@ a {
 
 
 /* =========================================================
-   MORPH SLOTS
+   SLOTS
    ========================================================= */
 
 .texture-slot,
@@ -518,8 +520,6 @@ a {
   pointer-events: none;
 }
 
-
-/* under horse */
 
 .under-slot-1 {
   z-index: 4;
@@ -535,8 +535,6 @@ a {
   z-index: 8;
 }
 
-
-/* over horse */
 
 .over-slot-1 {
   z-index: 24;
@@ -566,7 +564,8 @@ a {
 
   pointer-events: none;
 
-  background-size: cover;
+  background-size:
+    cover;
 
   background-repeat:
     no-repeat;
@@ -585,11 +584,6 @@ a {
       1
     );
 
-  /*
-    Absolutely prevent color from surviving
-    in the Texturelabs imagery.
-  */
-
   filter:
     grayscale(1)
     saturate(0);
@@ -607,12 +601,6 @@ a {
 
 .color-frame {
   inset: -5%;
-
-  /*
-    Redundant on purpose:
-    these remain monochrome even if JS styles
-    get changed later.
-  */
 
   filter:
     grayscale(1)
@@ -651,12 +639,6 @@ a {
 }
 
 
-/*
-  Main GIF.
-
-  This is the only major chromatic element.
-*/
-
 .horse-main {
   z-index: 2;
 
@@ -680,10 +662,6 @@ a {
 }
 
 
-/*
-  Slight second color registration plate.
-*/
-
 .horse-offset {
   z-index: 1;
 
@@ -702,9 +680,7 @@ a {
 
 
 /* =========================================================
-   HORSE INK KEY
-
-   Neutral linework only.
+   HORSE KEY
    ========================================================= */
 
 .horse-key {
@@ -727,7 +703,7 @@ a {
   filter:
     grayscale(1)
     saturate(0)
-    contrast(1.8);
+    contrast(1.65);
 
   pointer-events: none;
 
@@ -753,7 +729,7 @@ a {
 
   pointer-events: none;
 
-  opacity: 0.11;
+  opacity: 0.10;
 
   background-image:
     radial-gradient(
@@ -761,7 +737,7 @@ a {
         20,
         13,
         8,
-        0.19
+        0.18
       )
       0.65px,
       transparent
@@ -780,7 +756,7 @@ a {
 
 
 /* =========================================================
-   NORMAL GIF AFTER 4:03
+   NORMAL STATE AFTER 4:03
    ========================================================= */
 
 .collage-stage.is-normal {
@@ -876,9 +852,11 @@ a {
     align-items:
       center;
 
-    width: 100%;
+    width:
+      100%;
 
-    gap: 6px;
+    gap:
+      6px;
 
     padding:
       4px
@@ -900,7 +878,8 @@ a {
 
 
   .scarf-rack::-webkit-scrollbar {
-    display: none;
+    display:
+      none;
   }
 
 
@@ -908,31 +887,39 @@ a {
     flex:
       0 0 auto;
 
-    width: 285px;
+    width:
+      285px;
 
-    height: auto;
+    height:
+      auto;
 
-    transform: none;
+    transform:
+      none;
   }
 
 
   .scarf-item img {
-    width: 100%;
+    width:
+      100%;
 
-    height: auto;
+    height:
+      auto;
   }
 
 
   .scarf-home {
-    width: 315px;
+    width:
+      315px;
 
-    transform: none;
+    transform:
+      none;
   }
 
 
   .scarf-item:hover,
   .scarf-home:hover {
-    transform: none;
+    transform:
+      none;
   }
 
 
@@ -951,7 +938,8 @@ a {
 
 
   .welcome-slot {
-    width: 100%;
+    width:
+      100%;
   }
 
 
@@ -966,7 +954,8 @@ a {
 
 
   .site-title {
-    margin-top: 4px;
+    margin-top:
+      4px;
 
     font-size:
       clamp(
@@ -985,7 +974,8 @@ a {
 
 
   .wip-inner {
-    width: 94vw;
+    width:
+      94vw;
   }
 
 
@@ -1006,16 +996,57 @@ a {
       12px
       13px;
 
-    font-size: 17px;
+    font-size:
+      17px;
   }
 
 
   .wip-close {
-    flex-basis: 47px;
+    flex-basis:
+      47px;
 
-    width: 47px;
+    width:
+      47px;
 
-    font-size: 31px;
+    font-size:
+      31px;
+  }
+
+
+  /*
+    Mobile rendering:
+    gentler neutral collage.
+  */
+
+  .morph-frame {
+    inset:
+      -6%;
+
+    transition-timing-function:
+      ease-in-out;
+  }
+
+
+  .color-frame {
+    inset:
+      -3%;
+  }
+
+
+  .stage-grain {
+    opacity:
+      0.065;
+
+    background-size:
+      5px 5px;
+  }
+
+
+  .horse-key {
+    filter:
+      grayscale(1)
+      saturate(0)
+      contrast(1.4);
   }
 
 }
@@ -1030,17 +1061,20 @@ a {
 ) {
 
   .scarf-item {
-    width: 248px;
+    width:
+      248px;
   }
 
 
   .scarf-home {
-    width: 278px;
+    width:
+      278px;
   }
 
 
   .hero {
-    padding-top: 164px;
+    padding-top:
+      164px;
   }
 
 
