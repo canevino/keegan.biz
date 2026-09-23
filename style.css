@@ -1,14 +1,16 @@
 /* =========================================================
-   KEEGAN.BIZ
+   ROOT
    ========================================================= */
 
 :root {
-  --paper: #ece7d7;
-  --ink: #11110f;
-
-  --yellow: #fdb913;
-  --green: #006a44;
-  --red: #c1272d;
+  --paper: #e7e1d1;
+  --ink: #111111;
+  --green: #0c7b4d;
+  --yellow: #f3b415;
+  --red: #cc2b31;
+  --navy: #465c8b;
+  --cream: #f2eee5;
+  --line: rgba(17, 17, 17, 0.22);
 }
 
 
@@ -22,738 +24,405 @@
   box-sizing: border-box;
 }
 
-
 html,
 body {
   margin: 0;
   padding: 0;
 }
 
-
 html {
-  min-height: 100%;
+  font-size: 16px;
 }
-
 
 body {
   min-height: 100vh;
-
-  overflow-x: hidden;
-
-  background:
-    var(--paper);
-
-  color:
-    var(--ink);
-
+  background: var(--paper);
+  color: var(--ink);
   font-family:
+    "Helvetica Neue",
     Helvetica,
     Arial,
     sans-serif;
-
-  -webkit-font-smoothing:
-    antialiased;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
-
 
 img {
   display: block;
-
   max-width: 100%;
 }
 
+button {
+  font: inherit;
+}
 
-a {
-  color: inherit;
 
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page-shell {
+  position: relative;
+  min-height: 100vh;
+  padding: 2rem 2rem 2rem 2rem;
+  transition: opacity 700ms ease, filter 700ms ease;
+}
+
+.page-shell.is-faded {
+  opacity: 0.18;
+  filter: saturate(0.85);
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.site-header {
+  position: fixed;
+  top: 1.4rem;
+  right: 2rem;
+  z-index: 20;
+}
+
+.home-scarf-link {
+  display: block;
+  width: clamp(240px, 20vw, 360px);
   text-decoration: none;
 }
 
-
-/* =========================================================
-   SITE FADE
-   ========================================================= */
-
-.home,
-.scarf-rack {
-  transition:
-    opacity 700ms ease;
-}
-
-
-body.wip-open
-.home,
-body.wip-open
-.scarf-rack {
-  opacity: 0;
-
-  pointer-events: none;
+.home-scarf-image {
+  width: 100%;
+  height: auto;
 }
 
 
 /* =========================================================
-   HOME
+   HERO
    ========================================================= */
-
-.home {
-  min-height: 100vh;
-}
-
 
 .hero {
   min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-
-  padding:
-    8vh
-    clamp(430px, 36vw, 575px)
-    8vh
-    clamp(40px, 5.5vw, 88px);
-}
-
-
-/* =========================================================
-   WELCOME
-   ========================================================= */
-
-.welcome-slot {
-  width:
-    min(
-      900px,
-      100%
-    );
-
-  margin-bottom:
-    22px;
-}
-
-
-.welcome-word {
-  display: block;
-
-  width: max-content;
-  max-width: 100%;
-
-  white-space: nowrap;
-
-  color:
-    var(--green);
-
-  font-size:
-    clamp(
-      68px,
-      6.6vw,
-      106px
-    );
-
-  font-weight: 700;
-
-  line-height: 0.95;
-
-  letter-spacing:
-    -0.065em;
-
-  opacity: 1;
-
-  transition:
-    opacity
-    260ms
-    ease;
-}
-
-
-.welcome-word.is-fading {
-  opacity: 0;
-}
-
-
-/* =========================================================
-   TITLE
-   ========================================================= */
-
-.site-title {
-  color:
-    var(--ink);
-
-  font-size:
-    clamp(
-      34px,
-      3.5vw,
-      56px
-    );
-
-  font-weight: 700;
-
-  line-height: 1;
-
-  letter-spacing:
-    -0.055em;
-}
-
-
-/* =========================================================
-   SCARFS
-   ========================================================= */
-
-.scarf-rack {
-  position: fixed;
-
-  top: 14px;
-  right: 12px;
-
-  z-index: 30;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  gap: 6px;
-}
-
-
-.scarf-item {
-  position: relative;
-
-  display: block;
-
-  height:
-    clamp(
-      72px,
-      calc((100vh - 84px) / 8),
-      108px
-    );
-
-  transform-origin:
-    right center;
-
-  transition:
-    transform
-    220ms
-    cubic-bezier(
-      .2,
-      .8,
-      .2,
-      1
-    );
-}
-
-
-.scarf-item img {
-  width: auto;
-  height: 100%;
-
-  object-fit: contain;
-
-  filter:
-    drop-shadow(
-      0
-      2px
-      1px
-      rgba(
-        17,
-        17,
-        15,
-        0.06
-      )
-    );
-}
-
-
-.scarf-home {
-  transform:
-    scale(1.045);
-}
-
-
-.scarf-item:hover {
-  z-index: 4;
-
-  transform:
-    translateX(-22px)
-    rotate(-0.5deg)
-    scale(1.035);
-}
-
-
-.scarf-home:hover {
-  transform:
-    translateX(-22px)
-    rotate(-0.5deg)
-    scale(1.075);
-}
-
-
-/* =========================================================
-   OVERLAY
-   ========================================================= */
-
-.wip-overlay {
-  position: fixed;
-  inset: 0;
-
-  z-index: 99999;
-
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding:
+    5rem
+    min(38vw, 30rem)
+    5rem
+    5vw;
+}
 
-  padding: 30px;
+.hero-copy {
+  max-width: 42rem;
+}
 
-  overflow: auto;
+.welcome-wrap {
+  min-height: 5.5rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
 
-  background:
-    var(--paper);
+.welcome-rotator {
+  font-size: clamp(3.4rem, 6vw, 5.8rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: var(--yellow);
+  transform-origin: left center;
+  will-change: transform, opacity;
+}
 
-  opacity: 0;
+.welcome-rotator.is-in {
+  animation: welcomeIn 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
 
-  visibility: hidden;
+.welcome-rotator.is-out {
+  animation: welcomeOut 240ms cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-  pointer-events: none;
-
-  transition:
-    opacity 600ms ease,
-    visibility 600ms ease;
+.hero-subline {
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+  color: #000;
 }
 
 
-.wip-overlay.is-visible {
+/* =========================================================
+   SCARF RAIL
+   ========================================================= */
+
+.scarf-rail {
+  position: fixed;
+  top: 50%;
+  right: 2rem;
+  transform: translateY(-45%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  z-index: 19;
+}
+
+.scarf-button {
+  display: block;
+  width: clamp(240px, 22vw, 370px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 180ms ease, filter 180ms ease, opacity 180ms ease;
+}
+
+.scarf-button:hover {
+  transform: translateX(-10px);
+  filter: contrast(1.04) saturate(1.03);
+}
+
+.scarf-button img {
+  width: 100%;
+  height: auto;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 300ms ease, visibility 300ms ease;
+  overflow: hidden;
+}
+
+.modal-shell.is-open {
   opacity: 1;
-
   visibility: visible;
-
   pointer-events: auto;
 }
 
-
-.wip-inner {
-  width:
-    min(
-      92vw,
-      720px
-    );
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-/* =========================================================
-   MESSAGE + X
-   ========================================================= */
-
-.wip-header {
-  position: relative;
-
-  z-index: 100;
-
-  display:
-    inline-flex;
-
-  align-items:
-    stretch;
-
-  margin-bottom:
-    14px;
-
-  background:
-    rgba(
-      236,
-      231,
-      215,
-      0.97
-    );
-
-  border:
-    1px solid
-    rgba(
-      17,
-      17,
-      15,
-      0.46
-    );
-}
-
-
-.wip-text {
-  margin: 0;
-
-  padding:
-    14px
-    19px
-    15px;
-
-  color:
-    var(--ink);
-
-  font-size:
-    clamp(
-      19px,
-      1.7vw,
-      27px
-    );
-
-  font-weight: 700;
-
-  line-height: 1;
-
-  letter-spacing:
-    -0.045em;
-
-  white-space:
-    nowrap;
-}
-
-
-.wip-close {
-  flex: 0 0 auto;
-
-  width: 53px;
-
-  margin: 0;
-  padding: 0;
-
-  border: 0;
-
-  border-left:
-    1px solid
-    rgba(
-      17,
-      17,
-      15,
-      0.46
-    );
-
-  background:
-    transparent;
-
-  color:
-    var(--ink);
-
-  font-family:
-    Helvetica,
-    Arial,
-    sans-serif;
-
-  font-size:
-    35px;
-
-  line-height: 1;
-
-  cursor: pointer;
-
-  transition:
-    background
-    130ms ease,
-    color
-    130ms ease;
-}
-
-
-.wip-close:hover {
-  background:
-    var(--ink);
-
-  color:
-    var(--paper);
-}
-
-
-/* =========================================================
-   COLLAGE FRAME
-   ========================================================= */
-
-.collage-stage {
-  --visual-reveal: 0;
-
-  position: relative;
-
-  width:
-    min(
-      68vh,
-      680px,
-      86vw
-    );
-
-  aspect-ratio:
-    1 / 1;
-
-  overflow:
-    hidden;
-
-  background:
-    #f4f0e7;
-
-  border:
-    8px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.84
-    );
-
-  box-shadow:
-    10px
-    10px
-    0
-    rgba(
-      17,
-      17,
-      15,
-      0.08
-    );
-
-  opacity:
-    var(--visual-reveal);
-
-  /*
-    Whole visual:
-    background + horse + collage
-    slowly materialize together.
-  */
-
-  transition:
-    opacity
-    120ms
-    linear;
-}
-
-
-/* =========================================================
-   TEXTURE LAYERS
-   ========================================================= */
-
-.texture-layer {
+.modal-backdrop {
   position: absolute;
+  inset: 0;
+  background: rgba(231, 225, 209, 0.74);
+}
 
-  /*
-    Slight overscan so static rotations
-    never expose an edge.
-  */
-
-  inset: -8%;
-
-  pointer-events: none;
-
+.modal-bg-layer,
+.modal-bg-color {
+  position: absolute;
+  inset: -12%;
   opacity: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transition: opacity 1000ms linear;
+  pointer-events: none;
+}
 
-  background-repeat:
-    no-repeat;
+.modal-bg-color {
+  filter: saturate(1.2) contrast(1.05);
+}
 
-  background-size:
-    cover;
+.modal-content {
+  position: relative;
+  z-index: 3;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
 
-  /*
-    VERY IMPORTANT:
+.modal-content-inner {
+  width: min(88vw, 62rem);
+}
 
-    only opacity transitions.
+.modal-note {
+  display: inline-flex;
+  align-items: stretch;
+  margin: 0 auto 1rem auto;
+  border: 1px solid rgba(17, 17, 17, 0.24);
+  background: rgba(231, 225, 209, 0.92);
+  min-height: 3.75rem;
+}
 
-    Zoom/rotation/crop NEVER animate while
-    a texture is visible.
-  */
+.modal-note__text {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  font-size: clamp(1.35rem, 2vw, 2rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: #111;
+}
 
+.modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  min-width: 3.25rem;
+  border: 0;
+  border-left: 1px solid rgba(17, 17, 17, 0.24);
+  background: transparent;
+  color: #111;
+  cursor: pointer;
+  font-size: 2.2rem;
+  line-height: 1;
+  transition: background 150ms ease;
+}
+
+.modal-close:hover {
+  background: rgba(17, 17, 17, 0.05);
+}
+
+.art-stage {
+  position: relative;
+  width: min(78vw, 640px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  overflow: hidden;
+  background: transparent;
+  opacity: 0;
+  transform: scale(0.985);
   transition:
-    opacity
-    260ms
-    ease;
+    opacity 1800ms ease,
+    transform 1800ms ease;
+}
 
-  transform-origin:
-    center;
+.stage-layer,
+.stage-colorwash,
+.horse-wrap,
+.stage-grain {
+  position: absolute;
+  inset: 0;
+}
 
-  will-change:
-    opacity;
+.stage-layer,
+.stage-colorwash,
+.modal-bg-layer,
+.modal-bg-color {
+  will-change: opacity;
+}
+
+.stage-layer {
+  opacity: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transition: opacity 850ms linear;
+  pointer-events: none;
+}
+
+.stage-colorwash {
+  opacity: 0;
+  transition: opacity 1000ms linear;
+  pointer-events: none;
+}
+
+.horse-wrap {
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 1600ms ease;
+  pointer-events: none;
+}
+
+.horse-gif {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: auto;
+  opacity: 0.65;
+  mix-blend-mode: multiply;
+  filter: contrast(1.1) saturate(1.15);
+  pointer-events: none;
+}
+
+.stage-grain {
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      rgba(255, 255, 255, 0.11) 0.7px,
+      transparent 0.7px
+    );
+  background-size: 5px 5px;
+  mix-blend-mode: soft-light;
+  opacity: 0.18;
 }
 
 
-/* 2 underneath */
+/* =========================================================
+   LAYER STACKING
+   ========================================================= */
 
-.texture-under-1 {
+.stage-layer--under {
+  z-index: 1;
+}
+
+.stage-colorwash[data-colorwash="under-a"] {
+  z-index: 2;
+}
+
+.stage-colorwash[data-colorwash="under-b"] {
+  z-index: 3;
+}
+
+.horse-wrap {
+  z-index: 4;
+}
+
+.stage-layer--over[data-layer="over-1"] {
   z-index: 5;
 }
 
-.texture-under-2 {
+.stage-layer--over[data-layer="over-2"] {
+  z-index: 6;
+}
+
+.stage-colorwash[data-colorwash="over-a"] {
   z-index: 7;
 }
 
-
-/* 2 on top */
-
-.texture-over-1 {
-  z-index: 25;
+.stage-colorwash[data-colorwash="over-b"] {
+  z-index: 8;
 }
 
-.texture-over-2 {
-  z-index: 27;
-}
-
-
-/* =========================================================
-   RANDOM COLOR FIELDS
-   ========================================================= */
-
-.color-layer {
-  position: absolute;
-
-  inset: 0;
-
-  pointer-events: none;
-
-  opacity: 0;
-
-  transition:
-    opacity
-    260ms
-    ease;
-}
-
-
-.color-under {
+.stage-grain {
   z-index: 9;
 }
 
 
-.color-over {
-  z-index: 29;
-}
-
-
 /* =========================================================
-   HORSE
+   ANIMATIONS
    ========================================================= */
 
-.horse-stage {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 20;
-
-  pointer-events: none;
+@keyframes welcomeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-
-.horse {
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit:
-    contain;
-
-  user-select: none;
-
-  pointer-events: none;
-}
-
-
-/*
-  Tiny printed shadow.
-*/
-
-.horse-shadow {
-  z-index: 1;
-
-  opacity: 0.18;
-
-  mix-blend-mode:
-    multiply;
-
-  filter:
-    contrast(1.2)
-    saturate(0.65);
-
-  transform:
-    translate(
-      2px,
-      2px
-    );
-}
-
-
-/*
-  Actual animated GIF.
-
-  NO random movement.
-  NO zoom animation.
-*/
-
-.horse-main {
-  z-index: 2;
-
-  opacity: 1;
-
-  mix-blend-mode:
-    multiply;
-
-  filter:
-    contrast(1.10)
-    saturate(1.06);
-}
-
-
-/*
-  The two OVER textures genuinely sit above
-  the horse.
-
-  This tiny anchor sits above THEM only to
-  preserve some line-work at the peak.
-*/
-
-.horse-anchor {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 40;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;
-
-  opacity: 0.25;
-
-  mix-blend-mode:
-    multiply;
-
-  filter:
-    contrast(1.35)
-    saturate(0.65);
-
-  pointer-events: none;
-}
-
-
-/* =========================================================
-   NORMAL STATE AT 4:03
-   ========================================================= */
-
-.collage-stage.is-normal
-.texture-layer,
-.collage-stage.is-normal
-.color-layer {
-  opacity:
-    0 !important;
-}
-
-
-.collage-stage.is-normal
-.horse-anchor {
-  opacity: 0;
-}
-
-
-.collage-stage.is-normal {
-  background:
-    #f4f0e7;
+@keyframes welcomeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
 }
 
 
@@ -762,32 +431,26 @@ body.wip-open
    ========================================================= */
 
 @media (max-width: 1100px) {
+  .site-header {
+    right: 1.25rem;
+  }
 
   .hero {
-    padding-right:
-      375px;
+    padding:
+      4rem
+      24rem
+      4rem
+      4vw;
   }
 
-
-  .welcome-word {
-    font-size:
-      clamp(
-        54px,
-        6.8vw,
-        86px
-      );
+  .scarf-rail {
+    right: 1.25rem;
+    gap: 1rem;
   }
 
-
-  .site-title {
-    font-size:
-      clamp(
-        30px,
-        4vw,
-        48px
-      );
+  .scarf-button {
+    width: 220px;
   }
-
 }
 
 
@@ -795,221 +458,94 @@ body.wip-open
    MOBILE
    ========================================================= */
 
-@media (max-width: 700px) {
-
-  .scarf-rack {
-    top: 10px;
-    left: 0;
-    right: 0;
-
-    flex-direction:
-      row;
-
-    align-items:
-      center;
-
-    gap: 6px;
-
-    width: 100%;
-
+@media (max-width: 760px) {
+  .page-shell {
     padding:
-      4px
-      14px
-      12px;
-
-    overflow-x:
-      auto;
-
-    overflow-y:
-      hidden;
-
-    scrollbar-width:
-      none;
-
-    -webkit-overflow-scrolling:
-      touch;
+      calc(1rem + env(safe-area-inset-top))
+      1rem
+      calc(1rem + env(safe-area-inset-bottom))
+      1rem;
   }
 
+  .site-header {
+    position: static;
+    margin-bottom: 1.5rem;
+  }
 
-  .scarf-rack::-webkit-scrollbar {
+  .home-scarf-link {
+    width: min(82vw, 280px);
+  }
+
+  .hero {
+    min-height: auto;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .hero-copy {
+    padding-top: 1rem;
+    max-width: 100%;
+  }
+
+  .welcome-wrap {
+    min-height: 4.15rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .welcome-rotator {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .hero-subline {
+    font-size: clamp(1.8rem, 8vw, 2.7rem);
+  }
+
+  .scarf-rail {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    gap: 0.9rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 1.5rem 0 0.25rem 0;
+    margin-top: 1.5rem;
+    scrollbar-width: none;
+  }
+
+  .scarf-rail::-webkit-scrollbar {
     display: none;
   }
 
-
-  .scarf-item {
-    flex:
-      0 0 auto;
-
-    width: 285px;
-    height: auto;
-
-    transform:
-      none;
+  .scarf-button {
+    flex: 0 0 auto;
+    width: 180px;
   }
 
-
-  .scarf-item img {
-    width: 100%;
-    height: auto;
-  }
-
-
-  .scarf-home {
-    width: 315px;
-
-    transform: none;
-  }
-
-
-  .scarf-item:hover,
-  .scarf-home:hover {
-    transform: none;
-  }
-
-
-  .hero {
-    justify-content:
-      flex-start;
-
-    min-height:
-      100svh;
-
+  .modal-content {
     padding:
-      180px
-      22px
-      50px;
+      calc(1rem + env(safe-area-inset-top))
+      1rem
+      calc(1rem + env(safe-area-inset-bottom))
+      1rem;
   }
 
-
-  .welcome-slot {
-    width: 100%;
+  .modal-note {
+    width: min(92vw, 480px);
+    min-height: 3.25rem;
   }
 
-
-  .welcome-word {
-    font-size:
-      clamp(
-        42px,
-        12vw,
-        68px
-      );
+  .modal-note__text {
+    font-size: clamp(1.1rem, 5vw, 1.45rem);
+    padding: 0.75rem 0.9rem;
   }
 
-
-  .site-title {
-    margin-top:
-      4px;
-
-    font-size:
-      clamp(
-        25px,
-        7vw,
-        38px
-      );
+  .modal-close {
+    width: 3rem;
+    min-width: 3rem;
+    font-size: 1.9rem;
   }
 
-
-  .wip-overlay {
-    padding:
-      20px
-      14px;
+  .art-stage {
+    width: min(92vw, 560px);
   }
-
-
-  .wip-inner {
-    width:
-      94vw;
-  }
-
-
-  .wip-header {
-    max-width:
-      94vw;
-
-    margin-bottom:
-      12px;
-  }
-
-
-  .wip-text {
-    min-width: 0;
-
-    padding:
-      13px
-      14px;
-
-    white-space:
-      normal;
-
-    font-size:
-      18px;
-  }
-
-
-  .wip-close {
-    width:
-      48px;
-
-    font-size:
-      32px;
-  }
-
-
-  .collage-stage {
-    width:
-      min(
-        84vh,
-        92vw
-      );
-
-    border-width:
-      6px;
-  }
-
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 420px) {
-
-  .scarf-item {
-    width:
-      248px;
-  }
-
-
-  .scarf-home {
-    width:
-      278px;
-  }
-
-
-  .hero {
-    padding-top:
-      164px;
-  }
-
-
-  .welcome-word {
-    font-size:
-      clamp(
-        36px,
-        11vw,
-        48px
-      );
-  }
-
-
-  .site-title {
-    font-size:
-      clamp(
-        22px,
-        6.5vw,
-        28px
-      );
-  }
-
 }
