@@ -173,7 +173,7 @@
 
 
   <!-- =====================================================
-       WIP OVERLAY
+       WIP
        ===================================================== -->
 
   <div
@@ -207,7 +207,7 @@
 
 
       <!-- =================================================
-           COLLAGE STAGE
+           VISUAL STAGE
            ================================================= -->
 
       <div
@@ -217,8 +217,7 @@
       >
 
         <!-- ===============================================
-             UNDER CHANNEL 1
-             Three frames = continuous overlapping dissolves
+             UNDER TEXTURE CHANNEL 1
              =============================================== -->
 
         <div
@@ -232,7 +231,7 @@
 
 
         <!-- ===============================================
-             UNDER CHANNEL 2
+             UNDER TEXTURE CHANNEL 2
              =============================================== -->
 
         <div
@@ -246,7 +245,7 @@
 
 
         <!-- ===============================================
-             COLOR UNDERPRINT
+             NEUTRAL UNDER WASH
              =============================================== -->
 
         <div
@@ -283,7 +282,7 @@
 
 
         <!-- ===============================================
-             OVER CHANNEL 1
+             OVER TEXTURE CHANNEL 1
              =============================================== -->
 
         <div
@@ -297,7 +296,7 @@
 
 
         <!-- ===============================================
-             OVER CHANNEL 2
+             OVER TEXTURE CHANNEL 2
              =============================================== -->
 
         <div
@@ -311,7 +310,7 @@
 
 
         <!-- ===============================================
-             COLOR OVERPRINT
+             NEUTRAL OVER WASH
              =============================================== -->
 
         <div
@@ -326,7 +325,6 @@
 
         <!-- ===============================================
              HORSE INK KEY
-             Keeps linework readable
              =============================================== -->
 
         <img
@@ -336,10 +334,6 @@
           alt=""
         >
 
-
-        <!-- ===============================================
-             GRAIN
-             =============================================== -->
 
         <div class="stage-grain"></div>
 
@@ -358,7 +352,7 @@
   (() => {
 
     /* =====================================================
-       GENERAL HELPERS
+       HELPERS
        ===================================================== */
 
     const clamp = (value, min, max) =>
@@ -386,12 +380,12 @@
 
     function shuffle(array) {
 
-      const result =
+      const copy =
         [...array];
 
 
       for (
-        let i = result.length - 1;
+        let i = copy.length - 1;
         i > 0;
         i--
       ) {
@@ -403,17 +397,17 @@
 
 
         [
-          result[i],
-          result[j]
+          copy[i],
+          copy[j]
         ] = [
-          result[j],
-          result[i]
+          copy[j],
+          copy[i]
         ];
 
       }
 
 
-      return result;
+      return copy;
 
     }
 
@@ -696,7 +690,7 @@
 
 
     /* =====================================================
-       PAGE / MODAL ELEMENTS
+       ELEMENTS
        ===================================================== */
 
     const pageShell =
@@ -748,7 +742,7 @@
 
 
     /* =====================================================
-       TEXTURE FILES
+       TEXTURES
        ===================================================== */
 
     const ALL_TEXTURES = [
@@ -862,11 +856,6 @@
 
     function prepareTextures() {
 
-      /*
-        Enough variety without asking the browser
-        to decode every large image at once.
-      */
-
       sessionTextures =
         shuffle(
           ALL_TEXTURES
@@ -903,12 +892,6 @@
         image.src =
           src;
 
-
-        /*
-          Modern browsers can decode while
-          we spend the first 30 seconds waiting
-          for the collage to begin.
-        */
 
         if (
           typeof image.decode ===
@@ -985,101 +968,151 @@
 
 
     /* =====================================================
-       COLOR PALETTES
+       NEUTRAL COLLAGE PALETTES
        ===================================================== */
 
-    const PALETTES = [
+    const MONO_PALETTES = [
 
       [
-        "#ff002b",
-        "#ff8a00",
-        "#ffe600"
+        "#060606",
+        "#555149",
+        "#ece5d8"
       ],
 
       [
-        "#ff005d",
-        "#ff00ba",
-        "#772cff"
+        "#13110f",
+        "#6d675e",
+        "#f0ebe1"
       ],
 
       [
-        "#00e5ff",
-        "#0067ff",
-        "#8a00ff"
+        "#090909",
+        "#393632",
+        "#d7d0c4"
       ],
 
       [
-        "#00ff85",
-        "#00b88a",
-        "#d9ff00"
+        "#191714",
+        "#777066",
+        "#e8e0d2"
       ],
 
       [
-        "#ff2400",
-        "#ff8c00",
-        "#ffdc00"
+        "#030303",
+        "#59554e",
+        "#f2ece0"
       ],
 
       [
-        "#ff006e",
-        "#3a0ca3",
-        "#00b4d8"
-      ],
-
-      [
-        "#d90429",
-        "#ffb703",
-        "#008f5a"
-      ],
-
-      [
-        "#ff4d00",
-        "#00d9ff",
-        "#ff00b7"
-      ],
-
-      [
-        "#00ff66",
-        "#ff0066",
-        "#0055ff"
-      ],
-
-      [
-        "#ff004c",
-        "#ffb000",
-        "#00ffd0"
-      ],
-
-      [
-        "#ff1a00",
-        "#bb00ff",
-        "#00f5ff"
-      ],
-
-      [
-        "#00ff9d",
-        "#ffd500",
-        "#ff006a"
+        "#211e19",
+        "#827b70",
+        "#d8d1c5"
       ]
 
     ];
 
 
-    let paletteIndex =
+    let monoPaletteIndex =
       0;
 
 
-    function nextPalette() {
+    function nextMonoPalette() {
 
-      paletteIndex =
+      monoPaletteIndex =
         differentIndex(
-          PALETTES.length,
-          paletteIndex
+          MONO_PALETTES.length,
+          monoPaletteIndex
         );
 
 
-      return PALETTES[
-        paletteIndex
+      return MONO_PALETTES[
+        monoPaletteIndex
+      ];
+
+    }
+
+
+    /* =====================================================
+       HORSE COLOR PALETTE
+
+       Only the horse uses chromatic color.
+       ===================================================== */
+
+    const HORSE_COLORS = [
+
+      {
+        hue: -8,
+        saturation: 7.5
+      },
+
+      {
+        hue: 18,
+        saturation: 8.5
+      },
+
+      {
+        hue: 40,
+        saturation: 7.8
+      },
+
+      {
+        hue: 76,
+        saturation: 7.5
+      },
+
+      {
+        hue: 112,
+        saturation: 8.2
+      },
+
+      {
+        hue: 152,
+        saturation: 8.5
+      },
+
+      {
+        hue: 188,
+        saturation: 8.8
+      },
+
+      {
+        hue: 220,
+        saturation: 8.5
+      },
+
+      {
+        hue: 255,
+        saturation: 8.3
+      },
+
+      {
+        hue: 292,
+        saturation: 8.8
+      },
+
+      {
+        hue: 325,
+        saturation: 8.2
+      }
+
+    ];
+
+
+    let horseColorIndex =
+      0;
+
+
+    function nextHorseColor() {
+
+      horseColorIndex =
+        differentIndex(
+          HORSE_COLORS.length,
+          horseColorIndex
+        );
+
+
+      return HORSE_COLORS[
+        horseColorIndex
       ];
 
     }
@@ -1091,17 +1124,19 @@
 
     const UNDER_BLEND = [
 
-      "color-burn",
-      "color-burn",
-      "color-burn",
-
+      "multiply",
       "multiply",
       "multiply",
 
-      "hard-light",
-      "hard-light",
+      "color-burn",
+      "color-burn",
 
       "overlay",
+      "overlay",
+
+      "soft-light",
+
+      "hard-light",
 
       "screen"
 
@@ -1110,7 +1145,9 @@
 
     const OVER_BLEND = [
 
-      "color-burn",
+      "multiply",
+      "multiply",
+
       "color-burn",
       "color-burn",
 
@@ -1118,29 +1155,28 @@
       "hard-light",
 
       "difference",
-      "difference",
-
-      "color-dodge",
 
       "exclusion",
 
       "overlay",
 
-      "multiply"
+      "screen"
 
     ];
 
 
     const INTERNAL_BLEND = [
 
-      "color-burn",
-      "color-burn",
-
-      "hard-light",
-
+      "multiply",
       "multiply",
 
-      "overlay"
+      "color-burn",
+
+      "overlay",
+
+      "soft-light",
+
+      "hard-light"
 
     ];
 
@@ -1150,18 +1186,13 @@
       "multiply",
       "multiply",
 
-      "color-burn",
-      "color-burn",
-
       "hard-light",
-
-      "difference",
-
-      "screen",
 
       "overlay",
 
-      "exclusion"
+      "screen",
+
+      "color-burn"
 
     ];
 
@@ -1191,7 +1222,6 @@
 
       return {
 
-        element,
         frames,
 
         active:
@@ -1222,12 +1252,6 @@
 
     }
 
-
-    /*
-      Different durations and phases make the
-      composition feel organic rather than like
-      six synchronized fades.
-    */
 
     const slots = [
 
@@ -1283,6 +1307,7 @@
         "color-slot-under",
         {
           isColor: true,
+
           isOver: false,
 
           slowFade: 13,
@@ -1296,6 +1321,7 @@
         "color-slot-over",
         {
           isColor: true,
+
           isOver: true,
 
           slowFade: 10.5,
@@ -1309,10 +1335,10 @@
 
 
     /* =====================================================
-       TEXTURE DESIGN
+       NEUTRAL TEXTURE FRAME
        ===================================================== */
 
-    function tintGradient(
+    function neutralGradient(
       palette
     ) {
 
@@ -1339,12 +1365,12 @@
 
 
       const palette =
-        nextPalette();
+        nextMonoPalette();
 
 
       frame.style.backgroundImage =
         `
-          ${tintGradient(palette)},
+          ${neutralGradient(palette)},
           url("${src}")
         `;
 
@@ -1365,21 +1391,12 @@
         "no-repeat, no-repeat";
 
 
-      /*
-        First burn color INTO the physical texture.
-      */
-
       frame.style.backgroundBlendMode =
         `
           ${pick(INTERNAL_BLEND)},
           normal
         `;
 
-
-      /*
-        Then blend that combined plate into
-        the full composition.
-      */
 
       frame.style.mixBlendMode =
         pick(
@@ -1390,10 +1407,8 @@
 
 
       /*
-        Random crop / zoom / rotation is chosen
-        ONCE.
-
-        It does not move after the image appears.
+        Static crop.
+        It never moves while visible.
       */
 
       frame.style.transform =
@@ -1411,16 +1426,22 @@
         `;
 
 
+      /*
+        Entire texture is explicitly desaturated.
+      */
+
       frame.style.filter =
         `
+          grayscale(1)
+          saturate(0)
           contrast(
-            ${random(1.08, 1.72)}
-          )
-          saturate(
-            ${random(1.2, 2.3)}
+            ${random(1.08, 1.82)}
           )
           brightness(
-            ${random(0.74, 1.16)}
+            ${random(0.72, 1.14)}
+          )
+          sepia(
+            ${random(0, 0.08)}
           )
         `;
 
@@ -1434,12 +1455,12 @@
           random(
             lerp(
               0.07,
-              0.16,
+              0.14,
               intensity
             ),
             lerp(
-              0.22,
-              0.47,
+              0.18,
+              0.36,
               intensity
             )
           );
@@ -1451,13 +1472,13 @@
         opacity =
           random(
             lerp(
-              0.26,
-              0.38,
+              0.24,
+              0.36,
               intensity
             ),
             lerp(
-              0.52,
-              0.80,
+              0.50,
+              0.72,
               intensity
             )
           );
@@ -1472,7 +1493,7 @@
 
 
     /* =====================================================
-       COLOR FRAMES
+       NEUTRAL WASH FRAME
        ===================================================== */
 
     function configureColorFrame(
@@ -1482,7 +1503,19 @@
     ) {
 
       const palette =
-        nextPalette();
+        nextMonoPalette();
+
+
+      const dark =
+        palette[0];
+
+
+      const mid =
+        palette[1];
+
+
+      const light =
+        palette[2];
 
 
       const type =
@@ -1497,9 +1530,9 @@
           `
             linear-gradient(
               ${random(0, 360)}deg,
-              ${palette[0]},
-              ${palette[1]},
-              ${palette[2]}
+              ${dark},
+              ${mid},
+              ${light}
             )
           `;
 
@@ -1513,24 +1546,24 @@
               circle at
               ${random(10, 90)}%
               ${random(10, 90)}%,
-              ${palette[0]},
-              transparent 54%
+              ${light},
+              transparent 56%
             ),
 
             radial-gradient(
               circle at
               ${random(10, 90)}%
               ${random(10, 90)}%,
-              ${palette[1]},
-              transparent 60%
-            ),
-
-            radial-gradient(
-              circle at
-              ${random(10, 90)}%
-              ${random(10, 90)}%,
-              ${palette[2]},
+              ${mid},
               transparent 62%
+            ),
+
+            radial-gradient(
+              circle at
+              ${random(10, 90)}%
+              ${random(10, 90)}%,
+              ${dark},
+              transparent 64%
             )
           `;
 
@@ -1546,10 +1579,10 @@
               at
               ${random(30, 70)}%
               ${random(30, 70)}%,
-              ${palette[0]},
-              ${palette[1]},
-              ${palette[2]},
-              ${palette[0]}
+              ${dark},
+              ${mid},
+              ${light},
+              ${dark}
             )
           `;
 
@@ -1561,11 +1594,11 @@
           `
             linear-gradient(
               ${random(0, 360)}deg,
-              ${palette[0]} 0%,
+              ${dark} 0%,
               transparent 32%,
-              ${palette[1]} 52%,
+              ${mid} 52%,
               transparent 72%,
-              ${palette[2]} 100%
+              ${light} 100%
             )
           `;
 
@@ -1578,6 +1611,16 @@
             ? OVER_BLEND
             : UNDER_BLEND
         );
+
+
+      frame.style.filter =
+        `
+          grayscale(1)
+          saturate(0)
+          contrast(
+            ${random(1.0, 1.4)}
+          )
+        `;
 
 
       frame.style.transform =
@@ -1594,18 +1637,18 @@
       const opacity =
         isOver
           ? random(
-              0.025,
+              0.02,
               lerp(
-                0.09,
-                0.25,
+                0.06,
+                0.15,
                 intensity
               )
             )
           : random(
-              0.04,
+              0.03,
               lerp(
-                0.12,
-                0.30,
+                0.08,
+                0.18,
                 intensity
               )
             );
@@ -1618,10 +1661,7 @@
 
 
     /* =====================================================
-       INITIALIZE A SLOT
-
-       Initial contamination itself fades in.
-       Different phases stagger the channels.
+       INITIAL SLOT
        ===================================================== */
 
     function initializeSlot(
@@ -1640,6 +1680,7 @@
             clearTimeout(
               frame._fadeTimer
             );
+
 
             frame._fadeTimer =
               null;
@@ -1701,10 +1742,6 @@
         0;
 
 
-      /*
-        Stagger when each "projector" switches on.
-      */
-
       slot.startTimer =
         window.setTimeout(
           () => {
@@ -1735,8 +1772,8 @@
 
 
       /*
-        Begin the NEXT dissolve before the
-        initial one has even completely finished.
+        Next image starts before this one
+        has finished fading in.
       */
 
       slot.nextChange =
@@ -1751,14 +1788,7 @@
 
 
     /* =====================================================
-       CONTINUOUS MORPH
-
-       Three frames per channel allow:
-       A -> B while C waits
-       B -> C while A finishes dying
-       C -> A while B finishes dying
-
-       There is no "hold" state.
+       CONTINUOUS CROSSFADE
        ===================================================== */
 
     function morphSlot(
@@ -1791,11 +1821,6 @@
         ];
 
 
-      /*
-        Clear any old fade timer belonging
-        to a recycled frame.
-      */
-
       if (
         incoming._fadeTimer
       ) {
@@ -1810,11 +1835,6 @@
 
       }
 
-
-      /*
-        Long dissolves early.
-        Rapid dissolves at the climax.
-      */
 
       const fadeDuration =
         lerp(
@@ -1831,10 +1851,6 @@
       outgoing.style.transitionDuration =
         `${fadeDuration}s`;
 
-
-      /*
-        Rebuild incoming plate while invisible.
-      */
 
       incoming.style.opacity =
         "0";
@@ -1863,12 +1879,6 @@
       }
 
 
-      /*
-        Make sure browser registers:
-        NEW IMAGE + ZERO OPACITY
-        before fade begins.
-      */
-
       incoming.offsetHeight;
 
 
@@ -1881,9 +1891,8 @@
 
 
       /*
-        Don't immediately remove old layer.
-
-        The new image accumulates over it first.
+        Incoming exists alongside outgoing
+        before outgoing begins disappearing.
       */
 
       const fadeOutDelay =
@@ -1926,19 +1935,11 @@
 
 
       /*
-        CRUCIAL:
-
-        The next morph begins while this morph
-        is still happening.
-
-        Early:
-        next begins around 60% through dissolve.
-
-        Late:
-        next begins around 50% through dissolve.
+        Next transformation begins while this
+        transformation is still underway.
       */
 
-      const overlapFactor =
+      const overlap =
         lerp(
           0.62,
           0.50,
@@ -1950,7 +1951,7 @@
         time +
         (
           fadeDuration *
-          overlapFactor *
+          overlap *
           random(
             0.92,
             1.08
@@ -1961,7 +1962,7 @@
 
 
     /* =====================================================
-       HORSE TREATMENT
+       HORSE COLOR
        ===================================================== */
 
     let nextHorseChange =
@@ -1973,32 +1974,32 @@
       time
     ) {
 
-      /*
-        Smooth filters / opacity.
+      const color =
+        nextHorseColor();
 
-        Blend-mode itself changes immediately,
-        giving occasional harder print shifts,
-        while surrounding collage keeps dissolving.
-      */
 
-      const horseTransition =
+      const transition =
         lerp(
-          3.2,
-          0.65,
+          4.5,
+          0.9,
           intensity
         );
 
 
+      /*
+        Main horse color morphs gradually.
+      */
+
       horseMain.style.transitionDuration =
-        `${horseTransition}s`;
+        `${transition}s`;
 
 
       horseOffset.style.transitionDuration =
-        `${horseTransition}s`;
+        `${transition}s`;
 
 
       horseKey.style.transitionDuration =
-        `${horseTransition}s`;
+        `${transition}s`;
 
 
       horseMain.style.mixBlendMode =
@@ -2007,89 +2008,118 @@
         );
 
 
+      /*
+        sepia supplies chroma to the grayscale
+        source; hue-rotate then chooses the color.
+      */
+
       horseMain.style.filter =
         `
-          hue-rotate(
-            ${random(-180, 180)}deg
-          )
+          grayscale(1)
+          sepia(1)
           saturate(
-            ${random(1.2, 3.0)}
+            ${random(
+              color.saturation,
+              color.saturation + 2.5
+            )}
+          )
+          hue-rotate(
+            ${color.hue}deg
           )
           contrast(
-            ${random(1.05, 1.8)}
+            ${random(1.12, 1.52)}
           )
           brightness(
-            ${random(0.76, 1.18)}
+            ${random(0.88, 1.08)}
           )
         `;
 
 
       horseMain.style.opacity =
         random(
-          0.64,
-          0.94
+          0.80,
+          0.98
         );
 
+
+      /*
+        Slight second color-print plate.
+      */
 
       horseOffset.style.mixBlendMode =
         pick(
           [
-            "hard-light",
-            "difference",
-            "screen",
-            "color-burn",
             "multiply",
-            "exclusion"
+            "overlay",
+            "hard-light",
+            "screen"
           ]
         );
 
 
       horseOffset.style.filter =
         `
-          hue-rotate(
-            ${random(-180, 180)}deg
-          )
+          grayscale(1)
+          sepia(1)
           saturate(
-            ${random(1.5, 3.4)}
+            ${random(
+              color.saturation + 1,
+              color.saturation + 4
+            )}
+          )
+          hue-rotate(
+            ${
+              color.hue +
+              random(-28, 28)
+            }deg
           )
           contrast(
-            ${random(1.1, 1.8)}
+            ${random(1.1, 1.65)}
           )
         `;
 
 
       horseOffset.style.opacity =
         random(
-          0.04,
+          0.03,
           lerp(
-            0.13,
-            0.32,
+            0.12,
+            0.28,
             intensity
           )
         );
 
 
+      /*
+        Very small registration offset only.
+        No continuous movement.
+      */
+
       horseOffset.style.transform =
         `
           translate(
-            ${random(-4, 4)}px,
-            ${random(-4, 4)}px
+            ${random(-3, 3)}px,
+            ${random(-3, 3)}px
           )
         `;
 
 
+      /*
+        Neutral line key prevents horse disappearing.
+      */
+
       horseKey.style.opacity =
         lerp(
-          0.27,
-          0.47,
+          0.16,
+          0.30,
           intensity
         ).toFixed(3);
 
 
       const interval =
         lerp(
-          7,
-          1.4,
+          9,
+          1.7,
           intensity
         );
 
@@ -2104,17 +2134,52 @@
     }
 
 
+    function cleanColoredHorse() {
+
+      const color =
+        nextHorseColor();
+
+
+      horseMain.style.transitionDuration =
+        "2.5s";
+
+
+      horseMain.style.mixBlendMode =
+        "multiply";
+
+
+      horseMain.style.filter =
+        `
+          grayscale(1)
+          sepia(1)
+          saturate(
+            ${color.saturation}
+          )
+          hue-rotate(
+            ${color.hue}deg
+          )
+          contrast(1.25)
+          brightness(1.02)
+        `;
+
+
+      horseMain.style.opacity =
+        "0";
+
+
+      horseOffset.style.opacity =
+        "0";
+
+
+      horseKey.style.opacity =
+        "0";
+
+    }
+
+
     function normalHorse() {
 
       horseMain.style.transitionDuration =
-        "500ms";
-
-
-      horseOffset.style.transitionDuration =
-        "500ms";
-
-
-      horseKey.style.transitionDuration =
         "500ms";
 
 
@@ -2143,23 +2208,6 @@
     /* =====================================================
        TIMELINE
        ===================================================== */
-
-    /*
-      0:00–0:12
-      Message only.
-
-      0:12–0:20
-      Horse fades in.
-
-      0:20–0:30
-      Clean horse alone.
-
-      0:30–4:03
-      Collage evolves continuously.
-
-      4:03+
-      Original clean GIF.
-    */
 
     const HORSE_START =
       12;
@@ -2222,11 +2270,6 @@
       }
 
 
-      /*
-        0:30–1:30
-        Very gradual contamination.
-      */
-
       if (
         time < 90
       ) {
@@ -2248,11 +2291,6 @@
       }
 
 
-      /*
-        1:30–2:55
-        More layers / stronger interactions.
-      */
-
       if (
         time < 175
       ) {
@@ -2271,11 +2309,6 @@
       }
 
 
-      /*
-        2:55–3:40
-        Tension increases.
-      */
-
       if (
         time < 220
       ) {
@@ -2293,11 +2326,6 @@
 
       }
 
-
-      /*
-        3:40–4:03
-        Fastest / densest state.
-      */
 
       return lerp(
         0.80,
@@ -2326,6 +2354,10 @@
 
 
     let normalState =
+      false;
+
+
+    let horseColorStarted =
       false;
 
 
@@ -2396,7 +2428,7 @@
             frame.style.transitionDuration =
               instant
                 ? "0s"
-                : "450ms";
+                : "500ms";
 
 
             frame.style.opacity =
@@ -2428,19 +2460,6 @@
         true;
 
 
-      /*
-        Until this point horse has been completely
-        untouched.
-      */
-
-      normalHorse();
-
-
-      /*
-        Each visual channel begins independently,
-        with slightly different starting times.
-      */
-
       slots.forEach(
         slot => {
 
@@ -2454,13 +2473,8 @@
       );
 
 
-      /*
-        Give the texture world a little time before
-        contaminating the horse itself.
-      */
-
       nextHorseChange =
-        time + 5;
+        time + 3;
 
     }
 
@@ -2496,7 +2510,7 @@
 
 
     /* =====================================================
-       MAIN VISUAL LOOP
+       MAIN LOOP
        ===================================================== */
 
     function visualLoop() {
@@ -2514,13 +2528,7 @@
         audio.currentTime || 0;
 
 
-      /*
-        Only the artwork square appears gradually.
-
-        The surrounding WIP page is already there.
-      */
-
-      const horseReveal =
+      const reveal =
         horseRevealAt(
           time
         );
@@ -2528,12 +2536,12 @@
 
       stage.style.setProperty(
         "--visual-reveal",
-        horseReveal.toFixed(4)
+        reveal.toFixed(4)
       );
 
 
       /*
-        0–12 seconds:
+        0–12:
         message only.
       */
 
@@ -2554,17 +2562,36 @@
 
 
       /*
-        12–30 seconds:
-        clean horse only.
+        Begin with colored horse,
+        but still no collage.
+      */
 
-        This allows the viewer to understand
-        the source image before we contaminate it.
+      if (
+        !horseColorStarted
+      ) {
+
+        horseColorStarted =
+          true;
+
+
+        cleanColoredHorse();
+
+      }
+
+
+      /*
+        Manually follow reveal opacity during the
+        initial clean-horse section.
       */
 
       if (
         time <
         COLLAGE_START
       ) {
+
+        horseMain.style.opacity =
+          reveal.toFixed(3);
+
 
         raf =
           requestAnimationFrame(
@@ -2578,7 +2605,9 @@
 
 
       /*
-        At 4:03 return to completely normal GIF.
+        4:03:
+        all treatment disappears;
+        original GIF remains.
       */
 
       if (
@@ -2615,14 +2644,18 @@
           intensity
         );
 
+
+        changeHorse(
+          intensity,
+          time
+        );
+
       }
 
 
       /*
-        Six independent continuously-morphing
-        "projectors".
-
-        No global cut / no global pause.
+        Six desaturated projector channels
+        continuously dissolve.
       */
 
       slots.forEach(slot => {
@@ -2644,8 +2677,7 @@
 
 
       /*
-        Horse is its own print plate and changes
-        on a separate rhythm.
+        Only the horse changes color.
       */
 
       if (
@@ -2670,7 +2702,7 @@
 
 
     /* =====================================================
-       OPEN WIP
+       OPEN
        ===================================================== */
 
     async function openWip() {
@@ -2696,24 +2728,31 @@
         false;
 
 
+      horseColorStarted =
+        false;
+
+
       recentTextures =
         [];
 
 
-      paletteIndex =
+      monoPaletteIndex =
         Math.floor(
           Math.random() *
-          PALETTES.length
+          MONO_PALETTES.length
+        );
+
+
+      horseColorIndex =
+        Math.floor(
+          Math.random() *
+          HORSE_COLORS.length
         );
 
 
       nextHorseChange =
         Infinity;
 
-
-      /*
-        Reset visual channels.
-      */
 
       clearSlots(
         true
@@ -2735,19 +2774,16 @@
 
 
       /*
-        Begin decoding texture pool immediately.
+        Start texture decoding immediately.
 
-        Collage does not begin for 30 seconds,
-        giving the browser plenty of time.
+        Collage won't actually begin until 30 sec.
       */
 
       prepareTextures();
 
 
       /*
-        Homepage disappears immediately.
-
-        No expensive full-page opacity fade.
+        Hide homepage instantly.
       */
 
       pageShell.classList.add(
@@ -2756,7 +2792,7 @@
 
 
       /*
-        Cream WIP screen + note appear immediately.
+        Show WIP screen immediately.
       */
 
       overlay.classList.add(
@@ -2771,7 +2807,7 @@
 
 
       /*
-        Start soundtrack.
+        Restart soundtrack.
       */
 
       audio.pause();
@@ -2815,7 +2851,7 @@
 
 
     /* =====================================================
-       CLOSE WIP
+       CLOSE
        ===================================================== */
 
     function closeWip() {
@@ -2861,10 +2897,6 @@
       );
 
 
-      /*
-        Restore homepage after short overlay close.
-      */
-
       window.setTimeout(() => {
 
         pageShell.classList.remove(
@@ -2894,13 +2926,6 @@
           return;
         }
 
-
-        /*
-          Later, finished pages can bypass
-          the WIP experience with:
-
-          data-live-link
-        */
 
         if (
           link.hasAttribute(
