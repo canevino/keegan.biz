@@ -84,7 +84,7 @@ a {
 /* =========================================================
    PAGE
 
-   Removed immediately when WIP opens.
+   Removed immediately once WIP opens.
    ========================================================= */
 
 .page-shell {
@@ -221,7 +221,7 @@ a {
 
 
 /* =========================================================
-   SCARFS
+   SCARF NAVIGATION
    ========================================================= */
 
 .scarf-rack {
@@ -331,9 +331,7 @@ a {
 
 
 /* =========================================================
-   OVERLAY
-
-   Solid cream screen immediately.
+   WIP OVERLAY
    ========================================================= */
 
 .wip-overlay {
@@ -412,7 +410,9 @@ a {
 
 
 /* =========================================================
-   MESSAGE
+   MESSAGE + X
+
+   Flush against top of animation box.
    ========================================================= */
 
 .wip-header {
@@ -548,9 +548,9 @@ a {
 
 
 /* =========================================================
-   COLLAGE STAGE
+   COLLAGE / HORSE STAGE
 
-   Only this part fades in.
+   Only this square fades into existence.
    ========================================================= */
 
 .collage-stage {
@@ -589,7 +589,7 @@ a {
     var(--visual-reveal);
 
   /*
-    GPU-friendly initial reveal.
+    Only opacity changes during initial reveal.
   */
 
   transform:
@@ -609,7 +609,7 @@ a {
 
 
 /* =========================================================
-   MORPH SLOTS
+   PROJECTOR / MORPH SLOTS
    ========================================================= */
 
 .texture-slot,
@@ -625,7 +625,7 @@ a {
 }
 
 
-/* underneath */
+/* UNDER HORSE */
 
 .under-slot-1 {
   z-index:
@@ -645,7 +645,7 @@ a {
 }
 
 
-/* over horse */
+/* ABOVE HORSE */
 
 .over-slot-1 {
   z-index:
@@ -667,11 +667,20 @@ a {
 
 /* =========================================================
    MORPH FRAMES
+
+   Three per channel.
+
+   Only opacity changes while visible.
    ========================================================= */
 
 .morph-frame {
   position:
     absolute;
+
+  /*
+    Overscan keeps random static rotation
+    from exposing an edge.
+  */
 
   inset:
     -9%;
@@ -692,10 +701,7 @@ a {
     center;
 
   /*
-    Only opacity animates.
-
-    Zoom / crop / rotation stay frozen
-    while visible.
+    JS dynamically changes duration.
   */
 
   transition-property:
@@ -703,11 +709,15 @@ a {
 
   transition-timing-function:
     cubic-bezier(
-      .35,
+      .40,
       0,
-      .25,
+      .22,
       1
     );
+
+  /*
+    Important for smoother opacity compositing.
+  */
 
   will-change:
     opacity;
@@ -717,6 +727,9 @@ a {
 
   -webkit-backface-visibility:
     hidden;
+
+  transform-style:
+    preserve-3d;
 }
 
 
@@ -769,23 +782,30 @@ a {
 }
 
 
+/* original / main drawing */
+
 .horse-main {
   z-index:
     2;
 
   opacity:
-    0.8;
+    1;
 
   mix-blend-mode:
-    multiply;
+    normal;
+
+  filter:
+    none;
 
   transition:
     opacity
-    650ms ease,
+    800ms ease,
     filter
-    650ms ease;
+    800ms ease;
 }
 
+
+/* slight misregistration print plate */
 
 .horse-offset {
   z-index:
@@ -796,14 +816,17 @@ a {
 
   transition:
     opacity
-    500ms ease,
+    800ms ease,
     filter
-    500ms ease;
+    800ms ease;
 }
 
 
 /* =========================================================
    HORSE INK KEY
+
+   Faint copy above collage so the drawing
+   remains readable.
    ========================================================= */
 
 .horse-key {
@@ -840,7 +863,7 @@ a {
 
   transition:
     opacity
-    450ms ease;
+    800ms ease;
 }
 
 
@@ -886,7 +909,7 @@ a {
 
 
 /* =========================================================
-   CLEAN HORSE AFTER 4:03
+   CLEAN STATE AFTER 4:03
    ========================================================= */
 
 .collage-stage.is-normal {
