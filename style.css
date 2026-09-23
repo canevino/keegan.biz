@@ -1,5 +1,8 @@
 /* =========================================================
    KEEGAN.BIZ
+   GOLDEN-RATIO TYPE SCALE
+
+   26 → 42 → 68 → 110
    ========================================================= */
 
 :root {
@@ -10,9 +13,15 @@
   --lt-green: #006a44;
   --lt-red: #c1272d;
 
-  --shadow: rgba(17, 17, 15, 0.14);
+  --shadow:
+    rgba(17, 17, 15, 0.14);
 
   --edge: 18px;
+
+  --type-1: 26px;
+  --type-2: 42px;
+  --type-3: 68px;
+  --type-4: 110px;
 }
 
 
@@ -51,7 +60,8 @@ body {
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing:
+    antialiased;
 
   overflow-x: hidden;
 }
@@ -77,7 +87,7 @@ a {
 
 
 /* =========================================================
-   SCARF RACK — DESKTOP
+   SCARF RACK
    ========================================================= */
 
 .scarf-rack {
@@ -100,29 +110,36 @@ a {
 .scarf-rack__item {
   display: block;
 
-  width: clamp(
-    360px,
-    29vw,
-    455px
-  );
+  width:
+    clamp(
+      360px,
+      29vw,
+      455px
+    );
 
-  transform-origin: right center;
+  transform-origin:
+    right center;
 
   transition:
-    transform 180ms
+    transform
+      180ms
       cubic-bezier(.2, .8, .2, 1),
-    filter 180ms ease;
+    filter
+      180ms
+      ease;
 }
 
 
 .scarf-rack__item--home {
-  width: clamp(
-    390px,
-    31vw,
-    490px
-  );
+  width:
+    clamp(
+      390px,
+      31vw,
+      490px
+    );
 
-  margin-bottom: 4px;
+  margin-bottom:
+    4px;
 }
 
 
@@ -138,7 +155,9 @@ a {
 
   filter:
     drop-shadow(
-      2px 3px 2px
+      2px
+      3px
+      2px
       rgba(17, 17, 15, 0.12)
     );
 }
@@ -175,6 +194,8 @@ a {
 }
 
 
+/* hover */
+
 .scarf-rack__item:hover {
   z-index: 4;
 
@@ -188,7 +209,9 @@ a {
 .scarf-rack__item:hover img {
   filter:
     drop-shadow(
-      5px 7px 4px
+      5px
+      7px
+      4px
       rgba(17, 17, 15, 0.18)
     );
 }
@@ -209,7 +232,8 @@ a {
 
   align-items: center;
 
-  justify-content: flex-start;
+  justify-content:
+    flex-start;
 
   padding:
     7vh
@@ -235,7 +259,7 @@ a {
 
   width: 100%;
 
-  height: 122px;
+  height: 124px;
 
   overflow: hidden;
 
@@ -260,19 +284,21 @@ a {
 
   font-size:
     clamp(
-      62px,
-      7.2vw,
-      108px
+      68px,
+      7vw,
+      110px
     );
 
   font-weight: 800;
 
   line-height: 1;
 
-  letter-spacing: -0.055em;
+  letter-spacing:
+    -0.055em;
 
   transition:
-    transform 540ms
+    transform
+      540ms
       cubic-bezier(.55, 0, .15, 1);
 }
 
@@ -280,14 +306,16 @@ a {
 .welcome-word--current {
   top: 0;
 
-  transform: translateY(0);
+  transform:
+    translateY(0);
 }
 
 
 .welcome-word--next {
   top: 100%;
 
-  transform: translateY(0);
+  transform:
+    translateY(0);
 }
 
 
@@ -307,9 +335,12 @@ a {
 
 .welcome-track.no-transition
 .welcome-word {
-  transition: none !important;
+  transition:
+    none !important;
 }
 
+
+/* Wingdings */
 
 .welcome-word.is-wingdings {
   font-family:
@@ -318,9 +349,12 @@ a {
     "Zapf Dingbats",
     sans-serif;
 
-  letter-spacing: 0.02em;
+  letter-spacing:
+    0.02em;
 }
 
+
+/* Binary */
 
 .welcome-word.is-binary {
   font-family:
@@ -330,14 +364,15 @@ a {
 
   font-size:
     clamp(
-      24px,
-      3.3vw,
-      48px
+      26px,
+      2.7vw,
+      42px
     );
 
   line-height: 1.05;
 
-  letter-spacing: -0.04em;
+  letter-spacing:
+    -0.04em;
 }
 
 
@@ -358,16 +393,17 @@ a {
 
   font-size:
     clamp(
-      46px,
-      6vw,
-      92px
+      42px,
+      4.33vw,
+      68px
     );
 
   font-weight: 900;
 
   line-height: 0.92;
 
-  letter-spacing: -0.075em;
+  letter-spacing:
+    -0.075em;
 
   color: var(--ink);
 }
@@ -385,7 +421,7 @@ a {
 
 
 /* =========================================================
-   YOUTUBE PLAYER
+   WORK IN PROGRESS PLAYER
    ========================================================= */
 
 .player-shell {
@@ -398,15 +434,20 @@ a {
 
   display: none;
 
-  width: 300px;
+  width: 320px;
 
-  padding-top: 34px;
+  background:
+    var(--paper);
 
-  background: var(--paper);
+  border:
+    1.5px solid
+    var(--ink);
 
   box-shadow:
-    5px 6px 0
-    rgba(17, 17, 15, 0.16);
+    6px
+    6px
+    0
+    rgba(17, 17, 15, 0.15);
 }
 
 
@@ -415,11 +456,58 @@ a {
 }
 
 
+/* popup header */
+
+.player-header {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  min-height: 46px;
+
+  padding:
+    9px
+    42px
+    9px
+    12px;
+
+  border-bottom:
+    1.5px solid
+    var(--ink);
+}
+
+
+.player-message {
+  margin: 0;
+
+  max-width: 230px;
+
+  font-size: 15px;
+
+  font-weight: 800;
+
+  line-height: 1.05;
+
+  letter-spacing:
+    -0.035em;
+
+  text-transform:
+    lowercase;
+}
+
+
+/* close */
+
 .player-close {
   position: absolute;
 
-  top: 2px;
-  right: 4px;
+  top: 50%;
+  right: 8px;
 
   width: 28px;
   height: 28px;
@@ -428,22 +516,42 @@ a {
 
   border: 0;
 
-  background: transparent;
-  color: var(--ink);
+  background:
+    transparent;
+
+  color:
+    var(--ink);
 
   font: inherit;
 
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 27px;
+
+  font-weight: 500;
 
   line-height: 1;
 
   cursor: pointer;
+
+  transform:
+    translateY(-50%);
+
+  transition:
+    transform 120ms ease;
+}
+
+
+.player-close:hover {
+  transform:
+    translateY(-50%)
+    rotate(8deg)
+    scale(1.1);
 }
 
 
 #youtube-player {
-  width: 300px;
+  display: block;
+
+  width: 320px;
   height: 200px;
 }
 
@@ -470,16 +578,16 @@ a {
 
 
   .welcome-slot {
-    height: 92px;
+    height: 100px;
   }
 
 
   .welcome-word {
     font-size:
       clamp(
-        48px,
-        6vw,
-        76px
+        55px,
+        6.2vw,
+        89px
       );
   }
 
@@ -487,9 +595,9 @@ a {
   .main-title {
     font-size:
       clamp(
-        44px,
-        5.7vw,
-        72px
+        34px,
+        3.8vw,
+        55px
       );
   }
 
@@ -508,12 +616,14 @@ a {
 
 
   body {
-    min-height: 100svh;
+    min-height:
+      100svh;
   }
 
 
   .page-shell {
-    min-height: 100svh;
+    min-height:
+      100svh;
 
     padding:
       max(
@@ -562,7 +672,8 @@ a {
 
     scrollbar-width: none;
 
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling:
+      touch;
   }
 
 
@@ -572,11 +683,13 @@ a {
 
 
   .scarf-rack__item {
-    flex: 0 0 auto;
+    flex:
+      0 0 auto;
 
     width: 285px;
 
-    transform: none !important;
+    transform:
+      none !important;
   }
 
 
@@ -588,7 +701,8 @@ a {
 
 
   .scarf-rack__item:hover {
-    transform: none !important;
+    transform:
+      none !important;
   }
 
 
@@ -604,7 +718,8 @@ a {
      ------------------------------------------------------- */
 
   .hero {
-    min-height: 100svh;
+    min-height:
+      100svh;
 
     align-items: center;
 
@@ -621,7 +736,7 @@ a {
 
 
   .welcome-slot {
-    height: 70px;
+    height: 76px;
 
     margin-bottom: 13px;
   }
@@ -630,9 +745,9 @@ a {
   .welcome-word {
     font-size:
       clamp(
-        38px,
-        11vw,
-        58px
+        42px,
+        12vw,
+        68px
       );
   }
 
@@ -640,9 +755,9 @@ a {
   .welcome-word.is-binary {
     font-size:
       clamp(
-        14px,
-        4.6vw,
-        23px
+        16px,
+        5vw,
+        26px
       );
   }
 
@@ -652,9 +767,9 @@ a {
 
     font-size:
       clamp(
-        38px,
-        10.5vw,
-        58px
+        26px,
+        7.4vw,
+        42px
       );
 
     line-height: 0.94;
@@ -664,7 +779,8 @@ a {
   .main-title__to {
     display: block;
 
-    margin-bottom: 0.08em;
+    margin-bottom:
+      0.08em;
   }
 
 
@@ -681,14 +797,24 @@ a {
     left: 10px;
     bottom: 10px;
 
-    width: 240px;
+    width:
+      min(
+        320px,
+        calc(100vw - 20px)
+      );
+  }
 
-    padding-top: 32px;
+
+  .player-message {
+    max-width:
+      calc(100vw - 95px);
+
+    font-size: 14px;
   }
 
 
   #youtube-player {
-    width: 240px;
+    width: 100%;
     height: 200px;
   }
 
@@ -717,16 +843,16 @@ a {
 
 
   .welcome-slot {
-    height: 62px;
+    height: 58px;
   }
 
 
   .welcome-word {
     font-size:
       clamp(
-        34px,
+        36px,
         10vw,
-        48px
+        42px
       );
   }
 
@@ -734,9 +860,9 @@ a {
   .main-title {
     font-size:
       clamp(
-        36px,
-        10vw,
-        50px
+        22px,
+        6.5vw,
+        26px
       );
   }
 
@@ -753,7 +879,8 @@ a {
 ) {
 
   .scarf-rack__item,
-  .welcome-word {
+  .welcome-word,
+  .player-close {
     transition: none;
   }
 
