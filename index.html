@@ -211,7 +211,7 @@
         </div>
 
 
-        <!-- second rough underprint -->
+        <!-- secondary underprint -->
 
         <div
           class="texture-slot under-slot under-slot-2"
@@ -243,7 +243,7 @@
         </div>
 
 
-        <!-- restrained texture above horse -->
+        <!-- restrained overprint -->
 
         <div
           class="texture-slot over-slot over-slot-1"
@@ -254,7 +254,7 @@
         </div>
 
 
-        <!-- neutral ink key -->
+        <!-- readability key -->
 
         <img
           class="horse horse-key"
@@ -263,8 +263,6 @@
           alt=""
         >
 
-
-        <!-- static grain -->
 
         <div class="stage-grain"></div>
 
@@ -773,13 +771,6 @@
     );
 
 
-    /*
-      Prioritize physical dirt.
-
-      These are what give us most of the
-      background character.
-    */
-
     const DIRTY_TEXTURES =
       ALL_TEXTURES.filter(
         src =>
@@ -798,7 +789,7 @@
 
 
     /* =====================================================
-       TEXTURE PRELOAD
+       PRELOAD
        ===================================================== */
 
     let sessionTextures =
@@ -954,7 +945,10 @@
 
 
     /* =====================================================
-       NATURAL PIGMENT HORSE COLORS
+       HORSE PIGMENTS
+
+       More chromatic than previous version,
+       but still all natural / mineral / plant-like.
        ===================================================== */
 
     const HORSE_COLORS = [
@@ -967,13 +961,13 @@
           -13,
 
         saturation:
-          1.80,
+          3.55,
 
         brightness:
-          0.88,
+          0.94,
 
         contrast:
-          1.22
+          1.28
       },
 
       {
@@ -984,13 +978,13 @@
           69,
 
         saturation:
-          1.62,
+          2.85,
 
         brightness:
-          0.76,
+          0.84,
 
         contrast:
-          1.18
+          1.24
       },
 
       {
@@ -1001,13 +995,13 @@
           151,
 
         saturation:
-          1.72,
+          3.25,
 
         brightness:
-          0.84,
+          0.91,
 
         contrast:
-          1.18
+          1.22
       },
 
       {
@@ -1018,13 +1012,13 @@
           -28,
 
         saturation:
-          1.86,
+          3.65,
 
         brightness:
-          0.82,
+          0.89,
 
         contrast:
-          1.24
+          1.30
       },
 
       {
@@ -1035,13 +1029,13 @@
           4,
 
         saturation:
-          1.28,
+          1.95,
 
         brightness:
-          0.70,
+          0.78,
 
         contrast:
-          1.20
+          1.24
       },
 
       {
@@ -1052,13 +1046,13 @@
           67,
 
         saturation:
-          1.04,
+          1.72,
 
         brightness:
-          1.03,
+          1.08,
 
         contrast:
-          0.98
+          1.05
       },
 
       {
@@ -1069,15 +1063,40 @@
           187,
 
         saturation:
-          1.48,
+          3.05,
 
         brightness:
-          0.72,
+          0.82,
 
         contrast:
-          1.20
+          1.27
       }
 
+    ];
+
+
+    /*
+      Opening deliberately excludes the quietest
+      earth tones.
+
+      This is what fixes the weak beginning.
+    */
+
+    const OPENING_COLORS = [
+      HORSE_COLORS[0],
+      HORSE_COLORS[1],
+      HORSE_COLORS[2],
+      HORSE_COLORS[3],
+      HORSE_COLORS[6]
+    ];
+
+
+    const EARLY_COLORS = [
+      HORSE_COLORS[0],
+      HORSE_COLORS[1],
+      HORSE_COLORS[2],
+      HORSE_COLORS[3],
+      HORSE_COLORS[6]
     ];
 
 
@@ -1085,29 +1104,78 @@
       0;
 
 
-    function nextHorseColor() {
+    let lastHorseColorName =
+      "";
 
-      horseColorIndex =
-        differentIndex(
-          HORSE_COLORS.length,
-          horseColorIndex
+
+    function differentHorseColor(
+      pool
+    ) {
+
+      let result;
+
+
+      let attempts =
+        0;
+
+
+      do {
+
+        result =
+          pick(pool);
+
+
+        attempts++;
+
+      }
+      while (
+        result.name ===
+          lastHorseColorName &&
+        attempts < 12
+      );
+
+
+      lastHorseColorName =
+        result.name;
+
+
+      return result;
+
+    }
+
+
+    function nextHorseColor(
+      time
+    ) {
+
+      /*
+        First minute stays with the stronger
+        pigments.
+
+        Brown and sage enter later as contrast,
+        rather than dominating the opening.
+      */
+
+      if (
+        time < 75
+      ) {
+
+        return differentHorseColor(
+          EARLY_COLORS
         );
 
+      }
 
-      return HORSE_COLORS[
-        horseColorIndex
-      ];
+
+      return differentHorseColor(
+        HORSE_COLORS
+      );
 
     }
 
 
     /* =====================================================
        TEXTURE SLOTS
-
-       Blend modes are FIXED by role.
-
-       They do not jump around whenever an image
-       changes.
        ===================================================== */
 
     function makeSlot(
@@ -1218,7 +1286,7 @@
             13.5,
 
           fastDuration:
-            3.0,
+            3,
 
           phase:
             2.4,
@@ -1253,10 +1321,6 @@
           phase:
             4.8,
 
-          /*
-            Completely removed on phone.
-          */
-
           mobileEnabled:
             false
         }
@@ -1273,28 +1337,28 @@
 
       const dark =
         pick([
-          "#070706",
+          "#060605",
           "#11100e",
-          "#1c1915",
-          "#29251f"
+          "#1a1714",
+          "#25211c"
         ]);
 
 
       const mid =
         pick([
-          "#504b43",
-          "#625c52",
-          "#756d61",
-          "#82796c"
+          "#49443d",
+          "#5a544b",
+          "#6e665b",
+          "#7a7164"
         ]);
 
 
       const light =
         pick([
-          "#ccc4b7",
-          "#d9d1c4",
-          "#e5ddcf",
-          "#eee7da"
+          "#c5bdae",
+          "#d2cabc",
+          "#ded5c7",
+          "#e8dfd1"
         ]);
 
 
@@ -1320,38 +1384,31 @@
         "foundation"
       ) {
 
-        if (
-          isMobile()
-        ) {
-
-          return random(
-            lerp(
-              0.48,
-              0.56,
-              intensity
-            ),
-            lerp(
-              0.62,
-              0.72,
-              intensity
+        return isMobile()
+          ? random(
+              lerp(
+                0.48,
+                0.56,
+                intensity
+              ),
+              lerp(
+                0.62,
+                0.72,
+                intensity
+              )
             )
-          );
-
-        }
-
-
-        return random(
-          lerp(
-            0.60,
-            0.68,
-            intensity
-          ),
-          lerp(
-            0.78,
-            0.88,
-            intensity
-          )
-        );
+          : random(
+              lerp(
+                0.60,
+                0.68,
+                intensity
+              ),
+              lerp(
+                0.78,
+                0.88,
+                intensity
+              )
+            );
 
       }
 
@@ -1361,37 +1418,26 @@
         "secondary"
       ) {
 
-        if (
-          isMobile()
-        ) {
-
-          return random(
-            0.24,
-            lerp(
-              0.35,
-              0.48,
-              intensity
+        return isMobile()
+          ? random(
+              0.24,
+              lerp(
+                0.35,
+                0.48,
+                intensity
+              )
             )
-          );
-
-        }
-
-
-        return random(
-          0.34,
-          lerp(
-            0.50,
-            0.64,
-            intensity
-          )
-        );
+          : random(
+              0.34,
+              lerp(
+                0.50,
+                0.64,
+                intensity
+              )
+            );
 
       }
 
-
-      /*
-        Desktop overprint.
-      */
 
       return random(
         0.08,
@@ -1451,15 +1497,10 @@
           : slot.desktopBlend;
 
 
-      /*
-        Enough crop variation to feel handmade,
-        but no violent geometric jumps.
-      */
-
       const rotation =
         isMobile()
           ? random(-0.8, 0.8)
-          : random(-2.0, 2.0);
+          : random(-2, 2);
 
 
       const translate =
@@ -1477,8 +1518,14 @@
       frame.style.transform =
         `
           translate(
-            ${random(-translate, translate)}%,
-            ${random(-translate, translate)}%
+            ${random(
+              -translate,
+              translate
+            )}%,
+            ${random(
+              -translate,
+              translate
+            )}%
           )
           rotate(
             ${rotation}deg
@@ -1488,12 +1535,6 @@
           )
         `;
 
-
-      /*
-        Dense / dirty rather than pale.
-
-        Still completely neutral.
-      */
 
       if (
         isMobile()
@@ -1603,11 +1644,6 @@
       );
 
 
-      /*
-        The rough background itself gradually
-        appears rather than suddenly arriving.
-      */
-
       const initialFade =
         isMobile()
           ? 6
@@ -1642,11 +1678,6 @@
       );
 
 
-      /*
-        First true crossfade starts after the
-        initial material has established itself.
-      */
-
       slot.nextChange =
         time +
         slot.phase +
@@ -1656,17 +1687,7 @@
 
 
     /* =====================================================
-       SMOOTH CROSSFADE
-
-       Two plates only.
-
-       A fades to B.
-       Once complete, B immediately starts
-       fading toward a newly prepared A.
-
-       There is no blend-mode change.
-       There is no blank frame.
-       There is no hard reset.
+       CONTINUOUS CROSSFADE
        ===================================================== */
 
     function morphSlot(
@@ -1701,11 +1722,6 @@
         );
 
 
-      /*
-        Keep mobile from entering frantic
-        sub-second territory.
-      */
-
       if (
         isMobile()
       ) {
@@ -1718,10 +1734,6 @@
 
       }
 
-
-      /*
-        Prepare invisible incoming plate.
-      */
 
       incoming.style.transitionDuration =
         "0s";
@@ -1740,10 +1752,6 @@
 
       incoming.offsetHeight;
 
-
-      /*
-        Now both plates dissolve together.
-      */
 
       incoming.style.transitionDuration =
         `${duration}s`;
@@ -1769,17 +1777,11 @@
         incomingIndex;
 
 
-      /*
-        No hold.
-
-        As soon as this dissolve is effectively
-        complete, the next one begins.
-      */
-
       slot.nextChange =
         time +
         (
-          duration * 0.96
+          duration *
+          0.96
         );
 
     }
@@ -1787,8 +1789,6 @@
 
     /* =====================================================
        HORSE COLOR
-
-       Natural pigment, not RGB neon.
        ===================================================== */
 
     let nextHorseChange =
@@ -1801,12 +1801,16 @@
       time
     ) {
 
+      /*
+        Still gradual, but visibly chromatic.
+      */
+
       const transition =
         lerp(
-          6.5,
+          5.8,
           isMobile()
-            ? 3.8
-            : 2.8,
+            ? 3.4
+            : 2.5,
           intensity
         );
 
@@ -1814,11 +1818,6 @@
       horseMain.style.transitionDuration =
         `${transition}s`;
 
-
-      /*
-        Multiply keeps the drawing feeling like
-        pigment actually sitting in the paper.
-      */
 
       horseMain.style.mixBlendMode =
         "multiply";
@@ -1832,23 +1831,23 @@
             ${
               color.saturation *
               random(
-                0.92,
-                1.06
+                0.97,
+                1.10
               )
             }
           )
           hue-rotate(
             ${
               color.hue +
-              random(-3, 3)
+              random(-2.5, 2.5)
             }deg
           )
           contrast(
             ${
               color.contrast *
               random(
-                0.97,
-                1.03
+                0.98,
+                1.04
               )
             }
           )
@@ -1856,29 +1855,26 @@
             ${
               color.brightness *
               random(
-                0.98,
-                1.02
+                0.99,
+                1.03
               )
             }
           )
         `;
 
 
+      /*
+        Keep the colored linework strong.
+      */
+
       horseMain.style.opacity =
         isMobile()
-          ? 0.98
+          ? "1"
           : random(
-              0.90,
-              0.98
+              0.95,
+              1
             );
 
-
-      /*
-        Very restrained registration ghost.
-
-        Same basic pigment family.
-        Desktop only.
-      */
 
       if (
         isMobile()
@@ -1906,7 +1902,7 @@
             saturate(
               ${
                 color.saturation *
-                0.92
+                1.05
               }
             )
             hue-rotate(
@@ -1927,25 +1923,21 @@
         horseOffset.style.transform =
           `
             translate(
-              ${random(-1.4, 1.4)}px,
-              ${random(-1.4, 1.4)}px
+              ${random(-1.2, 1.2)}px,
+              ${random(-1.2, 1.2)}px
             )
           `;
 
 
         horseOffset.style.opacity =
           lerp(
-            0.025,
-            0.075,
+            0.02,
+            0.06,
             intensity
           ).toFixed(3);
 
       }
 
-
-      /*
-        Neutral ink key for readability.
-      */
 
       horseKey.style.transitionDuration =
         `${transition}s`;
@@ -1954,28 +1946,23 @@
       horseKey.style.opacity =
         isMobile()
           ? lerp(
-              0.11,
-              0.17,
+              0.08,
+              0.14,
               intensity
             ).toFixed(3)
           : lerp(
-              0.14,
-              0.23,
+              0.10,
+              0.18,
               intensity
             ).toFixed(3);
 
 
-      /*
-        Color changes accelerate, but never
-        become flickery.
-      */
-
       const interval =
         lerp(
-          13,
+          12,
           isMobile()
-            ? 5.5
-            : 4.2,
+            ? 5.2
+            : 4,
           intensity
         );
 
@@ -1993,7 +1980,9 @@
     ) {
 
       applyHorseColor(
-        nextHorseColor(),
+        nextHorseColor(
+          time
+        ),
         intensity,
         time
       );
@@ -2004,11 +1993,13 @@
     function prepareInitialHorse() {
 
       const color =
-        nextHorseColor();
+        differentHorseColor(
+          OPENING_COLORS
+        );
 
 
       horseMain.style.transitionDuration =
-        "4s";
+        "3.5s";
 
 
       horseMain.style.mixBlendMode =
@@ -2020,16 +2011,25 @@
           grayscale(1)
           sepia(1)
           saturate(
-            ${color.saturation}
+            ${
+              color.saturation *
+              1.12
+            }
           )
           hue-rotate(
             ${color.hue}deg
           )
           contrast(
-            ${color.contrast}
+            ${
+              color.contrast *
+              1.04
+            }
           )
           brightness(
-            ${color.brightness}
+            ${
+              color.brightness *
+              1.03
+            }
           )
         `;
 
@@ -2044,6 +2044,18 @@
 
       horseKey.style.opacity =
         "0";
+
+
+      /*
+        Change once while the horse is still
+        completely clean.
+
+        So the opening already demonstrates the
+        pigment-changing idea.
+      */
+
+      nextHorseChange =
+        24;
 
     }
 
@@ -2284,15 +2296,6 @@
 
       });
 
-
-      /*
-        Let rough material arrive before the
-        first horse pigment change.
-      */
-
-      nextHorseChange =
-        time + 7;
-
     }
 
 
@@ -2356,7 +2359,8 @@
 
 
       /*
-        message only
+        0–12:
+        message only.
       */
 
       if (
@@ -2375,7 +2379,7 @@
 
 
       /*
-        establish initial natural-color horse
+        Introduce rich pigment horse.
       */
 
       if (
@@ -2392,7 +2396,10 @@
 
 
       /*
-        clean horse section
+        12–30:
+        clean horse only.
+
+        It can still change pigment once.
       */
 
       if (
@@ -2401,6 +2408,18 @@
 
         horseMain.style.opacity =
           reveal.toFixed(3);
+
+
+        if (
+          time >= nextHorseChange
+        ) {
+
+          changeHorse(
+            0.08,
+            time
+          );
+
+        }
 
 
         raf =
@@ -2415,7 +2434,8 @@
 
 
       /*
-        back to completely original GIF
+        4:03:
+        back to original GIF.
       */
 
       if (
@@ -2451,12 +2471,18 @@
           intensity
         );
 
+
+        /*
+          Do not immediately recolor at 30 sec.
+          Preserve whatever rich pigment the clean
+          section has reached.
+        */
+
+        nextHorseChange =
+          time + 8;
+
       }
 
-
-      /*
-        Independent continuous texture channels.
-      */
 
       slots.forEach(slot => {
 
@@ -2471,7 +2497,8 @@
 
 
         if (
-          time >= slot.nextChange
+          time >=
+          slot.nextChange
         ) {
 
           morphSlot(
@@ -2485,12 +2512,9 @@
       });
 
 
-      /*
-        Slow natural pigment evolution.
-      */
-
       if (
-        time >= nextHorseChange
+        time >=
+        nextHorseChange
       ) {
 
         changeHorse(
@@ -2544,11 +2568,8 @@
         [];
 
 
-      horseColorIndex =
-        Math.floor(
-          Math.random() *
-          HORSE_COLORS.length
-        );
+      lastHorseColorName =
+        "";
 
 
       nextHorseChange =
@@ -2572,17 +2593,8 @@
       );
 
 
-      /*
-        Texture decoding starts immediately,
-        thirty seconds before collage is needed.
-      */
-
       prepareTextures();
 
-
-      /*
-        Remove website immediately.
-      */
 
       pageShell.classList.add(
         "is-hidden"
