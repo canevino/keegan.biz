@@ -25,90 +25,103 @@
     </header>
 
 
-    <!-- SCARF NAVIGATION -->
-    <nav class="scarf-nav" aria-label="Site sections">
+    <!-- SMALL SCARF MENU -->
+    <nav class="scarf-menu" aria-label="Site sections">
 
       <a
-        class="scarf-nav__item"
         href="illustration.html"
+        class="scarf-menu__item"
         aria-label="Illustration"
         title="Illustration"
       >
         <img
           src="assets/home/scarf-illustration.png"
-          alt="Illustration"
+          alt=""
         />
       </a>
 
       <a
-        class="scarf-nav__item"
         href="photo.html"
+        class="scarf-menu__item"
         aria-label="Photo"
         title="Photo"
       >
         <img
           src="assets/home/scarf-photography.png"
-          alt="Photo"
+          alt=""
         />
       </a>
 
       <a
-        class="scarf-nav__item"
         href="design.html"
+        class="scarf-menu__item"
         aria-label="Design"
         title="Design"
       >
         <img
           src="assets/home/scarf-design.png"
-          alt="Design"
+          alt=""
         />
       </a>
 
       <a
-        class="scarf-nav__item"
         href="music.html"
+        class="scarf-menu__item"
         aria-label="Music"
         title="Music"
       >
         <img
           src="assets/home/scarf-music.png"
-          alt="Music"
+          alt=""
         />
       </a>
 
       <a
-        class="scarf-nav__item"
         href="motion.html"
+        class="scarf-menu__item"
         aria-label="Motion"
         title="Motion"
       >
         <img
           src="assets/home/scarf-motion.png"
-          alt="Motion"
+          alt=""
         />
       </a>
 
       <a
-        class="scarf-nav__item"
         href="misc.html"
+        class="scarf-menu__item"
         aria-label="Misc"
         title="Misc"
       >
         <img
           src="assets/home/scarf-misc.png"
-          alt="Misc"
+          alt=""
         />
       </a>
 
     </nav>
 
 
-    <!-- MAIN TITLE -->
+    <!-- WELCOME -->
     <main class="hero">
-      <h1 class="hero-title">
-        <span class="hero-title__main">keegan</span>
-        <span class="hero-title__sub">.biz</span>
+
+      <h1 class="welcome-title">
+
+        <span
+          class="welcome-word"
+          id="welcome-word"
+          dir="auto"
+        >
+          Welcome
+        </span>
+
+        <span class="welcome-rest">
+          to keegan's page
+        </span>
+
       </h1>
+
     </main>
 
 
@@ -125,6 +138,131 @@
     </footer>
 
   </div>
+
+
+  <script>
+    const welcomes = [
+      { text: "Welcome", lang: "English" },
+      { text: "Ласкаво просимо", lang: "Ukrainian" },
+      { text: "Benvenuti", lang: "Italian" },
+      { text: "Fáilte", lang: "Irish" },
+      { text: "Bienvenidos", lang: "Spanish" },
+      { text: "欢迎", lang: "Chinese" },
+      { text: "Benvinguts", lang: "Catalan" },
+
+      /* Wingdings uses the English word but renders it as symbols */
+      {
+        text: "WELCOME",
+        lang: "Wingdings",
+        className: "is-wingdings"
+      },
+
+      { text: "Sveiki atvykę", lang: "Lithuanian" },
+
+      /* Navajo greeting equivalent */
+      { text: "Yá’át’ééh", lang: "Navajo" },
+
+      { text: "Velkomin", lang: "Icelandic" },
+      { text: "Willkommen", lang: "German" },
+      { text: "ようこそ", lang: "Japanese" },
+      { text: "Bienvenue", lang: "French" },
+      { text: "Bem-vindos", lang: "Portuguese" },
+      { text: "أهلاً وسهلاً", lang: "Arabic" },
+
+      /* Tolkien-attested Sindarin greeting: "well met" */
+      { text: "Mae govannen", lang: "Sindarin" },
+
+      { text: "Croeso", lang: "Welsh" },
+
+      {
+        text: "01010111 01100101 01101100 01100011 01101111 01101101 01100101",
+        lang: "Binary",
+        className: "is-binary"
+      },
+
+      /* African languages */
+      { text: "Karibu", lang: "Swahili" },
+      { text: "Siyakwamukela", lang: "Zulu" },
+      { text: "Ẹ káàbọ̀", lang: "Yoruba" },
+      { text: "እንኳን ደህና መጡ", lang: "Amharic" },
+
+      { text: "स्वागत", lang: "Hindi" },
+      { text: "خوش آمدید", lang: "Persian" }
+    ];
+
+
+    const lithuanianColors = [
+      "#FDB913", /* gold */
+      "#006A44", /* green */
+      "#C1272D"  /* red */
+    ];
+
+
+    const welcomeWord = document.getElementById("welcome-word");
+
+    let previousIndex = -1;
+
+
+    function chooseDifferentIndex() {
+      let index;
+
+      do {
+        index = Math.floor(Math.random() * welcomes.length);
+      } while (
+        welcomes.length > 1 &&
+        index === previousIndex
+      );
+
+      previousIndex = index;
+
+      return index;
+    }
+
+
+    function changeWelcome() {
+      const entry = welcomes[chooseDifferentIndex()];
+
+      welcomeWord.classList.add("is-changing");
+
+      setTimeout(() => {
+
+        welcomeWord.textContent = entry.text;
+        welcomeWord.dataset.language = entry.lang;
+
+        welcomeWord.classList.remove(
+          "is-wingdings",
+          "is-binary"
+        );
+
+        if (entry.className) {
+          welcomeWord.classList.add(entry.className);
+        }
+
+        const randomColor =
+          lithuanianColors[
+            Math.floor(
+              Math.random() *
+              lithuanianColors.length
+            )
+          ];
+
+        welcomeWord.style.color = randomColor;
+
+        requestAnimationFrame(() => {
+          welcomeWord.classList.remove("is-changing");
+        });
+
+      }, 220);
+    }
+
+
+    /* Start with a random language */
+    changeWelcome();
+
+
+    /* Change every 2.4 seconds */
+    setInterval(changeWelcome, 2400);
+  </script>
 
 </body>
 </html>
