@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
+
   <title>photography — keegan.biz</title>
+
   <link
     rel="stylesheet"
     href="style.css"
   >
 </head>
+
 
 <body>
 
@@ -41,6 +46,7 @@
         >
       </a>
 
+
       <a
         class="scarf-item"
         href="#"
@@ -51,6 +57,7 @@
           alt=""
         >
       </a>
+
 
       <a
         class="scarf-item"
@@ -65,6 +72,7 @@
         >
       </a>
 
+
       <a
         class="scarf-item"
         href="#"
@@ -75,6 +83,7 @@
           alt=""
         >
       </a>
+
 
       <a
         class="scarf-item"
@@ -87,6 +96,7 @@
         >
       </a>
 
+
       <a
         class="scarf-item"
         href="#"
@@ -98,6 +108,7 @@
         >
       </a>
 
+
       <a
         class="scarf-item"
         href="#"
@@ -108,6 +119,7 @@
           alt=""
         >
       </a>
+
 
       <a
         class="scarf-item"
@@ -122,6 +134,7 @@
 
     </nav>
 
+
     <!-- ===================================================
          PHOTOGRAPHY
          =================================================== -->
@@ -129,13 +142,16 @@
     <main class="photo-page">
 
       <header class="photo-header">
+
         <h1
           class="photo-title"
           id="photo-title"
         >
           photography
         </h1>
+
       </header>
+
 
       <section
         class="photo-canvas"
@@ -149,7 +165,8 @@
           aria-label="Interactive landscape photograph with architectural drawing and generative sound"
         >
 
-          <!-- BASE PHOTOGRAPH -->
+          <!-- BASE -->
+
           <img
             class="fuji-base"
             id="fuji-base"
@@ -159,11 +176,14 @@
             fetchpriority="high"
           >
 
+
           <!-- BUILDING -->
+
           <div
             class="fuji-building-stack"
             aria-hidden="true"
           >
+
             <img
               class="fuji-building"
               src="assets/building.png"
@@ -171,6 +191,7 @@
               draggable="false"
               decoding="async"
             >
+
             <img
               class="fuji-building"
               src="assets/building.png"
@@ -178,6 +199,7 @@
               draggable="false"
               decoding="async"
             >
+
             <img
               class="fuji-building"
               src="assets/building.png"
@@ -185,6 +207,7 @@
               draggable="false"
               decoding="async"
             >
+
             <img
               class="fuji-building"
               src="assets/building.png"
@@ -192,13 +215,17 @@
               draggable="false"
               decoding="async"
             >
+
           </div>
 
+
           <!-- LINES -->
+
           <div
             class="fuji-lines"
             aria-hidden="true"
           >
+
             <div class="fuji-line-layer" data-line="1">
               <img class="fuji-line-source" src="assets/line1.png" alt="" draggable="false">
               <div class="fuji-line-texture"></div>
@@ -263,25 +290,66 @@
               <img class="fuji-line-source" src="assets/line13.png" alt="" draggable="false">
               <div class="fuji-line-texture"></div>
             </div>
+
           </div>
 
-          <!-- SOUND CONTROL -->
-          <button
-            class="fuji-sound-toggle"
-            id="fuji-sound-toggle"
-            type="button"
-            aria-label="Start sound"
-          >
-            sound: click to start
-          </button>
 
-          <!-- SVG FILTER DEFINITIONS -->
+          <!-- MUSICAL SPLASHES -->
+
+          <div
+            class="fuji-splash-layer"
+            id="fuji-splash-layer"
+            aria-hidden="true"
+          ></div>
+
+
+          <!-- TUTORIAL -->
+
+          <div
+            class="fuji-click-prompt"
+            id="fuji-click-prompt"
+            aria-live="polite"
+            aria-hidden="true"
+          ></div>
+
+
+          <!-- CONTROLS — REVEALED AFTER TUTORIAL -->
+
+          <div
+            class="fuji-controls"
+            id="fuji-controls"
+            aria-hidden="true"
+          >
+
+            <button
+              class="fuji-control fuji-auto-song"
+              id="fuji-auto-song"
+              type="button"
+            >
+              randomly generate a song
+            </button>
+
+            <button
+              class="fuji-control fuji-sound-toggle"
+              id="fuji-sound-toggle"
+              type="button"
+              aria-label="Turn sound off"
+            >
+              click to turn off
+            </button>
+
+          </div>
+
+
+          <!-- SVG FILTERS -->
+
           <svg
             class="fuji-filter-defs"
             width="0"
             height="0"
             aria-hidden="true"
           >
+
             <defs>
 
               <filter
@@ -296,6 +364,7 @@
                 </feComponentTransfer>
               </filter>
 
+
               <filter
                 id="fuji-posterize-4"
                 color-interpolation-filters="sRGB"
@@ -307,6 +376,7 @@
                   <feFuncA type="identity" />
                 </feComponentTransfer>
               </filter>
+
 
               <filter
                 id="fuji-posterize-6"
@@ -320,6 +390,7 @@
                 </feComponentTransfer>
               </filter>
 
+
               <filter
                 id="fuji-threshold-low"
                 color-interpolation-filters="sRGB"
@@ -332,6 +403,7 @@
                 </feComponentTransfer>
               </filter>
 
+
               <filter
                 id="fuji-threshold-mid"
                 color-interpolation-filters="sRGB"
@@ -343,6 +415,7 @@
                   <feFuncA type="identity" />
                 </feComponentTransfer>
               </filter>
+
 
               <filter
                 id="fuji-threshold-high"
@@ -357,16 +430,20 @@
               </filter>
 
             </defs>
+
           </svg>
 
         </figure>
 
       </section>
+
     </main>
+
   </div>
 
+
   <!-- =====================================================
-       EXISTING WIP SYSTEM
+       WIP
        ===================================================== -->
 
   <audio
@@ -379,13 +456,17 @@
     >
   </audio>
 
+
   <div
     class="wip-overlay"
     id="wip-overlay"
     aria-hidden="true"
   >
+
     <div class="wip-inner">
+
       <div class="wip-header">
+
         <p class="wip-text">
           sorry, i'm still working on this page.
         </p>
@@ -398,7 +479,9 @@
         >
           ×
         </button>
+
       </div>
+
 
       <div
         class="collage-stage"
@@ -413,6 +496,7 @@
           <div class="morph-frame"></div>
         </div>
 
+
         <div
           class="texture-slot under-slot under-slot-2"
           id="under-slot-2"
@@ -421,7 +505,9 @@
           <div class="morph-frame"></div>
         </div>
 
+
         <div class="horse-stack">
+
           <img
             class="horse horse-main"
             id="horse-main"
@@ -435,7 +521,9 @@
             src="../assets/home/horse.gif"
             alt=""
           >
+
         </div>
+
 
         <div
           class="texture-slot over-slot over-slot-1"
@@ -445,6 +533,7 @@
           <div class="morph-frame"></div>
         </div>
 
+
         <img
           class="horse horse-key"
           id="horse-key"
@@ -452,18 +541,28 @@
           alt=""
         >
 
+
         <div class="stage-grain"></div>
+
       </div>
+
     </div>
+
   </div>
 
+
   <!-- =====================================================
-       TITLE COLOR
+       TITLE
        ===================================================== -->
 
   <script>
   (() => {
-    const title = document.getElementById("photo-title");
+
+    const title =
+      document.getElementById(
+        "photo-title"
+      );
+
 
     const colors = [
       "#c1272d",
@@ -471,31 +570,71 @@
       "#fdb913"
     ];
 
+
     let current = 0;
 
+
     function changeTitle() {
+
       let next;
 
+
       do {
-        next = Math.floor(Math.random() * colors.length);
-      } while (next === current);
 
-      title.classList.add("is-fading");
+        next =
+          Math.floor(
+            Math.random() *
+            colors.length
+          );
 
-      window.setTimeout(() => {
-        current = next;
-        title.style.color = colors[current];
-        title.classList.remove("is-fading");
-      }, 200);
+      }
+      while (
+        next === current
+      );
+
+
+      title.classList.add(
+        "is-fading"
+      );
+
+
+      window.setTimeout(
+        () => {
+
+          current =
+            next;
+
+
+          title.style.color =
+            colors[current];
+
+
+          title.classList.remove(
+            "is-fading"
+          );
+
+        },
+        200
+      );
+
     }
 
-    title.style.color = colors[current];
-    window.setInterval(changeTitle, 2300);
+
+    title.style.color =
+      colors[current];
+
+
+    window.setInterval(
+      changeTitle,
+      2300
+    );
+
   })();
   </script>
 
+
   <!-- =====================================================
-       FUJI VISUAL + GENERATIVE AUDIO
+       FUJI VISUAL + AUDIO
        ===================================================== -->
 
   <script>
@@ -505,100 +644,531 @@
        ELEMENTS
        ===================================================== */
 
-    const artwork = document.getElementById("fuji-interactive");
-    const base = document.getElementById("fuji-base");
-    const soundToggle = document.getElementById("fuji-sound-toggle");
+    const artwork =
+      document.getElementById(
+        "fuji-interactive"
+      );
 
-    const buildings = Array.from(
-      document.querySelectorAll(".fuji-building")
-    );
 
-    const lines = Array.from(
-      document.querySelectorAll(".fuji-line-layer")
-    ).map(layer => ({
-      layer,
-      source: layer.querySelector(".fuji-line-source"),
-      texture: layer.querySelector(".fuji-line-texture"),
-      visible: false,
-      lastMutation: 0
-    }));
+    const base =
+      document.getElementById(
+        "fuji-base"
+      );
 
-    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const clickPrompt =
+      document.getElementById(
+        "fuji-click-prompt"
+      );
+
+
+    const controls =
+      document.getElementById(
+        "fuji-controls"
+      );
+
+
+    const soundToggle =
+      document.getElementById(
+        "fuji-sound-toggle"
+      );
+
+
+    const autoSongButton =
+      document.getElementById(
+        "fuji-auto-song"
+      );
+
+
+    const splashLayer =
+      document.getElementById(
+        "fuji-splash-layer"
+      );
+
+
+    const buildings =
+      Array.from(
+        document.querySelectorAll(
+          ".fuji-building"
+        )
+      );
+
+
+    const lines =
+      Array.from(
+        document.querySelectorAll(
+          ".fuji-line-layer"
+        )
+      ).map(
+        layer => ({
+
+          layer,
+
+          source:
+            layer.querySelector(
+              ".fuji-line-source"
+            ),
+
+          texture:
+            layer.querySelector(
+              ".fuji-line-texture"
+            ),
+
+          visible: false,
+
+          lastMutation: 0
+
+        })
+      );
+
+
+    const finePointer =
+      window.matchMedia(
+        "(hover: hover) and (pointer: fine)"
+      );
+
+
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+
 
     /* =====================================================
        HELPERS
        ===================================================== */
 
-    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-    const random = (min, max) => min + Math.random() * (max - min);
-    const randomInt = (min, max) => Math.floor(random(min, max + 1));
-    const pick = array => array[Math.floor(Math.random() * array.length)];
+    const clamp =
+      (
+        value,
+        min,
+        max
+      ) =>
+        Math.min(
+          Math.max(
+            value,
+            min
+          ),
+          max
+        );
 
-    function shuffle(array) {
-      const result = [...array];
 
-      for (let i = result.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [result[i], result[j]] = [result[j], result[i]];
+    const random =
+      (
+        min,
+        max
+      ) =>
+        min +
+        Math.random() *
+        (
+          max -
+          min
+        );
+
+
+    const randomInt =
+      (
+        min,
+        max
+      ) =>
+        Math.floor(
+          random(
+            min,
+            max + 1
+          )
+        );
+
+
+    const pick =
+      array =>
+        array[
+          Math.floor(
+            Math.random() *
+            array.length
+          )
+        ];
+
+
+    function shuffle(
+      array
+    ) {
+
+      const result =
+        [...array];
+
+
+      for (
+        let i =
+          result.length - 1;
+
+        i > 0;
+
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() *
+            (
+              i + 1
+            )
+          );
+
+
+        [
+          result[i],
+          result[j]
+        ] = [
+          result[j],
+          result[i]
+        ];
+
       }
+
 
       return result;
+
     }
 
-    function weightedPick(entries) {
-      const usable = entries.filter(entry => entry.weight > 0);
-      const total = usable.reduce((sum, item) => sum + item.weight, 0);
 
-      if (!usable.length || total <= 0) {
+    function weightedPick(
+      entries
+    ) {
+
+      const usable =
+        entries.filter(
+          entry =>
+            entry.weight > 0
+        );
+
+
+      const total =
+        usable.reduce(
+          (
+            sum,
+            item
+          ) =>
+            sum +
+            item.weight,
+          0
+        );
+
+
+      if (
+        !usable.length ||
+        total <= 0
+      ) {
+
         return null;
+
       }
 
-      let value = Math.random() * total;
 
-      for (const item of usable) {
-        value -= item.weight;
-        if (value <= 0) return item.value;
+      let value =
+        Math.random() *
+        total;
+
+
+      for (
+        const item of usable
+      ) {
+
+        value -=
+          item.weight;
+
+
+        if (
+          value <= 0
+        ) {
+
+          return item.value;
+
+        }
+
       }
 
-      return usable[usable.length - 1].value;
+
+      return usable[
+        usable.length - 1
+      ].value;
+
     }
 
-    function weightedObject(entries) {
-      const usable = entries.filter(entry => entry.weight > 0);
-      const total = usable.reduce((sum, item) => sum + item.weight, 0);
 
-      let value = Math.random() * total;
+    function weightedObject(
+      entries
+    ) {
 
-      for (const item of usable) {
-        value -= item.weight;
-        if (value <= 0) return item;
+      const usable =
+        entries.filter(
+          entry =>
+            entry.weight > 0
+        );
+
+
+      const total =
+        usable.reduce(
+          (
+            sum,
+            item
+          ) =>
+            sum +
+            item.weight,
+          0
+        );
+
+
+      let value =
+        Math.random() *
+        total;
+
+
+      for (
+        const item of usable
+      ) {
+
+        value -=
+          item.weight;
+
+
+        if (
+          value <= 0
+        ) {
+
+          return item;
+
+        }
+
       }
 
-      return usable[usable.length - 1];
+
+      return usable[
+        usable.length - 1
+      ];
+
     }
 
-    function waitForImage(image) {
-      if (image.complete && image.naturalWidth > 0) {
+
+    function waitForImage(
+      image
+    ) {
+
+      if (
+        image.complete &&
+        image.naturalWidth >
+          0
+      ) {
+
         return Promise.resolve();
+
       }
 
-      return new Promise((resolve, reject) => {
-        image.addEventListener("load", resolve, { once: true });
-        image.addEventListener("error", reject, { once: true });
-      });
+
+      return new Promise(
+        (
+          resolve,
+          reject
+        ) => {
+
+          image.addEventListener(
+            "load",
+            resolve,
+            {
+              once: true
+            }
+          );
+
+
+          image.addEventListener(
+            "error",
+            reject,
+            {
+              once: true
+            }
+          );
+
+        }
+      );
+
     }
 
-    function setSoundButton(label, state = "") {
-      soundToggle.textContent = label;
-      soundToggle.dataset.state = state;
+
+    /* =====================================================
+       TUTORIAL
+       ===================================================== */
+
+    const tutorial = {
+
+      step:
+        0,
+
+      promptTimer:
+        null,
+
+      controlsTimer:
+        null
+
+    };
+
+
+    function showPrompt(
+      text
+    ) {
+
+      clickPrompt.textContent =
+        text;
+
+
+      clickPrompt.classList.add(
+        "is-visible"
+      );
+
+
+      clickPrompt.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
     }
+
+
+    function hidePrompt() {
+
+      clickPrompt.classList.remove(
+        "is-visible"
+      );
+
+
+      clickPrompt.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    }
+
+
+    function schedulePrompt(
+      text,
+      delay
+    ) {
+
+      window.clearTimeout(
+        tutorial.promptTimer
+      );
+
+
+      tutorial.promptTimer =
+        window.setTimeout(
+          () => {
+
+            showPrompt(
+              text
+            );
+
+          },
+          delay
+        );
+
+    }
+
+
+    function revealControls() {
+
+      controls.classList.add(
+        "is-visible"
+      );
+
+
+      controls.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+    }
+
+
+    function advanceTutorial() {
+
+      hidePrompt();
+
+
+      window.clearTimeout(
+        tutorial.promptTimer
+      );
+
+
+      if (
+        tutorial.step === 0
+      ) {
+
+        tutorial.step =
+          1;
+
+
+        schedulePrompt(
+          "click again!",
+          900
+        );
+
+
+        return;
+
+      }
+
+
+      if (
+        tutorial.step === 1
+      ) {
+
+        tutorial.step =
+          2;
+
+
+        /*
+          Give them time to listen before another instruction.
+        */
+
+        schedulePrompt(
+          "keep clicking!",
+          4000
+        );
+
+
+        return;
+
+      }
+
+
+      if (
+        tutorial.step === 2
+      ) {
+
+        tutorial.step =
+          3;
+
+
+        window.clearTimeout(
+          tutorial.controlsTimer
+        );
+
+
+        tutorial.controlsTimer =
+          window.setTimeout(
+            revealControls,
+            650
+          );
+
+      }
+
+    }
+
 
     /* =====================================================
        VISUAL MATERIAL
        ===================================================== */
 
     const VISUAL_TEXTURES = [
+
       "../assets/home/Texturelabs_Grunge_173S.jpg",
       "../assets/home/Texturelabs_Grunge_279L.jpg",
       "../assets/home/Texturelabs_Grunge_334S.jpg",
@@ -626,66 +1196,94 @@
 
       "../assets/home/Texturelabs_Wood_135S.jpg",
       "../assets/home/Texturelabs_Wood_280S.jpg"
+
     ];
 
+
     const LINE_PALETTES = [
+
       {
-        name: "deep-wine",
-        colors: ["#4d1e2e", "#7a3348"],
-        hue: -18,
-        saturate: [1.0, 1.35],
-        brightness: [0.88, 1.02],
-        contrast: [1.10, 1.36]
+        colors: [
+          "#4c1f2d",
+          "#763246"
+        ],
+        hue: -20,
+        saturate: [.92, 1.26],
+        brightness: [.84, .98]
       },
+
       {
-        name: "forest",
-        colors: ["#214635", "#3e6e54"],
-        hue: 58,
-        saturate: [1.0, 1.35],
-        brightness: [0.82, 0.98],
-        contrast: [1.08, 1.32]
+        colors: [
+          "#66272b",
+          "#8a413d"
+        ],
+        hue: -9,
+        saturate: [.92, 1.22],
+        brightness: [.84, .98]
       },
+
       {
-        name: "sage",
-        colors: ["#62785d", "#93a58c"],
-        hue: 72,
-        saturate: [0.82, 1.10],
-        brightness: [0.96, 1.10],
-        contrast: [1.02, 1.18]
+        colors: [
+          "#203f30",
+          "#41654a"
+        ],
+        hue: 64,
+        saturate: [.88, 1.22],
+        brightness: [.80, .96]
       },
+
       {
-        name: "moss",
-        colors: ["#4c5f33", "#728246"],
+        colors: [
+          "#68775e",
+          "#9aa58b"
+        ],
+        hue: 74,
+        saturate: [.66, .94],
+        brightness: [.94, 1.08]
+      },
+
+      {
+        colors: [
+          "#4b5835",
+          "#737a49"
+        ],
         hue: 82,
-        saturate: [0.92, 1.28],
-        brightness: [0.86, 1.02],
-        contrast: [1.05, 1.26]
+        saturate: [.76, 1.08],
+        brightness: [.84, 1.00]
       },
+
       {
-        name: "peat",
-        colors: ["#49372d", "#6a4d3d"],
-        hue: 10,
-        saturate: [0.78, 1.08],
-        brightness: [0.80, 0.94],
-        contrast: [1.08, 1.24]
+        colors: [
+          "#777657",
+          "#9b9a72"
+        ],
+        hue: 87,
+        saturate: [.56, .82],
+        brightness: [.92, 1.06]
       },
+
       {
-        name: "stone-blue",
-        colors: ["#556879", "#768a96"],
-        hue: 162,
-        saturate: [0.85, 1.16],
-        brightness: [0.92, 1.08],
-        contrast: [1.03, 1.20]
+        colors: [
+          "#47362d",
+          "#685044"
+        ],
+        hue: 5,
+        saturate: [.62, .88],
+        brightness: [.78, .94]
       },
+
       {
-        name: "lichen",
-        colors: ["#6f7650", "#90996f"],
-        hue: 86,
-        saturate: [0.80, 1.08],
-        brightness: [0.94, 1.08],
-        contrast: [1.00, 1.18]
+        colors: [
+          "#50616a",
+          "#74828a"
+        ],
+        hue: 168,
+        saturate: [.58, .86],
+        brightness: [.88, 1.03]
       }
+
     ];
+
 
     const POSTERIZE = [
       "#fuji-posterize-3",
@@ -693,1662 +1291,5547 @@
       "#fuji-posterize-6"
     ];
 
+
     const THRESHOLD = [
       "#fuji-threshold-low",
       "#fuji-threshold-mid",
       "#fuji-threshold-high"
     ];
 
+
     const BUILDING_LOOKS = [
+
       {
-        name: "fog-blue",
         blend: "screen",
         weight: 22,
-        grayscale: [0.08, 0.20],
-        sepia: [0.08, 0.18],
-        saturate: [0.68, 0.96],
+        grayscale: [.08, .20],
+        sepia: [.08, .18],
+        saturate: [.68, .96],
         hue: [176, 202],
         brightness: [1.02, 1.12],
         contrast: [1.02, 1.11],
-        opacity: [0.08, 0.21]
+        opacity: [.08, .21]
       },
+
       {
-        name: "slate",
         blend: "soft-light",
         weight: 20,
-        grayscale: [0.12, 0.25],
-        sepia: [0.08, 0.20],
-        saturate: [0.62, 0.92],
+        grayscale: [.12, .25],
+        sepia: [.08, .20],
+        saturate: [.62, .92],
         hue: [184, 211],
-        brightness: [0.94, 1.05],
+        brightness: [.94, 1.05],
         contrast: [1.05, 1.16],
-        opacity: [0.08, 0.23]
+        opacity: [.08, .23]
       },
+
       {
-        name: "moss-stone",
         blend: "overlay",
         weight: 18,
-        grayscale: [0.08, 0.20],
-        sepia: [0.24, 0.42],
-        saturate: [0.68, 0.98],
+        grayscale: [.08, .20],
+        sepia: [.24, .42],
+        saturate: [.68, .98],
         hue: [76, 104],
-        brightness: [0.90, 1.00],
+        brightness: [.90, 1.00],
         contrast: [1.04, 1.14],
-        opacity: [0.07, 0.19]
+        opacity: [.07, .19]
       },
+
       {
-        name: "warm-stone",
         blend: "lighten",
         weight: 16,
-        grayscale: [0.12, 0.25],
-        sepia: [0.28, 0.48],
-        saturate: [0.58, 0.88],
+        grayscale: [.12, .25],
+        sepia: [.28, .48],
+        saturate: [.58, .88],
         hue: [5, 24],
-        brightness: [0.97, 1.08],
+        brightness: [.97, 1.08],
         contrast: [1.02, 1.11],
-        opacity: [0.07, 0.18]
+        opacity: [.07, .18]
       },
+
       {
-        name: "peat",
         blend: "multiply",
         weight: 12,
-        grayscale: [0.08, 0.20],
-        sepia: [0.34, 0.54],
-        saturate: [0.70, 1.00],
+        grayscale: [.08, .20],
+        sepia: [.34, .54],
+        saturate: [.70, 1.00],
         hue: [-8, 10],
-        brightness: [0.78, 0.91],
+        brightness: [.78, .91],
         contrast: [1.06, 1.16],
-        opacity: [0.05, 0.15]
-      },
-      {
-        name: "mist",
-        blend: "screen",
-        weight: 12,
-        grayscale: [0.20, 0.38],
-        sepia: [0.02, 0.10],
-        saturate: [0.38, 0.66],
-        hue: [166, 196],
-        brightness: [1.04, 1.14],
-        contrast: [1.00, 1.07],
-        opacity: [0.06, 0.16]
+        opacity: [.05, .15]
       }
+
     ];
 
+
     /* =====================================================
-       ALPHA DETECTION
+       SPLASHES
        ===================================================== */
 
-    function hasUsefulAlpha(image) {
-      try {
-        const canvas = document.createElement("canvas");
-        const width = 120;
-        const height = Math.max(
-          1,
-          Math.round(width * (image.naturalHeight / image.naturalWidth))
+    const SPLASH_COLORS = [
+      "#006a44",
+      "#fdb913",
+      "#c1272d"
+    ];
+
+
+    const SPLASH_BLENDS = [
+      "overlay",
+      "soft-light",
+      "multiply"
+    ];
+
+
+    function eventPointFromMouse(
+      event
+    ) {
+
+      const rect =
+        artwork.getBoundingClientRect();
+
+
+      return {
+
+        x:
+          clamp(
+            (
+              event.clientX -
+              rect.left
+            ) /
+            rect.width,
+            0,
+            1
+          ),
+
+        y:
+          clamp(
+            (
+              event.clientY -
+              rect.top
+            ) /
+            rect.height,
+            0,
+            1
+          )
+
+      };
+
+    }
+
+
+    function randomEventPoint() {
+
+      return {
+
+        x:
+          random(
+            .20,
+            .80
+          ),
+
+        y:
+          random(
+            .22,
+            .80
+          )
+
+      };
+
+    }
+
+
+    function addSplashCircle(
+      point,
+      type,
+      index
+    ) {
+
+      const circle =
+        document.createElement(
+          "span"
         );
 
-        canvas.width = width;
-        canvas.height = height;
 
-        const context = canvas.getContext("2d", {
-          willReadFrequently: true
-        });
+      circle.className =
+        `fuji-splash fuji-splash-${type}`;
 
-        context.drawImage(image, 0, 0, width, height);
 
-        const data = context.getImageData(0, 0, width, height).data;
+      const cloud =
+        type === "cloud";
 
-        let translucent = 0;
 
-        for (let i = 3; i < data.length; i += 4) {
-          if (data[i] < 235) translucent++;
-        }
+      const drone =
+        type === "drone";
 
-        return (translucent / (width * height)) > 0.025;
-      } catch {
-        return false;
-      }
-    }
 
-    let validLines = [];
-    let buildingValid = true;
+      const size =
+        cloud
+          ? random(44, 78)
+          : drone
+            ? random(28, 48)
+            : random(12, 23);
 
-    async function prepareVisuals() {
-      try {
-        await Promise.all([
-          waitForImage(base),
-          ...buildings.map(waitForImage),
-          ...lines.map(line => waitForImage(line.source))
-        ]);
-      } catch (error) {
-        console.error("One or more photography assets failed to load.", error);
-        return;
-      }
 
-      const width = base.naturalWidth;
-      const height = base.naturalHeight;
+      const duration =
+        cloud
+          ? random(5.4, 7.8)
+          : drone
+            ? random(5.5, 8)
+            : random(2.7, 4.2);
 
-      validLines = lines.filter(item => {
-        if (
-          item.source.naturalWidth !== width ||
-          item.source.naturalHeight !== height
-        ) {
-          item.layer.style.display = "none";
-          return false;
-        }
 
-        if (hasUsefulAlpha(item.source)) {
-          item.layer.classList.add("has-alpha");
-          item.texture.style.webkitMaskImage = `url("${item.source.src}")`;
-          item.texture.style.maskImage = `url("${item.source.src}")`;
-        } else {
-          item.layer.classList.add("has-white-canvas");
-        }
+      const opacity =
+        cloud
+          ? random(.14, .25)
+          : drone
+            ? random(.09, .15)
+            : random(.13, .21);
 
-        return true;
-      });
 
-      buildingValid = buildings.every(
-        building =>
-          building.naturalWidth === width &&
-          building.naturalHeight === height
+      const jitter =
+        cloud
+          ? .07
+          : drone
+            ? .04
+            : .025;
+
+
+      const x =
+        clamp(
+          point.x +
+          random(
+            -jitter,
+            jitter
+          ),
+          .03,
+          .97
+        );
+
+
+      const y =
+        clamp(
+          point.y +
+          random(
+            -jitter,
+            jitter
+          ),
+          .03,
+          .97
+        );
+
+
+      circle.style.setProperty(
+        "--x",
+        `${x * 100}%`
       );
 
-      if (!buildingValid) {
-        buildings.forEach(building => {
-          building.style.display = "none";
-        });
+
+      circle.style.setProperty(
+        "--y",
+        `${y * 100}%`
+      );
+
+
+      circle.style.setProperty(
+        "--size",
+        `${size}%`
+      );
+
+
+      circle.style.setProperty(
+        "--splash-color",
+        pick(
+          SPLASH_COLORS
+        )
+      );
+
+
+      circle.style.setProperty(
+        "--splash-opacity",
+        opacity.toFixed(3)
+      );
+
+
+      circle.style.setProperty(
+        "--splash-duration",
+        `${duration}s`
+      );
+
+
+      circle.style.setProperty(
+        "--splash-delay",
+        `${index * random(.05, .13)}s`
+      );
+
+
+      circle.style.mixBlendMode =
+        pick(
+          SPLASH_BLENDS
+        );
+
+
+      splashLayer.appendChild(
+        circle
+      );
+
+
+      window.setTimeout(
+        () => {
+
+          circle.remove();
+
+        },
+        (
+          duration +
+          .6
+        ) *
+        1000
+      );
+
+    }
+
+
+    function createSplash(
+      type,
+      point
+    ) {
+
+      if (
+        reducedMotion.matches
+      ) {
+
+        return;
+
       }
 
-      clearArtwork(true);
+
+      const origin =
+        point ||
+        randomEventPoint();
+
+
+      const count =
+        type === "cloud"
+          ? randomInt(2, 3)
+          : type === "drone"
+            ? 2
+            : 1;
+
+
+      for (
+        let i = 0;
+        i < count;
+        i++
+      ) {
+
+        addSplashCircle(
+          origin,
+          type,
+          i
+        );
+
+      }
+
     }
+
 
     /* =====================================================
-       LINE PROCESSING
+       IMAGE PREPARATION
        ===================================================== */
 
-    function chooseLineBlend(item, intensity) {
-      if (item.layer.classList.contains("has-white-canvas")) {
-        return weightedPick([
-          { value: "multiply", weight: 54 },
-          { value: "darken", weight: 28 },
-          { value: "color-burn", weight: 8 + intensity * 10 }
-        ]);
+    function hasUsefulAlpha(
+      image
+    ) {
+
+      try {
+
+        const canvas =
+          document.createElement(
+            "canvas"
+          );
+
+
+        const width =
+          120;
+
+
+        const height =
+          Math.max(
+            1,
+            Math.round(
+              width *
+              (
+                image.naturalHeight /
+                image.naturalWidth
+              )
+            )
+          );
+
+
+        canvas.width =
+          width;
+
+
+        canvas.height =
+          height;
+
+
+        const context =
+          canvas.getContext(
+            "2d",
+            {
+              willReadFrequently: true
+            }
+          );
+
+
+        context.drawImage(
+          image,
+          0,
+          0,
+          width,
+          height
+        );
+
+
+        const data =
+          context.getImageData(
+            0,
+            0,
+            width,
+            height
+          ).data;
+
+
+        let translucent =
+          0;
+
+
+        for (
+          let i = 3;
+          i < data.length;
+          i += 4
+        ) {
+
+          if (
+            data[i] < 235
+          ) {
+
+            translucent++;
+
+          }
+
+        }
+
+
+        return (
+          translucent /
+          (
+            width *
+            height
+          )
+        ) > .025;
+
       }
 
-      return weightedPick([
-        { value: "screen", weight: 14 },
-        { value: "soft-light", weight: 18 },
-        { value: "hard-light", weight: 16 },
-        { value: "overlay", weight: 18 },
-        { value: "multiply", weight: 14 },
-        { value: "difference", weight: 2 + intensity * 6 },
-        { value: "exclusion", weight: 4 + intensity * 5 },
-        { value: "color-dodge", weight: 2 + intensity * 4 }
-      ]);
+      catch {
+
+        return false;
+
+      }
+
     }
 
-    function chooseProcessing(intensity) {
-      return weightedPick([
-        { value: "normal", weight: 26 },
-        { value: "exposed", weight: 24 },
-        { value: "posterize", weight: 13 + intensity * 8 },
-        { value: "threshold", weight: 4 + intensity * 11 },
-        { value: "hard", weight: 10 + intensity * 5 },
-        { value: "bleached", weight: 11 },
-        { value: "invert", weight: intensity * 4 }
-      ]);
+
+    let validLines =
+      [];
+
+
+    let buildingValid =
+      true;
+
+
+    async function prepareVisuals() {
+
+      try {
+
+        await Promise.all([
+
+          waitForImage(
+            base
+          ),
+
+          ...buildings.map(
+            waitForImage
+          ),
+
+          ...lines.map(
+            line =>
+              waitForImage(
+                line.source
+              )
+          )
+
+        ]);
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "One or more photography assets failed to load.",
+          error
+        );
+
+
+        return;
+
+      }
+
+
+      const width =
+        base.naturalWidth;
+
+
+      const height =
+        base.naturalHeight;
+
+
+      validLines =
+        lines.filter(
+          item => {
+
+            if (
+              item.source.naturalWidth !== width ||
+              item.source.naturalHeight !== height
+            ) {
+
+              item.layer.style.display =
+                "none";
+
+
+              return false;
+
+            }
+
+
+            if (
+              hasUsefulAlpha(
+                item.source
+              )
+            ) {
+
+              item.layer.classList.add(
+                "has-alpha"
+              );
+
+
+              item.texture.style.webkitMaskImage =
+                `url("${item.source.src}")`;
+
+
+              item.texture.style.maskImage =
+                `url("${item.source.src}")`;
+
+            }
+
+            else {
+
+              item.layer.classList.add(
+                "has-white-canvas"
+              );
+
+            }
+
+
+            return true;
+
+          }
+        );
+
+
+      buildingValid =
+        buildings.every(
+          building =>
+            building.naturalWidth === width &&
+            building.naturalHeight === height
+        );
+
+
+      if (
+        !buildingValid
+      ) {
+
+        buildings.forEach(
+          building => {
+
+            building.style.display =
+              "none";
+
+          }
+        );
+
+      }
+
+
+      clearArtwork(
+        true
+      );
+
     }
 
-    function filterFor(processing, intensity, palette) {
-      const hue = palette.hue + random(-8, 8);
 
-      if (processing === "posterize") {
+    /* =====================================================
+       LINES
+       ===================================================== */
+
+    function chooseLineBlend(
+      item,
+      intensity
+    ) {
+
+      if (
+        item.layer.classList.contains(
+          "has-white-canvas"
+        )
+      ) {
+
+        return weightedPick([
+
+          {
+            value: "multiply",
+            weight: 56
+          },
+
+          {
+            value: "darken",
+            weight: 28
+          },
+
+          {
+            value: "color-burn",
+            weight:
+              7 +
+              intensity *
+              7
+          }
+
+        ]);
+
+      }
+
+
+      return weightedPick([
+
+        {
+          value: "soft-light",
+          weight: 22
+        },
+
+        {
+          value: "overlay",
+          weight: 20
+        },
+
+        {
+          value: "multiply",
+          weight: 17
+        },
+
+        {
+          value: "screen",
+          weight: 13
+        },
+
+        {
+          value: "hard-light",
+          weight: 12
+        },
+
+        {
+          value: "exclusion",
+          weight:
+            2 +
+            intensity *
+            3
+        },
+
+        {
+          value: "difference",
+          weight:
+            1 +
+            intensity *
+            2
+        }
+
+      ]);
+
+    }
+
+
+    function chooseProcessing(
+      intensity
+    ) {
+
+      return weightedPick([
+
+        {
+          value: "normal",
+          weight: 29
+        },
+
+        {
+          value: "exposed",
+          weight: 25
+        },
+
+        {
+          value: "posterize",
+          weight:
+            14 +
+            intensity *
+            8
+        },
+
+        {
+          value: "threshold",
+          weight:
+            4 +
+            intensity *
+            10
+        },
+
+        {
+          value: "hard",
+          weight:
+            10 +
+            intensity *
+            5
+        },
+
+        {
+          value: "bleached",
+          weight: 11
+        }
+
+      ]);
+
+    }
+
+
+    function filterFor(
+      processing,
+      intensity,
+      palette
+    ) {
+
+      const hue =
+        palette.hue +
+        random(
+          -7,
+          7
+        );
+
+
+      if (
+        processing === "posterize"
+      ) {
+
         return `
           grayscale(.15)
-          sepia(.35)
+          sepia(.38)
           url("${pick(POSTERIZE)}")
           hue-rotate(${hue}deg)
-          saturate(${random(palette.saturate[0], palette.saturate[1] + 0.18)})
-          brightness(${random(palette.brightness[0], palette.brightness[1])})
-          contrast(${random(1.08, 1.42)})
+          saturate(${random(
+            palette.saturate[0],
+            palette.saturate[1] + .12
+          )})
+          brightness(${random(
+            palette.brightness[0],
+            palette.brightness[1]
+          )})
+          contrast(${random(1.08, 1.40)})
         `;
+
       }
 
-      if (processing === "threshold") {
+
+      if (
+        processing === "threshold"
+      ) {
+
         return `
-          grayscale(.22)
+          grayscale(.20)
           sepia(.42)
           url("${pick(THRESHOLD)}")
           hue-rotate(${hue}deg)
-          saturate(${random(palette.saturate[0], palette.saturate[1] + 0.14)})
-          contrast(${random(1.12, 1.48)})
+          saturate(${random(
+            palette.saturate[0],
+            palette.saturate[1] + .12
+          )})
+          contrast(${random(1.12, 1.45)})
         `;
+
       }
 
-      if (processing === "exposed") {
+
+      if (
+        processing === "exposed"
+      ) {
+
         return `
-          grayscale(.1)
-          sepia(.28)
+          grayscale(.10)
+          sepia(.30)
           hue-rotate(${hue}deg)
-          saturate(${random(palette.saturate[0], palette.saturate[1] + 0.22)})
-          brightness(${random(1.02, 1.24 + intensity * 0.18)})
-          contrast(${random(palette.contrast[0], palette.contrast[1])})
+          saturate(${random(
+            palette.saturate[0],
+            palette.saturate[1] + .14
+          )})
+          brightness(${random(
+            1,
+            1.18 +
+            intensity *
+            .12
+          )})
+          contrast(${random(1.05, 1.30)})
         `;
+
       }
 
-      if (processing === "hard") {
+
+      if (
+        processing === "hard"
+      ) {
+
         return `
           grayscale(.12)
           sepia(.34)
           hue-rotate(${hue}deg)
-          saturate(${random(palette.saturate[0] + 0.08, palette.saturate[1] + 0.30)})
-          brightness(${random(0.90, 1.08)})
-          contrast(${random(1.28, 1.76)})
+          saturate(${random(
+            palette.saturate[0],
+            palette.saturate[1] + .18
+          )})
+          brightness(${random(.88, 1.05)})
+          contrast(${random(1.28, 1.68)})
         `;
+
       }
 
-      if (processing === "bleached") {
+
+      if (
+        processing === "bleached"
+      ) {
+
         return `
-          grayscale(.2)
-          sepia(.22)
+          grayscale(.24)
+          sepia(.20)
           hue-rotate(${hue}deg)
-          saturate(${random(0.60, 0.95)})
-          brightness(${random(1.10, 1.26)})
-          contrast(${random(0.98, 1.16)})
+          saturate(${random(.54, .84)})
+          brightness(${random(1.08, 1.23)})
+          contrast(${random(.98, 1.15)})
         `;
+
       }
 
-      if (processing === "invert") {
-        return `
-          invert(1)
-          grayscale(.08)
-          sepia(.22)
-          hue-rotate(${hue}deg)
-          saturate(${random(1.02, 1.28)})
-          contrast(${random(1.08, 1.28)})
-        `;
-      }
 
       return `
-        grayscale(.08)
-        sepia(.26)
+        grayscale(.10)
+        sepia(.30)
         hue-rotate(${hue}deg)
-        saturate(${random(palette.saturate[0], palette.saturate[1])})
-        brightness(${random(palette.brightness[0], palette.brightness[1])})
+        saturate(${random(
+          palette.saturate[0],
+          palette.saturate[1]
+        )})
+        brightness(${random(
+          palette.brightness[0],
+          palette.brightness[1]
+        )})
         contrast(${random(1.02, 1.20)})
       `;
+
     }
 
-    function configureLine(item, intensity) {
-      const palette = pick(LINE_PALETTES);
-      const [colorA, colorB] = palette.colors;
 
-      const textureA = pick(VISUAL_TEXTURES);
-      const textureB = pick(VISUAL_TEXTURES);
+    function configureLine(
+      item,
+      intensity
+    ) {
 
-      item.source.style.mixBlendMode = chooseLineBlend(item, intensity);
-      item.source.style.filter = filterFor(
-        chooseProcessing(intensity),
-        intensity,
-        palette
-      );
-      item.source.style.opacity = random(0.36, 0.82);
+      const palette =
+        pick(
+          LINE_PALETTES
+        );
 
-      const angle = random(0, 360);
 
-      if (item.layer.classList.contains("has-alpha")) {
-        item.texture.style.backgroundImage = `
-          linear-gradient(${angle}deg, ${colorA}, ${colorB}),
-          radial-gradient(circle at ${random(18, 82)}% ${random(18, 82)}%, rgba(255,255,255,0.18), transparent 48%),
-          url("${textureA}"),
-          url("${textureB}")
-        `;
+      const [
+        colorA,
+        colorB
+      ] =
+        palette.colors;
 
-        item.texture.style.backgroundBlendMode = `
-          normal,
-          soft-light,
-          ${pick(["multiply", "overlay", "soft-light"])},
-          normal
-        `;
 
-        item.texture.style.mixBlendMode = weightedPick([
-          { value: "soft-light", weight: 20 },
-          { value: "overlay", weight: 22 },
-          { value: "hard-light", weight: 15 },
-          { value: "screen", weight: 14 },
-          { value: "multiply", weight: 12 },
-          { value: "difference", weight: 2 + intensity * 5 },
-          { value: "color-dodge", weight: 2 + intensity * 4 }
-        ]);
-      } else {
-        item.texture.style.backgroundImage = `
-          url("${item.source.src}"),
-          linear-gradient(${angle}deg, ${colorA}, ${colorB}),
-          url("${textureA}"),
-          url("${textureB}")
-        `;
+      const textureA =
+        pick(
+          VISUAL_TEXTURES
+        );
 
-        item.texture.style.backgroundBlendMode = `
-          multiply,
-          screen,
-          overlay,
-          normal
-        `;
 
-        item.texture.style.mixBlendMode = "multiply";
+      const textureB =
+        pick(
+          VISUAL_TEXTURES
+        );
+
+
+      item.source.style.mixBlendMode =
+        chooseLineBlend(
+          item,
+          intensity
+        );
+
+
+      item.source.style.filter =
+        filterFor(
+          chooseProcessing(
+            intensity
+          ),
+          intensity,
+          palette
+        );
+
+
+      item.source.style.opacity =
+        random(
+          .34,
+          .80
+        );
+
+
+      const angle =
+        random(
+          0,
+          360
+        );
+
+
+      if (
+        item.layer.classList.contains(
+          "has-alpha"
+        )
+      ) {
+
+        item.texture.style.backgroundImage =
+          `
+            linear-gradient(
+              ${angle}deg,
+              ${colorA},
+              ${colorB}
+            ),
+            url("${textureA}"),
+            url("${textureB}")
+          `;
+
+
+        item.texture.style.backgroundBlendMode =
+          `
+            normal,
+            ${pick([
+              "multiply",
+              "soft-light",
+              "overlay"
+            ])},
+            normal
+          `;
+
+
+        item.texture.style.mixBlendMode =
+          weightedPick([
+
+            {
+              value: "soft-light",
+              weight: 24
+            },
+
+            {
+              value: "overlay",
+              weight: 22
+            },
+
+            {
+              value: "multiply",
+              weight: 16
+            },
+
+            {
+              value: "screen",
+              weight: 14
+            },
+
+            {
+              value: "hard-light",
+              weight: 10
+            },
+
+            {
+              value: "difference",
+              weight:
+                1 +
+                intensity *
+                2
+            }
+
+          ]);
+
       }
 
-      item.texture.style.backgroundSize = `
-        100% 100%,
-        ${random(110, 165)}% ${random(110, 165)}%,
-        cover,
-        cover
-      `;
+      else {
 
-      item.texture.style.backgroundPosition = `
-        center,
-        ${random(0, 100)}% ${random(0, 100)}%,
-        ${random(0, 100)}% ${random(0, 100)}%,
-        ${random(0, 100)}% ${random(0, 100)}%
-      `;
+        item.texture.style.backgroundImage =
+          `
+            url("${item.source.src}"),
+            linear-gradient(
+              ${angle}deg,
+              ${colorA},
+              ${colorB}
+            ),
+            url("${textureA}"),
+            url("${textureB}")
+          `;
 
-      item.texture.style.filter = `
-        grayscale(${random(0.02, 0.12)})
-        contrast(${random(1.06, 1.44)})
-        saturate(${random(0.98, 1.34)})
-      `;
 
-      item.texture.style.opacity = random(
-        0.14,
-        0.40 + intensity * 0.16
-      );
+        item.texture.style.backgroundBlendMode =
+          `
+            multiply,
+            screen,
+            overlay,
+            normal
+          `;
 
-      item.layer.dataset.targetOpacity = clamp(
+
+        item.texture.style.mixBlendMode =
+          "multiply";
+
+      }
+
+
+      item.texture.style.backgroundSize =
+        `
+          100% 100%,
+          ${random(110, 160)}% ${random(110, 160)}%,
+          cover,
+          cover
+        `;
+
+
+      item.texture.style.backgroundPosition =
+        `
+          center,
+          ${random(0, 100)}% ${random(0, 100)}%,
+          ${random(0, 100)}% ${random(0, 100)}%,
+          ${random(0, 100)}% ${random(0, 100)}%
+        `;
+
+
+      item.texture.style.filter =
+        `
+          grayscale(${random(.03, .13)})
+          contrast(${random(1.05, 1.38)})
+          saturate(${random(.88, 1.18)})
+        `;
+
+
+      item.texture.style.opacity =
         random(
-          0.28,
-          0.58 + intensity * 0.24
-        ),
-        0.18,
-        0.88
-      ).toFixed(3);
+          .14,
+          .38 +
+          intensity *
+          .15
+        );
 
-      item.layer.style.transform = "none";
+
+      item.layer.dataset.targetOpacity =
+        clamp(
+          random(
+            .27,
+            .57 +
+            intensity *
+            .24
+          ),
+          .18,
+          .86
+        ).toFixed(
+          3
+        );
+
+
+      item.layer.style.transform =
+        "none";
+
     }
+
 
     /* =====================================================
-       NATURAL BUILDING PROCESSING
+       BUILDING
        ===================================================== */
 
-    function configureBuildingLayer(building, intensity) {
-      const look = weightedObject(BUILDING_LOOKS);
+    function configureBuildingLayer(
+      building,
+      intensity
+    ) {
 
-      const grayscale = random(look.grayscale[0], look.grayscale[1]);
-      const sepia = random(look.sepia[0], look.sepia[1]);
-      const saturate = random(look.saturate[0], look.saturate[1]);
-      const hue = random(look.hue[0], look.hue[1]);
-      const brightness = random(look.brightness[0], look.brightness[1]) + intensity * 0.025;
-      const contrast = random(look.contrast[0], look.contrast[1]) + intensity * 0.025;
+      const look =
+        weightedObject(
+          BUILDING_LOOKS
+        );
 
-      building.style.transitionDuration = "170ms";
-      building.style.mixBlendMode = look.blend;
-      building.style.filter = `
-        grayscale(${grayscale})
-        sepia(${sepia})
-        saturate(${saturate})
-        hue-rotate(${hue}deg)
-        brightness(${brightness})
-        contrast(${contrast})
-      `;
 
-      building.style.transform = `
-        translate3d(
-          ${random(-0.65, 0.65)}px,
-          ${random(-0.65, 0.65)}px,
-          0
-        )
-      `;
+      building.style.mixBlendMode =
+        look.blend;
 
-      building.dataset.targetOpacity = clamp(
-        random(look.opacity[0], look.opacity[1] + intensity * 0.07),
-        0.04,
-        0.32
-      ).toFixed(3);
+
+      building.style.filter =
+        `
+          grayscale(${random(
+            look.grayscale[0],
+            look.grayscale[1]
+          )})
+          sepia(${random(
+            look.sepia[0],
+            look.sepia[1]
+          )})
+          saturate(${random(
+            look.saturate[0],
+            look.saturate[1]
+          )})
+          hue-rotate(${random(
+            look.hue[0],
+            look.hue[1]
+          )}deg)
+          brightness(${random(
+            look.brightness[0],
+            look.brightness[1]
+          ) + intensity * .025})
+          contrast(${random(
+            look.contrast[0],
+            look.contrast[1]
+          ) + intensity * .025})
+        `;
+
+
+      building.style.transform =
+        `
+          translate3d(
+            ${random(-.65, .65)}px,
+            ${random(-.65, .65)}px,
+            0
+          )
+        `;
+
+
+      building.dataset.targetOpacity =
+        clamp(
+          random(
+            look.opacity[0],
+            look.opacity[1] +
+            intensity *
+            .07
+          ),
+          .04,
+          .32
+        ).toFixed(
+          3
+        );
+
     }
 
-    function wakeBuilding(intensity) {
-      if (!buildingValid) return;
+
+    function wakeBuilding(
+      intensity
+    ) {
+
+      if (
+        !buildingValid
+      ) {
+
+        return;
+
+      }
+
 
       const count =
-        intensity < 0.34
+        intensity < .34
           ? 1
-          : intensity < 0.62
+          : intensity < .62
             ? 2
             : 3;
 
-      const selected = shuffle(buildings).slice(0, count);
 
-      buildings.forEach(building => {
-        if (selected.includes(building)) {
-          configureBuildingLayer(building, intensity);
-          building.style.opacity = building.dataset.targetOpacity;
-        } else {
-          building.style.opacity = "0";
+      const selected =
+        shuffle(
+          buildings
+        ).slice(
+          0,
+          count
+        );
+
+
+      buildings.forEach(
+        building => {
+
+          if (
+            selected.includes(
+              building
+            )
+          ) {
+
+            configureBuildingLayer(
+              building,
+              intensity
+            );
+
+
+            building.style.opacity =
+              building.dataset
+                .targetOpacity;
+
+          }
+
+          else {
+
+            building.style.opacity =
+              "0";
+
+          }
+
         }
-      });
-    }
-
-    /* =====================================================
-       MOVEMENT ENGINE
-       ===================================================== */
-
-    let pointerInside = false;
-    let lastPointer = { x: 0, y: 0, time: 0 };
-    let currentSpeed = 0;
-    let activeOrder = [];
-    let visibleCount = 0;
-    let movementAccumulator = 0;
-    let lastMutationTime = 0;
-    let lastBuildingUpdateTime = 0;
-
-    const STILL_SPEED = 0.055;
-    const FULL_SPEED = 1.15;
-
-    function normalizeSpeed(speed) {
-      return clamp((speed - STILL_SPEED) / (FULL_SPEED - STILL_SPEED), 0, 1);
-    }
-
-    function revealNextLines(amount, intensity) {
-      if (!activeOrder.length) {
-        activeOrder = shuffle(validLines);
-      }
-
-      for (let i = 0; i < amount; i++) {
-        if (visibleCount >= activeOrder.length) break;
-
-        const item = activeOrder[visibleCount];
-
-        configureLine(item, intensity);
-
-        item.visible = true;
-        item.lastMutation = performance.now();
-
-        item.layer.style.transitionDuration = `${random(160, 430)}ms`;
-        item.layer.style.opacity = item.layer.dataset.targetOpacity;
-
-        visibleCount++;
-      }
-    }
-
-    function mutateVisibleLines(intensity, count) {
-      const now = performance.now();
-
-      const available = validLines.filter(
-        item =>
-          item.visible &&
-          (now - item.lastMutation) > 180
       );
 
-      if (!available.length) return;
-
-      shuffle(available)
-        .slice(0, Math.min(count, available.length))
-        .forEach(item => {
-          configureLine(item, intensity);
-          item.lastMutation = now;
-
-          item.layer.style.transitionDuration =
-            intensity > 0.72
-              ? `${random(100, 220)}ms`
-              : `${random(220, 500)}ms`;
-
-          item.layer.style.opacity = item.layer.dataset.targetOpacity;
-        });
     }
 
-    function processMovement(event) {
-      if (!pointerInside || reducedMotion.matches) return;
 
-      const now = performance.now();
+    /* =====================================================
+       MOVEMENT VISUALS
+       ===================================================== */
 
-      if (!lastPointer.time) {
-        lastPointer = {
-          x: event.clientX,
-          y: event.clientY,
-          time: now
-        };
-        return;
+    let pointerInside =
+      false;
+
+
+    let lastPointer = {
+      x: 0,
+      y: 0,
+      time: 0
+    };
+
+
+    let activeOrder =
+      [];
+
+
+    let visibleCount =
+      0;
+
+
+    let movementAccumulator =
+      0;
+
+
+    let lastMutationTime =
+      0;
+
+
+    let lastBuildingUpdateTime =
+      0;
+
+
+    const STILL_SPEED =
+      .055;
+
+
+    const FULL_SPEED =
+      1.15;
+
+
+    function normalizeSpeed(
+      speed
+    ) {
+
+      return clamp(
+        (
+          speed -
+          STILL_SPEED
+        ) /
+        (
+          FULL_SPEED -
+          STILL_SPEED
+        ),
+        0,
+        1
+      );
+
+    }
+
+
+    function revealNextLines(
+      amount,
+      intensity
+    ) {
+
+      if (
+        !activeOrder.length
+      ) {
+
+        activeOrder =
+          shuffle(
+            validLines
+          );
+
       }
 
-      const dx = event.clientX - lastPointer.x;
-      const dy = event.clientY - lastPointer.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const elapsed = Math.max(16, now - lastPointer.time);
 
-      currentSpeed = distance / elapsed;
+      for (
+        let i = 0;
+        i < amount;
+        i++
+      ) {
+
+        if (
+          visibleCount >=
+          activeOrder.length
+        ) {
+
+          break;
+
+        }
+
+
+        const item =
+          activeOrder[
+            visibleCount
+          ];
+
+
+        configureLine(
+          item,
+          intensity
+        );
+
+
+        item.visible =
+          true;
+
+
+        item.lastMutation =
+          performance.now();
+
+
+        item.layer.style.transitionDuration =
+          `${random(160, 430)}ms`;
+
+
+        item.layer.style.opacity =
+          item.layer.dataset
+            .targetOpacity;
+
+
+        visibleCount++;
+
+      }
+
+    }
+
+
+    function mutateVisibleLines(
+      intensity,
+      count
+    ) {
+
+      const now =
+        performance.now();
+
+
+      const available =
+        validLines.filter(
+          item =>
+            item.visible &&
+            (
+              now -
+              item.lastMutation
+            ) >
+            180
+        );
+
+
+      if (
+        !available.length
+      ) {
+
+        return;
+
+      }
+
+
+      shuffle(
+        available
+      )
+        .slice(
+          0,
+          Math.min(
+            count,
+            available.length
+          )
+        )
+        .forEach(
+          item => {
+
+            configureLine(
+              item,
+              intensity
+            );
+
+
+            item.lastMutation =
+              now;
+
+
+            item.layer.style.transitionDuration =
+              intensity > .72
+                ? `${random(100, 220)}ms`
+                : `${random(220, 500)}ms`;
+
+
+            item.layer.style.opacity =
+              item.layer.dataset
+                .targetOpacity;
+
+          }
+        );
+
+    }
+
+
+    function processMovement(
+      event
+    ) {
+
+      if (
+        !pointerInside ||
+        reducedMotion.matches
+      ) {
+
+        return;
+
+      }
+
+
+      const now =
+        performance.now();
+
+
+      if (
+        !lastPointer.time
+      ) {
+
+        lastPointer = {
+
+          x:
+            event.clientX,
+
+          y:
+            event.clientY,
+
+          time:
+            now
+
+        };
+
+
+        return;
+
+      }
+
+
+      const dx =
+        event.clientX -
+        lastPointer.x;
+
+
+      const dy =
+        event.clientY -
+        lastPointer.y;
+
+
+      const distance =
+        Math.sqrt(
+          dx * dx +
+          dy * dy
+        );
+
+
+      const elapsed =
+        Math.max(
+          16,
+          now -
+          lastPointer.time
+        );
+
+
+      const speed =
+        distance /
+        elapsed;
+
 
       lastPointer = {
-        x: event.clientX,
-        y: event.clientY,
-        time: now
+
+        x:
+          event.clientX,
+
+        y:
+          event.clientY,
+
+        time:
+          now
+
       };
 
-      if (currentSpeed < STILL_SPEED) {
+
+      if (
+        speed <
+        STILL_SPEED
+      ) {
+
         return;
+
       }
 
-      const intensity = normalizeSpeed(currentSpeed);
 
-      movementAccumulator += distance * (0.55 + intensity * 1.55);
+      const intensity =
+        normalizeSpeed(
+          speed
+        );
 
-      const revealThreshold = 95 - intensity * 69;
 
-      if (movementAccumulator >= revealThreshold) {
-        let revealAmount = 1;
+      movementAccumulator +=
+        distance *
+        (
+          .55 +
+          intensity *
+          1.55
+        );
 
-        if (intensity > 0.68) {
-          revealAmount = Math.random() < 0.42 ? 2 : 1;
+
+      const revealThreshold =
+        95 -
+        intensity *
+        69;
+
+
+      if (
+        movementAccumulator >=
+        revealThreshold
+      ) {
+
+        let amount =
+          1;
+
+
+        if (
+          intensity > .68
+        ) {
+
+          amount =
+            Math.random() < .42
+              ? 2
+              : 1;
+
         }
 
-        if (intensity > 0.88) {
-          revealAmount = Math.random() < 0.36 ? 3 : 2;
+
+        if (
+          intensity > .88
+        ) {
+
+          amount =
+            Math.random() < .36
+              ? 3
+              : 2;
+
         }
 
-        revealNextLines(revealAmount, intensity);
-        movementAccumulator = 0;
+
+        revealNextLines(
+          amount,
+          intensity
+        );
+
+
+        movementAccumulator =
+          0;
+
       }
 
-      const minimumMutationGap = 620 - intensity * 535;
 
-      if (now - lastMutationTime >= minimumMutationGap) {
-        let mutationCount = 1;
+      const mutationGap =
+        620 -
+        intensity *
+        535;
 
-        if (intensity > 0.62) {
-          mutationCount = Math.random() < 0.55 ? 2 : 1;
-        }
 
-        if (intensity > 0.84) {
-          mutationCount = Math.random() < 0.38 ? 3 : 2;
-        }
+      if (
+        now -
+        lastMutationTime >=
+        mutationGap
+      ) {
 
-        mutateVisibleLines(intensity, mutationCount);
-        lastMutationTime = now;
+        const count =
+          intensity > .84
+            ? (
+                Math.random() < .35
+                  ? 3
+                  : 2
+              )
+            : 1;
+
+
+        mutateVisibleLines(
+          intensity,
+          count
+        );
+
+
+        lastMutationTime =
+          now;
+
       }
+
 
       const buildingGap =
-        intensity > 0.75
+        intensity > .75
           ? 150
-          : intensity > 0.45
+          : intensity > .45
             ? 210
             : 280;
 
-      if (now - lastBuildingUpdateTime >= buildingGap) {
-        wakeBuilding(intensity);
-        lastBuildingUpdateTime = now;
+
+      if (
+        now -
+        lastBuildingUpdateTime >=
+        buildingGap
+      ) {
+
+        wakeBuilding(
+          intensity
+        );
+
+
+        lastBuildingUpdateTime =
+          now;
+
       }
+
     }
 
-    function clearArtwork(instant = false) {
-      currentSpeed = 0;
-      movementAccumulator = 0;
-      visibleCount = 0;
-      lastMutationTime = 0;
-      lastBuildingUpdateTime = 0;
-      activeOrder = shuffle(validLines);
 
-      validLines.forEach(item => {
-        item.visible = false;
-        item.lastMutation = 0;
-        item.layer.style.transitionDuration = instant ? "0ms" : "220ms";
-        item.layer.style.opacity = "0";
-        item.layer.style.transform = "none";
-      });
+    function clearArtwork(
+      instant = false
+    ) {
 
-      buildings.forEach(building => {
-        building.style.transitionDuration = instant ? "0ms" : "220ms";
-        building.style.opacity = "0";
-        building.style.transform = "translate3d(0,0,0)";
-        building.style.filter = "none";
-        building.style.mixBlendMode = "normal";
-      });
+      movementAccumulator =
+        0;
 
-      base.style.filter = "none";
+
+      visibleCount =
+        0;
+
+
+      lastMutationTime =
+        0;
+
+
+      lastBuildingUpdateTime =
+        0;
+
+
+      activeOrder =
+        shuffle(
+          validLines
+        );
+
+
+      validLines.forEach(
+        item => {
+
+          item.visible =
+            false;
+
+
+          item.lastMutation =
+            0;
+
+
+          item.layer.style.transitionDuration =
+            instant
+              ? "0ms"
+              : "220ms";
+
+
+          item.layer.style.opacity =
+            "0";
+
+        }
+      );
+
+
+      buildings.forEach(
+        building => {
+
+          building.style.transitionDuration =
+            instant
+              ? "0ms"
+              : "220ms";
+
+
+          building.style.opacity =
+            "0";
+
+
+          building.style.transform =
+            "translate3d(0,0,0)";
+
+
+          building.style.filter =
+            "none";
+
+
+          building.style.mixBlendMode =
+            "normal";
+
+        }
+      );
+
     }
+
 
     function visualChordPulse() {
-      if (reducedMotion.matches) return;
 
-      if (visibleCount < 4) {
-        revealNextLines(3, 0.78);
-      } else {
-        revealNextLines(1, 0.78);
+      if (
+        reducedMotion.matches ||
+        (
+          finePointer.matches &&
+          !pointerInside
+        )
+      ) {
+
+        return;
+
       }
 
-      mutateVisibleLines(0.82, 3);
-      wakeBuilding(0.82);
+
+      if (
+        visibleCount < 4
+      ) {
+
+        revealNextLines(
+          3,
+          .78
+        );
+
+      }
+
+      else {
+
+        revealNextLines(
+          1,
+          .78
+        );
+
+      }
+
+
+      mutateVisibleLines(
+        .82,
+        3
+      );
+
+
+      wakeBuilding(
+        .82
+      );
+
     }
+
 
     function visualConnectionPulse() {
-      if (reducedMotion.matches) return;
 
-      if (visibleCount === 0) {
-        revealNextLines(1, 0.38);
-      } else {
-        mutateVisibleLines(0.38, 1);
+      if (
+        reducedMotion.matches ||
+        (
+          finePointer.matches &&
+          !pointerInside
+        )
+      ) {
+
+        return;
+
       }
 
-      if (Math.random() < 0.42) {
-        wakeBuilding(0.34);
+
+      if (
+        visibleCount === 0
+      ) {
+
+        revealNextLines(
+          1,
+          .38
+        );
+
       }
+
+      else {
+
+        mutateVisibleLines(
+          .38,
+          1
+        );
+
+      }
+
+
+      if (
+        Math.random() < .42
+      ) {
+
+        wakeBuilding(
+          .34
+        );
+
+      }
+
     }
 
-    artwork.addEventListener("pointerenter", event => {
-      if (!finePointer.matches || reducedMotion.matches) return;
 
-      pointerInside = true;
-      lastPointer = {
-        x: event.clientX,
-        y: event.clientY,
-        time: performance.now()
-      };
-    });
+    artwork.addEventListener(
+      "pointerenter",
+      event => {
 
-    artwork.addEventListener("pointermove", event => {
-      if (!finePointer.matches) return;
-      processMovement(event);
-    });
+        if (
+          !finePointer.matches ||
+          reducedMotion.matches
+        ) {
 
-    artwork.addEventListener("pointerleave", () => {
-      if (!finePointer.matches) return;
+          return;
 
-      pointerInside = false;
-      lastPointer.time = 0;
-      clearArtwork(false);
-    });
+        }
+
+
+        pointerInside =
+          true;
+
+
+        lastPointer = {
+
+          x:
+            event.clientX,
+
+          y:
+            event.clientY,
+
+          time:
+            performance.now()
+
+        };
+
+      }
+    );
+
+
+    artwork.addEventListener(
+      "pointermove",
+      event => {
+
+        if (
+          finePointer.matches
+        ) {
+
+          processMovement(
+            event
+          );
+
+        }
+
+      }
+    );
+
+
+    artwork.addEventListener(
+      "pointerleave",
+      () => {
+
+        if (
+          !finePointer.matches
+        ) {
+
+          return;
+
+        }
+
+
+        pointerInside =
+          false;
+
+
+        lastPointer.time =
+          0;
+
+
+        clearArtwork(
+          false
+        );
+
+      }
+    );
+
 
     /* =====================================================
        AUDIO CONFIG
        ===================================================== */
 
     const AUDIO_CONFIG = {
-      masterGain: 0.65,
-      eventCooldownMs: 420,
-      maxVoices: 22,
+
+      masterGain:
+        .62,
+
+      eventCooldownMs:
+        480,
+
+      maxVoices:
+        22,
 
       cloud: {
-        minVoices: 5,
-        maxVoices: 8,
-        harmonicChance: 0.17,
-        maxSamePitch: 3,
-        maxSameInstrument: 3,
-        entrySpreadMs: 120
+
+        minVoices:
+          5,
+
+        maxVoices:
+          8,
+
+        harmonicChance:
+          .17,
+
+        maxSamePitch:
+          3,
+
+        maxSameInstrument:
+          3,
+
+        entrySpreadMs:
+          290
+
       },
 
       connection: {
-        minVoices: 1,
-        maxVoices: 4,
-        harmonicChance: 0.34,
-        entrySpreadMs: 160
+
+        minVoices:
+          1,
+
+        maxVoices:
+          4,
+
+        harmonicChance:
+          .34,
+
+        entrySpreadMs:
+          175
+
       },
 
       gainRanges: {
-        concertina: [0.12, 0.22],
-        guitar: [0.12, 0.20],
-        mandolin: [0.09, 0.17],
-        harmonic: [0.07, 0.14],
-        cello: [0.10, 0.16]
+
+        concertina:
+          [.12, .22],
+
+        guitar:
+          [.12, .20],
+
+        mandolin:
+          [.09, .17],
+
+        harmonic:
+          [.07, .14],
+
+        cello:
+          [.10, .16]
+
+      },
+
+      attackRanges: {
+
+        concertina:
+          [.055, .12],
+
+        guitar:
+          [.035, .085],
+
+        mandolin:
+          [.045, .10],
+
+        harmonic:
+          [.060, .13]
+
       },
 
       instrumentWeights: {
-        concertina: 1.10,
-        guitar: 1.00,
-        mandolin: 0.90
+
+        concertina:
+          1.10,
+
+        guitar:
+          1,
+
+        mandolin:
+          .90
+
       },
 
       registerWeights: {
-        1: 1.00,
-        2: 0.88,
-        3: 0.18
+
+        1:
+          1,
+
+        2:
+          .88,
+
+        3:
+          .18
+
       },
 
       panRanges: {
-        1: 0.25,
-        2: 0.40,
-        3: 0.55,
-        harmonic: 0.55
+
+        1:
+          .25,
+
+        2:
+          .40,
+
+        3:
+          .55,
+
+        harmonic:
+          .55
+
       },
 
       drone: {
-        fadeIn: 2.6,
-        preferredCrossfade: 3.0
+
+        fadeIn:
+          2.6,
+
+        crossfade:
+          3,
+
+        /*
+          Always keep at least 12 minutes of future
+          six-minute drone segments scheduled.
+        */
+
+        scheduleAheadSeconds:
+          720,
+
+        watchdogMs:
+          30000
+
       }
+
     };
 
-    const AUDIO_ROOT = "/photography/assets/audio/";
-    const PITCHES = ["D", "E", "F", "G", "A", "B", "C"];
-    const SCALE = ["D", "E", "F", "G", "A", "B", "C"];
-    const SAMPLE_MANIFEST = [];
 
-    function addSample(instrument, pitchClass, register, filename, isHarmonic = false) {
+    const AUDIO_ROOT =
+      "/photography/assets/audio/";
+
+
+    const PITCHES = [
+      "D",
+      "E",
+      "F",
+      "G",
+      "A",
+      "B",
+      "C"
+    ];
+
+
+    const SCALE = [
+      "D",
+      "E",
+      "F",
+      "G",
+      "A",
+      "B",
+      "C"
+    ];
+
+
+    const SAMPLE_MANIFEST =
+      [];
+
+
+    function addSample(
+      instrument,
+      pitchClass,
+      register,
+      filename,
+      isHarmonic = false
+    ) {
+
       SAMPLE_MANIFEST.push({
-        id: filename.replace(".mp3", ""),
+
+        id:
+          filename.replace(
+            ".mp3",
+            ""
+          ),
+
         instrument,
+
         pitchClass,
+
         register,
+
         isHarmonic,
-        path: AUDIO_ROOT + filename
+
+        path:
+          AUDIO_ROOT +
+          filename
+
       });
+
     }
 
-    PITCHES.forEach(pitch => {
-      const lower = pitch.toLowerCase();
-      addSample("concertina", pitch, 1, `concertina_${lower}1.mp3`);
-      addSample("concertina", pitch, 2, `concertina_${lower}2.mp3`);
-    });
 
-    addSample("concertina", "D", 3, "concertina_d3.mp3");
+    PITCHES.forEach(
+      pitch => {
 
-    PITCHES.forEach(pitch => {
-      const lower = pitch.toLowerCase();
-      addSample("guitar", pitch, 1, `guitar_${lower}1.mp3`);
-      addSample("guitar", pitch, 2, `guitar_${lower}2.mp3`);
-    });
+        const p =
+          pitch.toLowerCase();
 
-    addSample("guitar", "D", 3, "guitar_d3.mp3");
 
-    PITCHES.forEach(pitch => {
-      const lower = pitch.toLowerCase();
-      addSample("mandolin", pitch, 1, `mandolin_${lower}1.mp3`);
-      addSample("mandolin", pitch, 2, `mandolin_${lower}2.mp3`);
-    });
+        addSample(
+          "concertina",
+          pitch,
+          1,
+          `concertina_${p}1.mp3`
+        );
 
-    addSample("guitar", "D", 3, "guitar_hd.mp3", true);
-    addSample("guitar", "G", 3, "guitar_hg.mp3", true);
-    addSample("guitar", "B", 3, "guitar_hb.mp3", true);
-    addSample("guitar", "E", 3, "guitar_he.mp3", true);
 
-    const DRONE_PATH = AUDIO_ROOT + "cello_drone_d.mp3";
+        addSample(
+          "concertina",
+          pitch,
+          2,
+          `concertina_${p}2.mp3`
+        );
+
+      }
+    );
+
+
+    addSample(
+      "concertina",
+      "D",
+      3,
+      "concertina_d3.mp3"
+    );
+
+
+    PITCHES.forEach(
+      pitch => {
+
+        const p =
+          pitch.toLowerCase();
+
+
+        addSample(
+          "guitar",
+          pitch,
+          1,
+          `guitar_${p}1.mp3`
+        );
+
+
+        addSample(
+          "guitar",
+          pitch,
+          2,
+          `guitar_${p}2.mp3`
+        );
+
+      }
+    );
+
+
+    addSample(
+      "guitar",
+      "D",
+      3,
+      "guitar_d3.mp3"
+    );
+
+
+    PITCHES.forEach(
+      pitch => {
+
+        const p =
+          pitch.toLowerCase();
+
+
+        addSample(
+          "mandolin",
+          pitch,
+          1,
+          `mandolin_${p}1.mp3`
+        );
+
+
+        addSample(
+          "mandolin",
+          pitch,
+          2,
+          `mandolin_${p}2.mp3`
+        );
+
+      }
+    );
+
+
+    addSample(
+      "guitar",
+      "D",
+      3,
+      "guitar_hd.mp3",
+      true
+    );
+
+
+    addSample(
+      "guitar",
+      "G",
+      3,
+      "guitar_hg.mp3",
+      true
+    );
+
+
+    addSample(
+      "guitar",
+      "B",
+      3,
+      "guitar_hb.mp3",
+      true
+    );
+
+
+    addSample(
+      "guitar",
+      "E",
+      3,
+      "guitar_he.mp3",
+      true
+    );
+
+
+    const DRONE_PATH =
+      AUDIO_ROOT +
+      "cello_drone_d.mp3";
+
+
+    /* =====================================================
+       HARMONIC WORLD
+
+       tension:
+       0 = open / settled
+       1 = unstable / tense
+       ===================================================== */
 
     const HARMONIES = [
-      { pitches: ["D", "A", "E"], weight: 16 },
-      { pitches: ["D", "F", "A"], weight: 13 },
-      { pitches: ["G", "B", "D"], weight: 14 },
-      { pitches: ["C", "G", "D"], weight: 11 },
-      { pitches: ["G", "D", "A"], weight: 11 },
-      { pitches: ["D", "G", "A"], weight: 10 },
-      { pitches: ["D", "C", "G"], weight: 9 },
-      { pitches: ["C", "E", "G"], weight: 8 },
-      { pitches: ["E", "B", "D"], weight: 7 },
-      { pitches: ["A", "E", "G"], weight: 7 },
-      { pitches: ["E", "G", "B"], weight: 6 },
-      { pitches: ["F", "A", "C"], weight: 5 },
-      { pitches: ["A", "C", "E"], weight: 5 },
-      { pitches: ["B", "D", "F"], weight: 1 }
+
+      {
+        name: "d-open",
+        pitches: ["D", "A", "E"],
+        tension: .08,
+        weight: 17
+      },
+
+      {
+        name: "d-minor",
+        pitches: ["D", "F", "A"],
+        tension: .16,
+        weight: 15
+      },
+
+      {
+        name: "g-open",
+        pitches: ["D", "G", "A"],
+        tension: .12,
+        weight: 14
+      },
+
+      {
+        name: "g-major",
+        pitches: ["G", "B", "D"],
+        tension: .20,
+        weight: 14
+      },
+
+      {
+        name: "c-open",
+        pitches: ["C", "G", "D"],
+        tension: .18,
+        weight: 13
+      },
+
+      {
+        name: "c-major",
+        pitches: ["C", "E", "G"],
+        tension: .24,
+        weight: 11
+      },
+
+      {
+        name: "a-open",
+        pitches: ["A", "E", "G"],
+        tension: .31,
+        weight: 10
+      },
+
+      {
+        name: "a-minor",
+        pitches: ["A", "C", "E"],
+        tension: .30,
+        weight: 10
+      },
+
+      {
+        name: "e-minor",
+        pitches: ["E", "G", "B"],
+        tension: .31,
+        weight: 9
+      },
+
+      {
+        name: "e-suspended",
+        pitches: ["E", "B", "D"],
+        tension: .35,
+        weight: 9
+      },
+
+      {
+        name: "f-major",
+        pitches: ["F", "A", "C"],
+        tension: .34,
+        weight: 8
+      },
+
+      {
+        name: "d-e-g",
+        pitches: ["D", "E", "G"],
+        tension: .31,
+        weight: 9
+      },
+
+      {
+        name: "d-f-g",
+        pitches: ["D", "F", "G"],
+        tension: .38,
+        weight: 8
+      },
+
+      {
+        name: "d-c-e",
+        pitches: ["D", "C", "E"],
+        tension: .41,
+        weight: 7
+      },
+
+      {
+        name: "d-c-f",
+        pitches: ["D", "C", "F"],
+        tension: .43,
+        weight: 7
+      },
+
+      {
+        name: "g-a-c",
+        pitches: ["G", "A", "C"],
+        tension: .39,
+        weight: 7
+      },
+
+      {
+        name: "g-b-c",
+        pitches: ["G", "B", "C"],
+        tension: .51,
+        weight: 5
+      },
+
+      {
+        name: "c-f-g",
+        pitches: ["C", "F", "G"],
+        tension: .44,
+        weight: 6
+      },
+
+      {
+        name: "a-b-d",
+        pitches: ["A", "B", "D"],
+        tension: .46,
+        weight: 6
+      },
+
+      {
+        name: "a-c-d",
+        pitches: ["A", "C", "D"],
+        tension: .40,
+        weight: 7
+      },
+
+      {
+        name: "b-c-e",
+        pitches: ["B", "C", "E"],
+        tension: .58,
+        weight: 4
+      },
+
+      {
+        name: "f-g-a",
+        pitches: ["F", "G", "A"],
+        tension: .54,
+        weight: 4
+      },
+
+      {
+        name: "e-f-a",
+        pitches: ["E", "F", "A"],
+        tension: .62,
+        weight: 3
+      },
+
+      {
+        name: "b-d-f",
+        pitches: ["B", "D", "F"],
+        tension: .88,
+        weight: .65
+      }
+
     ];
+
 
     /* =====================================================
        AUDIO STATE
        ===================================================== */
 
     const audioState = {
-      context: null,
-      masterBus: null,
-      compressor: null,
-      masterGain: null,
 
-      muted: false,
-      overlayMuted: false,
+      context:
+        null,
 
-      droneStarted: false,
-      droneLoading: false,
-      droneBuffer: null,
-      droneNextStart: 0,
-      droneTimer: null,
+      masterBus:
+        null,
 
-      currentHarmony: null,
-      nextHarmony: null,
-      eventType: "drone",
-      eventPending: false,
-      lastClickTime: 0,
+      compressor:
+        null,
 
-      activeVoices: new Set(),
-      bufferCache: new Map(),
-      loadPromises: new Map(),
-      preloadStarted: false,
-      audioUnavailable: false
+      masterGain:
+        null,
+
+      muted:
+        false,
+
+      overlayMuted:
+        false,
+
+      droneStarted:
+        false,
+
+      droneLoading:
+        false,
+
+      droneBuffer:
+        null,
+
+      droneNextStart:
+        0,
+
+      droneHorizonEnd:
+        0,
+
+      droneScheduler:
+        null,
+
+      currentHarmony:
+        null,
+
+      nextHarmony:
+        null,
+
+      recentHarmonySignatures:
+        [],
+
+      phraseTargetTension:
+        .22,
+
+      phraseStepsRemaining:
+        0,
+
+      eventType:
+        "drone",
+
+      eventPending:
+        false,
+
+      lastClickTime:
+        0,
+
+      activeVoices:
+        new Set(),
+
+      bufferCache:
+        new Map(),
+
+      loadPromises:
+        new Map(),
+
+      preloadStarted:
+        false,
+
+      autoSongEnabled:
+        false,
+
+      autoSongTimer:
+        null
+
     };
 
+
     /* =====================================================
-       AUDIO CORE
+       AUDIO CONTEXT
        ===================================================== */
 
     function ensureAudioContext() {
-      if (audioState.context) return audioState.context;
 
-      const Context = window.AudioContext || window.webkitAudioContext;
+      if (
+        audioState.context
+      ) {
 
-      if (!Context) {
-        audioState.audioUnavailable = true;
-        setSoundButton("sound unavailable", "error");
-        console.warn("Web Audio API is not supported in this browser.");
-        return null;
+        return audioState.context;
+
       }
 
-      const context = new Context();
 
-      const masterBus = context.createGain();
-      const compressor = context.createDynamicsCompressor();
-      const masterGain = context.createGain();
+      const Context =
+        window.AudioContext ||
+        window.webkitAudioContext;
 
-      compressor.threshold.value = -12;
-      compressor.knee.value = 12;
-      compressor.ratio.value = 2.4;
-      compressor.attack.value = 0.018;
-      compressor.release.value = 0.32;
 
-      masterGain.gain.value = AUDIO_CONFIG.masterGain;
+      if (
+        !Context
+      ) {
 
-      masterBus.connect(compressor);
-      compressor.connect(masterGain);
-      masterGain.connect(context.destination);
+        return null;
 
-      audioState.context = context;
-      audioState.masterBus = masterBus;
-      audioState.compressor = compressor;
-      audioState.masterGain = masterGain;
+      }
+
+
+      const context =
+        new Context();
+
+
+      const masterBus =
+        context.createGain();
+
+
+      const compressor =
+        context.createDynamicsCompressor();
+
+
+      const masterGain =
+        context.createGain();
+
+
+      compressor.threshold.value =
+        -12;
+
+
+      compressor.knee.value =
+        12;
+
+
+      compressor.ratio.value =
+        2.4;
+
+
+      compressor.attack.value =
+        .018;
+
+
+      compressor.release.value =
+        .32;
+
+
+      masterGain.gain.value =
+        AUDIO_CONFIG.masterGain;
+
+
+      masterBus.connect(
+        compressor
+      );
+
+
+      compressor.connect(
+        masterGain
+      );
+
+
+      masterGain.connect(
+        context.destination
+      );
+
+
+      audioState.context =
+        context;
+
+
+      audioState.masterBus =
+        masterBus;
+
+
+      audioState.compressor =
+        compressor;
+
+
+      audioState.masterGain =
+        masterGain;
+
 
       return context;
+
     }
 
-    function updateMasterGain(immediate = false) {
-      if (!audioState.context || !audioState.masterGain) return;
 
-      const now = audioState.context.currentTime;
-      const shouldMute = audioState.muted || audioState.overlayMuted;
-      const target = shouldMute ? 0.0001 : AUDIO_CONFIG.masterGain;
+    function updateSoundLabel() {
 
-      audioState.masterGain.gain.cancelScheduledValues(now);
-      audioState.masterGain.gain.setValueAtTime(
-        Math.max(0.0001, audioState.masterGain.gain.value),
-        now
-      );
-
-      if (immediate) {
-        audioState.masterGain.gain.setValueAtTime(target, now);
-      } else {
-        audioState.masterGain.gain.exponentialRampToValueAtTime(target, now + 0.24);
-      }
-    }
-
-    async function loadBuffer(path) {
-      if (audioState.bufferCache.has(path)) {
-        return audioState.bufferCache.get(path);
-      }
-
-      if (audioState.loadPromises.has(path)) {
-        return audioState.loadPromises.get(path);
-      }
-
-      const context = ensureAudioContext();
-
-      if (!context) {
-        throw new Error("No AudioContext available.");
-      }
-
-      const promise = fetch(path)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Failed to load ${path}`);
-          }
-
-          return response.arrayBuffer();
-        })
-        .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
-        .then(buffer => {
-          audioState.bufferCache.set(path, buffer);
-          audioState.loadPromises.delete(path);
-          return buffer;
-        })
-        .catch(error => {
-          audioState.loadPromises.delete(path);
-          console.warn(error);
-          throw error;
-        });
-
-      audioState.loadPromises.set(path, promise);
-      return promise;
-    }
-
-    async function preloadAllSamples() {
-      if (audioState.preloadStarted) return;
-      audioState.preloadStarted = true;
-
-      const paths = SAMPLE_MANIFEST.map(sample => sample.path);
-      const concurrency = 6;
-
-      for (let i = 0; i < paths.length; i += concurrency) {
-        const group = paths.slice(i, i + concurrency);
-        await Promise.allSettled(group.map(path => loadBuffer(path)));
-      }
-    }
-
-    /* =====================================================
-       DRONE
-       ===================================================== */
-
-    function scheduleDroneSegment(initial = false) {
       if (
-        !audioState.context ||
-        !audioState.droneBuffer ||
         !audioState.droneStarted
       ) {
+
         return;
+
       }
 
-      const context = audioState.context;
-      const buffer = audioState.droneBuffer;
-      const duration = buffer.duration;
 
-      const crossfade = Math.min(
-        AUDIO_CONFIG.drone.preferredCrossfade,
-        Math.max(1, duration * 0.22)
+      soundToggle.textContent =
+        audioState.muted
+          ? "click to turn on"
+          : "click to turn off";
+
+
+      soundToggle.setAttribute(
+        "aria-label",
+        audioState.muted
+          ? "Turn sound on"
+          : "Turn sound off"
       );
 
-      let startTime = audioState.droneNextStart;
-
-      if (startTime < context.currentTime + 0.05) {
-        startTime = context.currentTime + 0.05;
-      }
-
-      const source = context.createBufferSource();
-      const gain = context.createGain();
-
-      source.buffer = buffer;
-
-      const targetGain = random(
-        AUDIO_CONFIG.gainRanges.cello[0],
-        AUDIO_CONFIG.gainRanges.cello[1]
-      );
-
-      const fadeIn = initial
-        ? AUDIO_CONFIG.drone.fadeIn
-        : crossfade;
-
-      const endTime = startTime + duration;
-      const fadeOutStart = Math.max(startTime + fadeIn, endTime - crossfade);
-
-      gain.gain.setValueAtTime(0.0001, startTime);
-      gain.gain.linearRampToValueAtTime(targetGain, startTime + fadeIn);
-      gain.gain.setValueAtTime(targetGain, fadeOutStart);
-      gain.gain.linearRampToValueAtTime(0.0001, endTime);
-
-      source.connect(gain);
-      gain.connect(audioState.masterBus);
-
-      source.start(startTime);
-      source.stop(endTime + 0.05);
-
-      const nextStart = endTime - crossfade;
-      audioState.droneNextStart = nextStart;
-
-      window.clearTimeout(audioState.droneTimer);
-
-      const schedulerDelay = Math.max(
-        300,
-        (nextStart - context.currentTime - 0.75) * 1000
-      );
-
-      audioState.droneTimer = window.setTimeout(() => {
-        scheduleDroneSegment(false);
-      }, schedulerDelay);
     }
 
-    async function startDrone() {
-      if (audioState.droneStarted || audioState.droneLoading) return;
 
-      audioState.droneLoading = true;
-      setSoundButton("sound: loading...", "loading");
+    function updateMasterGain() {
 
-      const context = ensureAudioContext();
+      if (
+        !audioState.context ||
+        !audioState.masterGain
+      ) {
 
-      if (!context) {
-        audioState.droneLoading = false;
-        setSoundButton("sound unavailable", "error");
         return;
+
       }
 
-      try {
-        await context.resume();
-        const buffer = await loadBuffer(DRONE_PATH);
 
-        audioState.droneBuffer = buffer;
-        audioState.droneStarted = true;
-        audioState.droneLoading = false;
-        audioState.droneNextStart = context.currentTime + 0.05;
+      const now =
+        audioState.context
+          .currentTime;
 
-        scheduleDroneSegment(true);
-        preloadAllSamples().catch(() => {});
 
-        setSoundButton("sound: on", "on");
-        audioState.eventType = "cloud";
-      } catch (error) {
-        audioState.droneLoading = false;
-        audioState.audioUnavailable = true;
-        setSoundButton("sound unavailable", "error");
-        console.warn("Unable to start cello drone.", error);
-      }
+      const target =
+        (
+          audioState.muted ||
+          audioState.overlayMuted
+        )
+          ? .0001
+          : AUDIO_CONFIG.masterGain;
+
+
+      audioState.masterGain.gain
+        .cancelScheduledValues(
+          now
+        );
+
+
+      audioState.masterGain.gain
+        .setValueAtTime(
+          Math.max(
+            .0001,
+            audioState.masterGain.gain
+              .value
+          ),
+          now
+        );
+
+
+      audioState.masterGain.gain
+        .exponentialRampToValueAtTime(
+          target,
+          now +
+          .24
+        );
+
     }
+
 
     /* =====================================================
-       HARMONY HELPERS
+       BUFFER LOADING
        ===================================================== */
 
-    function harmonySignature(harmony) {
-      return [...harmony].sort().join("-");
-    }
+    async function loadBuffer(
+      path
+    ) {
 
-    function sharedPitchCount(a, b) {
-      return a.filter(pitch => b.includes(pitch)).length;
-    }
+      if (
+        audioState.bufferCache.has(
+          path
+        )
+      ) {
 
-    function scaleDistance(a, b) {
-      const ai = SCALE.indexOf(a);
-      const bi = SCALE.indexOf(b);
-      const raw = Math.abs(ai - bi);
-      return Math.min(raw, SCALE.length - raw);
-    }
-
-    function harmonyDistance(current, candidate) {
-      return candidate.reduce((total, pitch) => {
-        const nearest = Math.min(
-          ...current.map(currentPitch => scaleDistance(currentPitch, pitch))
+        return audioState.bufferCache.get(
+          path
         );
-        return total + nearest;
-      }, 0);
-    }
 
-    function chooseWeightedHarmony(candidates) {
-      return weightedObject(candidates).pitches;
-    }
+      }
 
-    function chooseInitialHarmony() {
-      return chooseWeightedHarmony(HARMONIES);
-    }
 
-    function chooseNextHarmony(current) {
-      const currentSignature = harmonySignature(current);
+      if (
+        audioState.loadPromises.has(
+          path
+        )
+      ) {
 
-      const available = HARMONIES.filter(
-        harmony => harmonySignature(harmony.pitches) !== currentSignature
+        return audioState.loadPromises.get(
+          path
+        );
+
+      }
+
+
+      const context =
+        ensureAudioContext();
+
+
+      const promise =
+        fetch(
+          path
+        )
+          .then(
+            response => {
+
+              if (
+                !response.ok
+              ) {
+
+                throw new Error(
+                  `Failed to load ${path}`
+                );
+
+              }
+
+
+              return response.arrayBuffer();
+
+            }
+          )
+          .then(
+            arrayBuffer =>
+              context.decodeAudioData(
+                arrayBuffer
+              )
+          )
+          .then(
+            buffer => {
+
+              audioState.bufferCache.set(
+                path,
+                buffer
+              );
+
+
+              audioState.loadPromises.delete(
+                path
+              );
+
+
+              return buffer;
+
+            }
+          )
+          .catch(
+            error => {
+
+              audioState.loadPromises.delete(
+                path
+              );
+
+
+              throw error;
+
+            }
+          );
+
+
+      audioState.loadPromises.set(
+        path,
+        promise
       );
 
-      const mode = weightedPick([
-        { value: "shared", weight: 60 },
-        { value: "close", weight: 25 },
-        { value: "free", weight: 15 }
-      ]);
 
-      if (mode === "shared") {
-        const shared = available.filter(
-          harmony => sharedPitchCount(current, harmony.pitches) > 0
+      return promise;
+
+    }
+
+
+    async function preloadAllSamples() {
+
+      if (
+        audioState.preloadStarted
+      ) {
+
+        return;
+
+      }
+
+
+      audioState.preloadStarted =
+        true;
+
+
+      const paths =
+        SAMPLE_MANIFEST.map(
+          sample =>
+            sample.path
         );
 
-        if (shared.length) {
-          return chooseWeightedHarmony(
-            shared.map(harmony => ({
-              ...harmony,
-              weight: harmony.weight * (1 + sharedPitchCount(current, harmony.pitches) * 0.30)
-            }))
-          );
-        }
+
+      for (
+        let i = 0;
+        i < paths.length;
+        i += 6
+      ) {
+
+        await Promise.allSettled(
+          paths
+            .slice(
+              i,
+              i + 6
+            )
+            .map(
+              path =>
+                loadBuffer(
+                  path
+                )
+            )
+        );
+
       }
 
-      if (mode === "close") {
-        const ranked = [...available]
-          .sort(
-            (a, b) =>
-              harmonyDistance(current, a.pitches) -
-              harmonyDistance(current, b.pitches)
-          )
-          .slice(0, 5);
-
-        return chooseWeightedHarmony(ranked);
-      }
-
-      return chooseWeightedHarmony(available);
     }
+
+
+    /* =====================================================
+       ROBUST SIX-MINUTE DRONE LOOP
+       ===================================================== */
+
+    function scheduleOneDronePass(
+      startTime,
+      initial
+    ) {
+
+      const context =
+        audioState.context;
+
+
+      const buffer =
+        audioState.droneBuffer;
+
+
+      const duration =
+        buffer.duration;
+
+
+      const crossfade =
+        Math.min(
+          AUDIO_CONFIG.drone
+            .crossfade,
+          duration *
+          .20
+        );
+
+
+      const source =
+        context.createBufferSource();
+
+
+      const gain =
+        context.createGain();
+
+
+      source.buffer =
+        buffer;
+
+
+      const level =
+        random(
+          AUDIO_CONFIG.gainRanges
+            .cello[0],
+          AUDIO_CONFIG.gainRanges
+            .cello[1]
+        );
+
+
+      const fadeIn =
+        initial
+          ? AUDIO_CONFIG.drone
+              .fadeIn
+          : crossfade;
+
+
+      const end =
+        startTime +
+        duration;
+
+
+      gain.gain.setValueAtTime(
+        .0001,
+        startTime
+      );
+
+
+      gain.gain.linearRampToValueAtTime(
+        level,
+        startTime +
+        fadeIn
+      );
+
+
+      gain.gain.setValueAtTime(
+        level,
+        Math.max(
+          startTime +
+          fadeIn,
+          end -
+          crossfade
+        )
+      );
+
+
+      gain.gain.linearRampToValueAtTime(
+        .0001,
+        end
+      );
+
+
+      source.connect(
+        gain
+      );
+
+
+      gain.connect(
+        audioState.masterBus
+      );
+
+
+      source.start(
+        startTime
+      );
+
+
+      source.stop(
+        end +
+        .10
+      );
+
+
+      audioState.droneNextStart =
+        end -
+        crossfade;
+
+
+      audioState.droneHorizonEnd =
+        end;
+
+    }
+
+
+    function ensureDroneScheduledAhead() {
+
+      if (
+        !audioState.droneStarted ||
+        !audioState.droneBuffer ||
+        !audioState.context
+      ) {
+
+        return;
+
+      }
+
+
+      const context =
+        audioState.context;
+
+
+      /*
+        If a browser suspension somehow leaves us behind
+        the Web Audio clock, recover from "now."
+      */
+
+      if (
+        audioState.droneNextStart <
+        context.currentTime -
+        1
+      ) {
+
+        audioState.droneNextStart =
+          context.currentTime +
+          .05;
+
+
+        audioState.droneHorizonEnd =
+          context.currentTime;
+
+      }
+
+
+      const targetHorizon =
+        context.currentTime +
+        AUDIO_CONFIG.drone
+          .scheduleAheadSeconds;
+
+
+      let safety =
+        0;
+
+
+      while (
+        audioState.droneHorizonEnd <
+          targetHorizon &&
+        safety <
+          10
+      ) {
+
+        safety++;
+
+
+        scheduleOneDronePass(
+          audioState.droneNextStart,
+          false
+        );
+
+      }
+
+    }
+
+
+    async function startDrone(
+      point
+    ) {
+
+      if (
+        audioState.droneStarted ||
+        audioState.droneLoading
+      ) {
+
+        return false;
+
+      }
+
+
+      audioState.droneLoading =
+        true;
+
+
+      const context =
+        ensureAudioContext();
+
+
+      if (
+        !context
+      ) {
+
+        audioState.droneLoading =
+          false;
+
+
+        return false;
+
+      }
+
+
+      await context.resume();
+
+
+      try {
+
+        const buffer =
+          await loadBuffer(
+            DRONE_PATH
+          );
+
+
+        audioState.droneBuffer =
+          buffer;
+
+
+        audioState.droneStarted =
+          true;
+
+
+        audioState.droneLoading =
+          false;
+
+
+        const firstStart =
+          context.currentTime +
+          .05;
+
+
+        scheduleOneDronePass(
+          firstStart,
+          true
+        );
+
+
+        ensureDroneScheduledAhead();
+
+
+        window.clearInterval(
+          audioState.droneScheduler
+        );
+
+
+        audioState.droneScheduler =
+          window.setInterval(
+            ensureDroneScheduledAhead,
+            AUDIO_CONFIG.drone
+              .watchdogMs
+          );
+
+
+        updateSoundLabel();
+
+
+        audioState.eventType =
+          "cloud";
+
+
+        createSplash(
+          "drone",
+          point
+        );
+
+
+        preloadAllSamples();
+
+
+        return true;
+
+      }
+
+      catch (error) {
+
+        audioState.droneLoading =
+          false;
+
+
+        console.warn(
+          "Unable to start drone.",
+          error
+        );
+
+
+        return false;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       DIRECTED HARMONIC JOURNEY
+       ===================================================== */
+
+    function harmonySignature(
+      harmony
+    ) {
+
+      return [...harmony.pitches]
+        .sort()
+        .join("-");
+
+    }
+
+
+    function sharedPitchCount(
+      a,
+      b
+    ) {
+
+      return a.pitches.filter(
+        pitch =>
+          b.pitches.includes(
+            pitch
+          )
+      ).length;
+
+    }
+
+
+    function scaleDistance(
+      a,
+      b
+    ) {
+
+      const ai =
+        SCALE.indexOf(
+          a
+        );
+
+
+      const bi =
+        SCALE.indexOf(
+          b
+        );
+
+
+      const raw =
+        Math.abs(
+          ai -
+          bi
+        );
+
+
+      return Math.min(
+        raw,
+        SCALE.length -
+        raw
+      );
+
+    }
+
+
+    function harmonyDistance(
+      current,
+      candidate
+    ) {
+
+      return candidate.pitches.reduce(
+        (
+          total,
+          pitch
+        ) => {
+
+          const nearest =
+            Math.min(
+              ...current.pitches.map(
+                source =>
+                  scaleDistance(
+                    source,
+                    pitch
+                  )
+              )
+            );
+
+
+          return total +
+            nearest;
+
+        },
+        0
+      );
+
+    }
+
+
+    function chooseInitialHarmony() {
+
+      const calm =
+        HARMONIES.filter(
+          harmony =>
+            harmony.tension <
+            .38
+        );
+
+
+      return weightedObject(
+        calm
+      );
+
+    }
+
+
+    function beginNewPhrase(
+      current
+    ) {
+
+      let mode;
+
+
+      if (
+        current.tension >
+        .62
+      ) {
+
+        mode =
+          "release";
+
+      }
+
+      else {
+
+        mode =
+          weightedPick([
+
+            {
+              value: "hover",
+              weight: 37
+            },
+
+            {
+              value: "rise",
+              weight: 26
+            },
+
+            {
+              value: "settle",
+              weight: 27
+            },
+
+            {
+              value: "darken",
+              weight: 10
+            }
+
+          ]);
+
+      }
+
+
+      if (
+        mode === "release"
+      ) {
+
+        audioState.phraseTargetTension =
+          random(
+            .10,
+            .30
+          );
+
+      }
+
+      else if (
+        mode === "rise"
+      ) {
+
+        audioState.phraseTargetTension =
+          random(
+            Math.max(
+              .30,
+              current.tension
+            ),
+            .64
+          );
+
+      }
+
+      else if (
+        mode === "darken"
+      ) {
+
+        audioState.phraseTargetTension =
+          random(
+            .50,
+            .76
+          );
+
+      }
+
+      else if (
+        mode === "settle"
+      ) {
+
+        audioState.phraseTargetTension =
+          random(
+            .08,
+            .30
+          );
+
+      }
+
+      else {
+
+        audioState.phraseTargetTension =
+          clamp(
+            current.tension +
+            random(
+              -.15,
+              .15
+            ),
+            .12,
+            .58
+          );
+
+      }
+
+
+      audioState.phraseStepsRemaining =
+        randomInt(
+          2,
+          4
+        );
+
+    }
+
+
+    function chooseNextHarmony(
+      current
+    ) {
+
+      if (
+        audioState.phraseStepsRemaining <=
+        0
+      ) {
+
+        beginNewPhrase(
+          current
+        );
+
+      }
+
+
+      audioState.phraseStepsRemaining--;
+
+
+      const currentSignature =
+        harmonySignature(
+          current
+        );
+
+
+      const candidates =
+        HARMONIES.filter(
+          candidate =>
+            harmonySignature(
+              candidate
+            ) !==
+            currentSignature
+        );
+
+
+      const scored =
+        candidates.map(
+          candidate => {
+
+            const signature =
+              harmonySignature(
+                candidate
+              );
+
+
+            const shared =
+              sharedPitchCount(
+                current,
+                candidate
+              );
+
+
+            const distance =
+              harmonyDistance(
+                current,
+                candidate
+              );
+
+
+            const tensionError =
+              Math.abs(
+                candidate.tension -
+                audioState
+                  .phraseTargetTension
+              );
+
+
+            let weight =
+              candidate.weight;
+
+
+            /*
+              Smooth harmonic continuity.
+            */
+
+            weight *=
+              1 +
+              shared *
+              .72;
+
+
+            weight *=
+              1 /
+              (
+                1 +
+                distance *
+                .27
+              );
+
+
+            /*
+              Follow the current phrase's broad
+              tension direction.
+            */
+
+            weight *=
+              .48 +
+              Math.exp(
+                -tensionError *
+                4
+              );
+
+
+            /*
+              High tension generally wants somewhere
+              calmer next.
+            */
+
+            if (
+              current.tension >
+                .62 &&
+              candidate.tension <
+                current.tension
+            ) {
+
+              weight *=
+                1.9;
+
+            }
+
+
+            /*
+              Avoid jumping from complete repose
+              straight into the ugliest harmony.
+            */
+
+            if (
+              current.tension <
+                .24 &&
+              candidate.tension >
+                .68
+            ) {
+
+              weight *=
+                .18;
+
+            }
+
+
+            /*
+              The D pedal makes D-containing structures
+              especially convincing without requiring them.
+            */
+
+            if (
+              candidate.pitches.includes(
+                "D"
+              )
+            ) {
+
+              weight *=
+                1.11;
+
+            }
+
+
+            /*
+              Avoid recent repetition.
+            */
+
+            if (
+              audioState
+                .recentHarmonySignatures
+                .includes(
+                  signature
+                )
+            ) {
+
+              weight *=
+                .10;
+
+            }
+
+
+            /*
+              Very remote moves remain possible,
+              just uncommon.
+            */
+
+            if (
+              shared === 0 &&
+              distance >
+                5
+            ) {
+
+              weight *=
+                .42;
+
+            }
+
+
+            return {
+
+              ...candidate,
+
+              weight:
+                Math.max(
+                  .005,
+                  weight
+                )
+
+            };
+
+          }
+        );
+
+
+      const selected =
+        weightedObject(
+          scored
+        );
+
+
+      const signature =
+        harmonySignature(
+          selected
+        );
+
+
+      audioState
+        .recentHarmonySignatures
+        .push(
+          signature
+        );
+
+
+      if (
+        audioState
+          .recentHarmonySignatures
+          .length >
+        5
+      ) {
+
+        audioState
+          .recentHarmonySignatures
+          .shift();
+
+      }
+
+
+      return selected;
+
+    }
+
 
     /* =====================================================
        SAMPLE SELECTION
        ===================================================== */
 
-    function samplesForPitch(pitchClass, includeHarmonics = false) {
+    function samplesForPitch(
+      pitch,
+      includeHarmonics = false
+    ) {
+
       return SAMPLE_MANIFEST.filter(
         sample =>
-          sample.pitchClass === pitchClass &&
-          (includeHarmonics || !sample.isHarmonic)
-      );
-    }
-
-    function weightedSample(samples, usedIds, instrumentCounts, preferredRegister = null) {
-      const candidates = samples.filter(
-        sample =>
-          !usedIds.has(sample.id) &&
+          sample.pitchClass ===
+            pitch &&
           (
-            sample.isHarmonic ||
-            (instrumentCounts[sample.instrument] || 0) <
-            AUDIO_CONFIG.cloud.maxSameInstrument
+            includeHarmonics ||
+            !sample.isHarmonic
           )
       );
 
-      if (!candidates.length) return null;
-
-      return weightedObject(
-        candidates.map(sample => {
-          let weight = AUDIO_CONFIG.instrumentWeights[sample.instrument] || 1;
-
-          if (sample.isHarmonic) {
-            weight = 0.45;
-          } else {
-            weight *= AUDIO_CONFIG.registerWeights[sample.register] || 1;
-          }
-
-          if (preferredRegister && sample.register === preferredRegister) {
-            weight *= 1.8;
-          }
-
-          if (sample.instrument === "mandolin" && sample.register === 2) {
-            weight *= 1.25;
-          }
-
-          if (
-            (sample.instrument === "guitar" || sample.instrument === "concertina") &&
-            sample.register === 1
-          ) {
-            weight *= 1.12;
-          }
-
-          return {
-            ...sample,
-            weight
-          };
-        })
-      );
     }
 
-    function addVoice(voices, sample, pitchCounts, instrumentCounts, usedIds) {
-      if (!sample) return false;
 
-      voices.push(sample);
-      usedIds.add(sample.id);
+    function weightedSample(
+      samples,
+      usedIds,
+      instrumentCounts,
+      preferredRegister = null
+    ) {
 
-      pitchCounts[sample.pitchClass] = (pitchCounts[sample.pitchClass] || 0) + 1;
-      instrumentCounts[sample.instrument] = (instrumentCounts[sample.instrument] || 0) + 1;
-
-      return true;
-    }
-
-    function generateCloudVoicing(harmony) {
-      const targetVoices = randomInt(
-        AUDIO_CONFIG.cloud.minVoices,
-        AUDIO_CONFIG.cloud.maxVoices
-      );
-
-      const voices = [];
-      const usedIds = new Set();
-      const pitchCounts = {};
-      const instrumentCounts = {};
-
-      harmony.forEach((pitch, index) => {
-        const preferredRegister =
-          index === 0
-            ? 1
-            : index === 1
-              ? 2
-              : (Math.random() < 0.5 ? 1 : 2);
-
-        const sample = weightedSample(
-          samplesForPitch(pitch, false),
-          usedIds,
-          instrumentCounts,
-          preferredRegister
+      const candidates =
+        samples.filter(
+          sample =>
+            !usedIds.has(
+              sample.id
+            ) &&
+            (
+              sample.isHarmonic ||
+              (
+                instrumentCounts[
+                  sample.instrument
+                ] || 0
+              ) <
+              AUDIO_CONFIG.cloud
+                .maxSameInstrument
+            )
         );
 
-        addVoice(voices, sample, pitchCounts, instrumentCounts, usedIds);
-      });
-
-      const harmonicCandidates = SAMPLE_MANIFEST.filter(
-        sample =>
-          sample.isHarmonic &&
-          harmony.includes(sample.pitchClass)
-      );
-
-      const wantsHarmonic =
-        harmonicCandidates.length > 0 &&
-        Math.random() < AUDIO_CONFIG.cloud.harmonicChance;
-
-      const normalTarget =
-        wantsHarmonic
-          ? Math.max(harmony.length, targetVoices - 1)
-          : targetVoices;
-
-      let safety = 0;
-
-      while (voices.length < normalTarget && safety < 80) {
-        safety++;
-
-        const eligiblePitches = harmony.filter(
-          pitch => (pitchCounts[pitch] || 0) < AUDIO_CONFIG.cloud.maxSamePitch
-        );
-
-        if (!eligiblePitches.length) break;
-
-        const pitch = weightedObject(
-          eligiblePitches.map(pitchClass => ({
-            value: pitchClass,
-            weight: 1 / (1 + (pitchCounts[pitchClass] || 0))
-          }))
-        ).value;
-
-        const sample = weightedSample(
-          samplesForPitch(pitch, false),
-          usedIds,
-          instrumentCounts,
-          null
-        );
-
-        if (!sample) continue;
-
-        addVoice(voices, sample, pitchCounts, instrumentCounts, usedIds);
-      }
-
-      if (wantsHarmonic && voices.length < targetVoices) {
-        const availableHarmonics = harmonicCandidates.filter(
-          sample => !usedIds.has(sample.id)
-        );
-
-        if (availableHarmonics.length) {
-          const harmonic = pick(availableHarmonics);
-          addVoice(voices, harmonic, pitchCounts, instrumentCounts, usedIds);
-        }
-      }
-
-      return voices;
-    }
-
-    /* =====================================================
-       CONNECTIVE PITCH GENERATOR
-       ===================================================== */
-
-    function unique(array) {
-      return [...new Set(array)];
-    }
-
-    function approachPitches(currentHarmony, nextHarmony) {
-      const approaches = [];
-
-      currentHarmony.forEach(currentPitch => {
-        const ci = SCALE.indexOf(currentPitch);
-
-        nextHarmony.forEach(targetPitch => {
-          const ti = SCALE.indexOf(targetPitch);
-
-          const forward = (ti - ci + SCALE.length) % SCALE.length;
-          const backward = (ci - ti + SCALE.length) % SCALE.length;
-
-          if (forward === 2) {
-            approaches.push(SCALE[(ci + 1) % SCALE.length]);
-          }
-
-          if (backward === 2) {
-            approaches.push(SCALE[(ci - 1 + SCALE.length) % SCALE.length]);
-          }
-        });
-      });
-
-      return unique(approaches);
-    }
-
-    function chooseConnectionPitches(currentHarmony, nextHarmony) {
-      const common = currentHarmony.filter(
-        pitch => nextHarmony.includes(pitch)
-      );
-
-      const incoming = nextHarmony.filter(
-        pitch => !currentHarmony.includes(pitch)
-      );
-
-      const approaches = approachPitches(currentHarmony, nextHarmony);
-
-      const strategy = weightedPick([
-        { value: "incoming", weight: 34 },
-        { value: "common", weight: common.length ? 28 : 0 },
-        { value: "approach", weight: approaches.length ? 26 : 0 },
-        { value: "pair", weight: 12 }
-      ]);
-
-      if (strategy === "common" && common.length) {
-        return [pick(common)];
-      }
-
-      if (strategy === "approach" && approaches.length) {
-        return [pick(approaches)];
-      }
-
-      if (strategy === "pair") {
-        const firstPool =
-          common.length
-            ? common
-            : approaches.length
-              ? approaches
-              : currentHarmony;
-
-        const secondPool =
-          incoming.length
-            ? incoming
-            : nextHarmony;
-
-        return unique([
-          pick(firstPool),
-          pick(secondPool)
-        ]).slice(0, 2);
-      }
-
-      return [
-        pick(incoming.length ? incoming : nextHarmony)
-      ];
-    }
-
-    function generateConnectionVoicing(pitches) {
-      const targetVoices = randomInt(
-        Math.max(AUDIO_CONFIG.connection.minVoices, pitches.length),
-        AUDIO_CONFIG.connection.maxVoices
-      );
-
-      const voices = [];
-      const usedIds = new Set();
-      const pitchCounts = {};
-      const instrumentCounts = {};
-
-      pitches.forEach(pitch => {
-        const regular = weightedSample(
-          samplesForPitch(pitch, false),
-          usedIds,
-          instrumentCounts,
-          Math.random() < 0.68 ? 2 : 1
-        );
-
-        addVoice(voices, regular, pitchCounts, instrumentCounts, usedIds);
-      });
 
       if (
-        voices.length < targetVoices &&
-        Math.random() < AUDIO_CONFIG.connection.harmonicChance
+        !candidates.length
       ) {
-        const harmonicCandidates = SAMPLE_MANIFEST.filter(
-          sample =>
-            sample.isHarmonic &&
-            pitches.includes(sample.pitchClass) &&
-            !usedIds.has(sample.id)
+
+        return null;
+
+      }
+
+
+      return weightedObject(
+        candidates.map(
+          sample => {
+
+            let weight =
+              AUDIO_CONFIG
+                .instrumentWeights[
+                  sample.instrument
+                ] || 1;
+
+
+            if (
+              sample.isHarmonic
+            ) {
+
+              weight =
+                .45;
+
+            }
+
+            else {
+
+              weight *=
+                AUDIO_CONFIG
+                  .registerWeights[
+                    sample.register
+                  ] || 1;
+
+            }
+
+
+            if (
+              preferredRegister &&
+              preferredRegister ===
+                sample.register
+            ) {
+
+              weight *=
+                1.7;
+
+            }
+
+
+            if (
+              sample.instrument ===
+                "mandolin" &&
+              sample.register ===
+                2
+            ) {
+
+              weight *=
+                1.18;
+
+            }
+
+
+            return {
+
+              ...sample,
+
+              weight
+
+            };
+
+          }
+        )
+      );
+
+    }
+
+
+    function addVoice(
+      voices,
+      sample,
+      pitchCounts,
+      instrumentCounts,
+      usedIds
+    ) {
+
+      if (
+        !sample
+      ) {
+
+        return;
+
+      }
+
+
+      voices.push(
+        sample
+      );
+
+
+      usedIds.add(
+        sample.id
+      );
+
+
+      pitchCounts[
+        sample.pitchClass
+      ] =
+        (
+          pitchCounts[
+            sample.pitchClass
+          ] || 0
+        ) +
+        1;
+
+
+      instrumentCounts[
+        sample.instrument
+      ] =
+        (
+          instrumentCounts[
+            sample.instrument
+          ] || 0
+        ) +
+        1;
+
+    }
+
+
+    function generateCloudVoicing(
+      harmony
+    ) {
+
+      const target =
+        randomInt(
+          AUDIO_CONFIG.cloud
+            .minVoices,
+          AUDIO_CONFIG.cloud
+            .maxVoices
         );
 
-        if (harmonicCandidates.length) {
+
+      const voices =
+        [];
+
+
+      const usedIds =
+        new Set();
+
+
+      const pitchCounts =
+        {};
+
+
+      const instrumentCounts =
+        {};
+
+
+      harmony.pitches.forEach(
+        (
+          pitch,
+          index
+        ) => {
+
+          const preferred =
+            index === 0
+              ? 1
+              : index === 1
+                ? 2
+                : (
+                    Math.random() < .5
+                      ? 1
+                      : 2
+                  );
+
+
           addVoice(
             voices,
-            pick(harmonicCandidates),
+            weightedSample(
+              samplesForPitch(
+                pitch
+              ),
+              usedIds,
+              instrumentCounts,
+              preferred
+            ),
             pitchCounts,
             instrumentCounts,
             usedIds
           );
+
         }
-      }
+      );
 
-      let safety = 0;
 
-      while (voices.length < targetVoices && safety < 40) {
-        safety++;
-
-        const pitch = pick(pitches);
-
-        const sample = weightedSample(
-          samplesForPitch(pitch, false),
-          usedIds,
-          instrumentCounts,
-          Math.random() < 0.62 ? 2 : null
+      const harmonicCandidates =
+        SAMPLE_MANIFEST.filter(
+          sample =>
+            sample.isHarmonic &&
+            harmony.pitches.includes(
+              sample.pitchClass
+            )
         );
 
-        if (!sample) continue;
 
-        addVoice(voices, sample, pitchCounts, instrumentCounts, usedIds);
+      const wantsHarmonic =
+        harmonicCandidates.length >
+          0 &&
+        Math.random() <
+          AUDIO_CONFIG.cloud
+            .harmonicChance;
+
+
+      const normalTarget =
+        wantsHarmonic
+          ? Math.max(
+              3,
+              target -
+              1
+            )
+          : target;
+
+
+      let safety =
+        0;
+
+
+      while (
+        voices.length <
+          normalTarget &&
+        safety <
+          80
+      ) {
+
+        safety++;
+
+
+        const eligible =
+          harmony.pitches.filter(
+            pitch =>
+              (
+                pitchCounts[
+                  pitch
+                ] || 0
+              ) <
+              AUDIO_CONFIG.cloud
+                .maxSamePitch
+          );
+
+
+        if (
+          !eligible.length
+        ) {
+
+          break;
+
+        }
+
+
+        /*
+          Underrepresented chord tones get preference.
+        */
+
+        const pitch =
+          weightedObject(
+            eligible.map(
+              candidate => ({
+
+                value:
+                  candidate,
+
+                weight:
+                  1 /
+                  (
+                    1 +
+                    (
+                      pitchCounts[
+                        candidate
+                      ] || 0
+                    )
+                  )
+
+              })
+            )
+          ).value;
+
+
+        addVoice(
+          voices,
+          weightedSample(
+            samplesForPitch(
+              pitch
+            ),
+            usedIds,
+            instrumentCounts
+          ),
+          pitchCounts,
+          instrumentCounts,
+          usedIds
+        );
+
       }
 
+
+      if (
+        wantsHarmonic &&
+        voices.length <
+          target
+      ) {
+
+        const candidates =
+          harmonicCandidates.filter(
+            sample =>
+              !usedIds.has(
+                sample.id
+              )
+          );
+
+
+        if (
+          candidates.length
+        ) {
+
+          addVoice(
+            voices,
+            pick(
+              candidates
+            ),
+            pitchCounts,
+            instrumentCounts,
+            usedIds
+          );
+
+        }
+
+      }
+
+
       return voices;
+
     }
+
+
+    /* =====================================================
+       CONNECTIVE MUSIC
+
+       Uses the already-planned next harmony.
+       ===================================================== */
+
+    function unique(
+      array
+    ) {
+
+      return [
+        ...new Set(
+          array
+        )
+      ];
+
+    }
+
+
+    function oneStepToward(
+      source,
+      target
+    ) {
+
+      const si =
+        SCALE.indexOf(
+          source
+        );
+
+
+      const ti =
+        SCALE.indexOf(
+          target
+        );
+
+
+      if (
+        si === ti
+      ) {
+
+        return source;
+
+      }
+
+
+      const forward =
+        (
+          ti -
+          si +
+          SCALE.length
+        ) %
+        SCALE.length;
+
+
+      const backward =
+        (
+          si -
+          ti +
+          SCALE.length
+        ) %
+        SCALE.length;
+
+
+      if (
+        forward <=
+        backward
+      ) {
+
+        return SCALE[
+          (
+            si +
+            1
+          ) %
+          SCALE.length
+        ];
+
+      }
+
+
+      return SCALE[
+        (
+          si -
+          1 +
+          SCALE.length
+        ) %
+        SCALE.length
+      ];
+
+    }
+
+
+    function connectionCandidates(
+      current,
+      next
+    ) {
+
+      const common =
+        current.pitches.filter(
+          pitch =>
+            next.pitches.includes(
+              pitch
+            )
+        );
+
+
+      const incoming =
+        next.pitches.filter(
+          pitch =>
+            !current.pitches.includes(
+              pitch
+            )
+        );
+
+
+      const approaches =
+        [];
+
+
+      current.pitches.forEach(
+        source => {
+
+          next.pitches.forEach(
+            target => {
+
+              approaches.push(
+                oneStepToward(
+                  source,
+                  target
+                )
+              );
+
+            }
+          );
+
+        }
+      );
+
+
+      return {
+
+        common:
+          unique(
+            common
+          ),
+
+        incoming:
+          unique(
+            incoming
+          ),
+
+        approaches:
+          unique(
+            approaches
+          )
+
+      };
+
+    }
+
+
+    function chooseConnectionPitches(
+      current,
+      next
+    ) {
+
+      const pools =
+        connectionCandidates(
+          current,
+          next
+        );
+
+
+      const strategy =
+        weightedPick([
+
+          {
+            value: "common",
+            weight:
+              pools.common.length
+                ? 31
+                : 0
+          },
+
+          {
+            value: "approach",
+            weight:
+              pools.approaches.length
+                ? 31
+                : 0
+          },
+
+          {
+            value: "incoming",
+            weight:
+              pools.incoming.length
+                ? 24
+                : 0
+          },
+
+          {
+            value: "pair",
+            weight: 14
+          }
+
+        ]);
+
+
+      if (
+        strategy === "common"
+      ) {
+
+        return [
+          pick(
+            pools.common
+          )
+        ];
+
+      }
+
+
+      if (
+        strategy === "approach"
+      ) {
+
+        return [
+          pick(
+            pools.approaches
+          )
+        ];
+
+      }
+
+
+      if (
+        strategy === "incoming"
+      ) {
+
+        return [
+          pick(
+            pools.incoming
+          )
+        ];
+
+      }
+
+
+      return unique([
+
+        pick(
+          pools.common.length
+            ? pools.common
+            : pools.approaches
+        ),
+
+        pick(
+          pools.incoming.length
+            ? pools.incoming
+            : next.pitches
+        )
+
+      ]).slice(
+        0,
+        2
+      );
+
+    }
+
+
+    function generateConnectionVoicing(
+      pitches
+    ) {
+
+      const target =
+        randomInt(
+          Math.max(
+            1,
+            pitches.length
+          ),
+          AUDIO_CONFIG.connection
+            .maxVoices
+        );
+
+
+      const voices =
+        [];
+
+
+      const usedIds =
+        new Set();
+
+
+      const pitchCounts =
+        {};
+
+
+      const instrumentCounts =
+        {};
+
+
+      pitches.forEach(
+        pitch => {
+
+          addVoice(
+            voices,
+            weightedSample(
+              samplesForPitch(
+                pitch
+              ),
+              usedIds,
+              instrumentCounts,
+              Math.random() < .68
+                ? 2
+                : 1
+            ),
+            pitchCounts,
+            instrumentCounts,
+            usedIds
+          );
+
+        }
+      );
+
+
+      if (
+        voices.length <
+          target &&
+        Math.random() <
+          AUDIO_CONFIG.connection
+            .harmonicChance
+      ) {
+
+        const harmonics =
+          SAMPLE_MANIFEST.filter(
+            sample =>
+              sample.isHarmonic &&
+              pitches.includes(
+                sample.pitchClass
+              ) &&
+              !usedIds.has(
+                sample.id
+              )
+          );
+
+
+        if (
+          harmonics.length
+        ) {
+
+          addVoice(
+            voices,
+            pick(
+              harmonics
+            ),
+            pitchCounts,
+            instrumentCounts,
+            usedIds
+          );
+
+        }
+
+      }
+
+
+      let safety =
+        0;
+
+
+      while (
+        voices.length <
+          target &&
+        safety <
+          30
+      ) {
+
+        safety++;
+
+
+        const pitch =
+          pick(
+            pitches
+          );
+
+
+        addVoice(
+          voices,
+          weightedSample(
+            samplesForPitch(
+              pitch
+            ),
+            usedIds,
+            instrumentCounts,
+            Math.random() < .62
+              ? 2
+              : null
+          ),
+          pitchCounts,
+          instrumentCounts,
+          usedIds
+        );
+
+      }
+
+
+      return voices;
+
+    }
+
 
     /* =====================================================
        PLAYBACK
+
+       Two-stage attack softening:
+       individual note ramp + event bus ramp.
        ===================================================== */
 
-    function gainRangeForSample(sample) {
-      if (sample.isHarmonic) {
-        return AUDIO_CONFIG.gainRanges.harmonic;
-      }
+    function gainRangeForSample(
+      sample
+    ) {
 
-      return AUDIO_CONFIG.gainRanges[sample.instrument];
+      return sample.isHarmonic
+        ? AUDIO_CONFIG
+            .gainRanges
+            .harmonic
+        : AUDIO_CONFIG
+            .gainRanges[
+              sample.instrument
+            ];
+
     }
 
-    function panRangeForSample(sample) {
-      if (sample.isHarmonic) {
-        return AUDIO_CONFIG.panRanges.harmonic;
-      }
 
-      return AUDIO_CONFIG.panRanges[sample.register] || 0.30;
+    function attackRangeForSample(
+      sample
+    ) {
+
+      return sample.isHarmonic
+        ? AUDIO_CONFIG
+            .attackRanges
+            .harmonic
+        : AUDIO_CONFIG
+            .attackRanges[
+              sample.instrument
+            ];
+
     }
 
-    function scheduleBufferVoice(sample, buffer, startTime, gainScale = 1) {
-      if (audioState.activeVoices.size >= AUDIO_CONFIG.maxVoices) {
-        return false;
-      }
 
-      const context = audioState.context;
-      const source = context.createBufferSource();
-      const gain = context.createGain();
-      const panner = context.createStereoPanner();
+    function panRangeForSample(
+      sample
+    ) {
 
-      source.buffer = buffer;
-      source.playbackRate.value = 1;
+      return sample.isHarmonic
+        ? AUDIO_CONFIG
+            .panRanges
+            .harmonic
+        : AUDIO_CONFIG
+            .panRanges[
+              sample.register
+            ] || .30;
 
-      const range = gainRangeForSample(sample);
-      const sourceGain = random(range[0], range[1]) * gainScale;
-
-      gain.gain.setValueAtTime(sourceGain, startTime);
-
-      const panRange = panRangeForSample(sample);
-      panner.pan.setValueAtTime(random(-panRange, panRange), startTime);
-
-      source.connect(gain);
-      gain.connect(panner);
-      panner.connect(audioState.masterBus);
-
-      audioState.activeVoices.add(source);
-
-      source.onended = () => {
-        audioState.activeVoices.delete(source);
-
-        try {
-          source.disconnect();
-          gain.disconnect();
-          panner.disconnect();
-        } catch {}
-      };
-
-      source.start(startTime);
-      return true;
     }
 
-    async function playVoices(voices, spreadMs, gainScale = 1) {
-      if (!voices.length || !audioState.context) return;
 
-      const results = await Promise.all(
-        voices.map(async sample => {
-          try {
-            const buffer = await loadBuffer(sample.path);
-            return { sample, buffer };
-          } catch {
-            return null;
-          }
-        })
+    function staggerOffsets(
+      count,
+      maxSpread
+    ) {
+
+      if (
+        count <= 1
+      ) {
+
+        return [
+          random(
+            0,
+            25
+          )
+        ];
+
+      }
+
+
+      const offsets =
+        [];
+
+
+      let current =
+        random(
+          0,
+          22
+        );
+
+
+      for (
+        let i = 0;
+        i < count;
+        i++
+      ) {
+
+        offsets.push(
+          Math.min(
+            current,
+            maxSpread
+          )
+        );
+
+
+        current +=
+          random(
+            22,
+            52
+          );
+
+      }
+
+
+      return offsets;
+
+    }
+
+
+    function scheduleVoice(
+      sample,
+      buffer,
+      startTime,
+      gainScale,
+      destination,
+      eventType
+    ) {
+
+      if (
+        audioState.activeVoices
+          .size >=
+        AUDIO_CONFIG.maxVoices
+      ) {
+
+        return;
+
+      }
+
+
+      const context =
+        audioState.context;
+
+
+      const source =
+        context.createBufferSource();
+
+
+      const gain =
+        context.createGain();
+
+
+      const panner =
+        context.createStereoPanner();
+
+
+      source.buffer =
+        buffer;
+
+
+      source.playbackRate.value =
+        1;
+
+
+      const range =
+        gainRangeForSample(
+          sample
+        );
+
+
+      const targetGain =
+        random(
+          range[0],
+          range[1]
+        ) *
+        gainScale;
+
+
+      const attackRange =
+        attackRangeForSample(
+          sample
+        );
+
+
+      let attack =
+        random(
+          attackRange[0],
+          attackRange[1]
+        );
+
+
+      if (
+        eventType ===
+        "connection"
+      ) {
+
+        attack *=
+          .82;
+
+      }
+
+
+      gain.gain.setValueAtTime(
+        .0001,
+        startTime
       );
 
-      const playable = results.filter(Boolean);
 
-      if (!playable.length) return;
+      gain.gain.linearRampToValueAtTime(
+        targetGain,
+        startTime +
+        attack
+      );
 
-      const baseStart = audioState.context.currentTime + 0.055;
 
-      const offsets = playable
-        .map(() => random(0, spreadMs))
-        .sort((a, b) => a - b);
-
-      playable.forEach((entry, index) => {
-        if (audioState.activeVoices.size >= AUDIO_CONFIG.maxVoices) return;
-
-        scheduleBufferVoice(
-          entry.sample,
-          entry.buffer,
-          baseStart + offsets[index] / 1000,
-          gainScale
+      const panRange =
+        panRangeForSample(
+          sample
         );
-      });
+
+
+      panner.pan.setValueAtTime(
+        random(
+          -panRange,
+          panRange
+        ),
+        startTime
+      );
+
+
+      source.connect(
+        gain
+      );
+
+
+      gain.connect(
+        panner
+      );
+
+
+      panner.connect(
+        destination
+      );
+
+
+      audioState.activeVoices.add(
+        source
+      );
+
+
+      source.onended =
+        () => {
+
+          audioState.activeVoices.delete(
+            source
+          );
+
+
+          try {
+
+            source.disconnect();
+            gain.disconnect();
+            panner.disconnect();
+
+          }
+
+          catch {}
+
+        };
+
+
+      source.start(
+        startTime
+      );
+
     }
+
+
+    async function playVoices(
+      voices,
+      spreadMs,
+      gainScale,
+      eventType
+    ) {
+
+      const results =
+        await Promise.all(
+          voices.map(
+            async sample => {
+
+              try {
+
+                return {
+
+                  sample,
+
+                  buffer:
+                    await loadBuffer(
+                      sample.path
+                    )
+
+                };
+
+              }
+
+              catch {
+
+                return null;
+
+              }
+
+            }
+          )
+        );
+
+
+      const playable =
+        results.filter(
+          Boolean
+        );
+
+
+      if (
+        !playable.length
+      ) {
+
+        return false;
+
+      }
+
+
+      const context =
+        audioState.context;
+
+
+      const eventBus =
+        context.createGain();
+
+
+      eventBus.connect(
+        audioState.masterBus
+      );
+
+
+      const eventStart =
+        context.currentTime +
+        .06;
+
+
+      const eventAttack =
+        eventType === "cloud"
+          ? random(.09, .15)
+          : random(.045, .085);
+
+
+      eventBus.gain.setValueAtTime(
+        .0001,
+        eventStart
+      );
+
+
+      eventBus.gain.linearRampToValueAtTime(
+        1,
+        eventStart +
+        eventAttack
+      );
+
+
+      const offsets =
+        staggerOffsets(
+          playable.length,
+          spreadMs
+        );
+
+
+      let longestDuration =
+        0;
+
+
+      playable.forEach(
+        (
+          entry,
+          index
+        ) => {
+
+          longestDuration =
+            Math.max(
+              longestDuration,
+              entry.buffer.duration
+            );
+
+
+          scheduleVoice(
+            entry.sample,
+            entry.buffer,
+            eventStart +
+            offsets[index] /
+            1000,
+            gainScale,
+            eventBus,
+            eventType
+          );
+
+        }
+      );
+
+
+      window.setTimeout(
+        () => {
+
+          try {
+
+            eventBus.disconnect();
+
+          }
+
+          catch {}
+
+        },
+        (
+          longestDuration +
+          1
+        ) *
+        1000
+      );
+
+
+      return true;
+
+    }
+
 
     /* =====================================================
        MUSICAL EVENTS
        ===================================================== */
 
-    async function playCloudEvent() {
-      if (!audioState.currentHarmony) {
-        audioState.currentHarmony = chooseInitialHarmony();
-      } else if (audioState.nextHarmony) {
-        audioState.currentHarmony = audioState.nextHarmony;
+    async function playCloudEvent(
+      point
+    ) {
+
+      if (
+        !audioState.currentHarmony
+      ) {
+
+        audioState.currentHarmony =
+          chooseInitialHarmony();
+
+
+        audioState
+          .recentHarmonySignatures
+          .push(
+            harmonySignature(
+              audioState.currentHarmony
+            )
+          );
+
       }
 
-      const voices = generateCloudVoicing(audioState.currentHarmony);
+      else if (
+        audioState.nextHarmony
+      ) {
 
-      await playVoices(
-        voices,
-        AUDIO_CONFIG.cloud.entrySpreadMs,
-        1
+        audioState.currentHarmony =
+          audioState.nextHarmony;
+
+      }
+
+
+      const played =
+        await playVoices(
+          generateCloudVoicing(
+            audioState.currentHarmony
+          ),
+          AUDIO_CONFIG.cloud
+            .entrySpreadMs,
+          .90,
+          "cloud"
+        );
+
+
+      if (
+        !played
+      ) {
+
+        return false;
+
+      }
+
+
+      audioState.nextHarmony =
+        chooseNextHarmony(
+          audioState.currentHarmony
+        );
+
+
+      audioState.eventType =
+        "connection";
+
+
+      createSplash(
+        "cloud",
+        point
       );
 
-      audioState.nextHarmony = chooseNextHarmony(audioState.currentHarmony);
-      audioState.eventType = "connection";
 
       visualChordPulse();
+
+
+      return true;
+
     }
 
-    async function playConnectionEvent() {
-      if (!audioState.currentHarmony || !audioState.nextHarmony) return;
 
-      const pitches = chooseConnectionPitches(
-        audioState.currentHarmony,
-        audioState.nextHarmony
+    async function playConnectionEvent(
+      point
+    ) {
+
+      if (
+        !audioState.currentHarmony ||
+        !audioState.nextHarmony
+      ) {
+
+        return false;
+
+      }
+
+
+      const pitches =
+        chooseConnectionPitches(
+          audioState.currentHarmony,
+          audioState.nextHarmony
+        );
+
+
+      const played =
+        await playVoices(
+          generateConnectionVoicing(
+            pitches
+          ),
+          AUDIO_CONFIG.connection
+            .entrySpreadMs,
+          .90,
+          "connection"
+        );
+
+
+      if (
+        !played
+      ) {
+
+        return false;
+
+      }
+
+
+      audioState.eventType =
+        "cloud";
+
+
+      createSplash(
+        "connection",
+        point
       );
 
-      const voices = generateConnectionVoicing(pitches);
 
-      await playVoices(
-        voices,
-        AUDIO_CONFIG.connection.entrySpreadMs,
-        0.92
-      );
-
-      audioState.eventType = "cloud";
       visualConnectionPulse();
+
+
+      return true;
+
     }
 
-    async function handleMusicalClick() {
-      const now = performance.now();
 
-      if (audioState.audioUnavailable) return;
-      if (now - audioState.lastClickTime < AUDIO_CONFIG.eventCooldownMs) return;
-      if (audioState.eventPending) return;
+    async function handleMusicalClick(
+      origin,
+      point
+    ) {
 
-      audioState.lastClickTime = now;
-      audioState.eventPending = true;
+      const now =
+        performance.now();
+
+
+      if (
+        now -
+        audioState.lastClickTime <
+        AUDIO_CONFIG.eventCooldownMs
+      ) {
+
+        return false;
+
+      }
+
+
+      if (
+        audioState.eventPending
+      ) {
+
+        return false;
+
+      }
+
+
+      audioState.lastClickTime =
+        now;
+
+
+      audioState.eventPending =
+        true;
+
+
+      let success =
+        false;
+
 
       try {
-        const context = ensureAudioContext();
 
-        if (!context) return;
+        const context =
+          ensureAudioContext();
+
+
+        if (
+          !context
+        ) {
+
+          return false;
+
+        }
+
 
         await context.resume();
 
-        if (!audioState.droneStarted && !audioState.droneLoading) {
-          await startDrone();
-          return;
+
+        if (
+          audioState.muted
+        ) {
+
+          audioState.muted =
+            false;
+
+
+          updateMasterGain();
+
+
+          updateSoundLabel();
+
         }
 
-        if (audioState.droneLoading) return;
 
-        if (audioState.eventType === "cloud") {
-          await playCloudEvent();
-        } else {
-          await playConnectionEvent();
+        if (
+          !audioState.droneStarted
+        ) {
+
+          success =
+            await startDrone(
+              point
+            );
+
         }
-      } finally {
-        audioState.eventPending = false;
+
+        else if (
+          audioState.eventType ===
+          "cloud"
+        ) {
+
+          success =
+            await playCloudEvent(
+              point
+            );
+
+        }
+
+        else {
+
+          success =
+            await playConnectionEvent(
+              point
+            );
+
+        }
+
+
+        return success;
+
       }
+
+      finally {
+
+        audioState.eventPending =
+          false;
+
+
+        if (
+          success &&
+          origin === "manual"
+        ) {
+
+          advanceTutorial();
+
+        }
+
+
+        if (
+          success &&
+          origin === "manual" &&
+          audioState.autoSongEnabled
+        ) {
+
+          scheduleAutoSong();
+
+        }
+
+      }
+
     }
 
-    artwork.addEventListener("click", async event => {
-      if (event.target.closest(".fuji-sound-toggle")) return;
-      await handleMusicalClick();
-    });
 
-    artwork.addEventListener("keydown", async event => {
-      if (event.key !== "Enter" && event.key !== " ") return;
-      if (event.target === soundToggle) return;
+    /* =====================================================
+       RANDOM SONG
+       ===================================================== */
 
-      event.preventDefault();
-      await handleMusicalClick();
-    });
+    function updateAutoSongLabel() {
 
-    soundToggle.addEventListener("click", async event => {
-      event.preventDefault();
-      event.stopPropagation();
+      autoSongButton.textContent =
+        audioState.autoSongEnabled
+          ? "stop randomly generating"
+          : "randomly generate a song";
 
-      if (audioState.audioUnavailable) return;
+    }
 
-      if (!audioState.droneStarted) {
-        await handleMusicalClick();
-        return;
+
+    function nextAutoDelay() {
+
+      /*
+        The current musical state determines the pacing.
+
+        A cloud needs more room to decay.
+        A connective note can move sooner.
+      */
+
+      if (
+        audioState.eventType ===
+        "connection"
+      ) {
+
+        return random(
+          3800,
+          7000
+        );
+
       }
 
-      audioState.muted = !audioState.muted;
+
+      return random(
+        2400,
+        4700
+      );
+
+    }
+
+
+    function scheduleAutoSong() {
+
+      window.clearTimeout(
+        audioState.autoSongTimer
+      );
+
+
+      if (
+        !audioState.autoSongEnabled ||
+        audioState.overlayMuted
+      ) {
+
+        return;
+
+      }
+
+
+      audioState.autoSongTimer =
+        window.setTimeout(
+          async () => {
+
+            if (
+              !audioState.autoSongEnabled ||
+              audioState.overlayMuted
+            ) {
+
+              return;
+
+            }
+
+
+            await handleMusicalClick(
+              "auto",
+              randomEventPoint()
+            );
+
+
+            scheduleAutoSong();
+
+          },
+          nextAutoDelay()
+        );
+
+    }
+
+
+    async function startAutoSong() {
+
+      audioState.autoSongEnabled =
+        true;
+
+
+      audioState.muted =
+        false;
+
+
       updateMasterGain();
 
-      setSoundButton(
-        audioState.muted ? "sound: off" : "sound: on",
-        audioState.muted ? "off" : "on"
+
+      updateSoundLabel();
+
+
+      updateAutoSongLabel();
+
+
+      await handleMusicalClick(
+        "auto",
+        randomEventPoint()
       );
 
-      soundToggle.setAttribute(
-        "aria-label",
-        audioState.muted ? "Turn sound on" : "Turn sound off"
+
+      scheduleAutoSong();
+
+    }
+
+
+    function stopAutoSong() {
+
+      audioState.autoSongEnabled =
+        false;
+
+
+      window.clearTimeout(
+        audioState.autoSongTimer
       );
-    });
+
+
+      updateAutoSongLabel();
+
+    }
+
+
+    /* =====================================================
+       USER EVENTS
+       ===================================================== */
+
+    artwork.addEventListener(
+      "click",
+      async event => {
+
+        if (
+          event.target.closest(
+            ".fuji-controls"
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        /*
+          Instruction disappears the instant the user acts.
+          The next instruction waits until the sound event
+          actually succeeds.
+        */
+
+        hidePrompt();
+
+
+        await handleMusicalClick(
+          "manual",
+          eventPointFromMouse(
+            event
+          )
+        );
+
+      }
+    );
+
+
+    artwork.addEventListener(
+      "keydown",
+      async event => {
+
+        if (
+          event.key !== "Enter" &&
+          event.key !== " "
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          event.target.closest(
+            ".fuji-controls"
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        hidePrompt();
+
+
+        await handleMusicalClick(
+          "manual",
+          {
+            x: .5,
+            y: .55
+          }
+        );
+
+      }
+    );
+
+
+    soundToggle.addEventListener(
+      "click",
+      event => {
+
+        event.preventDefault();
+
+
+        event.stopPropagation();
+
+
+        if (
+          !audioState.droneStarted
+        ) {
+
+          return;
+
+        }
+
+
+        audioState.muted =
+          !audioState.muted;
+
+
+        if (
+          audioState.muted &&
+          audioState.autoSongEnabled
+        ) {
+
+          stopAutoSong();
+
+        }
+
+
+        updateMasterGain();
+
+
+        updateSoundLabel();
+
+      }
+    );
+
+
+    autoSongButton.addEventListener(
+      "click",
+      async event => {
+
+        event.preventDefault();
+
+
+        event.stopPropagation();
+
+
+        if (
+          audioState.autoSongEnabled
+        ) {
+
+          stopAutoSong();
+
+        }
+
+        else {
+
+          await startAutoSong();
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       WIP INTERLOCK
+       ===================================================== */
 
     window.fujiAudio = {
-      setOverlayMuted(muted) {
-        audioState.overlayMuted = Boolean(muted);
+
+      setOverlayMuted(
+        muted
+      ) {
+
+        audioState.overlayMuted =
+          Boolean(
+            muted
+          );
+
+
         updateMasterGain();
+
+
+        if (
+          audioState.overlayMuted
+        ) {
+
+          window.clearTimeout(
+            audioState.autoSongTimer
+          );
+
+        }
+
+        else if (
+          audioState.autoSongEnabled
+        ) {
+
+          scheduleAutoSong();
+
+        }
+
       }
+
     };
 
-    prepareVisuals();
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+    updateAutoSongLabel();
+
+
+    prepareVisuals()
+      .then(
+        () => {
+
+          /*
+            The image gets a few seconds of silence before
+            telling the user what to do.
+          */
+
+          tutorial.promptTimer =
+            window.setTimeout(
+              () => {
+
+                if (
+                  tutorial.step === 0 &&
+                  !audioState.droneStarted
+                ) {
+
+                  showPrompt(
+                    "click here"
+                  );
+
+                }
+
+              },
+              3200
+            );
+
+        }
+      );
+
   })();
   </script>
+
 
   <!-- =====================================================
        EXISTING HORSE / WIP
@@ -2357,84 +6840,234 @@
   <script>
   (() => {
 
-    const clamp = (value, min, max) =>
-      Math.min(Math.max(value, min), max);
+    const clamp =
+      (
+        value,
+        min,
+        max
+      ) =>
+        Math.min(
+          Math.max(
+            value,
+            min
+          ),
+          max
+        );
 
-    const lerp = (a, b, t) =>
-      a + ((b - a) * t);
 
-    const random = (min, max) =>
-      min + Math.random() * (max - min);
+    const lerp =
+      (
+        a,
+        b,
+        t
+      ) =>
+        a +
+        (
+          (
+            b -
+            a
+          ) *
+          t
+        );
 
-    const pick = array =>
-      array[Math.floor(Math.random() * array.length)];
 
-    function shuffle(array) {
-      const result = [...array];
+    const random =
+      (
+        min,
+        max
+      ) =>
+        min +
+        Math.random() *
+        (
+          max -
+          min
+        );
 
-      for (let i = result.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [result[i], result[j]] = [result[j], result[i]];
+
+    const pick =
+      array =>
+        array[
+          Math.floor(
+            Math.random() *
+            array.length
+          )
+        ];
+
+
+    function shuffle(
+      array
+    ) {
+
+      const result =
+        [...array];
+
+
+      for (
+        let i =
+          result.length - 1;
+
+        i > 0;
+
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() *
+            (
+              i + 1
+            )
+          );
+
+
+        [
+          result[i],
+          result[j]
+        ] = [
+          result[j],
+          result[i]
+        ];
+
       }
 
+
       return result;
+
     }
 
-    function smoothStep(value) {
-      const t = clamp(value, 0, 1);
-      return t * t * (3 - 2 * t);
+
+    function smoothStep(
+      value
+    ) {
+
+      const t =
+        clamp(
+          value,
+          0,
+          1
+        );
+
+
+      return (
+        t *
+        t *
+        (
+          3 -
+          2 *
+          t
+        )
+      );
+
     }
 
-    const mobileQuery = window.matchMedia("(max-width: 700px)");
+
+    const mobileQuery =
+      window.matchMedia(
+        "(max-width: 700px)"
+      );
+
 
     function isMobile() {
+
       return mobileQuery.matches;
+
     }
 
-    const pageShell = document.getElementById("page-shell");
-    const overlay = document.getElementById("wip-overlay");
-    const audio = document.getElementById("wip-audio");
-    const closeButton = document.getElementById("wip-close");
-    const stage = document.getElementById("collage-stage");
-    const horseMain = document.getElementById("horse-main");
-    const horseOffset = document.getElementById("horse-offset");
-    const horseKey = document.getElementById("horse-key");
+
+    const pageShell =
+      document.getElementById(
+        "page-shell"
+      );
+
+
+    const overlay =
+      document.getElementById(
+        "wip-overlay"
+      );
+
+
+    const audio =
+      document.getElementById(
+        "wip-audio"
+      );
+
+
+    const closeButton =
+      document.getElementById(
+        "wip-close"
+      );
+
+
+    const stage =
+      document.getElementById(
+        "collage-stage"
+      );
+
+
+    const horseMain =
+      document.getElementById(
+        "horse-main"
+      );
+
+
+    const horseOffset =
+      document.getElementById(
+        "horse-offset"
+      );
+
+
+    const horseKey =
+      document.getElementById(
+        "horse-key"
+      );
+
 
     const ALL_TEXTURES = [
+
       "Texturelabs_Atmosphere_121S.jpg",
       "Texturelabs_Atmosphere_127S.jpg",
       "Texturelabs_Atmosphere_130S.jpg",
       "Texturelabs_Atmosphere_135S.jpg",
       "Texturelabs_Atmosphere_201S.jpg",
+
       "Texturelabs_Brick_124S.jpg",
       "Texturelabs_Brick_158S.jpg",
+
       "Texturelabs_Concrete_150S.jpg",
       "Texturelabs_Concrete_155S.jpg",
       "Texturelabs_Concrete_179S.jpg",
       "Texturelabs_Concrete_205S.jpg",
       "Texturelabs_Concrete_207S.jpg",
+
       "Texturelabs_Fabric_123S.jpg",
       "Texturelabs_Fabric_144S.jpg",
       "Texturelabs_Fabric_172S.jpg",
+
       "Texturelabs_Film_181S.jpg",
       "Texturelabs_Film_183S.jpg",
       "Texturelabs_Film_187S.jpg",
+
       "Texturelabs_Glass_134S.jpg",
       "Texturelabs_Glass_155S.jpg",
+
       "Texturelabs_Grunge_173S.jpg",
       "Texturelabs_Grunge_279L.jpg",
       "Texturelabs_Grunge_334S.jpg",
       "Texturelabs_Grunge_341S.jpg",
+
       "Texturelabs_InkPaint_126S.jpg",
       "Texturelabs_InkPaint_320S.jpg",
       "Texturelabs_InkPaint_332S.jpg",
       "Texturelabs_InkPaint_356S.jpg",
+
       "Texturelabs_LensFX_251S.jpg",
       "Texturelabs_LensFX_256S.jpg",
+
       "Texturelabs_Metal_129S.jpg",
       "Texturelabs_Metal_165S.jpg",
       "Texturelabs_Metal_285S.jpg",
       "Texturelabs_Metal_294S.jpg",
+
       "Texturelabs_Paper_273S.jpg",
       "Texturelabs_Paper_278L.jpg",
       "Texturelabs_Paper_280S.jpg",
@@ -2443,86 +7076,243 @@
       "Texturelabs_Paper_324S.jpg",
       "Texturelabs_Paper_380L.jpg",
       "Texturelabs_Paper_380S.jpg",
+
       "Texturelabs_Sky_171S.jpg",
+
       "Texturelabs_Soil_146S.jpg",
       "Texturelabs_Soil_149S.jpg",
+
       "Texturelabs_Stone_167S.jpg",
       "Texturelabs_Stone_169S.jpg",
+
       "Texturelabs_Water_124S.jpg",
       "Texturelabs_Water_141S.jpg",
+
       "Texturelabs_Wood_135S.jpg",
       "Texturelabs_Wood_280S.jpg",
       "Texturelabs_Wood_290S.jpg"
-    ].map(file => `../assets/home/${file}`);
 
-    const DIRTY_TEXTURES = ALL_TEXTURES.filter(
-      src => /Grunge|Concrete|Soil|Stone|Wood|Metal|Film|Brick|Paper|InkPaint/i.test(src)
+    ].map(
+      file =>
+        `../assets/home/${file}`
     );
 
-    const SOFTER_TEXTURES = ALL_TEXTURES.filter(
-      src => !DIRTY_TEXTURES.includes(src)
-    );
+
+    const DIRTY_TEXTURES =
+      ALL_TEXTURES.filter(
+        src =>
+          /Grunge|Concrete|Soil|Stone|Wood|Metal|Film|Brick|Paper|InkPaint/i
+            .test(src)
+      );
+
+
+    const SOFTER_TEXTURES =
+      ALL_TEXTURES.filter(
+        src =>
+          !DIRTY_TEXTURES.includes(
+            src
+          )
+      );
+
 
     let sessionTextures = [];
     let readyTextures = [];
     let recentTextures = [];
 
+
     function prepareTextures() {
+
       sessionTextures = [
-        ...shuffle(DIRTY_TEXTURES).slice(0, isMobile() ? 13 : 18),
-        ...shuffle(SOFTER_TEXTURES).slice(0, isMobile() ? 3 : 6)
+
+        ...shuffle(
+          DIRTY_TEXTURES
+        ).slice(
+          0,
+          isMobile()
+            ? 13
+            : 18
+        ),
+
+        ...shuffle(
+          SOFTER_TEXTURES
+        ).slice(
+          0,
+          isMobile()
+            ? 3
+            : 6
+        )
+
       ];
 
-      readyTextures = [];
 
-      sessionTextures.forEach(src => {
-        const image = new Image();
-        image.decoding = "async";
+      readyTextures =
+        [];
 
-        image.onload = () => {
-          if (!readyTextures.includes(src)) {
-            readyTextures.push(src);
-          }
-        };
 
-        image.src = src;
-      });
+      sessionTextures.forEach(
+        src => {
+
+          const image =
+            new Image();
+
+
+          image.decoding =
+            "async";
+
+
+          image.onload =
+            () => {
+
+              if (
+                !readyTextures.includes(
+                  src
+                )
+              ) {
+
+                readyTextures.push(
+                  src
+                );
+
+              }
+
+            };
+
+
+          image.src =
+            src;
+
+        }
+      );
+
     }
 
+
     function chooseTexture() {
-      const dirty = readyTextures.filter(src => DIRTY_TEXTURES.includes(src));
+
+      const dirty =
+        readyTextures.filter(
+          src =>
+            DIRTY_TEXTURES.includes(
+              src
+            )
+        );
+
 
       const pool =
-        (Math.random() < 0.82 && dirty.length > 3)
+        (
+          Math.random() < .82 &&
+          dirty.length > 3
+        )
           ? dirty
-          : (readyTextures.length > 5 ? readyTextures : sessionTextures);
+          : (
+              readyTextures.length > 5
+                ? readyTextures
+                : sessionTextures
+            );
+
 
       let result;
       let attempts = 0;
 
+
       do {
-        result = pick(pool);
+
+        result =
+          pick(
+            pool
+          );
+
+
         attempts++;
-      } while (recentTextures.includes(result) && attempts < 14);
 
-      recentTextures.push(result);
+      }
+      while (
+        recentTextures.includes(
+          result
+        ) &&
+        attempts < 14
+      );
 
-      if (recentTextures.length > 7) {
+
+      recentTextures.push(
+        result
+      );
+
+
+      if (
+        recentTextures.length > 7
+      ) {
+
         recentTextures.shift();
+
       }
 
+
       return result;
+
     }
 
+
     const HORSE_COLORS = [
-      { name: "burnt sienna", hue: -13, saturation: 3.55, brightness: 0.94, contrast: 1.28 },
-      { name: "forest green", hue: 69, saturation: 2.85, brightness: 0.84, contrast: 1.24 },
-      { name: "ocean blue", hue: 151, saturation: 3.25, brightness: 0.91, contrast: 1.22 },
-      { name: "canyon red", hue: -28, saturation: 3.65, brightness: 0.89, contrast: 1.30 },
-      { name: "dirt brown", hue: 4, saturation: 1.95, brightness: 0.78, contrast: 1.24 },
-      { name: "pale sage", hue: 67, saturation: 1.72, brightness: 1.08, contrast: 1.05 },
-      { name: "blueberry", hue: 187, saturation: 3.05, brightness: 0.82, contrast: 1.27 }
+
+      {
+        name: "burnt sienna",
+        hue: -13,
+        saturation: 3.55,
+        brightness: .94,
+        contrast: 1.28
+      },
+
+      {
+        name: "forest green",
+        hue: 69,
+        saturation: 2.85,
+        brightness: .84,
+        contrast: 1.24
+      },
+
+      {
+        name: "ocean blue",
+        hue: 151,
+        saturation: 3.25,
+        brightness: .91,
+        contrast: 1.22
+      },
+
+      {
+        name: "canyon red",
+        hue: -28,
+        saturation: 3.65,
+        brightness: .89,
+        contrast: 1.30
+      },
+
+      {
+        name: "dirt brown",
+        hue: 4,
+        saturation: 1.95,
+        brightness: .78,
+        contrast: 1.24
+      },
+
+      {
+        name: "pale sage",
+        hue: 67,
+        saturation: 1.72,
+        brightness: 1.08,
+        contrast: 1.05
+      },
+
+      {
+        name: "blueberry",
+        hue: 187,
+        saturation: 3.05,
+        brightness: .82,
+        contrast: 1.27
+      }
+
     ];
+
 
     const OPENING_COLORS = [
       HORSE_COLORS[0],
@@ -2532,260 +7322,657 @@
       HORSE_COLORS[6]
     ];
 
-    let lastHorseColorName = "";
 
-    function differentHorseColor(pool) {
+    let lastHorseColorName =
+      "";
+
+
+    function differentHorseColor(
+      pool
+    ) {
+
       let result;
       let attempts = 0;
 
+
       do {
-        result = pick(pool);
+
+        result =
+          pick(
+            pool
+          );
+
+
         attempts++;
-      } while (result.name === lastHorseColorName && attempts < 12);
 
-      lastHorseColorName = result.name;
+      }
+      while (
+        result.name === lastHorseColorName &&
+        attempts < 12
+      );
+
+
+      lastHorseColorName =
+        result.name;
+
+
       return result;
+
     }
 
-    function nextHorseColor(time) {
-      return differentHorseColor(time < 75 ? OPENING_COLORS : HORSE_COLORS);
+
+    function nextHorseColor(
+      time
+    ) {
+
+      return differentHorseColor(
+        time < 75
+          ? OPENING_COLORS
+          : HORSE_COLORS
+      );
+
     }
 
-    function makeSlot(id, options) {
-      const element = document.getElementById(id);
+
+    function makeSlot(
+      id,
+      options
+    ) {
+
+      const element =
+        document.getElementById(
+          id
+        );
+
 
       return {
+
         element,
-        frames: Array.from(element.querySelectorAll(".morph-frame")),
+
+        frames:
+          Array.from(
+            element.querySelectorAll(
+              ".morph-frame"
+            )
+          ),
+
         active: 0,
+
         ...options,
-        nextChange: Infinity
+
+        nextChange:
+          Infinity
+
       };
+
     }
 
+
     const slots = [
-      makeSlot("under-slot-1", {
-        role: "foundation",
-        desktopBlend: "multiply",
-        mobileBlend: "multiply",
-        internalBlend: "multiply",
-        slowDuration: 11.5,
-        fastDuration: 2.5,
-        phase: 0,
-        mobileEnabled: true
-      }),
 
-      makeSlot("under-slot-2", {
-        role: "secondary",
-        desktopBlend: "color-burn",
-        mobileBlend: "soft-light",
-        internalBlend: "overlay",
-        slowDuration: 13.5,
-        fastDuration: 3,
-        phase: 2.4,
-        mobileEnabled: true
-      }),
+      makeSlot(
+        "under-slot-1",
+        {
+          role: "foundation",
+          desktopBlend: "multiply",
+          mobileBlend: "multiply",
+          internalBlend: "multiply",
+          slowDuration: 11.5,
+          fastDuration: 2.5,
+          phase: 0,
+          mobileEnabled: true
+        }
+      ),
 
-      makeSlot("over-slot-1", {
-        role: "overprint",
-        desktopBlend: "hard-light",
-        mobileBlend: "soft-light",
-        internalBlend: "multiply",
-        slowDuration: 9.5,
-        fastDuration: 2.4,
-        phase: 4.8,
-        mobileEnabled: false
-      })
+      makeSlot(
+        "under-slot-2",
+        {
+          role: "secondary",
+          desktopBlend: "color-burn",
+          mobileBlend: "soft-light",
+          internalBlend: "overlay",
+          slowDuration: 13.5,
+          fastDuration: 3,
+          phase: 2.4,
+          mobileEnabled: true
+        }
+      ),
+
+      makeSlot(
+        "over-slot-1",
+        {
+          role: "overprint",
+          desktopBlend: "hard-light",
+          mobileBlend: "soft-light",
+          internalBlend: "multiply",
+          slowDuration: 9.5,
+          fastDuration: 2.4,
+          phase: 4.8,
+          mobileEnabled: false
+        }
+      )
+
     ];
 
+
     function neutralTint() {
+
       return `
         linear-gradient(
           ${random(0, 360)}deg,
-          ${pick(["#060605", "#11100e", "#1a1714", "#25211c"])} 0%,
-          ${pick(["#49443d", "#5a544b", "#6e665b", "#7a7164"])} 52%,
-          ${pick(["#c5bdae", "#d2cabc", "#ded5c7", "#e8dfd1"])} 100%
+          ${pick([
+            "#060605",
+            "#11100e",
+            "#1a1714",
+            "#25211c"
+          ])} 0%,
+          ${pick([
+            "#49443d",
+            "#5a544b",
+            "#6e665b",
+            "#7a7164"
+          ])} 52%,
+          ${pick([
+            "#c5bdae",
+            "#d2cabc",
+            "#ded5c7",
+            "#e8dfd1"
+          ])} 100%
         )
       `;
+
     }
 
-    function opacityForSlot(slot, intensity) {
-      if (slot.role === "foundation") {
+
+    function opacityForSlot(
+      slot,
+      intensity
+    ) {
+
+      if (
+        slot.role === "foundation"
+      ) {
+
         return isMobile()
-          ? random(0.48, 0.62 + intensity * 0.10)
-          : random(0.60, 0.78 + intensity * 0.10);
+          ? random(
+              .48,
+              .62 +
+              intensity *
+              .10
+            )
+          : random(
+              .60,
+              .78 +
+              intensity *
+              .10
+            );
+
       }
 
-      if (slot.role === "secondary") {
+
+      if (
+        slot.role === "secondary"
+      ) {
+
         return isMobile()
-          ? random(0.24, 0.35 + intensity * 0.13)
-          : random(0.34, 0.50 + intensity * 0.14);
+          ? random(
+              .24,
+              .35 +
+              intensity *
+              .13
+            )
+          : random(
+              .34,
+              .50 +
+              intensity *
+              .14
+            );
+
       }
 
-      return random(0.08, 0.16 + intensity * 0.11);
+
+      return random(
+        .08,
+        .16 +
+        intensity *
+        .11
+      );
+
     }
 
-    function configureFrame(frame, slot, intensity) {
-      frame.style.backgroundImage = `
-        ${neutralTint()},
-        url("${chooseTexture()}")
-      `;
 
-      frame.style.backgroundSize = "cover, cover";
-      frame.style.backgroundRepeat = "no-repeat, no-repeat";
-      frame.style.backgroundBlendMode = `${slot.internalBlend}, normal`;
+    function configureFrame(
+      frame,
+      slot,
+      intensity
+    ) {
 
-      frame.style.mixBlendMode = isMobile()
-        ? slot.mobileBlend
-        : slot.desktopBlend;
+      frame.style.backgroundImage =
+        `
+          ${neutralTint()},
+          url("${chooseTexture()}")
+        `;
 
-      frame.style.transform = `
-        translate(${random(-2, 2)}%, ${random(-2, 2)}%)
-        rotate(${random(-1.5, 1.5)}deg)
-        scale(${random(1.06, 1.20)})
-      `;
 
-      frame.style.filter = isMobile()
-        ? `
-            grayscale(1)
-            saturate(0)
-            contrast(${random(1.16, 1.42)})
-            brightness(${random(0.74, 0.94)})
-          `
-        : `
-            grayscale(1)
-            saturate(0)
-            contrast(${random(1.28, 1.72)})
-            brightness(${random(0.64, 0.92)})
-          `;
+      frame.style.backgroundSize =
+        "cover, cover";
 
-      frame.dataset.targetOpacity = opacityForSlot(slot, intensity).toFixed(3);
+
+      frame.style.backgroundRepeat =
+        "no-repeat, no-repeat";
+
+
+      frame.style.backgroundBlendMode =
+        `${slot.internalBlend}, normal`;
+
+
+      frame.style.mixBlendMode =
+        isMobile()
+          ? slot.mobileBlend
+          : slot.desktopBlend;
+
+
+      frame.style.transform =
+        `
+          translate(
+            ${random(-2, 2)}%,
+            ${random(-2, 2)}%
+          )
+          rotate(
+            ${random(-1.5, 1.5)}deg
+          )
+          scale(
+            ${random(1.06, 1.20)}
+          )
+        `;
+
+
+      frame.style.filter =
+        isMobile()
+          ? `
+              grayscale(1)
+              saturate(0)
+              contrast(${random(1.16, 1.42)})
+              brightness(${random(.74, .94)})
+            `
+          : `
+              grayscale(1)
+              saturate(0)
+              contrast(${random(1.28, 1.72)})
+              brightness(${random(.64, .92)})
+            `;
+
+
+      frame.dataset.targetOpacity =
+        opacityForSlot(
+          slot,
+          intensity
+        ).toFixed(
+          3
+        );
+
     }
 
-    function initializeSlot(slot, intensity, time) {
-      if (isMobile() && !slot.mobileEnabled) {
-        slot.element.style.display = "none";
+
+    function initializeSlot(
+      slot,
+      intensity,
+      time
+    ) {
+
+      if (
+        isMobile() &&
+        !slot.mobileEnabled
+      ) {
+
+        slot.element.style.display =
+          "none";
+
+
         return;
+
       }
 
-      const first = slot.frames[0];
 
-      configureFrame(first, slot, intensity);
+      const first =
+        slot.frames[0];
 
-      const fade = isMobile() ? 6 : 7;
 
-      first.style.transitionDuration = `${fade}s`;
-      first.style.opacity = first.dataset.targetOpacity;
+      configureFrame(
+        first,
+        slot,
+        intensity
+      );
 
-      slot.nextChange = time + slot.phase + fade;
+
+      const fade =
+        isMobile()
+          ? 6
+          : 7;
+
+
+      first.style.transitionDuration =
+        `${fade}s`;
+
+
+      first.style.opacity =
+        first.dataset.targetOpacity;
+
+
+      slot.nextChange =
+        time +
+        slot.phase +
+        fade;
+
     }
 
-    function morphSlot(slot, intensity, time) {
-      const outgoing = slot.frames[slot.active];
-      const incomingIndex = slot.active === 0 ? 1 : 0;
-      const incoming = slot.frames[incomingIndex];
 
-      let duration = lerp(slot.slowDuration, slot.fastDuration, intensity);
+    function morphSlot(
+      slot,
+      intensity,
+      time
+    ) {
 
-      if (isMobile()) {
-        duration = Math.max(duration, 3.2);
+      const outgoing =
+        slot.frames[
+          slot.active
+        ];
+
+
+      const incomingIndex =
+        slot.active === 0
+          ? 1
+          : 0;
+
+
+      const incoming =
+        slot.frames[
+          incomingIndex
+        ];
+
+
+      let duration =
+        lerp(
+          slot.slowDuration,
+          slot.fastDuration,
+          intensity
+        );
+
+
+      if (
+        isMobile()
+      ) {
+
+        duration =
+          Math.max(
+            duration,
+            3.2
+          );
+
       }
 
-      incoming.style.opacity = "0";
-      configureFrame(incoming, slot, intensity);
+
+      incoming.style.opacity =
+        "0";
+
+
+      configureFrame(
+        incoming,
+        slot,
+        intensity
+      );
+
+
       incoming.offsetHeight;
 
-      incoming.style.transitionDuration = `${duration}s`;
-      outgoing.style.transitionDuration = `${duration}s`;
 
-      requestAnimationFrame(() => {
-        incoming.style.opacity = incoming.dataset.targetOpacity;
-        outgoing.style.opacity = "0";
-      });
+      incoming.style.transitionDuration =
+        `${duration}s`;
 
-      slot.active = incomingIndex;
-      slot.nextChange = time + duration * 0.96;
+
+      outgoing.style.transitionDuration =
+        `${duration}s`;
+
+
+      requestAnimationFrame(
+        () => {
+
+          incoming.style.opacity =
+            incoming.dataset.targetOpacity;
+
+
+          outgoing.style.opacity =
+            "0";
+
+        }
+      );
+
+
+      slot.active =
+        incomingIndex;
+
+
+      slot.nextChange =
+        time +
+        duration *
+        .96;
+
     }
 
-    let nextHorseChange = Infinity;
 
-    function applyHorseColor(color, intensity, time) {
-      const transition = lerp(5.8, isMobile() ? 3.4 : 2.5, intensity);
+    let nextHorseChange =
+      Infinity;
 
-      horseMain.style.transitionDuration = `${transition}s`;
-      horseMain.style.mixBlendMode = "multiply";
-      horseMain.style.filter = `
-        grayscale(1)
-        sepia(1)
-        saturate(${color.saturation})
-        hue-rotate(${color.hue}deg)
-        contrast(${color.contrast})
-        brightness(${color.brightness})
-      `;
 
-      horseMain.style.opacity = "1";
+    function applyHorseColor(
+      color,
+      intensity,
+      time
+    ) {
 
-      horseOffset.style.opacity = isMobile()
-        ? "0"
-        : lerp(0.02, 0.06, intensity).toFixed(3);
+      const transition =
+        lerp(
+          5.8,
+          isMobile()
+            ? 3.4
+            : 2.5,
+          intensity
+        );
 
-      horseKey.style.opacity = isMobile()
-        ? lerp(0.08, 0.14, intensity).toFixed(3)
-        : lerp(0.10, 0.18, intensity).toFixed(3);
 
-      nextHorseChange = time + lerp(12, isMobile() ? 5.2 : 4, intensity);
+      horseMain.style.transitionDuration =
+        `${transition}s`;
+
+
+      horseMain.style.mixBlendMode =
+        "multiply";
+
+
+      horseMain.style.filter =
+        `
+          grayscale(1)
+          sepia(1)
+          saturate(${color.saturation})
+          hue-rotate(${color.hue}deg)
+          contrast(${color.contrast})
+          brightness(${color.brightness})
+        `;
+
+
+      horseMain.style.opacity =
+        "1";
+
+
+      horseOffset.style.opacity =
+        isMobile()
+          ? "0"
+          : lerp(
+              .02,
+              .06,
+              intensity
+            ).toFixed(
+              3
+            );
+
+
+      horseKey.style.opacity =
+        isMobile()
+          ? lerp(
+              .08,
+              .14,
+              intensity
+            ).toFixed(
+              3
+            )
+          : lerp(
+              .10,
+              .18,
+              intensity
+            ).toFixed(
+              3
+            );
+
+
+      nextHorseChange =
+        time +
+        lerp(
+          12,
+          isMobile()
+            ? 5.2
+            : 4,
+          intensity
+        );
+
     }
+
 
     function prepareInitialHorse() {
-      const color = differentHorseColor(OPENING_COLORS);
 
-      horseMain.style.mixBlendMode = "multiply";
-      horseMain.style.filter = `
-        grayscale(1)
-        sepia(1)
-        saturate(${color.saturation * 1.12})
-        hue-rotate(${color.hue}deg)
-        contrast(${color.contrast * 1.04})
-        brightness(${color.brightness * 1.03})
-      `;
+      const color =
+        differentHorseColor(
+          OPENING_COLORS
+        );
 
-      horseMain.style.opacity = "0";
-      horseOffset.style.opacity = "0";
-      horseKey.style.opacity = "0";
 
-      nextHorseChange = 24;
+      horseMain.style.mixBlendMode =
+        "multiply";
+
+
+      horseMain.style.filter =
+        `
+          grayscale(1)
+          sepia(1)
+          saturate(${color.saturation * 1.12})
+          hue-rotate(${color.hue}deg)
+          contrast(${color.contrast * 1.04})
+          brightness(${color.brightness * 1.03})
+        `;
+
+
+      horseMain.style.opacity =
+        "0";
+
+
+      horseOffset.style.opacity =
+        "0";
+
+
+      horseKey.style.opacity =
+        "0";
+
+
+      nextHorseChange =
+        24;
+
     }
+
 
     function normalHorse() {
-      horseMain.style.mixBlendMode = "normal";
-      horseMain.style.filter = "none";
-      horseMain.style.opacity = "1";
-      horseOffset.style.opacity = "0";
-      horseKey.style.opacity = "0";
+
+      horseMain.style.mixBlendMode =
+        "normal";
+
+
+      horseMain.style.filter =
+        "none";
+
+
+      horseMain.style.opacity =
+        "1";
+
+
+      horseOffset.style.opacity =
+        "0";
+
+
+      horseKey.style.opacity =
+        "0";
+
     }
+
 
     const HORSE_START = 12;
     const HORSE_FULL = 20;
     const COLLAGE_START = 30;
     const NORMAL_TIME = 243;
 
-    function horseRevealAt(time) {
-      if (time < HORSE_START) return 0;
+
+    function horseRevealAt(
+      time
+    ) {
+
+      if (
+        time < HORSE_START
+      ) {
+
+        return 0;
+
+      }
+
 
       return smoothStep(
-        (time - HORSE_START) / (HORSE_FULL - HORSE_START)
+        (
+          time -
+          HORSE_START
+        ) /
+        (
+          HORSE_FULL -
+          HORSE_START
+        )
       );
+
     }
 
-    function intensityAt(time) {
-      if (time < COLLAGE_START || time >= NORMAL_TIME) return 0;
+
+    function intensityAt(
+      time
+    ) {
+
+      if (
+        time < COLLAGE_START ||
+        time >= NORMAL_TIME
+      ) {
+
+        return 0;
+
+      }
+
 
       return clamp(
-        (time - COLLAGE_START) / (NORMAL_TIME - COLLAGE_START),
+        (
+          time -
+          COLLAGE_START
+        ) /
+        (
+          NORMAL_TIME -
+          COLLAGE_START
+        ),
         0,
         1
       );
+
     }
+
 
     let overlayOpen = false;
     let collageStarted = false;
@@ -2793,148 +7980,427 @@
     let normalState = false;
     let raf = null;
 
+
     function clearSlots() {
-      slots.forEach(slot => {
-        slot.nextChange = Infinity;
-        slot.frames.forEach(frame => {
-          frame.style.opacity = "0";
-        });
-      });
+
+      slots.forEach(
+        slot => {
+
+          slot.nextChange =
+            Infinity;
+
+
+          slot.frames.forEach(
+            frame => {
+
+              frame.style.opacity =
+                "0";
+
+            }
+          );
+
+        }
+      );
+
     }
 
-    function visualLoop() {
-      if (!overlayOpen) return;
 
-      const time = audio.currentTime || 0;
+    function visualLoop() {
+
+      if (
+        !overlayOpen
+      ) {
+
+        return;
+
+      }
+
+
+      const time =
+        audio.currentTime ||
+        0;
+
 
       stage.style.setProperty(
         "--visual-reveal",
-        horseRevealAt(time).toFixed(4)
+        horseRevealAt(
+          time
+        ).toFixed(
+          4
+        )
       );
 
-      if (time >= HORSE_START && !horseStarted) {
-        horseStarted = true;
+
+      if (
+        time >= HORSE_START &&
+        !horseStarted
+      ) {
+
+        horseStarted =
+          true;
+
+
         prepareInitialHorse();
+
       }
 
-      if (time >= HORSE_START && time < COLLAGE_START) {
-        horseMain.style.opacity = horseRevealAt(time);
 
-        if (time >= nextHorseChange) {
-          applyHorseColor(nextHorseColor(time), 0.08, time);
-        }
-      }
+      if (
+        time >= HORSE_START &&
+        time < COLLAGE_START
+      ) {
 
-      if (time >= COLLAGE_START && time < NORMAL_TIME) {
-        const intensity = intensityAt(time);
-
-        if (!collageStarted) {
-          collageStarted = true;
-
-          slots.forEach(slot =>
-            initializeSlot(slot, intensity, time)
+        horseMain.style.opacity =
+          horseRevealAt(
+            time
           );
 
-          nextHorseChange = time + 8;
+
+        if (
+          time >= nextHorseChange
+        ) {
+
+          applyHorseColor(
+            nextHorseColor(
+              time
+            ),
+            .08,
+            time
+          );
+
         }
 
-        slots.forEach(slot => {
-          if (time >= slot.nextChange) {
-            morphSlot(slot, intensity, time);
+      }
+
+
+      if (
+        time >= COLLAGE_START &&
+        time < NORMAL_TIME
+      ) {
+
+        const intensity =
+          intensityAt(
+            time
+          );
+
+
+        if (
+          !collageStarted
+        ) {
+
+          collageStarted =
+            true;
+
+
+          slots.forEach(
+            slot =>
+              initializeSlot(
+                slot,
+                intensity,
+                time
+              )
+          );
+
+
+          nextHorseChange =
+            time +
+            8;
+
+        }
+
+
+        slots.forEach(
+          slot => {
+
+            if (
+              time >= slot.nextChange
+            ) {
+
+              morphSlot(
+                slot,
+                intensity,
+                time
+              );
+
+            }
+
           }
-        });
+        );
 
-        if (time >= nextHorseChange) {
-          applyHorseColor(nextHorseColor(time), intensity, time);
+
+        if (
+          time >= nextHorseChange
+        ) {
+
+          applyHorseColor(
+            nextHorseColor(
+              time
+            ),
+            intensity,
+            time
+          );
+
         }
+
       }
 
-      if (time >= NORMAL_TIME && !normalState) {
-        normalState = true;
+
+      if (
+        time >= NORMAL_TIME &&
+        !normalState
+      ) {
+
+        normalState =
+          true;
+
+
         clearSlots();
+
+
         normalHorse();
-        stage.classList.add("is-normal");
+
+
+        stage.classList.add(
+          "is-normal"
+        );
+
       }
 
-      raf = requestAnimationFrame(visualLoop);
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
+
     }
 
-    async function openWip() {
-      if (overlayOpen) return;
 
-      overlayOpen = true;
-      collageStarted = false;
-      horseStarted = false;
-      normalState = false;
-      recentTextures = [];
-      lastHorseColorName = "";
+    async function openWip() {
+
+      if (
+        overlayOpen
+      ) {
+
+        return;
+
+      }
+
+
+      overlayOpen =
+        true;
+
+
+      collageStarted =
+        false;
+
+
+      horseStarted =
+        false;
+
+
+      normalState =
+        false;
+
+
+      recentTextures =
+        [];
+
+
+      lastHorseColorName =
+        "";
+
 
       clearSlots();
+
+
       normalHorse();
-      stage.classList.remove("is-normal");
-      stage.style.setProperty("--visual-reveal", "0");
+
+
+      stage.classList.remove(
+        "is-normal"
+      );
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
+
 
       prepareTextures();
 
-      if (window.fujiAudio) {
-        window.fujiAudio.setOverlayMuted(true);
+
+      if (
+        window.fujiAudio
+      ) {
+
+        window.fujiAudio
+          .setOverlayMuted(
+            true
+          );
+
       }
 
-      pageShell.classList.add("is-hidden");
-      overlay.classList.add("is-visible");
-      overlay.setAttribute("aria-hidden", "false");
 
-      audio.currentTime = 0;
-      audio.volume = 0.72;
+      pageShell.classList.add(
+        "is-hidden"
+      );
+
+
+      overlay.classList.add(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      audio.currentTime =
+        0;
+
+
+      audio.volume =
+        .72;
+
 
       try {
-        await audio.play();
-      } catch {}
 
-      raf = requestAnimationFrame(visualLoop);
+        await audio.play();
+
+      }
+
+      catch {}
+
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
+
     }
+
 
     function closeWip() {
-      overlayOpen = false;
 
-      cancelAnimationFrame(raf);
+      overlayOpen =
+        false;
+
+
+      cancelAnimationFrame(
+        raf
+      );
+
 
       audio.pause();
-      audio.currentTime = 0;
+
+
+      audio.currentTime =
+        0;
+
 
       clearSlots();
+
+
       normalHorse();
 
-      overlay.classList.remove("is-visible");
-      overlay.setAttribute("aria-hidden", "true");
 
-      pageShell.classList.remove("is-hidden");
+      overlay.classList.remove(
+        "is-visible"
+      );
 
-      if (window.fujiAudio) {
-        window.fujiAudio.setOverlayMuted(false);
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      pageShell.classList.remove(
+        "is-hidden"
+      );
+
+
+      if (
+        window.fujiAudio
+      ) {
+
+        window.fujiAudio
+          .setOverlayMuted(
+            false
+          );
+
       }
+
     }
 
-    document.addEventListener("click", event => {
-      const link = event.target.closest("a");
 
-      if (!link) return;
-      if (link.hasAttribute("data-live-link")) return;
+    document.addEventListener(
+      "click",
+      event => {
 
-      event.preventDefault();
-      openWip();
-    });
+        const link =
+          event.target.closest(
+            "a"
+          );
 
-    closeButton.addEventListener("click", closeWip);
 
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && overlayOpen) {
-        closeWip();
+        if (
+          !link
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          link.hasAttribute(
+            "data-live-link"
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        openWip();
+
       }
-    });
+    );
+
+
+    closeButton.addEventListener(
+      "click",
+      closeWip
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape" &&
+          overlayOpen
+        ) {
+
+          closeWip();
+
+        }
+
+      }
+    );
 
   })();
   </script>
 
 </body>
+
 </html>
