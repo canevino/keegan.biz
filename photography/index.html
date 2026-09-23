@@ -9,7 +9,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>photography.keegan.biz</title>
+  <title>photography — keegan.biz</title>
 
   <link
     rel="stylesheet"
@@ -31,7 +31,6 @@
 
     <!-- ===================================================
          SCARF NAVIGATION
-         Same position / behavior as homepage
          =================================================== -->
 
     <nav
@@ -39,11 +38,9 @@
       aria-label="Sections"
     >
 
-      <!-- HOME — WORKING -->
-
       <a
         class="scarf-item scarf-home"
-        href="../index.html"
+        href="../"
         data-live-link
         aria-label="Home"
       >
@@ -53,8 +50,6 @@
         >
       </a>
 
-
-      <!-- ILLUSTRATION — WIP -->
 
       <a
         class="scarf-item"
@@ -67,8 +62,6 @@
         >
       </a>
 
-
-      <!-- PHOTOGRAPHY — CURRENT / WORKING -->
 
       <a
         class="scarf-item"
@@ -84,8 +77,6 @@
       </a>
 
 
-      <!-- GRAPHIC DESIGN — WIP -->
-
       <a
         class="scarf-item"
         href="#"
@@ -97,8 +88,6 @@
         >
       </a>
 
-
-      <!-- MUSIC — WIP -->
 
       <a
         class="scarf-item"
@@ -112,8 +101,6 @@
       </a>
 
 
-      <!-- MOTION — WIP -->
-
       <a
         class="scarf-item"
         href="#"
@@ -126,8 +113,6 @@
       </a>
 
 
-      <!-- MISC — WIP -->
-
       <a
         class="scarf-item"
         href="#"
@@ -139,8 +124,6 @@
         >
       </a>
 
-
-      <!-- GASTRONOMY — WIP -->
 
       <a
         class="scarf-item"
@@ -164,19 +147,18 @@
 
       <header class="photo-header">
 
-        <h1 class="photo-wordmark">
-
-          <span class="photo-wordmark-main">
-            photography.
-          </span><span class="photo-wordmark-domain">keegan.biz</span>
-
+        <h1
+          class="photo-title"
+          id="photo-title"
+        >
+          photography
         </h1>
 
       </header>
 
 
       <!-- =================================================
-           FIRST PHOTO OBJECT GOES HERE NEXT
+           PHOTOGRAPHY CANVAS
            ================================================= -->
 
       <section
@@ -184,6 +166,409 @@
         id="photo-canvas"
         aria-label="Photography"
       >
+
+        <!-- ===============================================
+             INTERACTIVE FUJI ARTWORK
+             =============================================== -->
+
+        <figure
+          class="fuji-interactive"
+          id="fuji-interactive"
+          tabindex="0"
+          aria-label="Interactive landscape photograph with architectural drawing overlays"
+        >
+
+          <!-- stable photograph -->
+
+          <img
+            class="fuji-base"
+            id="fuji-base"
+            src="assets/Fuji400-web.png"
+            alt="Landscape photograph"
+            draggable="false"
+            fetchpriority="high"
+          >
+
+
+          <!-- =============================================
+               GHOST BUILDING
+
+               Same image rendered three times.
+               Blend modes are crossfaded rather than
+               abruptly switched.
+               ============================================= -->
+
+          <div
+            class="fuji-building-stack"
+            aria-hidden="true"
+          >
+
+            <img
+              class="fuji-building fuji-building-screen"
+              id="fuji-building-screen"
+              src="assets/building.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-building fuji-building-hard"
+              id="fuji-building-hard"
+              src="assets/building.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-building fuji-building-difference"
+              id="fuji-building-difference"
+              src="assets/building.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+          </div>
+
+
+          <!-- =============================================
+               INDIVIDUAL PERSPECTIVE LINES
+               ============================================= -->
+
+          <div
+            class="fuji-lines"
+            id="fuji-lines"
+            aria-hidden="true"
+          >
+
+            <img
+              class="fuji-line"
+              data-line="1"
+              src="assets/line1.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="2"
+              src="assets/line2.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="3"
+              src="assets/line3.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="4"
+              src="assets/line4.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="5"
+              src="assets/line5.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="6"
+              src="assets/line6.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="7"
+              src="assets/line7.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="8"
+              src="assets/line8.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="9"
+              src="assets/line9.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="10"
+              src="assets/line10.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="11"
+              src="assets/line11.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="12"
+              src="assets/line12.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+            <img
+              class="fuji-line"
+              data-line="13"
+              src="assets/line13.png"
+              alt=""
+              draggable="false"
+              decoding="async"
+            >
+
+          </div>
+
+
+          <!-- =============================================
+               SVG PROCESSING FILTERS
+
+               These preserve alpha and create actual
+               quantization rather than fake CSS threshold.
+               ============================================= -->
+
+          <svg
+            class="fuji-filter-defs"
+            aria-hidden="true"
+            width="0"
+            height="0"
+          >
+
+            <defs>
+
+              <!-- posterize 3 -->
+
+              <filter
+                id="fuji-posterize-3"
+                color-interpolation-filters="sRGB"
+              >
+                <feComponentTransfer>
+
+                  <feFuncR
+                    type="discrete"
+                    tableValues="0 .5 1"
+                  />
+
+                  <feFuncG
+                    type="discrete"
+                    tableValues="0 .5 1"
+                  />
+
+                  <feFuncB
+                    type="discrete"
+                    tableValues="0 .5 1"
+                  />
+
+                  <feFuncA
+                    type="identity"
+                  />
+
+                </feComponentTransfer>
+              </filter>
+
+
+              <!-- posterize 4 -->
+
+              <filter
+                id="fuji-posterize-4"
+                color-interpolation-filters="sRGB"
+              >
+                <feComponentTransfer>
+
+                  <feFuncR
+                    type="discrete"
+                    tableValues="0 .33 .66 1"
+                  />
+
+                  <feFuncG
+                    type="discrete"
+                    tableValues="0 .33 .66 1"
+                  />
+
+                  <feFuncB
+                    type="discrete"
+                    tableValues="0 .33 .66 1"
+                  />
+
+                  <feFuncA
+                    type="identity"
+                  />
+
+                </feComponentTransfer>
+              </filter>
+
+
+              <!-- posterize 6 -->
+
+              <filter
+                id="fuji-posterize-6"
+                color-interpolation-filters="sRGB"
+              >
+                <feComponentTransfer>
+
+                  <feFuncR
+                    type="discrete"
+                    tableValues="0 .2 .4 .6 .8 1"
+                  />
+
+                  <feFuncG
+                    type="discrete"
+                    tableValues="0 .2 .4 .6 .8 1"
+                  />
+
+                  <feFuncB
+                    type="discrete"
+                    tableValues="0 .2 .4 .6 .8 1"
+                  />
+
+                  <feFuncA
+                    type="identity"
+                  />
+
+                </feComponentTransfer>
+              </filter>
+
+
+              <!-- threshold low -->
+
+              <filter
+                id="fuji-threshold-low"
+                color-interpolation-filters="sRGB"
+              >
+                <feComponentTransfer>
+
+                  <feFuncR
+                    type="discrete"
+                    tableValues="0 1 1 1 1 1 1 1"
+                  />
+
+                  <feFuncG
+                    type="discrete"
+                    tableValues="0 1 1 1 1 1 1 1"
+                  />
+
+                  <feFuncB
+                    type="discrete"
+                    tableValues="0 1 1 1 1 1 1 1"
+                  />
+
+                  <feFuncA
+                    type="identity"
+                  />
+
+                </feComponentTransfer>
+              </filter>
+
+
+              <!-- threshold middle -->
+
+              <filter
+                id="fuji-threshold-mid"
+                color-interpolation-filters="sRGB"
+              >
+                <feComponentTransfer>
+
+                  <feFuncR
+                    type="discrete"
+                    tableValues="0 0 0 0 1 1 1 1"
+                  />
+
+                  <feFuncG
+                    type="discrete"
+                    tableValues="0 0 0 0 1 1 1 1"
+                  />
+
+                  <feFuncB
+                    type="discrete"
+                    tableValues="0 0 0 0 1 1 1 1"
+                  />
+
+                  <feFuncA
+                    type="identity"
+                  />
+
+                </feComponentTransfer>
+              </filter>
+
+
+              <!-- threshold high -->
+
+              <filter
+                id="fuji-threshold-high"
+                color-interpolation-filters="sRGB"
+              >
+                <feComponentTransfer>
+
+                  <feFuncR
+                    type="discrete"
+                    tableValues="0 0 0 0 0 0 1 1"
+                  />
+
+                  <feFuncG
+                    type="discrete"
+                    tableValues="0 0 0 0 0 0 1 1"
+                  />
+
+                  <feFuncB
+                    type="discrete"
+                    tableValues="0 0 0 0 0 0 1 1"
+                  />
+
+                  <feFuncA
+                    type="identity"
+                  />
+
+                </feComponentTransfer>
+              </filter>
+
+            </defs>
+
+          </svg>
+
+        </figure>
 
       </section>
 
@@ -193,7 +578,7 @@
 
 
   <!-- =====================================================
-       SHARED WIP AUDIO
+       EXISTING WIP AUDIO
        ===================================================== -->
 
   <audio
@@ -208,7 +593,7 @@
 
 
   <!-- =====================================================
-       WIP HORSE EXPERIENCE
+       EXISTING WIP HORSE
        ===================================================== -->
 
   <div
@@ -243,8 +628,6 @@
         aria-hidden="true"
       >
 
-        <!-- rough foundation -->
-
         <div
           class="texture-slot under-slot under-slot-1"
           id="under-slot-1"
@@ -254,8 +637,6 @@
         </div>
 
 
-        <!-- secondary underprint -->
-
         <div
           class="texture-slot under-slot under-slot-2"
           id="under-slot-2"
@@ -264,8 +645,6 @@
           <div class="morph-frame"></div>
         </div>
 
-
-        <!-- horse -->
 
         <div class="horse-stack">
 
@@ -286,8 +665,6 @@
         </div>
 
 
-        <!-- restrained overprint -->
-
         <div
           class="texture-slot over-slot over-slot-1"
           id="over-slot-1"
@@ -296,8 +673,6 @@
           <div class="morph-frame"></div>
         </div>
 
-
-        <!-- readability key -->
 
         <img
           class="horse horse-key"
@@ -317,15 +692,2288 @@
 
 
   <!-- =====================================================
-       WIP ANIMATION
+       PHOTOGRAPHY TITLE + FUJI ARTWORK
        ===================================================== -->
 
   <script>
   (() => {
 
     /* =====================================================
+       TITLE COLOR
+       ===================================================== */
+
+    const photoTitle =
+      document.getElementById(
+        "photo-title"
+      );
+
+
+    const titleColors = [
+      "#fdb913",
+      "#006a44",
+      "#c1272d"
+    ];
+
+
+    let titleColorIndex = 0;
+    let titleBusy = false;
+
+
+    function differentIndex(
+      length,
+      current
+    ) {
+
+      let next;
+
+      do {
+
+        next =
+          Math.floor(
+            Math.random() *
+            length
+          );
+
+      }
+      while (
+        length > 1 &&
+        next === current
+      );
+
+      return next;
+
+    }
+
+
+    function changeTitleColor() {
+
+      if (titleBusy) {
+        return;
+      }
+
+
+      titleBusy = true;
+
+
+      const nextColor =
+        differentIndex(
+          titleColors.length,
+          titleColorIndex
+        );
+
+
+      photoTitle.classList.add(
+        "is-fading"
+      );
+
+
+      window.setTimeout(() => {
+
+        titleColorIndex =
+          nextColor;
+
+
+        photoTitle.style.color =
+          titleColors[
+            titleColorIndex
+          ];
+
+
+        photoTitle.classList.remove(
+          "is-fading"
+        );
+
+
+        window.setTimeout(() => {
+
+          titleBusy = false;
+
+        }, 300);
+
+      }, 250);
+
+    }
+
+
+    photoTitle.style.color =
+      titleColors[0];
+
+
+    window.setInterval(
+      changeTitleColor,
+      2500
+    );
+
+
+    /* =====================================================
+       FUJI ARTWORK
+       ===================================================== */
+
+    const artwork =
+      document.getElementById(
+        "fuji-interactive"
+      );
+
+
+    const base =
+      document.getElementById(
+        "fuji-base"
+      );
+
+
+    const lines =
+      Array.from(
+        document.querySelectorAll(
+          ".fuji-line"
+        )
+      );
+
+
+    const buildingScreen =
+      document.getElementById(
+        "fuji-building-screen"
+      );
+
+
+    const buildingHard =
+      document.getElementById(
+        "fuji-building-hard"
+      );
+
+
+    const buildingDifference =
+      document.getElementById(
+        "fuji-building-difference"
+      );
+
+
+    const buildings = [
+      buildingScreen,
+      buildingHard,
+      buildingDifference
+    ];
+
+
+    const finePointer =
+      window.matchMedia(
+        "(hover: hover) and (pointer: fine)"
+      );
+
+
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+
+
+    /* =====================================================
        HELPERS
        ===================================================== */
+
+    const clamp = (value, min, max) =>
+      Math.min(
+        Math.max(value, min),
+        max
+      );
+
+
+    const random = (min, max) =>
+      min +
+      (
+        Math.random() *
+        (max - min)
+      );
+
+
+    const pick = array =>
+      array[
+        Math.floor(
+          Math.random() *
+          array.length
+        )
+      ];
+
+
+    function shuffle(array) {
+
+      const result =
+        [...array];
+
+
+      for (
+        let i = result.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() *
+            (i + 1)
+          );
+
+
+        [
+          result[i],
+          result[j]
+        ] = [
+          result[j],
+          result[i]
+        ];
+
+      }
+
+
+      return result;
+
+    }
+
+
+    function weightedPick(entries) {
+
+      const total =
+        entries.reduce(
+          (sum, item) =>
+            sum + item.weight,
+          0
+        );
+
+
+      let value =
+        Math.random() *
+        total;
+
+
+      for (
+        const item of entries
+      ) {
+
+        value -=
+          item.weight;
+
+
+        if (
+          value <= 0
+        ) {
+
+          return item.value;
+
+        }
+
+      }
+
+
+      return entries[
+        entries.length - 1
+      ].value;
+
+    }
+
+
+    function wait(ms) {
+
+      return new Promise(
+        resolve =>
+          window.setTimeout(
+            resolve,
+            ms
+          )
+      );
+
+    }
+
+
+    function waitForImage(image) {
+
+      if (
+        image.complete &&
+        image.naturalWidth > 0
+      ) {
+
+        return Promise.resolve(
+          image
+        );
+
+      }
+
+
+      return new Promise(
+        (resolve, reject) => {
+
+          image.addEventListener(
+            "load",
+            () => resolve(image),
+            {
+              once: true
+            }
+          );
+
+
+          image.addEventListener(
+            "error",
+            reject,
+            {
+              once: true
+            }
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =====================================================
+       DIMENSION VALIDATION
+
+       Do not guess positions for cropped layers.
+       ===================================================== */
+
+    let validLines = [];
+    let buildingValid = false;
+
+
+    async function validateLayers() {
+
+      try {
+
+        await Promise.all([
+          waitForImage(base),
+          ...lines.map(
+            waitForImage
+          ),
+          waitForImage(
+            buildingScreen
+          )
+        ]);
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "One or more Fuji artwork assets failed to load.",
+          error
+        );
+
+        return;
+
+      }
+
+
+      const width =
+        base.naturalWidth;
+
+
+      const height =
+        base.naturalHeight;
+
+
+      console.log(
+        `Fuji base canvas: ${width} × ${height}`
+      );
+
+
+      validLines =
+        lines.filter(line => {
+
+          const valid =
+            (
+              line.naturalWidth ===
+                width &&
+              line.naturalHeight ===
+                height
+            );
+
+
+          if (!valid) {
+
+            line.style.display =
+              "none";
+
+
+            console.warn(
+              `line${line.dataset.line}.png is ${line.naturalWidth} × ${line.naturalHeight}, not ${width} × ${height}. ` +
+              `I am not guessing its position. I need Photoshop x, y, width and height for this layer.`
+            );
+
+          }
+
+
+          return valid;
+
+        });
+
+
+      buildingValid =
+        (
+          buildingScreen.naturalWidth ===
+            width &&
+          buildingScreen.naturalHeight ===
+            height
+        );
+
+
+      if (!buildingValid) {
+
+        buildings.forEach(
+          building => {
+
+            building.style.display =
+              "none";
+
+          }
+        );
+
+
+        console.warn(
+          `building.png is ${buildingScreen.naturalWidth} × ${buildingScreen.naturalHeight}, not ${width} × ${height}. ` +
+          `I need its Photoshop x, y, width and height rather than guessing its placement.`
+        );
+
+      }
+
+
+      if (
+        validLines.length ===
+        lines.length
+      ) {
+
+        console.log(
+          "All 13 line PNGs match the base canvas and can be stacked at inset: 0."
+        );
+
+      }
+
+
+      findBuildingCenter();
+
+
+      if (
+        reducedMotion.matches
+      ) {
+
+        setReducedMotionState();
+
+      }
+
+      else {
+
+        setRestState(
+          true
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       BUILDING CENTER
+
+       Infer architectural center from building alpha,
+       rather than hard-coding a mouse hotspot.
+       ===================================================== */
+
+    let buildingCenter = {
+      x: 0.5,
+      y: 0.5
+    };
+
+
+    function findBuildingCenter() {
+
+      if (
+        !buildingValid
+      ) {
+
+        return;
+
+      }
+
+
+      try {
+
+        const canvas =
+          document.createElement(
+            "canvas"
+          );
+
+
+        const sampleWidth =
+          240;
+
+
+        const sampleHeight =
+          Math.round(
+            sampleWidth *
+            (
+              buildingScreen.naturalHeight /
+              buildingScreen.naturalWidth
+            )
+          );
+
+
+        canvas.width =
+          sampleWidth;
+
+
+        canvas.height =
+          sampleHeight;
+
+
+        const context =
+          canvas.getContext(
+            "2d",
+            {
+              willReadFrequently: true
+            }
+          );
+
+
+        context.drawImage(
+          buildingScreen,
+          0,
+          0,
+          sampleWidth,
+          sampleHeight
+        );
+
+
+        const data =
+          context.getImageData(
+            0,
+            0,
+            sampleWidth,
+            sampleHeight
+          ).data;
+
+
+        let minX =
+          sampleWidth;
+
+
+        let minY =
+          sampleHeight;
+
+
+        let maxX =
+          0;
+
+
+        let maxY =
+          0;
+
+
+        let found =
+          false;
+
+
+        for (
+          let y = 0;
+          y < sampleHeight;
+          y++
+        ) {
+
+          for (
+            let x = 0;
+            x < sampleWidth;
+            x++
+          ) {
+
+            const alpha =
+              data[
+                (
+                  (
+                    y *
+                    sampleWidth
+                  ) +
+                  x
+                ) *
+                4 +
+                3
+              ];
+
+
+            if (
+              alpha > 18
+            ) {
+
+              found =
+                true;
+
+
+              minX =
+                Math.min(
+                  minX,
+                  x
+                );
+
+
+              minY =
+                Math.min(
+                  minY,
+                  y
+                );
+
+
+              maxX =
+                Math.max(
+                  maxX,
+                  x
+                );
+
+
+              maxY =
+                Math.max(
+                  maxY,
+                  y
+                );
+
+            }
+
+          }
+
+        }
+
+
+        if (
+          found
+        ) {
+
+          buildingCenter = {
+
+            x:
+              (
+                (
+                  minX +
+                  maxX
+                ) /
+                2
+              ) /
+              sampleWidth,
+
+            y:
+              (
+                (
+                  minY +
+                  maxY
+                ) /
+                2
+              ) /
+              sampleHeight
+
+          };
+
+        }
+
+      }
+
+      catch (error) {
+
+        /*
+          Cross-origin/security errors should not happen
+          on GitHub Pages because these assets are local,
+          but center fallback remains 0.5 / 0.5.
+        */
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LINE PROCESSING
+       ===================================================== */
+
+    const posterizeFilters = [
+      "#fuji-posterize-3",
+      "#fuji-posterize-4",
+      "#fuji-posterize-6"
+    ];
+
+
+    const thresholdFilters = [
+      "#fuji-threshold-low",
+      "#fuji-threshold-mid",
+      "#fuji-threshold-high"
+    ];
+
+
+    function chooseProcessing(
+      energy,
+      forceStrong = false
+    ) {
+
+      const boost =
+        forceStrong
+          ? 18
+          : (
+              energy *
+              10
+            );
+
+
+      return weightedPick([
+
+        {
+          value:
+            "exposed",
+          weight:
+            30
+        },
+
+        {
+          value:
+            "normal",
+          weight:
+            25
+        },
+
+        {
+          value:
+            "posterized",
+          weight:
+            18 +
+            (
+              energy *
+              7
+            )
+        },
+
+        {
+          value:
+            "threshold",
+          weight:
+            7 +
+            boost
+        },
+
+        {
+          value:
+            "bleached",
+          weight:
+            9
+        },
+
+        {
+          value:
+            "hard",
+          weight:
+            7 +
+            (
+              energy *
+              6
+            )
+        },
+
+        {
+          value:
+            "inverted",
+          weight:
+            1 +
+            (
+              forceStrong
+                ? 4
+                : energy * 2
+            )
+        }
+
+      ]);
+
+    }
+
+
+    function chooseBlendMode(
+      energy,
+      forceStrong = false
+    ) {
+
+      const extreme =
+        forceStrong
+          ? 14
+          : (
+              energy *
+              8
+            );
+
+
+      return weightedPick([
+
+        {
+          value:
+            "normal",
+          weight:
+            24
+        },
+
+        {
+          value:
+            "screen",
+          weight:
+            22
+        },
+
+        {
+          value:
+            "multiply",
+          weight:
+            19
+        },
+
+        {
+          value:
+            "hard-light",
+          weight:
+            16
+        },
+
+        {
+          value:
+            "overlay",
+          weight:
+            12
+        },
+
+        {
+          value:
+            "difference",
+          weight:
+            2 +
+            extreme
+        },
+
+        {
+          value:
+            "exclusion",
+          weight:
+            3 +
+            (
+              energy *
+              3
+            )
+        },
+
+        {
+          value:
+            "color-dodge",
+          weight:
+            2 +
+            (
+              forceStrong
+                ? 5
+                : energy * 2
+            )
+        }
+
+      ]);
+
+    }
+
+
+    function createFilter(
+      state,
+      energy
+    ) {
+
+      if (
+        state ===
+        "normal"
+      ) {
+
+        return `
+          brightness(${random(0.96, 1.13)})
+          contrast(${random(0.98, 1.20)})
+          saturate(${random(0.88, 1.08)})
+        `;
+
+      }
+
+
+      if (
+        state ===
+        "exposed"
+      ) {
+
+        return `
+          brightness(${random(
+            1.15,
+            1.55 +
+            (
+              energy *
+              0.55
+            )
+          )})
+          contrast(${random(1.05, 1.45)})
+          saturate(${random(0.82, 1.14)})
+        `;
+
+      }
+
+
+      if (
+        state ===
+        "posterized"
+      ) {
+
+        return `
+          url("${pick(
+            posterizeFilters
+          )}")
+          brightness(${random(0.95, 1.35)})
+          contrast(${random(1.05, 1.45)})
+          saturate(${random(0.88, 1.14)})
+        `;
+
+      }
+
+
+      if (
+        state ===
+        "threshold"
+      ) {
+
+        return `
+          url("${pick(
+            thresholdFilters
+          )}")
+          brightness(${random(0.90, 1.24)})
+          contrast(${random(1.0, 1.28)})
+        `;
+
+      }
+
+
+      if (
+        state ===
+        "bleached"
+      ) {
+
+        return `
+          brightness(${random(1.30, 1.78)})
+          contrast(${random(0.88, 1.14)})
+          saturate(${random(0.42, 0.78)})
+        `;
+
+      }
+
+
+      if (
+        state ===
+        "hard"
+      ) {
+
+        return `
+          brightness(${random(0.82, 1.15)})
+          contrast(${random(1.55, 2.35)})
+          saturate(${random(0.88, 1.20)})
+        `;
+
+      }
+
+
+      return `
+        invert(1)
+        brightness(${random(0.92, 1.15)})
+        contrast(${random(1.12, 1.42)})
+        saturate(${random(0.78, 1.10)})
+      `;
+
+    }
+
+
+    function opacityForLine(
+      blend,
+      energy
+    ) {
+
+      let opacity =
+        random(
+          0.30,
+          0.70 +
+          (
+            energy *
+            0.18
+          )
+        );
+
+
+      if (
+        blend ===
+        "difference" ||
+        blend ===
+        "color-dodge"
+      ) {
+
+        opacity *=
+          random(
+            0.50,
+            0.76
+          );
+
+      }
+
+
+      return clamp(
+        opacity,
+        0.16,
+        0.92
+      );
+
+    }
+
+
+    function configureLine(
+      line,
+      energy,
+      forceStrong = false
+    ) {
+
+      const processing =
+        chooseProcessing(
+          energy,
+          forceStrong
+        );
+
+
+      const blend =
+        chooseBlendMode(
+          energy,
+          forceStrong
+        );
+
+
+      const opacity =
+        opacityForLine(
+          blend,
+          energy
+        );
+
+
+      line.style.mixBlendMode =
+        blend;
+
+
+      line.style.filter =
+        createFilter(
+          processing,
+          energy
+        );
+
+
+      line.dataset.targetOpacity =
+        opacity.toFixed(3);
+
+
+      line.dataset.processing =
+        processing;
+
+
+      line.dataset.blend =
+        blend;
+
+    }
+
+
+    /* =====================================================
+       ENERGY
+       ===================================================== */
+
+    let pointerInside =
+      false;
+
+
+    let energy =
+      0;
+
+
+    let targetEnergy =
+      0;
+
+
+    let speedEnergy =
+      0;
+
+
+    let lastPointer = {
+      x: 0,
+      y: 0,
+      time: 0
+    };
+
+
+    let lastBurst =
+      0;
+
+
+    function updatePointerEnergy(
+      event
+    ) {
+
+      const rect =
+        artwork.getBoundingClientRect();
+
+
+      const x =
+        clamp(
+          (
+            event.clientX -
+            rect.left
+          ) /
+          rect.width,
+          0,
+          1
+        );
+
+
+      const y =
+        clamp(
+          (
+            event.clientY -
+            rect.top
+          ) /
+          rect.height,
+          0,
+          1
+        );
+
+
+      const dx =
+        x -
+        buildingCenter.x;
+
+
+      const dy =
+        y -
+        buildingCenter.y;
+
+
+      const distance =
+        Math.sqrt(
+          (
+            dx *
+            dx
+          ) +
+          (
+            dy *
+            dy
+          )
+        );
+
+
+      const proximity =
+        1 -
+        clamp(
+          distance /
+          0.62,
+          0,
+          1
+        );
+
+
+      const now =
+        performance.now();
+
+
+      if (
+        lastPointer.time > 0
+      ) {
+
+        const pixelDX =
+          event.clientX -
+          lastPointer.x;
+
+
+        const pixelDY =
+          event.clientY -
+          lastPointer.y;
+
+
+        const elapsed =
+          Math.max(
+            16,
+            now -
+            lastPointer.time
+          );
+
+
+        const speed =
+          (
+            Math.sqrt(
+              (
+                pixelDX *
+                pixelDX
+              ) +
+              (
+                pixelDY *
+                pixelDY
+              )
+            )
+          ) /
+          elapsed;
+
+
+        speedEnergy =
+          clamp(
+            speed /
+            1.45,
+            0,
+            1
+          );
+
+      }
+
+
+      lastPointer = {
+        x:
+          event.clientX,
+
+        y:
+          event.clientY,
+
+        time:
+          now
+      };
+
+
+      targetEnergy =
+        clamp(
+          0.12 +
+          (
+            proximity *
+            0.76
+          ) +
+          (
+            speedEnergy *
+            0.30
+          ),
+          0,
+          1
+        );
+
+
+      /*
+        Very fast movement can create one rare
+        strong photographic interruption.
+      */
+
+      if (
+        speedEnergy > 0.72 &&
+        (
+          now -
+          lastBurst
+        ) > 650 &&
+        active &&
+        !reducedMotion.matches
+      ) {
+
+        lastBurst =
+          now;
+
+
+        const candidates =
+          shuffle(
+            validLines
+          ).slice(
+            0,
+            Math.random() < 0.22
+              ? 2
+              : 1
+          );
+
+
+        candidates.forEach(
+          line => {
+
+            mutateLine(
+              line,
+              true
+            );
+
+          }
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       BUILDING / BASE RENDER LOOP
+       ===================================================== */
+
+    function renderEnergy() {
+
+      const smoothing =
+        pointerInside
+          ? 0.085
+          : 0.045;
+
+
+      energy +=
+        (
+          targetEnergy -
+          energy
+        ) *
+        smoothing;
+
+
+      speedEnergy *=
+        0.92;
+
+
+      /*
+        Photograph stays stable.
+      */
+
+      base.style.filter =
+        `
+          brightness(${1 + (energy * 0.025)})
+          contrast(${1 + (energy * 0.045)})
+          saturate(${1 - (energy * 0.03)})
+        `;
+
+
+      if (
+        buildingValid
+      ) {
+
+        const screenOpacity =
+          0.055 +
+          (
+            energy *
+            0.30
+          );
+
+
+        const hardOpacity =
+          Math.max(
+            0,
+            energy -
+            0.16
+          ) *
+          0.66;
+
+
+        const differenceOpacity =
+          Math.max(
+            0,
+            energy -
+            0.68
+          ) *
+          (
+            finePointer.matches
+              ? 0.54
+              : 0.24
+          );
+
+
+        buildingScreen.style.opacity =
+          screenOpacity.toFixed(3);
+
+
+        buildingHard.style.opacity =
+          hardOpacity.toFixed(3);
+
+
+        buildingDifference.style.opacity =
+          differenceOpacity.toFixed(3);
+
+
+        /*
+          Tiny registration error only.
+        */
+
+        const drift =
+          energy *
+          2.4;
+
+
+        buildingScreen.style.transform =
+          `translate(${(-drift * 0.35).toFixed(2)}px, ${(drift * 0.20).toFixed(2)}px)`;
+
+
+        buildingHard.style.transform =
+          `translate(${(drift * 0.55).toFixed(2)}px, ${(-drift * 0.25).toFixed(2)}px)`;
+
+
+        buildingDifference.style.transform =
+          `translate(${(-drift * 0.70).toFixed(2)}px, ${(-drift * 0.45).toFixed(2)}px)`;
+
+      }
+
+
+      requestAnimationFrame(
+        renderEnergy
+      );
+
+    }
+
+
+    requestAnimationFrame(
+      renderEnergy
+    );
+
+
+    /* =====================================================
+       RECONSTRUCTION
+       ===================================================== */
+
+    let active =
+      false;
+
+
+    let reconstructionToken =
+      0;
+
+
+    let mutationTimer =
+      null;
+
+
+    let settleToken =
+      0;
+
+
+    async function reconstruct(
+      startMutationAfter = true
+    ) {
+
+      if (
+        validLines.length === 0
+      ) {
+
+        return;
+
+      }
+
+
+      active =
+        true;
+
+
+      settleToken++;
+
+
+      const token =
+        ++reconstructionToken;
+
+
+      clearTimeout(
+        mutationTimer
+      );
+
+
+      /*
+        Existing drawing sinks briefly back into
+        the photograph before reconstructing.
+      */
+
+      validLines.forEach(
+        line => {
+
+          line.style.transitionDuration =
+            "320ms";
+
+
+          line.style.opacity =
+            "0";
+
+        }
+      );
+
+
+      await wait(280);
+
+
+      if (
+        token !==
+        reconstructionToken
+      ) {
+
+        return;
+
+      }
+
+
+      const order =
+        shuffle(
+          validLines
+        );
+
+
+      for (
+        const line of order
+      ) {
+
+        if (
+          token !==
+          reconstructionToken
+        ) {
+
+          return;
+
+        }
+
+
+        configureLine(
+          line,
+          energy,
+          false
+        );
+
+
+        const transition =
+          random(
+            180,
+            700
+          );
+
+
+        line.style.transitionDuration =
+          `${transition}ms`;
+
+
+        line.style.opacity =
+          line.dataset.targetOpacity;
+
+
+        let gap =
+          random(
+            60,
+            320
+          );
+
+
+        /*
+          Occasional breath in the sequence.
+        */
+
+        if (
+          Math.random() < 0.13
+        ) {
+
+          gap +=
+            random(
+              180,
+              420
+            );
+
+        }
+
+
+        await wait(
+          gap
+        );
+
+      }
+
+
+      if (
+        startMutationAfter &&
+        finePointer.matches &&
+        pointerInside &&
+        !reducedMotion.matches
+      ) {
+
+        scheduleMutation();
+
+      }
+
+    }
+
+
+    /* =====================================================
+       CONTROLLED MUTATION
+       ===================================================== */
+
+    function mutateLine(
+      line,
+      forceStrong = false
+    ) {
+
+      if (
+        !line ||
+        reducedMotion.matches
+      ) {
+
+        return;
+
+      }
+
+
+      const currentOpacity =
+        parseFloat(
+          getComputedStyle(
+            line
+          ).opacity
+        ) || 0;
+
+
+      const dipDuration =
+        random(
+          120,
+          230
+        );
+
+
+      line.style.transitionDuration =
+        `${dipDuration}ms`;
+
+
+      line.style.opacity =
+        Math.min(
+          currentOpacity * 0.55,
+          0.24
+        );
+
+
+      window.setTimeout(
+        () => {
+
+          if (
+            !active
+          ) {
+
+            return;
+
+          }
+
+
+          configureLine(
+            line,
+            energy,
+            forceStrong
+          );
+
+
+          line.style.transitionDuration =
+            `${random(260, 680)}ms`;
+
+
+          line.style.opacity =
+            line.dataset.targetOpacity;
+
+        },
+        dipDuration * 0.72
+      );
+
+    }
+
+
+    function scheduleMutation() {
+
+      clearTimeout(
+        mutationTimer
+      );
+
+
+      if (
+        !active ||
+        !pointerInside ||
+        reducedMotion.matches
+      ) {
+
+        return;
+
+      }
+
+
+      const delay =
+        random(
+          500,
+          1400 -
+          (
+            energy *
+            420
+          )
+        );
+
+
+      mutationTimer =
+        window.setTimeout(
+          () => {
+
+            if (
+              !active ||
+              !pointerInside
+            ) {
+
+              return;
+
+            }
+
+
+            const roll =
+              Math.random();
+
+
+            const count =
+              roll < 0.76
+                ? 1
+                : (
+                    roll < 0.96
+                      ? 2
+                      : 3
+                  );
+
+
+            const chosen =
+              shuffle(
+                validLines
+              ).slice(
+                0,
+                count
+              );
+
+
+            chosen.forEach(
+              line => {
+
+                mutateLine(
+                  line,
+                  false
+                );
+
+              }
+            );
+
+
+            scheduleMutation();
+
+          },
+          delay
+        );
+
+    }
+
+
+    /* =====================================================
+       SETTLE / REST
+       ===================================================== */
+
+    function setRestState(
+      instant = false
+    ) {
+
+      if (
+        validLines.length === 0
+      ) {
+
+        return;
+
+      }
+
+
+      active =
+        false;
+
+
+      targetEnergy =
+        0;
+
+
+      clearTimeout(
+        mutationTimer
+      );
+
+
+      reconstructionToken++;
+
+
+      const visibleAtRest =
+        shuffle(
+          validLines
+        ).slice(
+          0,
+          Math.min(
+            3,
+            validLines.length
+          )
+        );
+
+
+      validLines.forEach(
+        line => {
+
+          const keep =
+            visibleAtRest.includes(
+              line
+            );
+
+
+          line.style.mixBlendMode =
+            keep
+              ? pick([
+                  "screen",
+                  "multiply",
+                  "normal"
+                ])
+              : "normal";
+
+
+          line.style.filter =
+            keep
+              ? `
+                  brightness(${random(0.96, 1.10)})
+                  contrast(${random(1.0, 1.16)})
+                `
+              : "none";
+
+
+          line.style.transitionDuration =
+            instant
+              ? "0ms"
+              : `${random(700, 1400)}ms`;
+
+
+          line.style.opacity =
+            keep
+              ? random(
+                  0.035,
+                  0.095
+                )
+              : "0";
+
+        }
+      );
+
+    }
+
+
+    function settleAfterLeave() {
+
+      const token =
+        ++settleToken;
+
+
+      active =
+        false;
+
+
+      reconstructionToken++;
+
+
+      clearTimeout(
+        mutationTimer
+      );
+
+
+      targetEnergy =
+        0;
+
+
+      const order =
+        shuffle(
+          validLines
+        );
+
+
+      order.forEach(
+        (line, index) => {
+
+          const delay =
+            random(
+              0,
+              950
+            ) +
+            (
+              index *
+              random(
+                20,
+                65
+              )
+            );
+
+
+          window.setTimeout(
+            () => {
+
+              if (
+                token !==
+                settleToken
+              ) {
+
+                return;
+
+              }
+
+
+              line.style.transitionDuration =
+                `${random(650, 1300)}ms`;
+
+
+              line.style.filter =
+                `
+                  brightness(${random(0.98, 1.07)})
+                  contrast(${random(1, 1.10)})
+                `;
+
+
+              line.style.mixBlendMode =
+                pick([
+                  "normal",
+                  "screen",
+                  "multiply"
+                ]);
+
+
+              line.style.opacity =
+                "0";
+
+            },
+            delay
+          );
+
+      });
+
+
+      /*
+        After the drawing has receded, leave a
+        few faint traces rather than a hard reset.
+      */
+
+      window.setTimeout(
+        () => {
+
+          if (
+            token !==
+            settleToken
+          ) {
+
+            return;
+
+          }
+
+
+          setRestState(
+            false
+          );
+
+        },
+        2100
+      );
+
+    }
+
+
+    /* =====================================================
+       REDUCED MOTION
+       ===================================================== */
+
+    function setReducedMotionState() {
+
+      reconstructionToken++;
+
+
+      clearTimeout(
+        mutationTimer
+      );
+
+
+      active =
+        false;
+
+
+      targetEnergy =
+        0;
+
+
+      validLines.forEach(
+        line => {
+
+          line.style.opacity =
+            "0";
+
+
+          line.style.filter =
+            "none";
+
+
+          line.style.mixBlendMode =
+            "normal";
+
+        }
+      );
+
+
+      shuffle(
+        validLines
+      )
+        .slice(
+          0,
+          Math.min(
+            4,
+            validLines.length
+          )
+        )
+        .forEach(
+          (line, index) => {
+
+            line.style.mixBlendMode =
+              index % 2 === 0
+                ? "screen"
+                : "multiply";
+
+
+            line.style.opacity =
+              0.08 +
+              (
+                index *
+                0.025
+              );
+
+          }
+        );
+
+
+      if (
+        buildingValid
+      ) {
+
+        buildingScreen.style.opacity =
+          "0.12";
+
+
+        buildingHard.style.opacity =
+          "0";
+
+
+        buildingDifference.style.opacity =
+          "0";
+
+      }
+
+    }
+
+
+    /* =====================================================
+       DESKTOP POINTER
+       ===================================================== */
+
+    artwork.addEventListener(
+      "pointerenter",
+      event => {
+
+        if (
+          !finePointer.matches ||
+          reducedMotion.matches
+        ) {
+
+          return;
+
+        }
+
+
+        pointerInside =
+          true;
+
+
+        updatePointerEnergy(
+          event
+        );
+
+
+        reconstruct(
+          true
+        );
+
+      }
+    );
+
+
+    artwork.addEventListener(
+      "pointermove",
+      event => {
+
+        if (
+          !finePointer.matches ||
+          reducedMotion.matches
+        ) {
+
+          return;
+
+        }
+
+
+        updatePointerEnergy(
+          event
+        );
+
+      }
+    );
+
+
+    artwork.addEventListener(
+      "pointerleave",
+      () => {
+
+        if (
+          !finePointer.matches ||
+          reducedMotion.matches
+        ) {
+
+          return;
+
+        }
+
+
+        pointerInside =
+          false;
+
+
+        lastPointer.time =
+          0;
+
+
+        settleAfterLeave();
+
+      }
+    );
+
+
+    /* =====================================================
+       TOUCH
+
+       Tap reconstructs.
+       No perpetual mutation loop.
+       ===================================================== */
+
+    artwork.addEventListener(
+      "click",
+      event => {
+
+        if (
+          finePointer.matches ||
+          reducedMotion.matches
+        ) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        targetEnergy =
+          0.62;
+
+
+        reconstruct(
+          false
+        );
+
+
+        window.setTimeout(
+          () => {
+
+            targetEnergy =
+              0.12;
+
+          },
+          1900
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       KEYBOARD
+       ===================================================== */
+
+    artwork.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key !== "Enter" &&
+          event.key !== " "
+        ) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        if (
+          reducedMotion.matches
+        ) {
+
+          setReducedMotionState();
+
+          return;
+
+        }
+
+
+        targetEnergy =
+          0.55;
+
+
+        reconstruct(
+          false
+        );
+
+
+        window.setTimeout(
+          () => {
+
+            targetEnergy =
+              0.12;
+
+          },
+          2000
+        );
+
+      }
+    );
+
+
+    reducedMotion.addEventListener(
+      "change",
+      () => {
+
+        if (
+          reducedMotion.matches
+        ) {
+
+          setReducedMotionState();
+
+        }
+
+        else {
+
+          setRestState(
+            false
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+    validateLayers();
+
+  })();
+  </script>
+
+
+  <!-- =====================================================
+       EXISTING HORSE WIP
+       ===================================================== -->
+
+  <script>
+  (() => {
 
     const clamp = (value, min, max) =>
       Math.min(
@@ -386,34 +3034,6 @@
     }
 
 
-    function differentIndex(
-      length,
-      current
-    ) {
-
-      let next;
-
-
-      do {
-
-        next =
-          Math.floor(
-            Math.random() *
-            length
-          );
-
-      }
-      while (
-        length > 1 &&
-        next === current
-      );
-
-
-      return next;
-
-    }
-
-
     function smoothStep(value) {
 
       const t =
@@ -436,10 +3056,6 @@
     }
 
 
-    /* =====================================================
-       MOBILE
-       ===================================================== */
-
     const mobileQuery =
       window.matchMedia(
         "(max-width: 700px)"
@@ -452,10 +3068,6 @@
 
     }
 
-
-    /* =====================================================
-       ELEMENTS
-       ===================================================== */
 
     const pageShell =
       document.getElementById(
@@ -504,10 +3116,6 @@
         "horse-key"
       );
 
-
-    /* =====================================================
-       SHARED HOME TEXTURES
-       ===================================================== */
 
     const ALL_TEXTURES = [
 
@@ -602,35 +3210,12 @@
       );
 
 
-    /* =====================================================
-       PRELOAD
-       ===================================================== */
-
-    let sessionTextures =
-      [];
-
-
-    let readyTextures =
-      [];
-
-
-    let recentTextures =
-      [];
+    let sessionTextures = [];
+    let readyTextures = [];
+    let recentTextures = [];
 
 
     function prepareTextures() {
-
-      const dirtyCount =
-        isMobile()
-          ? 13
-          : 18;
-
-
-      const softCount =
-        isMobile()
-          ? 3
-          : 6;
-
 
       sessionTextures = [
 
@@ -638,31 +3223,30 @@
           DIRTY_TEXTURES
         ).slice(
           0,
-          dirtyCount
+          isMobile()
+            ? 13
+            : 18
         ),
 
         ...shuffle(
           SOFTER_TEXTURES
         ).slice(
           0,
-          softCount
+          isMobile()
+            ? 3
+            : 6
         )
 
       ];
 
 
-      readyTextures =
-        [];
+      readyTextures = [];
 
 
       sessionTextures.forEach(src => {
 
         const image =
           new Image();
-
-
-        image.decoding =
-          "async";
 
 
         image.onload =
@@ -716,10 +3300,7 @@
 
 
       let result;
-
-
-      let attempts =
-        0;
+      let attempts = 0;
 
 
       do {
@@ -757,10 +3338,6 @@
 
     }
 
-
-    /* =====================================================
-       HORSE PIGMENTS
-       ===================================================== */
 
     const HORSE_COLORS = [
 
@@ -841,8 +3418,7 @@
     ];
 
 
-    let lastHorseColorName =
-      "";
+    let lastHorseColorName = "";
 
 
     function differentHorseColor(
@@ -850,10 +3426,7 @@
     ) {
 
       let result;
-
-
-      let attempts =
-        0;
+      let attempts = 0;
 
 
       do {
@@ -885,27 +3458,14 @@
       time
     ) {
 
-      if (
-        time < 75
-      ) {
-
-        return differentHorseColor(
-          EARLY_COLORS
-        );
-
-      }
-
-
       return differentHorseColor(
-        HORSE_COLORS
+        time < 75
+          ? EARLY_COLORS
+          : HORSE_COLORS
       );
 
     }
 
-
-    /* =====================================================
-       TEXTURE SLOTS
-       ===================================================== */
 
     function makeSlot(
       id,
@@ -931,29 +3491,7 @@
 
         active: 0,
 
-        role:
-          options.role,
-
-        desktopBlend:
-          options.desktopBlend,
-
-        mobileBlend:
-          options.mobileBlend,
-
-        internalBlend:
-          options.internalBlend,
-
-        slowDuration:
-          options.slowDuration,
-
-        fastDuration:
-          options.fastDuration,
-
-        phase:
-          options.phase,
-
-        mobileEnabled:
-          options.mobileEnabled !== false,
+        ...options,
 
         nextChange:
           Infinity
@@ -969,57 +3507,40 @@
         "under-slot-1",
         {
           role: "foundation",
-
           desktopBlend: "multiply",
           mobileBlend: "multiply",
-
           internalBlend: "multiply",
-
           slowDuration: 11.5,
           fastDuration: 2.5,
-
           phase: 0,
-
           mobileEnabled: true
         }
       ),
-
 
       makeSlot(
         "under-slot-2",
         {
           role: "secondary",
-
           desktopBlend: "color-burn",
           mobileBlend: "soft-light",
-
           internalBlend: "overlay",
-
           slowDuration: 13.5,
           fastDuration: 3,
-
           phase: 2.4,
-
           mobileEnabled: true
         }
       ),
-
 
       makeSlot(
         "over-slot-1",
         {
           role: "overprint",
-
           desktopBlend: "hard-light",
           mobileBlend: "soft-light",
-
           internalBlend: "multiply",
-
           slowDuration: 9.5,
           fastDuration: 2.4,
-
           phase: 4.8,
-
           mobileEnabled: false
         }
       )
@@ -1027,45 +3548,29 @@
     ];
 
 
-    /* =====================================================
-       TEXTURE DESIGN
-       ===================================================== */
-
     function neutralTint() {
-
-      const dark =
-        pick([
-          "#060605",
-          "#11100e",
-          "#1a1714",
-          "#25211c"
-        ]);
-
-
-      const mid =
-        pick([
-          "#49443d",
-          "#5a544b",
-          "#6e665b",
-          "#7a7164"
-        ]);
-
-
-      const light =
-        pick([
-          "#c5bdae",
-          "#d2cabc",
-          "#ded5c7",
-          "#e8dfd1"
-        ]);
-
 
       return `
         linear-gradient(
           ${random(0, 360)}deg,
-          ${dark} 0%,
-          ${mid} 52%,
-          ${light} 100%
+          ${pick([
+            "#060605",
+            "#11100e",
+            "#1a1714",
+            "#25211c"
+          ])} 0%,
+          ${pick([
+            "#49443d",
+            "#5a544b",
+            "#6e665b",
+            "#7a7164"
+          ])} 52%,
+          ${pick([
+            "#c5bdae",
+            "#d2cabc",
+            "#ded5c7",
+            "#e8dfd1"
+          ])} 100%
         )
       `;
 
@@ -1084,27 +3589,19 @@
 
         return isMobile()
           ? random(
-              lerp(
-                0.48,
-                0.56,
-                intensity
-              ),
-              lerp(
-                0.62,
-                0.72,
-                intensity
+              0.48,
+              0.62 +
+              (
+                intensity *
+                0.10
               )
             )
           : random(
-              lerp(
-                0.60,
-                0.68,
-                intensity
-              ),
-              lerp(
-                0.78,
-                0.88,
-                intensity
+              0.60,
+              0.78 +
+              (
+                intensity *
+                0.10
               )
             );
 
@@ -1119,18 +3616,18 @@
         return isMobile()
           ? random(
               0.24,
-              lerp(
-                0.35,
-                0.48,
-                intensity
+              0.35 +
+              (
+                intensity *
+                0.13
               )
             )
           : random(
               0.34,
-              lerp(
-                0.50,
-                0.64,
-                intensity
+              0.50 +
+              (
+                intensity *
+                0.14
               )
             );
 
@@ -1139,10 +3636,10 @@
 
       return random(
         0.08,
-        lerp(
-          0.16,
-          0.27,
-          intensity
+        0.16 +
+        (
+          intensity *
+          0.11
         )
       );
 
@@ -1155,14 +3652,10 @@
       intensity
     ) {
 
-      const texture =
-        chooseTexture();
-
-
       frame.style.backgroundImage =
         `
           ${neutralTint()},
-          url("${texture}")
+          url("${chooseTexture()}")
         `;
 
 
@@ -1170,23 +3663,8 @@
         "cover, cover";
 
 
-      frame.style.backgroundRepeat =
-        "no-repeat, no-repeat";
-
-
-      frame.style.backgroundPosition =
-        `
-          center,
-          ${random(12, 88)}%
-          ${random(12, 88)}%
-        `;
-
-
       frame.style.backgroundBlendMode =
-        `
-          ${slot.internalBlend},
-          normal
-        `;
+        `${slot.internalBlend}, normal`;
 
 
       frame.style.mixBlendMode =
@@ -1195,81 +3673,35 @@
           : slot.desktopBlend;
 
 
-      const rotation =
-        isMobile()
-          ? random(-0.8, 0.8)
-          : random(-2, 2);
-
-
-      const translate =
-        isMobile()
-          ? 1
-          : 2.2;
-
-
-      const scale =
-        isMobile()
-          ? random(1.05, 1.14)
-          : random(1.07, 1.24);
-
-
       frame.style.transform =
         `
           translate(
-            ${random(
-              -translate,
-              translate
-            )}%,
-            ${random(
-              -translate,
-              translate
-            )}%
+            ${random(-2, 2)}%,
+            ${random(-2, 2)}%
           )
           rotate(
-            ${rotation}deg
+            ${random(-1.5, 1.5)}deg
           )
           scale(
-            ${scale}
+            ${random(1.06, 1.20)}
           )
         `;
 
 
-      if (
+      frame.style.filter =
         isMobile()
-      ) {
-
-        frame.style.filter =
-          `
-            grayscale(1)
-            saturate(0)
-            contrast(
-              ${random(1.16, 1.42)}
-            )
-            brightness(
-              ${random(0.74, 0.94)}
-            )
-          `;
-
-      }
-
-      else {
-
-        frame.style.filter =
-          `
-            grayscale(1)
-            saturate(0)
-            contrast(
-              ${random(1.28, 1.72)}
-            )
-            brightness(
-              ${random(0.64, 0.92)}
-            )
-            sepia(
-              ${random(0.02, 0.07)}
-            )
-          `;
-
-      }
+          ? `
+              grayscale(1)
+              saturate(0)
+              contrast(${random(1.16, 1.42)})
+              brightness(${random(0.74, 0.94)})
+            `
+          : `
+              grayscale(1)
+              saturate(0)
+              contrast(${random(1.28, 1.72)})
+              brightness(${random(0.64, 0.92)})
+            `;
 
 
       frame.dataset.targetOpacity =
@@ -1280,10 +3712,6 @@
 
     }
 
-
-    /* =====================================================
-       INITIAL TEXTURE
-       ===================================================== */
 
     function initializeSlot(
       slot,
@@ -1299,36 +3727,9 @@
         slot.element.style.display =
           "none";
 
-
-        slot.nextChange =
-          Infinity;
-
-
         return;
 
       }
-
-
-      slot.element.style.display =
-        "";
-
-
-      slot.frames.forEach(
-        frame => {
-
-          frame.style.transitionDuration =
-            "0s";
-
-
-          frame.style.opacity =
-            "0";
-
-        }
-      );
-
-
-      slot.active =
-        0;
 
 
       const first =
@@ -1342,51 +3743,25 @@
       );
 
 
-      const initialFade =
-        isMobile()
-          ? 6
-          : 7;
-
-
       first.style.transitionDuration =
-        `${initialFade}s`;
+        `${isMobile() ? 6 : 7}s`;
 
 
-      first.offsetHeight;
-
-
-      window.setTimeout(
-        () => {
-
-          if (
-            !overlayOpen ||
-            normalState
-          ) {
-
-            return;
-
-          }
-
-
-          first.style.opacity =
-            first.dataset.targetOpacity;
-
-        },
-        slot.phase * 1000
-      );
+      first.style.opacity =
+        first.dataset.targetOpacity;
 
 
       slot.nextChange =
         time +
         slot.phase +
-        initialFade;
+        (
+          isMobile()
+            ? 6
+            : 7
+        );
 
     }
 
-
-    /* =====================================================
-       CONTINUOUS CROSSFADE
-       ===================================================== */
 
     function morphSlot(
       slot,
@@ -1431,10 +3806,6 @@
           );
 
       }
-
-
-      incoming.style.transitionDuration =
-        "0s";
 
 
       incoming.style.opacity =
@@ -1485,10 +3856,6 @@
     }
 
 
-    /* =====================================================
-       HORSE COLOR
-       ===================================================== */
-
     let nextHorseChange =
       Infinity;
 
@@ -1521,116 +3888,25 @@
         `
           grayscale(1)
           sepia(1)
-          saturate(
-            ${
-              color.saturation *
-              random(
-                0.97,
-                1.10
-              )
-            }
-          )
-          hue-rotate(
-            ${
-              color.hue +
-              random(-2.5, 2.5)
-            }deg
-          )
-          contrast(
-            ${
-              color.contrast *
-              random(
-                0.98,
-                1.04
-              )
-            }
-          )
-          brightness(
-            ${
-              color.brightness *
-              random(
-                0.99,
-                1.03
-              )
-            }
-          )
+          saturate(${color.saturation})
+          hue-rotate(${color.hue}deg)
+          contrast(${color.contrast})
+          brightness(${color.brightness})
         `;
 
 
       horseMain.style.opacity =
+        "1";
+
+
+      horseOffset.style.opacity =
         isMobile()
-          ? "1"
-          : random(
-              0.95,
-              1
-            );
-
-
-      if (
-        isMobile()
-      ) {
-
-        horseOffset.style.opacity =
-          "0";
-
-      }
-
-      else {
-
-        horseOffset.style.transitionDuration =
-          `${transition}s`;
-
-
-        horseOffset.style.mixBlendMode =
-          "multiply";
-
-
-        horseOffset.style.filter =
-          `
-            grayscale(1)
-            sepia(1)
-            saturate(
-              ${
-                color.saturation *
-                1.05
-              }
-            )
-            hue-rotate(
-              ${
-                color.hue +
-                random(-4, 4)
-              }deg
-            )
-            contrast(
-              ${color.contrast}
-            )
-            brightness(
-              ${color.brightness}
-            )
-          `;
-
-
-        horseOffset.style.transform =
-          `
-            translate(
-              ${random(-1.2, 1.2)}px,
-              ${random(-1.2, 1.2)}px
-            )
-          `;
-
-
-        horseOffset.style.opacity =
-          lerp(
-            0.02,
-            0.06,
-            intensity
-          ).toFixed(3);
-
-      }
-
-
-      horseKey.style.transitionDuration =
-        `${transition}s`;
+          ? "0"
+          : lerp(
+              0.02,
+              0.06,
+              intensity
+            ).toFixed(3);
 
 
       horseKey.style.opacity =
@@ -1647,7 +3923,8 @@
             ).toFixed(3);
 
 
-      const interval =
+      nextHorseChange =
+        time +
         lerp(
           12,
           isMobile()
@@ -1655,27 +3932,6 @@
             : 4,
           intensity
         );
-
-
-      nextHorseChange =
-        time +
-        interval;
-
-    }
-
-
-    function changeHorse(
-      intensity,
-      time
-    ) {
-
-      applyHorseColor(
-        nextHorseColor(
-          time
-        ),
-        intensity,
-        time
-      );
 
     }
 
@@ -1688,10 +3944,6 @@
         );
 
 
-      horseMain.style.transitionDuration =
-        "3.5s";
-
-
       horseMain.style.mixBlendMode =
         "multiply";
 
@@ -1700,39 +3952,14 @@
         `
           grayscale(1)
           sepia(1)
-          saturate(
-            ${
-              color.saturation *
-              1.12
-            }
-          )
-          hue-rotate(
-            ${color.hue}deg
-          )
-          contrast(
-            ${
-              color.contrast *
-              1.04
-            }
-          )
-          brightness(
-            ${
-              color.brightness *
-              1.03
-            }
-          )
+          saturate(${color.saturation * 1.12})
+          hue-rotate(${color.hue}deg)
+          contrast(${color.contrast * 1.04})
+          brightness(${color.brightness * 1.03})
         `;
 
 
       horseMain.style.opacity =
-        "0";
-
-
-      horseOffset.style.opacity =
-        "0";
-
-
-      horseKey.style.opacity =
         "0";
 
 
@@ -1743,10 +3970,6 @@
 
 
     function normalHorse() {
-
-      horseMain.style.transitionDuration =
-        "500ms";
-
 
       horseMain.style.mixBlendMode =
         "normal";
@@ -1770,24 +3993,10 @@
     }
 
 
-    /* =====================================================
-       TIMELINE
-       ===================================================== */
-
-    const HORSE_START =
-      12;
-
-
-    const HORSE_FULL =
-      20;
-
-
-    const COLLAGE_START =
-      30;
-
-
-    const NORMAL_TIME =
-      243;
+    const HORSE_START = 12;
+    const HORSE_FULL = 20;
+    const COLLAGE_START = 30;
+    const NORMAL_TIME = 243;
 
 
     function horseRevealAt(
@@ -1807,8 +4016,7 @@
         (
           time -
           HORSE_START
-        )
-        /
+        ) /
         (
           HORSE_FULL -
           HORSE_START
@@ -1832,96 +4040,27 @@
       }
 
 
-      if (
-        time < 90
-      ) {
-
-        return lerp(
-          0.06,
-          0.25,
-          (
-            time -
-            COLLAGE_START
-          )
-          /
-          60
-        );
-
-      }
-
-
-      if (
-        time < 175
-      ) {
-
-        return lerp(
-          0.25,
-          0.52,
-          (
-            time -
-            90
-          )
-          /
-          85
-        );
-
-      }
-
-
-      if (
-        time < 220
-      ) {
-
-        return lerp(
-          0.52,
-          0.79,
-          (
-            time -
-            175
-          )
-          /
-          45
-        );
-
-      }
-
-
-      return lerp(
-        0.79,
-        1,
+      return clamp(
         (
           time -
-          220
-        )
-        /
-        23
+          COLLAGE_START
+        ) /
+        (
+          NORMAL_TIME -
+          COLLAGE_START
+        ),
+        0,
+        1
       );
 
     }
 
 
-    /* =====================================================
-       STATE
-       ===================================================== */
-
-    let overlayOpen =
-      false;
-
-
-    let collageStarted =
-      false;
-
-
-    let horseStarted =
-      false;
-
-
-    let normalState =
-      false;
-
-
-    let raf =
-      null;
+    let overlayOpen = false;
+    let collageStarted = false;
+    let horseStarted = false;
+    let normalState = false;
+    let raf = null;
 
 
     function clearSlots() {
@@ -1935,10 +4074,6 @@
         slot.frames.forEach(
           frame => {
 
-            frame.style.transitionDuration =
-              "0s";
-
-
             frame.style.opacity =
               "0";
 
@@ -1949,69 +4084,6 @@
 
     }
 
-
-    function startCollage(
-      time,
-      intensity
-    ) {
-
-      if (
-        collageStarted
-      ) {
-
-        return;
-
-      }
-
-
-      collageStarted =
-        true;
-
-
-      slots.forEach(slot => {
-
-        initializeSlot(
-          slot,
-          intensity,
-          time
-        );
-
-      });
-
-    }
-
-
-    function enterNormalState() {
-
-      if (
-        normalState
-      ) {
-
-        return;
-
-      }
-
-
-      normalState =
-        true;
-
-
-      clearSlots();
-
-
-      normalHorse();
-
-
-      stage.classList.add(
-        "is-normal"
-      );
-
-    }
-
-
-    /* =====================================================
-       LOOP
-       ===================================================== */
 
     function visualLoop() {
 
@@ -2028,34 +4100,16 @@
         audio.currentTime || 0;
 
 
-      const reveal =
-        horseRevealAt(
-          time
-        );
-
-
       stage.style.setProperty(
         "--visual-reveal",
-        reveal.toFixed(4)
+        horseRevealAt(
+          time
+        ).toFixed(4)
       );
 
 
       if (
-        time < HORSE_START
-      ) {
-
-        raf =
-          requestAnimationFrame(
-            visualLoop
-          );
-
-
-        return;
-
-      }
-
-
-      if (
+        time >= HORSE_START &&
         !horseStarted
       ) {
 
@@ -2069,112 +4123,121 @@
 
 
       if (
+        time >= HORSE_START &&
         time < COLLAGE_START
       ) {
 
         horseMain.style.opacity =
-          reveal.toFixed(3);
+          horseRevealAt(
+            time
+          );
 
 
         if (
           time >= nextHorseChange
         ) {
 
-          changeHorse(
+          applyHorseColor(
+            nextHorseColor(
+              time
+            ),
             0.08,
             time
           );
 
         }
 
-
-        raf =
-          requestAnimationFrame(
-            visualLoop
-          );
-
-
-        return;
-
       }
 
 
       if (
-        time >= NORMAL_TIME
+        time >= COLLAGE_START &&
+        time < NORMAL_TIME
       ) {
 
-        enterNormalState();
-
-
-        raf =
-          requestAnimationFrame(
-            visualLoop
+        const intensity =
+          intensityAt(
+            time
           );
 
-
-        return;
-
-      }
-
-
-      const intensity =
-        intensityAt(
-          time
-        );
-
-
-      if (
-        !collageStarted
-      ) {
-
-        startCollage(
-          time,
-          intensity
-        );
-
-
-        nextHorseChange =
-          time + 8;
-
-      }
-
-
-      slots.forEach(slot => {
 
         if (
-          isMobile() &&
-          !slot.mobileEnabled
+          !collageStarted
         ) {
 
-          return;
+          collageStarted =
+            true;
+
+
+          slots.forEach(
+            slot =>
+              initializeSlot(
+                slot,
+                intensity,
+                time
+              )
+          );
+
+
+          nextHorseChange =
+            time + 8;
 
         }
 
 
+        slots.forEach(slot => {
+
+          if (
+            time >=
+            slot.nextChange
+          ) {
+
+            morphSlot(
+              slot,
+              intensity,
+              time
+            );
+
+          }
+
+        });
+
+
         if (
           time >=
-          slot.nextChange
+          nextHorseChange
         ) {
 
-          morphSlot(
-            slot,
+          applyHorseColor(
+            nextHorseColor(
+              time
+            ),
             intensity,
             time
           );
 
         }
 
-      });
+      }
 
 
       if (
-        time >=
-        nextHorseChange
+        time >= NORMAL_TIME &&
+        !normalState
       ) {
 
-        changeHorse(
-          intensity,
-          time
+        normalState =
+          true;
+
+
+        clearSlots();
+
+
+        normalHorse();
+
+
+        stage.classList.add(
+          "is-normal"
         );
 
       }
@@ -2187,10 +4250,6 @@
 
     }
 
-
-    /* =====================================================
-       OPEN WIP
-       ===================================================== */
 
     async function openWip() {
 
@@ -2219,16 +4278,8 @@
         false;
 
 
-      recentTextures =
-        [];
-
-
       lastHorseColorName =
         "";
-
-
-      nextHorseChange =
-        Infinity;
 
 
       clearSlots();
@@ -2267,9 +4318,6 @@
       );
 
 
-      audio.pause();
-
-
       audio.currentTime =
         0;
 
@@ -2284,19 +4332,7 @@
 
       }
 
-      catch (error) {
-
-        console.log(
-          "Audio could not start:",
-          error
-        );
-
-      }
-
-
-      cancelAnimationFrame(
-        raf
-      );
+      catch (error) {}
 
 
       raf =
@@ -2306,10 +4342,6 @@
 
     }
 
-
-    /* =====================================================
-       CLOSE WIP
-       ===================================================== */
 
     function closeWip() {
 
@@ -2322,9 +4354,6 @@
       );
 
 
-      clearSlots();
-
-
       audio.pause();
 
 
@@ -2332,13 +4361,10 @@
         0;
 
 
+      clearSlots();
+
+
       normalHorse();
-
-
-      stage.style.setProperty(
-        "--visual-reveal",
-        "0"
-      );
 
 
       overlay.classList.remove(
@@ -2352,24 +4378,12 @@
       );
 
 
-      window.setTimeout(() => {
-
-        pageShell.classList.remove(
-          "is-hidden"
-        );
-
-      }, 160);
+      pageShell.classList.remove(
+        "is-hidden"
+      );
 
     }
 
-
-    /* =====================================================
-       LINK HANDLING
-
-       data-live-link = actual working page.
-
-       Everything else gets horse.
-       ===================================================== */
 
     document.addEventListener(
       "click",
