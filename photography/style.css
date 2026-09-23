@@ -1,10 +1,20 @@
+/* =========================================================
+   ROOT
+   ========================================================= */
+
 :root {
   --paper: #ece7d7;
   --ink: #11110f;
+
   --yellow: #fdb913;
   --green: #006a44;
   --red: #c1272d;
 }
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
 
 *,
 *::before,
@@ -12,422 +22,1261 @@
   box-sizing: border-box;
 }
 
+
 html,
 body {
   margin: 0;
   padding: 0;
 }
 
+
 html {
   min-height: 100%;
 }
 
+
 body {
   min-height: 100vh;
+
   overflow-x: hidden;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+
+  background:
+    var(--paper);
+
+  color:
+    var(--ink);
+
+  font-family:
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing:
+    antialiased;
 }
+
 
 img {
   display: block;
+
   max-width: 100%;
 }
+
 
 a {
   color: inherit;
   text-decoration: none;
 }
 
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
 .page-shell {
   min-height: 100vh;
 }
 
-/* scarves */
+
+.page-shell.is-hidden {
+  display: none;
+}
+
+
+/* =========================================================
+   SCARFS
+   ========================================================= */
 
 .scarf-rack {
   position: fixed;
+
   top: 14px;
   right: 12px;
+
   z-index: 50;
+
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
   gap: 6px;
 }
 
+
 .scarf-item {
   position: relative;
+
   display: block;
-  height: clamp(72px, calc((100vh - 84px) / 8), 108px);
-  transform-origin: right center;
-  transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+
+  height:
+    clamp(
+      72px,
+      calc((100vh - 84px) / 8),
+      108px
+    );
+
+  transform-origin:
+    right center;
+
+  transition:
+    transform
+    220ms
+    cubic-bezier(.2, .8, .2, 1);
 }
+
 
 .scarf-item img {
   width: auto;
   height: 100%;
+
   object-fit: contain;
-  filter: drop-shadow(0 2px 1px rgba(17, 17, 15, 0.06));
+
+  filter:
+    drop-shadow(
+      0
+      2px
+      1px
+      rgba(17, 17, 15, 0.06)
+    );
 }
 
+
 .scarf-home {
-  transform: scale(1.045);
+  transform:
+    scale(1.045);
 }
+
 
 .scarf-item:hover {
   z-index: 4;
-  transform: translateX(-22px) rotate(-0.5deg) scale(1.035);
+
+  transform:
+    translateX(-22px)
+    rotate(-0.5deg)
+    scale(1.035);
 }
+
 
 .scarf-home:hover {
-  transform: translateX(-22px) rotate(-0.5deg) scale(1.075);
+  transform:
+    translateX(-22px)
+    rotate(-0.5deg)
+    scale(1.075);
 }
 
-/* page */
+
+/* =========================================================
+   PHOTOGRAPHY
+   ========================================================= */
 
 .photo-page {
   min-height: 100vh;
-  padding: clamp(30px, 4vw, 56px) clamp(430px, 36vw, 575px) 100px clamp(30px, 5.5vw, 80px);
+
+  padding:
+    clamp(30px, 4vw, 56px)
+    clamp(430px, 36vw, 575px)
+    100px
+    clamp(30px, 5.5vw, 80px);
 }
+
 
 .photo-header {
   width: 100%;
+
   margin: 0;
   padding: 0;
 }
 
+
 .photo-title {
   display: block;
+
   width: max-content;
   max-width: 100%;
+
   margin: 0;
-  color: var(--red);
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: clamp(42px, 5.4vw, 82px);
+
+  color:
+    var(--red);
+
+  font-family:
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-size:
+    clamp(
+      34px,
+      4.1vw,
+      64px
+    );
+
   font-weight: 700;
+
   line-height: 0.95;
-  letter-spacing: -0.065em;
+
+  letter-spacing:
+    -0.06em;
+
   opacity: 1;
-  transition: opacity 200ms ease, color 200ms ease;
+
+  transition:
+    opacity
+    200ms
+    ease,
+    color
+    200ms
+    ease;
 }
+
 
 .photo-title.is-fading {
   opacity: 0;
 }
 
+
 .photo-canvas {
   position: relative;
+
   width: 100%;
-  margin-top: clamp(34px, 4vw, 52px);
-  padding-bottom: 60px;
+
+  margin-top:
+    clamp(
+      28px,
+      3.2vw,
+      46px
+    );
+
+  padding-bottom:
+    60px;
 }
 
-/* interactive artwork */
+
+/* =========================================================
+   FUJI
+   ========================================================= */
 
 .fuji-interactive {
   position: relative;
+
   display: block;
+
   width: 100%;
   max-width: 1100px;
-  aspect-ratio: 3 / 2;
+
+  aspect-ratio:
+    3 / 2;
+
   margin: 0;
+
   overflow: hidden;
+
   isolation: isolate;
-  background: #101010;
-  contain: layout paint style;
-  touch-action: pan-y;
-  outline: none;
+
+  background:
+    #11110f;
+
+  contain:
+    layout
+    paint
+    style;
+
+  touch-action:
+    pan-y;
+
+  outline:
+    none;
 }
 
+
 .fuji-interactive:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: 5px;
+  outline:
+    2px solid
+    var(--ink);
+
+  outline-offset:
+    5px;
 }
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
 
 .fuji-base {
   position: absolute;
+
   inset: 0;
+
   z-index: 1;
+
   width: 100%;
   height: 100%;
+
   object-fit: fill;
+
   pointer-events: none;
+
   user-select: none;
-  transition: filter 450ms ease-out;
+
+  transition:
+    filter
+    220ms
+    ease-out;
 }
+
+
+/* =========================================================
+   BUILDING
+   ========================================================= */
 
 .fuji-building-stack {
   position: absolute;
+
   inset: 0;
+
   z-index: 12;
+
   pointer-events: none;
 }
+
 
 .fuji-building {
   position: absolute;
+
   inset: 0;
+
   width: 100%;
   height: 100%;
+
   object-fit: fill;
+
   opacity: 0;
+
   pointer-events: none;
+
   user-select: none;
+
+  transform:
+    translate(0, 0);
+
   transition:
-    opacity 320ms ease-out,
-    transform 280ms ease-out,
-    filter 320ms ease-out;
-  will-change: opacity, transform, filter;
+    opacity
+    150ms
+    ease-out,
+    filter
+    140ms
+    ease-out,
+    transform
+    140ms
+    ease-out;
+
+  will-change:
+    opacity,
+    filter;
 }
+
+
+/* =========================================================
+   LINES
+
+   Geometry itself stays still.
+   ========================================================= */
 
 .fuji-lines {
   position: absolute;
+
   inset: 0;
+
   z-index: 20;
+
   pointer-events: none;
 }
 
-.fuji-line {
-  --line-mask: none;
+
+.fuji-line-layer {
   position: absolute;
+
   inset: 0;
+
   width: 100%;
   height: 100%;
+
   opacity: 0;
+
   pointer-events: none;
+
+  /*
+    No movement animation.
+  */
+
+  transform:
+    none;
+
+  transition-property:
+    opacity;
+
+  transition-duration:
+    220ms;
+
+  transition-timing-function:
+    ease-in-out;
+
+  will-change:
+    opacity;
+}
+
+
+.fuji-line-source {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: fill;
+
+  pointer-events: none;
+
   user-select: none;
 
-  -webkit-mask-image: var(--line-mask);
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: 100% 100%;
-
-  mask-image: var(--line-mask);
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: 100% 100%;
-
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  /*
+    No transform transition.
+  */
 
   transition:
-    opacity 260ms ease-in-out,
-    transform 260ms ease-in-out,
-    filter 260ms ease-in-out;
-  will-change: opacity, transform, filter;
+    filter
+    180ms
+    ease-in-out,
+    opacity
+    180ms
+    ease-in-out;
+
+  will-change:
+    filter,
+    opacity;
 }
+
+
+.fuji-line-texture {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  background-repeat:
+    no-repeat;
+
+  transition:
+    opacity
+    180ms
+    ease-in-out,
+    filter
+    180ms
+    ease-in-out;
+
+  will-change:
+    opacity,
+    filter;
+}
+
+
+/* =========================================================
+   TRUE ALPHA LINE MASK
+   ========================================================= */
+
+.fuji-line-layer.has-alpha
+.fuji-line-texture {
+  -webkit-mask-repeat:
+    no-repeat;
+
+  -webkit-mask-position:
+    center;
+
+  -webkit-mask-size:
+    100% 100%;
+
+  mask-repeat:
+    no-repeat;
+
+  mask-position:
+    center;
+
+  mask-size:
+    100% 100%;
+}
+
+
+/* =========================================================
+   WHITE-CANVAS LINE
+   ========================================================= */
+
+.fuji-line-layer.has-white-canvas
+.fuji-line-texture {
+  mix-blend-mode:
+    multiply;
+}
+
+
+/* =========================================================
+   SVG FILTERS
+   ========================================================= */
 
 .fuji-filter-defs {
   position: absolute;
+
   width: 0;
   height: 0;
+
   overflow: hidden;
+
   pointer-events: none;
 }
 
-/* dead-link horse */
+
+/* =========================================================
+   WIP
+   ========================================================= */
 
 .wip-overlay {
   position: fixed;
+
   inset: 0;
+
   z-index: 99999;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
-  padding: 24px;
-  background: rgba(236, 231, 215, 0.96);
+
+  padding: 28px;
+
+  overflow: auto;
+
+  background:
+    var(--paper);
+
   opacity: 0;
+
   visibility: hidden;
+
   pointer-events: none;
-  transition: opacity 150ms ease, visibility 150ms ease;
+
+  transition:
+    opacity
+    160ms ease,
+    visibility
+    160ms ease;
 }
+
 
 .wip-overlay.is-visible {
   opacity: 1;
+
   visibility: visible;
+
   pointer-events: auto;
 }
 
-.wip-card {
-  width: min(84vw, 640px);
+
+.wip-inner {
+  width:
+    min(
+      92vw,
+      700px
+    );
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
 
 .wip-header {
+  position: relative;
+
+  z-index: 100;
+
+  width:
+    min(
+      69vh,
+      680px,
+      88vw
+    );
+
   display: flex;
+
   align-items: stretch;
-  background: var(--paper);
-  border: 1px solid rgba(17, 17, 15, 0.36);
+
+  margin-bottom: 0;
+
+  background:
+    var(--paper);
+
+  border:
+    1px solid
+    rgba(
+      17,
+      17,
+      15,
+      0.46
+    );
 }
 
-.wip-header p {
+
+.wip-text {
   flex: 1 1 auto;
+
   margin: 0;
-  padding: 14px 18px 15px;
-  color: var(--ink);
-  font-size: clamp(18px, 1.6vw, 24px);
+
+  padding:
+    14px
+    19px
+    15px;
+
+  color:
+    var(--ink);
+
+  font-size:
+    clamp(
+      19px,
+      1.65vw,
+      26px
+    );
+
   font-weight: 700;
+
   line-height: 1;
-  letter-spacing: -0.04em;
+
+  letter-spacing:
+    -0.045em;
 }
 
-.wip-header button {
+
+.wip-close {
   flex: 0 0 52px;
+
   width: 52px;
+
   margin: 0;
   padding: 0;
+
   border: 0;
-  border-left: 1px solid rgba(17, 17, 15, 0.36);
-  background: transparent;
-  color: var(--ink);
-  font-family: Helvetica, Arial, sans-serif;
+
+  border-left:
+    1px solid
+    rgba(
+      17,
+      17,
+      15,
+      0.46
+    );
+
+  background:
+    transparent;
+
+  color:
+    var(--ink);
+
+  font-family:
+    Helvetica,
+    Arial,
+    sans-serif;
+
   font-size: 34px;
+
   line-height: 1;
+
   cursor: pointer;
 }
 
-.wip-header button:hover {
-  background: var(--ink);
-  color: var(--paper);
+
+.wip-close:hover {
+  color:
+    var(--paper);
+
+  background:
+    var(--ink);
 }
 
-.wip-image-wrap {
-  margin-top: 0;
-  background: transparent;
+
+/* =========================================================
+   HORSE STAGE
+   ========================================================= */
+
+.collage-stage {
+  --visual-reveal: 0;
+
+  position: relative;
+
+  width:
+    min(
+      69vh,
+      680px,
+      88vw
+    );
+
+  aspect-ratio:
+    1 / 1;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  background:
+    #d4d0c5;
+
+  opacity:
+    var(--visual-reveal);
+
+  contain:
+    paint;
+
+  transition:
+    opacity
+    90ms
+    linear;
 }
 
-.wip-horse {
+
+.collage-stage::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 18% 22%,
+      rgba(0, 0, 0, 0.14),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 80% 72%,
+      rgba(255, 255, 255, 0.20),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 57% 38%,
+      rgba(0, 0, 0, 0.10),
+      transparent 40%
+    );
+
+  mix-blend-mode:
+    multiply;
+
+  opacity:
+    0.72;
+}
+
+
+.texture-slot {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+}
+
+
+.under-slot-1 {
+  z-index: 4;
+}
+
+
+.under-slot-2 {
+  z-index: 7;
+}
+
+
+.over-slot-1 {
+  z-index: 26;
+}
+
+
+.morph-frame {
+  position: absolute;
+
+  inset: -7%;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  transform-origin: center;
+
+  transition-property:
+    opacity;
+
+  transition-timing-function:
+    ease-in-out;
+}
+
+
+.horse-stack {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 20;
+
+  pointer-events: none;
+}
+
+
+.horse {
+  position: absolute;
+
+  inset: 0;
+
   width: 100%;
-  height: auto;
+  height: 100%;
+
+  object-fit: cover;
+
+  pointer-events: none;
+
+  user-select: none;
 }
 
-/* tablet */
 
-@media (max-width: 1100px) {
+.horse-main {
+  z-index: 2;
+
+  opacity: 1;
+
+  mix-blend-mode:
+    multiply;
+
+  transition-property:
+    opacity,
+    filter;
+
+  transition-timing-function:
+    ease-in-out;
+}
+
+
+.horse-offset {
+  z-index: 1;
+
+  opacity: 0;
+
+  mix-blend-mode:
+    multiply;
+
+  transition-property:
+    opacity,
+    filter;
+
+  transition-timing-function:
+    ease-in-out;
+}
+
+
+.horse-key {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 40;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0;
+
+  mix-blend-mode:
+    multiply;
+
+  filter:
+    grayscale(1)
+    saturate(0)
+    contrast(1.5);
+
+  pointer-events: none;
+}
+
+
+.stage-grain {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 45;
+
+  pointer-events: none;
+
+  opacity: 0.07;
+
+  background-image:
+    radial-gradient(
+      rgba(12, 10, 8, 0.22)
+      0.65px,
+      transparent
+      0.8px
+    );
+
+  background-size:
+    4px 4px;
+
+  mix-blend-mode:
+    multiply;
+}
+
+
+.collage-stage.is-normal {
+  background:
+    transparent;
+}
+
+
+.collage-stage.is-normal::before {
+  opacity:
+    0;
+}
+
+
+.collage-stage.is-normal
+.morph-frame {
+  opacity:
+    0 !important;
+}
+
+
+.collage-stage.is-normal
+.horse-offset,
+.collage-stage.is-normal
+.horse-key,
+.collage-stage.is-normal
+.stage-grain {
+  opacity:
+    0 !important;
+}
+
+
+.collage-stage.is-normal
+.horse-main {
+  opacity:
+    1 !important;
+
+  mix-blend-mode:
+    normal !important;
+
+  filter:
+    none !important;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (
+  max-width: 1100px
+) {
+
   .photo-page {
-    padding-right: 375px;
+    padding-right:
+      375px;
   }
+
 
   .photo-title {
-    font-size: clamp(40px, 6vw, 72px);
+    font-size:
+      clamp(
+        32px,
+        4.8vw,
+        56px
+      );
   }
+
 }
 
-/* mobile */
 
-@media (max-width: 700px) {
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (
+  max-width: 700px
+) {
+
   .scarf-rack {
     top: 10px;
+
     left: 0;
     right: 0;
-    flex-direction: row;
-    align-items: center;
+
+    flex-direction:
+      row;
+
+    align-items:
+      center;
+
     width: 100%;
+
     gap: 6px;
-    padding: 4px 14px 12px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+
+    padding:
+      4px
+      14px
+      12px;
+
+    overflow-x:
+      auto;
+
+    overflow-y:
+      hidden;
+
+    scrollbar-width:
+      none;
+
+    -webkit-overflow-scrolling:
+      touch;
   }
+
 
   .scarf-rack::-webkit-scrollbar {
     display: none;
   }
 
+
   .scarf-item {
-    flex: 0 0 auto;
+    flex:
+      0 0 auto;
+
     width: 285px;
     height: auto;
-    transform: none;
+
+    transform:
+      none;
   }
+
 
   .scarf-item img {
     width: 100%;
     height: auto;
   }
 
+
   .scarf-home {
     width: 315px;
+
     transform: none;
   }
+
 
   .scarf-item:hover,
   .scarf-home:hover {
     transform: none;
   }
 
+
   .photo-page {
-    min-height: 100svh;
-    padding: 180px 22px 70px;
+    min-height:
+      100svh;
+
+    padding:
+      180px
+      22px
+      70px;
   }
+
 
   .photo-title {
-    font-size: clamp(40px, 12vw, 60px);
-    line-height: 0.94;
+    font-size:
+      clamp(
+        34px,
+        10vw,
+        50px
+      );
   }
+
 
   .photo-canvas {
-    margin-top: 30px;
-    padding-bottom: 40px;
+    margin-top:
+      26px;
+
+    padding-bottom:
+      40px;
   }
 
-  .fuji-interactive {
-    width: 100%;
+
+  /*
+    Keep line textures somewhat calmer on touch.
+  */
+
+  .fuji-line-texture {
+    transition-duration:
+      320ms;
   }
+
+
+  .fuji-building {
+    transition-duration:
+      320ms;
+  }
+
 
   .wip-overlay {
-    padding: 16px 12px;
+    padding:
+      18px
+      12px;
   }
 
-  .wip-card {
-    width: 94vw;
+
+  .wip-inner {
+    width:
+      94vw;
   }
 
-  .wip-header p {
-    padding: 12px 13px;
-    font-size: 17px;
+
+  .wip-header,
+  .collage-stage {
+    width:
+      min(
+        82vh,
+        94vw
+      );
   }
 
-  .wip-header button {
-    flex-basis: 47px;
-    width: 47px;
-    font-size: 31px;
+
+  .wip-text {
+    min-width: 0;
+
+    padding:
+      12px
+      13px;
+
+    font-size:
+      17px;
   }
+
+
+  .wip-close {
+    flex-basis:
+      47px;
+
+    width:
+      47px;
+
+    font-size:
+      31px;
+  }
+
+
+  .over-slot-1 {
+    display:
+      none;
+  }
+
+
+  .horse-offset {
+    display:
+      none;
+  }
+
+
+  .morph-frame {
+    inset:
+      -5%;
+  }
+
+
+  .collage-stage::before {
+    opacity:
+      0.54;
+  }
+
+
+  .stage-grain {
+    opacity:
+      0.04;
+
+    background-size:
+      5px 5px;
+  }
+
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .fuji-base,
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+
   .fuji-building,
-  .fuji-line {
-    transition-duration: 900ms !important;
+  .fuji-line-layer,
+  .fuji-line-source,
+  .fuji-line-texture {
+    transition-duration:
+      700ms !important;
   }
 
-  .photo-title {
-    transition-duration: 500ms;
-  }
 }
 
-@media (max-width: 420px) {
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (
+  max-width: 420px
+) {
+
   .scarf-item {
-    width: 248px;
+    width:
+      248px;
   }
+
 
   .scarf-home {
-    width: 278px;
+    width:
+      278px;
   }
+
 
   .photo-page {
-    padding-top: 164px;
+    padding-top:
+      164px;
   }
+
 
   .photo-title {
-    font-size: clamp(36px, 11vw, 52px);
+    font-size:
+      clamp(
+        32px,
+        9.5vw,
+        44px
+      );
   }
 
+
   .photo-canvas {
-    margin-top: 26px;
+    margin-top:
+      24px;
   }
+
 }
