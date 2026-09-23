@@ -2,115 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
-
   <title>keegan.biz</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
   <!-- =====================================================
-       SCARF NAVIGATION
+       SCARF NAV
        ===================================================== -->
 
-  <nav
-    class="scarf-rack"
-    aria-label="Sections"
-  >
+  <nav class="scarf-rack" aria-label="Sections">
 
-    <a
-      class="scarf-item scarf-home"
-      href="#"
-      aria-label="Home"
-    >
-      <img
-        src="assets/home/home-scarf-update.png"
-        alt=""
-      >
+    <a class="scarf-item scarf-home" href="#" aria-label="Home">
+      <img src="assets/home/home-scarf-update.png" alt="">
     </a>
 
-    <a
-      class="scarf-item"
-      href="#"
-      aria-label="Illustration"
-    >
-      <img
-        src="assets/home/scarf-illustration.png"
-        alt=""
-      >
+    <a class="scarf-item" href="#" aria-label="Illustration">
+      <img src="assets/home/scarf-illustration.png" alt="">
     </a>
 
-    <a
-      class="scarf-item"
-      href="#"
-      aria-label="Photography"
-    >
-      <img
-        src="assets/home/scarf-photography.png"
-        alt=""
-      >
+    <a class="scarf-item" href="#" aria-label="Photography">
+      <img src="assets/home/scarf-photography.png" alt="">
     </a>
 
-    <a
-      class="scarf-item"
-      href="#"
-      aria-label="Graphic Design"
-    >
-      <img
-        src="assets/home/scarf-design.png"
-        alt=""
-      >
+    <a class="scarf-item" href="#" aria-label="Graphic Design">
+      <img src="assets/home/scarf-design.png" alt="">
     </a>
 
-    <a
-      class="scarf-item"
-      href="#"
-      aria-label="Music"
-    >
-      <img
-        src="assets/home/scarf-music.png"
-        alt=""
-      >
+    <a class="scarf-item" href="#" aria-label="Music">
+      <img src="assets/home/scarf-music.png" alt="">
     </a>
 
-    <a
-      class="scarf-item"
-      href="#"
-      aria-label="Motion"
-    >
-      <img
-        src="assets/home/scarf-motion.png"
-        alt=""
-      >
+    <a class="scarf-item" href="#" aria-label="Motion">
+      <img src="assets/home/scarf-motion.png" alt="">
     </a>
 
-    <a
-      class="scarf-item"
-      href="#"
-      aria-label="Miscellaneous"
-    >
-      <img
-        src="assets/home/scarf-misc.png"
-        alt=""
-      >
+    <a class="scarf-item" href="#" aria-label="Miscellaneous">
+      <img src="assets/home/scarf-misc.png" alt="">
     </a>
 
-    <a
-      class="scarf-item"
-      href="#"
-      aria-label="Gastronomy"
-    >
-      <img
-        src="assets/home/scarf-gastronomy.png"
-        alt=""
-      >
+    <a class="scarf-item" href="#" aria-label="Gastronomy">
+      <img src="assets/home/scarf-gastronomy.png" alt="">
     </a>
 
   </nav>
@@ -122,18 +59,10 @@
 
   <main class="home">
 
-    <section
-      class="hero"
-      aria-label="Welcome to keegan.biz"
-    >
+    <section class="hero" aria-label="Welcome to keegan.biz">
 
       <div class="welcome-slot" aria-hidden="true">
-
-        <div
-          class="welcome-track"
-          id="welcome-track"
-        >
-
+        <div class="welcome-track" id="welcome-track">
           <span
             class="welcome-word welcome-current"
             id="welcome-current"
@@ -145,11 +74,8 @@
             class="welcome-word welcome-next"
             id="welcome-next"
           ></span>
-
         </div>
-
       </div>
-
 
       <div class="site-title">
         to keegan.biz
@@ -161,7 +87,7 @@
 
 
   <!-- =====================================================
-       WIP AUDIO
+       AUDIO
        ===================================================== -->
 
   <audio
@@ -194,44 +120,51 @@
       ×
     </button>
 
+    <div class="wip-inner">
 
-    <!-- horse layers -->
+      <p class="wip-text">
+        sorry, i'm still working on this.
+      </p>
 
-    <div
-      class="horse-stage"
-      aria-hidden="true"
-    >
+      <div class="trippy-stage" id="trippy-stage">
 
-      <img
-        class="horse horse-base"
-        src="assets/home/horse.gif"
-        alt=""
-      >
+        <div
+          class="texture-stack texture-under"
+          id="texture-under"
+          aria-hidden="true"
+        ></div>
 
-      <img
-        class="horse horse-red"
-        src="assets/home/horse.gif"
-        alt=""
-      >
+        <div class="horse-stage" aria-hidden="true">
 
-      <img
-        class="horse horse-weird"
-        src="assets/home/horse.gif"
-        alt=""
-      >
+          <img
+            class="horse horse-base"
+            src="assets/home/horse.gif"
+            alt=""
+          >
 
-      <img
-        class="horse horse-blur"
-        src="assets/home/horse.gif"
-        alt=""
-      >
+          <img
+            class="horse horse-echo"
+            src="assets/home/horse.gif"
+            alt=""
+          >
+
+          <img
+            class="horse horse-weird"
+            src="assets/home/horse.gif"
+            alt=""
+          >
+
+        </div>
+
+        <div
+          class="texture-stack texture-over"
+          id="texture-over"
+          aria-hidden="true"
+        ></div>
+
+      </div>
 
     </div>
-
-
-    <p class="wip-text">
-      sorry, i'm still working on this.
-    </p>
 
   </div>
 
@@ -241,12 +174,28 @@
        ===================================================== -->
 
   <script>
-
   (() => {
 
     /* =====================================================
-       WELCOME SLOT MACHINE
+       HELPERS
        ===================================================== */
+
+    const pick = array =>
+      array[Math.floor(Math.random() * array.length)];
+
+    const rand = (min, max) =>
+      min + Math.random() * (max - min);
+
+    const clamp = (value, min, max) =>
+      Math.min(Math.max(value, min), max);
+
+    const lerp = (a, b, t) =>
+      a + (b - a) * t;
+
+    const easeInOut = t =>
+      t < 0.5
+        ? 4 * t * t * t
+        : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     const welcomeTrack =
       document.getElementById("welcome-track");
@@ -257,660 +206,582 @@
     const welcomeNext =
       document.getElementById("welcome-next");
 
-
-    const greetings = [
-
-      {
-        text: "Welcome"
-      },
-
-      {
-        text: "Ласкаво просимо"
-      },
-
-      {
-        text: "Benvenuti"
-      },
-
-      {
-        text: "Fáilte"
-      },
-
-      {
-        text: "Bienvenidos"
-      },
-
-      {
-        text: "欢迎"
-      },
-
-      {
-        text: "Benvinguts"
-      },
-
-      {
-        text: "WELCOME",
-        className: "wingdings"
-      },
-
-      {
-        text: "Sveiki atvykę"
-      },
-
-      {
-        text: "Yá’át’ééh"
-      },
-
-      {
-        text: "Velkomin"
-      },
-
-      {
-        text: "Willkommen"
-      },
-
-      {
-        text: "ようこそ"
-      },
-
-      {
-        text: "Bienvenue"
-      },
-
-      {
-        text: "Bem-vindos"
-      },
-
-      {
-        text: "أهلاً وسهلاً"
-      },
-
-      {
-        text: "Mae govannen"
-      },
-
-      {
-        text: "Croeso"
-      },
-
-      {
-        text:
-          "01010111 01100101 01101100 01100011 01101111 01101101 01100101",
-        className: "binary"
-      },
-
-      {
-        text: "Karibu"
-      },
-
-      {
-        text: "Siyakwamukela"
-      },
-
-      {
-        text: "Ẹ káàbọ̀"
-      },
-
-      {
-        text: "እንኳን ደህና መጡ"
-      },
-
-      {
-        text: "स्वागत है"
-      },
-
-      {
-        text: "خوش آمدید"
-      }
-
-    ];
-
-
-    const welcomeColors = [
-      "#fdb913",
-      "#006a44",
-      "#c1272d"
-    ];
-
-
-    let greetingIndex = 0;
-    let rolling = false;
-
-
-    function randomColor() {
-
-      return welcomeColors[
-        Math.floor(
-          Math.random() * welcomeColors.length
-        )
-      ];
-
-    }
-
-
-    function applyGreeting(
-      element,
-      greeting
-    ) {
-
-      element.className =
-        "welcome-word";
-
-      if (greeting.className) {
-
-        element.classList.add(
-          greeting.className
-        );
-
-      }
-
-
-      if (
-        !greeting.className &&
-        greeting.text.length > 17
-      ) {
-
-        element.classList.add(
-          "welcome-long"
-        );
-
-      }
-
-
-      element.textContent =
-        greeting.text;
-
-    }
-
-
-    function rollGreeting() {
-
-      if (rolling) {
-        return;
-      }
-
-      rolling = true;
-
-
-      let nextIndex;
-
-      do {
-
-        nextIndex =
-          Math.floor(
-            Math.random() * greetings.length
-          );
-
-      } while (
-        nextIndex === greetingIndex
-      );
-
-
-      const nextGreeting =
-        greetings[nextIndex];
-
-
-      applyGreeting(
-        welcomeNext,
-        nextGreeting
-      );
-
-
-      welcomeNext.style.color =
-        randomColor();
-
-
-      welcomeTrack.classList.add(
-        "is-rolling"
-      );
-
-
-      window.setTimeout(() => {
-
-        greetingIndex =
-          nextIndex;
-
-
-        applyGreeting(
-          welcomeCurrent,
-          nextGreeting
-        );
-
-
-        welcomeCurrent.style.color =
-          welcomeNext.style.color;
-
-
-        welcomeTrack.classList.add(
-          "no-transition"
-        );
-
-
-        welcomeTrack.classList.remove(
-          "is-rolling"
-        );
-
-
-        welcomeNext.textContent =
-          "";
-
-
-        requestAnimationFrame(() => {
-
-          requestAnimationFrame(() => {
-
-            welcomeTrack.classList.remove(
-              "no-transition"
-            );
-
-            rolling = false;
-
-          });
-
-        });
-
-      }, 560);
-
-    }
-
-
-    welcomeCurrent.style.color =
-      randomColor();
-
-
-    window.setInterval(
-      rollGreeting,
-      2600
-    );
-
-
-
-    /* =====================================================
-       WIP EXPERIENCE
-       ===================================================== */
-
-    const audio =
-      document.getElementById("wip-audio");
-
     const overlay =
       document.getElementById("wip-overlay");
 
     const closeButton =
       document.getElementById("wip-close");
 
+    const audio =
+      document.getElementById("wip-audio");
 
-    /*
-      Horse begins:
-      0:45
+    const textureUnder =
+      document.getElementById("texture-under");
 
-      Horse fully visible:
-      1:11
-    */
+    const textureOver =
+      document.getElementById("texture-over");
+
+    const trippyStage =
+      document.getElementById("trippy-stage");
+
+
+    /* =====================================================
+       GREETINGS
+       ===================================================== */
+
+    const greetings = [
+      { text: "Welcome" },
+      { text: "Ласкаво просимо" },
+      { text: "Benvenuti" },
+      { text: "Fáilte" },
+      { text: "Bienvenidos" },
+      { text: "Bienvenidas" },
+      { text: "欢迎" },
+      { text: "Benvinguts" },
+      { text: "Sveiki atvykę" },
+      { text: "Yá’át’ééh" },
+      { text: "Velkomin" },
+      { text: "Willkommen" },
+      { text: "ようこそ" },
+      { text: "Bienvenue" },
+      { text: "Bem-vindos" },
+      { text: "أهلاً وسهلاً" },
+      { text: "Mae govannen" },
+      { text: "Croeso" },
+      {
+        text: "01010111 01100101 01101100 01100011 01101111 01101101 01100101",
+        className: "binary"
+      },
+      { text: "Karibu" },
+      { text: "Siyakwamukela" },
+      { text: "Ẹ káàbọ̀" },
+      { text: "እንኳን ደህና መጡ" },
+      { text: "स्वागत है" },
+      { text: "خوش آمدید" },
+      { text: "স্বাগতম" },
+      { text: "환영합니다" },
+      { text: "Hoş geldiniz" },
+      { text: "Καλώς ήρθατε" },
+      { text: "ברוכים הבאים" },
+      { text: "ยินดีต้อนรับ" },
+      { text: "Selamat datang" },
+      { text: "Witamy" },
+      { text: "Welkom" },
+      { text: "Vítejte" },
+      { text: "Bun venit" },
+      { text: "Üdvözöljük" },
+      { text: "Velkommen" },
+      { text: "Välkommen" },
+      { text: "Tervetuloa" },
+      { text: "Nau mai" },
+      { text: "Salvete" },
+      { text: "Aloha" },
+      { text: "As-salāmu ʿalaykum" },
+      { text: "Mirë se vini" },
+      { text: "Dobrodošli" },
+      { text: "Bula vinaka" },
+      { text: "Maligayang pagdating" },
+      {
+        text: "WELCOME",
+        className: "wingdings"
+      }
+    ];
+
+    const welcomeColors = [
+      "#fdb913",
+      "#006a44",
+      "#c1272d",
+      "#d9a418",
+      "#157049",
+      "#aa2727"
+    ];
+
+    let currentGreetingIndex = 0;
+    let greetingRolling = false;
+
+    function randomWelcomeColor() {
+      return pick(welcomeColors);
+    }
+
+    function applyGreeting(el, greeting) {
+      el.className = "welcome-word";
+
+      if (greeting.className) {
+        el.classList.add(greeting.className);
+      }
+
+      if (!greeting.className && greeting.text.length > 16) {
+        el.classList.add("welcome-long");
+      }
+
+      el.textContent = greeting.text;
+    }
+
+    function rollGreeting() {
+      if (greetingRolling) return;
+      greetingRolling = true;
+
+      let nextIndex;
+
+      do {
+        nextIndex = Math.floor(Math.random() * greetings.length);
+      } while (nextIndex === currentGreetingIndex);
+
+      const nextGreeting = greetings[nextIndex];
+
+      applyGreeting(welcomeNext, nextGreeting);
+      welcomeNext.style.color = randomWelcomeColor();
+
+      welcomeTrack.classList.add("is-rolling");
+
+      window.setTimeout(() => {
+        currentGreetingIndex = nextIndex;
+
+        applyGreeting(welcomeCurrent, nextGreeting);
+        welcomeCurrent.style.color = welcomeNext.style.color;
+
+        welcomeTrack.classList.add("no-transition");
+        welcomeTrack.classList.remove("is-rolling");
+        welcomeNext.textContent = "";
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            welcomeTrack.classList.remove("no-transition");
+            greetingRolling = false;
+          });
+        });
+
+      }, 480);
+    }
+
+    welcomeCurrent.style.color = randomWelcomeColor();
+
+    setInterval(rollGreeting, 2400);
+
+
+    /* =====================================================
+       TRIPPY TEXTURE SYSTEM
+       ===================================================== */
+
+    const TEXTURE_FILES = [
+      "assets/home/Texturelabs_Atmosphere_121S.jpg",
+      "assets/home/Texturelabs_Atmosphere_127S.jpg",
+      "assets/home/Texturelabs_Atmosphere_130S.jpg",
+      "assets/home/Texturelabs_Atmosphere_135S.jpg",
+      "assets/home/Texturelabs_Atmosphere_201S.jpg",
+      "assets/home/Texturelabs_Brick_124S.jpg",
+      "assets/home/Texturelabs_Brick_158S.jpg",
+      "assets/home/Texturelabs_Concrete_150S.jpg",
+      "assets/home/Texturelabs_Concrete_155S.jpg",
+      "assets/home/Texturelabs_Concrete_179S.jpg",
+      "assets/home/Texturelabs_Concrete_205S.jpg",
+      "assets/home/Texturelabs_Concrete_207S.jpg",
+      "assets/home/Texturelabs_Fabric_123S.jpg",
+      "assets/home/Texturelabs_Fabric_144S.jpg",
+      "assets/home/Texturelabs_Fabric_172S.jpg",
+      "assets/home/Texturelabs_Film_181S.jpg",
+      "assets/home/Texturelabs_Film_183S.jpg",
+      "assets/home/Texturelabs_Film_187S.jpg",
+      "assets/home/Texturelabs_Glass_134S.jpg",
+      "assets/home/Texturelabs_Glass_155S.jpg",
+      "assets/home/Texturelabs_Grunge_173S.jpg",
+      "assets/home/Texturelabs_Grunge_279L.jpg",
+      "assets/home/Texturelabs_Grunge_334S.jpg",
+      "assets/home/Texturelabs_Grunge_341S.jpg",
+      "assets/home/Texturelabs_InkPaint_126S.jpg",
+      "assets/home/Texturelabs_InkPaint_320S.jpg",
+      "assets/home/Texturelabs_InkPaint_332S.jpg",
+      "assets/home/Texturelabs_InkPaint_356S.jpg",
+      "assets/home/Texturelabs_LensFX_251S.jpg",
+      "assets/home/Texturelabs_LensFX_256S.jpg",
+      "assets/home/Texturelabs_Metal_129S.jpg",
+      "assets/home/Texturelabs_Metal_165S.jpg",
+      "assets/home/Texturelabs_Metal_285S.jpg",
+      "assets/home/Texturelabs_Metal_294S.jpg",
+      "assets/home/Texturelabs_Paper_273S.jpg",
+      "assets/home/Texturelabs_Paper_278L.jpg",
+      "assets/home/Texturelabs_Paper_280S.jpg",
+      "assets/home/Texturelabs_Paper_286S.jpg",
+      "assets/home/Texturelabs_Paper_303S.jpg",
+      "assets/home/Texturelabs_Paper_324S.jpg",
+      "assets/home/Texturelabs_Paper_380L.jpg",
+      "assets/home/Texturelabs_Paper_380S.jpg",
+      "assets/home/Texturelabs_Sky_171S.jpg",
+      "assets/home/Texturelabs_Soil_146S.jpg",
+      "assets/home/Texturelabs_Soil_149S.jpg",
+      "assets/home/Texturelabs_Stone_167S.jpg",
+      "assets/home/Texturelabs_Stone_169S.jpg",
+      "assets/home/Texturelabs_Water_124S.jpg",
+      "assets/home/Texturelabs_Water_141S.jpg",
+      "assets/home/Texturelabs_Wood_135S.jpg",
+      "assets/home/Texturelabs_Wood_280S.jpg",
+      "assets/home/Texturelabs_Wood_290S.jpg"
+    ];
+
+    const UNDER_BLEND_MODES = [
+      "multiply",
+      "screen",
+      "overlay",
+      "soft-light",
+      "hard-light",
+      "darken",
+      "lighten",
+      "luminosity",
+      "color-dodge",
+      "color-burn"
+    ];
+
+    const OVER_BLEND_MODES = [
+      "overlay",
+      "soft-light",
+      "screen",
+      "difference",
+      "exclusion",
+      "hard-light",
+      "lighten",
+      "multiply",
+      "color-dodge"
+    ];
+
+    const PSYCHE_COLORS = [
+      "#fdb913",
+      "#006a44",
+      "#c1272d",
+      "#ff66a5",
+      "#7c5cff",
+      "#34d1bf",
+      "#ff8a00",
+      "#55c1ff",
+      "#7aff7a",
+      "#ffd8a8",
+      "#ff416c",
+      "#6a11cb",
+      "#2bff88",
+      "#00b4d8"
+    ];
+
+    const UNDER_LAYER_COUNT = 8;
+    const OVER_LAYER_COUNT = 8;
+
+    const underLayers = [];
+    const overLayers = [];
+
+    function createLayer(container, className) {
+      const layer = document.createElement("div");
+      layer.className = className;
+      container.appendChild(layer);
+      return layer;
+    }
+
+    for (let i = 0; i < UNDER_LAYER_COUNT; i += 1) {
+      underLayers.push(createLayer(textureUnder, "texture-layer"));
+    }
+
+    for (let i = 0; i < OVER_LAYER_COUNT; i += 1) {
+      overLayers.push(createLayer(textureOver, "texture-layer"));
+    }
+
+    function makeGradient() {
+      const c1 = pick(PSYCHE_COLORS);
+      const c2 = pick(PSYCHE_COLORS);
+      const c3 = pick(PSYCHE_COLORS);
+
+      const mode = Math.floor(Math.random() * 4);
+
+      if (mode === 0) {
+        return `
+          radial-gradient(
+            circle at ${rand(15, 85)}% ${rand(15, 85)}%,
+            ${c1} 0%,
+            transparent ${rand(30, 70)}%
+          ),
+          radial-gradient(
+            circle at ${rand(15, 85)}% ${rand(15, 85)}%,
+            ${c2} 0%,
+            transparent ${rand(20, 60)}%
+          )
+        `;
+      }
+
+      if (mode === 1) {
+        return `
+          linear-gradient(
+            ${rand(0, 360)}deg,
+            ${c1},
+            ${c2},
+            ${c3}
+          )
+        `;
+      }
+
+      if (mode === 2) {
+        return `
+          conic-gradient(
+            from ${rand(0, 360)}deg at ${rand(20, 80)}% ${rand(20, 80)}%,
+            ${c1},
+            ${c2},
+            ${c3},
+            ${c1}
+          )
+        `;
+      }
+
+      return `
+        radial-gradient(
+          ellipse at ${rand(15, 85)}% ${rand(15, 85)}%,
+          ${c1},
+          ${c2},
+          transparent ${rand(40, 75)}%
+        )
+      `;
+    }
+
+    function applyTextureStyle(layer, intensity, isOver) {
+      const useGradient =
+        Math.random() < (0.22 + intensity * 0.28);
+
+      if (useGradient) {
+        layer.style.backgroundImage = makeGradient();
+      } else {
+        layer.style.backgroundImage =
+          `url("${pick(TEXTURE_FILES)}")`;
+      }
+
+      const blendModes = isOver
+        ? OVER_BLEND_MODES
+        : UNDER_BLEND_MODES;
+
+      layer.style.mixBlendMode = pick(blendModes);
+
+      const opacity = isOver
+        ? rand(0.03, 0.10 + intensity * 0.34)
+        : rand(0.04, 0.14 + intensity * 0.28);
+
+      layer.style.opacity = opacity.toFixed(3);
+
+      layer.style.backgroundSize = `${rand(45, 165)}%`;
+      layer.style.backgroundPosition = `${rand(0, 100)}% ${rand(0, 100)}%`;
+      layer.style.transform = `
+        translate(${rand(-8, 8)}%, ${rand(-8, 8)}%)
+        rotate(${rand(-12, 12)}deg)
+        scale(${rand(0.92, 1.22)})
+      `;
+
+      layer.style.filter = `
+        blur(${rand(0, 8 + intensity * 8)}px)
+        saturate(${rand(0.8, 1.8 + intensity * 1.5)})
+        contrast(${rand(0.85, 1.5 + intensity * 0.8)})
+        hue-rotate(${rand(-60, 60) * intensity}deg)
+        brightness(${rand(0.78, 1.35)})
+      `;
+
+      layer.style.borderRadius = `${rand(0, 12)}px`;
+    }
+
+    function hideLayers(layers) {
+      layers.forEach(layer => {
+        layer.style.opacity = "0";
+      });
+    }
+
+    function resetTrippyLayers() {
+      hideLayers(underLayers);
+      hideLayers(overLayers);
+      trippyStage.style.setProperty("--wash-opacity", "0");
+      trippyStage.style.setProperty("--horse-jitter-x", "0px");
+      trippyStage.style.setProperty("--horse-jitter-y", "0px");
+      trippyStage.style.setProperty("--horse-jitter-r", "0deg");
+      trippyStage.style.setProperty("--horse-hue", "0deg");
+      trippyStage.style.setProperty("--horse-echo-opacity", "0");
+      trippyStage.style.setProperty("--horse-weird-opacity", "0");
+    }
+
+
+    /* =====================================================
+       TIMING
+       ===================================================== */
 
     const HORSE_START = 45;
     const HORSE_FULL = 71;
-
+    const TRIP_END = 243;
 
     let animationFrame = null;
-    let weirdTimer = null;
+    let lastShuffle = 0;
+    let overlayOpen = false;
 
-
-    const clamp = (
-      value,
-      min,
-      max
-    ) => {
-
-      return Math.min(
-        Math.max(value, min),
-        max
+    function getHorseProgress(time) {
+      return clamp(
+        (time - HORSE_START) / (HORSE_FULL - HORSE_START),
+        0,
+        1
       );
-
-    };
-
-
-    const random = (
-      min,
-      max
-    ) => {
-
-      return (
-        min +
-        Math.random() *
-        (max - min)
-      );
-
-    };
-
-
-    function updateHorse() {
-
-      const time =
-        audio.currentTime || 0;
-
-
-      const progress =
-        clamp(
-          (
-            time -
-            HORSE_START
-          ) /
-          (
-            HORSE_FULL -
-            HORSE_START
-          ),
-          0,
-          1
-        );
-
-
-      /*
-        Smooth fade:
-        subtle at first,
-        increasingly apparent toward 1:11.
-      */
-
-      const eased =
-        progress *
-        progress *
-        (
-          3 -
-          2 * progress
-        );
-
-
-      overlay.style.setProperty(
-        "--horse-progress",
-        eased.toFixed(4)
-      );
-
-
-      animationFrame =
-        requestAnimationFrame(
-          updateHorse
-        );
-
     }
 
+    function getChaosProgress(time) {
+      if (time < HORSE_START) return 0;
+      if (time >= TRIP_END) return 0;
 
-    function distortHorse() {
+      return easeInOut(
+        clamp(
+          (time - HORSE_START) / (TRIP_END - HORSE_START),
+          0,
+          1
+        )
+      );
+    }
 
-      const time =
-        audio.currentTime || 0;
+    function shuffleTrippyVisuals(time, chaos) {
+      const now = performance.now();
+      const interval = lerp(1500, 120, chaos);
 
+      if (now - lastShuffle < interval) return;
+      lastShuffle = now;
 
-      if (
-        time <
-        HORSE_START
-      ) {
+      const underActive = Math.round(lerp(2, UNDER_LAYER_COUNT, chaos));
+      const overActive = Math.round(lerp(1, OVER_LAYER_COUNT, chaos));
 
-        return;
+      underLayers.forEach((layer, index) => {
+        if (index < underActive) {
+          applyTextureStyle(layer, chaos, false);
+        } else {
+          layer.style.opacity = "0";
+        }
+      });
 
+      overLayers.forEach((layer, index) => {
+        if (index < overActive) {
+          applyTextureStyle(layer, chaos, true);
+        } else {
+          layer.style.opacity = "0";
+        }
+      });
+
+      trippyStage.style.setProperty(
+        "--wash-opacity",
+        (0.02 + chaos * 0.16).toFixed(3)
+      );
+    }
+
+    function updateOverlayVisuals() {
+      if (!overlayOpen) return;
+
+      const time = audio.currentTime || 0;
+      const horseProgress = getHorseProgress(time);
+      const chaos = getChaosProgress(time);
+
+      trippyStage.style.setProperty(
+        "--horse-progress",
+        horseProgress.toFixed(3)
+      );
+
+      trippyStage.style.setProperty(
+        "--horse-jitter-x",
+        `${rand(-1.2, 1.2) * horseProgress}px`
+      );
+
+      trippyStage.style.setProperty(
+        "--horse-jitter-y",
+        `${rand(-1.2, 1.2) * horseProgress}px`
+      );
+
+      trippyStage.style.setProperty(
+        "--horse-jitter-r",
+        `${rand(-0.3, 0.3) * horseProgress}deg`
+      );
+
+      trippyStage.style.setProperty(
+        "--horse-hue",
+        `${rand(-8, 8) * chaos}deg`
+      );
+
+      trippyStage.style.setProperty(
+        "--horse-echo-opacity",
+        (chaos * 0.28).toFixed(3)
+      );
+
+      trippyStage.style.setProperty(
+        "--horse-weird-opacity",
+        (chaos * 0.18).toFixed(3)
+      );
+
+      if (chaos > 0) {
+        shuffleTrippyVisuals(time, chaos);
+      } else {
+        hideLayers(underLayers);
+        hideLayers(overLayers);
+        trippyStage.style.setProperty("--wash-opacity", "0");
       }
 
-
-      const strength =
-        clamp(
-          (
-            time -
-            HORSE_START
-          ) /
-          (
-            HORSE_FULL -
-            HORSE_START
-          ),
-          0,
-          1
-        );
-
-
-      const x =
-        random(-12, 12) *
-        strength;
-
-
-      const y =
-        random(-8, 8) *
-        strength;
-
-
-      const rotation =
-        random(-1.4, 1.4) *
-        strength;
-
-
-      const hue =
-        random(-25, 25) *
-        strength;
-
-
-      overlay.style.setProperty(
-        "--shift-x",
-        `${x}px`
-      );
-
-
-      overlay.style.setProperty(
-        "--shift-y",
-        `${y}px`
-      );
-
-
-      overlay.style.setProperty(
-        "--shift-r",
-        `${rotation}deg`
-      );
-
-
-      overlay.style.setProperty(
-        "--horse-hue",
-        `${hue}deg`
-      );
-
+      animationFrame = requestAnimationFrame(updateOverlayVisuals);
     }
 
+
+    /* =====================================================
+       OPEN / CLOSE
+       ===================================================== */
 
     async function openWip() {
+      overlayOpen = true;
 
-      /*
-        Always restart the experience
-        when another scarf/link is clicked.
-      */
+      overlay.classList.add("is-visible");
+      overlay.setAttribute("aria-hidden", "false");
+
+      resetTrippyLayers();
 
       audio.pause();
-
       audio.currentTime = 0;
-
-
-      overlay.classList.add(
-        "is-visible"
-      );
-
-
-      overlay.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-
-      overlay.style.setProperty(
-        "--horse-progress",
-        "0"
-      );
-
-
-      overlay.style.setProperty(
-        "--shift-x",
-        "0px"
-      );
-
-
-      overlay.style.setProperty(
-        "--shift-y",
-        "0px"
-      );
-
-
-      overlay.style.setProperty(
-        "--shift-r",
-        "0deg"
-      );
-
-
-      /*
-        Overall website playback volume.
-        Raise/lower this if needed.
-      */
-
-      audio.volume = 0.55;
-
+      audio.volume = 0.72;
 
       try {
-
         await audio.play();
-
       } catch (error) {
-
-        console.log(
-          "Audio playback could not start:",
-          error
-        );
-
+        console.log("Audio failed to play:", error);
       }
 
-
-      cancelAnimationFrame(
-        animationFrame
-      );
-
-
-      clearInterval(
-        weirdTimer
-      );
-
-
-      animationFrame =
-        requestAnimationFrame(
-          updateHorse
-        );
-
-
-      weirdTimer =
-        setInterval(
-          distortHorse,
-          700
-        );
-
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(updateOverlayVisuals);
     }
-
 
     function closeWip() {
+      overlayOpen = false;
+
+      overlay.classList.remove("is-visible");
+      overlay.setAttribute("aria-hidden", "true");
 
       audio.pause();
-
       audio.currentTime = 0;
 
-
-      overlay.classList.remove(
-        "is-visible"
-      );
-
-
-      overlay.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-
-      cancelAnimationFrame(
-        animationFrame
-      );
-
-
-      clearInterval(
-        weirdTimer
-      );
-
-
-      overlay.style.setProperty(
-        "--horse-progress",
-        "0"
-      );
-
+      cancelAnimationFrame(animationFrame);
+      resetTrippyLayers();
     }
 
 
-    /*
-      Every normal link currently opens
-      the WIP experience.
+    /* =====================================================
+       CLICK HANDLING
+       ===================================================== */
 
-      Later, when a real page exists,
-      add:
+    document.addEventListener("click", event => {
+      const link = event.target.closest("a");
 
-      data-live-link
+      if (!link) return;
 
-      to its <a> element and it will
-      navigate normally.
-    */
-
-    document.addEventListener(
-      "click",
-      event => {
-
-        const link =
-          event.target.closest("a");
-
-
-        if (!link) {
-          return;
-        }
-
-
-        if (
-          link.hasAttribute(
-            "data-live-link"
-          )
-        ) {
-
-          return;
-
-        }
-
-
-        event.preventDefault();
-
-        openWip();
-
+      if (link.hasAttribute("data-live-link")) {
+        return;
       }
-    );
 
+      event.preventDefault();
+      openWip();
+    });
 
-    closeButton.addEventListener(
-      "click",
-      closeWip
-    );
+    closeButton.addEventListener("click", closeWip);
 
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key === "Escape" &&
-          overlay.classList.contains(
-            "is-visible"
-          )
-        ) {
-
-          closeWip();
-
-        }
-
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && overlay.classList.contains("is-visible")) {
+        closeWip();
       }
-    );
+    });
 
   })();
-
   </script>
 
 </body>
