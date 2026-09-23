@@ -21,62 +21,102 @@
        PAGE
        ===================================================== -->
 
-  <div class="page-shell" id="page-shell">
+  <div
+    class="page-shell"
+    id="page-shell"
+  >
 
-    <!-- SCARF NAVIGATION -->
+    <!-- ===================================================
+         SCARF NAVIGATION
+         =================================================== -->
 
-    <nav class="scarf-rack" aria-label="Sections">
+    <nav
+      class="scarf-rack"
+      aria-label="Sections"
+    >
 
-      <a class="scarf-item scarf-home" href="#" aria-label="Home">
+      <a
+        class="scarf-item scarf-home"
+        href="#"
+        aria-label="Home"
+      >
         <img
           src="assets/home/home-scarf-update.png"
           alt=""
         >
       </a>
 
-      <a class="scarf-item" href="#" aria-label="Illustration">
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Illustration"
+      >
         <img
           src="assets/home/scarf-illustration.png"
           alt=""
         >
       </a>
 
-      <a class="scarf-item" href="#" aria-label="Photography">
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Photography"
+      >
         <img
           src="assets/home/scarf-photography.png"
           alt=""
         >
       </a>
 
-      <a class="scarf-item" href="#" aria-label="Graphic Design">
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Graphic Design"
+      >
         <img
           src="assets/home/scarf-design.png"
           alt=""
         >
       </a>
 
-      <a class="scarf-item" href="#" aria-label="Music">
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Music"
+      >
         <img
           src="assets/home/scarf-music.png"
           alt=""
         >
       </a>
 
-      <a class="scarf-item" href="#" aria-label="Motion">
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Motion"
+      >
         <img
           src="assets/home/scarf-motion.png"
           alt=""
         >
       </a>
 
-      <a class="scarf-item" href="#" aria-label="Miscellaneous">
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Miscellaneous"
+      >
         <img
           src="assets/home/scarf-misc.png"
           alt=""
         >
       </a>
 
-      <a class="scarf-item" href="#" aria-label="Gastronomy">
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Gastronomy"
+      >
         <img
           src="assets/home/scarf-gastronomy.png"
           alt=""
@@ -86,7 +126,9 @@
     </nav>
 
 
-    <!-- HOME -->
+    <!-- ===================================================
+         HOME
+         =================================================== -->
 
     <main class="home">
 
@@ -131,7 +173,7 @@
 
 
   <!-- =====================================================
-       WIP
+       WIP OVERLAY
        ===================================================== -->
 
   <div
@@ -142,7 +184,9 @@
 
     <div class="wip-inner">
 
-      <!-- caption strip -->
+      <!-- =================================================
+           MESSAGE
+           ================================================= -->
 
       <div class="wip-header">
 
@@ -162,7 +206,9 @@
       </div>
 
 
-      <!-- visual -->
+      <!-- =================================================
+           COLLAGE STAGE
+           ================================================= -->
 
       <div
         class="collage-stage"
@@ -170,9 +216,9 @@
         aria-hidden="true"
       >
 
-        <!-- =================================================
-             UNDERPRINT CHANNEL 1
-             ================================================= -->
+        <!-- ===============================================
+             UNDER TEXTURE CHANNEL 1
+             =============================================== -->
 
         <div
           class="texture-slot under-slot under-slot-1"
@@ -183,9 +229,9 @@
         </div>
 
 
-        <!-- =================================================
-             UNDERPRINT CHANNEL 2
-             ================================================= -->
+        <!-- ===============================================
+             UNDER TEXTURE CHANNEL 2
+             =============================================== -->
 
         <div
           class="texture-slot under-slot under-slot-2"
@@ -196,9 +242,9 @@
         </div>
 
 
-        <!-- =================================================
+        <!-- ===============================================
              COLOR UNDERPRINT
-             ================================================= -->
+             =============================================== -->
 
         <div
           class="color-slot color-slot-under"
@@ -209,9 +255,9 @@
         </div>
 
 
-        <!-- =================================================
+        <!-- ===============================================
              HORSE
-             ================================================= -->
+             =============================================== -->
 
         <div class="horse-stack">
 
@@ -232,9 +278,9 @@
         </div>
 
 
-        <!-- =================================================
-             OVERPRINT CHANNEL 1
-             ================================================= -->
+        <!-- ===============================================
+             OVER TEXTURE CHANNEL 1
+             =============================================== -->
 
         <div
           class="texture-slot over-slot over-slot-1"
@@ -245,9 +291,9 @@
         </div>
 
 
-        <!-- =================================================
-             OVERPRINT CHANNEL 2
-             ================================================= -->
+        <!-- ===============================================
+             OVER TEXTURE CHANNEL 2
+             =============================================== -->
 
         <div
           class="texture-slot over-slot over-slot-2"
@@ -258,9 +304,9 @@
         </div>
 
 
-        <!-- =================================================
+        <!-- ===============================================
              COLOR OVERPRINT
-             ================================================= -->
+             =============================================== -->
 
         <div
           class="color-slot color-slot-over"
@@ -271,7 +317,9 @@
         </div>
 
 
-        <!-- ink key keeps horse readable -->
+        <!-- ===============================================
+             HORSE INK KEY
+             =============================================== -->
 
         <img
           class="horse horse-key"
@@ -280,6 +328,10 @@
           alt=""
         >
 
+
+        <!-- ===============================================
+             GRAIN
+             =============================================== -->
 
         <div class="stage-grain"></div>
 
@@ -888,8 +940,6 @@
 
     /* =====================================================
        COLOR
-
-       Deliberately much stronger than before.
        ===================================================== */
 
     const PALETTES = [
@@ -1059,11 +1109,7 @@
 
 
     /* =====================================================
-       SLOT OBJECTS
-
-       Every slot contains two frames.
-
-       While one goes out, the other comes in.
+       MORPH SLOT FACTORY
        ===================================================== */
 
     function makeSlot(
@@ -1128,10 +1174,13 @@
         "under-slot-1",
         {
           isOver: false,
+
           slowInterval: 7.2,
           fastInterval: 1.15,
+
           slowFade: 4.8,
           fastFade: 0.65,
+
           phase: 0
         }
       ),
@@ -1140,10 +1189,13 @@
         "under-slot-2",
         {
           isOver: false,
+
           slowInterval: 8.8,
           fastInterval: 1.4,
+
           slowFade: 5.4,
           fastFade: 0.75,
+
           phase: 2.7
         }
       ),
@@ -1152,10 +1204,13 @@
         "over-slot-1",
         {
           isOver: true,
+
           slowInterval: 6.5,
           fastInterval: 0.85,
+
           slowFade: 4.2,
           fastFade: 0.40,
+
           phase: 1.5
         }
       ),
@@ -1164,10 +1219,13 @@
         "over-slot-2",
         {
           isOver: true,
+
           slowInterval: 9.4,
           fastInterval: 1.05,
+
           slowFade: 5.0,
           fastFade: 0.48,
+
           phase: 4
         }
       ),
@@ -1177,10 +1235,13 @@
         {
           isColor: true,
           isOver: false,
+
           slowInterval: 8,
           fastInterval: 1.3,
+
           slowFade: 5.2,
           fastFade: 0.7,
+
           phase: 1
         }
       ),
@@ -1190,10 +1251,13 @@
         {
           isColor: true,
           isOver: true,
+
           slowInterval: 10,
           fastInterval: 1.65,
+
           slowFade: 5.8,
           fastFade: 0.8,
+
           phase: 5
         }
       )
@@ -1202,7 +1266,7 @@
 
 
     /* =====================================================
-       STATIC TEXTURE DESIGN
+       TEXTURE DESIGN
        ===================================================== */
 
     function tintGradient(
@@ -1274,8 +1338,7 @@
 
 
       /*
-        Random once.
-        Frozen while visible.
+        Static crop / zoom / rotation.
       */
 
       frame.style.transform =
@@ -1354,7 +1417,7 @@
 
 
     /* =====================================================
-       COLOR FRAMES
+       COLOR FRAME
        ===================================================== */
 
     function configureColorFrame(
@@ -1421,7 +1484,8 @@
         frame.style.background =
           `
             conic-gradient(
-              from ${random(0, 360)}deg
+              from
+              ${random(0, 360)}deg
               at
               ${random(30, 70)}%
               ${random(30, 70)}%,
@@ -1481,12 +1545,7 @@
 
 
     /* =====================================================
-       CROSSFADE
-
-       This is the important new part.
-
-       Incoming image fades up WHILE outgoing
-       image fades away.
+       CROSSFADE SLOT
        ===================================================== */
 
     function morphSlot(
@@ -1530,7 +1589,7 @@
 
 
       /*
-        Build incoming frame invisibly.
+        Configure incoming while hidden.
       */
 
       incoming.style.opacity =
@@ -1561,14 +1620,15 @@
 
 
       /*
-        Force layout before beginning dissolve.
+        Force browser to register hidden state.
       */
 
       incoming.offsetHeight;
 
 
       /*
-        simultaneous crossfade
+        Both happen simultaneously:
+        one rises as one falls.
       */
 
       incoming.style.opacity =
@@ -1582,10 +1642,6 @@
       slot.active =
         incomingIndex;
 
-
-      /*
-        independent slightly-random timing
-      */
 
       const interval =
         lerp(
@@ -1690,13 +1746,6 @@
       time
     ) {
 
-      const hue =
-        random(
-          -180,
-          180
-        );
-
-
       horseMain.style.mixBlendMode =
         pick(
           HORSE_BLEND
@@ -1705,7 +1754,9 @@
 
       horseMain.style.filter =
         `
-          hue-rotate(${hue}deg)
+          hue-rotate(
+            ${random(-180, 180)}deg
+          )
           saturate(
             ${random(1.2, 3.0)}
           )
@@ -1823,15 +1874,21 @@
 
 
     /* =====================================================
-       TIMELINE
+       TIMING
        ===================================================== */
 
     const VISUAL_START =
       9;
 
 
+    /*
+      Much shorter initial fade.
+
+      Only the square fades.
+    */
+
     const VISUAL_FULL =
-      25;
+      15;
 
 
     const NORMAL_TIME =
@@ -1880,10 +1937,6 @@
       }
 
 
-      /*
-        restrained beginning
-      */
-
       if (
         time < 75
       ) {
@@ -1905,10 +1958,6 @@
       }
 
 
-      /*
-        long gradual development
-      */
-
       if (
         time < 175
       ) {
@@ -1927,10 +1976,6 @@
       }
 
 
-      /*
-        tension begins accelerating
-      */
-
       if (
         time < 220
       ) {
@@ -1948,11 +1993,6 @@
 
       }
 
-
-      /*
-        final 23 seconds:
-        increasingly manic
-      */
 
       return lerp(
         0.82,
@@ -2074,7 +2114,7 @@
 
 
     /* =====================================================
-       LOOP
+       MAIN LOOP
        ===================================================== */
 
     function visualLoop() {
@@ -2092,15 +2132,24 @@
         audio.currentTime || 0;
 
 
+      /*
+        Only the square fades in.
+
+        0–9:
+        completely absent
+
+        9–15:
+        smooth reveal
+
+        15+:
+        fully present
+      */
+
       const reveal =
         revealAt(
           time
         );
 
-
-      /*
-        stage fades in
-      */
 
       stage.style.setProperty(
         "--visual-reveal",
@@ -2109,32 +2158,10 @@
 
 
       /*
-        background behind stage fades in
-        at exactly the same pace
-      */
+        Before 9 sec:
+        WIP message and audio only.
 
-      overlay.style.setProperty(
-        "--overlay-reveal",
-        reveal.toFixed(4)
-      );
-
-
-      /*
-        homepage disappears as artwork arrives
-      */
-
-      pageShell.style.opacity =
-        (
-          1 -
-          (
-            reveal * 0.98
-          )
-        ).toFixed(4);
-
-
-      /*
-        first nine seconds:
-        note only
+        Textures aren't activated yet.
       */
 
       if (
@@ -2173,7 +2200,7 @@
 
       /*
         4:03:
-        remove everything except original GIF.
+        clean normal horse.
       */
 
       if (
@@ -2196,8 +2223,8 @@
 
 
       /*
-        Every projector / collage channel
-        evolves independently.
+        All six projector channels morph
+        independently.
       */
 
       slots.forEach(slot => {
@@ -2219,8 +2246,7 @@
 
 
       /*
-        Horse plate also gradually changes,
-        with faster changes toward climax.
+        Horse treatment evolves independently.
       */
 
       if (
@@ -2245,10 +2271,19 @@
 
 
     /* =====================================================
-       OPEN / CLOSE
+       OPEN
        ===================================================== */
 
     async function openWip() {
+
+      if (
+        overlayOpen
+      ) {
+
+        return;
+
+      }
+
 
       overlayOpen =
         true;
@@ -2274,8 +2309,7 @@
 
 
       nextHorseChange =
-        VISUAL_START +
-        3;
+        VISUAL_START + 3;
 
 
       clearSlots();
@@ -2295,18 +2329,30 @@
       );
 
 
-      overlay.style.setProperty(
-        "--overlay-reveal",
-        "0"
-      );
+      /*
+        Begin decoding textures immediately.
 
-
-      pageShell.style.opacity =
-        "1";
-
+        Browser has nine seconds before it
+        actually needs them.
+      */
 
       prepareTextures();
 
+
+      /*
+        Homepage disappears immediately.
+
+        No expensive full-page fade.
+      */
+
+      pageShell.classList.add(
+        "is-hidden"
+      );
+
+
+      /*
+        WIP cream screen + message appear.
+      */
 
       overlay.classList.add(
         "is-visible"
@@ -2318,6 +2364,10 @@
         "false"
       );
 
+
+      /*
+        Restart soundtrack.
+      */
 
       audio.pause();
 
@@ -2359,6 +2409,10 @@
     }
 
 
+    /* =====================================================
+       CLOSE
+       ===================================================== */
+
     function closeWip() {
 
       overlayOpen =
@@ -2383,8 +2437,10 @@
       normalHorse();
 
 
-      pageShell.style.opacity =
-        "1";
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
 
 
       overlay.classList.remove(
@@ -2397,11 +2453,25 @@
         "true"
       );
 
+
+      /*
+        Restore homepage after overlay begins
+        disappearing.
+      */
+
+      window.setTimeout(() => {
+
+        pageShell.classList.remove(
+          "is-hidden"
+        );
+
+      }, 160);
+
     }
 
 
     /* =====================================================
-       LINKS
+       LINK HANDLING
        ===================================================== */
 
     document.addEventListener(
@@ -2467,4 +2537,5 @@
   </script>
 
 </body>
+
 </html>
