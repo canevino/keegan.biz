@@ -6,15 +6,13 @@
   --paper: #ece7d7;
   --ink: #11110f;
 
-  --green: #155b3b;
-  --green-dark: #10472f;
-
-  --gold: #d5a42b;
-  --red: #b43a34;
+  /* Lithuanian palette */
+  --lt-green: #006a44;
+  --lt-gold: #fdb913;
+  --lt-red: #c1272d;
 
   --cream: #f7f1df;
 
-  --line: rgba(17, 17, 15, 0.18);
   --shadow: rgba(17, 17, 15, 0.13);
 
   --edge: 18px;
@@ -89,7 +87,6 @@ a {
   z-index: 50;
 
   width: fit-content;
-  height: auto;
 
   pointer-events: none;
 }
@@ -97,30 +94,29 @@ a {
 .scarf-link {
   display: block;
 
-  width: 300px !important;
+  width: 300px;
+
   max-width: calc(100vw - 28px);
 
-  text-decoration: none;
-
   pointer-events: auto;
+
+  line-height: 0;
+
+  text-decoration: none;
 
   transform: rotate(-1.4deg);
 
   transform-origin: center;
 
   transition:
-    transform 180ms ease,
-    filter 180ms ease;
+    transform 180ms ease;
 }
 
 .scarf-image {
   display: block;
 
-  width: 300px !important;
-  max-width: 100% !important;
-  height: auto !important;
-
-  object-fit: contain;
+  width: 100%;
+  height: auto;
 
   user-select: none;
 
@@ -128,9 +124,7 @@ a {
 
   filter:
     drop-shadow(
-      2px
-      3px
-      2px
+      2px 3px 2px
       rgba(17, 17, 15, 0.12)
     );
 }
@@ -141,62 +135,55 @@ a {
     translate(-2px, -2px);
 }
 
-.scarf-link:hover .scarf-image {
-  filter:
-    drop-shadow(
-      3px
-      5px
-      3px
-      rgba(17, 17, 15, 0.16)
-    );
-}
-
 
 /* =========================================================
-   SCARF NAVIGATION
+   SMALL SCARF MENU
    ========================================================= */
 
-.scarf-nav {
+.scarf-menu {
   position: fixed;
 
   top: 50%;
-  right: 12px;
+  right: 7px;
 
-  z-index: 45;
+  z-index: 60;
 
   display: flex;
   flex-direction: column;
 
   align-items: flex-end;
 
-  gap: 3px;
+  gap: 2px;
 
   transform: translateY(-50%);
 }
 
-.scarf-nav__item {
+
+/* each scarf is intentionally tiny */
+
+.scarf-menu__item {
+  position: relative;
+
   display: block;
 
-  width: 145px;
+  width: 92px;
 
   line-height: 0;
 
   text-decoration: none;
 
-  transform-origin: center;
+  transform-origin: right center;
 
   transition:
-    transform 160ms ease,
-    filter 160ms ease;
+    transform 170ms cubic-bezier(.2,.8,.2,1),
+    filter 170ms ease;
 }
 
-.scarf-nav__item img {
+.scarf-menu__item img {
   display: block;
 
   width: 100%;
   height: auto;
-
-  object-fit: contain;
 
   user-select: none;
 
@@ -204,59 +191,55 @@ a {
 
   filter:
     drop-shadow(
-      1px
-      2px
-      1.5px
-      rgba(17, 17, 15, 0.1)
+      1px 1px 1px
+      rgba(17, 17, 15, 0.08)
     );
 }
 
 
-/* slight individual irregularity */
+/* subtle irregularity */
 
-.scarf-nav__item:nth-child(1) {
-  transform: rotate(-1.2deg);
+.scarf-menu__item:nth-child(1) {
+  transform: rotate(-1deg);
 }
 
-.scarf-nav__item:nth-child(2) {
-  transform: rotate(0.8deg);
+.scarf-menu__item:nth-child(2) {
+  transform: rotate(0.7deg);
 }
 
-.scarf-nav__item:nth-child(3) {
-  transform: rotate(-0.4deg);
+.scarf-menu__item:nth-child(3) {
+  transform: rotate(-0.5deg);
 }
 
-.scarf-nav__item:nth-child(4) {
-  transform: rotate(1deg);
+.scarf-menu__item:nth-child(4) {
+  transform: rotate(0.9deg);
 }
 
-.scarf-nav__item:nth-child(5) {
-  transform: rotate(-0.7deg);
+.scarf-menu__item:nth-child(5) {
+  transform: rotate(-0.8deg);
 }
 
-.scarf-nav__item:nth-child(6) {
-  transform: rotate(0.5deg);
+.scarf-menu__item:nth-child(6) {
+  transform: rotate(0.4deg);
 }
 
 
-/* hover */
+/* pull the scarf out from the menu */
 
-.scarf-nav__item:hover {
+.scarf-menu__item:hover {
   z-index: 5;
 
   transform:
-    translateX(-10px)
-    rotate(0deg)
-    scale(1.12);
+    translateX(-24px)
+    rotate(-2deg)
+    scale(1.25);
 }
 
-.scarf-nav__item:hover img {
+.scarf-menu__item:hover img {
   filter:
     drop-shadow(
-      3px
-      5px
-      3px
-      rgba(17, 17, 15, 0.18)
+      3px 4px 3px
+      rgba(17, 17, 15, 0.16)
     );
 }
 
@@ -269,71 +252,136 @@ a {
   min-height: calc(100vh - (var(--edge) * 2));
 
   display: flex;
+
   align-items: center;
 
   padding:
-    7vh
-    12vw
-    7vh
+    9vh
+    125px
+    9vh
     5vw;
 }
 
-.hero-title {
+
+/* =========================================================
+   WELCOME TYPE
+   ========================================================= */
+
+.welcome-title {
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+
   margin: 0;
+
+  max-width: 1100px;
+
+  line-height: 0.86;
+
+  letter-spacing: -0.07em;
+}
+
+
+/* rotating word */
+
+.welcome-word {
+  display: block;
 
   max-width: 100%;
 
-  line-height: 0.69;
+  color: var(--lt-green);
 
-  letter-spacing: -0.085em;
-}
-
-.hero-title__main,
-.hero-title__sub {
-  display: block;
-
-  width: fit-content;
-}
-
-.hero-title__main {
-  position: relative;
-
-  font-size: clamp(90px, 20vw, 310px);
+  font-size:
+    clamp(
+      82px,
+      15vw,
+      235px
+    );
 
   font-weight: 900;
+
+  line-height: 0.82;
+
+  overflow-wrap: anywhere;
+
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease,
+    color 220ms ease;
+}
+
+
+/* static line */
+
+.welcome-rest {
+  display: block;
+
+  margin-top: 0.12em;
+
+  margin-left: 0.07em;
+
+  font-size:
+    clamp(
+      42px,
+      7.2vw,
+      110px
+    );
+
+  font-weight: 800;
+
+  line-height: 0.9;
 
   color: var(--ink);
 
-  text-transform: lowercase;
-
-  text-shadow:
-    3px
-    3px
-    0
-    rgba(180, 58, 52, 0.8);
+  letter-spacing: -0.06em;
 }
 
-.hero-title__sub {
-  position: relative;
 
-  margin-top: -0.12em;
-  margin-left: clamp(60px, 29vw, 450px);
+/* transition */
 
-  font-size: clamp(80px, 17vw, 270px);
+.welcome-word.is-changing {
+  opacity: 0;
 
-  font-weight: 900;
+  transform:
+    translateY(10px)
+    rotate(0.5deg);
+}
 
-  color: var(--green);
 
-  text-transform: lowercase;
+/* Wingdings */
 
-  text-shadow:
-    -3px
-    3px
-    0
-    var(--gold);
+.welcome-word.is-wingdings {
+  font-family:
+    Wingdings,
+    Webdings,
+    "Zapf Dingbats",
+    sans-serif;
 
-  transform: rotate(-2deg);
+  letter-spacing: 0.02em;
+}
+
+
+/* binary is naturally much longer */
+
+.welcome-word.is-binary {
+  max-width: min(920px, 70vw);
+
+  font-family:
+    "Courier New",
+    Courier,
+    monospace;
+
+  font-size:
+    clamp(
+      30px,
+      5vw,
+      72px
+    );
+
+  line-height: 0.95;
+
+  letter-spacing: -0.055em;
 }
 
 
@@ -347,16 +395,17 @@ a {
   right: var(--edge);
   bottom: var(--edge);
 
-  z-index: 50;
+  z-index: 70;
 }
 
 .behance-link {
   display: inline-flex;
+
   align-items: center;
 
   padding: 7px 10px;
 
-  background: var(--gold);
+  background: var(--lt-gold);
   color: var(--ink);
 
   border: 1.5px solid var(--ink);
@@ -379,7 +428,8 @@ a {
 }
 
 .behance-link:hover {
-  transform: translate(-2px, -2px);
+  transform:
+    translate(-2px, -2px);
 }
 
 
@@ -389,34 +439,40 @@ a {
 
 @media (max-width: 1000px) {
 
-  .scarf-link,
-  .scarf-image {
-    width: 255px !important;
+  .scarf-link {
+    width: 255px;
   }
 
-  .scarf-nav {
-    right: 8px;
-
-    gap: 2px;
+  .scarf-menu__item {
+    width: 78px;
   }
 
-  .scarf-nav__item {
-    width: 120px;
+  .scarf-menu__item:hover {
+    transform:
+      translateX(-18px)
+      scale(1.18);
   }
 
   .hero {
-    padding-left: 3vw;
-    padding-right: 15vw;
+    padding-right: 105px;
   }
 
-  .hero-title__main {
-    font-size: clamp(88px, 19vw, 210px);
+  .welcome-word {
+    font-size:
+      clamp(
+        72px,
+        14vw,
+        160px
+      );
   }
 
-  .hero-title__sub {
-    margin-left: 22vw;
-
-    font-size: clamp(78px, 17vw, 185px);
+  .welcome-rest {
+    font-size:
+      clamp(
+        38px,
+        7vw,
+        78px
+      );
   }
 }
 
@@ -445,163 +501,113 @@ a {
   }
 
 
-  /* -------------------------------------------------------
-     HOME SCARF
-     ------------------------------------------------------- */
+  /* home scarf */
 
   .site-header {
-    top: max(9px, env(safe-area-inset-top));
+    top:
+      max(
+        9px,
+        env(safe-area-inset-top)
+      );
+
     left: 8px;
   }
 
-  .scarf-link,
-  .scarf-image {
-    width: 200px !important;
-    max-width: 62vw !important;
-  }
-
   .scarf-link {
-    transform: rotate(-1.4deg);
-  }
+    width: 195px;
 
-  .scarf-image {
-    filter:
-      drop-shadow(
-        1px
-        2px
-        1.5px
-        rgba(17, 17, 15, 0.12)
-      );
-  }
-
-  .scarf-link:hover {
-    transform: rotate(-1.4deg);
+    max-width: 60vw;
   }
 
 
-  /* -------------------------------------------------------
-     HERO
-     ------------------------------------------------------- */
+  /* scarf menu stays on the side */
+
+  .scarf-menu {
+    right: 3px;
+
+    gap: 1px;
+  }
+
+  .scarf-menu__item {
+    width: 62px;
+  }
+
+  .scarf-menu__item:hover {
+    transform: none;
+  }
+
+  .scarf-menu__item:active {
+    transform:
+      translateX(-8px)
+      scale(1.08);
+  }
+
+
+  /* hero */
 
   .hero {
     min-height: 100svh;
 
-    display: flex;
-    align-items: center;
-
     padding:
-      88px
-      0
-      175px;
+      100px
+      76px
+      90px
+      5px;
   }
 
-  .hero-title {
-    width: 100%;
+  .welcome-title {
+    line-height: 0.9;
 
-    line-height: 0.73;
-
-    letter-spacing: -0.075em;
+    letter-spacing: -0.06em;
   }
 
-  .hero-title__main {
-    font-size: clamp(68px, 23vw, 125px);
+  .welcome-word {
+    font-size:
+      clamp(
+        53px,
+        17vw,
+        100px
+      );
 
-    text-shadow:
-      2px
-      2px
-      0
-      rgba(180, 58, 52, 0.8);
+    line-height: 0.86;
   }
 
-  .hero-title__sub {
-    margin-top: -0.08em;
-    margin-left: 17vw;
+  .welcome-rest {
+    margin-top: 0.2em;
+    margin-left: 0;
 
-    font-size: clamp(62px, 21vw, 112px);
+    font-size:
+      clamp(
+        29px,
+        9vw,
+        54px
+      );
 
-    text-shadow:
-      -2px
-      2px
-      0
-      var(--gold);
-
-    transform: rotate(-2deg);
+    line-height: 0.94;
   }
 
+  .welcome-word.is-binary {
+    max-width: 100%;
 
-  /* -------------------------------------------------------
-     MOBILE SCARF NAV
-     ------------------------------------------------------- */
-
-  .scarf-nav {
-    position: fixed;
-
-    top: auto;
-    left: 0;
-    right: 0;
-    bottom: 48px;
-
-    z-index: 45;
-
-    display: flex;
-    flex-direction: row;
-
-    align-items: center;
-
-    gap: 4px;
-
-    width: 100%;
-
-    padding:
-      6px
-      10px
-      8px;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    transform: none;
-
-    -webkit-overflow-scrolling: touch;
-
-    scrollbar-width: none;
-  }
-
-  .scarf-nav::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scarf-nav__item {
-    flex:
-      0
-      0
-      115px;
-
-    width: 115px;
-
-    transform: none !important;
-  }
-
-  .scarf-nav__item img {
-    width: 100%;
-  }
-
-  .scarf-nav__item:hover {
-    transform: none;
+    font-size:
+      clamp(
+        20px,
+        6.5vw,
+        38px
+      );
   }
 
 
-  /* -------------------------------------------------------
-     FOOTER
-     ------------------------------------------------------- */
+  /* footer */
 
   .site-footer {
     right: 8px;
 
-    bottom: max(
-      8px,
-      env(safe-area-inset-bottom)
-    );
+    bottom:
+      max(
+        9px,
+        env(safe-area-inset-bottom)
+      );
   }
 
   .behance-link {
@@ -624,37 +630,49 @@ a {
 
 @media (max-width: 420px) {
 
-  .scarf-link,
-  .scarf-image {
-    width: 170px !important;
-    max-width: 58vw !important;
+  .scarf-link {
+    width: 165px;
+
+    max-width: 56vw;
+  }
+
+  .scarf-menu__item {
+    width: 53px;
   }
 
   .hero {
-    padding-top: 74px;
-    padding-bottom: 165px;
+    padding-right: 62px;
   }
 
-  .hero-title__main {
-    font-size: 22.5vw;
+  .welcome-word {
+    font-size:
+      clamp(
+        47px,
+        16vw,
+        76px
+      );
   }
 
-  .hero-title__sub {
-    margin-left: 14vw;
-
-    font-size: 21vw;
+  .welcome-rest {
+    font-size:
+      clamp(
+        27px,
+        8.8vw,
+        43px
+      );
   }
+}
 
-  .scarf-nav {
-    bottom: 45px;
 
-    padding-left: 7px;
-    padding-right: 7px;
-  }
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
 
-  .scarf-nav__item {
-    flex-basis: 105px;
+@media (prefers-reduced-motion: reduce) {
 
-    width: 105px;
+  .welcome-word,
+  .scarf-menu__item,
+  .scarf-link {
+    transition: none;
   }
 }
