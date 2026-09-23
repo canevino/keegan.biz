@@ -24,59 +24,35 @@
   <nav class="scarf-rack" aria-label="Sections">
 
     <a class="scarf-item scarf-home" href="#" aria-label="Home">
-      <img
-        src="assets/home/home-scarf-update.png"
-        alt=""
-      >
+      <img src="assets/home/home-scarf-update.png" alt="">
     </a>
 
     <a class="scarf-item" href="#" aria-label="Illustration">
-      <img
-        src="assets/home/scarf-illustration.png"
-        alt=""
-      >
+      <img src="assets/home/scarf-illustration.png" alt="">
     </a>
 
     <a class="scarf-item" href="#" aria-label="Photography">
-      <img
-        src="assets/home/scarf-photography.png"
-        alt=""
-      >
+      <img src="assets/home/scarf-photography.png" alt="">
     </a>
 
     <a class="scarf-item" href="#" aria-label="Graphic Design">
-      <img
-        src="assets/home/scarf-design.png"
-        alt=""
-      >
+      <img src="assets/home/scarf-design.png" alt="">
     </a>
 
     <a class="scarf-item" href="#" aria-label="Music">
-      <img
-        src="assets/home/scarf-music.png"
-        alt=""
-      >
+      <img src="assets/home/scarf-music.png" alt="">
     </a>
 
     <a class="scarf-item" href="#" aria-label="Motion">
-      <img
-        src="assets/home/scarf-motion.png"
-        alt=""
-      >
+      <img src="assets/home/scarf-motion.png" alt="">
     </a>
 
     <a class="scarf-item" href="#" aria-label="Miscellaneous">
-      <img
-        src="assets/home/scarf-misc.png"
-        alt=""
-      >
+      <img src="assets/home/scarf-misc.png" alt="">
     </a>
 
     <a class="scarf-item" href="#" aria-label="Gastronomy">
-      <img
-        src="assets/home/scarf-gastronomy.png"
-        alt=""
-      >
+      <img src="assets/home/scarf-gastronomy.png" alt="">
     </a>
 
   </nav>
@@ -88,13 +64,9 @@
 
   <main class="home">
 
-    <section
-      class="hero"
-      aria-label="Welcome to keegan.biz"
-    >
+    <section class="hero">
 
       <div class="welcome-slot">
-
         <span
           class="welcome-word"
           id="welcome-word"
@@ -102,9 +74,7 @@
         >
           Welcome
         </span>
-
       </div>
-
 
       <div class="site-title">
         to keegan.biz
@@ -119,10 +89,7 @@
        AUDIO
        ===================================================== -->
 
-  <audio
-    id="wip-audio"
-    preload="auto"
-  >
+  <audio id="wip-audio" preload="auto">
     <source
       src="assets/home/crickets.mp3"
       type="audio/mpeg"
@@ -131,7 +98,7 @@
 
 
   <!-- =====================================================
-       WIP EXPERIENCE
+       WIP
        ===================================================== -->
 
   <div
@@ -141,8 +108,6 @@
   >
 
     <div class="wip-inner">
-
-      <!-- note + close button are now one object -->
 
       <div class="wip-header">
 
@@ -162,23 +127,34 @@
       </div>
 
 
-      <!-- visual -->
-
       <div
-        class="trippy-stage"
-        id="trippy-stage"
+        class="collage-stage"
+        id="collage-stage"
         aria-hidden="true"
       >
 
-        <!-- textures BEHIND horse -->
+        <!-- TWO TEXTURES UNDER HORSE -->
 
         <div
-          class="texture-stack texture-under"
-          id="texture-under"
+          class="texture-layer texture-under texture-under-1"
+          id="under-1"
+        ></div>
+
+        <div
+          class="texture-layer texture-under texture-under-2"
+          id="under-2"
         ></div>
 
 
-        <!-- horse itself -->
+        <!-- COLOR / GRADIENT UNDER HORSE -->
+
+        <div
+          class="color-layer color-under"
+          id="color-under"
+        ></div>
+
+
+        <!-- HORSE -->
 
         <div class="horse-stage">
 
@@ -197,18 +173,31 @@
         </div>
 
 
-        <!-- textures OVER horse -->
+        <!-- TWO TEXTURES OVER HORSE -->
 
         <div
-          class="texture-stack texture-over"
-          id="texture-over"
+          class="texture-layer texture-over texture-over-1"
+          id="over-1"
+        ></div>
+
+        <div
+          class="texture-layer texture-over texture-over-2"
+          id="over-2"
+        ></div>
+
+
+        <!-- COLOR / GRADIENT ABOVE HORSE -->
+
+        <div
+          class="color-layer color-over"
+          id="color-over"
         ></div>
 
 
         <!--
-          Quiet duplicate above everything.
-          This keeps the drawing legible even
-          during the densest part.
+          Very faint final horse line layer.
+          Keeps the drawing legible even when
+          color-burn layers are strong.
         -->
 
         <img
@@ -225,46 +214,54 @@
 
 
   <!-- =====================================================
-       JAVASCRIPT
+       SCRIPT
        ===================================================== -->
 
   <script>
   (() => {
 
     /* =====================================================
-       GENERAL HELPERS
+       HELPERS
        ===================================================== */
-
-    const random = (min, max) =>
-      min + Math.random() * (max - min);
 
     const clamp = (value, min, max) =>
       Math.min(Math.max(value, min), max);
 
     const lerp = (a, b, amount) =>
-      a + (b - a) * amount;
+      a + ((b - a) * amount);
+
+    const random = (min, max) =>
+      min + Math.random() * (max - min);
 
     const pick = array =>
       array[Math.floor(Math.random() * array.length)];
 
-    function pickDifferentIndex(length, currentIndex) {
-      let next;
+    const shuffle = array => {
+      const copy = [...array];
 
-      do {
-        next = Math.floor(Math.random() * length);
-      } while (
-        length > 1 &&
-        next === currentIndex
-      );
+      for (
+        let i = copy.length - 1;
+        i > 0;
+        i--
+      ) {
+        const j =
+          Math.floor(Math.random() * (i + 1));
 
-      return next;
-    }
+        [
+          copy[i],
+          copy[j]
+        ] = [
+          copy[j],
+          copy[i]
+        ];
+      }
+
+      return copy;
+    };
 
 
     /* =====================================================
        WELCOME
-       Clean fade rather than scrolling two words
-       over one another.
        ===================================================== */
 
     const welcomeWord =
@@ -274,108 +271,69 @@
     const greetings = [
 
       "Welcome",
-
       "Fáilte",
-
       "Benvenuti",
-
       "Bienvenue",
-
       "Bienvenidos",
-
       "Benvinguts",
-
       "Bem-vindos",
 
       "Welkom",
-
       "Willkommen",
-
       "Velkommen",
-
       "Välkommen",
-
       "Velkomin",
 
       "Tervetuloa",
-
       "Sveiki atvykę",
-
       "Laipni lūdzam",
-
       "Tere tulemast",
 
       "Witamy",
-
       "Vítejte",
-
       "Vitajte",
 
-      "Dobrodošli",
-
       "Добродошли",
-
       "Добре дошли",
-
-      "Добро пожаловать",
+      "Ласкаво просимо",
 
       "Bun venit",
-
       "Üdvözöljük",
-
       "Mirë se vini",
 
       "Ongi etorri",
-
       "Καλώς ήρθατε",
-
       "Hoş geldiniz",
 
-      "Ласкаво просимо",
-
       "Croeso",
-
       "Nau mai",
 
-      "Aloha",
-
       "Karibu",
-
       "Siyakwamukela",
-
       "Ẹ káàbọ̀",
 
       "እንኳን ደህና መጡ",
-
       "स्वागत है",
-
       "স্বাগতম",
 
       "欢迎",
-
       "ようこそ",
-
       "환영합니다",
-
       "ยินดีต้อนรับ",
 
       "Chào mừng",
-
       "Selamat datang",
-
       "Maligayang pagdating",
 
       "ברוכים הבאים",
-
       "أهلاً وسهلاً",
-
       "خوش آمدید",
 
       "Bonvenon",
-
       "Salvete",
 
       "Yá’át’ééh",
+      "Aloha",
 
       "Mae govannen",
 
@@ -396,37 +354,52 @@
     let greetingBusy = false;
 
 
-    function fitWelcomeText() {
+    function differentIndex(
+      length,
+      oldIndex
+    ) {
 
-      /*
-        Start at CSS size, then shrink only
-        if a particular language is too wide.
-      */
+      let nextIndex;
+
+      do {
+        nextIndex =
+          Math.floor(
+            Math.random() * length
+          );
+      }
+      while (
+        length > 1 &&
+        nextIndex === oldIndex
+      );
+
+      return nextIndex;
+    }
+
+
+    function fitWelcome() {
 
       welcomeWord.style.fontSize = "";
 
-      const slot =
-        welcomeWord.parentElement;
-
       const maxWidth =
-        slot.clientWidth;
+        welcomeWord.parentElement.clientWidth;
 
-
-      let size =
+      let fontSize =
         parseFloat(
-          getComputedStyle(welcomeWord).fontSize
+          getComputedStyle(
+            welcomeWord
+          ).fontSize
         );
 
 
       while (
         welcomeWord.scrollWidth > maxWidth &&
-        size > 28
+        fontSize > 27
       ) {
 
-        size -= 2;
+        fontSize -= 2;
 
         welcomeWord.style.fontSize =
-          `${size}px`;
+          `${fontSize}px`;
 
       }
 
@@ -435,20 +408,22 @@
 
     function changeGreeting() {
 
-      if (greetingBusy) return;
+      if (greetingBusy) {
+        return;
+      }
 
       greetingBusy = true;
 
 
-      const nextGreetingIndex =
-        pickDifferentIndex(
+      const nextGreeting =
+        differentIndex(
           greetings.length,
           greetingIndex
         );
 
 
-      const nextColorIndex =
-        pickDifferentIndex(
+      const nextColor =
+        differentIndex(
           welcomeColors.length,
           colorIndex
         );
@@ -459,13 +434,13 @@
       );
 
 
-      window.setTimeout(() => {
+      setTimeout(() => {
 
         greetingIndex =
-          nextGreetingIndex;
+          nextGreeting;
 
         colorIndex =
-          nextColorIndex;
+          nextColor;
 
 
         welcomeWord.textContent =
@@ -476,7 +451,7 @@
           welcomeColors[colorIndex];
 
 
-        fitWelcomeText();
+        fitWelcome();
 
 
         welcomeWord.classList.remove(
@@ -484,11 +459,9 @@
         );
 
 
-        window.setTimeout(() => {
-
+        setTimeout(() => {
           greetingBusy = false;
-
-        }, 280);
+        }, 300);
 
       }, 260);
 
@@ -498,23 +471,24 @@
     welcomeWord.style.color =
       welcomeColors[colorIndex];
 
-    fitWelcomeText();
+
+    fitWelcome();
 
 
     window.addEventListener(
       "resize",
-      fitWelcomeText
+      fitWelcome
     );
 
 
-    window.setInterval(
+    setInterval(
       changeGreeting,
-      2450
+      2500
     );
 
 
     /* =====================================================
-       WIP ELEMENTS
+       WIP
        ===================================================== */
 
     const audio =
@@ -526,18 +500,37 @@
     const closeButton =
       document.getElementById("wip-close");
 
-    const trippyStage =
-      document.getElementById("trippy-stage");
+    const stage =
+      document.getElementById("collage-stage");
 
-    const textureUnder =
-      document.getElementById("texture-under");
 
-    const textureOver =
-      document.getElementById("texture-over");
+    const underLayers = [
+      document.getElementById("under-1"),
+      document.getElementById("under-2")
+    ];
+
+
+    const overLayers = [
+      document.getElementById("over-1"),
+      document.getElementById("over-2")
+    ];
+
+
+    const allTextureLayers = [
+      ...underLayers,
+      ...overLayers
+    ];
+
+
+    const colorUnder =
+      document.getElementById("color-under");
+
+    const colorOver =
+      document.getElementById("color-over");
 
 
     /* =====================================================
-       TEXTURE FILES
+       TEXTURE LIST
        ===================================================== */
 
     const TEXTURES = [
@@ -611,77 +604,129 @@
       "Texturelabs_Wood_290S.jpg"
 
     ].map(
-      file =>
-        `assets/home/${file}`
+      filename =>
+        `assets/home/${filename}`
     );
 
 
     /* =====================================================
-       COLLAGE PALETTE
+       SESSION TEXTURES
 
-       Deliberately less neon.
-       More stained paper / print / darkroom.
+       Use a randomized subset each time.
+       This avoids trying to decode 50 giant JPGs
+       while the animation is running.
        ===================================================== */
 
-    const COLORS = [
+    let sessionTextures = [];
+    let readyTextures = [];
+
+
+    function prepareTextureSession() {
+
+      /*
+        18 gives plenty of variation while
+        remaining much easier on the browser.
+      */
+
+      sessionTextures =
+        shuffle(TEXTURES).slice(0, 18);
+
+
+      readyTextures = [];
+
+
+      sessionTextures.forEach(src => {
+
+        const image =
+          new Image();
+
+
+        image.decoding =
+          "async";
+
+
+        image.onload = () => {
+
+          if (
+            !readyTextures.includes(src)
+          ) {
+
+            readyTextures.push(src);
+
+          }
+
+        };
+
+
+        image.src =
+          src;
+
+      });
+
+    }
+
+
+    function getTexture() {
+
+      if (
+        readyTextures.length
+      ) {
+
+        return pick(
+          readyTextures
+        );
+
+      }
+
+
+      return pick(
+        sessionTextures
+      );
+
+    }
+
+
+    /* =====================================================
+       COLOR SYSTEM
+       ===================================================== */
+
+    const colors = [
 
       "#c1272d",
-      "#7f1d25",
+      "#8d2027",
 
       "#006a44",
-      "#274f3c",
+      "#1f533e",
 
       "#fdb913",
-      "#b78a19",
+      "#c79721",
 
-      "#182f4d",
-      "#405f7c",
+      "#17364d",
+      "#566d83",
 
-      "#8c5a72",
-      "#b88876",
+      "#704c63",
+      "#b67f70",
 
-      "#dad0b8",
+      "#d9d0bb",
       "#ece7d7",
 
-      "#2a2420"
+      "#2c211e"
 
     ];
 
 
     /*
-      Repeated values deliberately weight the
-      random selection toward color burn,
-      multiply and soft light.
+      Weighted very heavily toward print /
+      photographic darkroom modes.
     */
 
-    const UNDER_BLEND_MODES = [
+    const underBlendModes = [
+
+      "color-burn",
+      "color-burn",
+      "color-burn",
 
       "multiply",
-      "multiply",
-      "multiply",
-
-      "color-burn",
-      "color-burn",
-      "color-burn",
-
-      "soft-light",
-      "soft-light",
-
-      "overlay",
-
-      "darken",
-
-      "screen"
-
-    ];
-
-
-    const OVER_BLEND_MODES = [
-
-      "color-burn",
-      "color-burn",
-      "color-burn",
-
       "multiply",
       "multiply",
 
@@ -693,10 +738,33 @@
 
       "hard-light",
 
+      "screen"
+
+    ];
+
+
+    const overBlendModes = [
+
+      "color-burn",
+      "color-burn",
+      "color-burn",
+      "color-burn",
+
+      "multiply",
+      "multiply",
+
+      "overlay",
+      "overlay",
+
+      "hard-light",
+
+      "soft-light",
+
       "screen",
 
       /*
-        Rarely weird rather than constantly weird.
+        Occasional Lynch-y rupture rather
+        than constant rainbow difference.
       */
 
       "difference",
@@ -705,122 +773,99 @@
     ];
 
 
-    /* =====================================================
-       CREATE TEXTURE LAYERS
-       ===================================================== */
+    const internalBlendModes = [
 
-    const UNDER_COUNT = 8;
-    const OVER_COUNT = 6;
+      "color-burn",
+      "color-burn",
 
-    const underLayers = [];
-    const overLayers = [];
+      "multiply",
+      "multiply",
 
+      "overlay",
 
-    function createTextureLayer(
-      parent,
-      isOver
-    ) {
+      "soft-light",
 
-      const layer =
-        document.createElement("div");
+      "hard-light"
 
-      layer.className =
-        "texture-layer";
-
-      layer.dataset.active =
-        "false";
-
-      layer.dataset.over =
-        isOver
-          ? "true"
-          : "false";
-
-      layer._version = 0;
-
-      parent.appendChild(layer);
-
-      return layer;
-
-    }
-
-
-    for (
-      let i = 0;
-      i < UNDER_COUNT;
-      i += 1
-    ) {
-
-      underLayers.push(
-        createTextureLayer(
-          textureUnder,
-          false
-        )
-      );
-
-    }
-
-
-    for (
-      let i = 0;
-      i < OVER_COUNT;
-      i += 1
-    ) {
-
-      overLayers.push(
-        createTextureLayer(
-          textureOver,
-          true
-        )
-      );
-
-    }
+    ];
 
 
     /* =====================================================
-       STATIC COLLAGE VISUALS
+       GRADIENTS / FILLS
        ===================================================== */
 
-    function makeGradient() {
+    function makeTintGradient() {
 
-      const c1 = pick(COLORS);
-      const c2 = pick(COLORS);
+      const colorA =
+        pick(colors);
 
-      const choice =
+      const colorB =
+        pick(colors);
+
+      const angle =
+        random(0, 360);
+
+
+      return `
+        linear-gradient(
+          ${angle}deg,
+          ${colorA} 0%,
+          transparent ${random(35, 55)}%,
+          ${colorB} 100%
+        )
+      `;
+
+    }
+
+
+    function makeColorField() {
+
+      const a =
+        pick(colors);
+
+      const b =
+        pick(colors);
+
+      const c =
+        pick(colors);
+
+
+      const type =
         Math.floor(
           Math.random() * 3
         );
 
 
-      if (choice === 0) {
+      if (type === 0) {
 
         return `
-          linear-gradient(
-            ${random(0, 360)}deg,
-            ${c1},
-            transparent 48%,
-            ${c2}
+          radial-gradient(
+            circle at
+            ${random(10, 90)}%
+            ${random(10, 90)}%,
+            ${a},
+            transparent ${random(35, 65)}%
+          ),
+          radial-gradient(
+            circle at
+            ${random(10, 90)}%
+            ${random(10, 90)}%,
+            ${b},
+            transparent ${random(40, 70)}%
           )
         `;
 
       }
 
 
-      if (choice === 1) {
+      if (type === 1) {
 
         return `
-          radial-gradient(
-            circle at
-            ${random(15, 85)}%
-            ${random(15, 85)}%,
-            ${c1},
-            transparent ${random(40, 70)}%
-          ),
-          radial-gradient(
-            circle at
-            ${random(15, 85)}%
-            ${random(15, 85)}%,
-            ${c2},
-            transparent ${random(35, 70)}%
+          linear-gradient(
+            ${random(0, 360)}deg,
+            ${a},
+            ${b},
+            ${c}
           )
         `;
 
@@ -830,386 +875,393 @@
       return `
         linear-gradient(
           ${random(0, 360)}deg,
-          ${c1} 0%,
+          ${a} 0%,
           transparent 35%,
           transparent 65%,
-          ${c2} 100%
+          ${b} 100%
         )
       `;
 
     }
 
 
-    function configureLayer(
+    /* =====================================================
+       TEXTURE CONFIGURATION
+
+       IMPORTANT:
+       No transform animation.
+
+       Each texture receives ONE crop, ONE zoom,
+       ONE rotation and stays completely static
+       until replaced.
+       ===================================================== */
+
+    function configureTexture(
       layer,
-      intensity
+      intensity,
+      isOver
     ) {
 
-      const isOver =
-        layer.dataset.over === "true";
+      const texture =
+        getTexture();
 
 
-      const blendModes =
-        isOver
-          ? OVER_BLEND_MODES
-          : UNDER_BLEND_MODES;
+      const tint =
+        makeTintGradient();
 
 
       /*
-        Most layers are photographs/textures.
+        Every texture is full-bleed.
 
-        Occasionally a color field or gradient
-        appears instead.
+        It is intentionally zoomed beyond cover
+        so we never see a small rectangle floating
+        inside the horse image.
       */
 
-      const visualType =
-        Math.random();
+      const zoom =
+        random(
+          1.10,
+          lerp(
+            1.30,
+            1.62,
+            intensity
+          )
+        );
 
 
-      layer.style.backgroundColor =
-        "transparent";
+      const x =
+        random(-3, 3);
+
+
+      const y =
+        random(-3, 3);
+
+
+      const rotation =
+        random(-2.2, 2.2);
 
 
       layer.style.backgroundImage =
-        "none";
+        `${tint}, url("${texture}")`;
 
 
-      if (visualType < 0.70) {
-
-        layer.style.backgroundImage =
-          `url("${pick(TEXTURES)}")`;
+      layer.style.backgroundSize =
+        "cover, cover";
 
 
-        layer.style.backgroundRepeat =
-          Math.random() < 0.15
-            ? "repeat"
-            : "no-repeat";
+      layer.style.backgroundRepeat =
+        "no-repeat, no-repeat";
 
 
-        layer.style.backgroundSize =
-          `${random(75, 185)}%`;
+      layer.style.backgroundPosition =
+        `
+          center,
+          ${random(15, 85)}%
+          ${random(15, 85)}%
+        `;
 
 
-        layer.style.backgroundPosition =
-          `${random(0, 100)}% ${random(0, 100)}%`;
+      /*
+        Blend tint INTO the texture.
+      */
 
-      }
+      layer.style.backgroundBlendMode =
+        `${pick(internalBlendModes)}, normal`;
 
-      else if (visualType < 0.90) {
 
-        layer.style.backgroundImage =
-          makeGradient();
-
-        layer.style.backgroundSize =
-          "100% 100%";
-
-        layer.style.backgroundPosition =
-          "center";
-
-        layer.style.backgroundRepeat =
-          "no-repeat";
-
-      }
-
-      else {
-
-        layer.style.backgroundColor =
-          pick(COLORS);
-
-      }
-
+      /*
+        Blend complete texture INTO composition.
+      */
 
       layer.style.mixBlendMode =
-        pick(blendModes);
+        pick(
+          isOver
+            ? overBlendModes
+            : underBlendModes
+        );
 
 
       /*
-        STATIC random crop / rotation / zoom.
-
-        This does NOT animate while visible.
+        Static zoom / crop / rotation.
       */
 
-      layer.style.transform = `
-        translate(
-          ${random(-8, 8)}%,
-          ${random(-8, 8)}%
-        )
-        rotate(
-          ${random(-8, 8)}deg
-        )
-        scale(
-          ${random(1.02, 1.48)}
-        )
-      `;
+      layer.style.transform =
+        `
+          translate(
+            ${x}%,
+            ${y}%
+          )
+          rotate(
+            ${rotation}deg
+          )
+          scale(
+            ${zoom}
+          )
+        `;
 
 
       /*
-        Keep filters more photographic / printed
-        instead of rainbow hallucination.
+        No blur.
+        This was one source of the previous
+        smeary / expensive look.
       */
 
-      const grayscale =
-        Math.random() < 0.22
-          ? random(0.3, 0.9)
-          : 0;
+      layer.style.filter =
+        `
+          contrast(
+            ${random(0.95, 1.42)}
+          )
+          saturate(
+            ${random(0.68, 1.38)}
+          )
+          brightness(
+            ${random(0.82, 1.12)}
+          )
+        `;
 
 
-      layer.style.filter = `
-        contrast(${random(0.9, 1.42)})
-        saturate(${random(0.72, 1.45)})
-        brightness(${random(0.82, 1.18)})
-        grayscale(${grayscale})
-        blur(${random(0, intensity * 1.4)}px)
-      `;
-
-
-      /*
-        Over-layers stay weaker so the horse
-        never disappears.
-      */
-
-      let opacity;
+      let minOpacity;
+      let maxOpacity;
 
 
       if (isOver) {
 
-        opacity =
-          random(
-            0.035,
-            lerp(
-              0.10,
-              0.24,
-              intensity
-            )
+        minOpacity =
+          lerp(
+            0.06,
+            0.13,
+            intensity
+          );
+
+
+        maxOpacity =
+          lerp(
+            0.15,
+            0.38,
+            intensity
           );
 
       }
 
       else {
 
-        opacity =
-          random(
-            0.06,
-            lerp(
-              0.18,
-              0.38,
-              intensity
-            )
+        minOpacity =
+          lerp(
+            0.11,
+            0.20,
+            intensity
+          );
+
+
+        maxOpacity =
+          lerp(
+            0.24,
+            0.52,
+            intensity
           );
 
       }
 
 
       layer.dataset.targetOpacity =
-        opacity.toFixed(3);
-
-    }
-
-
-    /*
-      Fade a layer out, change it while invisible,
-      then fade the new collage piece in.
-
-      Transform never animates.
-    */
-
-    function replaceLayer(
-      layer,
-      intensity
-    ) {
-
-      layer._version += 1;
-
-      const version =
-        layer._version;
-
-
-      layer.style.opacity =
-        "0";
-
-
-      window.setTimeout(() => {
-
-        if (
-          !overlayOpen ||
-          version !== layer._version
-        ) {
-
-          return;
-
-        }
-
-
-        configureLayer(
-          layer,
-          intensity
-        );
-
-
-        layer.dataset.active =
-          "true";
-
-
-        /*
-          Force styles to settle before
-          opacity comes back.
-        */
-
-        requestAnimationFrame(() => {
-
-          if (
-            version !== layer._version
-          ) {
-
-            return;
-
-          }
-
-
-          layer.style.opacity =
-            layer.dataset.targetOpacity;
-
-        });
-
-      }, 130);
-
-    }
-
-
-    function clearLayer(layer) {
-
-      layer._version += 1;
-
-      layer.dataset.active =
-        "false";
-
-      layer.style.opacity =
-        "0";
-
-    }
-
-
-    function clearAllLayers() {
-
-      underLayers.forEach(
-        clearLayer
-      );
-
-      overLayers.forEach(
-        clearLayer
-      );
-
-    }
-
-
-    function activeLayers(layers) {
-
-      return layers.filter(
-        layer =>
-          layer.dataset.active === "true"
-      );
-
-    }
-
-
-    function inactiveLayers(layers) {
-
-      return layers.filter(
-        layer =>
-          layer.dataset.active !== "true"
-      );
-
-    }
-
-
-    function ensureLayerCount(
-      layers,
-      wanted,
-      intensity
-    ) {
-
-      let active =
-        activeLayers(layers);
-
-
-      while (
-        active.length < wanted
-      ) {
-
-        const inactive =
-          inactiveLayers(layers);
-
-
-        if (!inactive.length) break;
-
-
-        const layer =
-          pick(inactive);
-
-
-        replaceLayer(
-          layer,
-          intensity
-        );
-
-
-        layer.dataset.active =
-          "true";
-
-
-        active =
-          activeLayers(layers);
-
-      }
-
-
-      while (
-        active.length > wanted
-      ) {
-
-        const layer =
-          pick(active);
-
-
-        clearLayer(layer);
-
-
-        active =
-          activeLayers(layers);
-
-      }
+        random(
+          minOpacity,
+          maxOpacity
+        ).toFixed(3);
 
     }
 
 
     /* =====================================================
-       INTENSITY CURVE
-
-       0:00–0:45
-       barely-there collage
-
-       0:45–1:11
-       establishes visual world
-
-       1:11–3:00
-       gradual build
-
-       3:00–3:40
-       increasingly tense
-
-       3:40–4:03
-       strongest / fastest collage
-
-       4:03
-       completely normal again
+       REPLACE ONE COLLAGE PIECE
        ===================================================== */
 
-    const NORMAL_TIME = 243;
+    function replaceTexture(
+      layer,
+      intensity,
+      isOver
+    ) {
+
+      /*
+        Fade old paper/image away.
+      */
+
+      layer.style.opacity =
+        "0";
 
 
-    function collageIntensity(time) {
+      setTimeout(() => {
+
+        configureTexture(
+          layer,
+          intensity,
+          isOver
+        );
+
+
+        /*
+          Browser gets one frame with the new
+          static crop before it fades in.
+        */
+
+        requestAnimationFrame(() => {
+
+          requestAnimationFrame(() => {
+
+            layer.style.opacity =
+              layer.dataset.targetOpacity;
+
+          });
+
+        });
+
+      }, 135);
+
+    }
+
+
+    /* =====================================================
+       COLOR FIELDS
+       ===================================================== */
+
+    function changeColorLayer(
+      layer,
+      intensity,
+      isOver
+    ) {
+
+      layer.style.opacity =
+        "0";
+
+
+      setTimeout(() => {
+
+        layer.style.background =
+          makeColorField();
+
+
+        layer.style.mixBlendMode =
+          pick(
+            isOver
+              ? overBlendModes
+              : underBlendModes
+          );
+
+
+        const opacity =
+          isOver
+            ? random(
+                0.02,
+                lerp(
+                  0.05,
+                  0.17,
+                  intensity
+                )
+              )
+            : random(
+                0.025,
+                lerp(
+                  0.07,
+                  0.20,
+                  intensity
+                )
+              );
+
+
+        layer.style.opacity =
+          opacity.toFixed(3);
+
+      }, 150);
+
+    }
+
+
+    /* =====================================================
+       TIMING
+       ===================================================== */
+
+    const VISUAL_START =
+      9;
+
+    const VISUAL_FULL =
+      28;
+
+    const NORMAL_TIME =
+      243;
+
+
+    /*
+      120 BPM
+      = 0.5 sec per quarter note.
+    */
+
+    const BEAT_LENGTH =
+      0.5;
+
+
+    function smoothStep(value) {
+
+      const t =
+        clamp(
+          value,
+          0,
+          1
+        );
+
+
+      return (
+        t *
+        t *
+        (3 - (2 * t))
+      );
+
+    }
+
+
+    function revealAmount(time) {
 
       if (
+        time < VISUAL_START
+      ) {
+
+        return 0;
+
+      }
+
+
+      if (
+        time >= VISUAL_FULL
+      ) {
+
+        return 1;
+
+      }
+
+
+      return smoothStep(
+        (
+          time -
+          VISUAL_START
+        )
+        /
+        (
+          VISUAL_FULL -
+          VISUAL_START
+        )
+      );
+
+    }
+
+
+    /*
+      Keeps beginning restrained,
+      then increases toward 4:03.
+    */
+
+    function intensityAt(time) {
+
+      if (
+        time < VISUAL_START ||
         time >= NORMAL_TIME
       ) {
 
@@ -1218,19 +1270,20 @@
       }
 
 
-      if (time < 45) {
-
-        return 0.07;
-
-      }
-
-
       if (time < 71) {
 
         return lerp(
-          0.07,
-          0.18,
-          (time - 45) / 26
+          0.08,
+          0.24,
+          (
+            time -
+            VISUAL_START
+          )
+          /
+          (
+            71 -
+            VISUAL_START
+          )
         );
 
       }
@@ -1239,9 +1292,14 @@
       if (time < 180) {
 
         return lerp(
-          0.18,
-          0.44,
-          (time - 71) / 109
+          0.24,
+          0.48,
+          (
+            time -
+            71
+          )
+          /
+          109
         );
 
       }
@@ -1250,265 +1308,89 @@
       if (time < 220) {
 
         return lerp(
-          0.44,
-          0.72,
-          (time - 180) / 40
+          0.48,
+          0.76,
+          (
+            time -
+            180
+          )
+          /
+          40
         );
 
       }
 
 
       return lerp(
-        0.72,
+        0.76,
         1,
-        (time - 220) / 23
+        (
+          time -
+          220
+        )
+        /
+        23
       );
 
     }
 
 
     /*
-      These timings align nicely with
-      120 BPM:
+      Still tempo-locked, but doesn't try
+      to load a new full-resolution JPG every
+      120ms anymore.
 
-      2000ms = 4 beats
-      1000ms = 2 beats
-      500ms  = 1 beat
-      250ms  = 1/2 beat
+      Mild:
+      every 4 sec
+
+      Building:
+      every 2 sec
+
+      Tense:
+      every 1 sec
+
+      Final:
+      every 0.5 sec
     */
 
-    function collageInterval(
+    function beatsPerChange(
       intensity
     ) {
 
-      if (intensity < 0.22) {
-        return 2000;
+      if (
+        intensity < 0.25
+      ) {
+
+        return 8;
+
       }
 
-      if (intensity < 0.50) {
-        return 1000;
+
+      if (
+        intensity < 0.50
+      ) {
+
+        return 4;
+
       }
 
-      if (intensity < 0.82) {
-        return 500;
+
+      if (
+        intensity < 0.78
+      ) {
+
+        return 2;
+
       }
 
-      return 250;
+
+      return 1;
 
     }
 
 
     /* =====================================================
-       COLLAGE UPDATE
-       ===================================================== */
-
-    let lastCollageChange =
-      -Infinity;
-
-    let normalized =
-      false;
-
-
-    function updateCollage(
-      time,
-      intensity
-    ) {
-
-      /*
-        At 4:03 everything disappears
-        immediately, leaving only the
-        original horse.
-      */
-
-      if (
-        time >= NORMAL_TIME
-      ) {
-
-        if (!normalized) {
-
-          normalized = true;
-
-          clearAllLayers();
-
-
-          trippyStage.style.setProperty(
-            "--vignette-opacity",
-            "0"
-          );
-
-
-          trippyStage.style.setProperty(
-            "--shadow-opacity",
-            "0"
-          );
-
-        }
-
-
-        return;
-
-      }
-
-
-      normalized = false;
-
-
-      const interval =
-        collageInterval(
-          intensity
-        );
-
-
-      const elapsedMs =
-        time * 1000;
-
-
-      if (
-        elapsedMs -
-        lastCollageChange <
-        interval
-      ) {
-
-        return;
-
-      }
-
-
-      lastCollageChange =
-        elapsedMs;
-
-
-      /*
-        More layers accumulate as tension rises,
-        but never enough to bury the horse.
-      */
-
-      const wantedUnder =
-        Math.round(
-          lerp(
-            2,
-            7,
-            intensity
-          )
-        );
-
-
-      const wantedOver =
-        Math.round(
-          lerp(
-            1,
-            4,
-            intensity
-          )
-        );
-
-
-      ensureLayerCount(
-        underLayers,
-        wantedUnder,
-        intensity
-      );
-
-
-      ensureLayerCount(
-        overLayers,
-        wantedOver,
-        intensity
-      );
-
-
-      /*
-        Only a FEW collage pieces change
-        on each visual beat.
-      */
-
-      const changes =
-        Math.round(
-          lerp(
-            1,
-            4,
-            intensity
-          )
-        );
-
-
-      const allActive = [
-        ...activeLayers(
-          underLayers
-        ),
-        ...activeLayers(
-          overLayers
-        )
-      ];
-
-
-      const changed =
-        new Set();
-
-
-      for (
-        let i = 0;
-        i < changes;
-        i += 1
-      ) {
-
-        if (!allActive.length) break;
-
-
-        let layer;
-
-
-        do {
-
-          layer =
-            pick(allActive);
-
-        } while (
-          changed.has(layer) &&
-          changed.size <
-          allActive.length
-        );
-
-
-        changed.add(layer);
-
-
-        replaceLayer(
-          layer,
-          intensity
-        );
-
-      }
-
-
-      /*
-        Small darkroom-style edge tension.
-      */
-
-      trippyStage.style.setProperty(
-        "--vignette-opacity",
-        lerp(
-          0.015,
-          0.22,
-          intensity
-        ).toFixed(3)
-      );
-
-
-      trippyStage.style.setProperty(
-        "--shadow-opacity",
-        lerp(
-          0.04,
-          0.17,
-          intensity
-        ).toFixed(3)
-      );
-
-    }
-
-
-    /* =====================================================
-       PLAYBACK LOOP
+       VISUAL STATE
        ===================================================== */
 
     let overlayOpen =
@@ -1517,6 +1399,183 @@
     let animationFrame =
       null;
 
+    let lastBeatGroup =
+      -1;
+
+    let hasStartedVisual =
+      false;
+
+    let hasNormalized =
+      false;
+
+
+    function initializeFourTextures(
+      intensity
+    ) {
+
+      replaceTexture(
+        underLayers[0],
+        intensity,
+        false
+      );
+
+      replaceTexture(
+        underLayers[1],
+        intensity,
+        false
+      );
+
+      replaceTexture(
+        overLayers[0],
+        intensity,
+        true
+      );
+
+      replaceTexture(
+        overLayers[1],
+        intensity,
+        true
+      );
+
+
+      changeColorLayer(
+        colorUnder,
+        intensity,
+        false
+      );
+
+
+      changeColorLayer(
+        colorOver,
+        intensity,
+        true
+      );
+
+    }
+
+
+    function clearCollage() {
+
+      allTextureLayers.forEach(
+        layer => {
+
+          layer.style.opacity =
+            "0";
+
+        }
+      );
+
+
+      colorUnder.style.opacity =
+        "0";
+
+
+      colorOver.style.opacity =
+        "0";
+
+    }
+
+
+    function normalizeAtEnd() {
+
+      if (hasNormalized) {
+        return;
+      }
+
+
+      hasNormalized =
+        true;
+
+
+      clearCollage();
+
+
+      stage.classList.add(
+        "is-normal"
+      );
+
+    }
+
+
+    /* =====================================================
+       RANDOM COLLAGE CUT
+
+       Usually 1 texture changes.
+       Near climax sometimes 2.
+       ===================================================== */
+
+    function collageCut(
+      intensity
+    ) {
+
+      const numberToChange =
+        intensity > 0.78 &&
+        Math.random() < 0.65
+          ? 2
+          : 1;
+
+
+      const shuffled =
+        shuffle(
+          allTextureLayers
+        );
+
+
+      for (
+        let i = 0;
+        i < numberToChange;
+        i++
+      ) {
+
+        const layer =
+          shuffled[i];
+
+
+        const isOver =
+          overLayers.includes(
+            layer
+          );
+
+
+        replaceTexture(
+          layer,
+          intensity,
+          isOver
+        );
+
+      }
+
+
+      /*
+        Color washes don't change every time.
+        More frequent toward climax.
+      */
+
+      if (
+        Math.random() <
+        lerp(
+          0.18,
+          0.60,
+          intensity
+        )
+      ) {
+
+        changeColorLayer(
+          Math.random() < 0.5
+            ? colorUnder
+            : colorOver,
+          intensity,
+          Math.random() < 0.5
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       FRAME LOOP
+       ===================================================== */
 
     function visualLoop() {
 
@@ -1529,14 +1588,113 @@
         audio.currentTime || 0;
 
 
-      const intensity =
-        collageIntensity(time);
+      /*
+        Entire visual box begins appearing
+        at exactly 9 seconds.
+      */
+
+      const reveal =
+        revealAmount(time);
 
 
-      updateCollage(
-        time,
-        intensity
+      stage.style.setProperty(
+        "--visual-reveal",
+        reveal.toFixed(4)
       );
+
+
+      /*
+        4:03:
+        all collage disappears.
+      */
+
+      if (
+        time >= NORMAL_TIME
+      ) {
+
+        normalizeAtEnd();
+
+
+        animationFrame =
+          requestAnimationFrame(
+            visualLoop
+          );
+
+
+        return;
+
+      }
+
+
+      const intensity =
+        intensityAt(time);
+
+
+      if (
+        time >= VISUAL_START &&
+        !hasStartedVisual
+      ) {
+
+        hasStartedVisual =
+          true;
+
+
+        initializeFourTextures(
+          intensity
+        );
+
+      }
+
+
+      /*
+        Audio-timeline beat grid.
+
+        No drifting setInterval.
+      */
+
+      if (
+        time >= VISUAL_START
+      ) {
+
+        const cadence =
+          beatsPerChange(
+            intensity
+          );
+
+
+        const beat =
+          Math.floor(
+            (
+              time -
+              VISUAL_START
+            )
+            /
+            BEAT_LENGTH
+          );
+
+
+        const beatGroup =
+          Math.floor(
+            beat / cadence
+          );
+
+
+        if (
+          beatGroup !==
+          lastBeatGroup
+        ) {
+
+          lastBeatGroup =
+            beatGroup;
+
+
+          collageCut(
+            intensity
+          );
+
+        }
+
+      }
 
 
       animationFrame =
@@ -1548,41 +1706,50 @@
 
 
     /* =====================================================
-       OPEN / CLOSE
+       OPEN
        ===================================================== */
-
-    function initializeMildCollage() {
-
-      clearAllLayers();
-
-
-      /*
-        Start with a couple of extremely quiet
-        layers rather than a blank square.
-      */
-
-      replaceLayer(
-        underLayers[0],
-        0.07
-      );
-
-      replaceLayer(
-        underLayers[1],
-        0.07
-      );
-
-      replaceLayer(
-        overLayers[0],
-        0.07
-      );
-
-    }
-
 
     async function openWip() {
 
       overlayOpen =
         true;
+
+
+      hasStartedVisual =
+        false;
+
+
+      hasNormalized =
+        false;
+
+
+      lastBeatGroup =
+        -1;
+
+
+      stage.classList.remove(
+        "is-normal"
+      );
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
+
+
+      clearCollage();
+
+
+      /*
+        Start loading a randomized texture pool
+        immediately.
+
+        We then have nine full seconds before
+        the collage even begins.
+      */
+
+      prepareTextureSession();
 
 
       document.body.classList.add(
@@ -1603,23 +1770,13 @@
 
       audio.pause();
 
+
       audio.currentTime =
         0;
 
 
       audio.volume =
         0.72;
-
-
-      lastCollageChange =
-        -Infinity;
-
-
-      normalized =
-        false;
-
-
-      initializeMildCollage();
 
 
       try {
@@ -1651,6 +1808,10 @@
     }
 
 
+    /* =====================================================
+       CLOSE
+       ===================================================== */
+
     function closeWip() {
 
       overlayOpen =
@@ -1675,6 +1836,7 @@
 
       audio.pause();
 
+
       audio.currentTime =
         0;
 
@@ -1684,7 +1846,13 @@
       );
 
 
-      clearAllLayers();
+      clearCollage();
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
 
     }
 
@@ -1706,11 +1874,6 @@
         }
 
 
-        /*
-          Eventually add data-live-link
-          to links that should navigate.
-        */
-
         if (
           link.hasAttribute(
             "data-live-link"
@@ -1723,6 +1886,7 @@
 
 
         event.preventDefault();
+
 
         openWip();
 
