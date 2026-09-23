@@ -118,8 +118,6 @@
 
       <div class="hero-inner">
 
-        <!-- slot-machine welcome -->
-
         <div
           class="welcome-slot"
           aria-live="polite"
@@ -147,8 +145,6 @@
           </div>
         </div>
 
-
-        <!-- static second line -->
 
         <h1 class="main-title">
 
@@ -186,23 +182,28 @@
 
 
     <!-- =====================================================
-         INVISIBLE YOUTUBE PLAYER
+         OPTIONAL LOCAL BACKGROUND AUDIO
+
+         When you have an audio file you are allowed to host,
+         put it at:
+         assets/audio/background.mp3
+
+         Then remove "disabled" from this element in JS logic
+         by simply leaving the src as-is.
          ===================================================== -->
 
-    <div
-      id="youtube-player"
-      class="background-player"
-      aria-hidden="true"
-    ></div>
+    <audio
+      id="background-audio"
+      preload="auto"
+      loop
+    >
+      <source
+        src="assets/audio/background.mp3"
+        type="audio/mpeg"
+      />
+    </audio>
 
   </div>
-
-
-  <!-- =======================================================
-       YOUTUBE IFRAME API
-       ======================================================= -->
-
-  <script src="https://www.youtube.com/iframe_api"></script>
 
 
   <script>
@@ -211,19 +212,12 @@
        ======================================================= */
 
     const welcomes = [
-
       { text: "Welcome" },
-
       { text: "Ласкаво просимо" },
-
       { text: "Benvenuti" },
-
       { text: "Fáilte" },
-
       { text: "Bienvenidos" },
-
       { text: "欢迎" },
-
       { text: "Benvinguts" },
 
       {
@@ -232,23 +226,14 @@
       },
 
       { text: "Sveiki atvykę" },
-
       { text: "Yá’át’ééh" },
-
       { text: "Velkomin" },
-
       { text: "Willkommen" },
-
       { text: "ようこそ" },
-
       { text: "Bienvenue" },
-
       { text: "Bem-vindos" },
-
       { text: "أهلاً وسهلاً" },
-
       { text: "Mae govannen" },
-
       { text: "Croeso" },
 
       {
@@ -258,21 +243,13 @@
       },
 
       { text: "Karibu" },
-
       { text: "Siyakwamukela" },
-
       { text: "Ẹ káàbọ̀" },
-
       { text: "እንኳን ደህና መጡ" },
-
       { text: "स्वागत है" },
-
       { text: "خوش آمدید" }
-
     ];
 
-
-    /* Lithuanian flag colors */
 
     const welcomeColors = [
       "#FDB913",
@@ -292,14 +269,11 @@
 
 
     let currentWelcome = 0;
-
-    let currentColor = -1;
-
+    let currentColor = 0;
     let rolling = false;
 
 
     function getDifferentIndex(length, previous) {
-
       let next;
 
       do {
@@ -321,11 +295,15 @@
         "is-binary"
       );
 
-      element.textContent = entry.text;
+      element.textContent =
+        entry.text;
 
       if (entry.className) {
-        element.classList.add(entry.className);
+        element.classList.add(
+          entry.className
+        );
       }
+
     }
 
 
@@ -334,7 +312,6 @@
       if (rolling) {
         return;
       }
-
 
       rolling = true;
 
@@ -398,9 +375,11 @@
         );
 
 
-        currentWelcome = nextWelcome;
+        currentWelcome =
+          nextWelcome;
 
-        currentColor = nextColor;
+        currentColor =
+          nextColor;
 
         rolling = false;
 
@@ -409,13 +388,8 @@
     }
 
 
-    /* initial color */
-
     welcomeCurrent.style.color =
       welcomeColors[0];
-
-
-    currentColor = 0;
 
 
     setInterval(
@@ -425,73 +399,23 @@
 
 
     /* =======================================================
-       BACKGROUND YOUTUBE AUDIO
+       FIRST-INTERACTION AUDIO
        ======================================================= */
 
-    let youtubePlayer;
+    const backgroundAudio =
+      document.getElementById(
+        "background-audio"
+      );
 
-    let youtubeReady = false;
 
     let audioStarted = false;
 
 
-    function onYouTubeIframeAPIReady() {
-
-      youtubePlayer = new YT.Player(
-        "youtube-player",
-        {
-
-          width: "200",
-
-          height: "200",
-
-          videoId: "Hqxdn-MbpE0",
-
-          playerVars: {
-
-            autoplay: 1,
-
-            controls: 0,
-
-            disablekb: 1,
-
-            fs: 0,
-
-            playsinline: 1,
-
-            rel: 0,
-
-            loop: 1,
-
-            playlist: "Hqxdn-MbpE0"
-
-          },
-
-          events: {
-
-            onReady: function(event) {
-
-              youtubeReady = true;
-
-              event.target.setVolume(35);
-
-              tryStartAudio();
-
-            }
-
-          }
-
-        }
-      );
-
-    }
-
-
-    function tryStartAudio() {
+    async function startBackgroundAudio() {
 
       if (
-        !youtubeReady ||
-        !youtubePlayer
+        audioStarted ||
+        !backgroundAudio
       ) {
         return;
       }
@@ -499,63 +423,32 @@
 
       try {
 
-        youtubePlayer.unMute();
+        backgroundAudio.volume = 0.35;
 
-        youtubePlayer.setVolume(35);
-
-        youtubePlayer.playVideo();
+        await backgroundAudio.play();
 
         audioStarted = true;
 
       }
       catch (error) {
 
-        audioStarted = false;
+        /* Browser still blocked playback.
+           Another interaction can try again. */
 
       }
-
-    }
-
-
-    /*
-      Browsers may block audible autoplay.
-
-      If that happens, the visitor's first interaction
-      starts the soundtrack.
-    */
-
-    function unlockAudio() {
-
-      if (!audioStarted) {
-        tryStartAudio();
-      }
-
-
-      document.removeEventListener(
-        "pointerdown",
-        unlockAudio
-      );
-
-
-      document.removeEventListener(
-        "keydown",
-        unlockAudio
-      );
 
     }
 
 
     document.addEventListener(
       "pointerdown",
-      unlockAudio,
-      { once: true }
+      startBackgroundAudio
     );
 
 
     document.addEventListener(
       "keydown",
-      unlockAudio,
-      { once: true }
+      startBackgroundAudio
     );
 
   </script>
