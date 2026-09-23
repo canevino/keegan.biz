@@ -40,11 +40,9 @@ body {
 
   overflow-x: hidden;
 
-  background:
-    var(--paper);
+  background: var(--paper);
 
-  color:
-    var(--ink);
+  color: var(--ink);
 
   font-family:
     Helvetica,
@@ -58,7 +56,6 @@ body {
 
 img {
   display: block;
-
   max-width: 100%;
 }
 
@@ -133,9 +130,7 @@ a {
 
   filter:
     drop-shadow(
-      0
-      2px
-      1px
+      0 2px 1px
       rgba(17, 17, 15, 0.06)
     );
 }
@@ -196,8 +191,7 @@ a {
 
   margin: 0;
 
-  color:
-    var(--red);
+  color: var(--red);
 
   font-family:
     Helvetica,
@@ -221,12 +215,8 @@ a {
   opacity: 1;
 
   transition:
-    opacity
-    200ms
-    ease,
-    color
-    200ms
-    ease;
+    opacity 200ms ease,
+    color 200ms ease;
 }
 
 
@@ -247,13 +237,12 @@ a {
       46px
     );
 
-  padding-bottom:
-    60px;
+  padding-bottom: 60px;
 }
 
 
 /* =========================================================
-   FUJI
+   FUJI ARTWORK
    ========================================================= */
 
 .fuji-interactive {
@@ -264,8 +253,7 @@ a {
   width: 100%;
   max-width: 1100px;
 
-  aspect-ratio:
-    3 / 2;
+  aspect-ratio: 3 / 2;
 
   margin: 0;
 
@@ -273,19 +261,16 @@ a {
 
   isolation: isolate;
 
-  background:
-    #11110f;
+  background: #11110f;
 
   contain:
     layout
     paint
     style;
 
-  touch-action:
-    pan-y;
+  touch-action: pan-y;
 
-  outline:
-    none;
+  outline: none;
 }
 
 
@@ -294,13 +279,12 @@ a {
     2px solid
     var(--ink);
 
-  outline-offset:
-    5px;
+  outline-offset: 5px;
 }
 
 
 /* =========================================================
-   BASE
+   BASE IMAGE
    ========================================================= */
 
 .fuji-base {
@@ -319,10 +303,10 @@ a {
 
   user-select: none;
 
-  transition:
-    filter
-    220ms
-    ease-out;
+  transform:
+    translate3d(0, 0, 0);
+
+  backface-visibility: hidden;
 }
 
 
@@ -358,29 +342,19 @@ a {
   user-select: none;
 
   transform:
-    translate(0, 0);
+    translate3d(0, 0, 0);
+
+  backface-visibility: hidden;
 
   transition:
-    opacity
-    150ms
-    ease-out,
-    filter
-    140ms
-    ease-out,
-    transform
-    140ms
-    ease-out;
-
-  will-change:
-    opacity,
-    filter;
+    opacity 170ms ease-out,
+    filter 170ms ease-out,
+    transform 170ms ease-out;
 }
 
 
 /* =========================================================
    LINES
-
-   Geometry itself stays still.
    ========================================================= */
 
 .fuji-lines {
@@ -406,12 +380,7 @@ a {
 
   pointer-events: none;
 
-  /*
-    No movement animation.
-  */
-
-  transform:
-    none;
+  transform: none;
 
   transition-property:
     opacity;
@@ -421,9 +390,6 @@ a {
 
   transition-timing-function:
     ease-in-out;
-
-  will-change:
-    opacity;
 }
 
 
@@ -441,21 +407,9 @@ a {
 
   user-select: none;
 
-  /*
-    No transform transition.
-  */
-
   transition:
-    filter
-    180ms
-    ease-in-out,
-    opacity
-    180ms
-    ease-in-out;
-
-  will-change:
-    filter,
-    opacity;
+    filter 180ms ease-in-out,
+    opacity 180ms ease-in-out;
 }
 
 
@@ -475,16 +429,8 @@ a {
     no-repeat;
 
   transition:
-    opacity
-    180ms
-    ease-in-out,
-    filter
-    180ms
-    ease-in-out;
-
-  will-change:
-    opacity,
-    filter;
+    opacity 180ms ease-in-out,
+    filter 180ms ease-in-out;
 }
 
 
@@ -515,13 +461,78 @@ a {
 
 
 /* =========================================================
-   WHITE-CANVAS LINE
+   WHITE CANVAS LINE
    ========================================================= */
 
 .fuji-line-layer.has-white-canvas
 .fuji-line-texture {
   mix-blend-mode:
     multiply;
+}
+
+
+/* =========================================================
+   SOUND CONTROL
+   ========================================================= */
+
+.fuji-sound-toggle {
+  position: absolute;
+
+  right: 10px;
+  bottom: 10px;
+
+  z-index: 60;
+
+  margin: 0;
+
+  padding:
+    7px
+    9px;
+
+  border:
+    1px solid
+    rgba(17, 17, 15, 0.62);
+
+  border-radius: 0;
+
+  background:
+    rgba(
+      236,
+      231,
+      215,
+      0.90
+    );
+
+  color: var(--ink);
+
+  font:
+    inherit;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing:
+    -0.02em;
+
+  cursor: pointer;
+
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+
+.fuji-sound-toggle:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+
+.fuji-sound-toggle:disabled {
+  opacity: 0.44;
+  cursor: default;
 }
 
 
@@ -561,8 +572,7 @@ a {
 
   overflow: auto;
 
-  background:
-    var(--paper);
+  background: var(--paper);
 
   opacity: 0;
 
@@ -571,10 +581,8 @@ a {
   pointer-events: none;
 
   transition:
-    opacity
-    160ms ease,
-    visibility
-    160ms ease;
+    opacity 160ms ease,
+    visibility 160ms ease;
 }
 
 
@@ -595,7 +603,9 @@ a {
     );
 
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
 }
 
@@ -618,17 +628,11 @@ a {
 
   margin-bottom: 0;
 
-  background:
-    var(--paper);
+  background: var(--paper);
 
   border:
     1px solid
-    rgba(
-      17,
-      17,
-      15,
-      0.46
-    );
+    rgba(17, 17, 15, 0.46);
 }
 
 
@@ -642,8 +646,7 @@ a {
     19px
     15px;
 
-  color:
-    var(--ink);
+  color: var(--ink);
 
   font-size:
     clamp(
@@ -673,18 +676,11 @@ a {
 
   border-left:
     1px solid
-    rgba(
-      17,
-      17,
-      15,
-      0.46
-    );
+    rgba(17, 17, 15, 0.46);
 
-  background:
-    transparent;
+  background: transparent;
 
-  color:
-    var(--ink);
+  color: var(--ink);
 
   font-family:
     Helvetica,
@@ -700,11 +696,9 @@ a {
 
 
 .wip-close:hover {
-  color:
-    var(--paper);
+  color: var(--paper);
 
-  background:
-    var(--ink);
+  background: var(--ink);
 }
 
 
@@ -724,26 +718,28 @@ a {
       88vw
     );
 
-  aspect-ratio:
-    1 / 1;
+  aspect-ratio: 1 / 1;
 
   overflow: hidden;
 
   isolation: isolate;
 
-  background:
-    #d4d0c5;
+  border: 0;
+
+  box-shadow: none;
+
+  background: #d4d0c5;
 
   opacity:
     var(--visual-reveal);
 
-  contain:
-    paint;
+  transform:
+    translateZ(0);
+
+  contain: paint;
 
   transition:
-    opacity
-    90ms
-    linear;
+    opacity 90ms linear;
 }
 
 
@@ -778,8 +774,7 @@ a {
   mix-blend-mode:
     multiply;
 
-  opacity:
-    0.72;
+  opacity: 0.72;
 }
 
 
@@ -817,9 +812,12 @@ a {
   pointer-events: none;
 
   background-size: cover;
-  background-repeat: no-repeat;
 
-  transform-origin: center;
+  background-repeat:
+    no-repeat;
+
+  transform-origin:
+    center;
 
   transition-property:
     opacity;
@@ -944,21 +942,18 @@ a {
 
 
 .collage-stage.is-normal {
-  background:
-    transparent;
+  background: transparent;
 }
 
 
 .collage-stage.is-normal::before {
-  opacity:
-    0;
+  opacity: 0;
 }
 
 
 .collage-stage.is-normal
 .morph-frame {
-  opacity:
-    0 !important;
+  opacity: 0 !important;
 }
 
 
@@ -968,21 +963,18 @@ a {
 .horse-key,
 .collage-stage.is-normal
 .stage-grain {
-  opacity:
-    0 !important;
+  opacity: 0 !important;
 }
 
 
 .collage-stage.is-normal
 .horse-main {
-  opacity:
-    1 !important;
+  opacity: 1 !important;
 
   mix-blend-mode:
     normal !important;
 
-  filter:
-    none !important;
+  filter: none !important;
 }
 
 
@@ -990,13 +982,10 @@ a {
    TABLET
    ========================================================= */
 
-@media (
-  max-width: 1100px
-) {
+@media (max-width: 1100px) {
 
   .photo-page {
-    padding-right:
-      375px;
+    padding-right: 375px;
   }
 
 
@@ -1016,9 +1005,7 @@ a {
    MOBILE
    ========================================================= */
 
-@media (
-  max-width: 700px
-) {
+@media (max-width: 700px) {
 
   .scarf-rack {
     top: 10px;
@@ -1026,11 +1013,9 @@ a {
     left: 0;
     right: 0;
 
-    flex-direction:
-      row;
+    flex-direction: row;
 
-    align-items:
-      center;
+    align-items: center;
 
     width: 100%;
 
@@ -1041,14 +1026,11 @@ a {
       14px
       12px;
 
-    overflow-x:
-      auto;
+    overflow-x: auto;
 
-    overflow-y:
-      hidden;
+    overflow-y: hidden;
 
-    scrollbar-width:
-      none;
+    scrollbar-width: none;
 
     -webkit-overflow-scrolling:
       touch;
@@ -1061,19 +1043,19 @@ a {
 
 
   .scarf-item {
-    flex:
-      0 0 auto;
+    flex: 0 0 auto;
 
     width: 285px;
+
     height: auto;
 
-    transform:
-      none;
+    transform: none;
   }
 
 
   .scarf-item img {
     width: 100%;
+
     height: auto;
   }
 
@@ -1092,8 +1074,7 @@ a {
 
 
   .photo-page {
-    min-height:
-      100svh;
+    min-height: 100svh;
 
     padding:
       180px
@@ -1113,27 +1094,33 @@ a {
 
 
   .photo-canvas {
-    margin-top:
-      26px;
+    margin-top: 26px;
 
-    padding-bottom:
-      40px;
+    padding-bottom: 40px;
   }
 
 
-  /*
-    Keep line textures somewhat calmer on touch.
-  */
-
   .fuji-line-texture {
     transition-duration:
-      320ms;
+      300ms;
   }
 
 
   .fuji-building {
     transition-duration:
-      320ms;
+      260ms;
+  }
+
+
+  .fuji-sound-toggle {
+    right: 7px;
+    bottom: 7px;
+
+    padding:
+      6px
+      8px;
+
+    font-size: 11px;
   }
 
 
@@ -1145,8 +1132,7 @@ a {
 
 
   .wip-inner {
-    width:
-      94vw;
+    width: 94vw;
   }
 
 
@@ -1167,50 +1153,41 @@ a {
       12px
       13px;
 
-    font-size:
-      17px;
+    font-size: 17px;
   }
 
 
   .wip-close {
-    flex-basis:
-      47px;
+    flex-basis: 47px;
 
-    width:
-      47px;
+    width: 47px;
 
-    font-size:
-      31px;
+    font-size: 31px;
   }
 
 
   .over-slot-1 {
-    display:
-      none;
+    display: none;
   }
 
 
   .horse-offset {
-    display:
-      none;
+    display: none;
   }
 
 
   .morph-frame {
-    inset:
-      -5%;
+    inset: -5%;
   }
 
 
   .collage-stage::before {
-    opacity:
-      0.54;
+    opacity: 0.54;
   }
 
 
   .stage-grain {
-    opacity:
-      0.04;
+    opacity: 0.04;
 
     background-size:
       5px 5px;
@@ -1242,25 +1219,20 @@ a {
    SMALL MOBILE
    ========================================================= */
 
-@media (
-  max-width: 420px
-) {
+@media (max-width: 420px) {
 
   .scarf-item {
-    width:
-      248px;
+    width: 248px;
   }
 
 
   .scarf-home {
-    width:
-      278px;
+    width: 278px;
   }
 
 
   .photo-page {
-    padding-top:
-      164px;
+    padding-top: 164px;
   }
 
 
@@ -1275,8 +1247,7 @@ a {
 
 
   .photo-canvas {
-    margin-top:
-      24px;
+    margin-top: 24px;
   }
 
 }
