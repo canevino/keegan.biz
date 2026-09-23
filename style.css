@@ -26,8 +26,11 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
+  margin:
+    0;
+
+  padding:
+    0;
 }
 
 
@@ -80,19 +83,19 @@ a {
 
 /* =========================================================
    PAGE
+
+   Removed immediately when WIP opens.
    ========================================================= */
 
 .page-shell {
   min-height:
     100vh;
+}
 
-  opacity:
-    1;
 
-  transition:
-    opacity
-    120ms
-    linear;
+.page-shell.is-hidden {
+  display:
+    none;
 }
 
 
@@ -329,12 +332,11 @@ a {
 
 /* =========================================================
    OVERLAY
+
+   Solid cream screen immediately.
    ========================================================= */
 
 .wip-overlay {
-  --overlay-reveal:
-    0;
-
   position:
     fixed;
 
@@ -359,17 +361,8 @@ a {
   overflow:
     auto;
 
-  /*
-    This background fades in WITH the artwork.
-  */
-
   background:
-    rgb(
-      236 231 215 /
-      calc(
-        var(--overlay-reveal) * 0.98
-      )
-    );
+    var(--paper);
 
   opacity:
     0;
@@ -382,9 +375,9 @@ a {
 
   transition:
     opacity
-    250ms ease,
+    160ms ease,
     visibility
-    250ms ease;
+    160ms ease;
 }
 
 
@@ -419,7 +412,7 @@ a {
 
 
 /* =========================================================
-   HEADER
+   MESSAGE
    ========================================================= */
 
 .wip-header {
@@ -441,10 +434,6 @@ a {
 
   align-items:
     stretch;
-
-  /*
-    directly attached to artwork
-  */
 
   margin-bottom:
     0;
@@ -560,6 +549,8 @@ a {
 
 /* =========================================================
    COLLAGE STAGE
+
+   Only this part fades in.
    ========================================================= */
 
 .collage-stage {
@@ -579,10 +570,6 @@ a {
   aspect-ratio:
     1 / 1;
 
-  /*
-    NOTHING escapes the box.
-  */
-
   overflow:
     hidden;
 
@@ -601,9 +588,22 @@ a {
   opacity:
     var(--visual-reveal);
 
+  /*
+    GPU-friendly initial reveal.
+  */
+
+  transform:
+    translateZ(0);
+
+  will-change:
+    opacity;
+
+  contain:
+    paint;
+
   transition:
     opacity
-    120ms
+    90ms
     linear;
 }
 
@@ -625,7 +625,7 @@ a {
 }
 
 
-/* underprints */
+/* underneath */
 
 .under-slot-1 {
   z-index:
@@ -645,7 +645,7 @@ a {
 }
 
 
-/* overprints */
+/* over horse */
 
 .over-slot-1 {
   z-index:
@@ -673,11 +673,6 @@ a {
   position:
     absolute;
 
-  /*
-    Overscan ensures static rotation still
-    fills entire square.
-  */
-
   inset:
     -9%;
 
@@ -697,9 +692,10 @@ a {
     center;
 
   /*
-    JS controls transition-duration,
-    because the dissolve gets faster
-    throughout the piece.
+    Only opacity animates.
+
+    Zoom / crop / rotation stay frozen
+    while visible.
   */
 
   transition-property:
@@ -715,6 +711,12 @@ a {
 
   will-change:
     opacity;
+
+  backface-visibility:
+    hidden;
+
+  -webkit-backface-visibility:
+    hidden;
 }
 
 
@@ -800,12 +802,9 @@ a {
 }
 
 
-/*
-  Final ink plate.
-
-  Keeps horse legible without making
-  overprints feel fake.
-*/
+/* =========================================================
+   HORSE INK KEY
+   ========================================================= */
 
 .horse-key {
   position:
@@ -887,7 +886,7 @@ a {
 
 
 /* =========================================================
-   CLEAN GIF AFTER 4:03
+   CLEAN HORSE AFTER 4:03
    ========================================================= */
 
 .collage-stage.is-normal {
