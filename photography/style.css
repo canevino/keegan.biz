@@ -40,9 +40,11 @@ body {
 
   overflow-x: hidden;
 
-  background: var(--paper);
+  background:
+    var(--paper);
 
-  color: var(--ink);
+  color:
+    var(--ink);
 
   font-family:
     Helvetica,
@@ -193,7 +195,8 @@ a {
 
   margin: 0;
 
-  color: var(--red);
+  color:
+    var(--red);
 
   font-family:
     Helvetica,
@@ -244,7 +247,7 @@ a {
 
 
 /* =========================================================
-   ARTWORK
+   ARTWORK LOAD
    ========================================================= */
 
 .fuji-interactive {
@@ -263,16 +266,35 @@ a {
 
   isolation: isolate;
 
-  background: #11110f;
+  /*
+    Paper instead of black while the base photograph
+    downloads.
+  */
+
+  background:
+    var(--paper);
+
+  opacity: 0;
 
   contain:
     layout
     paint
     style;
 
-  touch-action: pan-y;
+  touch-action:
+    pan-y;
 
   outline: none;
+
+  transition:
+    opacity
+    280ms
+    ease;
+}
+
+
+.fuji-interactive.is-ready {
+  opacity: 1;
 }
 
 
@@ -308,7 +330,8 @@ a {
   transform:
     translate3d(0, 0, 0);
 
-  backface-visibility: hidden;
+  backface-visibility:
+    hidden;
 }
 
 
@@ -346,12 +369,13 @@ a {
   transform:
     translate3d(0, 0, 0);
 
-  backface-visibility: hidden;
+  backface-visibility:
+    hidden;
 
   transition:
-    opacity 170ms ease-out,
-    filter 170ms ease-out,
-    transform 170ms ease-out;
+    opacity 420ms ease,
+    filter 420ms ease,
+    transform 420ms ease;
 }
 
 
@@ -383,7 +407,9 @@ a {
   pointer-events: none;
 
   transition:
-    opacity 220ms ease-in-out;
+    opacity
+    360ms
+    ease-in-out;
 }
 
 
@@ -402,8 +428,8 @@ a {
   user-select: none;
 
   transition:
-    filter 180ms ease-in-out,
-    opacity 180ms ease-in-out;
+    filter 300ms ease,
+    opacity 300ms ease;
 }
 
 
@@ -419,11 +445,12 @@ a {
 
   pointer-events: none;
 
-  background-repeat: no-repeat;
+  background-repeat:
+    no-repeat;
 
   transition:
-    opacity 180ms ease-in-out,
-    filter 180ms ease-in-out;
+    opacity 300ms ease,
+    filter 300ms ease;
 }
 
 
@@ -457,7 +484,11 @@ a {
 
 
 /* =========================================================
-   CLICK TUTORIAL
+   INSTRUCTION TEXT
+
+   White, no shadow.
+   The overlay blend allows the photographic grain/color
+   underneath to slightly roughen the lettering.
    ========================================================= */
 
 .fuji-click-prompt {
@@ -466,33 +497,36 @@ a {
   left: 50%;
   top: 50%;
 
-  z-index: 80;
+  z-index: 90;
 
   transform:
     translate(-50%, -50%);
 
-  max-width: 80%;
+  max-width: 84%;
 
-  margin: 0;
-
-  color: #fff;
+  color:
+    #fff;
 
   font-size:
     clamp(
-      24px,
-      3vw,
-      46px
+      22px,
+      2.45vw,
+      39px
     );
 
   font-weight: 700;
 
   line-height: .95;
 
-  letter-spacing: -.055em;
+  letter-spacing:
+    -.055em;
 
   text-align: center;
 
   white-space: nowrap;
+
+  mix-blend-mode:
+    overlay;
 
   opacity: 0;
 
@@ -500,27 +534,21 @@ a {
 
   pointer-events: none;
 
-  text-shadow:
-    0
-    1px
-    8px
-    rgba(0, 0, 0, .28);
-
   transition:
-    opacity 450ms ease,
-    visibility 450ms ease;
+    opacity 480ms ease,
+    visibility 480ms ease;
 }
 
 
 .fuji-click-prompt.is-visible {
-  opacity: 1;
+  opacity: .96;
 
   visibility: visible;
 }
 
 
 /* =========================================================
-   MUSICAL SPLASHES
+   MUSICAL SPLASH
    ========================================================= */
 
 .fuji-splash-layer {
@@ -551,7 +579,8 @@ a {
   aspect-ratio:
     1 / 1;
 
-  border-radius: 50%;
+  border-radius:
+    50%;
 
   opacity: 0;
 
@@ -559,40 +588,57 @@ a {
 
   transform:
     translate(-50%, -50%)
-    scale(.06);
+    scale(.14);
 
   transform-origin:
     center;
 
+  /*
+    Flatter, more printed, less "UI bubble".
+  */
+
   background:
     radial-gradient(
-      circle,
+      circle at 48% 46%,
       var(--splash-color) 0%,
       var(--splash-color) 54%,
-      transparent 76%
+      transparent 56%,
+      transparent 100%
     );
+
+  filter:
+    saturate(.84)
+    contrast(1.06);
 
   animation:
     fuji-splash-grow
     var(--splash-duration)
-    cubic-bezier(.17, .75, .2, 1)
-    var(--splash-delay)
+    cubic-bezier(.18, .74, .22, 1)
     forwards;
 }
 
 
-.fuji-splash-cloud {
-  filter: blur(3px);
-}
+.fuji-splash::after {
+  content: "";
 
+  position: absolute;
 
-.fuji-splash-connection {
-  filter: blur(1.5px);
-}
+  inset: 0;
 
+  border-radius:
+    50%;
 
-.fuji-splash-drone {
-  filter: blur(4px);
+  background:
+    repeating-radial-gradient(
+      circle at 40% 44%,
+      rgba(255, 255, 255, .09) 0 1px,
+      transparent 1px 5px
+    );
+
+  opacity: .34;
+
+  mix-blend-mode:
+    soft-light;
 }
 
 
@@ -603,21 +649,21 @@ a {
 
     transform:
       translate(-50%, -50%)
-      scale(.06);
+      scale(.14);
   }
 
 
-  10% {
+  13% {
     opacity:
       var(--splash-opacity);
   }
 
 
-  56% {
+  62% {
     opacity:
       calc(
         var(--splash-opacity) *
-        .72
+        .60
       );
   }
 
@@ -627,7 +673,7 @@ a {
 
     transform:
       translate(-50%, -50%)
-      scale(1.62);
+      scale(1.20);
   }
 
 }
@@ -640,16 +686,18 @@ a {
 .fuji-controls {
   position: absolute;
 
-  right: 14px;
-  bottom: 12px;
+  right: 13px;
+  bottom: 11px;
 
-  z-index: 90;
+  z-index: 100;
 
   display: flex;
 
-  flex-direction: column;
+  flex-direction:
+    column;
 
-  align-items: flex-end;
+  align-items:
+    flex-end;
 
   gap: 5px;
 
@@ -660,8 +708,8 @@ a {
   pointer-events: none;
 
   transition:
-    opacity 500ms ease,
-    visibility 500ms ease;
+    opacity 520ms ease,
+    visibility 520ms ease;
 }
 
 
@@ -681,46 +729,55 @@ a {
 
   border: 0;
 
-  background: transparent;
+  background:
+    transparent;
 
-  color: #fff;
+  color:
+    #fff;
 
   font:
     inherit;
 
   font-size:
-    12px;
+    11px;
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  line-height: 1.1;
+  line-height:
+    1.15;
 
-  letter-spacing: -.025em;
+  letter-spacing:
+    -.02em;
 
-  text-align: right;
+  text-align:
+    right;
 
-  cursor: pointer;
+  cursor:
+    pointer;
 
-  text-shadow:
-    0
-    1px
-    6px
-    rgba(0, 0, 0, .36);
+  mix-blend-mode:
+    screen;
 
-  -webkit-appearance: none;
-  appearance: none;
+  -webkit-appearance:
+    none;
+
+  appearance:
+    none;
 }
 
 
 .fuji-control:hover {
-  text-decoration: underline;
+  text-decoration:
+    underline;
 
-  text-underline-offset: 2px;
+  text-underline-offset:
+    2px;
 }
 
 
 /* =========================================================
-   FILTER DEFS
+   SVG
    ========================================================= */
 
 .fuji-filter-defs {
@@ -755,7 +812,8 @@ a {
 
   overflow: auto;
 
-  background: var(--paper);
+  background:
+    var(--paper);
 
   opacity: 0;
 
@@ -811,7 +869,8 @@ a {
 
   margin-bottom: 0;
 
-  background: var(--paper);
+  background:
+    var(--paper);
 
   border:
     1px solid
@@ -829,7 +888,8 @@ a {
     19px
     15px;
 
-  color: var(--ink);
+  color:
+    var(--ink);
 
   font-size:
     clamp(
@@ -842,16 +902,21 @@ a {
 
   line-height: 1;
 
-  letter-spacing: -.045em;
+  letter-spacing:
+    -.045em;
 }
 
 
 .wip-close {
-  flex: 0 0 52px;
+  flex:
+    0 0
+    52px;
 
-  width: 52px;
+  width:
+    52px;
 
   margin: 0;
+
   padding: 0;
 
   border: 0;
@@ -860,16 +925,19 @@ a {
     1px solid
     rgba(17, 17, 15, .46);
 
-  background: transparent;
+  background:
+    transparent;
 
-  color: var(--ink);
+  color:
+    var(--ink);
 
   font-family:
     Helvetica,
     Arial,
     sans-serif;
 
-  font-size: 34px;
+  font-size:
+    34px;
 
   line-height: 1;
 
@@ -878,14 +946,16 @@ a {
 
 
 .wip-close:hover {
-  color: var(--paper);
+  color:
+    var(--paper);
 
-  background: var(--ink);
+  background:
+    var(--ink);
 }
 
 
 /* =========================================================
-   HORSE STAGE
+   HORSE
    ========================================================= */
 
 .collage-stage {
@@ -900,18 +970,21 @@ a {
       88vw
     );
 
-  aspect-ratio: 1 / 1;
+  aspect-ratio:
+    1 / 1;
 
   overflow: hidden;
 
   isolation: isolate;
 
-  background: #d4d0c5;
+  background:
+    #d4d0c5;
 
   opacity:
     var(--visual-reveal);
 
-  contain: paint;
+  contain:
+    paint;
 
   transition:
     opacity 90ms linear;
@@ -946,7 +1019,8 @@ a {
       transparent 40%
     );
 
-  mix-blend-mode: multiply;
+  mix-blend-mode:
+    multiply;
 
   opacity: .72;
 }
@@ -985,15 +1059,20 @@ a {
 
   pointer-events: none;
 
-  background-size: cover;
+  background-size:
+    cover;
 
-  background-repeat: no-repeat;
+  background-repeat:
+    no-repeat;
 
-  transform-origin: center;
+  transform-origin:
+    center;
 
-  transition-property: opacity;
+  transition-property:
+    opacity;
 
-  transition-timing-function: ease-in-out;
+  transition-timing-function:
+    ease-in-out;
 }
 
 
@@ -1029,7 +1108,8 @@ a {
 
   opacity: 1;
 
-  mix-blend-mode: multiply;
+  mix-blend-mode:
+    multiply;
 
   transition-property:
     opacity,
@@ -1045,7 +1125,8 @@ a {
 
   opacity: 0;
 
-  mix-blend-mode: multiply;
+  mix-blend-mode:
+    multiply;
 
   transition-property:
     opacity,
@@ -1070,7 +1151,8 @@ a {
 
   opacity: 0;
 
-  mix-blend-mode: multiply;
+  mix-blend-mode:
+    multiply;
 
   filter:
     grayscale(1)
@@ -1100,14 +1182,17 @@ a {
       .8px
     );
 
-  background-size: 4px 4px;
+  background-size:
+    4px 4px;
 
-  mix-blend-mode: multiply;
+  mix-blend-mode:
+    multiply;
 }
 
 
 .collage-stage.is-normal {
-  background: transparent;
+  background:
+    transparent;
 }
 
 
@@ -1118,7 +1203,8 @@ a {
 
 .collage-stage.is-normal
 .morph-frame {
-  opacity: 0 !important;
+  opacity:
+    0 !important;
 }
 
 
@@ -1128,13 +1214,15 @@ a {
 .horse-key,
 .collage-stage.is-normal
 .stage-grain {
-  opacity: 0 !important;
+  opacity:
+    0 !important;
 }
 
 
 .collage-stage.is-normal
 .horse-main {
-  opacity: 1 !important;
+  opacity:
+    1 !important;
 
   mix-blend-mode:
     normal !important;
@@ -1153,7 +1241,8 @@ a {
 ) {
 
   .photo-page {
-    padding-right: 375px;
+    padding-right:
+      375px;
   }
 
 
@@ -1183,11 +1272,14 @@ a {
     left: 0;
     right: 0;
 
-    flex-direction: row;
+    flex-direction:
+      row;
 
-    align-items: center;
+    align-items:
+      center;
 
-    width: 100%;
+    width:
+      100%;
 
     gap: 6px;
 
@@ -1196,11 +1288,14 @@ a {
       14px
       12px;
 
-    overflow-x: auto;
+    overflow-x:
+      auto;
 
-    overflow-y: hidden;
+    overflow-y:
+      hidden;
 
-    scrollbar-width: none;
+    scrollbar-width:
+      none;
 
     -webkit-overflow-scrolling:
       touch;
@@ -1208,43 +1303,55 @@ a {
 
 
   .scarf-rack::-webkit-scrollbar {
-    display: none;
+    display:
+      none;
   }
 
 
   .scarf-item {
-    flex: 0 0 auto;
+    flex:
+      0 0
+      auto;
 
-    width: 285px;
+    width:
+      285px;
 
-    height: auto;
+    height:
+      auto;
 
-    transform: none;
+    transform:
+      none;
   }
 
 
   .scarf-item img {
-    width: 100%;
+    width:
+      100%;
 
-    height: auto;
+    height:
+      auto;
   }
 
 
   .scarf-home {
-    width: 315px;
+    width:
+      315px;
 
-    transform: none;
+    transform:
+      none;
   }
 
 
   .scarf-item:hover,
   .scarf-home:hover {
-    transform: none;
+    transform:
+      none;
   }
 
 
   .photo-page {
-    min-height: 100svh;
+    min-height:
+      100svh;
 
     padding:
       180px
@@ -1264,25 +1371,26 @@ a {
 
 
   .photo-canvas {
-    margin-top: 26px;
+    margin-top:
+      26px;
 
-    padding-bottom: 40px;
+    padding-bottom:
+      40px;
   }
 
 
   .fuji-click-prompt {
     font-size:
       clamp(
-        22px,
-        7vw,
-        34px
+        20px,
+        6.5vw,
+        31px
       );
   }
 
 
   .fuji-controls {
     right: 8px;
-
     bottom: 8px;
 
     gap: 4px;
@@ -1290,17 +1398,26 @@ a {
 
 
   .fuji-control {
-    font-size: 10px;
+    font-size:
+      10px;
   }
 
 
+  /*
+    Slightly slower and calmer compositor changes on mobile.
+  */
+
+  .fuji-line-layer,
+  .fuji-line-source,
   .fuji-line-texture {
-    transition-duration: 300ms;
+    transition-duration:
+      420ms;
   }
 
 
   .fuji-building {
-    transition-duration: 260ms;
+    transition-duration:
+      540ms;
   }
 
 
@@ -1312,7 +1429,8 @@ a {
 
 
   .wip-inner {
-    width: 94vw;
+    width:
+      94vw;
   }
 
 
@@ -1327,51 +1445,60 @@ a {
 
 
   .wip-text {
-    min-width: 0;
+    min-width:
+      0;
 
     padding:
       12px
       13px;
 
-    font-size: 17px;
+    font-size:
+      17px;
   }
 
 
   .wip-close {
-    flex-basis: 47px;
+    flex-basis:
+      47px;
 
-    width: 47px;
+    width:
+      47px;
 
-    font-size: 31px;
+    font-size:
+      31px;
   }
 
 
   .over-slot-1 {
-    display: none;
+    display:
+      none;
   }
 
 
   .horse-offset {
-    display: none;
+    display:
+      none;
   }
 
 
   .morph-frame {
-    inset: -5%;
+    inset:
+      -5%;
   }
 
 
   .collage-stage::before {
-    opacity: .54;
+    opacity:
+      .54;
   }
 
 
   .stage-grain {
-    opacity: .04;
+    opacity:
+      .04;
 
     background-size:
-      5px
-      5px;
+      5px 5px;
   }
 
 }
@@ -1385,17 +1512,18 @@ a {
   prefers-reduced-motion: reduce
 ) {
 
+  .fuji-splash {
+    display:
+      none;
+  }
+
+
   .fuji-building,
   .fuji-line-layer,
   .fuji-line-source,
   .fuji-line-texture {
     transition-duration:
       700ms !important;
-  }
-
-
-  .fuji-splash {
-    display: none;
   }
 
 }
@@ -1410,17 +1538,20 @@ a {
 ) {
 
   .scarf-item {
-    width: 248px;
+    width:
+      248px;
   }
 
 
   .scarf-home {
-    width: 278px;
+    width:
+      278px;
   }
 
 
   .photo-page {
-    padding-top: 164px;
+    padding-top:
+      164px;
   }
 
 
@@ -1435,7 +1566,8 @@ a {
 
 
   .photo-canvas {
-    margin-top: 24px;
+    margin-top:
+      24px;
   }
 
 }
