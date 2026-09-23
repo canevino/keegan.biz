@@ -3,14 +3,12 @@
    ========================================================= */
 
 :root {
-  --paper: #e7e1d1;
-  --ink: #111111;
-  --green: #0c7b4d;
-  --yellow: #f3b415;
-  --red: #cc2b31;
-  --navy: #465c8b;
-  --cream: #f2eee5;
-  --line: rgba(17, 17, 17, 0.22);
+  --paper: #ece7d7;
+  --ink: #11110f;
+
+  --yellow: #fdb913;
+  --green: #006a44;
+  --red: #c1272d;
 }
 
 
@@ -24,36 +22,51 @@
   box-sizing: border-box;
 }
 
+
 html,
 body {
   margin: 0;
   padding: 0;
 }
 
+
 html {
-  font-size: 16px;
+  min-height: 100%;
 }
+
 
 body {
   min-height: 100vh;
-  background: var(--paper);
-  color: var(--ink);
+
+  overflow-x: hidden;
+
+  background:
+    var(--paper);
+
+  color:
+    var(--ink);
+
   font-family:
-    "Helvetica Neue",
     Helvetica,
     Arial,
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+
+  -webkit-font-smoothing:
+    antialiased;
 }
+
 
 img {
   display: block;
+
   max-width: 100%;
 }
 
-button {
-  font: inherit;
+
+a {
+  color: inherit;
+
+  text-decoration: none;
 }
 
 
@@ -62,367 +75,752 @@ button {
    ========================================================= */
 
 .page-shell {
-  position: relative;
   min-height: 100vh;
-  padding: 2rem 2rem 2rem 2rem;
-  transition: opacity 700ms ease, filter 700ms ease;
-}
 
-.page-shell.is-faded {
-  opacity: 0.18;
-  filter: saturate(0.85);
-  pointer-events: none;
-}
+  opacity: 1;
 
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-.site-header {
-  position: fixed;
-  top: 1.4rem;
-  right: 2rem;
-  z-index: 20;
-}
-
-.home-scarf-link {
-  display: block;
-  width: clamp(240px, 20vw, 360px);
-  text-decoration: none;
-}
-
-.home-scarf-image {
-  width: 100%;
-  height: auto;
+  transition:
+    opacity
+    120ms
+    linear;
 }
 
 
 /* =========================================================
-   HERO
+   HOME
    ========================================================= */
+
+.home {
+  min-height: 100vh;
+}
+
 
 .hero {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding:
-    5rem
-    min(38vw, 30rem)
-    5rem
-    5vw;
-}
 
-.hero-copy {
-  max-width: 42rem;
-}
-
-.welcome-wrap {
-  min-height: 5.5rem;
-  margin-bottom: 1rem;
-  overflow: hidden;
-}
-
-.welcome-rotator {
-  font-size: clamp(3.4rem, 6vw, 5.8rem);
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.05em;
-  color: var(--yellow);
-  transform-origin: left center;
-  will-change: transform, opacity;
-}
-
-.welcome-rotator.is-in {
-  animation: welcomeIn 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.welcome-rotator.is-out {
-  animation: welcomeOut 240ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hero-subline {
-  font-size: clamp(2rem, 4vw, 3.6rem);
-  font-weight: 800;
-  line-height: 0.94;
-  letter-spacing: -0.055em;
-  color: #000;
-}
-
-
-/* =========================================================
-   SCARF RAIL
-   ========================================================= */
-
-.scarf-rail {
-  position: fixed;
-  top: 50%;
-  right: 2rem;
-  transform: translateY(-45%);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  z-index: 19;
-}
+  justify-content: center;
+  align-items: flex-start;
 
-.scarf-button {
-  display: block;
-  width: clamp(240px, 22vw, 370px);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  transition: transform 180ms ease, filter 180ms ease, opacity 180ms ease;
-}
-
-.scarf-button:hover {
-  transform: translateX(-10px);
-  filter: contrast(1.04) saturate(1.03);
-}
-
-.scarf-button img {
-  width: 100%;
-  height: auto;
+  padding:
+    8vh
+    clamp(430px, 36vw, 575px)
+    8vh
+    clamp(40px, 5.5vw, 88px);
 }
 
 
 /* =========================================================
-   MODAL
+   WELCOME
    ========================================================= */
 
-.modal-shell {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 300ms ease, visibility 300ms ease;
-  overflow: hidden;
+.welcome-slot {
+  width:
+    min(
+      900px,
+      100%
+    );
+
+  margin-bottom:
+    22px;
 }
 
-.modal-shell.is-open {
+
+.welcome-word {
+  display: block;
+
+  width: max-content;
+
+  max-width: 100%;
+
+  white-space: nowrap;
+
+  font-size:
+    clamp(
+      68px,
+      6.6vw,
+      106px
+    );
+
+  font-weight: 700;
+
+  line-height: 0.95;
+
+  letter-spacing:
+    -0.065em;
+
   opacity: 1;
+
+  transition:
+    opacity
+    250ms
+    ease;
+}
+
+
+.welcome-word.is-fading {
+  opacity: 0;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.site-title {
+  color:
+    var(--ink);
+
+  font-size:
+    clamp(
+      34px,
+      3.5vw,
+      56px
+    );
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing:
+    -0.055em;
+}
+
+
+/* =========================================================
+   SCARF NAVIGATION
+   ========================================================= */
+
+.scarf-rack {
+  position: fixed;
+
+  top: 14px;
+  right: 12px;
+
+  z-index: 30;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  gap: 6px;
+}
+
+
+.scarf-item {
+  position: relative;
+
+  display: block;
+
+  height:
+    clamp(
+      72px,
+      calc((100vh - 84px) / 8),
+      108px
+    );
+
+  transform-origin:
+    right center;
+
+  transition:
+    transform
+    220ms
+    cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
+}
+
+
+.scarf-item img {
+  width: auto;
+  height: 100%;
+
+  object-fit:
+    contain;
+
+  filter:
+    drop-shadow(
+      0
+      2px
+      1px
+      rgba(
+        17,
+        17,
+        15,
+        0.06
+      )
+    );
+}
+
+
+.scarf-home {
+  transform:
+    scale(1.045);
+}
+
+
+.scarf-item:hover {
+  z-index: 4;
+
+  transform:
+    translateX(-22px)
+    rotate(-0.5deg)
+    scale(1.035);
+}
+
+
+.scarf-home:hover {
+  transform:
+    translateX(-22px)
+    rotate(-0.5deg)
+    scale(1.075);
+}
+
+
+/* =========================================================
+   OVERLAY
+   ========================================================= */
+
+.wip-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: auto;
+
+  padding:
+    28px;
+
+  /*
+    Transparent until the page underneath
+    disappears.
+
+    NO visual texture escapes the collage box.
+  */
+
+  background:
+    transparent;
+
+  opacity: 0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity
+    250ms ease,
+    visibility
+    250ms ease;
+}
+
+
+.wip-overlay.is-visible {
+  opacity: 1;
+
   visibility: visible;
+
   pointer-events: auto;
 }
 
-.modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(231, 225, 209, 0.74);
-}
 
-.modal-bg-layer,
-.modal-bg-color {
-  position: absolute;
-  inset: -12%;
-  opacity: 0;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  transition: opacity 1000ms linear;
-  pointer-events: none;
-}
-
-.modal-bg-color {
-  filter: saturate(1.2) contrast(1.05);
-}
-
-.modal-content {
-  position: relative;
-  z-index: 3;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 2rem;
-}
-
-.modal-content-inner {
-  width: min(88vw, 62rem);
-}
-
-.modal-note {
-  display: inline-flex;
-  align-items: stretch;
-  margin: 0 auto 1rem auto;
-  border: 1px solid rgba(17, 17, 17, 0.24);
-  background: rgba(231, 225, 209, 0.92);
-  min-height: 3.75rem;
-}
-
-.modal-note__text {
-  display: flex;
-  align-items: center;
-  padding: 0.8rem 1.2rem;
-  font-size: clamp(1.35rem, 2vw, 2rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.05em;
-  color: #111;
-}
-
-.modal-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 3.25rem;
-  min-width: 3.25rem;
-  border: 0;
-  border-left: 1px solid rgba(17, 17, 17, 0.24);
-  background: transparent;
-  color: #111;
-  cursor: pointer;
-  font-size: 2.2rem;
-  line-height: 1;
-  transition: background 150ms ease;
-}
-
-.modal-close:hover {
-  background: rgba(17, 17, 17, 0.05);
-}
-
-.art-stage {
-  position: relative;
-  width: min(78vw, 640px);
-  aspect-ratio: 1 / 1;
-  margin: 0 auto;
-  overflow: hidden;
-  background: transparent;
-  opacity: 0;
-  transform: scale(0.985);
-  transition:
-    opacity 1800ms ease,
-    transform 1800ms ease;
-}
-
-.stage-layer,
-.stage-colorwash,
-.horse-wrap,
-.stage-grain {
-  position: absolute;
-  inset: 0;
-}
-
-.stage-layer,
-.stage-colorwash,
-.modal-bg-layer,
-.modal-bg-color {
-  will-change: opacity;
-}
-
-.stage-layer {
-  opacity: 0;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  transition: opacity 850ms linear;
-  pointer-events: none;
-}
-
-.stage-colorwash {
-  opacity: 0;
-  transition: opacity 1000ms linear;
-  pointer-events: none;
-}
-
-.horse-wrap {
-  display: grid;
-  place-items: center;
-  opacity: 0;
-  transition: opacity 1600ms ease;
-  pointer-events: none;
-}
-
-.horse-gif {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  image-rendering: auto;
-  opacity: 0.65;
-  mix-blend-mode: multiply;
-  filter: contrast(1.1) saturate(1.15);
-  pointer-events: none;
-}
-
-.stage-grain {
-  pointer-events: none;
-  background-image:
-    radial-gradient(
-      rgba(255, 255, 255, 0.11) 0.7px,
-      transparent 0.7px
+.wip-inner {
+  width:
+    min(
+      92vw,
+      700px
     );
-  background-size: 5px 5px;
-  mix-blend-mode: soft-light;
-  opacity: 0.18;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
 /* =========================================================
-   LAYER STACKING
+   MESSAGE
    ========================================================= */
 
-.stage-layer--under {
-  z-index: 1;
+.wip-header {
+  position: relative;
+
+  z-index: 100;
+
+  display:
+    inline-flex;
+
+  align-items:
+    stretch;
+
+  /*
+    Literally touches the artwork.
+  */
+
+  margin-bottom:
+    -1px;
+
+  background:
+    rgba(
+      236,
+      231,
+      215,
+      0.98
+    );
+
+  border:
+    1px solid
+    rgba(
+      17,
+      17,
+      15,
+      0.48
+    );
 }
 
-.stage-colorwash[data-colorwash="under-a"] {
-  z-index: 2;
+
+.wip-text {
+  margin: 0;
+
+  padding:
+    14px
+    19px
+    15px;
+
+  color:
+    var(--ink);
+
+  font-size:
+    clamp(
+      19px,
+      1.65vw,
+      26px
+    );
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing:
+    -0.045em;
+
+  white-space:
+    nowrap;
 }
 
-.stage-colorwash[data-colorwash="under-b"] {
-  z-index: 3;
+
+.wip-close {
+  flex:
+    0 0 auto;
+
+  width:
+    52px;
+
+  margin: 0;
+
+  padding: 0;
+
+  border: 0;
+
+  border-left:
+    1px solid
+    rgba(
+      17,
+      17,
+      15,
+      0.48
+    );
+
+  background:
+    transparent;
+
+  color:
+    var(--ink);
+
+  font-family:
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-size:
+    34px;
+
+  line-height: 1;
+
+  cursor:
+    pointer;
 }
 
-.horse-wrap {
+
+.wip-close:hover {
+  color:
+    var(--paper);
+
+  background:
+    var(--ink);
+}
+
+
+/* =========================================================
+   COLLAGE STAGE
+   ========================================================= */
+
+.collage-stage {
+  --visual-reveal: 0;
+
+  position: relative;
+
+  width:
+    min(
+      69vh,
+      680px,
+      88vw
+    );
+
+  aspect-ratio:
+    1 / 1;
+
+  /*
+    CRITICAL:
+    nothing can ever escape this square.
+  */
+
+  overflow:
+    hidden;
+
+  /*
+    No border.
+    No drop shadow.
+  */
+
+  border:
+    0;
+
+  box-shadow:
+    none;
+
+  background:
+    #eee9dc;
+
+  opacity:
+    var(--visual-reveal);
+
+  transition:
+    opacity
+    120ms
+    linear;
+
+  isolation:
+    isolate;
+}
+
+
+/* =========================================================
+   TEXTURES
+   ========================================================= */
+
+.texture-layer {
+  position:
+    absolute;
+
+  /*
+    Small overscan means rotations still fill
+    the entire box.
+  */
+
+  inset:
+    -9%;
+
+  opacity:
+    0;
+
+  background-size:
+    cover;
+
+  background-repeat:
+    no-repeat;
+
+  pointer-events:
+    none;
+
+  transform-origin:
+    center;
+
+  /*
+    ONLY opacity animates.
+
+    Random zoom / rotation / crop remain still.
+  */
+
+  transition:
+    opacity
+    180ms
+    ease;
+
+  will-change:
+    opacity;
+}
+
+
+/* UNDER */
+
+.under-a {
   z-index: 4;
 }
 
-.stage-layer--over[data-layer="over-1"] {
-  z-index: 5;
-}
 
-.stage-layer--over[data-layer="over-2"] {
+.under-b {
   z-index: 6;
 }
 
-.stage-colorwash[data-colorwash="over-a"] {
-  z-index: 7;
+
+/* OVER */
+
+.over-a {
+  z-index: 24;
 }
 
-.stage-colorwash[data-colorwash="over-b"] {
-  z-index: 8;
-}
 
-.stage-grain {
-  z-index: 9;
+.over-b {
+  z-index: 26;
 }
 
 
 /* =========================================================
-   ANIMATIONS
+   COLOR LAYERS
    ========================================================= */
 
-@keyframes welcomeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.color-layer {
+  position:
+    absolute;
+
+  inset: 0;
+
+  opacity:
+    0;
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity
+    200ms
+    ease;
 }
 
-@keyframes welcomeOut {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-18px);
-  }
+
+.color-under {
+  z-index: 8;
+}
+
+
+.color-over {
+  z-index: 28;
+}
+
+
+/* =========================================================
+   HORSE STACK
+   ========================================================= */
+
+.horse-stack {
+  position:
+    absolute;
+
+  inset: 0;
+
+  z-index: 20;
+
+  pointer-events:
+    none;
+}
+
+
+.horse {
+  position:
+    absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit:
+    cover;
+
+  pointer-events:
+    none;
+
+  user-select:
+    none;
+}
+
+
+/* main image */
+
+.horse-main {
+  z-index: 2;
+
+  opacity:
+    0.78;
+
+  mix-blend-mode:
+    multiply;
+
+  transition:
+    opacity
+    180ms linear,
+    filter
+    180ms linear;
+}
+
+
+/* slight registration / print duplicate */
+
+.horse-offset {
+  z-index: 1;
+
+  opacity:
+    0;
+
+  transition:
+    opacity
+    180ms linear;
+}
+
+
+/*
+  Constant ink line key ABOVE overlays.
+
+  White paper vanishes with multiply.
+
+  This is what stops the horse from becoming
+  unreadable even at the climax.
+*/
+
+.horse-key {
+  position:
+    absolute;
+
+  inset: 0;
+
+  z-index: 40;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit:
+    cover;
+
+  opacity:
+    0;
+
+  mix-blend-mode:
+    multiply;
+
+  filter:
+    contrast(1.8)
+    saturate(0.45);
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity
+    180ms linear;
+}
+
+
+/* =========================================================
+   GRAIN
+   ========================================================= */
+
+.stage-grain {
+  position:
+    absolute;
+
+  inset: 0;
+
+  z-index: 45;
+
+  pointer-events:
+    none;
+
+  opacity:
+    0.10;
+
+  background-image:
+    radial-gradient(
+      rgba(
+        15,
+        12,
+        9,
+        0.16
+      )
+      0.7px,
+      transparent
+      0.8px
+    );
+
+  background-size:
+    4px 4px;
+
+  mix-blend-mode:
+    multiply;
+}
+
+
+/* =========================================================
+   AFTER 4:03
+   ========================================================= */
+
+.collage-stage.is-normal {
+  /*
+    Horse GIF supplies its own original
+    background again.
+  */
+
+  background:
+    transparent;
+}
+
+
+.collage-stage.is-normal
+.texture-layer,
+.collage-stage.is-normal
+.color-layer,
+.collage-stage.is-normal
+.horse-offset,
+.collage-stage.is-normal
+.horse-key,
+.collage-stage.is-normal
+.stage-grain {
+  opacity:
+    0 !important;
+}
+
+
+.collage-stage.is-normal
+.horse-main {
+  opacity:
+    1 !important;
+
+  mix-blend-mode:
+    normal !important;
+
+  filter:
+    none !important;
 }
 
 
@@ -430,27 +828,35 @@ button {
    TABLET
    ========================================================= */
 
-@media (max-width: 1100px) {
-  .site-header {
-    right: 1.25rem;
-  }
+@media (
+  max-width: 1100px
+) {
 
   .hero {
-    padding:
-      4rem
-      24rem
-      4rem
-      4vw;
+    padding-right:
+      375px;
   }
 
-  .scarf-rail {
-    right: 1.25rem;
-    gap: 1rem;
+
+  .welcome-word {
+    font-size:
+      clamp(
+        54px,
+        6.8vw,
+        86px
+      );
   }
 
-  .scarf-button {
-    width: 220px;
+
+  .site-title {
+    font-size:
+      clamp(
+        30px,
+        4vw,
+        48px
+      );
   }
+
 }
 
 
@@ -458,94 +864,232 @@ button {
    MOBILE
    ========================================================= */
 
-@media (max-width: 760px) {
-  .page-shell {
+@media (
+  max-width: 700px
+) {
+
+  .scarf-rack {
+    top: 10px;
+
+    left: 0;
+    right: 0;
+
+    flex-direction:
+      row;
+
+    align-items:
+      center;
+
+    width:
+      100%;
+
+    gap:
+      6px;
+
     padding:
-      calc(1rem + env(safe-area-inset-top))
-      1rem
-      calc(1rem + env(safe-area-inset-bottom))
-      1rem;
+      4px
+      14px
+      12px;
+
+    overflow-x:
+      auto;
+
+    overflow-y:
+      hidden;
+
+    scrollbar-width:
+      none;
+
+    -webkit-overflow-scrolling:
+      touch;
   }
 
-  .site-header {
-    position: static;
-    margin-bottom: 1.5rem;
-  }
 
-  .home-scarf-link {
-    width: min(82vw, 280px);
-  }
-
-  .hero {
-    min-height: auto;
-    align-items: flex-start;
-    padding: 0;
-  }
-
-  .hero-copy {
-    padding-top: 1rem;
-    max-width: 100%;
-  }
-
-  .welcome-wrap {
-    min-height: 4.15rem;
-    margin-bottom: 0.85rem;
-  }
-
-  .welcome-rotator {
-    font-size: clamp(2.5rem, 12vw, 4rem);
-  }
-
-  .hero-subline {
-    font-size: clamp(1.8rem, 8vw, 2.7rem);
-  }
-
-  .scarf-rail {
-    position: static;
-    transform: none;
-    flex-direction: row;
-    gap: 0.9rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 1.5rem 0 0.25rem 0;
-    margin-top: 1.5rem;
-    scrollbar-width: none;
-  }
-
-  .scarf-rail::-webkit-scrollbar {
+  .scarf-rack::-webkit-scrollbar {
     display: none;
   }
 
-  .scarf-button {
-    flex: 0 0 auto;
-    width: 180px;
+
+  .scarf-item {
+    flex:
+      0 0 auto;
+
+    width:
+      285px;
+
+    height:
+      auto;
+
+    transform:
+      none;
   }
 
-  .modal-content {
+
+  .scarf-item img {
+    width:
+      100%;
+
+    height:
+      auto;
+  }
+
+
+  .scarf-home {
+    width:
+      315px;
+
+    transform:
+      none;
+  }
+
+
+  .scarf-item:hover,
+  .scarf-home:hover {
+    transform:
+      none;
+  }
+
+
+  .hero {
+    justify-content:
+      flex-start;
+
+    min-height:
+      100svh;
+
     padding:
-      calc(1rem + env(safe-area-inset-top))
-      1rem
-      calc(1rem + env(safe-area-inset-bottom))
-      1rem;
+      180px
+      22px
+      50px;
   }
 
-  .modal-note {
-    width: min(92vw, 480px);
-    min-height: 3.25rem;
+
+  .welcome-slot {
+    width:
+      100%;
   }
 
-  .modal-note__text {
-    font-size: clamp(1.1rem, 5vw, 1.45rem);
-    padding: 0.75rem 0.9rem;
+
+  .welcome-word {
+    font-size:
+      clamp(
+        42px,
+        12vw,
+        68px
+      );
   }
 
-  .modal-close {
-    width: 3rem;
-    min-width: 3rem;
-    font-size: 1.9rem;
+
+  .site-title {
+    margin-top:
+      4px;
+
+    font-size:
+      clamp(
+        25px,
+        7vw,
+        38px
+      );
   }
 
-  .art-stage {
-    width: min(92vw, 560px);
+
+  .wip-overlay {
+    padding:
+      18px
+      12px;
   }
+
+
+  .wip-inner {
+    width:
+      94vw;
+  }
+
+
+  .wip-header {
+    max-width:
+      94vw;
+  }
+
+
+  .wip-text {
+    min-width: 0;
+
+    padding:
+      12px
+      13px;
+
+    white-space:
+      normal;
+
+    font-size:
+      17px;
+  }
+
+
+  .wip-close {
+    width:
+      47px;
+
+    font-size:
+      31px;
+  }
+
+
+  .collage-stage {
+    width:
+      min(
+        82vh,
+        94vw
+      );
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (
+  max-width: 420px
+) {
+
+  .scarf-item {
+    width:
+      248px;
+  }
+
+
+  .scarf-home {
+    width:
+      278px;
+  }
+
+
+  .hero {
+    padding-top:
+      164px;
+  }
+
+
+  .welcome-word {
+    font-size:
+      clamp(
+        36px,
+        11vw,
+        48px
+      );
+  }
+
+
+  .site-title {
+    font-size:
+      clamp(
+        22px,
+        6.5vw,
+        28px
+      );
+  }
+
 }
