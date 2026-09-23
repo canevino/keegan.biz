@@ -3,7 +3,6 @@
    ========================================================= */
 
 :root {
-
   --paper: #ece7d7;
   --ink: #11110f;
 
@@ -11,11 +10,9 @@
   --lt-green: #006a44;
   --lt-red: #c1272d;
 
-  --shadow:
-    rgba(17, 17, 15, 0.14);
+  --shadow: rgba(17, 17, 15, 0.14);
 
   --edge: 18px;
-
 }
 
 
@@ -43,14 +40,10 @@ html {
 
 
 body {
-
   min-height: 100vh;
 
-  background:
-    var(--paper);
-
-  color:
-    var(--ink);
+  background: var(--paper);
+  color: var(--ink);
 
   font-family:
     "Helvetica Neue",
@@ -58,12 +51,9 @@ body {
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing:
-    antialiased;
+  -webkit-font-smoothing: antialiased;
 
-  overflow-x:
-    hidden;
-
+  overflow-x: hidden;
 }
 
 
@@ -78,14 +68,11 @@ a {
    ========================================================= */
 
 .page-shell {
-
   position: relative;
 
   min-height: 100vh;
 
-  padding:
-    var(--edge);
-
+  padding: var(--edge);
 }
 
 
@@ -94,7 +81,6 @@ a {
    ========================================================= */
 
 .scarf-rack {
-
   position: fixed;
 
   top: 14px;
@@ -108,41 +94,39 @@ a {
   align-items: flex-end;
 
   gap: 8px;
-
 }
 
 
-/* larger than previous version */
-
 .scarf-rack__item {
-
   display: block;
 
-  width: 350px;
+  width: clamp(
+    360px,
+    29vw,
+    455px
+  );
 
-  transform-origin:
-    right center;
+  transform-origin: right center;
 
   transition:
     transform 180ms
       cubic-bezier(.2, .8, .2, 1),
     filter 180ms ease;
-
 }
 
 
 .scarf-rack__item--home {
+  width: clamp(
+    390px,
+    31vw,
+    490px
+  );
 
-  width: 385px;
-
-  margin-bottom:
-    5px;
-
+  margin-bottom: 4px;
 }
 
 
 .scarf-rack__item img {
-
   display: block;
 
   width: 100%;
@@ -157,7 +141,6 @@ a {
       2px 3px 2px
       rgba(17, 17, 15, 0.12)
     );
-
 }
 
 
@@ -192,28 +175,22 @@ a {
 }
 
 
-/* hover pull-out */
-
 .scarf-rack__item:hover {
-
   z-index: 4;
 
   transform:
-    translateX(-38px)
-    scale(1.08)
+    translateX(-42px)
+    scale(1.07)
     rotate(-1deg);
-
 }
 
 
 .scarf-rack__item:hover img {
-
   filter:
     drop-shadow(
-      4px 6px 4px
+      5px 7px 4px
       rgba(17, 17, 15, 0.18)
     );
-
 }
 
 
@@ -222,7 +199,6 @@ a {
    ========================================================= */
 
 .hero {
-
   min-height:
     calc(
       100vh -
@@ -233,59 +209,49 @@ a {
 
   align-items: center;
 
-  justify-content:
-    flex-start;
+  justify-content: flex-start;
 
   padding:
-    8vh
-    455px
-    8vh
+    7vh
+    535px
+    7vh
     6vw;
-
 }
 
 
 .hero-inner {
-
   width: 100%;
 
-  max-width: 900px;
-
+  max-width: 920px;
 }
 
 
 /* =========================================================
-   SLOT-MACHINE WELCOME
+   WELCOME SLOT
    ========================================================= */
 
 .welcome-slot {
-
   position: relative;
 
   width: 100%;
 
-  height: 76px;
+  height: 122px;
 
   overflow: hidden;
 
-  margin-bottom:
-    12px;
-
+  margin-bottom: 18px;
 }
 
 
 .welcome-track {
-
   position: relative;
 
   width: 100%;
   height: 100%;
-
 }
 
 
 .welcome-word {
-
   position: absolute;
 
   left: 0;
@@ -294,88 +260,69 @@ a {
 
   font-size:
     clamp(
-      36px,
-      4.8vw,
-      66px
+      62px,
+      7.2vw,
+      108px
     );
 
   font-weight: 800;
 
   line-height: 1;
 
-  letter-spacing:
-    -0.055em;
+  letter-spacing: -0.055em;
 
   transition:
     transform 540ms
       cubic-bezier(.55, 0, .15, 1);
-
 }
 
 
 .welcome-word--current {
-
   top: 0;
 
-  transform:
-    translateY(0);
-
+  transform: translateY(0);
 }
 
 
 .welcome-word--next {
-
   top: 100%;
 
-  transform:
-    translateY(0);
-
+  transform: translateY(0);
 }
 
 
 .welcome-track.is-rolling
 .welcome-word--current {
-
   transform:
     translateY(-110%);
-
 }
 
 
 .welcome-track.is-rolling
 .welcome-word--next {
-
   transform:
     translateY(-100%);
-
 }
 
 
 .welcome-track.no-transition
 .welcome-word {
-
-  transition:
-    none !important;
-
+  transition: none !important;
 }
 
 
 .welcome-word.is-wingdings {
-
   font-family:
     Wingdings,
     Webdings,
     "Zapf Dingbats",
     sans-serif;
 
-  letter-spacing:
-    0.02em;
-
+  letter-spacing: 0.02em;
 }
 
 
 .welcome-word.is-binary {
-
   font-family:
     "Courier New",
     Courier,
@@ -383,26 +330,22 @@ a {
 
   font-size:
     clamp(
-      20px,
-      2.9vw,
-      38px
+      24px,
+      3.3vw,
+      48px
     );
 
-  line-height:
-    1.05;
+  line-height: 1.05;
 
-  letter-spacing:
-    -0.04em;
-
+  letter-spacing: -0.04em;
 }
 
 
 /* =========================================================
-   MAIN TITLE
+   TO KEEGAN.BIZ
    ========================================================= */
 
 .main-title {
-
   margin: 0;
 
   display: flex;
@@ -411,134 +354,97 @@ a {
 
   align-items: baseline;
 
-  gap:
-    0.16em;
-
-  /* smaller desktop title */
+  gap: 0.16em;
 
   font-size:
     clamp(
-      58px,
-      8vw,
-      128px
+      46px,
+      6vw,
+      92px
     );
 
-  font-weight:
-    900;
+  font-weight: 900;
 
-  line-height:
-    0.9;
+  line-height: 0.92;
 
-  letter-spacing:
-    -0.085em;
+  letter-spacing: -0.075em;
 
+  color: var(--ink);
 }
 
 
-.main-title__to {
-
-  color:
-    var(--ink);
-
+.main-title__to,
+.main-title__brand {
+  color: var(--ink);
 }
 
 
 .main-title__brand {
-
-  white-space:
-    nowrap;
-
-}
-
-
-.brand-keegan {
-
-  color:
-    var(--lt-yellow);
-
-}
-
-
-.brand-dot {
-
-  color:
-    var(--lt-green);
-
-}
-
-
-.brand-biz {
-
-  color:
-    var(--lt-red);
-
+  white-space: nowrap;
 }
 
 
 /* =========================================================
-   BEHANCE
+   YOUTUBE PLAYER
    ========================================================= */
 
-.site-footer {
-
+.player-shell {
   position: fixed;
 
-  right:
-    var(--edge);
+  left: 18px;
+  bottom: 18px;
 
-  bottom:
-    var(--edge);
+  z-index: 100;
 
-  z-index: 70;
+  display: none;
 
-}
+  width: 300px;
 
+  padding-top: 34px;
 
-.behance-link {
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  padding:
-    7px 10px;
-
-  background:
-    var(--lt-yellow);
-
-  color:
-    var(--ink);
-
-  border:
-    1.5px solid
-    var(--ink);
+  background: var(--paper);
 
   box-shadow:
-    3px 3px 0
-    var(--shadow);
-
-  font-size:
-    12px;
-
-  font-weight:
-    700;
-
-  text-transform:
-    lowercase;
-
-  transition:
-    transform 120ms ease;
-
+    5px 6px 0
+    rgba(17, 17, 15, 0.16);
 }
 
 
-.behance-link:hover {
+.player-shell.is-visible {
+  display: block;
+}
 
-  transform:
-    translate(-2px, -2px);
 
+.player-close {
+  position: absolute;
+
+  top: 2px;
+  right: 4px;
+
+  width: 28px;
+  height: 28px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+  color: var(--ink);
+
+  font: inherit;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+
+#youtube-player {
+  width: 300px;
+  height: 200px;
 }
 
 
@@ -549,46 +455,42 @@ a {
 @media (max-width: 1100px) {
 
   .scarf-rack__item {
-
-    width:
-      275px;
-
+    width: 300px;
   }
 
 
   .scarf-rack__item--home {
-
-    width:
-      305px;
-
+    width: 330px;
   }
 
 
   .hero {
-
-    padding-right:
-      350px;
-
+    padding-right: 370px;
   }
 
 
   .welcome-slot {
+    height: 92px;
+  }
 
-    height:
-      66px;
 
+  .welcome-word {
+    font-size:
+      clamp(
+        48px,
+        6vw,
+        76px
+      );
   }
 
 
   .main-title {
-
     font-size:
       clamp(
-        56px,
-        8vw,
-        105px
+        44px,
+        5.7vw,
+        72px
       );
-
   }
 
 }
@@ -601,25 +503,17 @@ a {
 @media (max-width: 700px) {
 
   :root {
-
-    --edge:
-      12px;
-
+    --edge: 12px;
   }
 
 
   body {
-
-    min-height:
-      100svh;
-
+    min-height: 100svh;
   }
 
 
   .page-shell {
-
-    min-height:
-      100svh;
+    min-height: 100svh;
 
     padding:
       max(
@@ -631,16 +525,14 @@ a {
         12px,
         env(safe-area-inset-bottom)
       );
-
   }
 
 
   /* -------------------------------------------------------
-     SIDEWAYS SCARF SCROLLER
+     HORIZONTAL SCARF SCROLLER
      ------------------------------------------------------- */
 
   .scarf-rack {
-
     position: fixed;
 
     top:
@@ -652,85 +544,58 @@ a {
     left: 0;
     right: 0;
 
-    display: flex;
-
     flex-direction: row;
 
     align-items: center;
 
-    gap:
-      12px;
+    gap: 14px;
 
-    width:
-      100%;
+    width: 100%;
 
     padding:
-      5px
+      6px
       10px
-      10px;
+      12px;
 
-    overflow-x:
-      auto;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-    overflow-y:
-      hidden;
+    scrollbar-width: none;
 
-    scrollbar-width:
-      none;
-
-    -webkit-overflow-scrolling:
-      touch;
-
+    -webkit-overflow-scrolling: touch;
   }
 
 
   .scarf-rack::-webkit-scrollbar {
-
-    display:
-      none;
-
+    display: none;
   }
 
 
   .scarf-rack__item {
+    flex: 0 0 auto;
 
-    flex:
-      0 0 auto;
+    width: 285px;
 
-    width:
-      245px;
-
-    transform:
-      none !important;
-
+    transform: none !important;
   }
 
 
   .scarf-rack__item--home {
+    width: 315px;
 
-    width:
-      270px;
-
-    margin:
-      0;
-
+    margin: 0;
   }
 
 
   .scarf-rack__item:hover {
-
-    transform:
-      none !important;
-
+    transform: none !important;
   }
 
 
   .scarf-rack__item:active {
-
     transform:
       scale(1.025)
       !important;
-
   }
 
 
@@ -739,131 +604,92 @@ a {
      ------------------------------------------------------- */
 
   .hero {
+    min-height: 100svh;
 
-    min-height:
-      100svh;
-
-    align-items:
-      center;
+    align-items: center;
 
     padding:
-      155px
+      175px
       4px
       90px;
-
   }
 
 
   .hero-inner {
-
-    max-width:
-      none;
-
+    max-width: none;
   }
 
 
   .welcome-slot {
+    height: 70px;
 
-    height:
-      50px;
-
-    margin-bottom:
-      10px;
-
+    margin-bottom: 13px;
   }
 
 
   .welcome-word {
-
     font-size:
       clamp(
-        29px,
-        8vw,
-        44px
+        38px,
+        11vw,
+        58px
       );
-
   }
 
 
   .welcome-word.is-binary {
-
     font-size:
       clamp(
         14px,
-        4.2vw,
-        22px
+        4.6vw,
+        23px
       );
-
   }
 
 
   .main-title {
-
-    display:
-      block;
+    display: block;
 
     font-size:
       clamp(
-        48px,
-        14vw,
-        78px
+        38px,
+        10.5vw,
+        58px
       );
 
-    line-height:
-      0.92;
-
+    line-height: 0.94;
   }
 
 
   .main-title__to {
+    display: block;
 
-    display:
-      block;
-
-    margin-bottom:
-      0.06em;
-
+    margin-bottom: 0.08em;
   }
 
 
   .main-title__brand {
-
-    display:
-      block;
-
+    display: block;
   }
 
 
   /* -------------------------------------------------------
-     FOOTER
+     PLAYER
      ------------------------------------------------------- */
 
-  .site-footer {
+  .player-shell {
+    left: 10px;
+    bottom: 10px;
 
-    right:
-      8px;
+    width: 240px;
 
-    bottom:
-      max(
-        9px,
-        env(safe-area-inset-bottom)
-      );
-
+    padding-top: 32px;
   }
 
 
-  .behance-link {
-
-    padding:
-      6px 8px;
-
-    font-size:
-      10px;
-
-    box-shadow:
-      2px 2px 0
-      var(--shadow);
-
+  #youtube-player {
+    width: 240px;
+    height: 200px;
   }
 
 }
@@ -876,58 +702,42 @@ a {
 @media (max-width: 420px) {
 
   .scarf-rack__item {
-
-    width:
-      220px;
-
+    width: 250px;
   }
 
 
   .scarf-rack__item--home {
-
-    width:
-      245px;
-
+    width: 280px;
   }
 
 
   .hero {
-
-    padding-top:
-      145px;
-
+    padding-top: 160px;
   }
 
 
   .welcome-slot {
-
-    height:
-      46px;
-
+    height: 62px;
   }
 
 
   .welcome-word {
-
     font-size:
       clamp(
-        27px,
-        8vw,
-        38px
+        34px,
+        10vw,
+        48px
       );
-
   }
 
 
   .main-title {
-
     font-size:
       clamp(
-        46px,
-        13.5vw,
-        68px
+        36px,
+        10vw,
+        50px
       );
-
   }
 
 }
@@ -943,12 +753,8 @@ a {
 ) {
 
   .scarf-rack__item,
-  .welcome-word,
-  .behance-link {
-
-    transition:
-      none;
-
+  .welcome-word {
+    transition: none;
   }
 
 }
