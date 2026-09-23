@@ -1,53 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
+
   <title>keegan.biz</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 
 <body>
 
   <!-- =====================================================
-       SCARF NAV
+       SCARF NAVIGATION
        ===================================================== -->
 
   <nav class="scarf-rack" aria-label="Sections">
 
     <a class="scarf-item scarf-home" href="#" aria-label="Home">
-      <img src="assets/home/home-scarf-update.png" alt="">
+      <img
+        src="assets/home/home-scarf-update.png"
+        alt=""
+      >
     </a>
 
     <a class="scarf-item" href="#" aria-label="Illustration">
-      <img src="assets/home/scarf-illustration.png" alt="">
+      <img
+        src="assets/home/scarf-illustration.png"
+        alt=""
+      >
     </a>
 
     <a class="scarf-item" href="#" aria-label="Photography">
-      <img src="assets/home/scarf-photography.png" alt="">
+      <img
+        src="assets/home/scarf-photography.png"
+        alt=""
+      >
     </a>
 
     <a class="scarf-item" href="#" aria-label="Graphic Design">
-      <img src="assets/home/scarf-design.png" alt="">
+      <img
+        src="assets/home/scarf-design.png"
+        alt=""
+      >
     </a>
 
     <a class="scarf-item" href="#" aria-label="Music">
-      <img src="assets/home/scarf-music.png" alt="">
+      <img
+        src="assets/home/scarf-music.png"
+        alt=""
+      >
     </a>
 
     <a class="scarf-item" href="#" aria-label="Motion">
-      <img src="assets/home/scarf-motion.png" alt="">
+      <img
+        src="assets/home/scarf-motion.png"
+        alt=""
+      >
     </a>
 
     <a class="scarf-item" href="#" aria-label="Miscellaneous">
-      <img src="assets/home/scarf-misc.png" alt="">
+      <img
+        src="assets/home/scarf-misc.png"
+        alt=""
+      >
     </a>
 
     <a class="scarf-item" href="#" aria-label="Gastronomy">
-      <img src="assets/home/scarf-gastronomy.png" alt="">
+      <img
+        src="assets/home/scarf-gastronomy.png"
+        alt=""
+      >
     </a>
 
   </nav>
@@ -59,23 +88,23 @@
 
   <main class="home">
 
-    <section class="hero" aria-label="Welcome to keegan.biz">
+    <section
+      class="hero"
+      aria-label="Welcome to keegan.biz"
+    >
 
-      <div class="welcome-slot" aria-hidden="true">
-        <div class="welcome-track" id="welcome-track">
-          <span
-            class="welcome-word welcome-current"
-            id="welcome-current"
-          >
-            Welcome
-          </span>
+      <div class="welcome-slot">
 
-          <span
-            class="welcome-word welcome-next"
-            id="welcome-next"
-          ></span>
-        </div>
+        <span
+          class="welcome-word"
+          id="welcome-word"
+          aria-hidden="true"
+        >
+          Welcome
+        </span>
+
       </div>
+
 
       <div class="site-title">
         to keegan.biz
@@ -102,7 +131,7 @@
 
 
   <!-- =====================================================
-       WIP OVERLAY
+       WIP EXPERIENCE
        ===================================================== -->
 
   <div
@@ -111,56 +140,82 @@
     aria-hidden="true"
   >
 
-    <button
-      class="wip-close"
-      id="wip-close"
-      type="button"
-      aria-label="Close"
-    >
-      ×
-    </button>
-
     <div class="wip-inner">
 
-      <p class="wip-text">
-        sorry, i'm still working on this.
-      </p>
+      <!-- note + close button are now one object -->
 
-      <div class="trippy-stage" id="trippy-stage">
+      <div class="wip-header">
+
+        <p class="wip-text">
+          sorry, i'm still working on this.
+        </p>
+
+        <button
+          class="wip-close"
+          id="wip-close"
+          type="button"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- visual -->
+
+      <div
+        class="trippy-stage"
+        id="trippy-stage"
+        aria-hidden="true"
+      >
+
+        <!-- textures BEHIND horse -->
 
         <div
           class="texture-stack texture-under"
           id="texture-under"
-          aria-hidden="true"
         ></div>
 
-        <div class="horse-stage" aria-hidden="true">
+
+        <!-- horse itself -->
+
+        <div class="horse-stage">
 
           <img
-            class="horse horse-base"
+            class="horse horse-shadow"
             src="assets/home/horse.gif"
             alt=""
           >
 
           <img
-            class="horse horse-echo"
-            src="assets/home/horse.gif"
-            alt=""
-          >
-
-          <img
-            class="horse horse-weird"
+            class="horse horse-main"
             src="assets/home/horse.gif"
             alt=""
           >
 
         </div>
 
+
+        <!-- textures OVER horse -->
+
         <div
           class="texture-stack texture-over"
           id="texture-over"
-          aria-hidden="true"
         ></div>
+
+
+        <!--
+          Quiet duplicate above everything.
+          This keeps the drawing legible even
+          during the densest part.
+        -->
+
+        <img
+          class="horse horse-anchor"
+          src="assets/home/horse.gif"
+          alt=""
+        >
 
       </div>
 
@@ -177,34 +232,293 @@
   (() => {
 
     /* =====================================================
-       HELPERS
+       GENERAL HELPERS
        ===================================================== */
 
-    const pick = array =>
-      array[Math.floor(Math.random() * array.length)];
-
-    const rand = (min, max) =>
+    const random = (min, max) =>
       min + Math.random() * (max - min);
 
     const clamp = (value, min, max) =>
       Math.min(Math.max(value, min), max);
 
-    const lerp = (a, b, t) =>
-      a + (b - a) * t;
+    const lerp = (a, b, amount) =>
+      a + (b - a) * amount;
 
-    const easeInOut = t =>
-      t < 0.5
-        ? 4 * t * t * t
-        : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const pick = array =>
+      array[Math.floor(Math.random() * array.length)];
 
-    const welcomeTrack =
-      document.getElementById("welcome-track");
+    function pickDifferentIndex(length, currentIndex) {
+      let next;
 
-    const welcomeCurrent =
-      document.getElementById("welcome-current");
+      do {
+        next = Math.floor(Math.random() * length);
+      } while (
+        length > 1 &&
+        next === currentIndex
+      );
 
-    const welcomeNext =
-      document.getElementById("welcome-next");
+      return next;
+    }
+
+
+    /* =====================================================
+       WELCOME
+       Clean fade rather than scrolling two words
+       over one another.
+       ===================================================== */
+
+    const welcomeWord =
+      document.getElementById("welcome-word");
+
+
+    const greetings = [
+
+      "Welcome",
+
+      "Fáilte",
+
+      "Benvenuti",
+
+      "Bienvenue",
+
+      "Bienvenidos",
+
+      "Benvinguts",
+
+      "Bem-vindos",
+
+      "Welkom",
+
+      "Willkommen",
+
+      "Velkommen",
+
+      "Välkommen",
+
+      "Velkomin",
+
+      "Tervetuloa",
+
+      "Sveiki atvykę",
+
+      "Laipni lūdzam",
+
+      "Tere tulemast",
+
+      "Witamy",
+
+      "Vítejte",
+
+      "Vitajte",
+
+      "Dobrodošli",
+
+      "Добродошли",
+
+      "Добре дошли",
+
+      "Добро пожаловать",
+
+      "Bun venit",
+
+      "Üdvözöljük",
+
+      "Mirë se vini",
+
+      "Ongi etorri",
+
+      "Καλώς ήρθατε",
+
+      "Hoş geldiniz",
+
+      "Ласкаво просимо",
+
+      "Croeso",
+
+      "Nau mai",
+
+      "Aloha",
+
+      "Karibu",
+
+      "Siyakwamukela",
+
+      "Ẹ káàbọ̀",
+
+      "እንኳን ደህና መጡ",
+
+      "स्वागत है",
+
+      "স্বাগতম",
+
+      "欢迎",
+
+      "ようこそ",
+
+      "환영합니다",
+
+      "ยินดีต้อนรับ",
+
+      "Chào mừng",
+
+      "Selamat datang",
+
+      "Maligayang pagdating",
+
+      "ברוכים הבאים",
+
+      "أهلاً وسهلاً",
+
+      "خوش آمدید",
+
+      "Bonvenon",
+
+      "Salvete",
+
+      "Yá’át’ééh",
+
+      "Mae govannen",
+
+      "01010111 01100101 01101100 01100011 01101111 01101101 01100101"
+
+    ];
+
+
+    const welcomeColors = [
+      "#fdb913",
+      "#006a44",
+      "#c1272d"
+    ];
+
+
+    let greetingIndex = 0;
+    let colorIndex = 1;
+    let greetingBusy = false;
+
+
+    function fitWelcomeText() {
+
+      /*
+        Start at CSS size, then shrink only
+        if a particular language is too wide.
+      */
+
+      welcomeWord.style.fontSize = "";
+
+      const slot =
+        welcomeWord.parentElement;
+
+      const maxWidth =
+        slot.clientWidth;
+
+
+      let size =
+        parseFloat(
+          getComputedStyle(welcomeWord).fontSize
+        );
+
+
+      while (
+        welcomeWord.scrollWidth > maxWidth &&
+        size > 28
+      ) {
+
+        size -= 2;
+
+        welcomeWord.style.fontSize =
+          `${size}px`;
+
+      }
+
+    }
+
+
+    function changeGreeting() {
+
+      if (greetingBusy) return;
+
+      greetingBusy = true;
+
+
+      const nextGreetingIndex =
+        pickDifferentIndex(
+          greetings.length,
+          greetingIndex
+        );
+
+
+      const nextColorIndex =
+        pickDifferentIndex(
+          welcomeColors.length,
+          colorIndex
+        );
+
+
+      welcomeWord.classList.add(
+        "is-fading"
+      );
+
+
+      window.setTimeout(() => {
+
+        greetingIndex =
+          nextGreetingIndex;
+
+        colorIndex =
+          nextColorIndex;
+
+
+        welcomeWord.textContent =
+          greetings[greetingIndex];
+
+
+        welcomeWord.style.color =
+          welcomeColors[colorIndex];
+
+
+        fitWelcomeText();
+
+
+        welcomeWord.classList.remove(
+          "is-fading"
+        );
+
+
+        window.setTimeout(() => {
+
+          greetingBusy = false;
+
+        }, 280);
+
+      }, 260);
+
+    }
+
+
+    welcomeWord.style.color =
+      welcomeColors[colorIndex];
+
+    fitWelcomeText();
+
+
+    window.addEventListener(
+      "resize",
+      fitWelcomeText
+    );
+
+
+    window.setInterval(
+      changeGreeting,
+      2450
+    );
+
+
+    /* =====================================================
+       WIP ELEMENTS
+       ===================================================== */
+
+    const audio =
+      document.getElementById("wip-audio");
 
     const overlay =
       document.getElementById("wip-overlay");
@@ -212,8 +526,8 @@
     const closeButton =
       document.getElementById("wip-close");
 
-    const audio =
-      document.getElementById("wip-audio");
+    const trippyStage =
+      document.getElementById("trippy-stage");
 
     const textureUnder =
       document.getElementById("texture-under");
@@ -221,498 +535,1015 @@
     const textureOver =
       document.getElementById("texture-over");
 
-    const trippyStage =
-      document.getElementById("trippy-stage");
+
+    /* =====================================================
+       TEXTURE FILES
+       ===================================================== */
+
+    const TEXTURES = [
+
+      "Texturelabs_Atmosphere_121S.jpg",
+      "Texturelabs_Atmosphere_127S.jpg",
+      "Texturelabs_Atmosphere_130S.jpg",
+      "Texturelabs_Atmosphere_135S.jpg",
+      "Texturelabs_Atmosphere_201S.jpg",
+
+      "Texturelabs_Brick_124S.jpg",
+      "Texturelabs_Brick_158S.jpg",
+
+      "Texturelabs_Concrete_150S.jpg",
+      "Texturelabs_Concrete_155S.jpg",
+      "Texturelabs_Concrete_179S.jpg",
+      "Texturelabs_Concrete_205S.jpg",
+      "Texturelabs_Concrete_207S.jpg",
+
+      "Texturelabs_Fabric_123S.jpg",
+      "Texturelabs_Fabric_144S.jpg",
+      "Texturelabs_Fabric_172S.jpg",
+
+      "Texturelabs_Film_181S.jpg",
+      "Texturelabs_Film_183S.jpg",
+      "Texturelabs_Film_187S.jpg",
+
+      "Texturelabs_Glass_134S.jpg",
+      "Texturelabs_Glass_155S.jpg",
+
+      "Texturelabs_Grunge_173S.jpg",
+      "Texturelabs_Grunge_279L.jpg",
+      "Texturelabs_Grunge_334S.jpg",
+      "Texturelabs_Grunge_341S.jpg",
+
+      "Texturelabs_InkPaint_126S.jpg",
+      "Texturelabs_InkPaint_320S.jpg",
+      "Texturelabs_InkPaint_332S.jpg",
+      "Texturelabs_InkPaint_356S.jpg",
+
+      "Texturelabs_LensFX_251S.jpg",
+      "Texturelabs_LensFX_256S.jpg",
+
+      "Texturelabs_Metal_129S.jpg",
+      "Texturelabs_Metal_165S.jpg",
+      "Texturelabs_Metal_285S.jpg",
+      "Texturelabs_Metal_294S.jpg",
+
+      "Texturelabs_Paper_273S.jpg",
+      "Texturelabs_Paper_278L.jpg",
+      "Texturelabs_Paper_280S.jpg",
+      "Texturelabs_Paper_286S.jpg",
+      "Texturelabs_Paper_303S.jpg",
+      "Texturelabs_Paper_324S.jpg",
+      "Texturelabs_Paper_380L.jpg",
+      "Texturelabs_Paper_380S.jpg",
+
+      "Texturelabs_Sky_171S.jpg",
+
+      "Texturelabs_Soil_146S.jpg",
+      "Texturelabs_Soil_149S.jpg",
+
+      "Texturelabs_Stone_167S.jpg",
+      "Texturelabs_Stone_169S.jpg",
+
+      "Texturelabs_Water_124S.jpg",
+      "Texturelabs_Water_141S.jpg",
+
+      "Texturelabs_Wood_135S.jpg",
+      "Texturelabs_Wood_280S.jpg",
+      "Texturelabs_Wood_290S.jpg"
+
+    ].map(
+      file =>
+        `assets/home/${file}`
+    );
 
 
     /* =====================================================
-       GREETINGS
+       COLLAGE PALETTE
+
+       Deliberately less neon.
+       More stained paper / print / darkroom.
        ===================================================== */
 
-    const greetings = [
-      { text: "Welcome" },
-      { text: "Ласкаво просимо" },
-      { text: "Benvenuti" },
-      { text: "Fáilte" },
-      { text: "Bienvenidos" },
-      { text: "Bienvenidas" },
-      { text: "欢迎" },
-      { text: "Benvinguts" },
-      { text: "Sveiki atvykę" },
-      { text: "Yá’át’ééh" },
-      { text: "Velkomin" },
-      { text: "Willkommen" },
-      { text: "ようこそ" },
-      { text: "Bienvenue" },
-      { text: "Bem-vindos" },
-      { text: "أهلاً وسهلاً" },
-      { text: "Mae govannen" },
-      { text: "Croeso" },
-      {
-        text: "01010111 01100101 01101100 01100011 01101111 01101101 01100101",
-        className: "binary"
-      },
-      { text: "Karibu" },
-      { text: "Siyakwamukela" },
-      { text: "Ẹ káàbọ̀" },
-      { text: "እንኳን ደህና መጡ" },
-      { text: "स्वागत है" },
-      { text: "خوش آمدید" },
-      { text: "স্বাগতম" },
-      { text: "환영합니다" },
-      { text: "Hoş geldiniz" },
-      { text: "Καλώς ήρθατε" },
-      { text: "ברוכים הבאים" },
-      { text: "ยินดีต้อนรับ" },
-      { text: "Selamat datang" },
-      { text: "Witamy" },
-      { text: "Welkom" },
-      { text: "Vítejte" },
-      { text: "Bun venit" },
-      { text: "Üdvözöljük" },
-      { text: "Velkommen" },
-      { text: "Välkommen" },
-      { text: "Tervetuloa" },
-      { text: "Nau mai" },
-      { text: "Salvete" },
-      { text: "Aloha" },
-      { text: "As-salāmu ʿalaykum" },
-      { text: "Mirë se vini" },
-      { text: "Dobrodošli" },
-      { text: "Bula vinaka" },
-      { text: "Maligayang pagdating" },
-      {
-        text: "WELCOME",
-        className: "wingdings"
-      }
-    ];
+    const COLORS = [
 
-    const welcomeColors = [
-      "#fdb913",
-      "#006a44",
       "#c1272d",
-      "#d9a418",
-      "#157049",
-      "#aa2727"
+      "#7f1d25",
+
+      "#006a44",
+      "#274f3c",
+
+      "#fdb913",
+      "#b78a19",
+
+      "#182f4d",
+      "#405f7c",
+
+      "#8c5a72",
+      "#b88876",
+
+      "#dad0b8",
+      "#ece7d7",
+
+      "#2a2420"
+
     ];
 
-    let currentGreetingIndex = 0;
-    let greetingRolling = false;
 
-    function randomWelcomeColor() {
-      return pick(welcomeColors);
-    }
-
-    function applyGreeting(el, greeting) {
-      el.className = "welcome-word";
-
-      if (greeting.className) {
-        el.classList.add(greeting.className);
-      }
-
-      if (!greeting.className && greeting.text.length > 16) {
-        el.classList.add("welcome-long");
-      }
-
-      el.textContent = greeting.text;
-    }
-
-    function rollGreeting() {
-      if (greetingRolling) return;
-      greetingRolling = true;
-
-      let nextIndex;
-
-      do {
-        nextIndex = Math.floor(Math.random() * greetings.length);
-      } while (nextIndex === currentGreetingIndex);
-
-      const nextGreeting = greetings[nextIndex];
-
-      applyGreeting(welcomeNext, nextGreeting);
-      welcomeNext.style.color = randomWelcomeColor();
-
-      welcomeTrack.classList.add("is-rolling");
-
-      window.setTimeout(() => {
-        currentGreetingIndex = nextIndex;
-
-        applyGreeting(welcomeCurrent, nextGreeting);
-        welcomeCurrent.style.color = welcomeNext.style.color;
-
-        welcomeTrack.classList.add("no-transition");
-        welcomeTrack.classList.remove("is-rolling");
-        welcomeNext.textContent = "";
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            welcomeTrack.classList.remove("no-transition");
-            greetingRolling = false;
-          });
-        });
-
-      }, 480);
-    }
-
-    welcomeCurrent.style.color = randomWelcomeColor();
-
-    setInterval(rollGreeting, 2400);
-
-
-    /* =====================================================
-       TRIPPY TEXTURE SYSTEM
-       ===================================================== */
-
-    const TEXTURE_FILES = [
-      "assets/home/Texturelabs_Atmosphere_121S.jpg",
-      "assets/home/Texturelabs_Atmosphere_127S.jpg",
-      "assets/home/Texturelabs_Atmosphere_130S.jpg",
-      "assets/home/Texturelabs_Atmosphere_135S.jpg",
-      "assets/home/Texturelabs_Atmosphere_201S.jpg",
-      "assets/home/Texturelabs_Brick_124S.jpg",
-      "assets/home/Texturelabs_Brick_158S.jpg",
-      "assets/home/Texturelabs_Concrete_150S.jpg",
-      "assets/home/Texturelabs_Concrete_155S.jpg",
-      "assets/home/Texturelabs_Concrete_179S.jpg",
-      "assets/home/Texturelabs_Concrete_205S.jpg",
-      "assets/home/Texturelabs_Concrete_207S.jpg",
-      "assets/home/Texturelabs_Fabric_123S.jpg",
-      "assets/home/Texturelabs_Fabric_144S.jpg",
-      "assets/home/Texturelabs_Fabric_172S.jpg",
-      "assets/home/Texturelabs_Film_181S.jpg",
-      "assets/home/Texturelabs_Film_183S.jpg",
-      "assets/home/Texturelabs_Film_187S.jpg",
-      "assets/home/Texturelabs_Glass_134S.jpg",
-      "assets/home/Texturelabs_Glass_155S.jpg",
-      "assets/home/Texturelabs_Grunge_173S.jpg",
-      "assets/home/Texturelabs_Grunge_279L.jpg",
-      "assets/home/Texturelabs_Grunge_334S.jpg",
-      "assets/home/Texturelabs_Grunge_341S.jpg",
-      "assets/home/Texturelabs_InkPaint_126S.jpg",
-      "assets/home/Texturelabs_InkPaint_320S.jpg",
-      "assets/home/Texturelabs_InkPaint_332S.jpg",
-      "assets/home/Texturelabs_InkPaint_356S.jpg",
-      "assets/home/Texturelabs_LensFX_251S.jpg",
-      "assets/home/Texturelabs_LensFX_256S.jpg",
-      "assets/home/Texturelabs_Metal_129S.jpg",
-      "assets/home/Texturelabs_Metal_165S.jpg",
-      "assets/home/Texturelabs_Metal_285S.jpg",
-      "assets/home/Texturelabs_Metal_294S.jpg",
-      "assets/home/Texturelabs_Paper_273S.jpg",
-      "assets/home/Texturelabs_Paper_278L.jpg",
-      "assets/home/Texturelabs_Paper_280S.jpg",
-      "assets/home/Texturelabs_Paper_286S.jpg",
-      "assets/home/Texturelabs_Paper_303S.jpg",
-      "assets/home/Texturelabs_Paper_324S.jpg",
-      "assets/home/Texturelabs_Paper_380L.jpg",
-      "assets/home/Texturelabs_Paper_380S.jpg",
-      "assets/home/Texturelabs_Sky_171S.jpg",
-      "assets/home/Texturelabs_Soil_146S.jpg",
-      "assets/home/Texturelabs_Soil_149S.jpg",
-      "assets/home/Texturelabs_Stone_167S.jpg",
-      "assets/home/Texturelabs_Stone_169S.jpg",
-      "assets/home/Texturelabs_Water_124S.jpg",
-      "assets/home/Texturelabs_Water_141S.jpg",
-      "assets/home/Texturelabs_Wood_135S.jpg",
-      "assets/home/Texturelabs_Wood_280S.jpg",
-      "assets/home/Texturelabs_Wood_290S.jpg"
-    ];
+    /*
+      Repeated values deliberately weight the
+      random selection toward color burn,
+      multiply and soft light.
+    */
 
     const UNDER_BLEND_MODES = [
+
       "multiply",
-      "screen",
-      "overlay",
+      "multiply",
+      "multiply",
+
+      "color-burn",
+      "color-burn",
+      "color-burn",
+
       "soft-light",
-      "hard-light",
+      "soft-light",
+
+      "overlay",
+
       "darken",
-      "lighten",
-      "luminosity",
-      "color-dodge",
-      "color-burn"
+
+      "screen"
+
     ];
+
 
     const OVER_BLEND_MODES = [
-      "overlay",
-      "soft-light",
-      "screen",
-      "difference",
-      "exclusion",
-      "hard-light",
-      "lighten",
+
+      "color-burn",
+      "color-burn",
+      "color-burn",
+
       "multiply",
-      "color-dodge"
+      "multiply",
+
+      "overlay",
+      "overlay",
+
+      "soft-light",
+      "soft-light",
+
+      "hard-light",
+
+      "screen",
+
+      /*
+        Rarely weird rather than constantly weird.
+      */
+
+      "difference",
+      "exclusion"
+
     ];
 
-    const PSYCHE_COLORS = [
-      "#fdb913",
-      "#006a44",
-      "#c1272d",
-      "#ff66a5",
-      "#7c5cff",
-      "#34d1bf",
-      "#ff8a00",
-      "#55c1ff",
-      "#7aff7a",
-      "#ffd8a8",
-      "#ff416c",
-      "#6a11cb",
-      "#2bff88",
-      "#00b4d8"
-    ];
 
-    const UNDER_LAYER_COUNT = 8;
-    const OVER_LAYER_COUNT = 8;
+    /* =====================================================
+       CREATE TEXTURE LAYERS
+       ===================================================== */
+
+    const UNDER_COUNT = 8;
+    const OVER_COUNT = 6;
 
     const underLayers = [];
     const overLayers = [];
 
-    function createLayer(container, className) {
-      const layer = document.createElement("div");
-      layer.className = className;
-      container.appendChild(layer);
+
+    function createTextureLayer(
+      parent,
+      isOver
+    ) {
+
+      const layer =
+        document.createElement("div");
+
+      layer.className =
+        "texture-layer";
+
+      layer.dataset.active =
+        "false";
+
+      layer.dataset.over =
+        isOver
+          ? "true"
+          : "false";
+
+      layer._version = 0;
+
+      parent.appendChild(layer);
+
       return layer;
+
     }
 
-    for (let i = 0; i < UNDER_LAYER_COUNT; i += 1) {
-      underLayers.push(createLayer(textureUnder, "texture-layer"));
-    }
 
-    for (let i = 0; i < OVER_LAYER_COUNT; i += 1) {
-      overLayers.push(createLayer(textureOver, "texture-layer"));
-    }
+    for (
+      let i = 0;
+      i < UNDER_COUNT;
+      i += 1
+    ) {
 
-    function makeGradient() {
-      const c1 = pick(PSYCHE_COLORS);
-      const c2 = pick(PSYCHE_COLORS);
-      const c3 = pick(PSYCHE_COLORS);
-
-      const mode = Math.floor(Math.random() * 4);
-
-      if (mode === 0) {
-        return `
-          radial-gradient(
-            circle at ${rand(15, 85)}% ${rand(15, 85)}%,
-            ${c1} 0%,
-            transparent ${rand(30, 70)}%
-          ),
-          radial-gradient(
-            circle at ${rand(15, 85)}% ${rand(15, 85)}%,
-            ${c2} 0%,
-            transparent ${rand(20, 60)}%
-          )
-        `;
-      }
-
-      if (mode === 1) {
-        return `
-          linear-gradient(
-            ${rand(0, 360)}deg,
-            ${c1},
-            ${c2},
-            ${c3}
-          )
-        `;
-      }
-
-      if (mode === 2) {
-        return `
-          conic-gradient(
-            from ${rand(0, 360)}deg at ${rand(20, 80)}% ${rand(20, 80)}%,
-            ${c1},
-            ${c2},
-            ${c3},
-            ${c1}
-          )
-        `;
-      }
-
-      return `
-        radial-gradient(
-          ellipse at ${rand(15, 85)}% ${rand(15, 85)}%,
-          ${c1},
-          ${c2},
-          transparent ${rand(40, 75)}%
+      underLayers.push(
+        createTextureLayer(
+          textureUnder,
+          false
         )
-      `;
+      );
+
     }
 
-    function applyTextureStyle(layer, intensity, isOver) {
-      const useGradient =
-        Math.random() < (0.22 + intensity * 0.28);
 
-      if (useGradient) {
-        layer.style.backgroundImage = makeGradient();
-      } else {
-        layer.style.backgroundImage =
-          `url("${pick(TEXTURE_FILES)}")`;
-      }
+    for (
+      let i = 0;
+      i < OVER_COUNT;
+      i += 1
+    ) {
 
-      const blendModes = isOver
-        ? OVER_BLEND_MODES
-        : UNDER_BLEND_MODES;
+      overLayers.push(
+        createTextureLayer(
+          textureOver,
+          true
+        )
+      );
 
-      layer.style.mixBlendMode = pick(blendModes);
-
-      const opacity = isOver
-        ? rand(0.03, 0.10 + intensity * 0.34)
-        : rand(0.04, 0.14 + intensity * 0.28);
-
-      layer.style.opacity = opacity.toFixed(3);
-
-      layer.style.backgroundSize = `${rand(45, 165)}%`;
-      layer.style.backgroundPosition = `${rand(0, 100)}% ${rand(0, 100)}%`;
-      layer.style.transform = `
-        translate(${rand(-8, 8)}%, ${rand(-8, 8)}%)
-        rotate(${rand(-12, 12)}deg)
-        scale(${rand(0.92, 1.22)})
-      `;
-
-      layer.style.filter = `
-        blur(${rand(0, 8 + intensity * 8)}px)
-        saturate(${rand(0.8, 1.8 + intensity * 1.5)})
-        contrast(${rand(0.85, 1.5 + intensity * 0.8)})
-        hue-rotate(${rand(-60, 60) * intensity}deg)
-        brightness(${rand(0.78, 1.35)})
-      `;
-
-      layer.style.borderRadius = `${rand(0, 12)}px`;
-    }
-
-    function hideLayers(layers) {
-      layers.forEach(layer => {
-        layer.style.opacity = "0";
-      });
-    }
-
-    function resetTrippyLayers() {
-      hideLayers(underLayers);
-      hideLayers(overLayers);
-      trippyStage.style.setProperty("--wash-opacity", "0");
-      trippyStage.style.setProperty("--horse-jitter-x", "0px");
-      trippyStage.style.setProperty("--horse-jitter-y", "0px");
-      trippyStage.style.setProperty("--horse-jitter-r", "0deg");
-      trippyStage.style.setProperty("--horse-hue", "0deg");
-      trippyStage.style.setProperty("--horse-echo-opacity", "0");
-      trippyStage.style.setProperty("--horse-weird-opacity", "0");
     }
 
 
     /* =====================================================
-       TIMING
+       STATIC COLLAGE VISUALS
        ===================================================== */
 
-    const HORSE_START = 45;
-    const HORSE_FULL = 71;
-    const TRIP_END = 243;
+    function makeGradient() {
 
-    let animationFrame = null;
-    let lastShuffle = 0;
-    let overlayOpen = false;
+      const c1 = pick(COLORS);
+      const c2 = pick(COLORS);
 
-    function getHorseProgress(time) {
-      return clamp(
-        (time - HORSE_START) / (HORSE_FULL - HORSE_START),
-        0,
-        1
-      );
-    }
+      const choice =
+        Math.floor(
+          Math.random() * 3
+        );
 
-    function getChaosProgress(time) {
-      if (time < HORSE_START) return 0;
-      if (time >= TRIP_END) return 0;
 
-      return easeInOut(
-        clamp(
-          (time - HORSE_START) / (TRIP_END - HORSE_START),
-          0,
-          1
-        )
-      );
-    }
+      if (choice === 0) {
 
-    function shuffleTrippyVisuals(time, chaos) {
-      const now = performance.now();
-      const interval = lerp(1500, 120, chaos);
+        return `
+          linear-gradient(
+            ${random(0, 360)}deg,
+            ${c1},
+            transparent 48%,
+            ${c2}
+          )
+        `;
 
-      if (now - lastShuffle < interval) return;
-      lastShuffle = now;
-
-      const underActive = Math.round(lerp(2, UNDER_LAYER_COUNT, chaos));
-      const overActive = Math.round(lerp(1, OVER_LAYER_COUNT, chaos));
-
-      underLayers.forEach((layer, index) => {
-        if (index < underActive) {
-          applyTextureStyle(layer, chaos, false);
-        } else {
-          layer.style.opacity = "0";
-        }
-      });
-
-      overLayers.forEach((layer, index) => {
-        if (index < overActive) {
-          applyTextureStyle(layer, chaos, true);
-        } else {
-          layer.style.opacity = "0";
-        }
-      });
-
-      trippyStage.style.setProperty(
-        "--wash-opacity",
-        (0.02 + chaos * 0.16).toFixed(3)
-      );
-    }
-
-    function updateOverlayVisuals() {
-      if (!overlayOpen) return;
-
-      const time = audio.currentTime || 0;
-      const horseProgress = getHorseProgress(time);
-      const chaos = getChaosProgress(time);
-
-      trippyStage.style.setProperty(
-        "--horse-progress",
-        horseProgress.toFixed(3)
-      );
-
-      trippyStage.style.setProperty(
-        "--horse-jitter-x",
-        `${rand(-1.2, 1.2) * horseProgress}px`
-      );
-
-      trippyStage.style.setProperty(
-        "--horse-jitter-y",
-        `${rand(-1.2, 1.2) * horseProgress}px`
-      );
-
-      trippyStage.style.setProperty(
-        "--horse-jitter-r",
-        `${rand(-0.3, 0.3) * horseProgress}deg`
-      );
-
-      trippyStage.style.setProperty(
-        "--horse-hue",
-        `${rand(-8, 8) * chaos}deg`
-      );
-
-      trippyStage.style.setProperty(
-        "--horse-echo-opacity",
-        (chaos * 0.28).toFixed(3)
-      );
-
-      trippyStage.style.setProperty(
-        "--horse-weird-opacity",
-        (chaos * 0.18).toFixed(3)
-      );
-
-      if (chaos > 0) {
-        shuffleTrippyVisuals(time, chaos);
-      } else {
-        hideLayers(underLayers);
-        hideLayers(overLayers);
-        trippyStage.style.setProperty("--wash-opacity", "0");
       }
 
-      animationFrame = requestAnimationFrame(updateOverlayVisuals);
+
+      if (choice === 1) {
+
+        return `
+          radial-gradient(
+            circle at
+            ${random(15, 85)}%
+            ${random(15, 85)}%,
+            ${c1},
+            transparent ${random(40, 70)}%
+          ),
+          radial-gradient(
+            circle at
+            ${random(15, 85)}%
+            ${random(15, 85)}%,
+            ${c2},
+            transparent ${random(35, 70)}%
+          )
+        `;
+
+      }
+
+
+      return `
+        linear-gradient(
+          ${random(0, 360)}deg,
+          ${c1} 0%,
+          transparent 35%,
+          transparent 65%,
+          ${c2} 100%
+        )
+      `;
+
+    }
+
+
+    function configureLayer(
+      layer,
+      intensity
+    ) {
+
+      const isOver =
+        layer.dataset.over === "true";
+
+
+      const blendModes =
+        isOver
+          ? OVER_BLEND_MODES
+          : UNDER_BLEND_MODES;
+
+
+      /*
+        Most layers are photographs/textures.
+
+        Occasionally a color field or gradient
+        appears instead.
+      */
+
+      const visualType =
+        Math.random();
+
+
+      layer.style.backgroundColor =
+        "transparent";
+
+
+      layer.style.backgroundImage =
+        "none";
+
+
+      if (visualType < 0.70) {
+
+        layer.style.backgroundImage =
+          `url("${pick(TEXTURES)}")`;
+
+
+        layer.style.backgroundRepeat =
+          Math.random() < 0.15
+            ? "repeat"
+            : "no-repeat";
+
+
+        layer.style.backgroundSize =
+          `${random(75, 185)}%`;
+
+
+        layer.style.backgroundPosition =
+          `${random(0, 100)}% ${random(0, 100)}%`;
+
+      }
+
+      else if (visualType < 0.90) {
+
+        layer.style.backgroundImage =
+          makeGradient();
+
+        layer.style.backgroundSize =
+          "100% 100%";
+
+        layer.style.backgroundPosition =
+          "center";
+
+        layer.style.backgroundRepeat =
+          "no-repeat";
+
+      }
+
+      else {
+
+        layer.style.backgroundColor =
+          pick(COLORS);
+
+      }
+
+
+      layer.style.mixBlendMode =
+        pick(blendModes);
+
+
+      /*
+        STATIC random crop / rotation / zoom.
+
+        This does NOT animate while visible.
+      */
+
+      layer.style.transform = `
+        translate(
+          ${random(-8, 8)}%,
+          ${random(-8, 8)}%
+        )
+        rotate(
+          ${random(-8, 8)}deg
+        )
+        scale(
+          ${random(1.02, 1.48)}
+        )
+      `;
+
+
+      /*
+        Keep filters more photographic / printed
+        instead of rainbow hallucination.
+      */
+
+      const grayscale =
+        Math.random() < 0.22
+          ? random(0.3, 0.9)
+          : 0;
+
+
+      layer.style.filter = `
+        contrast(${random(0.9, 1.42)})
+        saturate(${random(0.72, 1.45)})
+        brightness(${random(0.82, 1.18)})
+        grayscale(${grayscale})
+        blur(${random(0, intensity * 1.4)}px)
+      `;
+
+
+      /*
+        Over-layers stay weaker so the horse
+        never disappears.
+      */
+
+      let opacity;
+
+
+      if (isOver) {
+
+        opacity =
+          random(
+            0.035,
+            lerp(
+              0.10,
+              0.24,
+              intensity
+            )
+          );
+
+      }
+
+      else {
+
+        opacity =
+          random(
+            0.06,
+            lerp(
+              0.18,
+              0.38,
+              intensity
+            )
+          );
+
+      }
+
+
+      layer.dataset.targetOpacity =
+        opacity.toFixed(3);
+
+    }
+
+
+    /*
+      Fade a layer out, change it while invisible,
+      then fade the new collage piece in.
+
+      Transform never animates.
+    */
+
+    function replaceLayer(
+      layer,
+      intensity
+    ) {
+
+      layer._version += 1;
+
+      const version =
+        layer._version;
+
+
+      layer.style.opacity =
+        "0";
+
+
+      window.setTimeout(() => {
+
+        if (
+          !overlayOpen ||
+          version !== layer._version
+        ) {
+
+          return;
+
+        }
+
+
+        configureLayer(
+          layer,
+          intensity
+        );
+
+
+        layer.dataset.active =
+          "true";
+
+
+        /*
+          Force styles to settle before
+          opacity comes back.
+        */
+
+        requestAnimationFrame(() => {
+
+          if (
+            version !== layer._version
+          ) {
+
+            return;
+
+          }
+
+
+          layer.style.opacity =
+            layer.dataset.targetOpacity;
+
+        });
+
+      }, 130);
+
+    }
+
+
+    function clearLayer(layer) {
+
+      layer._version += 1;
+
+      layer.dataset.active =
+        "false";
+
+      layer.style.opacity =
+        "0";
+
+    }
+
+
+    function clearAllLayers() {
+
+      underLayers.forEach(
+        clearLayer
+      );
+
+      overLayers.forEach(
+        clearLayer
+      );
+
+    }
+
+
+    function activeLayers(layers) {
+
+      return layers.filter(
+        layer =>
+          layer.dataset.active === "true"
+      );
+
+    }
+
+
+    function inactiveLayers(layers) {
+
+      return layers.filter(
+        layer =>
+          layer.dataset.active !== "true"
+      );
+
+    }
+
+
+    function ensureLayerCount(
+      layers,
+      wanted,
+      intensity
+    ) {
+
+      let active =
+        activeLayers(layers);
+
+
+      while (
+        active.length < wanted
+      ) {
+
+        const inactive =
+          inactiveLayers(layers);
+
+
+        if (!inactive.length) break;
+
+
+        const layer =
+          pick(inactive);
+
+
+        replaceLayer(
+          layer,
+          intensity
+        );
+
+
+        layer.dataset.active =
+          "true";
+
+
+        active =
+          activeLayers(layers);
+
+      }
+
+
+      while (
+        active.length > wanted
+      ) {
+
+        const layer =
+          pick(active);
+
+
+        clearLayer(layer);
+
+
+        active =
+          activeLayers(layers);
+
+      }
+
+    }
+
+
+    /* =====================================================
+       INTENSITY CURVE
+
+       0:00–0:45
+       barely-there collage
+
+       0:45–1:11
+       establishes visual world
+
+       1:11–3:00
+       gradual build
+
+       3:00–3:40
+       increasingly tense
+
+       3:40–4:03
+       strongest / fastest collage
+
+       4:03
+       completely normal again
+       ===================================================== */
+
+    const NORMAL_TIME = 243;
+
+
+    function collageIntensity(time) {
+
+      if (
+        time >= NORMAL_TIME
+      ) {
+
+        return 0;
+
+      }
+
+
+      if (time < 45) {
+
+        return 0.07;
+
+      }
+
+
+      if (time < 71) {
+
+        return lerp(
+          0.07,
+          0.18,
+          (time - 45) / 26
+        );
+
+      }
+
+
+      if (time < 180) {
+
+        return lerp(
+          0.18,
+          0.44,
+          (time - 71) / 109
+        );
+
+      }
+
+
+      if (time < 220) {
+
+        return lerp(
+          0.44,
+          0.72,
+          (time - 180) / 40
+        );
+
+      }
+
+
+      return lerp(
+        0.72,
+        1,
+        (time - 220) / 23
+      );
+
+    }
+
+
+    /*
+      These timings align nicely with
+      120 BPM:
+
+      2000ms = 4 beats
+      1000ms = 2 beats
+      500ms  = 1 beat
+      250ms  = 1/2 beat
+    */
+
+    function collageInterval(
+      intensity
+    ) {
+
+      if (intensity < 0.22) {
+        return 2000;
+      }
+
+      if (intensity < 0.50) {
+        return 1000;
+      }
+
+      if (intensity < 0.82) {
+        return 500;
+      }
+
+      return 250;
+
+    }
+
+
+    /* =====================================================
+       COLLAGE UPDATE
+       ===================================================== */
+
+    let lastCollageChange =
+      -Infinity;
+
+    let normalized =
+      false;
+
+
+    function updateCollage(
+      time,
+      intensity
+    ) {
+
+      /*
+        At 4:03 everything disappears
+        immediately, leaving only the
+        original horse.
+      */
+
+      if (
+        time >= NORMAL_TIME
+      ) {
+
+        if (!normalized) {
+
+          normalized = true;
+
+          clearAllLayers();
+
+
+          trippyStage.style.setProperty(
+            "--vignette-opacity",
+            "0"
+          );
+
+
+          trippyStage.style.setProperty(
+            "--shadow-opacity",
+            "0"
+          );
+
+        }
+
+
+        return;
+
+      }
+
+
+      normalized = false;
+
+
+      const interval =
+        collageInterval(
+          intensity
+        );
+
+
+      const elapsedMs =
+        time * 1000;
+
+
+      if (
+        elapsedMs -
+        lastCollageChange <
+        interval
+      ) {
+
+        return;
+
+      }
+
+
+      lastCollageChange =
+        elapsedMs;
+
+
+      /*
+        More layers accumulate as tension rises,
+        but never enough to bury the horse.
+      */
+
+      const wantedUnder =
+        Math.round(
+          lerp(
+            2,
+            7,
+            intensity
+          )
+        );
+
+
+      const wantedOver =
+        Math.round(
+          lerp(
+            1,
+            4,
+            intensity
+          )
+        );
+
+
+      ensureLayerCount(
+        underLayers,
+        wantedUnder,
+        intensity
+      );
+
+
+      ensureLayerCount(
+        overLayers,
+        wantedOver,
+        intensity
+      );
+
+
+      /*
+        Only a FEW collage pieces change
+        on each visual beat.
+      */
+
+      const changes =
+        Math.round(
+          lerp(
+            1,
+            4,
+            intensity
+          )
+        );
+
+
+      const allActive = [
+        ...activeLayers(
+          underLayers
+        ),
+        ...activeLayers(
+          overLayers
+        )
+      ];
+
+
+      const changed =
+        new Set();
+
+
+      for (
+        let i = 0;
+        i < changes;
+        i += 1
+      ) {
+
+        if (!allActive.length) break;
+
+
+        let layer;
+
+
+        do {
+
+          layer =
+            pick(allActive);
+
+        } while (
+          changed.has(layer) &&
+          changed.size <
+          allActive.length
+        );
+
+
+        changed.add(layer);
+
+
+        replaceLayer(
+          layer,
+          intensity
+        );
+
+      }
+
+
+      /*
+        Small darkroom-style edge tension.
+      */
+
+      trippyStage.style.setProperty(
+        "--vignette-opacity",
+        lerp(
+          0.015,
+          0.22,
+          intensity
+        ).toFixed(3)
+      );
+
+
+      trippyStage.style.setProperty(
+        "--shadow-opacity",
+        lerp(
+          0.04,
+          0.17,
+          intensity
+        ).toFixed(3)
+      );
+
+    }
+
+
+    /* =====================================================
+       PLAYBACK LOOP
+       ===================================================== */
+
+    let overlayOpen =
+      false;
+
+    let animationFrame =
+      null;
+
+
+    function visualLoop() {
+
+      if (!overlayOpen) {
+        return;
+      }
+
+
+      const time =
+        audio.currentTime || 0;
+
+
+      const intensity =
+        collageIntensity(time);
+
+
+      updateCollage(
+        time,
+        intensity
+      );
+
+
+      animationFrame =
+        requestAnimationFrame(
+          visualLoop
+        );
+
     }
 
 
@@ -720,69 +1551,210 @@
        OPEN / CLOSE
        ===================================================== */
 
-    async function openWip() {
-      overlayOpen = true;
+    function initializeMildCollage() {
 
-      overlay.classList.add("is-visible");
-      overlay.setAttribute("aria-hidden", "false");
+      clearAllLayers();
 
-      resetTrippyLayers();
 
-      audio.pause();
-      audio.currentTime = 0;
-      audio.volume = 0.72;
+      /*
+        Start with a couple of extremely quiet
+        layers rather than a blank square.
+      */
 
-      try {
-        await audio.play();
-      } catch (error) {
-        console.log("Audio failed to play:", error);
-      }
+      replaceLayer(
+        underLayers[0],
+        0.07
+      );
 
-      cancelAnimationFrame(animationFrame);
-      animationFrame = requestAnimationFrame(updateOverlayVisuals);
+      replaceLayer(
+        underLayers[1],
+        0.07
+      );
+
+      replaceLayer(
+        overLayers[0],
+        0.07
+      );
+
     }
 
-    function closeWip() {
-      overlayOpen = false;
 
-      overlay.classList.remove("is-visible");
-      overlay.setAttribute("aria-hidden", "true");
+    async function openWip() {
+
+      overlayOpen =
+        true;
+
+
+      document.body.classList.add(
+        "wip-open"
+      );
+
+
+      overlay.classList.add(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
 
       audio.pause();
-      audio.currentTime = 0;
 
-      cancelAnimationFrame(animationFrame);
-      resetTrippyLayers();
+      audio.currentTime =
+        0;
+
+
+      audio.volume =
+        0.72;
+
+
+      lastCollageChange =
+        -Infinity;
+
+
+      normalized =
+        false;
+
+
+      initializeMildCollage();
+
+
+      try {
+
+        await audio.play();
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "Audio playback failed:",
+          error
+        );
+
+      }
+
+
+      cancelAnimationFrame(
+        animationFrame
+      );
+
+
+      animationFrame =
+        requestAnimationFrame(
+          visualLoop
+        );
+
+    }
+
+
+    function closeWip() {
+
+      overlayOpen =
+        false;
+
+
+      document.body.classList.remove(
+        "wip-open"
+      );
+
+
+      overlay.classList.remove(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      audio.pause();
+
+      audio.currentTime =
+        0;
+
+
+      cancelAnimationFrame(
+        animationFrame
+      );
+
+
+      clearAllLayers();
+
     }
 
 
     /* =====================================================
-       CLICK HANDLING
+       LINKS
        ===================================================== */
 
-    document.addEventListener("click", event => {
-      const link = event.target.closest("a");
+    document.addEventListener(
+      "click",
+      event => {
 
-      if (!link) return;
+        const link =
+          event.target.closest("a");
 
-      if (link.hasAttribute("data-live-link")) {
-        return;
+
+        if (!link) {
+          return;
+        }
+
+
+        /*
+          Eventually add data-live-link
+          to links that should navigate.
+        */
+
+        if (
+          link.hasAttribute(
+            "data-live-link"
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+        openWip();
+
       }
+    );
 
-      event.preventDefault();
-      openWip();
-    });
 
-    closeButton.addEventListener("click", closeWip);
+    closeButton.addEventListener(
+      "click",
+      closeWip
+    );
 
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && overlay.classList.contains("is-visible")) {
-        closeWip();
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape" &&
+          overlayOpen
+        ) {
+
+          closeWip();
+
+        }
+
       }
-    });
+    );
 
   })();
   </script>
 
 </body>
+
 </html>
