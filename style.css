@@ -19,7 +19,8 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+  box-sizing:
+    border-box;
 }
 
 
@@ -31,14 +32,17 @@ body {
 
 
 html {
-  min-height: 100%;
+  min-height:
+    100%;
 }
 
 
 body {
-  min-height: 100vh;
+  min-height:
+    100vh;
 
-  overflow-x: hidden;
+  overflow-x:
+    hidden;
 
   background:
     var(--paper);
@@ -57,16 +61,20 @@ body {
 
 
 img {
-  display: block;
+  display:
+    block;
 
-  max-width: 100%;
+  max-width:
+    100%;
 }
 
 
 a {
-  color: inherit;
+  color:
+    inherit;
 
-  text-decoration: none;
+  text-decoration:
+    none;
 }
 
 
@@ -75,9 +83,11 @@ a {
    ========================================================= */
 
 .page-shell {
-  min-height: 100vh;
+  min-height:
+    100vh;
 
-  opacity: 1;
+  opacity:
+    1;
 
   transition:
     opacity
@@ -91,17 +101,26 @@ a {
    ========================================================= */
 
 .home {
-  min-height: 100vh;
+  min-height:
+    100vh;
 }
 
 
 .hero {
-  min-height: 100vh;
+  min-height:
+    100vh;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    center;
+
+  align-items:
+    flex-start;
 
   padding:
     8vh
@@ -128,13 +147,17 @@ a {
 
 
 .welcome-word {
-  display: block;
+  display:
+    block;
 
-  width: max-content;
+  width:
+    max-content;
 
-  max-width: 100%;
+  max-width:
+    100%;
 
-  white-space: nowrap;
+  white-space:
+    nowrap;
 
   font-size:
     clamp(
@@ -143,14 +166,17 @@ a {
       106px
     );
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  line-height: 0.95;
+  line-height:
+    0.95;
 
   letter-spacing:
     -0.065em;
 
-  opacity: 1;
+  opacity:
+    1;
 
   transition:
     opacity
@@ -160,7 +186,8 @@ a {
 
 
 .welcome-word.is-fading {
-  opacity: 0;
+  opacity:
+    0;
 }
 
 
@@ -179,9 +206,11 @@ a {
       56px
     );
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  line-height: 1;
+  line-height:
+    1;
 
   letter-spacing:
     -0.055em;
@@ -189,29 +218,42 @@ a {
 
 
 /* =========================================================
-   SCARF NAVIGATION
+   SCARFS
    ========================================================= */
 
 .scarf-rack {
-  position: fixed;
+  position:
+    fixed;
 
-  top: 14px;
-  right: 12px;
+  top:
+    14px;
 
-  z-index: 30;
+  right:
+    12px;
 
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  z-index:
+    30;
 
-  gap: 6px;
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    flex-end;
+
+  gap:
+    6px;
 }
 
 
 .scarf-item {
-  position: relative;
+  position:
+    relative;
 
-  display: block;
+  display:
+    block;
 
   height:
     clamp(
@@ -236,8 +278,11 @@ a {
 
 
 .scarf-item img {
-  width: auto;
-  height: 100%;
+  width:
+    auto;
+
+  height:
+    100%;
 
   object-fit:
     contain;
@@ -264,7 +309,8 @@ a {
 
 
 .scarf-item:hover {
-  z-index: 4;
+  z-index:
+    4;
 
   transform:
     translateX(-22px)
@@ -286,32 +332,47 @@ a {
    ========================================================= */
 
 .wip-overlay {
-  position: fixed;
+  --overlay-reveal:
+    0;
 
-  inset: 0;
+  position:
+    fixed;
 
-  z-index: 99999;
+  inset:
+    0;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index:
+    99999;
 
-  overflow: auto;
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
 
   padding:
     28px;
 
-  /*
-    Transparent until the page underneath
-    disappears.
+  overflow:
+    auto;
 
-    NO visual texture escapes the collage box.
+  /*
+    This background fades in WITH the artwork.
   */
 
   background:
-    transparent;
+    rgb(
+      236 231 215 /
+      calc(
+        var(--overlay-reveal) * 0.98
+      )
+    );
 
-  opacity: 0;
+  opacity:
+    0;
 
   visibility:
     hidden;
@@ -328,11 +389,14 @@ a {
 
 
 .wip-overlay.is-visible {
-  opacity: 1;
+  opacity:
+    1;
 
-  visibility: visible;
+  visibility:
+    visible;
 
-  pointer-events: auto;
+  pointer-events:
+    auto;
 }
 
 
@@ -343,33 +407,47 @@ a {
       700px
     );
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
 }
 
 
 /* =========================================================
-   MESSAGE
+   HEADER
    ========================================================= */
 
 .wip-header {
-  position: relative;
+  position:
+    relative;
 
-  z-index: 100;
+  z-index:
+    100;
+
+  width:
+    min(
+      69vh,
+      680px,
+      88vw
+    );
 
   display:
-    inline-flex;
+    flex;
 
   align-items:
     stretch;
 
   /*
-    Literally touches the artwork.
+    directly attached to artwork
   */
 
   margin-bottom:
-    -1px;
+    0;
 
   background:
     rgba(
@@ -391,7 +469,11 @@ a {
 
 
 .wip-text {
-  margin: 0;
+  flex:
+    1 1 auto;
+
+  margin:
+    0;
 
   padding:
     14px
@@ -408,30 +490,33 @@ a {
       26px
     );
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  line-height: 1;
+  line-height:
+    1;
 
   letter-spacing:
     -0.045em;
-
-  white-space:
-    nowrap;
 }
 
 
 .wip-close {
   flex:
-    0 0 auto;
+    0 0
+    52px;
 
   width:
     52px;
 
-  margin: 0;
+  margin:
+    0;
 
-  padding: 0;
+  padding:
+    0;
 
-  border: 0;
+  border:
+    0;
 
   border-left:
     1px solid
@@ -456,7 +541,8 @@ a {
   font-size:
     34px;
 
-  line-height: 1;
+  line-height:
+    1;
 
   cursor:
     pointer;
@@ -477,9 +563,11 @@ a {
    ========================================================= */
 
 .collage-stage {
-  --visual-reveal: 0;
+  --visual-reveal:
+    0;
 
-  position: relative;
+  position:
+    relative;
 
   width:
     min(
@@ -492,17 +580,14 @@ a {
     1 / 1;
 
   /*
-    CRITICAL:
-    nothing can ever escape this square.
+    NOTHING escapes the box.
   */
 
   overflow:
     hidden;
 
-  /*
-    No border.
-    No drop shadow.
-  */
+  isolation:
+    isolate;
 
   border:
     0;
@@ -511,7 +596,7 @@ a {
     none;
 
   background:
-    #eee9dc;
+    #eee8d9;
 
   opacity:
     var(--visual-reveal);
@@ -520,23 +605,77 @@ a {
     opacity
     120ms
     linear;
-
-  isolation:
-    isolate;
 }
 
 
 /* =========================================================
-   TEXTURES
+   MORPH SLOTS
    ========================================================= */
 
-.texture-layer {
+.texture-slot,
+.color-slot {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  pointer-events:
+    none;
+}
+
+
+/* underprints */
+
+.under-slot-1 {
+  z-index:
+    4;
+}
+
+
+.under-slot-2 {
+  z-index:
+    6;
+}
+
+
+.color-slot-under {
+  z-index:
+    8;
+}
+
+
+/* overprints */
+
+.over-slot-1 {
+  z-index:
+    24;
+}
+
+
+.over-slot-2 {
+  z-index:
+    26;
+}
+
+
+.color-slot-over {
+  z-index:
+    28;
+}
+
+
+/* =========================================================
+   MORPH FRAMES
+   ========================================================= */
+
+.morph-frame {
   position:
     absolute;
 
   /*
-    Small overscan means rotations still fill
-    the entire box.
+    Overscan ensures static rotation still
+    fills entire square.
   */
 
   inset:
@@ -545,102 +684,59 @@ a {
   opacity:
     0;
 
+  pointer-events:
+    none;
+
   background-size:
     cover;
 
   background-repeat:
     no-repeat;
 
-  pointer-events:
-    none;
-
   transform-origin:
     center;
 
   /*
-    ONLY opacity animates.
-
-    Random zoom / rotation / crop remain still.
+    JS controls transition-duration,
+    because the dissolve gets faster
+    throughout the piece.
   */
 
-  transition:
-    opacity
-    180ms
-    ease;
+  transition-property:
+    opacity;
+
+  transition-timing-function:
+    cubic-bezier(
+      .35,
+      0,
+      .25,
+      1
+    );
 
   will-change:
     opacity;
 }
 
 
-/* UNDER */
-
-.under-a {
-  z-index: 4;
-}
-
-
-.under-b {
-  z-index: 6;
-}
-
-
-/* OVER */
-
-.over-a {
-  z-index: 24;
-}
-
-
-.over-b {
-  z-index: 26;
+.color-frame {
+  inset:
+    -5%;
 }
 
 
 /* =========================================================
-   COLOR LAYERS
-   ========================================================= */
-
-.color-layer {
-  position:
-    absolute;
-
-  inset: 0;
-
-  opacity:
-    0;
-
-  pointer-events:
-    none;
-
-  transition:
-    opacity
-    200ms
-    ease;
-}
-
-
-.color-under {
-  z-index: 8;
-}
-
-
-.color-over {
-  z-index: 28;
-}
-
-
-/* =========================================================
-   HORSE STACK
+   HORSE
    ========================================================= */
 
 .horse-stack {
   position:
     absolute;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 20;
+  z-index:
+    20;
 
   pointer-events:
     none;
@@ -651,74 +747,81 @@ a {
   position:
     absolute;
 
-  inset: 0;
+  inset:
+    0;
 
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
+
+  height:
+    100%;
 
   object-fit:
     cover;
 
-  pointer-events:
+  user-select:
     none;
 
-  user-select:
+  pointer-events:
     none;
 }
 
 
-/* main image */
-
 .horse-main {
-  z-index: 2;
+  z-index:
+    2;
 
   opacity:
-    0.78;
+    0.8;
 
   mix-blend-mode:
     multiply;
 
   transition:
     opacity
-    180ms linear,
+    650ms ease,
     filter
-    180ms linear;
+    650ms ease;
 }
 
 
-/* slight registration / print duplicate */
-
 .horse-offset {
-  z-index: 1;
+  z-index:
+    1;
 
   opacity:
     0;
 
   transition:
     opacity
-    180ms linear;
+    500ms ease,
+    filter
+    500ms ease;
 }
 
 
 /*
-  Constant ink line key ABOVE overlays.
+  Final ink plate.
 
-  White paper vanishes with multiply.
-
-  This is what stops the horse from becoming
-  unreadable even at the climax.
+  Keeps horse legible without making
+  overprints feel fake.
 */
 
 .horse-key {
   position:
     absolute;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 40;
+  z-index:
+    40;
 
-  width: 100%;
-  height: 100%;
+  width:
+    100%;
+
+  height:
+    100%;
 
   object-fit:
     cover;
@@ -731,14 +834,14 @@ a {
 
   filter:
     contrast(1.8)
-    saturate(0.45);
+    saturate(0.38);
 
   pointer-events:
     none;
 
   transition:
     opacity
-    180ms linear;
+    450ms ease;
 }
 
 
@@ -750,25 +853,27 @@ a {
   position:
     absolute;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 45;
+  z-index:
+    45;
 
   pointer-events:
     none;
 
   opacity:
-    0.10;
+    0.09;
 
   background-image:
     radial-gradient(
       rgba(
-        15,
-        12,
-        9,
-        0.16
+        20,
+        13,
+        8,
+        0.18
       )
-      0.7px,
+      0.65px,
       transparent
       0.8px
     );
@@ -782,24 +887,22 @@ a {
 
 
 /* =========================================================
-   AFTER 4:03
+   CLEAN GIF AFTER 4:03
    ========================================================= */
 
 .collage-stage.is-normal {
-  /*
-    Horse GIF supplies its own original
-    background again.
-  */
-
   background:
     transparent;
 }
 
 
 .collage-stage.is-normal
-.texture-layer,
-.collage-stage.is-normal
-.color-layer,
+.morph-frame {
+  opacity:
+    0 !important;
+}
+
+
 .collage-stage.is-normal
 .horse-offset,
 .collage-stage.is-normal
@@ -829,7 +932,8 @@ a {
    ========================================================= */
 
 @media (
-  max-width: 1100px
+  max-width:
+  1100px
 ) {
 
   .hero {
@@ -865,14 +969,19 @@ a {
    ========================================================= */
 
 @media (
-  max-width: 700px
+  max-width:
+  700px
 ) {
 
   .scarf-rack {
-    top: 10px;
+    top:
+      10px;
 
-    left: 0;
-    right: 0;
+    left:
+      0;
+
+    right:
+      0;
 
     flex-direction:
       row;
@@ -906,7 +1015,8 @@ a {
 
 
   .scarf-rack::-webkit-scrollbar {
-    display: none;
+    display:
+      none;
   }
 
 
@@ -1006,21 +1116,23 @@ a {
   }
 
 
-  .wip-header {
-    max-width:
-      94vw;
+  .wip-header,
+  .collage-stage {
+    width:
+      min(
+        82vh,
+        94vw
+      );
   }
 
 
   .wip-text {
-    min-width: 0;
+    min-width:
+      0;
 
     padding:
       12px
       13px;
-
-    white-space:
-      normal;
 
     font-size:
       17px;
@@ -1028,20 +1140,14 @@ a {
 
 
   .wip-close {
+    flex-basis:
+      47px;
+
     width:
       47px;
 
     font-size:
       31px;
-  }
-
-
-  .collage-stage {
-    width:
-      min(
-        82vh,
-        94vw
-      );
   }
 
 }
@@ -1052,7 +1158,8 @@ a {
    ========================================================= */
 
 @media (
-  max-width: 420px
+  max-width:
+  420px
 ) {
 
   .scarf-item {
