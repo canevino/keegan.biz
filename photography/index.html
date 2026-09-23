@@ -12,6 +12,12 @@
   <title>photography — keegan.biz</title>
 
   <link
+    rel="preload"
+    as="image"
+    href="assets/Fuji400-web.png"
+  >
+
+  <link
     rel="stylesheet"
     href="style.css"
   >
@@ -26,7 +32,7 @@
   >
 
     <!-- ===================================================
-         SCARF NAVIGATION
+         SCARFS
          =================================================== -->
 
     <nav
@@ -46,7 +52,6 @@
         >
       </a>
 
-
       <a
         class="scarf-item"
         href="#"
@@ -57,7 +62,6 @@
           alt=""
         >
       </a>
-
 
       <a
         class="scarf-item"
@@ -72,7 +76,6 @@
         >
       </a>
 
-
       <a
         class="scarf-item"
         href="#"
@@ -83,7 +86,6 @@
           alt=""
         >
       </a>
-
 
       <a
         class="scarf-item"
@@ -96,7 +98,6 @@
         >
       </a>
 
-
       <a
         class="scarf-item"
         href="#"
@@ -108,7 +109,6 @@
         >
       </a>
 
-
       <a
         class="scarf-item"
         href="#"
@@ -119,7 +119,6 @@
           alt=""
         >
       </a>
-
 
       <a
         class="scarf-item"
@@ -165,7 +164,7 @@
           aria-label="Interactive landscape photograph with architectural drawing and generative sound"
         >
 
-          <!-- BASE -->
+          <!-- BASE — THE ONLY LARGE ARTWORK IMAGE LOADED IMMEDIATELY -->
 
           <img
             class="fuji-base"
@@ -177,7 +176,10 @@
           >
 
 
-          <!-- BUILDING -->
+          <!-- BUILDING
+               IMPORTANT:
+               data-src means these are NOT decoded immediately.
+          -->
 
           <div
             class="fuji-building-stack"
@@ -186,7 +188,7 @@
 
             <img
               class="fuji-building"
-              src="assets/building.png"
+              data-src="assets/building.png"
               alt=""
               draggable="false"
               decoding="async"
@@ -194,7 +196,7 @@
 
             <img
               class="fuji-building"
-              src="assets/building.png"
+              data-src="assets/building.png"
               alt=""
               draggable="false"
               decoding="async"
@@ -202,7 +204,7 @@
 
             <img
               class="fuji-building"
-              src="assets/building.png"
+              data-src="assets/building.png"
               alt=""
               draggable="false"
               decoding="async"
@@ -210,7 +212,7 @@
 
             <img
               class="fuji-building"
-              src="assets/building.png"
+              data-src="assets/building.png"
               alt=""
               draggable="false"
               decoding="async"
@@ -219,7 +221,9 @@
           </div>
 
 
-          <!-- LINES -->
+          <!-- LINES
+               Also deferred with data-src.
+          -->
 
           <div
             class="fuji-lines"
@@ -227,74 +231,74 @@
           >
 
             <div class="fuji-line-layer" data-line="1">
-              <img class="fuji-line-source" src="assets/line1.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line1.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="2">
-              <img class="fuji-line-source" src="assets/line2.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line2.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="3">
-              <img class="fuji-line-source" src="assets/line3.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line3.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="4">
-              <img class="fuji-line-source" src="assets/line4.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line4.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="5">
-              <img class="fuji-line-source" src="assets/line5.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line5.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="6">
-              <img class="fuji-line-source" src="assets/line6.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line6.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="7">
-              <img class="fuji-line-source" src="assets/line7.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line7.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="8">
-              <img class="fuji-line-source" src="assets/line8.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line8.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="9">
-              <img class="fuji-line-source" src="assets/line9.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line9.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="10">
-              <img class="fuji-line-source" src="assets/line10.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line10.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="11">
-              <img class="fuji-line-source" src="assets/line11.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line11.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="12">
-              <img class="fuji-line-source" src="assets/line12.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line12.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
             <div class="fuji-line-layer" data-line="13">
-              <img class="fuji-line-source" src="assets/line13.png" alt="" draggable="false">
+              <img class="fuji-line-source" data-src="assets/line13.png" alt="" draggable="false" decoding="async">
               <div class="fuji-line-texture"></div>
             </div>
 
           </div>
 
 
-          <!-- MUSICAL SPLASHES -->
+          <!-- MUSICAL VISUAL RESPONSE -->
 
           <div
             class="fuji-splash-layer"
@@ -303,7 +307,7 @@
           ></div>
 
 
-          <!-- TUTORIAL -->
+          <!-- ONBOARDING -->
 
           <div
             class="fuji-click-prompt"
@@ -313,7 +317,7 @@
           ></div>
 
 
-          <!-- CONTROLS — REVEALED AFTER TUTORIAL -->
+          <!-- CONTROLS -->
 
           <div
             class="fuji-controls"
@@ -322,7 +326,7 @@
           >
 
             <button
-              class="fuji-control fuji-auto-song"
+              class="fuji-control"
               id="fuji-auto-song"
               type="button"
             >
@@ -330,10 +334,9 @@
             </button>
 
             <button
-              class="fuji-control fuji-sound-toggle"
+              class="fuji-control"
               id="fuji-sound-toggle"
               type="button"
-              aria-label="Turn sound off"
             >
               click to turn off
             </button>
@@ -443,7 +446,28 @@
 
 
   <!-- =====================================================
-       WIP
+       STREAMING CELLO DRONE
+
+       This is deliberately NOT decoded with decodeAudioData.
+       A six-minute stereo AudioBuffer is too expensive on
+       memory-constrained mobile devices.
+
+       HTMLMediaElement streams it and loop handles the
+       six-minute repeat.
+       ===================================================== -->
+
+  <audio
+    id="fuji-drone"
+    src="assets/audio/cello_drone_d.mp3"
+    preload="metadata"
+    loop
+    playsinline
+    hidden
+  ></audio>
+
+
+  <!-- =====================================================
+       EXISTING WIP AUDIO
        ===================================================== -->
 
   <audio
@@ -456,6 +480,10 @@
     >
   </audio>
 
+
+  <!-- =====================================================
+       WIP OVERLAY
+       ===================================================== -->
 
   <div
     class="wip-overlay"
@@ -598,16 +626,13 @@
       );
 
 
-      window.setTimeout(
+      setTimeout(
         () => {
 
-          current =
-            next;
-
+          current = next;
 
           title.style.color =
             colors[current];
-
 
           title.classList.remove(
             "is-fading"
@@ -624,7 +649,7 @@
       colors[current];
 
 
-    window.setInterval(
+    setInterval(
       changeTitle,
       2300
     );
@@ -634,14 +659,98 @@
 
 
   <!-- =====================================================
-       FUJI VISUAL + AUDIO
+       PHOTOGRAPHY ARTWORK + MUSIC
        ===================================================== -->
 
   <script>
   (() => {
 
     /* =====================================================
-       ELEMENTS
+       ENVIRONMENT
+       ===================================================== */
+
+    const WIDTH_MOBILE =
+      window.matchMedia(
+        "(max-width: 700px)"
+      );
+
+
+    const COARSE_POINTER =
+      window.matchMedia(
+        "(pointer: coarse)"
+      );
+
+
+    const NO_HOVER =
+      window.matchMedia(
+        "(hover: none)"
+      );
+
+
+    const REDUCED_MOTION =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+
+
+    function isMobileMode() {
+
+      return (
+        WIDTH_MOBILE.matches ||
+        COARSE_POINTER.matches
+      );
+
+    }
+
+
+    function isTouchLanguage() {
+
+      return (
+        COARSE_POINTER.matches ||
+        NO_HOVER.matches ||
+        "ontouchstart" in window
+      );
+
+    }
+
+
+    const WORDS = {
+
+      here:
+        () =>
+          isTouchLanguage()
+            ? "tap here"
+            : "click here",
+
+      again:
+        () =>
+          isTouchLanguage()
+            ? "tap again!"
+            : "click again!",
+
+      keep:
+        () =>
+          isTouchLanguage()
+            ? "keep tapping!"
+            : "keep clicking!",
+
+      off:
+        () =>
+          isTouchLanguage()
+            ? "tap to turn off"
+            : "click to turn off",
+
+      on:
+        () =>
+          isTouchLanguage()
+            ? "tap to turn on"
+            : "click to turn on"
+
+    };
+
+
+    /* =====================================================
+       DOM
        ===================================================== */
 
     const artwork =
@@ -656,7 +765,7 @@
       );
 
 
-    const clickPrompt =
+    const prompt =
       document.getElementById(
         "fuji-click-prompt"
       );
@@ -674,7 +783,7 @@
       );
 
 
-    const autoSongButton =
+    const autoButton =
       document.getElementById(
         "fuji-auto-song"
       );
@@ -686,7 +795,13 @@
       );
 
 
-    const buildings =
+    const droneElement =
+      document.getElementById(
+        "fuji-drone"
+      );
+
+
+    const buildingElements =
       Array.from(
         document.querySelectorAll(
           ".fuji-building"
@@ -694,7 +809,7 @@
       );
 
 
-    const lines =
+    const allLines =
       Array.from(
         document.querySelectorAll(
           ".fuji-line-layer"
@@ -714,24 +829,18 @@
               ".fuji-line-texture"
             ),
 
-          visible: false,
-
-          lastMutation: 0
+          visible: false
 
         })
       );
 
 
-    const finePointer =
-      window.matchMedia(
-        "(hover: hover) and (pointer: fine)"
-      );
+    let activeBuildings =
+      [];
 
 
-    const reducedMotion =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      );
+    let validLines =
+      [];
 
 
     /* =====================================================
@@ -793,13 +902,13 @@
       array
     ) {
 
-      const result =
+      const copy =
         [...array];
 
 
       for (
         let i =
-          result.length - 1;
+          copy.length - 1;
 
         i > 0;
 
@@ -816,47 +925,34 @@
 
 
         [
-          result[i],
-          result[j]
+          copy[i],
+          copy[j]
         ] = [
-          result[j],
-          result[i]
+          copy[j],
+          copy[i]
         ];
 
       }
 
 
-      return result;
+      return copy;
 
     }
 
 
-    function weightedPick(
-      entries
+    function weightedObject(
+      items
     ) {
 
-      const usable =
-        entries.filter(
-          entry =>
-            entry.weight > 0
-        );
-
-
-      const total =
-        usable.reduce(
-          (
-            sum,
-            item
-          ) =>
-            sum +
-            item.weight,
-          0
+      const valid =
+        items.filter(
+          item =>
+            item.weight > 0
         );
 
 
       if (
-        !usable.length ||
-        total <= 0
+        !valid.length
       ) {
 
         return null;
@@ -864,50 +960,8 @@
       }
 
 
-      let value =
-        Math.random() *
-        total;
-
-
-      for (
-        const item of usable
-      ) {
-
-        value -=
-          item.weight;
-
-
-        if (
-          value <= 0
-        ) {
-
-          return item.value;
-
-        }
-
-      }
-
-
-      return usable[
-        usable.length - 1
-      ].value;
-
-    }
-
-
-    function weightedObject(
-      entries
-    ) {
-
-      const usable =
-        entries.filter(
-          entry =>
-            entry.weight > 0
-        );
-
-
       const total =
-        usable.reduce(
+        valid.reduce(
           (
             sum,
             item
@@ -924,7 +978,7 @@
 
 
       for (
-        const item of usable
+        const item of valid
       ) {
 
         value -=
@@ -942,9 +996,26 @@
       }
 
 
-      return usable[
-        usable.length - 1
+      return valid[
+        valid.length - 1
       ];
+
+    }
+
+
+    function weightedPick(
+      items
+    ) {
+
+      const result =
+        weightedObject(
+          items
+        );
+
+
+      return result
+        ? result.value
+        : null;
 
     }
 
@@ -955,11 +1026,12 @@
 
       if (
         image.complete &&
-        image.naturalWidth >
-          0
+        image.naturalWidth > 0
       ) {
 
-        return Promise.resolve();
+        return Promise.resolve(
+          image
+        );
 
       }
 
@@ -972,7 +1044,10 @@
 
           image.addEventListener(
             "load",
-            resolve,
+            () =>
+              resolve(
+                image
+              ),
             {
               once: true
             }
@@ -993,651 +1068,61 @@
     }
 
 
-    /* =====================================================
-       TUTORIAL
-       ===================================================== */
-
-    const tutorial = {
-
-      step:
-        0,
-
-      promptTimer:
-        null,
-
-      controlsTimer:
-        null
-
-    };
-
-
-    function showPrompt(
-      text
+    async function hydrateImage(
+      image
     ) {
-
-      clickPrompt.textContent =
-        text;
-
-
-      clickPrompt.classList.add(
-        "is-visible"
-      );
-
-
-      clickPrompt.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-    }
-
-
-    function hidePrompt() {
-
-      clickPrompt.classList.remove(
-        "is-visible"
-      );
-
-
-      clickPrompt.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-    }
-
-
-    function schedulePrompt(
-      text,
-      delay
-    ) {
-
-      window.clearTimeout(
-        tutorial.promptTimer
-      );
-
-
-      tutorial.promptTimer =
-        window.setTimeout(
-          () => {
-
-            showPrompt(
-              text
-            );
-
-          },
-          delay
-        );
-
-    }
-
-
-    function revealControls() {
-
-      controls.classList.add(
-        "is-visible"
-      );
-
-
-      controls.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-    }
-
-
-    function advanceTutorial() {
-
-      hidePrompt();
-
-
-      window.clearTimeout(
-        tutorial.promptTimer
-      );
-
 
       if (
-        tutorial.step === 0
-      ) {
-
-        tutorial.step =
-          1;
-
-
-        schedulePrompt(
-          "click again!",
-          900
-        );
-
-
-        return;
-
-      }
-
-
-      if (
-        tutorial.step === 1
-      ) {
-
-        tutorial.step =
-          2;
-
-
-        /*
-          Give them time to listen before another instruction.
-        */
-
-        schedulePrompt(
-          "keep clicking!",
-          4000
-        );
-
-
-        return;
-
-      }
-
-
-      if (
-        tutorial.step === 2
-      ) {
-
-        tutorial.step =
-          3;
-
-
-        window.clearTimeout(
-          tutorial.controlsTimer
-        );
-
-
-        tutorial.controlsTimer =
-          window.setTimeout(
-            revealControls,
-            650
-          );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       VISUAL MATERIAL
-       ===================================================== */
-
-    const VISUAL_TEXTURES = [
-
-      "../assets/home/Texturelabs_Grunge_173S.jpg",
-      "../assets/home/Texturelabs_Grunge_279L.jpg",
-      "../assets/home/Texturelabs_Grunge_334S.jpg",
-      "../assets/home/Texturelabs_Grunge_341S.jpg",
-
-      "../assets/home/Texturelabs_InkPaint_126S.jpg",
-      "../assets/home/Texturelabs_InkPaint_320S.jpg",
-      "../assets/home/Texturelabs_InkPaint_332S.jpg",
-      "../assets/home/Texturelabs_InkPaint_356S.jpg",
-
-      "../assets/home/Texturelabs_Concrete_150S.jpg",
-      "../assets/home/Texturelabs_Concrete_155S.jpg",
-      "../assets/home/Texturelabs_Concrete_179S.jpg",
-      "../assets/home/Texturelabs_Concrete_205S.jpg",
-
-      "../assets/home/Texturelabs_Film_181S.jpg",
-      "../assets/home/Texturelabs_Film_183S.jpg",
-      "../assets/home/Texturelabs_Film_187S.jpg",
-
-      "../assets/home/Texturelabs_Metal_129S.jpg",
-      "../assets/home/Texturelabs_Metal_165S.jpg",
-
-      "../assets/home/Texturelabs_Paper_280S.jpg",
-      "../assets/home/Texturelabs_Paper_286S.jpg",
-
-      "../assets/home/Texturelabs_Wood_135S.jpg",
-      "../assets/home/Texturelabs_Wood_280S.jpg"
-
-    ];
-
-
-    const LINE_PALETTES = [
-
-      {
-        colors: [
-          "#4c1f2d",
-          "#763246"
-        ],
-        hue: -20,
-        saturate: [.92, 1.26],
-        brightness: [.84, .98]
-      },
-
-      {
-        colors: [
-          "#66272b",
-          "#8a413d"
-        ],
-        hue: -9,
-        saturate: [.92, 1.22],
-        brightness: [.84, .98]
-      },
-
-      {
-        colors: [
-          "#203f30",
-          "#41654a"
-        ],
-        hue: 64,
-        saturate: [.88, 1.22],
-        brightness: [.80, .96]
-      },
-
-      {
-        colors: [
-          "#68775e",
-          "#9aa58b"
-        ],
-        hue: 74,
-        saturate: [.66, .94],
-        brightness: [.94, 1.08]
-      },
-
-      {
-        colors: [
-          "#4b5835",
-          "#737a49"
-        ],
-        hue: 82,
-        saturate: [.76, 1.08],
-        brightness: [.84, 1.00]
-      },
-
-      {
-        colors: [
-          "#777657",
-          "#9b9a72"
-        ],
-        hue: 87,
-        saturate: [.56, .82],
-        brightness: [.92, 1.06]
-      },
-
-      {
-        colors: [
-          "#47362d",
-          "#685044"
-        ],
-        hue: 5,
-        saturate: [.62, .88],
-        brightness: [.78, .94]
-      },
-
-      {
-        colors: [
-          "#50616a",
-          "#74828a"
-        ],
-        hue: 168,
-        saturate: [.58, .86],
-        brightness: [.88, 1.03]
-      }
-
-    ];
-
-
-    const POSTERIZE = [
-      "#fuji-posterize-3",
-      "#fuji-posterize-4",
-      "#fuji-posterize-6"
-    ];
-
-
-    const THRESHOLD = [
-      "#fuji-threshold-low",
-      "#fuji-threshold-mid",
-      "#fuji-threshold-high"
-    ];
-
-
-    const BUILDING_LOOKS = [
-
-      {
-        blend: "screen",
-        weight: 22,
-        grayscale: [.08, .20],
-        sepia: [.08, .18],
-        saturate: [.68, .96],
-        hue: [176, 202],
-        brightness: [1.02, 1.12],
-        contrast: [1.02, 1.11],
-        opacity: [.08, .21]
-      },
-
-      {
-        blend: "soft-light",
-        weight: 20,
-        grayscale: [.12, .25],
-        sepia: [.08, .20],
-        saturate: [.62, .92],
-        hue: [184, 211],
-        brightness: [.94, 1.05],
-        contrast: [1.05, 1.16],
-        opacity: [.08, .23]
-      },
-
-      {
-        blend: "overlay",
-        weight: 18,
-        grayscale: [.08, .20],
-        sepia: [.24, .42],
-        saturate: [.68, .98],
-        hue: [76, 104],
-        brightness: [.90, 1.00],
-        contrast: [1.04, 1.14],
-        opacity: [.07, .19]
-      },
-
-      {
-        blend: "lighten",
-        weight: 16,
-        grayscale: [.12, .25],
-        sepia: [.28, .48],
-        saturate: [.58, .88],
-        hue: [5, 24],
-        brightness: [.97, 1.08],
-        contrast: [1.02, 1.11],
-        opacity: [.07, .18]
-      },
-
-      {
-        blend: "multiply",
-        weight: 12,
-        grayscale: [.08, .20],
-        sepia: [.34, .54],
-        saturate: [.70, 1.00],
-        hue: [-8, 10],
-        brightness: [.78, .91],
-        contrast: [1.06, 1.16],
-        opacity: [.05, .15]
-      }
-
-    ];
-
-
-    /* =====================================================
-       SPLASHES
-       ===================================================== */
-
-    const SPLASH_COLORS = [
-      "#006a44",
-      "#fdb913",
-      "#c1272d"
-    ];
-
-
-    const SPLASH_BLENDS = [
-      "overlay",
-      "soft-light",
-      "multiply"
-    ];
-
-
-    function eventPointFromMouse(
-      event
-    ) {
-
-      const rect =
-        artwork.getBoundingClientRect();
-
-
-      return {
-
-        x:
-          clamp(
-            (
-              event.clientX -
-              rect.left
-            ) /
-            rect.width,
-            0,
-            1
-          ),
-
-        y:
-          clamp(
-            (
-              event.clientY -
-              rect.top
-            ) /
-            rect.height,
-            0,
-            1
-          )
-
-      };
-
-    }
-
-
-    function randomEventPoint() {
-
-      return {
-
-        x:
-          random(
-            .20,
-            .80
-          ),
-
-        y:
-          random(
-            .22,
-            .80
-          )
-
-      };
-
-    }
-
-
-    function addSplashCircle(
-      point,
-      type,
-      index
-    ) {
-
-      const circle =
-        document.createElement(
-          "span"
-        );
-
-
-      circle.className =
-        `fuji-splash fuji-splash-${type}`;
-
-
-      const cloud =
-        type === "cloud";
-
-
-      const drone =
-        type === "drone";
-
-
-      const size =
-        cloud
-          ? random(44, 78)
-          : drone
-            ? random(28, 48)
-            : random(12, 23);
-
-
-      const duration =
-        cloud
-          ? random(5.4, 7.8)
-          : drone
-            ? random(5.5, 8)
-            : random(2.7, 4.2);
-
-
-      const opacity =
-        cloud
-          ? random(.14, .25)
-          : drone
-            ? random(.09, .15)
-            : random(.13, .21);
-
-
-      const jitter =
-        cloud
-          ? .07
-          : drone
-            ? .04
-            : .025;
-
-
-      const x =
-        clamp(
-          point.x +
-          random(
-            -jitter,
-            jitter
-          ),
-          .03,
-          .97
-        );
-
-
-      const y =
-        clamp(
-          point.y +
-          random(
-            -jitter,
-            jitter
-          ),
-          .03,
-          .97
-        );
-
-
-      circle.style.setProperty(
-        "--x",
-        `${x * 100}%`
-      );
-
-
-      circle.style.setProperty(
-        "--y",
-        `${y * 100}%`
-      );
-
-
-      circle.style.setProperty(
-        "--size",
-        `${size}%`
-      );
-
-
-      circle.style.setProperty(
-        "--splash-color",
-        pick(
-          SPLASH_COLORS
+        !image.getAttribute(
+          "src"
         )
+      ) {
+
+        image.src =
+          image.dataset.src;
+
+      }
+
+
+      await waitForImage(
+        image
       );
 
 
-      circle.style.setProperty(
-        "--splash-opacity",
-        opacity.toFixed(3)
-      );
+      return image;
+
+    }
 
 
-      circle.style.setProperty(
-        "--splash-duration",
-        `${duration}s`
-      );
+    /* =====================================================
+       TRUE DEFERRED IMAGE LOADING
+       ===================================================== */
 
+    async function revealBase() {
 
-      circle.style.setProperty(
-        "--splash-delay",
-        `${index * random(.05, .13)}s`
-      );
+      try {
 
-
-      circle.style.mixBlendMode =
-        pick(
-          SPLASH_BLENDS
+        await waitForImage(
+          base
         );
 
+      }
 
-      splashLayer.appendChild(
-        circle
-      );
+      catch {}
 
 
-      window.setTimeout(
+      requestAnimationFrame(
         () => {
 
-          circle.remove();
+          artwork.classList.add(
+            "is-ready"
+          );
 
-        },
-        (
-          duration +
-          .6
-        ) *
-        1000
+        }
       );
 
     }
 
-
-    function createSplash(
-      type,
-      point
-    ) {
-
-      if (
-        reducedMotion.matches
-      ) {
-
-        return;
-
-      }
-
-
-      const origin =
-        point ||
-        randomEventPoint();
-
-
-      const count =
-        type === "cloud"
-          ? randomInt(2, 3)
-          : type === "drone"
-            ? 2
-            : 1;
-
-
-      for (
-        let i = 0;
-        i < count;
-        i++
-      ) {
-
-        addSplashCircle(
-          origin,
-          type,
-          i
-        );
-
-      }
-
-    }
-
-
-    /* =====================================================
-       IMAGE PREPARATION
-       ===================================================== */
 
     function hasUsefulAlpha(
       image
@@ -1651,55 +1136,46 @@
           );
 
 
-        const width =
-          120;
+        canvas.width =
+          96;
 
 
-        const height =
+        canvas.height =
           Math.max(
             1,
             Math.round(
-              width *
-              (
-                image.naturalHeight /
-                image.naturalWidth
-              )
+              96 *
+              image.naturalHeight /
+              image.naturalWidth
             )
           );
 
 
-        canvas.width =
-          width;
-
-
-        canvas.height =
-          height;
-
-
-        const context =
+        const ctx =
           canvas.getContext(
             "2d",
             {
-              willReadFrequently: true
+              willReadFrequently:
+                true
             }
           );
 
 
-        context.drawImage(
+        ctx.drawImage(
           image,
           0,
           0,
-          width,
-          height
+          canvas.width,
+          canvas.height
         );
 
 
-        const data =
-          context.getImageData(
+        const pixels =
+          ctx.getImageData(
             0,
             0,
-            width,
-            height
+            canvas.width,
+            canvas.height
           ).data;
 
 
@@ -1709,12 +1185,12 @@
 
         for (
           let i = 3;
-          i < data.length;
+          i < pixels.length;
           i += 4
         ) {
 
           if (
-            data[i] < 235
+            pixels[i] < 235
           ) {
 
             translucent++;
@@ -1727,8 +1203,8 @@
         return (
           translucent /
           (
-            width *
-            height
+            canvas.width *
+            canvas.height
           )
         ) > .025;
 
@@ -1743,50 +1219,94 @@
     }
 
 
-    let validLines =
-      [];
+    async function prepareOverlayAssets() {
+
+      const mobile =
+        isMobileMode();
 
 
-    let buildingValid =
-      true;
+      /*
+        MOBILE MEMORY BUDGET
 
+        Desktop:
+          13 line PNGs
+          4 building plates
 
-    async function prepareVisuals() {
+        Mobile:
+          6 line PNGs
+          2 building plates
 
-      try {
+        The unused <img> elements never receive a src,
+        therefore those large PNGs are never decoded.
+      */
 
-        await Promise.all([
-
-          waitForImage(
-            base
-          ),
-
-          ...buildings.map(
-            waitForImage
-          ),
-
-          ...lines.map(
-            line =>
-              waitForImage(
-                line.source
-              )
-          )
-
-        ]);
-
-      }
-
-      catch (error) {
-
-        console.error(
-          "One or more photography assets failed to load.",
-          error
+      activeBuildings =
+        buildingElements.slice(
+          0,
+          mobile
+            ? 2
+            : 4
         );
 
 
-        return;
+      buildingElements
+        .slice(
+          activeBuildings.length
+        )
+        .forEach(
+          image => {
 
-      }
+            image.style.display =
+              "none";
+
+          }
+        );
+
+
+      const selectedLines =
+        mobile
+          ? shuffle(
+              allLines
+            ).slice(
+              0,
+              6
+            )
+          : allLines;
+
+
+      allLines.forEach(
+        item => {
+
+          if (
+            !selectedLines.includes(
+              item
+            )
+          ) {
+
+            item.layer.style.display =
+              "none";
+
+          }
+
+        }
+      );
+
+
+      await Promise.allSettled(
+        activeBuildings.map(
+          hydrateImage
+        )
+      );
+
+
+      await Promise.allSettled(
+        selectedLines.map(
+          item =>
+            hydrateImage(
+              item.source
+            )
+        )
+      );
 
 
       const width =
@@ -1798,12 +1318,14 @@
 
 
       validLines =
-        lines.filter(
+        selectedLines.filter(
           item => {
 
             if (
-              item.source.naturalWidth !== width ||
-              item.source.naturalHeight !== height
+              item.source.naturalWidth !==
+                width ||
+              item.source.naturalHeight !==
+                height
             ) {
 
               item.layer.style.display =
@@ -1850,31 +1372,7 @@
         );
 
 
-      buildingValid =
-        buildings.every(
-          building =>
-            building.naturalWidth === width &&
-            building.naturalHeight === height
-        );
-
-
-      if (
-        !buildingValid
-      ) {
-
-        buildings.forEach(
-          building => {
-
-            building.style.display =
-              "none";
-
-          }
-        );
-
-      }
-
-
-      clearArtwork(
+      resetVisuals(
         true
       );
 
@@ -1882,218 +1380,543 @@
 
 
     /* =====================================================
-       LINES
+       TUTORIAL
        ===================================================== */
 
-    function chooseLineBlend(
-      item,
-      intensity
+    const tutorial = {
+
+      step: 0,
+
+      promptTimer: null,
+
+      volumeTimer: null,
+
+      hideVolumeTimer: null,
+
+      nextTimer: null,
+
+      controlsTimer: null
+
+    };
+
+
+    function clearTutorialTimers() {
+
+      clearTimeout(
+        tutorial.promptTimer
+      );
+
+      clearTimeout(
+        tutorial.volumeTimer
+      );
+
+      clearTimeout(
+        tutorial.hideVolumeTimer
+      );
+
+      clearTimeout(
+        tutorial.nextTimer
+      );
+
+      clearTimeout(
+        tutorial.controlsTimer
+      );
+
+    }
+
+
+    function hidePrompt() {
+
+      prompt.classList.remove(
+        "is-visible"
+      );
+
+
+      prompt.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    }
+
+
+    function showPrompt(
+      text
     ) {
 
+      prompt.textContent =
+        text;
+
+
+      prompt.classList.add(
+        "is-visible"
+      );
+
+
+      prompt.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+    }
+
+
+    function showControls() {
+
+      controls.classList.add(
+        "is-visible"
+      );
+
+
+      controls.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+    }
+
+
+    function advanceTutorial() {
+
+      hidePrompt();
+
+
+      clearTutorialTimers();
+
+
       if (
-        item.layer.classList.contains(
-          "has-white-canvas"
-        )
+        tutorial.step === 0
       ) {
 
-        return weightedPick([
+        tutorial.step =
+          1;
 
-          {
-            value: "multiply",
-            weight: 56
-          },
 
-          {
-            value: "darken",
-            weight: 28
-          },
+        /*
+          The cello takes a few seconds to bloom.
 
-          {
-            value: "color-burn",
-            weight:
-              7 +
-              intensity *
-              7
-          }
+          0.9 sec:
+            turn up volume
 
-        ]);
+          2.8 sec:
+            remove volume message
+
+          5.2 sec:
+            click/tap again
+        */
+
+        tutorial.volumeTimer =
+          setTimeout(
+            () => {
+
+              showPrompt(
+                "turn up volume"
+              );
+
+            },
+            900
+          );
+
+
+        tutorial.hideVolumeTimer =
+          setTimeout(
+            () => {
+
+              hidePrompt();
+
+            },
+            2800
+          );
+
+
+        tutorial.nextTimer =
+          setTimeout(
+            () => {
+
+              showPrompt(
+                WORDS.again()
+              );
+
+            },
+            5200
+          );
+
+
+        return;
 
       }
 
 
-      return weightedPick([
+      if (
+        tutorial.step === 1
+      ) {
 
-        {
-          value: "soft-light",
-          weight: 22
-        },
+        tutorial.step =
+          2;
 
-        {
-          value: "overlay",
-          weight: 20
-        },
 
-        {
-          value: "multiply",
-          weight: 17
-        },
+        tutorial.nextTimer =
+          setTimeout(
+            () => {
 
-        {
-          value: "screen",
-          weight: 13
-        },
+              showPrompt(
+                WORDS.keep()
+              );
 
-        {
-          value: "hard-light",
-          weight: 12
-        },
+            },
+            4100
+          );
 
-        {
-          value: "exclusion",
-          weight:
-            2 +
-            intensity *
-            3
-        },
 
-        {
-          value: "difference",
-          weight:
-            1 +
-            intensity *
-            2
-        }
+        return;
 
-      ]);
+      }
+
+
+      if (
+        tutorial.step === 2
+      ) {
+
+        tutorial.step =
+          3;
+
+
+        tutorial.controlsTimer =
+          setTimeout(
+            showControls,
+            650
+          );
+
+      }
 
     }
 
 
-    function chooseProcessing(
-      intensity
-    ) {
+    /* =====================================================
+       VISUAL MATERIAL
+       ===================================================== */
 
-      return weightedPick([
+    const DESKTOP_TEXTURES = [
 
-        {
-          value: "normal",
-          weight: 29
-        },
+      "../assets/home/Texturelabs_Grunge_173S.jpg",
+      "../assets/home/Texturelabs_Grunge_279L.jpg",
+      "../assets/home/Texturelabs_Grunge_334S.jpg",
+      "../assets/home/Texturelabs_Grunge_341S.jpg",
 
-        {
-          value: "exposed",
-          weight: 25
-        },
+      "../assets/home/Texturelabs_InkPaint_126S.jpg",
+      "../assets/home/Texturelabs_InkPaint_320S.jpg",
+      "../assets/home/Texturelabs_InkPaint_332S.jpg",
 
-        {
-          value: "posterize",
-          weight:
-            14 +
-            intensity *
-            8
-        },
+      "../assets/home/Texturelabs_Concrete_150S.jpg",
+      "../assets/home/Texturelabs_Concrete_155S.jpg",
+      "../assets/home/Texturelabs_Concrete_179S.jpg",
 
-        {
-          value: "threshold",
-          weight:
-            4 +
-            intensity *
-            10
-        },
+      "../assets/home/Texturelabs_Film_181S.jpg",
+      "../assets/home/Texturelabs_Film_183S.jpg",
 
-        {
-          value: "hard",
-          weight:
-            10 +
-            intensity *
-            5
-        },
+      "../assets/home/Texturelabs_Metal_129S.jpg",
 
-        {
-          value: "bleached",
-          weight: 11
-        }
+      "../assets/home/Texturelabs_Paper_280S.jpg",
+      "../assets/home/Texturelabs_Paper_286S.jpg",
 
-      ]);
+      "../assets/home/Texturelabs_Wood_135S.jpg"
+
+    ];
+
+
+    /*
+      Keep the decoded texture footprint much smaller on
+      phones/tablets.
+    */
+
+    const MOBILE_TEXTURES = [
+
+      "../assets/home/Texturelabs_Grunge_341S.jpg",
+      "../assets/home/Texturelabs_Film_183S.jpg",
+      "../assets/home/Texturelabs_Paper_280S.jpg",
+      "../assets/home/Texturelabs_Concrete_155S.jpg"
+
+    ];
+
+
+    function activeTexturePool() {
+
+      return isMobileMode()
+        ? MOBILE_TEXTURES
+        : DESKTOP_TEXTURES;
 
     }
 
 
-    function filterFor(
-      processing,
+    const LINE_PALETTES = [
+
+      {
+        colors:
+          ["#4c1f2d", "#763246"],
+        hue: -20,
+        saturation: [.90, 1.22],
+        brightness: [.84, .98]
+      },
+
+      {
+        colors:
+          ["#642b32", "#8a453f"],
+        hue: -8,
+        saturation: [.86, 1.18],
+        brightness: [.84, .98]
+      },
+
+      {
+        colors:
+          ["#203f30", "#41654a"],
+        hue: 64,
+        saturation: [.86, 1.18],
+        brightness: [.80, .96]
+      },
+
+      {
+        colors:
+          ["#68775e", "#9aa58b"],
+        hue: 74,
+        saturation: [.64, .90],
+        brightness: [.94, 1.08]
+      },
+
+      {
+        colors:
+          ["#4b5835", "#737a49"],
+        hue: 82,
+        saturation: [.74, 1.04],
+        brightness: [.84, 1]
+      },
+
+      {
+        colors:
+          ["#777657", "#9b9a72"],
+        hue: 87,
+        saturation: [.54, .80],
+        brightness: [.92, 1.06]
+      },
+
+      {
+        colors:
+          ["#47362d", "#685044"],
+        hue: 5,
+        saturation: [.60, .86],
+        brightness: [.78, .94]
+      },
+
+      {
+        colors:
+          ["#50616a", "#74828a"],
+        hue: 168,
+        saturation: [.56, .82],
+        brightness: [.88, 1.03]
+      }
+
+    ];
+
+
+    const POSTERIZE = [
+      "#fuji-posterize-3",
+      "#fuji-posterize-4",
+      "#fuji-posterize-6"
+    ];
+
+
+    const THRESHOLD = [
+      "#fuji-threshold-low",
+      "#fuji-threshold-mid",
+      "#fuji-threshold-high"
+    ];
+
+
+    const BUILDING_LOOKS = [
+
+      {
+        blend: "screen",
+        weight: 20,
+        grayscale: [.08, .20],
+        sepia: [.08, .18],
+        saturation: [.66, .92],
+        hue: [176, 202],
+        brightness: [1.01, 1.10],
+        contrast: [1.02, 1.11],
+        opacity: [.07, .19]
+      },
+
+      {
+        blend: "soft-light",
+        weight: 22,
+        grayscale: [.12, .25],
+        sepia: [.08, .20],
+        saturation: [.60, .88],
+        hue: [184, 211],
+        brightness: [.94, 1.04],
+        contrast: [1.05, 1.16],
+        opacity: [.08, .22]
+      },
+
+      {
+        blend: "overlay",
+        weight: 20,
+        grayscale: [.08, .20],
+        sepia: [.24, .42],
+        saturation: [.66, .94],
+        hue: [76, 104],
+        brightness: [.90, 1],
+        contrast: [1.04, 1.14],
+        opacity: [.07, .18]
+      },
+
+      {
+        blend: "lighten",
+        weight: 16,
+        grayscale: [.12, .25],
+        sepia: [.28, .48],
+        saturation: [.56, .84],
+        hue: [5, 24],
+        brightness: [.97, 1.07],
+        contrast: [1.02, 1.11],
+        opacity: [.06, .17]
+      },
+
+      {
+        blend: "multiply",
+        weight: 14,
+        grayscale: [.08, .20],
+        sepia: [.34, .54],
+        saturation: [.68, .96],
+        hue: [-8, 10],
+        brightness: [.78, .91],
+        contrast: [1.06, 1.16],
+        opacity: [.05, .14]
+      }
+
+    ];
+
+
+    /* =====================================================
+       LINE APPEARANCE
+       ===================================================== */
+
+    function lineFilter(
       intensity,
       palette
     ) {
 
+      /*
+        The SVG posterize/threshold filters are significantly
+        heavier on a full-size transparent PNG.
+
+        They remain possible on desktop.
+
+        Mobile uses the simpler CSS processing path.
+      */
+
+      const processing =
+        isMobileMode()
+          ? weightedPick([
+
+              {
+                value: "normal",
+                weight: 48
+              },
+
+              {
+                value: "exposed",
+                weight: 31
+              },
+
+              {
+                value: "hard",
+                weight: 16
+              },
+
+              {
+                value: "posterized",
+                weight: 5
+              }
+
+            ])
+          : weightedPick([
+
+              {
+                value: "normal",
+                weight: 34
+              },
+
+              {
+                value: "exposed",
+                weight: 28
+              },
+
+              {
+                value: "posterized",
+                weight: 17
+              },
+
+              {
+                value: "threshold",
+                weight:
+                  4 +
+                  intensity *
+                  10
+              },
+
+              {
+                value: "hard",
+                weight:
+                  10 +
+                  intensity *
+                  5
+              }
+
+            ]);
+
+
       const hue =
         palette.hue +
         random(
-          -7,
-          7
+          -6,
+          6
         );
 
 
       if (
-        processing === "posterize"
+        processing === "posterized" &&
+        !isMobileMode()
       ) {
 
         return `
-          grayscale(.15)
-          sepia(.38)
+          grayscale(.14)
+          sepia(.36)
           url("${pick(POSTERIZE)}")
           hue-rotate(${hue}deg)
           saturate(${random(
-            palette.saturate[0],
-            palette.saturate[1] + .12
+            palette.saturation[0],
+            palette.saturation[1]
           )})
-          brightness(${random(
-            palette.brightness[0],
-            palette.brightness[1]
-          )})
-          contrast(${random(1.08, 1.40)})
+          contrast(${random(1.08, 1.38)})
         `;
 
       }
 
 
       if (
-        processing === "threshold"
+        processing === "threshold" &&
+        !isMobileMode()
       ) {
 
         return `
           grayscale(.20)
-          sepia(.42)
+          sepia(.40)
           url("${pick(THRESHOLD)}")
           hue-rotate(${hue}deg)
           saturate(${random(
-            palette.saturate[0],
-            palette.saturate[1] + .12
+            palette.saturation[0],
+            palette.saturation[1]
           )})
-          contrast(${random(1.12, 1.45)})
-        `;
-
-      }
-
-
-      if (
-        processing === "exposed"
-      ) {
-
-        return `
-          grayscale(.10)
-          sepia(.30)
-          hue-rotate(${hue}deg)
-          saturate(${random(
-            palette.saturate[0],
-            palette.saturate[1] + .14
-          )})
-          brightness(${random(
-            1,
-            1.18 +
-            intensity *
-            .12
-          )})
-          contrast(${random(1.05, 1.30)})
         `;
 
       }
@@ -2104,49 +1927,88 @@
       ) {
 
         return `
-          grayscale(.12)
-          sepia(.34)
+          grayscale(.10)
+          sepia(.32)
           hue-rotate(${hue}deg)
           saturate(${random(
-            palette.saturate[0],
-            palette.saturate[1] + .18
+            palette.saturation[0],
+            palette.saturation[1] + .10
           )})
-          brightness(${random(.88, 1.05)})
-          contrast(${random(1.28, 1.68)})
+          brightness(${random(.88, 1.04)})
+          contrast(${random(
+            isMobileMode()
+              ? 1.18
+              : 1.26,
+            isMobileMode()
+              ? 1.43
+              : 1.62
+          )})
         `;
 
       }
 
 
       if (
-        processing === "bleached"
+        processing === "exposed"
       ) {
 
         return `
-          grayscale(.24)
-          sepia(.20)
+          grayscale(.09)
+          sepia(.28)
           hue-rotate(${hue}deg)
-          saturate(${random(.54, .84)})
-          brightness(${random(1.08, 1.23)})
-          contrast(${random(.98, 1.15)})
+          saturate(${random(
+            palette.saturation[0],
+            palette.saturation[1]
+          )})
+          brightness(${random(
+            1,
+            1.14 +
+            intensity *
+            .08
+          )})
+          contrast(${random(1.04, 1.25)})
+        `;
+
+      }
+
+
+      /*
+        Mobile posterization becomes a lighter-weight
+        high-contrast approximation.
+      */
+
+      if (
+        processing === "posterized"
+      ) {
+
+        return `
+          grayscale(.13)
+          sepia(.34)
+          hue-rotate(${hue}deg)
+          saturate(${random(
+            palette.saturation[0],
+            palette.saturation[1]
+          )})
+          brightness(${random(.94, 1.06)})
+          contrast(${random(1.34, 1.52)})
         `;
 
       }
 
 
       return `
-        grayscale(.10)
-        sepia(.30)
+        grayscale(.08)
+        sepia(.28)
         hue-rotate(${hue}deg)
         saturate(${random(
-          palette.saturate[0],
-          palette.saturate[1]
+          palette.saturation[0],
+          palette.saturation[1]
         )})
         brightness(${random(
           palette.brightness[0],
           palette.brightness[1]
         )})
-        contrast(${random(1.02, 1.20)})
+        contrast(${random(1.02, 1.18)})
       `;
 
     }
@@ -2170,30 +2032,58 @@
         palette.colors;
 
 
-      const textureA =
+      const texture =
         pick(
-          VISUAL_TEXTURES
-        );
-
-
-      const textureB =
-        pick(
-          VISUAL_TEXTURES
+          activeTexturePool()
         );
 
 
       item.source.style.mixBlendMode =
-        chooseLineBlend(
-          item,
-          intensity
-        );
+        weightedPick([
+
+          {
+            value: "soft-light",
+            weight: 26
+          },
+
+          {
+            value: "overlay",
+            weight: 23
+          },
+
+          {
+            value: "multiply",
+            weight: 22
+          },
+
+          {
+            value: "screen",
+            weight: 13
+          },
+
+          {
+            value: "hard-light",
+            weight:
+              isMobileMode()
+                ? 5
+                : 11
+          },
+
+          {
+            value: "color-burn",
+            weight:
+              isMobileMode()
+                ? 0
+                : 4 +
+                  intensity *
+                  4
+          }
+
+        ]);
 
 
       item.source.style.filter =
-        filterFor(
-          chooseProcessing(
-            intensity
-          ),
+        lineFilter(
           intensity,
           palette
         );
@@ -2202,14 +2092,7 @@
       item.source.style.opacity =
         random(
           .34,
-          .80
-        );
-
-
-      const angle =
-        random(
-          0,
-          360
+          .78
         );
 
 
@@ -2222,64 +2105,33 @@
         item.texture.style.backgroundImage =
           `
             linear-gradient(
-              ${angle}deg,
+              ${random(0, 360)}deg,
               ${colorA},
               ${colorB}
             ),
-            url("${textureA}"),
-            url("${textureB}")
+            url("${texture}")
+          `;
+
+
+        item.texture.style.backgroundSize =
+          `
+            100% 100%,
+            cover
+          `;
+
+
+        item.texture.style.backgroundPosition =
+          `
+            center,
+            center
           `;
 
 
         item.texture.style.backgroundBlendMode =
           `
             normal,
-            ${pick([
-              "multiply",
-              "soft-light",
-              "overlay"
-            ])},
-            normal
+            multiply
           `;
-
-
-        item.texture.style.mixBlendMode =
-          weightedPick([
-
-            {
-              value: "soft-light",
-              weight: 24
-            },
-
-            {
-              value: "overlay",
-              weight: 22
-            },
-
-            {
-              value: "multiply",
-              weight: 16
-            },
-
-            {
-              value: "screen",
-              weight: 14
-            },
-
-            {
-              value: "hard-light",
-              weight: 10
-            },
-
-            {
-              value: "difference",
-              weight:
-                1 +
-                intensity *
-                2
-            }
-
-          ]);
 
       }
 
@@ -2289,12 +2141,27 @@
           `
             url("${item.source.src}"),
             linear-gradient(
-              ${angle}deg,
+              ${random(0, 360)}deg,
               ${colorA},
               ${colorB}
             ),
-            url("${textureA}"),
-            url("${textureB}")
+            url("${texture}")
+          `;
+
+
+        item.texture.style.backgroundSize =
+          `
+            100% 100%,
+            100% 100%,
+            cover
+          `;
+
+
+        item.texture.style.backgroundPosition =
+          `
+            center,
+            center,
+            center
           `;
 
 
@@ -2302,78 +2169,94 @@
           `
             multiply,
             screen,
-            overlay,
-            normal
+            overlay
           `;
-
-
-        item.texture.style.mixBlendMode =
-          "multiply";
 
       }
 
 
-      item.texture.style.backgroundSize =
-        `
-          100% 100%,
-          ${random(110, 160)}% ${random(110, 160)}%,
-          cover,
-          cover
-        `;
+      item.texture.style.mixBlendMode =
+        weightedPick([
 
+          {
+            value: "soft-light",
+            weight: 32
+          },
 
-      item.texture.style.backgroundPosition =
-        `
-          center,
-          ${random(0, 100)}% ${random(0, 100)}%,
-          ${random(0, 100)}% ${random(0, 100)}%,
-          ${random(0, 100)}% ${random(0, 100)}%
-        `;
+          {
+            value: "overlay",
+            weight: 26
+          },
+
+          {
+            value: "multiply",
+            weight: 22
+          },
+
+          {
+            value: "screen",
+            weight: 12
+          },
+
+          {
+            value: "hard-light",
+            weight:
+              isMobileMode()
+                ? 2
+                : 8
+          }
+
+        ]);
 
 
       item.texture.style.filter =
         `
-          grayscale(${random(.03, .13)})
-          contrast(${random(1.05, 1.38)})
-          saturate(${random(.88, 1.18)})
+          grayscale(${random(.03, .12)})
+          contrast(${random(
+            1.05,
+            isMobileMode()
+              ? 1.24
+              : 1.36
+          )})
+          saturate(${random(.86, 1.10)})
         `;
 
 
       item.texture.style.opacity =
         random(
-          .14,
-          .38 +
+          .12,
+          (
+            isMobileMode()
+              ? .24
+              : .30
+          ) +
           intensity *
-          .15
+          (
+            isMobileMode()
+              ? .10
+              : .16
+          )
         );
 
 
       item.layer.dataset.targetOpacity =
         clamp(
           random(
-            .27,
-            .57 +
+            .25,
+            .52 +
             intensity *
-            .24
+            .27
           ),
-          .18,
-          .86
+          .16,
+          .82
         ).toFixed(
           3
         );
 
-
-      item.layer.style.transform =
-        "none";
-
     }
 
 
-    /* =====================================================
-       BUILDING
-       ===================================================== */
-
-    function configureBuildingLayer(
+    function configureBuilding(
       building,
       intensity
     ) {
@@ -2399,8 +2282,8 @@
             look.sepia[1]
           )})
           saturate(${random(
-            look.saturate[0],
-            look.saturate[1]
+            look.saturation[0],
+            look.saturation[1]
           )})
           hue-rotate(${random(
             look.hue[0],
@@ -2409,19 +2292,19 @@
           brightness(${random(
             look.brightness[0],
             look.brightness[1]
-          ) + intensity * .025})
+          )})
           contrast(${random(
             look.contrast[0],
             look.contrast[1]
-          ) + intensity * .025})
+          )})
         `;
 
 
       building.style.transform =
         `
           translate3d(
-            ${random(-.65, .65)}px,
-            ${random(-.65, .65)}px,
+            ${random(-.55, .55)}px,
+            ${random(-.55, .55)}px,
             0
           )
         `;
@@ -2433,12 +2316,226 @@
             look.opacity[0],
             look.opacity[1] +
             intensity *
-            .07
+            .06
           ),
           .04,
-          .32
+          .29
         ).toFixed(
           3
+        );
+
+    }
+
+
+    /* =====================================================
+       MUSIC-DRIVEN VISUAL STATE
+       ===================================================== */
+
+    let visualOrder =
+      [];
+
+
+    let visibleLineCount =
+      0;
+
+
+    let visualSettleTimer =
+      null;
+
+
+    const visualTickTimers =
+      new Set();
+
+
+    function clearVisualTicks() {
+
+      visualTickTimers.forEach(
+        timer =>
+          clearTimeout(
+            timer
+          )
+      );
+
+
+      visualTickTimers.clear();
+
+    }
+
+
+    function resetVisuals(
+      immediate = false
+    ) {
+
+      clearVisualTicks();
+
+
+      clearTimeout(
+        visualSettleTimer
+      );
+
+
+      visualOrder =
+        shuffle(
+          validLines
+        );
+
+
+      visibleLineCount =
+        0;
+
+
+      validLines.forEach(
+        item => {
+
+          item.visible =
+            false;
+
+
+          item.layer.style.transitionDuration =
+            immediate
+              ? "0ms"
+              : "1050ms";
+
+
+          item.layer.style.opacity =
+            "0";
+
+        }
+      );
+
+
+      activeBuildings.forEach(
+        building => {
+
+          building.style.transitionDuration =
+            immediate
+              ? "0ms"
+              : "1150ms";
+
+
+          building.style.opacity =
+            "0";
+
+        }
+      );
+
+    }
+
+
+    function revealMusicLines(
+      amount,
+      intensity
+    ) {
+
+      if (
+        !validLines.length
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        !visualOrder.length
+      ) {
+
+        visualOrder =
+          shuffle(
+            validLines
+          );
+
+      }
+
+
+      for (
+        let i = 0;
+        i < amount;
+        i++
+      ) {
+
+        if (
+          visibleLineCount >=
+          visualOrder.length
+        ) {
+
+          break;
+
+        }
+
+
+        const item =
+          visualOrder[
+            visibleLineCount
+          ];
+
+
+        configureLine(
+          item,
+          intensity
+        );
+
+
+        item.visible =
+          true;
+
+
+        item.layer.style.transitionDuration =
+          `${random(220, 540)}ms`;
+
+
+        item.layer.style.opacity =
+          item.layer.dataset
+            .targetOpacity;
+
+
+        visibleLineCount++;
+
+      }
+
+    }
+
+
+    function mutateMusicLines(
+      amount,
+      intensity
+    ) {
+
+      const available =
+        validLines.filter(
+          item =>
+            item.visible
+        );
+
+
+      shuffle(
+        available
+      )
+        .slice(
+          0,
+          Math.min(
+            amount,
+            available.length
+          )
+        )
+        .forEach(
+          item => {
+
+            configureLine(
+              item,
+              intensity
+            );
+
+
+            item.layer.style.transitionDuration =
+              `${random(180, 450)}ms`;
+
+
+            item.layer.style.opacity =
+              item.layer.dataset
+                .targetOpacity;
+
+          }
         );
 
     }
@@ -2449,7 +2546,7 @@
     ) {
 
       if (
-        !buildingValid
+        !activeBuildings.length
       ) {
 
         return;
@@ -2457,36 +2554,50 @@
       }
 
 
+      const maxCount =
+        isMobileMode()
+          ? 2
+          : 3;
+
+
       const count =
-        intensity < .34
-          ? 1
-          : intensity < .62
-            ? 2
-            : 3;
+        clamp(
+          intensity < .36
+            ? 1
+            : intensity < .68
+              ? 2
+              : 3,
+          1,
+          maxCount
+        );
 
 
-      const selected =
+      const active =
         shuffle(
-          buildings
+          activeBuildings
         ).slice(
           0,
           count
         );
 
 
-      buildings.forEach(
+      activeBuildings.forEach(
         building => {
 
           if (
-            selected.includes(
+            active.includes(
               building
             )
           ) {
 
-            configureBuildingLayer(
+            configureBuilding(
               building,
               intensity
             );
+
+
+            building.style.transitionDuration =
+              `${random(260, 610)}ms`;
 
 
             building.style.opacity =
@@ -2508,200 +2619,201 @@
     }
 
 
-    /* =====================================================
-       MOVEMENT VISUALS
-       ===================================================== */
-
-    let pointerInside =
-      false;
-
-
-    let lastPointer = {
-      x: 0,
-      y: 0,
-      time: 0
-    };
-
-
-    let activeOrder =
-      [];
-
-
-    let visibleCount =
-      0;
-
-
-    let movementAccumulator =
-      0;
-
-
-    let lastMutationTime =
-      0;
-
-
-    let lastBuildingUpdateTime =
-      0;
-
-
-    const STILL_SPEED =
-      .055;
-
-
-    const FULL_SPEED =
-      1.15;
-
-
-    function normalizeSpeed(
-      speed
+    function scheduleVisualSettle(
+      delay
     ) {
 
-      return clamp(
-        (
-          speed -
-          STILL_SPEED
-        ) /
-        (
-          FULL_SPEED -
-          STILL_SPEED
-        ),
-        0,
-        1
+      clearTimeout(
+        visualSettleTimer
       );
 
-    }
 
+      visualSettleTimer =
+        setTimeout(
+          () => {
 
-    function revealNextLines(
-      amount,
-      intensity
-    ) {
+            resetVisuals(
+              false
+            );
 
-      if (
-        !activeOrder.length
-      ) {
-
-        activeOrder =
-          shuffle(
-            validLines
-          );
-
-      }
-
-
-      for (
-        let i = 0;
-        i < amount;
-        i++
-      ) {
-
-        if (
-          visibleCount >=
-          activeOrder.length
-        ) {
-
-          break;
-
-        }
-
-
-        const item =
-          activeOrder[
-            visibleCount
-          ];
-
-
-        configureLine(
-          item,
-          intensity
+          },
+          delay
         );
-
-
-        item.visible =
-          true;
-
-
-        item.lastMutation =
-          performance.now();
-
-
-        item.layer.style.transitionDuration =
-          `${random(160, 430)}ms`;
-
-
-        item.layer.style.opacity =
-          item.layer.dataset
-            .targetOpacity;
-
-
-        visibleCount++;
-
-      }
 
     }
 
 
-    function mutateVisibleLines(
-      intensity,
-      count
+    function musicalVisualEvent(
+      type,
+      noteCount,
+      durationMs
     ) {
 
-      const now =
-        performance.now();
-
-
-      const available =
-        validLines.filter(
-          item =>
-            item.visible &&
-            (
-              now -
-              item.lastMutation
-            ) >
-            180
-        );
+      clearTimeout(
+        visualSettleTimer
+      );
 
 
       if (
-        !available.length
+        type === "drone"
       ) {
+
+        revealMusicLines(
+          1,
+          .17
+        );
+
+
+        wakeBuilding(
+          .15
+        );
+
+
+        scheduleVisualSettle(
+          7200
+        );
+
 
         return;
 
       }
 
 
-      shuffle(
-        available
-      )
-        .slice(
-          0,
-          Math.min(
-            count,
-            available.length
+      if (
+        type === "cloud"
+      ) {
+
+        revealMusicLines(
+          randomInt(
+            2,
+            isMobileMode()
+              ? 3
+              : 4
+          ),
+          .78
+        );
+
+
+        mutateMusicLines(
+          randomInt(
+            2,
+            isMobileMode()
+              ? 3
+              : 4
+          ),
+          .78
+        );
+
+
+        wakeBuilding(
+          .76
+        );
+
+
+        scheduleVisualSettle(
+          Math.max(
+            6200,
+            durationMs +
+            4200
           )
+        );
+
+
+        return;
+
+      }
+
+
+      const energy =
+        clamp(
+          .25 +
+          noteCount *
+          .07,
+          .28,
+          .64
+        );
+
+
+      revealMusicLines(
+        noteCount >= 4
+          ? 2
+          : 1,
+        energy
+      );
+
+
+      mutateMusicLines(
+        noteCount >= 4
+          ? 2
+          : 1,
+        energy
+      );
+
+
+      wakeBuilding(
+        energy *
+        .72
+      );
+
+
+      scheduleVisualSettle(
+        Math.max(
+          3900,
+          durationMs +
+          2300
+        )
+      );
+
+    }
+
+
+    function schedulePhraseVisualTicks(
+      offsets,
+      intensity
+    ) {
+
+      offsets
+        .slice(
+          1
         )
         .forEach(
-          item => {
+          offset => {
 
-            configureLine(
-              item,
-              intensity
+            const timer =
+              setTimeout(
+                () => {
+
+                  visualTickTimers.delete(
+                    timer
+                  );
+
+
+                  mutateMusicLines(
+                    1,
+                    intensity
+                  );
+
+
+                  if (
+                    Math.random() <
+                    .38
+                  ) {
+
+                    wakeBuilding(
+                      intensity *
+                      .64
+                    );
+
+                  }
+
+                },
+                offset
+              );
+
+
+            visualTickTimers.add(
+              timer
             );
-
-
-            item.lastMutation =
-              now;
-
-
-            item.layer.style.transitionDuration =
-              intensity > .72
-                ? `${random(100, 220)}ms`
-                : `${random(220, 500)}ms`;
-
-
-            item.layer.style.opacity =
-              item.layer.dataset
-                .targetOpacity;
 
           }
         );
@@ -2709,316 +2821,83 @@
     }
 
 
-    function processMovement(
+    /* =====================================================
+       SINGLE EVENT SPLASH
+       ===================================================== */
+
+    const SPLASH_COLORS = [
+      "#006a44",
+      "#fdb913",
+      "#c1272d"
+    ];
+
+
+    function artworkPoint(
       event
     ) {
 
-      if (
-        !pointerInside ||
-        reducedMotion.matches
-      ) {
-
-        return;
-
-      }
+      const rect =
+        artwork.getBoundingClientRect();
 
 
-      const now =
-        performance.now();
-
-
-      if (
-        !lastPointer.time
-      ) {
-
-        lastPointer = {
-
-          x:
-            event.clientX,
-
-          y:
-            event.clientY,
-
-          time:
-            now
-
-        };
-
-
-        return;
-
-      }
-
-
-      const dx =
-        event.clientX -
-        lastPointer.x;
-
-
-      const dy =
-        event.clientY -
-        lastPointer.y;
-
-
-      const distance =
-        Math.sqrt(
-          dx * dx +
-          dy * dy
-        );
-
-
-      const elapsed =
-        Math.max(
-          16,
-          now -
-          lastPointer.time
-        );
-
-
-      const speed =
-        distance /
-        elapsed;
-
-
-      lastPointer = {
+      return {
 
         x:
-          event.clientX,
+          clamp(
+            (
+              event.clientX -
+              rect.left
+            ) /
+            rect.width,
+            .04,
+            .96
+          ),
 
         y:
-          event.clientY,
-
-        time:
-          now
+          clamp(
+            (
+              event.clientY -
+              rect.top
+            ) /
+            rect.height,
+            .04,
+            .96
+          )
 
       };
 
-
-      if (
-        speed <
-        STILL_SPEED
-      ) {
-
-        return;
-
-      }
+    }
 
 
-      const intensity =
-        normalizeSpeed(
-          speed
-        );
+    function randomArtworkPoint() {
 
+      return {
 
-      movementAccumulator +=
-        distance *
-        (
-          .55 +
-          intensity *
-          1.55
-        );
+        x:
+          random(
+            .18,
+            .82
+          ),
 
+        y:
+          random(
+            .20,
+            .80
+          )
 
-      const revealThreshold =
-        95 -
-        intensity *
-        69;
-
-
-      if (
-        movementAccumulator >=
-        revealThreshold
-      ) {
-
-        let amount =
-          1;
-
-
-        if (
-          intensity > .68
-        ) {
-
-          amount =
-            Math.random() < .42
-              ? 2
-              : 1;
-
-        }
-
-
-        if (
-          intensity > .88
-        ) {
-
-          amount =
-            Math.random() < .36
-              ? 3
-              : 2;
-
-        }
-
-
-        revealNextLines(
-          amount,
-          intensity
-        );
-
-
-        movementAccumulator =
-          0;
-
-      }
-
-
-      const mutationGap =
-        620 -
-        intensity *
-        535;
-
-
-      if (
-        now -
-        lastMutationTime >=
-        mutationGap
-      ) {
-
-        const count =
-          intensity > .84
-            ? (
-                Math.random() < .35
-                  ? 3
-                  : 2
-              )
-            : 1;
-
-
-        mutateVisibleLines(
-          intensity,
-          count
-        );
-
-
-        lastMutationTime =
-          now;
-
-      }
-
-
-      const buildingGap =
-        intensity > .75
-          ? 150
-          : intensity > .45
-            ? 210
-            : 280;
-
-
-      if (
-        now -
-        lastBuildingUpdateTime >=
-        buildingGap
-      ) {
-
-        wakeBuilding(
-          intensity
-        );
-
-
-        lastBuildingUpdateTime =
-          now;
-
-      }
+      };
 
     }
 
 
-    function clearArtwork(
-      instant = false
+    function createSplash(
+      type,
+      point,
+      noteCount = 1
     ) {
 
-      movementAccumulator =
-        0;
-
-
-      visibleCount =
-        0;
-
-
-      lastMutationTime =
-        0;
-
-
-      lastBuildingUpdateTime =
-        0;
-
-
-      activeOrder =
-        shuffle(
-          validLines
-        );
-
-
-      validLines.forEach(
-        item => {
-
-          item.visible =
-            false;
-
-
-          item.lastMutation =
-            0;
-
-
-          item.layer.style.transitionDuration =
-            instant
-              ? "0ms"
-              : "220ms";
-
-
-          item.layer.style.opacity =
-            "0";
-
-        }
-      );
-
-
-      buildings.forEach(
-        building => {
-
-          building.style.transitionDuration =
-            instant
-              ? "0ms"
-              : "220ms";
-
-
-          building.style.opacity =
-            "0";
-
-
-          building.style.transform =
-            "translate3d(0,0,0)";
-
-
-          building.style.filter =
-            "none";
-
-
-          building.style.mixBlendMode =
-            "normal";
-
-        }
-      );
-
-    }
-
-
-    function visualChordPulse() {
-
       if (
-        reducedMotion.matches ||
-        (
-          finePointer.matches &&
-          !pointerInside
-        )
+        REDUCED_MOTION.matches
       ) {
 
         return;
@@ -3026,169 +2905,148 @@
       }
 
 
-      if (
-        visibleCount < 4
-      ) {
-
-        revealNextLines(
-          3,
-          .78
+      const splash =
+        document.createElement(
+          "span"
         );
 
-      }
 
-      else {
-
-        revealNextLines(
-          1,
-          .78
-        );
-
-      }
+      splash.className =
+        `fuji-splash fuji-splash-${type}`;
 
 
-      mutateVisibleLines(
-        .82,
-        3
+      const origin =
+        point ||
+        randomArtworkPoint();
+
+
+      const size =
+        type === "cloud"
+          ? random(15, 21)
+          : type === "drone"
+            ? random(11, 15)
+            : random(6.5, 9) +
+              Math.min(
+                noteCount,
+                5
+              ) *
+              .55;
+
+
+      const duration =
+        type === "cloud"
+          ? random(4.8, 6.2)
+          : type === "drone"
+            ? random(4.6, 6)
+            : random(2.6, 3.8);
+
+
+      const opacity =
+        type === "cloud"
+          ? random(.13, .20)
+          : type === "drone"
+            ? random(.09, .14)
+            : random(.12, .18);
+
+
+      splash.style.setProperty(
+        "--x",
+        `${origin.x * 100}%`
       );
 
 
-      wakeBuilding(
-        .82
+      splash.style.setProperty(
+        "--y",
+        `${origin.y * 100}%`
       );
 
-    }
+
+      splash.style.setProperty(
+        "--size",
+        `${size}%`
+      );
 
 
-    function visualConnectionPulse() {
+      splash.style.setProperty(
+        "--splash-color",
+        pick(
+          SPLASH_COLORS
+        )
+      );
 
-      if (
-        reducedMotion.matches ||
+
+      splash.style.setProperty(
+        "--splash-opacity",
+        opacity
+      );
+
+
+      splash.style.setProperty(
+        "--splash-duration",
+        `${duration}s`
+      );
+
+
+      splash.style.mixBlendMode =
+        weightedPick([
+
+          {
+            value: "soft-light",
+            weight: 46
+          },
+
+          {
+            value: "overlay",
+            weight: 33
+          },
+
+          {
+            value: "multiply",
+            weight: 21
+          }
+
+        ]);
+
+
+      splashLayer.appendChild(
+        splash
+      );
+
+
+      /*
+        Keep the page from accumulating dozens of animated
+        DOM nodes during fast playing.
+      */
+
+      while (
+        splashLayer.children.length >
         (
-          finePointer.matches &&
-          !pointerInside
+          isMobileMode()
+            ? 3
+            : 5
         )
       ) {
 
-        return;
+        splashLayer.firstElementChild
+          ?.remove();
 
       }
 
 
-      if (
-        visibleCount === 0
-      ) {
+      setTimeout(
+        () => {
 
-        revealNextLines(
-          1,
-          .38
-        );
+          splash.remove();
 
-      }
-
-      else {
-
-        mutateVisibleLines(
-          .38,
-          1
-        );
-
-      }
-
-
-      if (
-        Math.random() < .42
-      ) {
-
-        wakeBuilding(
-          .34
-        );
-
-      }
+        },
+        (
+          duration +
+          .4
+        ) *
+        1000
+      );
 
     }
-
-
-    artwork.addEventListener(
-      "pointerenter",
-      event => {
-
-        if (
-          !finePointer.matches ||
-          reducedMotion.matches
-        ) {
-
-          return;
-
-        }
-
-
-        pointerInside =
-          true;
-
-
-        lastPointer = {
-
-          x:
-            event.clientX,
-
-          y:
-            event.clientY,
-
-          time:
-            performance.now()
-
-        };
-
-      }
-    );
-
-
-    artwork.addEventListener(
-      "pointermove",
-      event => {
-
-        if (
-          finePointer.matches
-        ) {
-
-          processMovement(
-            event
-          );
-
-        }
-
-      }
-    );
-
-
-    artwork.addEventListener(
-      "pointerleave",
-      () => {
-
-        if (
-          !finePointer.matches
-        ) {
-
-          return;
-
-        }
-
-
-        pointerInside =
-          false;
-
-
-        lastPointer.time =
-          0;
-
-
-        clearArtwork(
-          false
-        );
-
-      }
-    );
 
 
     /* =====================================================
@@ -3200,145 +3058,66 @@
       masterGain:
         .62,
 
-      eventCooldownMs:
-        480,
+      clickCooldown:
+        470,
 
       maxVoices:
-        22,
+        isMobileMode()
+          ? 16
+          : 26,
 
       cloud: {
 
         minVoices:
-          5,
+          isMobileMode()
+            ? 4
+            : 5,
 
         maxVoices:
-          8,
+          isMobileMode()
+            ? 6
+            : 8,
 
         harmonicChance:
-          .17,
+          .18,
 
-        maxSamePitch:
-          3,
-
-        maxSameInstrument:
-          3,
-
-        entrySpreadMs:
-          290
+        spread:
+          300
 
       },
 
-      connection: {
-
-        minVoices:
-          1,
-
-        maxVoices:
-          4,
-
-        harmonicChance:
-          .34,
-
-        entrySpreadMs:
-          175
-
-      },
-
-      gainRanges: {
+      gains: {
 
         concertina:
-          [.12, .22],
+          [.12, .21],
 
         guitar:
-          [.12, .20],
+          [.11, .19],
 
         mandolin:
-          [.09, .17],
+          [.085, .16],
 
         harmonic:
-          [.07, .14],
+          [.065, .13],
 
         cello:
           [.10, .16]
 
       },
 
-      attackRanges: {
+      attacks: {
 
         concertina:
-          [.055, .12],
+          [.055, .125],
 
         guitar:
           [.035, .085],
 
         mandolin:
-          [.045, .10],
+          [.045, .105],
 
         harmonic:
-          [.060, .13]
-
-      },
-
-      instrumentWeights: {
-
-        concertina:
-          1.10,
-
-        guitar:
-          1,
-
-        mandolin:
-          .90
-
-      },
-
-      registerWeights: {
-
-        1:
-          1,
-
-        2:
-          .88,
-
-        3:
-          .18
-
-      },
-
-      panRanges: {
-
-        1:
-          .25,
-
-        2:
-          .40,
-
-        3:
-          .55,
-
-        harmonic:
-          .55
-
-      },
-
-      drone: {
-
-        fadeIn:
-          2.6,
-
-        crossfade:
-          3,
-
-        /*
-          Always keep at least 12 minutes of future
-          six-minute drone segments scheduled.
-        */
-
-        scheduleAheadSeconds:
-          720,
-
-        watchdogMs:
-          30000
+          [.06, .14]
 
       }
 
@@ -3346,18 +3125,7 @@
 
 
     const AUDIO_ROOT =
-      "/photography/assets/audio/";
-
-
-    const PITCHES = [
-      "D",
-      "E",
-      "F",
-      "G",
-      "A",
-      "B",
-      "C"
-    ];
+      "assets/audio/";
 
 
     const SCALE = [
@@ -3371,33 +3139,42 @@
     ];
 
 
+    const INSTRUMENTS = [
+      "concertina",
+      "guitar",
+      "mandolin"
+    ];
+
+
     const SAMPLE_MANIFEST =
       [];
 
 
     function addSample(
       instrument,
-      pitchClass,
+      pitch,
       register,
       filename,
-      isHarmonic = false
+      harmonic = false
     ) {
 
       SAMPLE_MANIFEST.push({
+
+        instrument,
+
+        pitch,
+
+        register,
+
+        filename,
+
+        harmonic,
 
         id:
           filename.replace(
             ".mp3",
             ""
           ),
-
-        instrument,
-
-        pitchClass,
-
-        register,
-
-        isHarmonic,
 
         path:
           AUDIO_ROOT +
@@ -3408,7 +3185,7 @@
     }
 
 
-    PITCHES.forEach(
+    SCALE.forEach(
       pitch => {
 
         const p =
@@ -3430,24 +3207,6 @@
           `concertina_${p}2.mp3`
         );
 
-      }
-    );
-
-
-    addSample(
-      "concertina",
-      "D",
-      3,
-      "concertina_d3.mp3"
-    );
-
-
-    PITCHES.forEach(
-      pitch => {
-
-        const p =
-          pitch.toLowerCase();
-
 
         addSample(
           "guitar",
@@ -3463,24 +3222,6 @@
           2,
           `guitar_${p}2.mp3`
         );
-
-      }
-    );
-
-
-    addSample(
-      "guitar",
-      "D",
-      3,
-      "guitar_d3.mp3"
-    );
-
-
-    PITCHES.forEach(
-      pitch => {
-
-        const p =
-          pitch.toLowerCase();
 
 
         addSample(
@@ -3499,6 +3240,22 @@
         );
 
       }
+    );
+
+
+    addSample(
+      "concertina",
+      "D",
+      3,
+      "concertina_d3.mp3"
+    );
+
+
+    addSample(
+      "guitar",
+      "D",
+      3,
+      "guitar_d3.mp3"
     );
 
 
@@ -3538,17 +3295,8 @@
     );
 
 
-    const DRONE_PATH =
-      AUDIO_ROOT +
-      "cello_drone_d.mp3";
-
-
     /* =====================================================
-       HARMONIC WORLD
-
-       tension:
-       0 = open / settled
-       1 = unstable / tense
+       HARMONY
        ===================================================== */
 
     const HARMONIES = [
@@ -3556,22 +3304,22 @@
       {
         name: "d-open",
         pitches: ["D", "A", "E"],
-        tension: .08,
-        weight: 17
+        tension: .06,
+        weight: 18
       },
 
       {
         name: "d-minor",
         pitches: ["D", "F", "A"],
-        tension: .16,
-        weight: 15
+        tension: .15,
+        weight: 16
       },
 
       {
         name: "g-open",
         pitches: ["D", "G", "A"],
         tension: .12,
-        weight: 14
+        weight: 15
       },
 
       {
@@ -3633,27 +3381,27 @@
       {
         name: "d-e-g",
         pitches: ["D", "E", "G"],
-        tension: .31,
+        tension: .32,
         weight: 9
       },
 
       {
         name: "d-f-g",
         pitches: ["D", "F", "G"],
-        tension: .38,
+        tension: .39,
+        weight: 8
+      },
+
+      {
+        name: "a-c-d",
+        pitches: ["A", "C", "D"],
+        tension: .40,
         weight: 8
       },
 
       {
         name: "d-c-e",
         pitches: ["D", "C", "E"],
-        tension: .41,
-        weight: 7
-      },
-
-      {
-        name: "d-c-f",
-        pitches: ["D", "C", "F"],
         tension: .43,
         weight: 7
       },
@@ -3661,56 +3409,49 @@
       {
         name: "g-a-c",
         pitches: ["G", "A", "C"],
-        tension: .39,
+        tension: .41,
         weight: 7
-      },
-
-      {
-        name: "g-b-c",
-        pitches: ["G", "B", "C"],
-        tension: .51,
-        weight: 5
       },
 
       {
         name: "c-f-g",
         pitches: ["C", "F", "G"],
-        tension: .44,
+        tension: .45,
         weight: 6
       },
 
       {
         name: "a-b-d",
         pitches: ["A", "B", "D"],
-        tension: .46,
+        tension: .47,
         weight: 6
       },
 
       {
-        name: "a-c-d",
-        pitches: ["A", "C", "D"],
-        tension: .40,
-        weight: 7
-      },
-
-      {
-        name: "b-c-e",
-        pitches: ["B", "C", "E"],
-        tension: .58,
-        weight: 4
+        name: "g-b-c",
+        pitches: ["G", "B", "C"],
+        tension: .53,
+        weight: 5
       },
 
       {
         name: "f-g-a",
         pitches: ["F", "G", "A"],
-        tension: .54,
+        tension: .55,
+        weight: 4
+      },
+
+      {
+        name: "b-c-e",
+        pitches: ["B", "C", "E"],
+        tension: .59,
         weight: 4
       },
 
       {
         name: "e-f-a",
         pitches: ["E", "F", "A"],
-        tension: .62,
+        tension: .64,
         weight: 3
       },
 
@@ -3718,7 +3459,7 @@
         name: "b-d-f",
         pitches: ["B", "D", "F"],
         tension: .88,
-        weight: .65
+        weight: .6
       }
 
     ];
@@ -3728,111 +3469,112 @@
        AUDIO STATE
        ===================================================== */
 
-    const audioState = {
+    const state = {
 
-      context:
-        null,
+      context: null,
 
-      masterBus:
-        null,
+      bus: null,
 
-      compressor:
-        null,
+      compressor: null,
 
-      masterGain:
-        null,
+      master: null,
 
-      muted:
-        false,
+      droneSourceNode: null,
 
-      overlayMuted:
-        false,
+      droneGain: null,
 
-      droneStarted:
-        false,
+      muted: false,
 
-      droneLoading:
-        false,
+      overlayMuted: false,
 
-      droneBuffer:
-        null,
+      buffers:
+        new Map(),
 
-      droneNextStart:
+      loads:
+        new Map(),
+
+      preloadStarted: false,
+
+      activeSources:
+        new Set(),
+
+      droneStarted: false,
+
+      droneLoading: false,
+
+      currentHarmony: null,
+
+      nextHarmony: null,
+
+      recentHarmonies: [],
+
+      phraseMode:
+        "hover",
+
+      phraseTarget:
+        .24,
+
+      phraseSteps:
         0,
 
-      droneHorizonEnd:
-        0,
-
-      droneScheduler:
-        null,
-
-      currentHarmony:
-        null,
-
-      nextHarmony:
-        null,
-
-      recentHarmonySignatures:
-        [],
-
-      phraseTargetTension:
-        .22,
-
-      phraseStepsRemaining:
+      connectionsRemaining:
         0,
 
       eventType:
         "drone",
 
-      eventPending:
+      pending:
         false,
 
-      lastClickTime:
+      lastClick:
         0,
 
-      activeVoices:
-        new Set(),
+      lastPhrase:
+        null,
 
-      bufferCache:
-        new Map(),
+      lastInstrument:
+        null,
 
-      loadPromises:
-        new Map(),
+      lastPair:
+        null,
 
-      preloadStarted:
+      auto:
         false,
 
-      autoSongEnabled:
-        false,
-
-      autoSongTimer:
+      autoTimer:
         null
 
     };
+
+
+    const MAX_BUFFER_CACHE =
+      isMobileMode()
+        ? 18
+        : 52;
 
 
     /* =====================================================
        AUDIO CONTEXT
        ===================================================== */
 
-    function ensureAudioContext() {
+    function ensureContext() {
 
       if (
-        audioState.context
+        state.context
       ) {
 
-        return audioState.context;
+        return state.context;
 
       }
 
 
-      const Context =
+      const AudioContextClass =
         window.AudioContext ||
         window.webkitAudioContext;
 
 
       if (
-        !Context
+        !AudioContextClass
       ) {
 
         return null;
@@ -3841,10 +3583,10 @@
 
 
       const context =
-        new Context();
+        new AudioContextClass();
 
 
-      const masterBus =
+      const bus =
         context.createGain();
 
 
@@ -3852,7 +3594,7 @@
         context.createDynamicsCompressor();
 
 
-      const masterGain =
+      const master =
         context.createGain();
 
 
@@ -3865,7 +3607,7 @@
 
 
       compressor.ratio.value =
-        2.4;
+        2.3;
 
 
       compressor.attack.value =
@@ -3873,42 +3615,81 @@
 
 
       compressor.release.value =
-        .32;
+        .34;
 
 
-      masterGain.gain.value =
+      master.gain.value =
         AUDIO_CONFIG.masterGain;
 
 
-      masterBus.connect(
+      bus.connect(
         compressor
       );
 
 
       compressor.connect(
-        masterGain
+        master
       );
 
 
-      masterGain.connect(
+      master.connect(
         context.destination
       );
 
 
-      audioState.context =
+      /*
+        STREAMING DRONE
+
+        MediaElementAudioSourceNode does not require decoding
+        six minutes of MP3 into one giant AudioBuffer.
+      */
+
+      const droneSourceNode =
+        context.createMediaElementSource(
+          droneElement
+        );
+
+
+      const droneGain =
+        context.createGain();
+
+
+      droneGain.gain.value =
+        .0001;
+
+
+      droneSourceNode.connect(
+        droneGain
+      );
+
+
+      droneGain.connect(
+        bus
+      );
+
+
+      state.context =
         context;
 
 
-      audioState.masterBus =
-        masterBus;
+      state.bus =
+        bus;
 
 
-      audioState.compressor =
+      state.compressor =
         compressor;
 
 
-      audioState.masterGain =
-        masterGain;
+      state.master =
+        master;
+
+
+      state.droneSourceNode =
+        droneSourceNode;
+
+
+      state.droneGain =
+        droneGain;
 
 
       return context;
@@ -3916,38 +3697,11 @@
     }
 
 
-    function updateSoundLabel() {
+    function updateMaster() {
 
       if (
-        !audioState.droneStarted
-      ) {
-
-        return;
-
-      }
-
-
-      soundToggle.textContent =
-        audioState.muted
-          ? "click to turn on"
-          : "click to turn off";
-
-
-      soundToggle.setAttribute(
-        "aria-label",
-        audioState.muted
-          ? "Turn sound on"
-          : "Turn sound off"
-      );
-
-    }
-
-
-    function updateMasterGain() {
-
-      if (
-        !audioState.context ||
-        !audioState.masterGain
+        !state.context ||
+        !state.master
       ) {
 
         return;
@@ -3956,74 +3710,150 @@
 
 
       const now =
-        audioState.context
-          .currentTime;
+        state.context.currentTime;
 
 
       const target =
         (
-          audioState.muted ||
-          audioState.overlayMuted
+          state.muted ||
+          state.overlayMuted
         )
           ? .0001
           : AUDIO_CONFIG.masterGain;
 
 
-      audioState.masterGain.gain
+      state.master.gain
         .cancelScheduledValues(
           now
         );
 
 
-      audioState.masterGain.gain
+      state.master.gain
         .setValueAtTime(
           Math.max(
             .0001,
-            audioState.masterGain.gain
-              .value
+            state.master.gain.value
           ),
           now
         );
 
 
-      audioState.masterGain.gain
+      state.master.gain
         .exponentialRampToValueAtTime(
           target,
           now +
-          .24
+          .22
         );
 
     }
 
 
+    function updateSoundButton() {
+
+      soundToggle.textContent =
+        state.muted
+          ? WORDS.on()
+          : WORDS.off();
+
+
+      soundToggle.setAttribute(
+        "aria-label",
+        state.muted
+          ? "Turn sound on"
+          : "Turn sound off"
+      );
+
+    }
+
+
     /* =====================================================
-       BUFFER LOADING
+       AUDIO BUFFER CACHE
        ===================================================== */
 
-    async function loadBuffer(
-      path
+    function rememberBuffer(
+      path,
+      buffer
     ) {
 
       if (
-        audioState.bufferCache.has(
+        state.buffers.has(
           path
         )
       ) {
 
-        return audioState.bufferCache.get(
+        state.buffers.delete(
           path
         );
 
       }
 
 
+      state.buffers.set(
+        path,
+        buffer
+      );
+
+
+      while (
+        state.buffers.size >
+        MAX_BUFFER_CACHE
+      ) {
+
+        const oldest =
+          state.buffers
+            .keys()
+            .next()
+            .value;
+
+
+        state.buffers.delete(
+          oldest
+        );
+
+      }
+
+    }
+
+
+    async function loadBuffer(
+      path
+    ) {
+
       if (
-        audioState.loadPromises.has(
+        state.buffers.has(
           path
         )
       ) {
 
-        return audioState.loadPromises.get(
+        const buffer =
+          state.buffers.get(
+            path
+          );
+
+
+        state.buffers.delete(
+          path
+        );
+
+
+        state.buffers.set(
+          path,
+          buffer
+        );
+
+
+        return buffer;
+
+      }
+
+
+      if (
+        state.loads.has(
+          path
+        )
+      ) {
+
+        return state.loads.get(
           path
         );
 
@@ -4031,7 +3861,7 @@
 
 
       const context =
-        ensureAudioContext();
+        ensureContext();
 
 
       const promise =
@@ -4057,21 +3887,21 @@
             }
           )
           .then(
-            arrayBuffer =>
+            array =>
               context.decodeAudioData(
-                arrayBuffer
+                array
               )
           )
           .then(
             buffer => {
 
-              audioState.bufferCache.set(
+              rememberBuffer(
                 path,
                 buffer
               );
 
 
-              audioState.loadPromises.delete(
+              state.loads.delete(
                 path
               );
 
@@ -4083,7 +3913,7 @@
           .catch(
             error => {
 
-              audioState.loadPromises.delete(
+              state.loads.delete(
                 path
               );
 
@@ -4094,7 +3924,7 @@
           );
 
 
-      audioState.loadPromises.set(
+      state.loads.set(
         path,
         promise
       );
@@ -4105,10 +3935,11 @@
     }
 
 
-    async function preloadAllSamples() {
+    async function preloadSamplesDesktop() {
 
       if (
-        audioState.preloadStarted
+        isMobileMode() ||
+        state.preloadStarted
       ) {
 
         return;
@@ -4116,7 +3947,7 @@
       }
 
 
-      audioState.preloadStarted =
+      state.preloadStarted =
         true;
 
 
@@ -4140,10 +3971,7 @@
               i + 6
             )
             .map(
-              path =>
-                loadBuffer(
-                  path
-                )
+              loadBuffer
             )
         );
 
@@ -4152,137 +3980,34 @@
     }
 
 
-    /* =====================================================
-       ROBUST SIX-MINUTE DRONE LOOP
-       ===================================================== */
-
-    function scheduleOneDronePass(
-      startTime,
-      initial
+    function regularSamples(
+      instrument,
+      pitch
     ) {
 
-      const context =
-        audioState.context;
-
-
-      const buffer =
-        audioState.droneBuffer;
-
-
-      const duration =
-        buffer.duration;
-
-
-      const crossfade =
-        Math.min(
-          AUDIO_CONFIG.drone
-            .crossfade,
-          duration *
-          .20
-        );
-
-
-      const source =
-        context.createBufferSource();
-
-
-      const gain =
-        context.createGain();
-
-
-      source.buffer =
-        buffer;
-
-
-      const level =
-        random(
-          AUDIO_CONFIG.gainRanges
-            .cello[0],
-          AUDIO_CONFIG.gainRanges
-            .cello[1]
-        );
-
-
-      const fadeIn =
-        initial
-          ? AUDIO_CONFIG.drone
-              .fadeIn
-          : crossfade;
-
-
-      const end =
-        startTime +
-        duration;
-
-
-      gain.gain.setValueAtTime(
-        .0001,
-        startTime
+      return SAMPLE_MANIFEST.filter(
+        sample =>
+          !sample.harmonic &&
+          sample.instrument ===
+            instrument &&
+          sample.pitch ===
+            pitch
       );
-
-
-      gain.gain.linearRampToValueAtTime(
-        level,
-        startTime +
-        fadeIn
-      );
-
-
-      gain.gain.setValueAtTime(
-        level,
-        Math.max(
-          startTime +
-          fadeIn,
-          end -
-          crossfade
-        )
-      );
-
-
-      gain.gain.linearRampToValueAtTime(
-        .0001,
-        end
-      );
-
-
-      source.connect(
-        gain
-      );
-
-
-      gain.connect(
-        audioState.masterBus
-      );
-
-
-      source.start(
-        startTime
-      );
-
-
-      source.stop(
-        end +
-        .10
-      );
-
-
-      audioState.droneNextStart =
-        end -
-        crossfade;
-
-
-      audioState.droneHorizonEnd =
-        end;
 
     }
 
 
-    function ensureDroneScheduledAhead() {
+    /*
+      Mobile gets a small targeted warm-up rather than
+      decoding every note on the website.
+    */
+
+    function warmHarmony(
+      harmony
+    ) {
 
       if (
-        !audioState.droneStarted ||
-        !audioState.droneBuffer ||
-        !audioState.context
+        !harmony
       ) {
 
         return;
@@ -4290,93 +4015,87 @@
       }
 
 
-      const context =
-        audioState.context;
+      const samples =
+        [];
 
 
-      /*
-        If a browser suspension somehow leaves us behind
-        the Web Audio clock, recover from "now."
-      */
+      harmony.pitches.forEach(
+        pitch => {
 
-      if (
-        audioState.droneNextStart <
-        context.currentTime -
-        1
-      ) {
+          INSTRUMENTS.forEach(
+            instrument => {
 
-        audioState.droneNextStart =
-          context.currentTime +
-          .05;
+              const candidate =
+                regularSamples(
+                  instrument,
+                  pitch
+                )[0];
 
 
-        audioState.droneHorizonEnd =
-          context.currentTime;
+              if (
+                candidate
+              ) {
 
-      }
+                samples.push(
+                  candidate
+                );
 
+              }
 
-      const targetHorizon =
-        context.currentTime +
-        AUDIO_CONFIG.drone
-          .scheduleAheadSeconds;
+            }
+          );
 
-
-      let safety =
-        0;
-
-
-      while (
-        audioState.droneHorizonEnd <
-          targetHorizon &&
-        safety <
-          10
-      ) {
-
-        safety++;
+        }
+      );
 
 
-        scheduleOneDronePass(
-          audioState.droneNextStart,
-          false
-        );
-
-      }
+      Promise.allSettled(
+        samples.map(
+          sample =>
+            loadBuffer(
+              sample.path
+            )
+        )
+      );
 
     }
 
+
+    /* =====================================================
+       STREAMING DRONE LOOP
+       ===================================================== */
 
     async function startDrone(
       point
     ) {
 
       if (
-        audioState.droneStarted ||
-        audioState.droneLoading
+        state.droneStarted ||
+        state.droneLoading
       ) {
 
-        return false;
+        return null;
 
       }
 
 
-      audioState.droneLoading =
+      state.droneLoading =
         true;
 
 
       const context =
-        ensureAudioContext();
+        ensureContext();
 
 
       if (
         !context
       ) {
 
-        audioState.droneLoading =
+        state.droneLoading =
           false;
 
 
-        return false;
+        return null;
 
       }
 
@@ -4386,56 +4105,91 @@
 
       try {
 
-        const buffer =
-          await loadBuffer(
-            DRONE_PATH
-          );
-
-
-        audioState.droneBuffer =
-          buffer;
-
-
-        audioState.droneStarted =
+        droneElement.loop =
           true;
 
 
-        audioState.droneLoading =
-          false;
+        droneElement.currentTime =
+          0;
 
 
-        const firstStart =
-          context.currentTime +
-          .05;
+        await droneElement.play();
 
 
-        scheduleOneDronePass(
-          firstStart,
-          true
-        );
+        const now =
+          context.currentTime;
 
 
-        ensureDroneScheduledAhead();
-
-
-        window.clearInterval(
-          audioState.droneScheduler
-        );
-
-
-        audioState.droneScheduler =
-          window.setInterval(
-            ensureDroneScheduledAhead,
-            AUDIO_CONFIG.drone
-              .watchdogMs
+        const level =
+          random(
+            AUDIO_CONFIG.gains
+              .cello[0],
+            AUDIO_CONFIG.gains
+              .cello[1]
           );
 
 
-        updateSoundLabel();
+        state.droneGain.gain
+          .cancelScheduledValues(
+            now
+          );
 
 
-        audioState.eventType =
+        state.droneGain.gain
+          .setValueAtTime(
+            .0001,
+            now
+          );
+
+
+        state.droneGain.gain
+          .linearRampToValueAtTime(
+            level,
+            now +
+            2.8
+          );
+
+
+        state.droneStarted =
+          true;
+
+
+        state.droneLoading =
+          false;
+
+
+        state.eventType =
           "cloud";
+
+
+        /*
+          Pick and warm the first harmonic field during the
+          five-second drone introduction.
+        */
+
+        state.currentHarmony =
+          chooseInitialHarmony();
+
+
+        state.recentHarmonies.push(
+          harmonySignature(
+            state.currentHarmony
+          )
+        );
+
+
+        warmHarmony(
+          state.currentHarmony
+        );
+
+
+        if (
+          !isMobileMode()
+        ) {
+
+          preloadSamplesDesktop();
+
+        }
 
 
         createSplash(
@@ -4444,16 +4198,31 @@
         );
 
 
-        preloadAllSamples();
+        musicalVisualEvent(
+          "drone",
+          1,
+          3000
+        );
 
 
-        return true;
+        updateSoundButton();
+
+
+        return {
+
+          kind:
+            "drone",
+
+          durationMs:
+            5000
+
+        };
 
       }
 
       catch (error) {
 
-        audioState.droneLoading =
+        state.droneLoading =
           false;
 
 
@@ -4463,15 +4232,87 @@
         );
 
 
-        return false;
+        return null;
 
       }
 
     }
 
 
+    /*
+      `loop` should normally make ended irrelevant, but this
+      is a fallback for browsers that unexpectedly terminate
+      long media playback.
+    */
+
+    droneElement.addEventListener(
+      "ended",
+      async () => {
+
+        if (
+          !state.droneStarted
+        ) {
+
+          return;
+
+        }
+
+
+        try {
+
+          droneElement.currentTime =
+            0;
+
+
+          await droneElement.play();
+
+        }
+
+        catch {}
+
+      }
+    );
+
+
+    /*
+      If iOS/Safari suspends playback because the page goes
+      into the background, don't restart from zero. Resume
+      the existing streaming element when possible.
+    */
+
+    document.addEventListener(
+      "visibilitychange",
+      async () => {
+
+        if (
+          document.visibilityState ===
+            "visible" &&
+          state.droneStarted &&
+          droneElement.paused &&
+          !state.muted &&
+          !state.overlayMuted
+        ) {
+
+          try {
+
+            await state.context
+              ?.resume();
+
+
+            await droneElement.play();
+
+          }
+
+          catch {}
+
+        }
+
+      }
+    );
+
+
     /* =====================================================
-       DIRECTED HARMONIC JOURNEY
+       HARMONIC DIRECTION
        ===================================================== */
 
     function harmonySignature(
@@ -4481,21 +4322,6 @@
       return [...harmony.pitches]
         .sort()
         .join("-");
-
-    }
-
-
-    function sharedPitchCount(
-      a,
-      b
-    ) {
-
-      return a.pitches.filter(
-        pitch =>
-          b.pitches.includes(
-            pitch
-          )
-      ).length;
 
     }
 
@@ -4517,7 +4343,7 @@
         );
 
 
-      const raw =
+      const distance =
         Math.abs(
           ai -
           bi
@@ -4525,20 +4351,35 @@
 
 
       return Math.min(
-        raw,
+        distance,
         SCALE.length -
-        raw
+        distance
       );
 
     }
 
 
-    function harmonyDistance(
-      current,
-      candidate
+    function sharedPitchCount(
+      a,
+      b
     ) {
 
-      return candidate.pitches.reduce(
+      return a.pitches.filter(
+        pitch =>
+          b.pitches.includes(
+            pitch
+          )
+      ).length;
+
+    }
+
+
+    function harmonyDistance(
+      a,
+      b
+    ) {
+
+      return b.pitches.reduce(
         (
           total,
           pitch
@@ -4546,7 +4387,7 @@
 
           const nearest =
             Math.min(
-              ...current.pitches.map(
+              ...a.pitches.map(
                 source =>
                   scaleDistance(
                     source,
@@ -4568,51 +4409,51 @@
 
     function chooseInitialHarmony() {
 
-      const calm =
+      return weightedObject(
         HARMONIES.filter(
           harmony =>
             harmony.tension <
-            .38
-        );
-
-
-      return weightedObject(
-        calm
+            .40
+        )
       );
 
     }
 
 
-    function beginNewPhrase(
+    function beginPhraseDirection(
       current
     ) {
 
-      let mode;
-
-
       if (
         current.tension >
-        .62
+        .64
       ) {
 
-        mode =
+        state.phraseMode =
           "release";
+
+
+        state.phraseTarget =
+          random(
+            .09,
+            .28
+          );
 
       }
 
       else {
 
-        mode =
+        state.phraseMode =
           weightedPick([
 
             {
               value: "hover",
-              weight: 37
+              weight: 32
             },
 
             {
               value: "rise",
-              weight: 26
+              weight: 28
             },
 
             {
@@ -4622,85 +4463,77 @@
 
             {
               value: "darken",
-              weight: 10
+              weight: 13
             }
 
           ]);
 
-      }
 
+        if (
+          state.phraseMode ===
+          "rise"
+        ) {
 
-      if (
-        mode === "release"
-      ) {
-
-        audioState.phraseTargetTension =
-          random(
-            .10,
-            .30
-          );
-
-      }
-
-      else if (
-        mode === "rise"
-      ) {
-
-        audioState.phraseTargetTension =
-          random(
-            Math.max(
-              .30,
-              current.tension
-            ),
-            .64
-          );
-
-      }
-
-      else if (
-        mode === "darken"
-      ) {
-
-        audioState.phraseTargetTension =
-          random(
-            .50,
-            .76
-          );
-
-      }
-
-      else if (
-        mode === "settle"
-      ) {
-
-        audioState.phraseTargetTension =
-          random(
-            .08,
-            .30
-          );
-
-      }
-
-      else {
-
-        audioState.phraseTargetTension =
-          clamp(
-            current.tension +
+          state.phraseTarget =
             random(
-              -.15,
-              .15
-            ),
-            .12,
-            .58
-          );
+              Math.max(
+                current.tension +
+                .10,
+                .34
+              ),
+              .66
+            );
+
+        }
+
+        else if (
+          state.phraseMode ===
+          "darken"
+        ) {
+
+          state.phraseTarget =
+            random(
+              .50,
+              .76
+            );
+
+        }
+
+        else if (
+          state.phraseMode ===
+          "settle"
+        ) {
+
+          state.phraseTarget =
+            random(
+              .08,
+              .27
+            );
+
+        }
+
+        else {
+
+          state.phraseTarget =
+            clamp(
+              current.tension +
+              random(
+                -.12,
+                .12
+              ),
+              .12,
+              .55
+            );
+
+        }
 
       }
 
 
-      audioState.phraseStepsRemaining =
+      state.phraseSteps =
         randomInt(
           2,
-          4
+          5
         );
 
     }
@@ -4711,18 +4544,36 @@
     ) {
 
       if (
-        audioState.phraseStepsRemaining <=
-        0
+        state.phraseSteps <= 0
       ) {
 
-        beginNewPhrase(
+        beginPhraseDirection(
           current
         );
 
       }
 
 
-      audioState.phraseStepsRemaining--;
+      state.phraseSteps--;
+
+
+      /*
+        Sometimes hold a harmony instead of constantly
+        changing it.
+      */
+
+      if (
+        state.phraseMode ===
+          "hover" &&
+        current.tension <
+          .55 &&
+        Math.random() <
+          .12
+      ) {
+
+        return current;
+
+      }
 
 
       const currentSignature =
@@ -4733,9 +4584,9 @@
 
       const candidates =
         HARMONIES.filter(
-          candidate =>
+          harmony =>
             harmonySignature(
-              candidate
+              harmony
             ) !==
             currentSignature
         );
@@ -4765,21 +4616,16 @@
               );
 
 
-            const tensionError =
+            const targetError =
               Math.abs(
                 candidate.tension -
-                audioState
-                  .phraseTargetTension
+                state.phraseTarget
               );
 
 
             let weight =
               candidate.weight;
 
-
-            /*
-              Smooth harmonic continuity.
-            */
 
             weight *=
               1 +
@@ -4792,27 +4638,17 @@
               (
                 1 +
                 distance *
-                .27
+                .28
               );
 
 
-            /*
-              Follow the current phrase's broad
-              tension direction.
-            */
-
             weight *=
-              .48 +
+              .45 +
               Math.exp(
-                -tensionError *
+                -targetError *
                 4
               );
 
-
-            /*
-              High tension generally wants somewhere
-              calmer next.
-            */
 
             if (
               current.tension >
@@ -4822,15 +4658,10 @@
             ) {
 
               weight *=
-                1.9;
+                2.15;
 
             }
 
-
-            /*
-              Avoid jumping from complete repose
-              straight into the ugliest harmony.
-            */
 
             if (
               current.tension <
@@ -4840,15 +4671,10 @@
             ) {
 
               weight *=
-                .18;
+                .14;
 
             }
 
-
-            /*
-              The D pedal makes D-containing structures
-              especially convincing without requiring them.
-            */
 
             if (
               candidate.pitches.includes(
@@ -4857,42 +4683,19 @@
             ) {
 
               weight *=
-                1.11;
+                1.12;
 
             }
 
 
-            /*
-              Avoid recent repetition.
-            */
-
             if (
-              audioState
-                .recentHarmonySignatures
-                .includes(
-                  signature
-                )
+              state.recentHarmonies.includes(
+                signature
+              )
             ) {
 
               weight *=
-                .10;
-
-            }
-
-
-            /*
-              Very remote moves remain possible,
-              just uncommon.
-            */
-
-            if (
-              shared === 0 &&
-              distance >
-                5
-            ) {
-
-              weight *=
-                .42;
+                .16;
 
             }
 
@@ -4919,31 +4722,26 @@
         );
 
 
-      const signature =
+      state.recentHarmonies.push(
         harmonySignature(
           selected
-        );
-
-
-      audioState
-        .recentHarmonySignatures
-        .push(
-          signature
-        );
+        )
+      );
 
 
       if (
-        audioState
-          .recentHarmonySignatures
-          .length >
+        state.recentHarmonies.length >
         5
       ) {
 
-        audioState
-          .recentHarmonySignatures
-          .shift();
+        state.recentHarmonies.shift();
 
       }
+
+
+      warmHarmony(
+        selected
+      );
 
 
       return selected;
@@ -4951,51 +4749,120 @@
     }
 
 
-    /* =====================================================
-       SAMPLE SELECTION
-       ===================================================== */
-
-    function samplesForPitch(
-      pitch,
-      includeHarmonics = false
+    function chooseConnectionCount(
+      current,
+      next
     ) {
 
-      return SAMPLE_MANIFEST.filter(
-        sample =>
-          sample.pitchClass ===
-            pitch &&
-          (
-            includeHarmonics ||
-            !sample.isHarmonic
-          )
-      );
+      if (
+        state.phraseMode ===
+          "rise" ||
+        state.phraseMode ===
+          "darken"
+      ) {
+
+        return weightedPick([
+
+          {
+            value: 1,
+            weight: 10
+          },
+
+          {
+            value: 2,
+            weight: 26
+          },
+
+          {
+            value: 3,
+            weight: 39
+          },
+
+          {
+            value: 4,
+            weight: 25
+          }
+
+        ]);
+
+      }
+
+
+      if (
+        state.phraseMode ===
+          "release" ||
+        state.phraseMode ===
+          "settle"
+      ) {
+
+        return weightedPick([
+
+          {
+            value: 1,
+            weight: 49
+          },
+
+          {
+            value: 2,
+            weight: 35
+          },
+
+          {
+            value: 3,
+            weight: 14
+          },
+
+          {
+            value: 4,
+            weight: 2
+          }
+
+        ]);
+
+      }
+
+
+      return weightedPick([
+
+        {
+          value: 1,
+          weight: 28
+        },
+
+        {
+          value: 2,
+          weight: 35
+        },
+
+        {
+          value: 3,
+          weight: 28
+        },
+
+        {
+          value: 4,
+          weight: 9
+        }
+
+      ]);
 
     }
 
 
-    function weightedSample(
-      samples,
-      usedIds,
-      instrumentCounts,
+    /* =====================================================
+       SAMPLE CHOICE
+       ===================================================== */
+
+    function chooseSample(
+      instrument,
+      pitch,
       preferredRegister = null
     ) {
 
       const candidates =
-        samples.filter(
-          sample =>
-            !usedIds.has(
-              sample.id
-            ) &&
-            (
-              sample.isHarmonic ||
-              (
-                instrumentCounts[
-                  sample.instrument
-                ] || 0
-              ) <
-              AUDIO_CONFIG.cloud
-                .maxSameInstrument
-            )
+        regularSamples(
+          instrument,
+          pitch
         );
 
 
@@ -5010,129 +4877,33 @@
 
       return weightedObject(
         candidates.map(
-          sample => {
+          sample => ({
 
-            let weight =
-              AUDIO_CONFIG
-                .instrumentWeights[
-                  sample.instrument
-                ] || 1;
+            ...sample,
 
-
-            if (
-              sample.isHarmonic
-            ) {
-
-              weight =
-                .45;
-
-            }
-
-            else {
-
-              weight *=
-                AUDIO_CONFIG
-                  .registerWeights[
-                    sample.register
-                  ] || 1;
-
-            }
-
-
-            if (
-              preferredRegister &&
+            weight:
               preferredRegister ===
                 sample.register
-            ) {
+                ? 2
+                : sample.register ===
+                    1
+                  ? 1
+                  : .88
 
-              weight *=
-                1.7;
-
-            }
-
-
-            if (
-              sample.instrument ===
-                "mandolin" &&
-              sample.register ===
-                2
-            ) {
-
-              weight *=
-                1.18;
-
-            }
-
-
-            return {
-
-              ...sample,
-
-              weight
-
-            };
-
-          }
+          })
         )
       );
 
     }
 
 
-    function addVoice(
-      voices,
-      sample,
-      pitchCounts,
-      instrumentCounts,
-      usedIds
-    ) {
-
-      if (
-        !sample
-      ) {
-
-        return;
-
-      }
-
-
-      voices.push(
-        sample
-      );
-
-
-      usedIds.add(
-        sample.id
-      );
-
-
-      pitchCounts[
-        sample.pitchClass
-      ] =
-        (
-          pitchCounts[
-            sample.pitchClass
-          ] || 0
-        ) +
-        1;
-
-
-      instrumentCounts[
-        sample.instrument
-      ] =
-        (
-          instrumentCounts[
-            sample.instrument
-          ] || 0
-        ) +
-        1;
-
-    }
-
-
-    function generateCloudVoicing(
+    function cloudSamples(
       harmony
     ) {
+
+      const voices =
+        [];
+
 
       const target =
         randomInt(
@@ -5143,19 +4914,7 @@
         );
 
 
-      const voices =
-        [];
-
-
-      const usedIds =
-        new Set();
-
-
-      const pitchCounts =
-        {};
-
-
-      const instrumentCounts =
+      const counts =
         {};
 
 
@@ -5165,121 +4924,60 @@
           index
         ) => {
 
-          const preferred =
-            index === 0
-              ? 1
-              : index === 1
-                ? 2
-                : (
-                    Math.random() < .5
-                      ? 1
-                      : 2
-                  );
+          const instrument =
+            INSTRUMENTS[
+              index %
+              INSTRUMENTS.length
+            ];
 
 
-          addVoice(
-            voices,
-            weightedSample(
-              samplesForPitch(
-                pitch
-              ),
-              usedIds,
-              instrumentCounts,
-              preferred
-            ),
-            pitchCounts,
-            instrumentCounts,
-            usedIds
-          );
+          const sample =
+            chooseSample(
+              instrument,
+              pitch,
+              index === 0
+                ? 1
+                : 2
+            );
+
+
+          if (
+            sample
+          ) {
+
+            voices.push(
+              sample
+            );
+
+
+            counts[pitch] =
+              1;
+
+          }
 
         }
       );
 
 
-      const harmonicCandidates =
-        SAMPLE_MANIFEST.filter(
-          sample =>
-            sample.isHarmonic &&
-            harmony.pitches.includes(
-              sample.pitchClass
-            )
-        );
-
-
-      const wantsHarmonic =
-        harmonicCandidates.length >
-          0 &&
-        Math.random() <
-          AUDIO_CONFIG.cloud
-            .harmonicChance;
-
-
-      const normalTarget =
-        wantsHarmonic
-          ? Math.max(
-              3,
-              target -
-              1
-            )
-          : target;
-
-
-      let safety =
-        0;
-
-
       while (
         voices.length <
-          normalTarget &&
-        safety <
-          80
+        target
       ) {
-
-        safety++;
-
-
-        const eligible =
-          harmony.pitches.filter(
-            pitch =>
-              (
-                pitchCounts[
-                  pitch
-                ] || 0
-              ) <
-              AUDIO_CONFIG.cloud
-                .maxSamePitch
-          );
-
-
-        if (
-          !eligible.length
-        ) {
-
-          break;
-
-        }
-
-
-        /*
-          Underrepresented chord tones get preference.
-        */
 
         const pitch =
           weightedObject(
-            eligible.map(
-              candidate => ({
+            harmony.pitches.map(
+              pitch => ({
 
-                value:
-                  candidate,
+                value: pitch,
 
                 weight:
                   1 /
                   (
                     1 +
                     (
-                      pitchCounts[
-                        candidate
-                      ] || 0
+                      counts[pitch] ||
+                      0
                     )
                   )
 
@@ -5288,402 +4986,54 @@
           ).value;
 
 
-        addVoice(
-          voices,
-          weightedSample(
-            samplesForPitch(
-              pitch
+        const sample =
+          chooseSample(
+            pick(
+              INSTRUMENTS
             ),
-            usedIds,
-            instrumentCounts
-          ),
-          pitchCounts,
-          instrumentCounts,
-          usedIds
-        );
-
-      }
-
-
-      if (
-        wantsHarmonic &&
-        voices.length <
-          target
-      ) {
-
-        const candidates =
-          harmonicCandidates.filter(
-            sample =>
-              !usedIds.has(
-                sample.id
-              )
+            pitch,
+            Math.random() < .55
+              ? 1
+              : 2
           );
 
 
         if (
-          candidates.length
+          !sample
         ) {
 
-          addVoice(
-            voices,
-            pick(
-              candidates
-            ),
-            pitchCounts,
-            instrumentCounts,
-            usedIds
-          );
+          break;
 
         }
 
-      }
 
-
-      return voices;
-
-    }
-
-
-    /* =====================================================
-       CONNECTIVE MUSIC
-
-       Uses the already-planned next harmony.
-       ===================================================== */
-
-    function unique(
-      array
-    ) {
-
-      return [
-        ...new Set(
-          array
-        )
-      ];
-
-    }
-
-
-    function oneStepToward(
-      source,
-      target
-    ) {
-
-      const si =
-        SCALE.indexOf(
-          source
+        voices.push(
+          sample
         );
 
 
-      const ti =
-        SCALE.indexOf(
-          target
-        );
-
-
-      if (
-        si === ti
-      ) {
-
-        return source;
-
-      }
-
-
-      const forward =
-        (
-          ti -
-          si +
-          SCALE.length
-        ) %
-        SCALE.length;
-
-
-      const backward =
-        (
-          si -
-          ti +
-          SCALE.length
-        ) %
-        SCALE.length;
-
-
-      if (
-        forward <=
-        backward
-      ) {
-
-        return SCALE[
+        counts[pitch] =
           (
-            si +
-            1
-          ) %
-          SCALE.length
-        ];
-
-      }
-
-
-      return SCALE[
-        (
-          si -
-          1 +
-          SCALE.length
-        ) %
-        SCALE.length
-      ];
-
-    }
-
-
-    function connectionCandidates(
-      current,
-      next
-    ) {
-
-      const common =
-        current.pitches.filter(
-          pitch =>
-            next.pitches.includes(
-              pitch
-            )
-        );
-
-
-      const incoming =
-        next.pitches.filter(
-          pitch =>
-            !current.pitches.includes(
-              pitch
-            )
-        );
-
-
-      const approaches =
-        [];
-
-
-      current.pitches.forEach(
-        source => {
-
-          next.pitches.forEach(
-            target => {
-
-              approaches.push(
-                oneStepToward(
-                  source,
-                  target
-                )
-              );
-
-            }
-          );
-
-        }
-      );
-
-
-      return {
-
-        common:
-          unique(
-            common
-          ),
-
-        incoming:
-          unique(
-            incoming
-          ),
-
-        approaches:
-          unique(
-            approaches
-          )
-
-      };
-
-    }
-
-
-    function chooseConnectionPitches(
-      current,
-      next
-    ) {
-
-      const pools =
-        connectionCandidates(
-          current,
-          next
-        );
-
-
-      const strategy =
-        weightedPick([
-
-          {
-            value: "common",
-            weight:
-              pools.common.length
-                ? 31
-                : 0
-          },
-
-          {
-            value: "approach",
-            weight:
-              pools.approaches.length
-                ? 31
-                : 0
-          },
-
-          {
-            value: "incoming",
-            weight:
-              pools.incoming.length
-                ? 24
-                : 0
-          },
-
-          {
-            value: "pair",
-            weight: 14
-          }
-
-        ]);
-
-
-      if (
-        strategy === "common"
-      ) {
-
-        return [
-          pick(
-            pools.common
-          )
-        ];
+            counts[pitch] ||
+            0
+          ) +
+          1;
 
       }
 
 
       if (
-        strategy === "approach"
-      ) {
-
-        return [
-          pick(
-            pools.approaches
-          )
-        ];
-
-      }
-
-
-      if (
-        strategy === "incoming"
-      ) {
-
-        return [
-          pick(
-            pools.incoming
-          )
-        ];
-
-      }
-
-
-      return unique([
-
-        pick(
-          pools.common.length
-            ? pools.common
-            : pools.approaches
-        ),
-
-        pick(
-          pools.incoming.length
-            ? pools.incoming
-            : next.pitches
-        )
-
-      ]).slice(
-        0,
-        2
-      );
-
-    }
-
-
-    function generateConnectionVoicing(
-      pitches
-    ) {
-
-      const target =
-        randomInt(
-          Math.max(
-            1,
-            pitches.length
-          ),
-          AUDIO_CONFIG.connection
-            .maxVoices
-        );
-
-
-      const voices =
-        [];
-
-
-      const usedIds =
-        new Set();
-
-
-      const pitchCounts =
-        {};
-
-
-      const instrumentCounts =
-        {};
-
-
-      pitches.forEach(
-        pitch => {
-
-          addVoice(
-            voices,
-            weightedSample(
-              samplesForPitch(
-                pitch
-              ),
-              usedIds,
-              instrumentCounts,
-              Math.random() < .68
-                ? 2
-                : 1
-            ),
-            pitchCounts,
-            instrumentCounts,
-            usedIds
-          );
-
-        }
-      );
-
-
-      if (
-        voices.length <
-          target &&
         Math.random() <
-          AUDIO_CONFIG.connection
-            .harmonicChance
+        AUDIO_CONFIG.cloud
+          .harmonicChance
       ) {
 
         const harmonics =
           SAMPLE_MANIFEST.filter(
             sample =>
-              sample.isHarmonic &&
-              pitches.includes(
-                sample.pitchClass
-              ) &&
-              !usedIds.has(
-                sample.id
+              sample.harmonic &&
+              harmony.pitches.includes(
+                sample.pitch
               )
           );
 
@@ -5692,57 +5042,14 @@
           harmonics.length
         ) {
 
-          addVoice(
-            voices,
+          voices[
+            voices.length - 1
+          ] =
             pick(
               harmonics
-            ),
-            pitchCounts,
-            instrumentCounts,
-            usedIds
-          );
+            );
 
         }
-
-      }
-
-
-      let safety =
-        0;
-
-
-      while (
-        voices.length <
-          target &&
-        safety <
-          30
-      ) {
-
-        safety++;
-
-
-        const pitch =
-          pick(
-            pitches
-          );
-
-
-        addVoice(
-          voices,
-          weightedSample(
-            samplesForPitch(
-              pitch
-            ),
-            usedIds,
-            instrumentCounts,
-            Math.random() < .62
-              ? 2
-              : null
-          ),
-          pitchCounts,
-          instrumentCounts,
-          usedIds
-        );
 
       }
 
@@ -5753,88 +5060,662 @@
 
 
     /* =====================================================
-       PLAYBACK
-
-       Two-stage attack softening:
-       individual note ramp + event bus ramp.
+       PITCH PATHS
        ===================================================== */
 
-    function gainRangeForSample(
-      sample
+    function scaleIndex(
+      pitch
     ) {
 
-      return sample.isHarmonic
-        ? AUDIO_CONFIG
-            .gainRanges
-            .harmonic
-        : AUDIO_CONFIG
-            .gainRanges[
-              sample.instrument
-            ];
+      return SCALE.indexOf(
+        pitch
+      );
 
     }
 
 
-    function attackRangeForSample(
-      sample
+    function stepPitch(
+      pitch,
+      amount
     ) {
 
-      return sample.isHarmonic
-        ? AUDIO_CONFIG
-            .attackRanges
-            .harmonic
-        : AUDIO_CONFIG
-            .attackRanges[
-              sample.instrument
-            ];
+      const index =
+        scaleIndex(
+          pitch
+        );
+
+
+      return SCALE[
+        (
+          index +
+          amount +
+          SCALE.length *
+          10
+        ) %
+        SCALE.length
+      ];
 
     }
 
 
-    function panRangeForSample(
-      sample
+    function nearestTarget(
+      source,
+      targets
     ) {
 
-      return sample.isHarmonic
-        ? AUDIO_CONFIG
-            .panRanges
-            .harmonic
-        : AUDIO_CONFIG
-            .panRanges[
-              sample.register
-            ] || .30;
+      return [...targets]
+        .sort(
+          (
+            a,
+            b
+          ) =>
+            scaleDistance(
+              source,
+              a
+            ) -
+            scaleDistance(
+              source,
+              b
+            )
+        )[0];
 
     }
 
 
-    function staggerOffsets(
-      count,
-      maxSpread
+    function directionToward(
+      source,
+      target
+    ) {
+
+      const sourceIndex =
+        scaleIndex(
+          source
+        );
+
+
+      const targetIndex =
+        scaleIndex(
+          target
+        );
+
+
+      const up =
+        (
+          targetIndex -
+          sourceIndex +
+          SCALE.length
+        ) %
+        SCALE.length;
+
+
+      const down =
+        (
+          sourceIndex -
+          targetIndex +
+          SCALE.length
+        ) %
+        SCALE.length;
+
+
+      return up <= down
+        ? 1
+        : -1;
+
+    }
+
+
+    function makeDirectedRun(
+      current,
+      next,
+      length,
+      arch = false
+    ) {
+
+      const start =
+        pick(
+          current.pitches
+        );
+
+
+      const target =
+        nearestTarget(
+          start,
+          next.pitches
+        );
+
+
+      let direction =
+        directionToward(
+          start,
+          target
+        );
+
+
+      let pitch =
+        start;
+
+
+      const sequence =
+        [pitch];
+
+
+      for (
+        let i = 1;
+        i < length;
+        i++
+      ) {
+
+        if (
+          arch &&
+          i ===
+          Math.ceil(
+            length /
+            2
+          )
+        ) {
+
+          direction *=
+            -1;
+
+        }
+
+
+        pitch =
+          stepPitch(
+            pitch,
+            direction
+          );
+
+
+        sequence.push(
+          pitch
+        );
+
+      }
+
+
+      if (
+        !arch &&
+        sequence.length > 2
+      ) {
+
+        sequence[
+          sequence.length - 1
+        ] =
+          target;
+
+      }
+
+
+      return sequence;
+
+    }
+
+
+    /* =====================================================
+       PHRASE ENGINE
+       ===================================================== */
+
+    function chooseInstrument(
+      repeatChance = .38
     ) {
 
       if (
-        count <= 1
+        state.lastInstrument &&
+        Math.random() <
+        repeatChance
+      ) {
+
+        return state.lastInstrument;
+
+      }
+
+
+      return pick(
+        INSTRUMENTS
+      );
+
+    }
+
+
+    function chooseInstrumentPair() {
+
+      if (
+        state.lastPair &&
+        Math.random() < .34
       ) {
 
         return [
-          random(
-            0,
-            25
-          )
+          ...state.lastPair
         ];
 
       }
 
 
-      const offsets =
-        [];
-
-
-      let current =
-        random(
+      const pair =
+        shuffle(
+          INSTRUMENTS
+        ).slice(
           0,
-          22
+          2
         );
+
+
+      state.lastPair =
+        [
+          ...pair
+        ];
+
+
+      return pair;
+
+    }
+
+
+    function choosePhraseType(
+      origin
+    ) {
+
+      const repeatChance =
+        origin === "auto"
+          ? .31
+          : .20;
+
+
+      if (
+        state.lastPhrase &&
+        Math.random() <
+        repeatChance
+      ) {
+
+        return state.lastPhrase;
+
+      }
+
+
+      if (
+        origin === "auto" &&
+        (
+          state.phraseMode ===
+            "rise" ||
+          state.phraseMode ===
+            "darken"
+        )
+      ) {
+
+        return weightedPick([
+
+          {
+            value: "single",
+            weight: 6
+          },
+
+          {
+            value: "short-run",
+            weight: 23
+          },
+
+          {
+            value: "repeat",
+            weight: 17
+          },
+
+          {
+            value: "arpeggio",
+            weight: 15
+          },
+
+          {
+            value: "duet",
+            weight: 18
+          },
+
+          {
+            value: "long-run",
+            weight: 21
+          }
+
+        ]);
+
+      }
+
+
+      if (
+        origin === "auto" &&
+        (
+          state.phraseMode ===
+            "settle" ||
+          state.phraseMode ===
+            "release"
+        )
+      ) {
+
+        return weightedPick([
+
+          {
+            value: "single",
+            weight: 21
+          },
+
+          {
+            value: "short-run",
+            weight: 16
+          },
+
+          {
+            value: "repeat",
+            weight: 27
+          },
+
+          {
+            value: "arpeggio",
+            weight: 14
+          },
+
+          {
+            value: "duet",
+            weight: 15
+          },
+
+          {
+            value: "long-run",
+            weight: 7
+          }
+
+        ]);
+
+      }
+
+
+      return weightedPick([
+
+        {
+          value: "single",
+          weight:
+            origin === "auto"
+              ? 11
+              : 17
+        },
+
+        {
+          value: "short-run",
+          weight:
+            origin === "auto"
+              ? 23
+              : 28
+        },
+
+        {
+          value: "repeat",
+          weight:
+            origin === "auto"
+              ? 22
+              : 25
+        },
+
+        {
+          value: "arpeggio",
+          weight:
+            origin === "auto"
+              ? 16
+              : 12
+        },
+
+        {
+          value: "duet",
+          weight:
+            origin === "auto"
+              ? 18
+              : 14
+        },
+
+        {
+          value: "long-run",
+          weight:
+            origin === "auto"
+              ? 10
+              : 4
+        }
+
+      ]);
+
+    }
+
+
+    function phraseEvent(
+      sample,
+      offset,
+      gain = 1
+    ) {
+
+      return {
+        sample,
+        offset,
+        gain
+      };
+
+    }
+
+
+    function buildSinglePhrase(
+      current,
+      next
+    ) {
+
+      const source =
+        pick(
+          current.pitches
+        );
+
+
+      const target =
+        nearestTarget(
+          source,
+          next.pitches
+        );
+
+
+      const pitch =
+        Math.random() < .45
+          ? target
+          : stepPitch(
+              source,
+              directionToward(
+                source,
+                target
+              )
+            );
+
+
+      const instrument =
+        chooseInstrument(
+          .46
+        );
+
+
+      state.lastInstrument =
+        instrument;
+
+
+      return {
+
+        type: "single",
+
+        events: [
+          phraseEvent(
+            chooseSample(
+              instrument,
+              pitch,
+              Math.random() < .6
+                ? 2
+                : 1
+            ),
+            0
+          )
+        ]
+
+      };
+
+    }
+
+
+    function buildShortRun(
+      current,
+      next,
+      origin
+    ) {
+
+      const length =
+        origin === "auto"
+          ? randomInt(3, 5)
+          : randomInt(3, 4);
+
+
+      const sequence =
+        makeDirectedRun(
+          current,
+          next,
+          length,
+          false
+        );
+
+
+      const fixedInstrument =
+        Math.random() < .58;
+
+
+      const instrument =
+        chooseInstrument(
+          .44
+        );
+
+
+      const pair =
+        fixedInstrument
+          ? null
+          : chooseInstrumentPair();
+
+
+      const spacing =
+        random(
+          260,
+          430
+        );
+
+
+      const events =
+        sequence.map(
+          (
+            pitch,
+            index
+          ) => {
+
+            const chosen =
+              fixedInstrument
+                ? instrument
+                : pair[
+                    index %
+                    pair.length
+                  ];
+
+
+            return phraseEvent(
+              chooseSample(
+                chosen,
+                pitch,
+                index <
+                sequence.length /
+                  2
+                  ? 1
+                  : 2
+              ),
+              index *
+              spacing,
+              random(.90, 1.03)
+            );
+
+          }
+        );
+
+
+      state.lastInstrument =
+        instrument;
+
+
+      return {
+        type: "short-run",
+        events
+      };
+
+    }
+
+
+    function buildRepeatPhrase(
+      current,
+      next,
+      origin
+    ) {
+
+      const count =
+        origin === "auto"
+          ? randomInt(3, 6)
+          : randomInt(3, 4);
+
+
+      const instrument =
+        chooseInstrument(
+          .60
+        );
+
+
+      const source =
+        pick(
+          current.pitches
+        );
+
+
+      const target =
+        nearestTarget(
+          source,
+          next.pitches
+        );
+
+
+      const second =
+        Math.random() < .46
+          ? target
+          : stepPitch(
+              source,
+              directionToward(
+                source,
+                target
+              )
+            );
+
+
+      const oscillate =
+        Math.random() < .52;
+
+
+      const spacing =
+        random(
+          300,
+          520
+        );
+
+
+      const mainSample =
+        chooseSample(
+          instrument,
+          source,
+          Math.random() < .55
+            ? 1
+            : 2
+        );
+
+
+      const events =
+        [];
 
 
       for (
@@ -5843,40 +5724,479 @@
         i++
       ) {
 
-        offsets.push(
-          Math.min(
-            current,
-            maxSpread
+        const pitch =
+          oscillate &&
+          i % 2 === 1
+            ? second
+            : source;
+
+
+        events.push(
+          phraseEvent(
+            pitch === source
+              ? mainSample
+              : chooseSample(
+                  instrument,
+                  pitch,
+                  Math.random() < .5
+                    ? 1
+                    : 2
+                ),
+            i *
+            spacing,
+            i ===
+              count - 1
+              ? 1.04
+              : random(.86, 1)
           )
         );
 
+      }
 
-        current +=
-          random(
-            22,
-            52
+
+      state.lastInstrument =
+        instrument;
+
+
+      return {
+        type: "repeat",
+        events
+      };
+
+    }
+
+
+    function buildArpeggio(
+      current,
+      next,
+      origin
+    ) {
+
+      const count =
+        origin === "auto"
+          ? randomInt(4, 7)
+          : randomInt(3, 5);
+
+
+      const notes =
+        [
+          ...new Set([
+            ...current.pitches,
+            ...next.pitches
+          ])
+        ];
+
+
+      const fixed =
+        Math.random() < .52;
+
+
+      const instrument =
+        chooseInstrument(
+          .40
+        );
+
+
+      const pair =
+        fixed
+          ? null
+          : chooseInstrumentPair();
+
+
+      const spacing =
+        random(
+          300,
+          480
+        );
+
+
+      const events =
+        [];
+
+
+      for (
+        let i = 0;
+        i < count;
+        i++
+      ) {
+
+        const pitch =
+          notes[
+            i %
+            notes.length
+          ];
+
+
+        const chosen =
+          fixed
+            ? instrument
+            : pair[
+                i %
+                pair.length
+              ];
+
+
+        events.push(
+          phraseEvent(
+            chooseSample(
+              chosen,
+              pitch,
+              i <
+              count /
+                2
+                ? 1
+                : 2
+            ),
+            i *
+            spacing,
+            random(.88, 1.02)
+          )
+        );
+
+      }
+
+
+      state.lastInstrument =
+        instrument;
+
+
+      return {
+        type: "arpeggio",
+        events
+      };
+
+    }
+
+
+    function buildDuet(
+      current,
+      next,
+      origin
+    ) {
+
+      const count =
+        origin === "auto"
+          ? randomInt(5, 8)
+          : randomInt(4, 6);
+
+
+      const pair =
+        chooseInstrumentPair();
+
+
+      const sequence =
+        makeDirectedRun(
+          current,
+          next,
+          count,
+          Math.random() < .38
+        );
+
+
+      const spacing =
+        random(
+          290,
+          470
+        );
+
+
+      const events =
+        sequence.map(
+          (
+            pitch,
+            index
+          ) =>
+            phraseEvent(
+              chooseSample(
+                pair[
+                  index % 2
+                ],
+                pitch,
+                index <
+                count /
+                  2
+                  ? 1
+                  : 2
+              ),
+              index *
+              spacing,
+              random(.87, 1.02)
+            )
+        );
+
+
+      state.lastPair =
+        [
+          ...pair
+        ];
+
+
+      return {
+        type: "duet",
+        events
+      };
+
+    }
+
+
+    function buildLongRun(
+      current,
+      next,
+      origin
+    ) {
+
+      const length =
+        origin === "auto"
+          ? randomInt(7, 11)
+          : randomInt(6, 8);
+
+
+      const instrument =
+        chooseInstrument(
+          .58
+        );
+
+
+      const sequence =
+        makeDirectedRun(
+          current,
+          next,
+          length,
+          Math.random() < .68
+        );
+
+
+      const spacing =
+        random(
+          240,
+          370
+        );
+
+
+      const events =
+        sequence.map(
+          (
+            pitch,
+            index
+          ) => {
+
+            const position =
+              index /
+              Math.max(
+                1,
+                sequence.length -
+                1
+              );
+
+
+            return phraseEvent(
+              chooseSample(
+                instrument,
+                pitch,
+                position < .46
+                  ? 1
+                  : 2
+              ),
+              index *
+              spacing,
+              .86 +
+              position *
+              .17
+            );
+
+          }
+        );
+
+
+      state.lastInstrument =
+        instrument;
+
+
+      return {
+        type: "long-run",
+        events
+      };
+
+    }
+
+
+    function buildConnectionPhrase(
+      origin
+    ) {
+
+      const current =
+        state.currentHarmony;
+
+
+      const next =
+        state.nextHarmony;
+
+
+      const type =
+        choosePhraseType(
+          origin
+        );
+
+
+      let phrase;
+
+
+      if (
+        type === "single"
+      ) {
+
+        phrase =
+          buildSinglePhrase(
+            current,
+            next
+          );
+
+      }
+
+      else if (
+        type === "repeat"
+      ) {
+
+        phrase =
+          buildRepeatPhrase(
+            current,
+            next,
+            origin
+          );
+
+      }
+
+      else if (
+        type === "arpeggio"
+      ) {
+
+        phrase =
+          buildArpeggio(
+            current,
+            next,
+            origin
+          );
+
+      }
+
+      else if (
+        type === "duet"
+      ) {
+
+        phrase =
+          buildDuet(
+            current,
+            next,
+            origin
+          );
+
+      }
+
+      else if (
+        type === "long-run"
+      ) {
+
+        phrase =
+          buildLongRun(
+            current,
+            next,
+            origin
+          );
+
+      }
+
+      else {
+
+        phrase =
+          buildShortRun(
+            current,
+            next,
+            origin
           );
 
       }
 
 
-      return offsets;
+      phrase.events =
+        phrase.events.filter(
+          event =>
+            event.sample
+        );
+
+
+      state.lastPhrase =
+        phrase.type;
+
+
+      return phrase;
 
     }
 
 
-    function scheduleVoice(
-      sample,
-      buffer,
-      startTime,
-      gainScale,
-      destination,
-      eventType
+    /* =====================================================
+       PLAYBACK
+       ===================================================== */
+
+    function gainRange(
+      sample
+    ) {
+
+      return sample.harmonic
+        ? AUDIO_CONFIG.gains
+            .harmonic
+        : AUDIO_CONFIG.gains[
+            sample.instrument
+          ];
+
+    }
+
+
+    function attackRange(
+      sample
+    ) {
+
+      return sample.harmonic
+        ? AUDIO_CONFIG.attacks
+            .harmonic
+        : AUDIO_CONFIG.attacks[
+            sample.instrument
+          ];
+
+    }
+
+
+    function panRange(
+      sample
     ) {
 
       if (
-        audioState.activeVoices
-          .size >=
+        sample.harmonic
+      ) {
+
+        return .52;
+
+      }
+
+
+      return sample.register === 1
+        ? .24
+        : sample.register === 2
+          ? .38
+          : .50;
+
+    }
+
+
+    function scheduleSample(
+      sample,
+      buffer,
+      start,
+      destination,
+      gainMultiplier = 1
+    ) {
+
+      if (
+        state.activeSources.size >=
         AUDIO_CONFIG.maxVoices
       ) {
 
@@ -5885,93 +6205,70 @@
       }
 
 
-      const context =
-        audioState.context;
-
-
       const source =
-        context.createBufferSource();
+        state.context.createBufferSource();
 
 
       const gain =
-        context.createGain();
+        state.context.createGain();
 
 
-      const panner =
-        context.createStereoPanner();
+      const pan =
+        state.context.createStereoPanner();
 
 
       source.buffer =
         buffer;
 
 
-      source.playbackRate.value =
-        1;
-
-
-      const range =
-        gainRangeForSample(
+      const volumeRange =
+        gainRange(
           sample
         );
 
 
-      const targetGain =
+      const target =
         random(
-          range[0],
-          range[1]
+          volumeRange[0],
+          volumeRange[1]
         ) *
-        gainScale;
+        gainMultiplier;
 
 
-      const attackRange =
-        attackRangeForSample(
+      const attacks =
+        attackRange(
           sample
         );
-
-
-      let attack =
-        random(
-          attackRange[0],
-          attackRange[1]
-        );
-
-
-      if (
-        eventType ===
-        "connection"
-      ) {
-
-        attack *=
-          .82;
-
-      }
 
 
       gain.gain.setValueAtTime(
         .0001,
-        startTime
+        start
       );
 
 
       gain.gain.linearRampToValueAtTime(
-        targetGain,
-        startTime +
-        attack
+        target,
+        start +
+        random(
+          attacks[0],
+          attacks[1]
+        )
       );
 
 
-      const panRange =
-        panRangeForSample(
+      const width =
+        panRange(
           sample
         );
 
 
-      panner.pan.setValueAtTime(
+      pan.pan.setValueAtTime(
         random(
-          -panRange,
-          panRange
+          -width,
+          width
         ),
-        startTime
+        start
       );
 
 
@@ -5981,16 +6278,16 @@
 
 
       gain.connect(
-        panner
+        pan
       );
 
 
-      panner.connect(
+      pan.connect(
         destination
       );
 
 
-      audioState.activeVoices.add(
+      state.activeSources.add(
         source
       );
 
@@ -5998,7 +6295,7 @@
       source.onended =
         () => {
 
-          audioState.activeVoices.delete(
+          state.activeSources.delete(
             source
           );
 
@@ -6007,7 +6304,7 @@
 
             source.disconnect();
             gain.disconnect();
-            panner.disconnect();
+            pan.disconnect();
 
           }
 
@@ -6017,142 +6314,150 @@
 
 
       source.start(
-        startTime
+        start
       );
 
     }
 
 
-    async function playVoices(
-      voices,
-      spreadMs,
-      gainScale,
-      eventType
+    async function playCloud(
+      harmony
     ) {
 
-      const results =
-        await Promise.all(
-          voices.map(
-            async sample => {
-
-              try {
-
-                return {
-
-                  sample,
-
-                  buffer:
-                    await loadBuffer(
-                      sample.path
-                    )
-
-                };
-
-              }
-
-              catch {
-
-                return null;
-
-              }
-
-            }
-          )
+      const samples =
+        cloudSamples(
+          harmony
         );
 
 
-      const playable =
-        results.filter(
+      const loaded =
+        (
+          await Promise.all(
+            samples.map(
+              async sample => {
+
+                try {
+
+                  return {
+
+                    sample,
+
+                    buffer:
+                      await loadBuffer(
+                        sample.path
+                      )
+
+                  };
+
+                }
+
+                catch {
+
+                  return null;
+
+                }
+
+              }
+            )
+          )
+        ).filter(
           Boolean
         );
 
 
       if (
-        !playable.length
+        !loaded.length
       ) {
 
-        return false;
+        return null;
 
       }
 
 
-      const context =
-        audioState.context;
-
-
       const eventBus =
-        context.createGain();
+        state.context.createGain();
 
 
       eventBus.connect(
-        audioState.masterBus
+        state.bus
       );
 
 
-      const eventStart =
-        context.currentTime +
+      const start =
+        state.context.currentTime +
         .06;
-
-
-      const eventAttack =
-        eventType === "cloud"
-          ? random(.09, .15)
-          : random(.045, .085);
 
 
       eventBus.gain.setValueAtTime(
         .0001,
-        eventStart
+        start
       );
 
 
       eventBus.gain.linearRampToValueAtTime(
         1,
-        eventStart +
-        eventAttack
+        start +
+        random(
+          .10,
+          .16
+        )
       );
 
 
       const offsets =
-        staggerOffsets(
-          playable.length,
-          spreadMs
+        [];
+
+
+      let cursor =
+        random(
+          0,
+          22
         );
 
 
-      let longestDuration =
-        0;
+      loaded.forEach(
+        () => {
+
+          offsets.push(
+            cursor
+          );
 
 
-      playable.forEach(
+          cursor +=
+            random(
+              25,
+              54
+            );
+
+        }
+      );
+
+
+      loaded.forEach(
         (
-          entry,
+          voice,
           index
         ) => {
 
-          longestDuration =
-            Math.max(
-              longestDuration,
-              entry.buffer.duration
-            );
-
-
-          scheduleVoice(
-            entry.sample,
-            entry.buffer,
-            eventStart +
-            offsets[index] /
+          scheduleSample(
+            voice.sample,
+            voice.buffer,
+            start +
+            Math.min(
+              offsets[index],
+              AUDIO_CONFIG.cloud
+                .spread
+            ) /
             1000,
-            gainScale,
             eventBus,
-            eventType
+            .90
           );
 
         }
       );
 
 
-      window.setTimeout(
+      setTimeout(
         () => {
 
           try {
@@ -6164,15 +6469,129 @@
           catch {}
 
         },
-        (
-          longestDuration +
-          1
-        ) *
-        1000
+        15000
       );
 
 
-      return true;
+      return {
+
+        durationMs:
+          Math.min(
+            cursor,
+            AUDIO_CONFIG.cloud.spread
+          ) +
+          500,
+
+        noteCount:
+          loaded.length
+
+      };
+
+    }
+
+
+    async function playPhrase(
+      phrase
+    ) {
+
+      const loaded =
+        (
+          await Promise.all(
+            phrase.events.map(
+              async event => {
+
+                try {
+
+                  return {
+
+                    ...event,
+
+                    buffer:
+                      await loadBuffer(
+                        event.sample.path
+                      )
+
+                  };
+
+                }
+
+                catch {
+
+                  return null;
+
+                }
+
+              }
+            )
+          )
+        ).filter(
+          Boolean
+        );
+
+
+      if (
+        !loaded.length
+      ) {
+
+        return null;
+
+      }
+
+
+      const start =
+        state.context.currentTime +
+        .055;
+
+
+      loaded.forEach(
+        event => {
+
+          scheduleSample(
+            event.sample,
+            event.buffer,
+            start +
+            event.offset /
+            1000,
+            state.bus,
+            event.gain
+          );
+
+        }
+      );
+
+
+      const lastOffset =
+        Math.max(
+          ...loaded.map(
+            event =>
+              event.offset
+          )
+        );
+
+
+      schedulePhraseVisualTicks(
+        loaded.map(
+          event =>
+            event.offset
+        ),
+        phrase.type === "long-run"
+          ? .60
+          : phrase.type === "duet"
+            ? .52
+            : .42
+      );
+
+
+      return {
+
+        durationMs:
+          lastOffset +
+          450,
+
+        noteCount:
+          loaded.length
+
+      };
 
     }
 
@@ -6181,144 +6600,171 @@
        MUSICAL EVENTS
        ===================================================== */
 
-    async function playCloudEvent(
+    async function cloudEvent(
       point
     ) {
 
       if (
-        !audioState.currentHarmony
+        !state.currentHarmony
       ) {
 
-        audioState.currentHarmony =
+        state.currentHarmony =
           chooseInitialHarmony();
 
-
-        audioState
-          .recentHarmonySignatures
-          .push(
-            harmonySignature(
-              audioState.currentHarmony
-            )
-          );
-
       }
 
-      else if (
-        audioState.nextHarmony
+
+      if (
+        state.nextHarmony
       ) {
 
-        audioState.currentHarmony =
-          audioState.nextHarmony;
+        state.currentHarmony =
+          state.nextHarmony;
 
       }
 
 
-      const played =
-        await playVoices(
-          generateCloudVoicing(
-            audioState.currentHarmony
-          ),
-          AUDIO_CONFIG.cloud
-            .entrySpreadMs,
-          .90,
-          "cloud"
+      const playback =
+        await playCloud(
+          state.currentHarmony
         );
 
 
       if (
-        !played
+        !playback
       ) {
 
-        return false;
+        return null;
 
       }
 
 
-      audioState.nextHarmony =
+      state.nextHarmony =
         chooseNextHarmony(
-          audioState.currentHarmony
+          state.currentHarmony
         );
 
 
-      audioState.eventType =
+      state.connectionsRemaining =
+        chooseConnectionCount(
+          state.currentHarmony,
+          state.nextHarmony
+        );
+
+
+      state.eventType =
         "connection";
 
 
       createSplash(
         "cloud",
-        point
+        point,
+        playback.noteCount
       );
 
 
-      visualChordPulse();
+      musicalVisualEvent(
+        "cloud",
+        playback.noteCount,
+        playback.durationMs
+      );
 
 
-      return true;
+      return {
+
+        kind:
+          "cloud",
+
+        durationMs:
+          playback.durationMs,
+
+        noteCount:
+          playback.noteCount
+
+      };
 
     }
 
 
-    async function playConnectionEvent(
-      point
+    async function connectionEvent(
+      point,
+      origin
     ) {
 
       if (
-        !audioState.currentHarmony ||
-        !audioState.nextHarmony
+        !state.currentHarmony ||
+        !state.nextHarmony
       ) {
 
-        return false;
+        return null;
 
       }
 
 
-      const pitches =
-        chooseConnectionPitches(
-          audioState.currentHarmony,
-          audioState.nextHarmony
+      const phrase =
+        buildConnectionPhrase(
+          origin
         );
 
 
-      const played =
-        await playVoices(
-          generateConnectionVoicing(
-            pitches
-          ),
-          AUDIO_CONFIG.connection
-            .entrySpreadMs,
-          .90,
-          "connection"
+      const playback =
+        await playPhrase(
+          phrase
         );
 
 
       if (
-        !played
+        !playback
       ) {
 
-        return false;
+        return null;
 
       }
 
 
-      audioState.eventType =
-        "cloud";
+      state.connectionsRemaining--;
+
+
+      state.eventType =
+        state.connectionsRemaining > 0
+          ? "connection"
+          : "cloud";
 
 
       createSplash(
         "connection",
-        point
+        point,
+        playback.noteCount
       );
 
 
-      visualConnectionPulse();
+      musicalVisualEvent(
+        "connection",
+        playback.noteCount,
+        playback.durationMs
+      );
 
 
-      return true;
+      return {
+
+        kind:
+          "connection",
+
+        phraseType:
+          phrase.type,
+
+        durationMs:
+          playback.durationMs,
+
+        noteCount:
+          playback.noteCount
+
+      };
 
     }
 
 
-    async function handleMusicalClick(
+    async function musicalAction(
       origin,
       point
     ) {
@@ -6329,47 +6775,47 @@
 
       if (
         now -
-        audioState.lastClickTime <
-        AUDIO_CONFIG.eventCooldownMs
+        state.lastClick <
+        AUDIO_CONFIG.clickCooldown
       ) {
 
-        return false;
+        return null;
 
       }
 
 
       if (
-        audioState.eventPending
+        state.pending
       ) {
 
-        return false;
+        return null;
 
       }
 
 
-      audioState.lastClickTime =
+      state.lastClick =
         now;
 
 
-      audioState.eventPending =
+      state.pending =
         true;
 
 
-      let success =
-        false;
+      let result =
+        null;
 
 
       try {
 
         const context =
-          ensureAudioContext();
+          ensureContext();
 
 
         if (
           !context
         ) {
 
-          return false;
+          return null;
 
         }
 
@@ -6378,26 +6824,26 @@
 
 
         if (
-          audioState.muted
+          state.muted
         ) {
 
-          audioState.muted =
+          state.muted =
             false;
 
 
-          updateMasterGain();
+          updateMaster();
 
 
-          updateSoundLabel();
+          updateSoundButton();
 
         }
 
 
         if (
-          !audioState.droneStarted
+          !state.droneStarted
         ) {
 
-          success =
+          result =
             await startDrone(
               point
             );
@@ -6405,12 +6851,12 @@
         }
 
         else if (
-          audioState.eventType ===
+          state.eventType ===
           "cloud"
         ) {
 
-          success =
-            await playCloudEvent(
+          result =
+            await cloudEvent(
               point
             );
 
@@ -6418,26 +6864,27 @@
 
         else {
 
-          success =
-            await playConnectionEvent(
-              point
+          result =
+            await connectionEvent(
+              point,
+              origin
             );
 
         }
 
 
-        return success;
+        return result;
 
       }
 
       finally {
 
-        audioState.eventPending =
+        state.pending =
           false;
 
 
         if (
-          success &&
+          result &&
           origin === "manual"
         ) {
 
@@ -6447,12 +6894,14 @@
 
 
         if (
-          success &&
+          result &&
           origin === "manual" &&
-          audioState.autoSongEnabled
+          state.auto
         ) {
 
-          scheduleAutoSong();
+          scheduleAuto(
+            result
+          );
 
         }
 
@@ -6462,59 +6911,178 @@
 
 
     /* =====================================================
-       RANDOM SONG
+       AUTOPLAY
        ===================================================== */
 
-    function updateAutoSongLabel() {
+    function autoDelay(
+      result
+    ) {
 
-      autoSongButton.textContent =
-        audioState.autoSongEnabled
+      if (
+        !result
+      ) {
+
+        return 2500;
+
+      }
+
+
+      if (
+        result.kind === "drone"
+      ) {
+
+        return random(
+          6200,
+          7600
+        );
+
+      }
+
+
+      if (
+        result.kind === "cloud"
+      ) {
+
+        if (
+          state.phraseMode ===
+            "rise" ||
+          state.phraseMode ===
+            "darken"
+        ) {
+
+          return random(
+            1750,
+            3100
+          );
+
+        }
+
+
+        if (
+          state.phraseMode ===
+            "release" ||
+          state.phraseMode ===
+            "settle"
+        ) {
+
+          return random(
+            3800,
+            6300
+          );
+
+        }
+
+
+        return random(
+          2700,
+          4800
+        );
+
+      }
+
+
+      let rest;
+
+
+      if (
+        state.phraseMode ===
+          "rise" ||
+        state.phraseMode ===
+          "darken"
+      ) {
+
+        rest =
+          random(
+            500,
+            1250
+          );
+
+      }
+
+      else if (
+        state.phraseMode ===
+          "release" ||
+        state.phraseMode ===
+          "settle"
+      ) {
+
+        rest =
+          random(
+            1400,
+            2800
+          );
+
+      }
+
+      else {
+
+        rest =
+          random(
+            900,
+            1900
+          );
+
+      }
+
+
+      if (
+        result.phraseType ===
+          "long-run"
+      ) {
+
+        rest +=
+          random(
+            900,
+            1800
+          );
+
+      }
+
+
+      else if (
+        result.phraseType ===
+          "duet"
+      ) {
+
+        rest +=
+          random(
+            500,
+            1200
+          );
+
+      }
+
+
+      return (
+        result.durationMs +
+        rest
+      );
+
+    }
+
+
+    function updateAutoButton() {
+
+      autoButton.textContent =
+        state.auto
           ? "stop randomly generating"
           : "randomly generate a song";
 
     }
 
 
-    function nextAutoDelay() {
+    function scheduleAuto(
+      previousResult
+    ) {
 
-      /*
-        The current musical state determines the pacing.
-
-        A cloud needs more room to decay.
-        A connective note can move sooner.
-      */
-
-      if (
-        audioState.eventType ===
-        "connection"
-      ) {
-
-        return random(
-          3800,
-          7000
-        );
-
-      }
-
-
-      return random(
-        2400,
-        4700
-      );
-
-    }
-
-
-    function scheduleAutoSong() {
-
-      window.clearTimeout(
-        audioState.autoSongTimer
+      clearTimeout(
+        state.autoTimer
       );
 
 
       if (
-        !audioState.autoSongEnabled ||
-        audioState.overlayMuted
+        !state.auto ||
+        state.overlayMuted
       ) {
 
         return;
@@ -6522,13 +7090,13 @@
       }
 
 
-      audioState.autoSongTimer =
-        window.setTimeout(
+      state.autoTimer =
+        setTimeout(
           async () => {
 
             if (
-              !audioState.autoSongEnabled ||
-              audioState.overlayMuted
+              !state.auto ||
+              state.overlayMuted
             ) {
 
               return;
@@ -6536,69 +7104,77 @@
             }
 
 
-            await handleMusicalClick(
-              "auto",
-              randomEventPoint()
+            const result =
+              await musicalAction(
+                "auto",
+                randomArtworkPoint()
+              );
+
+
+            scheduleAuto(
+              result
             );
 
-
-            scheduleAutoSong();
-
           },
-          nextAutoDelay()
+          autoDelay(
+            previousResult
+          )
         );
 
     }
 
 
-    async function startAutoSong() {
+    async function startAuto() {
 
-      audioState.autoSongEnabled =
+      state.auto =
         true;
 
 
-      audioState.muted =
+      state.muted =
         false;
 
 
-      updateMasterGain();
+      updateMaster();
 
 
-      updateSoundLabel();
+      updateSoundButton();
 
 
-      updateAutoSongLabel();
+      updateAutoButton();
 
 
-      await handleMusicalClick(
-        "auto",
-        randomEventPoint()
+      const result =
+        await musicalAction(
+          "auto",
+          randomArtworkPoint()
+        );
+
+
+      scheduleAuto(
+        result
       );
-
-
-      scheduleAutoSong();
 
     }
 
 
-    function stopAutoSong() {
+    function stopAuto() {
 
-      audioState.autoSongEnabled =
+      state.auto =
         false;
 
 
-      window.clearTimeout(
-        audioState.autoSongTimer
+      clearTimeout(
+        state.autoTimer
       );
 
 
-      updateAutoSongLabel();
+      updateAutoButton();
 
     }
 
 
     /* =====================================================
-       USER EVENTS
+       INTERACTION
        ===================================================== */
 
     artwork.addEventListener(
@@ -6616,18 +7192,12 @@
         }
 
 
-        /*
-          Instruction disappears the instant the user acts.
-          The next instruction waits until the sound event
-          actually succeeds.
-        */
-
         hidePrompt();
 
 
-        await handleMusicalClick(
+        await musicalAction(
           "manual",
-          eventPointFromMouse(
+          artworkPoint(
             event
           )
         );
@@ -6667,11 +7237,11 @@
         hidePrompt();
 
 
-        await handleMusicalClick(
+        await musicalAction(
           "manual",
           {
             x: .5,
-            y: .55
+            y: .52
           }
         );
 
@@ -6689,39 +7259,30 @@
         event.stopPropagation();
 
 
+        state.muted =
+          !state.muted;
+
+
         if (
-          !audioState.droneStarted
+          state.muted &&
+          state.auto
         ) {
 
-          return;
+          stopAuto();
 
         }
 
 
-        audioState.muted =
-          !audioState.muted;
+        updateMaster();
 
 
-        if (
-          audioState.muted &&
-          audioState.autoSongEnabled
-        ) {
-
-          stopAutoSong();
-
-        }
-
-
-        updateMasterGain();
-
-
-        updateSoundLabel();
+        updateSoundButton();
 
       }
     );
 
 
-    autoSongButton.addEventListener(
+    autoButton.addEventListener(
       "click",
       async event => {
 
@@ -6732,16 +7293,16 @@
 
 
         if (
-          audioState.autoSongEnabled
+          state.auto
         ) {
 
-          stopAutoSong();
+          stopAuto();
 
         }
 
         else {
 
-          await startAutoSong();
+          await startAuto();
 
         }
 
@@ -6759,30 +7320,37 @@
         muted
       ) {
 
-        audioState.overlayMuted =
+        state.overlayMuted =
           Boolean(
             muted
           );
 
 
-        updateMasterGain();
+        updateMaster();
 
 
         if (
-          audioState.overlayMuted
+          state.overlayMuted
         ) {
 
-          window.clearTimeout(
-            audioState.autoSongTimer
+          clearTimeout(
+            state.autoTimer
+          );
+
+
+          resetVisuals(
+            false
           );
 
         }
 
         else if (
-          audioState.autoSongEnabled
+          state.auto
         ) {
 
-          scheduleAutoSong();
+          scheduleAuto(
+            null
+          );
 
         }
 
@@ -6795,29 +7363,41 @@
        START
        ===================================================== */
 
-    updateAutoSongLabel();
+    updateAutoButton();
 
 
-    prepareVisuals()
+    updateSoundButton();
+
+
+    revealBase()
       .then(
         () => {
 
           /*
-            The image gets a few seconds of silence before
-            telling the user what to do.
+            Photograph first.
+
+            THEN background-load the limited layer budget.
           */
 
+          setTimeout(
+            prepareOverlayAssets,
+            isMobileMode()
+              ? 500
+              : 250
+          );
+
+
           tutorial.promptTimer =
-            window.setTimeout(
+            setTimeout(
               () => {
 
                 if (
                   tutorial.step === 0 &&
-                  !audioState.droneStarted
+                  !state.droneStarted
                 ) {
 
                   showPrompt(
-                    "click here"
+                    WORDS.here()
                   );
 
                 }
@@ -7129,7 +7709,7 @@
         ).slice(
           0,
           isMobile()
-            ? 13
+            ? 10
             : 18
         ),
 
@@ -7138,7 +7718,7 @@
         ).slice(
           0,
           isMobile()
-            ? 3
+            ? 2
             : 6
         )
 
@@ -7347,7 +7927,8 @@
 
       }
       while (
-        result.name === lastHorseColorName &&
+        result.name ===
+          lastHorseColorName &&
         attempts < 12
       );
 
@@ -7490,7 +8071,8 @@
     ) {
 
       if (
-        slot.role === "foundation"
+        slot.role ===
+        "foundation"
       ) {
 
         return isMobile()
@@ -7511,7 +8093,8 @@
 
 
       if (
-        slot.role === "secondary"
+        slot.role ===
+        "secondary"
       ) {
 
         return isMobile()
@@ -7656,7 +8239,8 @@
 
 
       first.style.opacity =
-        first.dataset.targetOpacity;
+        first.dataset
+          .targetOpacity;
 
 
       slot.nextChange =
@@ -7738,7 +8322,8 @@
         () => {
 
           incoming.style.opacity =
-            incoming.dataset.targetOpacity;
+            incoming.dataset
+              .targetOpacity;
 
 
           outgoing.style.opacity =
@@ -8189,22 +8774,17 @@
       overlayOpen =
         true;
 
-
       collageStarted =
         false;
-
 
       horseStarted =
         false;
 
-
       normalState =
         false;
 
-
       recentTextures =
         [];
-
 
       lastHorseColorName =
         "";
