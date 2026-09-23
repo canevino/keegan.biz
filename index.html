@@ -217,7 +217,8 @@
       >
 
         <!-- ===============================================
-             UNDER TEXTURE CHANNEL 1
+             UNDER CHANNEL 1
+             Three frames = continuous overlapping dissolves
              =============================================== -->
 
         <div
@@ -226,17 +227,19 @@
         >
           <div class="morph-frame"></div>
           <div class="morph-frame"></div>
+          <div class="morph-frame"></div>
         </div>
 
 
         <!-- ===============================================
-             UNDER TEXTURE CHANNEL 2
+             UNDER CHANNEL 2
              =============================================== -->
 
         <div
           class="texture-slot under-slot under-slot-2"
           id="under-slot-2"
         >
+          <div class="morph-frame"></div>
           <div class="morph-frame"></div>
           <div class="morph-frame"></div>
         </div>
@@ -250,6 +253,7 @@
           class="color-slot color-slot-under"
           id="color-slot-under"
         >
+          <div class="morph-frame color-frame"></div>
           <div class="morph-frame color-frame"></div>
           <div class="morph-frame color-frame"></div>
         </div>
@@ -279,7 +283,7 @@
 
 
         <!-- ===============================================
-             OVER TEXTURE CHANNEL 1
+             OVER CHANNEL 1
              =============================================== -->
 
         <div
@@ -288,17 +292,19 @@
         >
           <div class="morph-frame"></div>
           <div class="morph-frame"></div>
+          <div class="morph-frame"></div>
         </div>
 
 
         <!-- ===============================================
-             OVER TEXTURE CHANNEL 2
+             OVER CHANNEL 2
              =============================================== -->
 
         <div
           class="texture-slot over-slot over-slot-2"
           id="over-slot-2"
         >
+          <div class="morph-frame"></div>
           <div class="morph-frame"></div>
           <div class="morph-frame"></div>
         </div>
@@ -314,11 +320,13 @@
         >
           <div class="morph-frame color-frame"></div>
           <div class="morph-frame color-frame"></div>
+          <div class="morph-frame color-frame"></div>
         </div>
 
 
         <!-- ===============================================
              HORSE INK KEY
+             Keeps linework readable
              =============================================== -->
 
         <img
@@ -350,7 +358,7 @@
   (() => {
 
     /* =====================================================
-       HELPERS
+       GENERAL HELPERS
        ===================================================== */
 
     const clamp = (value, min, max) =>
@@ -688,7 +696,7 @@
 
 
     /* =====================================================
-       ELEMENTS
+       PAGE / MODAL ELEMENTS
        ===================================================== */
 
     const pageShell =
@@ -740,7 +748,7 @@
 
 
     /* =====================================================
-       TEXTURES
+       TEXTURE FILES
        ===================================================== */
 
     const ALL_TEXTURES = [
@@ -820,7 +828,7 @@
 
 
     /* =====================================================
-       TEXTURE CACHE
+       TEXTURE PRELOADING
        ===================================================== */
 
     let sessionTextures =
@@ -835,7 +843,29 @@
       [];
 
 
+    function markTextureReady(src) {
+
+      if (
+        !readyTextures.includes(
+          src
+        )
+      ) {
+
+        readyTextures.push(
+          src
+        );
+
+      }
+
+    }
+
+
     function prepareTextures() {
+
+      /*
+        Enough variety without asking the browser
+        to decode every large image at once.
+      */
 
       sessionTextures =
         shuffle(
@@ -863,23 +893,40 @@
         image.onload =
           () => {
 
-            if (
-              !readyTextures.includes(
-                src
-              )
-            ) {
-
-              readyTextures.push(
-                src
-              );
-
-            }
+            markTextureReady(
+              src
+            );
 
           };
 
 
         image.src =
           src;
+
+
+        /*
+          Modern browsers can decode while
+          we spend the first 30 seconds waiting
+          for the collage to begin.
+        */
+
+        if (
+          typeof image.decode ===
+          "function"
+        ) {
+
+          image
+            .decode()
+            .then(() => {
+
+              markTextureReady(
+                src
+              );
+
+            })
+            .catch(() => {});
+
+        }
 
       });
 
@@ -913,9 +960,8 @@
       while (
         recentTextures.includes(
           selected
-        )
-        &&
-        tries < 15
+        ) &&
+        tries < 16
       );
 
 
@@ -939,7 +985,7 @@
 
 
     /* =====================================================
-       COLOR
+       COLOR PALETTES
        ===================================================== */
 
     const PALETTES = [
@@ -1002,6 +1048,18 @@
         "#ff004c",
         "#ffb000",
         "#00ffd0"
+      ],
+
+      [
+        "#ff1a00",
+        "#bb00ff",
+        "#00f5ff"
+      ],
+
+      [
+        "#00ff9d",
+        "#ffd500",
+        "#ff006a"
       ]
 
     ];
@@ -1145,12 +1203,6 @@
         isOver:
           options.isOver || false,
 
-        slowInterval:
-          options.slowInterval,
-
-        fastInterval:
-          options.fastInterval,
-
         slowFade:
           options.slowFade,
 
@@ -1161,12 +1213,21 @@
           options.phase || 0,
 
         nextChange:
-          0
+          Infinity,
+
+        startTimer:
+          null
 
       };
 
     }
 
+
+    /*
+      Different durations and phases make the
+      composition feel organic rather than like
+      six synchronized fades.
+    */
 
     const slots = [
 
@@ -1175,13 +1236,10 @@
         {
           isOver: false,
 
-          slowInterval: 7.2,
-          fastInterval: 1.15,
+          slowFade: 10.5,
+          fastFade: 1.55,
 
-          slowFade: 4.8,
-          fastFade: 0.65,
-
-          phase: 0
+          phase: 0.2
         }
       ),
 
@@ -1190,13 +1248,10 @@
         {
           isOver: false,
 
-          slowInterval: 8.8,
-          fastInterval: 1.4,
+          slowFade: 12,
+          fastFade: 1.8,
 
-          slowFade: 5.4,
-          fastFade: 0.75,
-
-          phase: 2.7
+          phase: 1.7
         }
       ),
 
@@ -1205,13 +1260,10 @@
         {
           isOver: true,
 
-          slowInterval: 6.5,
-          fastInterval: 0.85,
+          slowFade: 9,
+          fastFade: 1.2,
 
-          slowFade: 4.2,
-          fastFade: 0.40,
-
-          phase: 1.5
+          phase: 3.2
         }
       ),
 
@@ -1220,13 +1272,10 @@
         {
           isOver: true,
 
-          slowInterval: 9.4,
-          fastInterval: 1.05,
+          slowFade: 11,
+          fastFade: 1.45,
 
-          slowFade: 5.0,
-          fastFade: 0.48,
-
-          phase: 4
+          phase: 5
         }
       ),
 
@@ -1236,13 +1285,10 @@
           isColor: true,
           isOver: false,
 
-          slowInterval: 8,
-          fastInterval: 1.3,
+          slowFade: 13,
+          fastFade: 1.9,
 
-          slowFade: 5.2,
-          fastFade: 0.7,
-
-          phase: 1
+          phase: 2.4
         }
       ),
 
@@ -1252,13 +1298,10 @@
           isColor: true,
           isOver: true,
 
-          slowInterval: 10,
-          fastInterval: 1.65,
+          slowFade: 10.5,
+          fastFade: 1.45,
 
-          slowFade: 5.8,
-          fastFade: 0.8,
-
-          phase: 5
+          phase: 6.2
         }
       )
 
@@ -1322,12 +1365,21 @@
         "no-repeat, no-repeat";
 
 
+      /*
+        First burn color INTO the physical texture.
+      */
+
       frame.style.backgroundBlendMode =
         `
           ${pick(INTERNAL_BLEND)},
           normal
         `;
 
+
+      /*
+        Then blend that combined plate into
+        the full composition.
+      */
 
       frame.style.mixBlendMode =
         pick(
@@ -1338,7 +1390,10 @@
 
 
       /*
-        Static crop / zoom / rotation.
+        Random crop / zoom / rotation is chosen
+        ONCE.
+
+        It does not move after the image appears.
       */
 
       frame.style.transform =
@@ -1362,7 +1417,7 @@
             ${random(1.08, 1.72)}
           )
           saturate(
-            ${random(1.15, 2.15)}
+            ${random(1.2, 2.3)}
           )
           brightness(
             ${random(0.74, 1.16)}
@@ -1378,12 +1433,12 @@
         opacity =
           random(
             lerp(
-              0.08,
+              0.07,
               0.16,
               intensity
             ),
             lerp(
-              0.24,
+              0.22,
               0.47,
               intensity
             )
@@ -1396,12 +1451,12 @@
         opacity =
           random(
             lerp(
-              0.28,
+              0.26,
               0.38,
               intensity
             ),
             lerp(
-              0.55,
+              0.52,
               0.80,
               intensity
             )
@@ -1417,7 +1472,7 @@
 
 
     /* =====================================================
-       COLOR FRAME
+       COLOR FRAMES
        ===================================================== */
 
     function configureColorFrame(
@@ -1432,7 +1487,7 @@
 
       const type =
         Math.floor(
-          Math.random() * 3
+          Math.random() * 4
         );
 
 
@@ -1459,8 +1514,9 @@
               ${random(10, 90)}%
               ${random(10, 90)}%,
               ${palette[0]},
-              transparent 55%
+              transparent 54%
             ),
+
             radial-gradient(
               circle at
               ${random(10, 90)}%
@@ -1468,6 +1524,7 @@
               ${palette[1]},
               transparent 60%
             ),
+
             radial-gradient(
               circle at
               ${random(10, 90)}%
@@ -1479,7 +1536,7 @@
 
       }
 
-      else {
+      else if (type === 2) {
 
         frame.style.background =
           `
@@ -1493,6 +1550,22 @@
               ${palette[1]},
               ${palette[2]},
               ${palette[0]}
+            )
+          `;
+
+      }
+
+      else {
+
+        frame.style.background =
+          `
+            linear-gradient(
+              ${random(0, 360)}deg,
+              ${palette[0]} 0%,
+              transparent 32%,
+              ${palette[1]} 52%,
+              transparent 72%,
+              ${palette[2]} 100%
             )
           `;
 
@@ -1524,7 +1597,7 @@
               0.025,
               lerp(
                 0.09,
-                0.24,
+                0.25,
                 intensity
               )
             )
@@ -1532,7 +1605,7 @@
               0.04,
               lerp(
                 0.12,
-                0.28,
+                0.30,
                 intensity
               )
             );
@@ -1545,124 +1618,10 @@
 
 
     /* =====================================================
-       CROSSFADE SLOT
-       ===================================================== */
+       INITIALIZE A SLOT
 
-    function morphSlot(
-      slot,
-      intensity,
-      time
-    ) {
-
-      const outgoing =
-        slot.frames[
-          slot.active
-        ];
-
-
-      const incomingIndex =
-        slot.active === 0
-          ? 1
-          : 0;
-
-
-      const incoming =
-        slot.frames[
-          incomingIndex
-        ];
-
-
-      const duration =
-        lerp(
-          slot.slowFade,
-          slot.fastFade,
-          intensity
-        );
-
-
-      incoming.style.transitionDuration =
-        `${duration}s`;
-
-
-      outgoing.style.transitionDuration =
-        `${duration}s`;
-
-
-      /*
-        Configure incoming while hidden.
-      */
-
-      incoming.style.opacity =
-        "0";
-
-
-      if (
-        slot.isColor
-      ) {
-
-        configureColorFrame(
-          incoming,
-          intensity,
-          slot.isOver
-        );
-
-      }
-
-      else {
-
-        configureTextureFrame(
-          incoming,
-          intensity,
-          slot.isOver
-        );
-
-      }
-
-
-      /*
-        Force browser to register hidden state.
-      */
-
-      incoming.offsetHeight;
-
-
-      /*
-        Both happen simultaneously:
-        one rises as one falls.
-      */
-
-      incoming.style.opacity =
-        incoming.dataset.targetOpacity;
-
-
-      outgoing.style.opacity =
-        "0";
-
-
-      slot.active =
-        incomingIndex;
-
-
-      const interval =
-        lerp(
-          slot.slowInterval,
-          slot.fastInterval,
-          intensity
-        );
-
-
-      slot.nextChange =
-        time +
-        random(
-          interval * 0.84,
-          interval * 1.16
-        );
-
-    }
-
-
-    /* =====================================================
-       INITIALIZE SLOT
+       Initial contamination itself fades in.
+       Different phases stagger the channels.
        ===================================================== */
 
     function initializeSlot(
@@ -1671,24 +1630,36 @@
       time
     ) {
 
+      slot.frames.forEach(
+        frame => {
+
+          if (
+            frame._fadeTimer
+          ) {
+
+            clearTimeout(
+              frame._fadeTimer
+            );
+
+            frame._fadeTimer =
+              null;
+
+          }
+
+
+          frame.style.transitionDuration =
+            "0s";
+
+
+          frame.style.opacity =
+            "0";
+
+        }
+      );
+
+
       const first =
         slot.frames[0];
-
-
-      const second =
-        slot.frames[1];
-
-
-      first.style.transitionDuration =
-        "0s";
-
-
-      second.style.transitionDuration =
-        "0s";
-
-
-      second.style.opacity =
-        "0";
 
 
       if (
@@ -1714,37 +1685,321 @@
       }
 
 
-      first.style.opacity =
-        first.dataset.targetOpacity;
+      const fadeDuration =
+        slot.slowFade;
+
+
+      const initialDelay =
+        slot.phase * 0.45;
+
+
+      first.style.transitionDuration =
+        `${fadeDuration}s`;
 
 
       slot.active =
         0;
 
 
+      /*
+        Stagger when each "projector" switches on.
+      */
+
+      slot.startTimer =
+        window.setTimeout(
+          () => {
+
+            if (
+              !overlayOpen ||
+              normalState
+            ) {
+
+              return;
+
+            }
+
+
+            first.offsetHeight;
+
+
+            requestAnimationFrame(() => {
+
+              first.style.opacity =
+                first.dataset.targetOpacity;
+
+            });
+
+          },
+          initialDelay * 1000
+        );
+
+
+      /*
+        Begin the NEXT dissolve before the
+        initial one has even completely finished.
+      */
+
       slot.nextChange =
         time +
-        slot.phase +
-        random(
-          slot.slowInterval * 0.6,
-          slot.slowInterval
+        initialDelay +
+        (
+          fadeDuration *
+          0.62
         );
 
     }
 
 
     /* =====================================================
-       HORSE
+       CONTINUOUS MORPH
+
+       Three frames per channel allow:
+       A -> B while C waits
+       B -> C while A finishes dying
+       C -> A while B finishes dying
+
+       There is no "hold" state.
+       ===================================================== */
+
+    function morphSlot(
+      slot,
+      intensity,
+      time
+    ) {
+
+      const outgoingIndex =
+        slot.active;
+
+
+      const incomingIndex =
+        (
+          slot.active + 1
+        )
+        %
+        slot.frames.length;
+
+
+      const outgoing =
+        slot.frames[
+          outgoingIndex
+        ];
+
+
+      const incoming =
+        slot.frames[
+          incomingIndex
+        ];
+
+
+      /*
+        Clear any old fade timer belonging
+        to a recycled frame.
+      */
+
+      if (
+        incoming._fadeTimer
+      ) {
+
+        clearTimeout(
+          incoming._fadeTimer
+        );
+
+
+        incoming._fadeTimer =
+          null;
+
+      }
+
+
+      /*
+        Long dissolves early.
+        Rapid dissolves at the climax.
+      */
+
+      const fadeDuration =
+        lerp(
+          slot.slowFade,
+          slot.fastFade,
+          intensity
+        );
+
+
+      incoming.style.transitionDuration =
+        `${fadeDuration}s`;
+
+
+      outgoing.style.transitionDuration =
+        `${fadeDuration}s`;
+
+
+      /*
+        Rebuild incoming plate while invisible.
+      */
+
+      incoming.style.opacity =
+        "0";
+
+
+      if (
+        slot.isColor
+      ) {
+
+        configureColorFrame(
+          incoming,
+          intensity,
+          slot.isOver
+        );
+
+      }
+
+      else {
+
+        configureTextureFrame(
+          incoming,
+          intensity,
+          slot.isOver
+        );
+
+      }
+
+
+      /*
+        Make sure browser registers:
+        NEW IMAGE + ZERO OPACITY
+        before fade begins.
+      */
+
+      incoming.offsetHeight;
+
+
+      requestAnimationFrame(() => {
+
+        incoming.style.opacity =
+          incoming.dataset.targetOpacity;
+
+      });
+
+
+      /*
+        Don't immediately remove old layer.
+
+        The new image accumulates over it first.
+      */
+
+      const fadeOutDelay =
+        fadeDuration *
+        random(
+          0.28,
+          0.42
+        );
+
+
+      if (
+        outgoing._fadeTimer
+      ) {
+
+        clearTimeout(
+          outgoing._fadeTimer
+        );
+
+      }
+
+
+      outgoing._fadeTimer =
+        window.setTimeout(
+          () => {
+
+            outgoing.style.opacity =
+              "0";
+
+
+            outgoing._fadeTimer =
+              null;
+
+          },
+          fadeOutDelay * 1000
+        );
+
+
+      slot.active =
+        incomingIndex;
+
+
+      /*
+        CRUCIAL:
+
+        The next morph begins while this morph
+        is still happening.
+
+        Early:
+        next begins around 60% through dissolve.
+
+        Late:
+        next begins around 50% through dissolve.
+      */
+
+      const overlapFactor =
+        lerp(
+          0.62,
+          0.50,
+          intensity
+        );
+
+
+      slot.nextChange =
+        time +
+        (
+          fadeDuration *
+          overlapFactor *
+          random(
+            0.92,
+            1.08
+          )
+        );
+
+    }
+
+
+    /* =====================================================
+       HORSE TREATMENT
        ===================================================== */
 
     let nextHorseChange =
-      0;
+      Infinity;
 
 
     function changeHorse(
       intensity,
       time
     ) {
+
+      /*
+        Smooth filters / opacity.
+
+        Blend-mode itself changes immediately,
+        giving occasional harder print shifts,
+        while surrounding collage keeps dissolving.
+      */
+
+      const horseTransition =
+        lerp(
+          3.2,
+          0.65,
+          intensity
+        );
+
+
+      horseMain.style.transitionDuration =
+        `${horseTransition}s`;
+
+
+      horseOffset.style.transitionDuration =
+        `${horseTransition}s`;
+
+
+      horseKey.style.transitionDuration =
+        `${horseTransition}s`;
+
 
       horseMain.style.mixBlendMode =
         pick(
@@ -1771,7 +2026,7 @@
 
       horseMain.style.opacity =
         random(
-          0.62,
+          0.64,
           0.94
         );
 
@@ -1825,16 +2080,16 @@
 
       horseKey.style.opacity =
         lerp(
-          0.28,
-          0.48,
+          0.27,
+          0.47,
           intensity
         ).toFixed(3);
 
 
       const interval =
         lerp(
-          6,
-          1.15,
+          7,
+          1.4,
           intensity
         );
 
@@ -1842,14 +2097,26 @@
       nextHorseChange =
         time +
         random(
-          interval * 0.85,
-          interval * 1.15
+          interval * 0.88,
+          interval * 1.12
         );
 
     }
 
 
     function normalHorse() {
+
+      horseMain.style.transitionDuration =
+        "500ms";
+
+
+      horseOffset.style.transitionDuration =
+        "500ms";
+
+
+      horseKey.style.transitionDuration =
+        "500ms";
+
 
       horseMain.style.mixBlendMode =
         "normal";
@@ -1874,33 +2141,49 @@
 
 
     /* =====================================================
-       TIMING
+       TIMELINE
        ===================================================== */
 
-    const VISUAL_START =
-      9;
-
-
     /*
-      Much shorter initial fade.
+      0:00–0:12
+      Message only.
 
-      Only the square fades.
+      0:12–0:20
+      Horse fades in.
+
+      0:20–0:30
+      Clean horse alone.
+
+      0:30–4:03
+      Collage evolves continuously.
+
+      4:03+
+      Original clean GIF.
     */
 
-    const VISUAL_FULL =
-      15;
+    const HORSE_START =
+      12;
+
+
+    const HORSE_FULL =
+      20;
+
+
+    const COLLAGE_START =
+      30;
 
 
     const NORMAL_TIME =
       243;
 
 
-    function revealAt(
+    function horseRevealAt(
       time
     ) {
 
       if (
-        time < VISUAL_START
+        time <
+        HORSE_START
       ) {
 
         return 0;
@@ -1911,12 +2194,12 @@
       return smoothStep(
         (
           time -
-          VISUAL_START
+          HORSE_START
         )
         /
         (
-          VISUAL_FULL -
-          VISUAL_START
+          HORSE_FULL -
+          HORSE_START
         )
       );
 
@@ -1928,8 +2211,10 @@
     ) {
 
       if (
-        time < VISUAL_START ||
-        time >= NORMAL_TIME
+        time <
+        COLLAGE_START ||
+        time >=
+        NORMAL_TIME
       ) {
 
         return 0;
@@ -1937,52 +2222,67 @@
       }
 
 
+      /*
+        0:30–1:30
+        Very gradual contamination.
+      */
+
       if (
-        time < 75
+        time < 90
       ) {
 
         return lerp(
-          0.16,
-          0.34,
+          0.08,
+          0.28,
           (
             time -
-            VISUAL_START
+            COLLAGE_START
           )
           /
           (
-            75 -
-            VISUAL_START
+            90 -
+            COLLAGE_START
           )
         );
 
       }
 
+
+      /*
+        1:30–2:55
+        More layers / stronger interactions.
+      */
 
       if (
         time < 175
       ) {
 
         return lerp(
-          0.34,
-          0.58,
+          0.28,
+          0.55,
           (
             time -
-            75
+            90
           )
           /
-          100
+          85
         );
 
       }
 
+
+      /*
+        2:55–3:40
+        Tension increases.
+      */
 
       if (
         time < 220
       ) {
 
         return lerp(
-          0.58,
-          0.82,
+          0.55,
+          0.80,
           (
             time -
             175
@@ -1994,8 +2294,13 @@
       }
 
 
+      /*
+        3:40–4:03
+        Fastest / densest state.
+      */
+
       return lerp(
-        0.82,
+        0.80,
         1,
         (
           time -
@@ -2016,7 +2321,7 @@
       false;
 
 
-    let visualStarted =
+    let collageStarted =
       false;
 
 
@@ -2028,12 +2333,71 @@
       null;
 
 
-    function clearSlots() {
+    function clearSlotTimers() {
 
       slots.forEach(slot => {
 
+        if (
+          slot.startTimer
+        ) {
+
+          clearTimeout(
+            slot.startTimer
+          );
+
+
+          slot.startTimer =
+            null;
+
+        }
+
+
         slot.frames.forEach(
           frame => {
+
+            if (
+              frame._fadeTimer
+            ) {
+
+              clearTimeout(
+                frame._fadeTimer
+              );
+
+
+              frame._fadeTimer =
+                null;
+
+            }
+
+          }
+        );
+
+      });
+
+    }
+
+
+    function clearSlots(
+      instant = true
+    ) {
+
+      clearSlotTimers();
+
+
+      slots.forEach(slot => {
+
+        slot.nextChange =
+          Infinity;
+
+
+        slot.frames.forEach(
+          frame => {
+
+            frame.style.transitionDuration =
+              instant
+                ? "0s"
+                : "450ms";
+
 
             frame.style.opacity =
               "0";
@@ -2052,7 +2416,7 @@
     ) {
 
       if (
-        visualStarted
+        collageStarted
       ) {
 
         return;
@@ -2060,9 +2424,22 @@
       }
 
 
-      visualStarted =
+      collageStarted =
         true;
 
+
+      /*
+        Until this point horse has been completely
+        untouched.
+      */
+
+      normalHorse();
+
+
+      /*
+        Each visual channel begins independently,
+        with slightly different starting times.
+      */
 
       slots.forEach(
         slot => {
@@ -2077,10 +2454,13 @@
       );
 
 
-      changeHorse(
-        intensity,
-        time
-      );
+      /*
+        Give the texture world a little time before
+        contaminating the horse itself.
+      */
+
+      nextHorseChange =
+        time + 5;
 
     }
 
@@ -2100,7 +2480,9 @@
         true;
 
 
-      clearSlots();
+      clearSlots(
+        false
+      );
 
 
       normalHorse();
@@ -2114,7 +2496,7 @@
 
 
     /* =====================================================
-       MAIN LOOP
+       MAIN VISUAL LOOP
        ===================================================== */
 
     function visualLoop() {
@@ -2133,40 +2515,31 @@
 
 
       /*
-        Only the square fades in.
+        Only the artwork square appears gradually.
 
-        0–9:
-        completely absent
-
-        9–15:
-        smooth reveal
-
-        15+:
-        fully present
+        The surrounding WIP page is already there.
       */
 
-      const reveal =
-        revealAt(
+      const horseReveal =
+        horseRevealAt(
           time
         );
 
 
       stage.style.setProperty(
         "--visual-reveal",
-        reveal.toFixed(4)
+        horseReveal.toFixed(4)
       );
 
 
       /*
-        Before 9 sec:
-        WIP message and audio only.
-
-        Textures aren't activated yet.
+        0–12 seconds:
+        message only.
       */
 
       if (
         time <
-        VISUAL_START
+        HORSE_START
       ) {
 
         raf =
@@ -2180,27 +2553,32 @@
       }
 
 
-      const intensity =
-        intensityAt(
-          time
-        );
+      /*
+        12–30 seconds:
+        clean horse only.
 
+        This allows the viewer to understand
+        the source image before we contaminate it.
+      */
 
       if (
-        !visualStarted
+        time <
+        COLLAGE_START
       ) {
 
-        startCollage(
-          time,
-          intensity
-        );
+        raf =
+          requestAnimationFrame(
+            visualLoop
+          );
+
+
+        return;
 
       }
 
 
       /*
-        4:03:
-        clean normal horse.
+        At 4:03 return to completely normal GIF.
       */
 
       if (
@@ -2222,9 +2600,29 @@
       }
 
 
+      const intensity =
+        intensityAt(
+          time
+        );
+
+
+      if (
+        !collageStarted
+      ) {
+
+        startCollage(
+          time,
+          intensity
+        );
+
+      }
+
+
       /*
-        All six projector channels morph
-        independently.
+        Six independent continuously-morphing
+        "projectors".
+
+        No global cut / no global pause.
       */
 
       slots.forEach(slot => {
@@ -2246,7 +2644,8 @@
 
 
       /*
-        Horse treatment evolves independently.
+        Horse is its own print plate and changes
+        on a separate rhythm.
       */
 
       if (
@@ -2271,7 +2670,7 @@
 
 
     /* =====================================================
-       OPEN
+       OPEN WIP
        ===================================================== */
 
     async function openWip() {
@@ -2289,7 +2688,7 @@
         true;
 
 
-      visualStarted =
+      collageStarted =
         false;
 
 
@@ -2309,10 +2708,16 @@
 
 
       nextHorseChange =
-        VISUAL_START + 3;
+        Infinity;
 
 
-      clearSlots();
+      /*
+        Reset visual channels.
+      */
+
+      clearSlots(
+        true
+      );
 
 
       normalHorse();
@@ -2330,10 +2735,10 @@
 
 
       /*
-        Begin decoding textures immediately.
+        Begin decoding texture pool immediately.
 
-        Browser has nine seconds before it
-        actually needs them.
+        Collage does not begin for 30 seconds,
+        giving the browser plenty of time.
       */
 
       prepareTextures();
@@ -2342,7 +2747,7 @@
       /*
         Homepage disappears immediately.
 
-        No expensive full-page fade.
+        No expensive full-page opacity fade.
       */
 
       pageShell.classList.add(
@@ -2351,7 +2756,7 @@
 
 
       /*
-        WIP cream screen + message appear.
+        Cream WIP screen + note appear immediately.
       */
 
       overlay.classList.add(
@@ -2366,7 +2771,7 @@
 
 
       /*
-        Restart soundtrack.
+        Start soundtrack.
       */
 
       audio.pause();
@@ -2410,7 +2815,7 @@
 
 
     /* =====================================================
-       CLOSE
+       CLOSE WIP
        ===================================================== */
 
     function closeWip() {
@@ -2424,14 +2829,16 @@
       );
 
 
+      clearSlots(
+        true
+      );
+
+
       audio.pause();
 
 
       audio.currentTime =
         0;
-
-
-      clearSlots();
 
 
       normalHorse();
@@ -2455,8 +2862,7 @@
 
 
       /*
-        Restore homepage after overlay begins
-        disappearing.
+        Restore homepage after short overlay close.
       */
 
       window.setTimeout(() => {
@@ -2471,7 +2877,7 @@
 
 
     /* =====================================================
-       LINK HANDLING
+       LINKS
        ===================================================== */
 
     document.addEventListener(
@@ -2488,6 +2894,13 @@
           return;
         }
 
+
+        /*
+          Later, finished pages can bypass
+          the WIP experience with:
+
+          data-live-link
+        */
 
         if (
           link.hasAttribute(
