@@ -2,18 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
+
   <title>keegan.biz</title>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+
   <div class="page-shell">
 
-    <!-- SCARF MENU -->
+    <!-- =====================================================
+         SCARF MENU
+         ===================================================== -->
+
     <nav class="scarf-rack" aria-label="Site sections">
 
       <a
@@ -24,7 +31,7 @@
       >
         <img
           src="assets/home/home-scarf-update.png"
-          alt="keegan.biz home scarf"
+          alt="keegan.biz"
         />
       </a>
 
@@ -103,34 +110,69 @@
     </nav>
 
 
-    <!-- HERO -->
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
     <main class="hero">
+
       <div class="hero-inner">
 
-        <p class="welcome-line">
-          <span
-            id="welcome-word"
-            class="welcome-word"
-            dir="auto"
-          >
-            Welcome
-          </span>
-        </p>
+        <!-- slot-machine welcome -->
 
-        <h1 class="brand-title" aria-label="keegan.biz">
-          <span class="brand-title__keegan">keegan</span><span class="brand-title__dot">.</span><span class="brand-title__biz">biz</span>
+        <div
+          class="welcome-slot"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          <div
+            class="welcome-track"
+            id="welcome-track"
+          >
+            <span
+              class="welcome-word welcome-word--current"
+              id="welcome-current"
+              dir="auto"
+            >
+              Welcome
+            </span>
+
+            <span
+              class="welcome-word welcome-word--next"
+              id="welcome-next"
+              dir="auto"
+            >
+              Welcome
+            </span>
+          </div>
+        </div>
+
+
+        <!-- static second line -->
+
+        <h1 class="main-title">
+
+          <span class="main-title__to">
+            to
+          </span>
+
+          <span class="main-title__brand">
+            <span class="brand-keegan">keegan</span><span class="brand-dot">.</span><span class="brand-biz">biz</span>
+          </span>
+
         </h1>
 
-        <p class="progress-line">
-          <span id="progress-text">SITE STILL IN PROGRESS!!</span>
-        </p>
-
       </div>
+
     </main>
 
 
-    <!-- BEHANCE -->
+    <!-- =====================================================
+         BEHANCE
+         ===================================================== -->
+
     <footer class="site-footer">
+
       <a
         class="behance-link"
         href="https://www.behance.net/keeganandrulis"
@@ -139,102 +181,384 @@
       >
         behance ↗
       </a>
+
     </footer>
+
+
+    <!-- =====================================================
+         INVISIBLE YOUTUBE PLAYER
+         ===================================================== -->
+
+    <div
+      id="youtube-player"
+      class="background-player"
+      aria-hidden="true"
+    ></div>
 
   </div>
 
 
+  <!-- =======================================================
+       YOUTUBE IFRAME API
+       ======================================================= -->
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+
   <script>
-    const welcomeEntries = [
-      { text: "Welcome" },                // English
-      { text: "Ласкаво просимо" },        // Ukrainian
-      { text: "Benvenuti" },              // Italian
-      { text: "Fáilte" },                 // Irish
-      { text: "Bienvenidos" },            // Spanish
-      { text: "欢迎" },                    // Chinese
-      { text: "Benvinguts" },             // Catalan
-      { text: "WELCOME", className: "is-wingdings" }, // Wingdings
-      { text: "Sveiki atvykę" },          // Lithuanian
-      { text: "Yá’át’ééh" },              // Navajo
-      { text: "Velkomin" },               // Icelandic
-      { text: "Willkommen" },             // German
-      { text: "ようこそ" },                // Japanese
-      { text: "Bienvenue" },              // French
-      { text: "Bem-vindos" },             // Portuguese
-      { text: "أهلاً وسهلاً" },           // Arabic
-      { text: "Mae govannen" },           // Sindarin
-      { text: "Croeso" },                 // Welsh
+    /* =======================================================
+       WELCOME LANGUAGES
+       ======================================================= */
+
+    const welcomes = [
+
+      { text: "Welcome" },
+
+      { text: "Ласкаво просимо" },
+
+      { text: "Benvenuti" },
+
+      { text: "Fáilte" },
+
+      { text: "Bienvenidos" },
+
+      { text: "欢迎" },
+
+      { text: "Benvinguts" },
+
       {
-        text: "01010111 01100101 01101100 01100011 01101111 01101101 01100101",
+        text: "WELCOME",
+        className: "is-wingdings"
+      },
+
+      { text: "Sveiki atvykę" },
+
+      { text: "Yá’át’ééh" },
+
+      { text: "Velkomin" },
+
+      { text: "Willkommen" },
+
+      { text: "ようこそ" },
+
+      { text: "Bienvenue" },
+
+      { text: "Bem-vindos" },
+
+      { text: "أهلاً وسهلاً" },
+
+      { text: "Mae govannen" },
+
+      { text: "Croeso" },
+
+      {
+        text:
+          "01010111 01100101 01101100 01100011 01101111 01101101 01100101",
         className: "is-binary"
       },
-      { text: "Karibu" },                 // Swahili
-      { text: "Ẹ káàbọ̀" },               // Yoruba
-      { text: "Siyakwamukela" },          // Zulu
-      { text: "स्वागत है" },               // Hindi
-      { text: "خوش آمدید" },              // Persian
-      { text: "እንኳን ደህና መጡ" }         // Amharic
+
+      { text: "Karibu" },
+
+      { text: "Siyakwamukela" },
+
+      { text: "Ẹ káàbọ̀" },
+
+      { text: "እንኳን ደህና መጡ" },
+
+      { text: "स्वागत है" },
+
+      { text: "خوش آمدید" }
+
     ];
 
-    const palette = [
-      "#FDB913", // yellow
-      "#006A44", // green
-      "#C1272D"  // red
+
+    /* Lithuanian flag colors */
+
+    const welcomeColors = [
+      "#FDB913",
+      "#006A44",
+      "#C1272D"
     ];
 
-    const welcomeWord = document.getElementById("welcome-word");
-    const progressText = document.getElementById("progress-text");
 
-    let lastWelcomeIndex = -1;
-    let lastProgressColor = "";
+    const welcomeTrack =
+      document.getElementById("welcome-track");
 
-    function randomIndex(length, lastIndex) {
+    const welcomeCurrent =
+      document.getElementById("welcome-current");
+
+    const welcomeNext =
+      document.getElementById("welcome-next");
+
+
+    let currentWelcome = 0;
+
+    let currentColor = -1;
+
+    let rolling = false;
+
+
+    function getDifferentIndex(length, previous) {
+
       let next;
+
       do {
         next = Math.floor(Math.random() * length);
-      } while (length > 1 && next === lastIndex);
+      }
+      while (
+        length > 1 &&
+        next === previous
+      );
+
       return next;
     }
 
-    function randomColor(exclude = "") {
-      let color;
-      do {
-        color = palette[Math.floor(Math.random() * palette.length)];
-      } while (palette.length > 1 && color === exclude);
-      return color;
+
+    function applyEntry(element, entry) {
+
+      element.classList.remove(
+        "is-wingdings",
+        "is-binary"
+      );
+
+      element.textContent = entry.text;
+
+      if (entry.className) {
+        element.classList.add(entry.className);
+      }
     }
 
-    function updateWelcome() {
-      const nextIndex = randomIndex(welcomeEntries.length, lastWelcomeIndex);
-      const entry = welcomeEntries[nextIndex];
 
-      welcomeWord.classList.add("is-changing");
+    function rollWelcome() {
+
+      if (rolling) {
+        return;
+      }
+
+
+      rolling = true;
+
+
+      const nextWelcome =
+        getDifferentIndex(
+          welcomes.length,
+          currentWelcome
+        );
+
+
+      const nextColor =
+        getDifferentIndex(
+          welcomeColors.length,
+          currentColor
+        );
+
+
+      applyEntry(
+        welcomeNext,
+        welcomes[nextWelcome]
+      );
+
+
+      welcomeNext.style.color =
+        welcomeColors[nextColor];
+
+
+      welcomeTrack.classList.add(
+        "is-rolling"
+      );
+
 
       setTimeout(() => {
-        welcomeWord.textContent = entry.text;
-        welcomeWord.classList.remove("is-wingdings", "is-binary");
 
-        if (entry.className) {
-          welcomeWord.classList.add(entry.className);
+        applyEntry(
+          welcomeCurrent,
+          welcomes[nextWelcome]
+        );
+
+
+        welcomeCurrent.style.color =
+          welcomeColors[nextColor];
+
+
+        welcomeTrack.classList.add(
+          "no-transition"
+        );
+
+
+        welcomeTrack.classList.remove(
+          "is-rolling"
+        );
+
+
+        void welcomeTrack.offsetHeight;
+
+
+        welcomeTrack.classList.remove(
+          "no-transition"
+        );
+
+
+        currentWelcome = nextWelcome;
+
+        currentColor = nextColor;
+
+        rolling = false;
+
+      }, 560);
+
+    }
+
+
+    /* initial color */
+
+    welcomeCurrent.style.color =
+      welcomeColors[0];
+
+
+    currentColor = 0;
+
+
+    setInterval(
+      rollWelcome,
+      2600
+    );
+
+
+    /* =======================================================
+       BACKGROUND YOUTUBE AUDIO
+       ======================================================= */
+
+    let youtubePlayer;
+
+    let youtubeReady = false;
+
+    let audioStarted = false;
+
+
+    function onYouTubeIframeAPIReady() {
+
+      youtubePlayer = new YT.Player(
+        "youtube-player",
+        {
+
+          width: "200",
+
+          height: "200",
+
+          videoId: "Hqxdn-MbpE0",
+
+          playerVars: {
+
+            autoplay: 1,
+
+            controls: 0,
+
+            disablekb: 1,
+
+            fs: 0,
+
+            playsinline: 1,
+
+            rel: 0,
+
+            loop: 1,
+
+            playlist: "Hqxdn-MbpE0"
+
+          },
+
+          events: {
+
+            onReady: function(event) {
+
+              youtubeReady = true;
+
+              event.target.setVolume(35);
+
+              tryStartAudio();
+
+            }
+
+          }
+
         }
+      );
 
-        welcomeWord.style.color = randomColor();
-        welcomeWord.classList.remove("is-changing");
-        lastWelcomeIndex = nextIndex;
-      }, 160);
     }
 
-    function updateProgressColor() {
-      const nextColor = randomColor(lastProgressColor);
-      progressText.style.color = nextColor;
-      lastProgressColor = nextColor;
+
+    function tryStartAudio() {
+
+      if (
+        !youtubeReady ||
+        !youtubePlayer
+      ) {
+        return;
+      }
+
+
+      try {
+
+        youtubePlayer.unMute();
+
+        youtubePlayer.setVolume(35);
+
+        youtubePlayer.playVideo();
+
+        audioStarted = true;
+
+      }
+      catch (error) {
+
+        audioStarted = false;
+
+      }
+
     }
 
-    updateWelcome();
-    updateProgressColor();
 
-    setInterval(updateWelcome, 2400);
-    setInterval(updateProgressColor, 900);
+    /*
+      Browsers may block audible autoplay.
+
+      If that happens, the visitor's first interaction
+      starts the soundtrack.
+    */
+
+    function unlockAudio() {
+
+      if (!audioStarted) {
+        tryStartAudio();
+      }
+
+
+      document.removeEventListener(
+        "pointerdown",
+        unlockAudio
+      );
+
+
+      document.removeEventListener(
+        "keydown",
+        unlockAudio
+      );
+
+    }
+
+
+    document.addEventListener(
+      "pointerdown",
+      unlockAudio,
+      { once: true }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      unlockAudio,
+      { once: true }
+    );
+
   </script>
+
 </body>
 </html>
