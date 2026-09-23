@@ -1,869 +1,2511 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
-  <title>keegan.biz</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="page-shell" id="pageShell">
-    <!-- HOME SCARF -->
-    <header class="site-header">
-      <a class="home-scarf-link" href="index.html" aria-label="keegan.biz home">
-        <img
-          class="home-scarf-image"
-          src="assets/home/home-scarf-update.png"
-          alt="keegan.biz"
-        />
-      </a>
-    </header>
+    content="width=device-width, initial-scale=1.0"
+  >
 
-    <!-- HOME CONTENT -->
-    <main class="hero">
-      <div class="hero-copy">
-        <div class="welcome-wrap">
-          <div
-            class="welcome-rotator"
-            id="welcomeRotator"
-            aria-live="polite"
+  <title>keegan.biz</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       PAGE
+       ===================================================== -->
+
+  <div class="page-shell" id="page-shell">
+
+    <!-- SCARF NAVIGATION -->
+
+    <nav class="scarf-rack" aria-label="Sections">
+
+      <a class="scarf-item scarf-home" href="#" aria-label="Home">
+        <img
+          src="assets/home/home-scarf-update.png"
+          alt=""
+        >
+      </a>
+
+      <a class="scarf-item" href="#" aria-label="Illustration">
+        <img
+          src="assets/home/scarf-illustration.png"
+          alt=""
+        >
+      </a>
+
+      <a class="scarf-item" href="#" aria-label="Photography">
+        <img
+          src="assets/home/scarf-photography.png"
+          alt=""
+        >
+      </a>
+
+      <a class="scarf-item" href="#" aria-label="Graphic Design">
+        <img
+          src="assets/home/scarf-design.png"
+          alt=""
+        >
+      </a>
+
+      <a class="scarf-item" href="#" aria-label="Music">
+        <img
+          src="assets/home/scarf-music.png"
+          alt=""
+        >
+      </a>
+
+      <a class="scarf-item" href="#" aria-label="Motion">
+        <img
+          src="assets/home/scarf-motion.png"
+          alt=""
+        >
+      </a>
+
+      <a class="scarf-item" href="#" aria-label="Miscellaneous">
+        <img
+          src="assets/home/scarf-misc.png"
+          alt=""
+        >
+      </a>
+
+      <a class="scarf-item" href="#" aria-label="Gastronomy">
+        <img
+          src="assets/home/scarf-gastronomy.png"
+          alt=""
+        >
+      </a>
+
+    </nav>
+
+
+    <!-- HOME -->
+
+    <main class="home">
+
+      <section class="hero">
+
+        <div class="welcome-slot">
+
+          <span
+            class="welcome-word"
+            id="welcome-word"
+            aria-hidden="true"
           >
-            Fáilte
-          </div>
+            Welcome
+          </span>
+
         </div>
 
-        <div class="hero-subline">to keegan.biz</div>
-      </div>
+        <div class="site-title">
+          to keegan.biz
+        </div>
+
+      </section>
+
     </main>
 
-    <!-- SCARF MENU -->
-    <nav class="scarf-rail" aria-label="Site sections">
-      <button class="scarf-button" data-trigger-modal="illustration" type="button">
-        <img src="assets/home/scarf-illustration.png" alt="Illustration" />
-      </button>
-
-      <button class="scarf-button" data-trigger-modal="photography" type="button">
-        <img src="assets/home/scarf-photography.png" alt="Photography" />
-      </button>
-
-      <button class="scarf-button" data-trigger-modal="design" type="button">
-        <img src="assets/home/scarf-design.png" alt="Graphic Design" />
-      </button>
-
-      <button class="scarf-button" data-trigger-modal="music" type="button">
-        <img src="assets/home/scarf-music.png" alt="Music" />
-      </button>
-
-      <button class="scarf-button" data-trigger-modal="motion" type="button">
-        <img src="assets/home/scarf-motion.png" alt="Motion" />
-      </button>
-
-      <button class="scarf-button" data-trigger-modal="misc" type="button">
-        <img src="assets/home/scarf-misc.png" alt="Misc" />
-      </button>
-
-      <button class="scarf-button" data-trigger-modal="gastronomy" type="button">
-        <img src="assets/home/scarf-gastronomy.png" alt="Gastronomy" />
-      </button>
-    </nav>
   </div>
 
-  <!-- AUDIO -->
+
+  <!-- =====================================================
+       AUDIO
+       ===================================================== -->
+
   <audio
-    id="cricketsAudio"
-    src="assets/home/crickets.mp3"
+    id="wip-audio"
     preload="auto"
-    playsinline
-  ></audio>
+  >
+    <source
+      src="assets/home/crickets.mp3"
+      type="audio/mpeg"
+    >
+  </audio>
 
-  <!-- MODAL -->
-  <div class="modal-shell" id="workModal" aria-hidden="true">
-    <div class="modal-backdrop"></div>
 
-    <!-- whole-screen background texture system -->
-    <div class="modal-bg-layer modal-bg-layer--a"></div>
-    <div class="modal-bg-layer modal-bg-layer--b"></div>
-    <div class="modal-bg-color modal-bg-color--a"></div>
-    <div class="modal-bg-color modal-bg-color--b"></div>
+  <!-- =====================================================
+       WIP OVERLAY
+       ===================================================== -->
 
-    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="workModalTitle">
-      <div class="modal-note">
-        <div class="modal-note__text" id="workModalTitle">
-          sorry, i'm still working on this.
-        </div>
-        <button class="modal-close" id="modalClose" type="button" aria-label="Close">
+  <div
+    class="wip-overlay"
+    id="wip-overlay"
+    aria-hidden="true"
+  >
+
+    <div class="wip-inner">
+
+      <!-- NOTE -->
+
+      <div class="wip-header">
+
+        <p class="wip-text">
+          sorry, i'm still working on this page.
+        </p>
+
+        <button
+          class="wip-close"
+          id="wip-close"
+          type="button"
+          aria-label="Close"
+        >
           ×
         </button>
+
       </div>
 
-      <div class="art-stage" id="artStage">
-        <!-- underneath: always at least one visible -->
-        <div class="stage-layer stage-layer--under js-stage-layer" data-layer="under-1"></div>
-        <div class="stage-layer stage-layer--under js-stage-layer" data-layer="under-2"></div>
-        <div class="stage-layer stage-layer--under js-stage-layer" data-layer="under-3"></div>
 
-        <div class="stage-colorwash js-colorwash" data-colorwash="under-a"></div>
-        <div class="stage-colorwash js-colorwash" data-colorwash="under-b"></div>
+      <!-- COLLAGE -->
 
-        <div class="horse-wrap" id="horseWrap">
+      <div
+        class="collage-stage"
+        id="collage-stage"
+        aria-hidden="true"
+      >
+
+        <!--
+          UNDERPRINT
+
+          Two images stay beneath the horse.
+        -->
+
+        <div
+          class="texture-layer layer-under under-a"
+          id="under-a"
+        ></div>
+
+        <div
+          class="texture-layer layer-under under-b"
+          id="under-b"
+        ></div>
+
+
+        <!-- color stain beneath horse -->
+
+        <div
+          class="color-layer color-under"
+          id="color-under"
+        ></div>
+
+
+        <!-- HORSE -->
+
+        <div class="horse-stack">
+
           <img
-            id="horseGif"
-            class="horse-gif"
+            class="horse horse-main"
+            id="horse-main"
             src="assets/home/horse.gif"
-            alt="Animated horse sketch"
-          />
+            alt=""
+          >
+
+          <img
+            class="horse horse-offset"
+            id="horse-offset"
+            src="assets/home/horse.gif"
+            alt=""
+          >
+
         </div>
 
-        <!-- over the horse -->
-        <div class="stage-layer stage-layer--over js-stage-layer" data-layer="over-1"></div>
-        <div class="stage-layer stage-layer--over js-stage-layer" data-layer="over-2"></div>
 
-        <div class="stage-colorwash js-colorwash" data-colorwash="over-a"></div>
-        <div class="stage-colorwash js-colorwash" data-colorwash="over-b"></div>
+        <!--
+          OVERPRINT
+
+          These genuinely obscure / burn into the horse.
+        -->
+
+        <div
+          class="texture-layer layer-over over-a"
+          id="over-a"
+        ></div>
+
+        <div
+          class="texture-layer layer-over over-b"
+          id="over-b"
+        ></div>
+
+
+        <div
+          class="color-layer color-over"
+          id="color-over"
+        ></div>
+
+
+        <!--
+          Final ink key.
+
+          White disappears through multiply,
+          leaving enough linework that the horse
+          can never completely disappear.
+        -->
+
+        <img
+          class="horse horse-key"
+          id="horse-key"
+          src="assets/home/horse.gif"
+          alt=""
+        >
+
+
+        <!-- extremely subtle physical grit -->
 
         <div class="stage-grain"></div>
+
       </div>
+
     </div>
+
   </div>
 
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
   <script>
-    /* =========================================================
-       WELCOME ROTATOR
-       ========================================================= */
+  (() => {
 
-    const welcomeRotator = document.getElementById("welcomeRotator");
+    /* =====================================================
+       HELPERS
+       ===================================================== */
 
-    const welcomes = [
+    const clamp = (value, min, max) =>
+      Math.min(
+        Math.max(value, min),
+        max
+      );
+
+
+    const lerp = (a, b, t) =>
+      a + ((b - a) * t);
+
+
+    const random = (min, max) =>
+      min + Math.random() * (max - min);
+
+
+    const pick = array =>
+      array[
+        Math.floor(
+          Math.random() * array.length
+        )
+      ];
+
+
+    function shuffle(array) {
+
+      const result =
+        [...array];
+
+
+      for (
+        let i = result.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() * (i + 1)
+          );
+
+
+        [
+          result[i],
+          result[j]
+        ] = [
+          result[j],
+          result[i]
+        ];
+
+      }
+
+
+      return result;
+
+    }
+
+
+    function differentIndex(
+      length,
+      current
+    ) {
+
+      let next;
+
+
+      do {
+
+        next =
+          Math.floor(
+            Math.random() * length
+          );
+
+      }
+      while (
+        length > 1 &&
+        next === current
+      );
+
+
+      return next;
+
+    }
+
+
+    function smoothStep(value) {
+
+      const t =
+        clamp(
+          value,
+          0,
+          1
+        );
+
+
+      return (
+        t *
+        t *
+        (
+          3 -
+          (2 * t)
+        )
+      );
+
+    }
+
+
+    /* =====================================================
+       WELCOME
+       ===================================================== */
+
+    const welcomeWord =
+      document.getElementById(
+        "welcome-word"
+      );
+
+
+    const greetings = [
+
       "Welcome",
       "Fáilte",
       "Benvenuti",
-      "Bienvenidos",
-      "Croeso",
-      "Willkommen",
       "Bienvenue",
-      "Bem-vindos",
-      "Sveiki",
-      "Ласкаво просимо",
-      "Добро пожаловать",
-      "خوش آمدید",
-      "أهلاً وسهلاً",
-      "स्वागत है",
-      "Välkomin",
-      "Ongi etorri",
+      "Bienvenidos",
       "Benvinguts",
-      "歡迎",
+      "Bem-vindos",
+
+      "Welkom",
+      "Willkommen",
+      "Velkommen",
+      "Välkommen",
+      "Velkomin",
+
+      "Tervetuloa",
+      "Sveiki atvykę",
+      "Laipni lūdzam",
+      "Tere tulemast",
+
+      "Witamy",
+      "Vítejte",
+      "Vitajte",
+
+      "Добродошли",
+      "Добре дошли",
+      "Ласкаво просимо",
+
+      "Bun venit",
+      "Üdvözöljük",
+      "Mirë se vini",
+
+      "Ongi etorri",
+      "Καλώς ήρθατε",
+      "Hoş geldiniz",
+
+      "Croeso",
+      "Nau mai",
+
+      "Karibu",
+      "Siyakwamukela",
+      "Ẹ káàbọ̀",
+
+      "እንኳን ደህና መጡ",
+
+      "स्वागत है",
+      "স্বাগতম",
+
+      "欢迎",
       "ようこそ",
       "환영합니다",
-      "ᏩᏙ",
-      "Yá'át'ééh",
-      "Karibu",
-      "Mauya",
-      "Welkom",
+      "ยินดีต้อนรับ",
+
+      "Chào mừng",
+      "Selamat datang",
+      "Maligayang pagdating",
+
+      "ברוכים הבאים",
+      "أهلاً وسهلاً",
+      "خوش آمدید",
+
+      "Bonvenon",
+      "Salvete",
+
+      "Yá’át’ééh",
       "Aloha",
-      "01010111 01100101 01101100 01100011 01101111 01101101 01100101",
-      "☞︎♏︎●︎♍︎□︎❍︎♏︎"
+
+      "Mae govannen",
+
+      "01010111 01100101 01101100 01100011 01101111 01101101 01100101"
+
     ];
 
-    let welcomeIndex = 0;
-    let welcomeTimer = null;
 
-    function cycleWelcome() {
-      welcomeRotator.classList.remove("is-in");
-      welcomeRotator.classList.add("is-out");
-
-      setTimeout(() => {
-        welcomeIndex = (welcomeIndex + 1) % welcomes.length;
-        welcomeRotator.textContent = welcomes[welcomeIndex];
-        welcomeRotator.classList.remove("is-out");
-        welcomeRotator.classList.add("is-in");
-      }, 240);
-    }
-
-    welcomeRotator.classList.add("is-in");
-    welcomeTimer = setInterval(cycleWelcome, 2200);
-
-
-    /* =========================================================
-       MODAL / AUDIO
-       ========================================================= */
-
-    const workModal = document.getElementById("workModal");
-    const modalClose = document.getElementById("modalClose");
-    const audio = document.getElementById("cricketsAudio");
-    const pageShell = document.getElementById("pageShell");
-    const scarfButtons = document.querySelectorAll("[data-trigger-modal]");
-    const artStage = document.getElementById("artStage");
-    const horseWrap = document.getElementById("horseWrap");
-    const horseGif = document.getElementById("horseGif");
-
-    const bgLayers = [
-      document.querySelector(".modal-bg-layer--a"),
-      document.querySelector(".modal-bg-layer--b")
+    const welcomeColors = [
+      "#fdb913",
+      "#006a44",
+      "#c1272d"
     ];
 
-    const bgColorLayers = [
-      document.querySelector(".modal-bg-color--a"),
-      document.querySelector(".modal-bg-color--b")
-    ];
 
-    const stageLayers = Array.from(document.querySelectorAll(".js-stage-layer"));
-    const colorWashes = Array.from(document.querySelectorAll(".js-colorwash"));
+    let greetingIndex =
+      0;
 
-    let modalIsOpen = false;
-    let elapsedTimer = null;
-    let stageStarted = false;
-    let stageFullyVisible = false;
-    let modalSeconds = 0;
-    let stageIntensity = 0.18;
-    let layerIntervals = [];
-    let layerTimeouts = [];
-    let horseInterval = null;
-    let bgIntervals = [];
-    let recentTextures = [];
-    let recentBgTextures = [];
-    let recentColors = [];
+    let welcomeColorIndex =
+      1;
+
+    let greetingBusy =
+      false;
 
 
-    scarfButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        openWorkModal();
-      });
-    });
+    function fitWelcome() {
 
-    modalClose.addEventListener("click", closeWorkModal);
+      welcomeWord.style.fontSize =
+        "";
 
-    workModal.addEventListener("click", (event) => {
-      if (event.target === workModal || event.target.classList.contains("modal-backdrop")) {
-        closeWorkModal();
-      }
-    });
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && modalIsOpen) {
-        closeWorkModal();
-      }
-    });
+      const available =
+        welcomeWord
+          .parentElement
+          .clientWidth;
 
-    function openWorkModal() {
-      if (modalIsOpen) return;
 
-      modalIsOpen = true;
-      workModal.setAttribute("aria-hidden", "false");
-      workModal.classList.add("is-open");
-      pageShell.classList.add("is-faded");
+      let size =
+        parseFloat(
+          getComputedStyle(
+            welcomeWord
+          ).fontSize
+        );
 
-      resetVisualSystem();
-      startAudio();
-      startElapsedClock();
-    }
 
-    function closeWorkModal() {
-      modalIsOpen = false;
-      workModal.setAttribute("aria-hidden", "true");
-      workModal.classList.remove("is-open");
-      pageShell.classList.remove("is-faded");
+      while (
+        welcomeWord.scrollWidth >
+        available &&
+        size > 27
+      ) {
 
-      stopAudio();
-      stopAllVisuals();
-      resetVisualSystem();
-    }
+        size -= 2;
 
-    function startAudio() {
-      audio.currentTime = 0;
-      audio.play().catch(() => {
-        /* user interaction should cover this, but silently fail if needed */
-      });
-    }
 
-    function stopAudio() {
-      audio.pause();
-      audio.currentTime = 0;
-    }
+        welcomeWord.style.fontSize =
+          `${size}px`;
 
-    function startElapsedClock() {
-      stopAllTimersOnly();
-
-      elapsedTimer = setInterval(() => {
-        modalSeconds += 1;
-        updateTimeline();
-      }, 1000);
-    }
-
-    function stopAllTimersOnly() {
-      if (elapsedTimer) {
-        clearInterval(elapsedTimer);
-        elapsedTimer = null;
-      }
-    }
-
-    function stopAllVisuals() {
-      stopAllTimersOnly();
-
-      layerIntervals.forEach(clearInterval);
-      layerIntervals = [];
-
-      layerTimeouts.forEach(clearTimeout);
-      layerTimeouts = [];
-
-      bgIntervals.forEach(clearInterval);
-      bgIntervals = [];
-
-      if (horseInterval) {
-        clearInterval(horseInterval);
-        horseInterval = null;
-      }
-    }
-
-    function resetVisualSystem() {
-      stopAllVisuals();
-
-      modalSeconds = 0;
-      stageStarted = false;
-      stageFullyVisible = false;
-      stageIntensity = 0.18;
-      recentTextures = [];
-      recentBgTextures = [];
-      recentColors = [];
-
-      workModal.classList.remove("stage-has-begun", "stage-is-full");
-      artStage.style.opacity = "0";
-      artStage.style.transform = "scale(0.985)";
-      horseWrap.style.opacity = "0";
-
-      stageLayers.forEach((layer) => {
-        layer.style.opacity = "0";
-        layer.style.backgroundImage = "none";
-      });
-
-      colorWashes.forEach((wash) => {
-        wash.style.opacity = "0";
-        wash.style.background = "none";
-      });
-
-      bgLayers.forEach((layer) => {
-        layer.style.opacity = "0";
-        layer.style.backgroundImage = "none";
-      });
-
-      bgColorLayers.forEach((layer) => {
-        layer.style.opacity = "0";
-        layer.style.background = "none";
-      });
-
-      horseGif.style.mixBlendMode = "multiply";
-      horseGif.style.opacity = "0.55";
-      horseGif.style.filter = "contrast(1.15) saturate(1.2) hue-rotate(0deg)";
-    }
-
-    function updateTimeline() {
-      /* 0–8s: modal + note only */
-      if (modalSeconds >= 9 && !stageStarted) {
-        stageStarted = true;
-        workModal.classList.add("stage-has-begun");
-        fadeStageIn();
-        startBackgroundSystem();
-        startStageSystem();
       }
 
-      /* build up */
-      if (modalSeconds >= 45) {
-        stageIntensity = 0.58;
-      }
-
-      if (modalSeconds >= 71 && !stageFullyVisible) {
-        stageFullyVisible = true;
-        workModal.classList.add("stage-is-full");
-        horseWrap.style.opacity = "1";
-        stageIntensity = 0.82;
-      }
-
-      /* tense / intense */
-      if (modalSeconds >= 160) {
-        stageIntensity = 0.95;
-      }
-
-      if (modalSeconds >= 220) {
-        stageIntensity = 1.0;
-      }
-
-      /* back down / normalize at 4:03 */
-      if (modalSeconds >= 243) {
-        stageIntensity = 0.28;
-      }
-    }
-
-    function fadeStageIn() {
-      artStage.style.opacity = "1";
-      artStage.style.transform = "scale(1)";
     }
 
 
-    /* =========================================================
-       TEXTURE SYSTEM
-       ========================================================= */
+    function changeGreeting() {
 
-    const texturePool = [
-      "assets/home/Texturelabs_Atmosphere_121S.jpg",
-      "assets/home/Texturelabs_Atmosphere_127S.jpg",
-      "assets/home/Texturelabs_Atmosphere_130S.jpg",
-      "assets/home/Texturelabs_Atmosphere_135S.jpg",
-      "assets/home/Texturelabs_Atmosphere_201S.jpg",
+      if (greetingBusy) {
+        return;
+      }
 
-      "assets/home/Texturelabs_Brick_124S.jpg",
-      "assets/home/Texturelabs_Brick_158S.jpg",
 
-      "assets/home/Texturelabs_Concrete_150S.jpg",
-      "assets/home/Texturelabs_Concrete_155S.jpg",
-      "assets/home/Texturelabs_Concrete_179S.jpg",
-      "assets/home/Texturelabs_Concrete_205S.jpg",
-      "assets/home/Texturelabs_Concrete_207S.jpg",
+      greetingBusy =
+        true;
 
-      "assets/home/Texturelabs_Fabric_123S.jpg",
-      "assets/home/Texturelabs_Fabric_144S.jpg",
-      "assets/home/Texturelabs_Fabric_172S.jpg",
 
-      "assets/home/Texturelabs_Film_181S.jpg",
-      "assets/home/Texturelabs_Film_183S.jpg",
-      "assets/home/Texturelabs_Film_187S.jpg",
+      const nextGreeting =
+        differentIndex(
+          greetings.length,
+          greetingIndex
+        );
 
-      "assets/home/Texturelabs_Glass_134S.jpg",
-      "assets/home/Texturelabs_Glass_155S.jpg",
 
-      "assets/home/Texturelabs_Grunge_173S.jpg",
-      "assets/home/Texturelabs_Grunge_279L.jpg",
-      "assets/home/Texturelabs_Grunge_334S.jpg",
-      "assets/home/Texturelabs_Grunge_341S.jpg",
+      const nextColor =
+        differentIndex(
+          welcomeColors.length,
+          welcomeColorIndex
+        );
 
-      "assets/home/Texturelabs_InkPaint_126S.jpg",
-      "assets/home/Texturelabs_InkPaint_320S.jpg",
-      "assets/home/Texturelabs_InkPaint_332S.jpg",
-      "assets/home/Texturelabs_InkPaint_356S.jpg",
 
-      "assets/home/Texturelabs_LensFX_251S.jpg",
-      "assets/home/Texturelabs_LensFX_256S.jpg",
+      welcomeWord.classList.add(
+        "is-fading"
+      );
 
-      "assets/home/Texturelabs_Metal_129S.jpg",
-      "assets/home/Texturelabs_Metal_165S.jpg",
-      "assets/home/Texturelabs_Metal_285S.jpg",
-      "assets/home/Texturelabs_Metal_294S.jpg",
 
-      "assets/home/Texturelabs_Paper_273S.jpg",
-      "assets/home/Texturelabs_Paper_278L.jpg",
-      "assets/home/Texturelabs_Paper_280S.jpg",
-      "assets/home/Texturelabs_Paper_286S.jpg",
-      "assets/home/Texturelabs_Paper_303S.jpg",
-      "assets/home/Texturelabs_Paper_324S.jpg",
-      "assets/home/Texturelabs_Paper_380L.jpg",
-      "assets/home/Texturelabs_Paper_380S.jpg",
+      window.setTimeout(() => {
 
-      "assets/home/Texturelabs_Sky_171S.jpg",
+        greetingIndex =
+          nextGreeting;
 
-      "assets/home/Texturelabs_Soil_146S.jpg",
-      "assets/home/Texturelabs_Soil_149S.jpg",
 
-      "assets/home/Texturelabs_Stone_167S.jpg",
-      "assets/home/Texturelabs_Stone_169S.jpg",
+        welcomeColorIndex =
+          nextColor;
 
-      "assets/home/Texturelabs_Water_124S.jpg",
-      "assets/home/Texturelabs_Water_141S.jpg",
 
-      "assets/home/Texturelabs_Wood_135S.jpg",
-      "assets/home/Texturelabs_Wood_280S.jpg",
-      "assets/home/Texturelabs_Wood_290S.jpg"
-    ];
+        welcomeWord.textContent =
+          greetings[greetingIndex];
 
-    const weightedDirtyTextures = texturePool.filter((src) =>
-      /Grunge|Concrete|Metal|Film|InkPaint|Paper|Stone|Soil|Wood/i.test(src)
+
+        welcomeWord.style.color =
+          welcomeColors[
+            welcomeColorIndex
+          ];
+
+
+        fitWelcome();
+
+
+        welcomeWord.classList.remove(
+          "is-fading"
+        );
+
+
+        window.setTimeout(() => {
+
+          greetingBusy =
+            false;
+
+        }, 300);
+
+      }, 250);
+
+    }
+
+
+    welcomeWord.style.color =
+      welcomeColors[
+        welcomeColorIndex
+      ];
+
+
+    fitWelcome();
+
+
+    window.addEventListener(
+      "resize",
+      fitWelcome
     );
 
-    const weightedVividTextures = texturePool.filter((src) =>
-      /Atmosphere|LensFX|Water|Glass|InkPaint|Film/i.test(src)
+
+    window.setInterval(
+      changeGreeting,
+      2500
     );
 
-    const horseBlendModes = [
-      "multiply",
-      "overlay",
-      "hard-light",
-      "screen",
-      "difference",
-      "color-dodge",
+
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
+
+    const pageShell =
+      document.getElementById(
+        "page-shell"
+      );
+
+
+    const overlay =
+      document.getElementById(
+        "wip-overlay"
+      );
+
+
+    const audio =
+      document.getElementById(
+        "wip-audio"
+      );
+
+
+    const closeButton =
+      document.getElementById(
+        "wip-close"
+      );
+
+
+    const stage =
+      document.getElementById(
+        "collage-stage"
+      );
+
+
+    const underA =
+      document.getElementById(
+        "under-a"
+      );
+
+
+    const underB =
+      document.getElementById(
+        "under-b"
+      );
+
+
+    const overA =
+      document.getElementById(
+        "over-a"
+      );
+
+
+    const overB =
+      document.getElementById(
+        "over-b"
+      );
+
+
+    const colorUnder =
+      document.getElementById(
+        "color-under"
+      );
+
+
+    const colorOver =
+      document.getElementById(
+        "color-over"
+      );
+
+
+    const horseMain =
+      document.getElementById(
+        "horse-main"
+      );
+
+
+    const horseOffset =
+      document.getElementById(
+        "horse-offset"
+      );
+
+
+    const horseKey =
+      document.getElementById(
+        "horse-key"
+      );
+
+
+    const underLayers = [
+      underA,
+      underB
+    ];
+
+
+    const overLayers = [
+      overA,
+      overB
+    ];
+
+
+    const allTextureLayers = [
+      ...underLayers,
+      ...overLayers
+    ];
+
+
+    /* =====================================================
+       TEXTURES
+       ===================================================== */
+
+    const ALL_TEXTURES = [
+
+      "Texturelabs_Atmosphere_121S.jpg",
+      "Texturelabs_Atmosphere_127S.jpg",
+      "Texturelabs_Atmosphere_130S.jpg",
+      "Texturelabs_Atmosphere_135S.jpg",
+      "Texturelabs_Atmosphere_201S.jpg",
+
+      "Texturelabs_Brick_124S.jpg",
+      "Texturelabs_Brick_158S.jpg",
+
+      "Texturelabs_Concrete_150S.jpg",
+      "Texturelabs_Concrete_155S.jpg",
+      "Texturelabs_Concrete_179S.jpg",
+      "Texturelabs_Concrete_205S.jpg",
+      "Texturelabs_Concrete_207S.jpg",
+
+      "Texturelabs_Fabric_123S.jpg",
+      "Texturelabs_Fabric_144S.jpg",
+      "Texturelabs_Fabric_172S.jpg",
+
+      "Texturelabs_Film_181S.jpg",
+      "Texturelabs_Film_183S.jpg",
+      "Texturelabs_Film_187S.jpg",
+
+      "Texturelabs_Glass_134S.jpg",
+      "Texturelabs_Glass_155S.jpg",
+
+      "Texturelabs_Grunge_173S.jpg",
+      "Texturelabs_Grunge_279L.jpg",
+      "Texturelabs_Grunge_334S.jpg",
+      "Texturelabs_Grunge_341S.jpg",
+
+      "Texturelabs_InkPaint_126S.jpg",
+      "Texturelabs_InkPaint_320S.jpg",
+      "Texturelabs_InkPaint_332S.jpg",
+      "Texturelabs_InkPaint_356S.jpg",
+
+      "Texturelabs_LensFX_251S.jpg",
+      "Texturelabs_LensFX_256S.jpg",
+
+      "Texturelabs_Metal_129S.jpg",
+      "Texturelabs_Metal_165S.jpg",
+      "Texturelabs_Metal_285S.jpg",
+      "Texturelabs_Metal_294S.jpg",
+
+      "Texturelabs_Paper_273S.jpg",
+      "Texturelabs_Paper_278L.jpg",
+      "Texturelabs_Paper_280S.jpg",
+      "Texturelabs_Paper_286S.jpg",
+      "Texturelabs_Paper_303S.jpg",
+      "Texturelabs_Paper_324S.jpg",
+      "Texturelabs_Paper_380L.jpg",
+      "Texturelabs_Paper_380S.jpg",
+
+      "Texturelabs_Sky_171S.jpg",
+
+      "Texturelabs_Soil_146S.jpg",
+      "Texturelabs_Soil_149S.jpg",
+
+      "Texturelabs_Stone_167S.jpg",
+      "Texturelabs_Stone_169S.jpg",
+
+      "Texturelabs_Water_124S.jpg",
+      "Texturelabs_Water_141S.jpg",
+
+      "Texturelabs_Wood_135S.jpg",
+      "Texturelabs_Wood_280S.jpg",
+      "Texturelabs_Wood_290S.jpg"
+
+    ].map(
+      file =>
+        `assets/home/${file}`
+    );
+
+
+    /* =====================================================
+       SESSION CACHE
+
+       Pick a new selection every time the modal
+       opens.
+
+       Loading starts immediately, giving the
+       browser nine seconds before anything appears.
+       ===================================================== */
+
+    let sessionTextures =
+      [];
+
+    let readyTextures =
+      [];
+
+    let recentTextures =
+      [];
+
+
+    function prepareSessionTextures() {
+
+      sessionTextures =
+        shuffle(
+          ALL_TEXTURES
+        ).slice(
+          0,
+          26
+        );
+
+
+      readyTextures =
+        [];
+
+
+      sessionTextures.forEach(src => {
+
+        const image =
+          new Image();
+
+
+        image.decoding =
+          "async";
+
+
+        image.onload =
+          () => {
+
+            if (
+              !readyTextures.includes(
+                src
+              )
+            ) {
+
+              readyTextures.push(
+                src
+              );
+
+            }
+
+          };
+
+
+        image.src =
+          src;
+
+      });
+
+    }
+
+
+    function chooseTexture() {
+
+      const source =
+        readyTextures.length > 6
+          ? readyTextures
+          : sessionTextures;
+
+
+      let texture;
+
+
+      let tries =
+        0;
+
+
+      do {
+
+        texture =
+          pick(source);
+
+
+        tries++;
+
+      }
+      while (
+        recentTextures.includes(
+          texture
+        ) &&
+        tries < 15
+      );
+
+
+      recentTextures.push(
+        texture
+      );
+
+
+      if (
+        recentTextures.length >
+        8
+      ) {
+
+        recentTextures.shift();
+
+      }
+
+
+      return texture;
+
+    }
+
+
+    /* =====================================================
+       COLOR FAMILIES
+
+       One family changes into another.
+
+       Prevents everything accidentally becoming
+       the same pastel color.
+       ===================================================== */
+
+    const COLOR_FAMILIES = [
+
+      [
+        "#ff1d35",
+        "#ffb000",
+        "#ffe500"
+      ],
+
+      [
+        "#ff006e",
+        "#ff4d00",
+        "#ffca00"
+      ],
+
+      [
+        "#00b8d9",
+        "#0066ff",
+        "#8c00ff"
+      ],
+
+      [
+        "#00c875",
+        "#d7ff00",
+        "#009e7a"
+      ],
+
+      [
+        "#ff164f",
+        "#6d00d9",
+        "#0057ff"
+      ],
+
+      [
+        "#f03721",
+        "#ff8317",
+        "#c60045"
+      ],
+
+      [
+        "#005f73",
+        "#0a9396",
+        "#ee9b00"
+      ],
+
+      [
+        "#d90429",
+        "#2b2d42",
+        "#ef233c"
+      ]
+
+    ];
+
+
+    let paletteIndex =
+      0;
+
+
+    function nextPalette() {
+
+      paletteIndex =
+        differentIndex(
+          COLOR_FAMILIES.length,
+          paletteIndex
+        );
+
+
+      return COLOR_FAMILIES[
+        paletteIndex
+      ];
+
+    }
+
+
+    /* =====================================================
+       BLENDING
+       ===================================================== */
+
+    const UNDER_MODES = [
+
       "color-burn",
-      "exclusion"
-    ];
+      "color-burn",
+      "color-burn",
 
-    const underBlendModes = [
       "multiply",
-      "overlay",
+      "multiply",
+
       "hard-light",
-      "soft-light",
-      "screen",
-      "color-burn"
+      "hard-light",
+
+      "overlay",
+
+      "screen"
+
     ];
 
-    const overBlendModes = [
-      "overlay",
+
+    const OVER_MODES = [
+
+      "color-burn",
+      "color-burn",
+      "color-burn",
+
       "hard-light",
-      "screen",
+      "hard-light",
+
       "difference",
+      "difference",
+
       "exclusion",
+
       "color-dodge",
-      "color-burn"
-    ];
 
-    const bgBlendModes = [
       "multiply",
-      "overlay",
+
+      "overlay"
+
+    ];
+
+
+    const HORSE_MODES = [
+
+      "multiply",
+      "multiply",
+
+      "color-burn",
+      "color-burn",
+
       "hard-light",
+
+      "difference",
+
+      "exclusion",
+
       "screen",
-      "soft-light",
-      "difference"
+
+      "overlay"
+
     ];
 
-    const colorPalette = [
-      ["rgba(255, 0, 76, 0.70)", "rgba(255, 199, 0, 0.45)", "rgba(0, 255, 198, 0.35)"],
-      ["rgba(255, 110, 0, 0.78)", "rgba(255, 0, 166, 0.42)", "rgba(28, 144, 255, 0.36)"],
-      ["rgba(0, 216, 255, 0.65)", "rgba(255, 86, 166, 0.40)", "rgba(252, 255, 0, 0.32)"],
-      ["rgba(0, 255, 140, 0.58)", "rgba(255, 0, 89, 0.50)", "rgba(101, 0, 255, 0.34)"],
-      ["rgba(255, 30, 30, 0.62)", "rgba(255, 241, 118, 0.42)", "rgba(34, 255, 184, 0.30)"],
-      ["rgba(145, 0, 255, 0.56)", "rgba(255, 99, 0, 0.44)", "rgba(0, 218, 255, 0.32)"],
-      ["rgba(255, 0, 153, 0.54)", "rgba(255, 214, 10, 0.44)", "rgba(60, 255, 120, 0.28)"],
-      ["rgba(255, 70, 70, 0.50)", "rgba(34, 113, 255, 0.38)", "rgba(255, 255, 255, 0.22)"]
+
+    const INTERNAL_MODES = [
+
+      "color-burn",
+      "color-burn",
+
+      "multiply",
+
+      "hard-light",
+
+      "overlay"
+
     ];
 
-    function pickRandom(list) {
-      return list[Math.floor(Math.random() * list.length)];
-    }
 
-    function pickTexture(pool, recentStore) {
-      let tries = 0;
-      let choice = pickRandom(pool);
+    /* =====================================================
+       TEXTURE DESIGN
+       ===================================================== */
 
-      while (recentStore.includes(choice) && tries < 12) {
-        choice = pickRandom(pool);
-        tries++;
-      }
+    function makeTint(
+      palette
+    ) {
 
-      recentStore.push(choice);
-      if (recentStore.length > 7) recentStore.shift();
+      const direction =
+        Math.round(
+          random(
+            0,
+            360
+          )
+        );
 
-      return choice;
-    }
 
-    function pickColors() {
-      let tries = 0;
-      let choice = pickRandom(colorPalette);
-
-      while (recentColors.includes(choice) && tries < 12) {
-        choice = pickRandom(colorPalette);
-        tries++;
-      }
-
-      recentColors.push(choice);
-      if (recentColors.length > 5) recentColors.shift();
-
-      return choice;
-    }
-
-    function staticTransformString() {
-      const scale = (1.14 + Math.random() * 0.52).toFixed(2);
-      const rotate = (-11 + Math.random() * 22).toFixed(2);
-      const translateX = (-10 + Math.random() * 20).toFixed(1);
-      const translateY = (-10 + Math.random() * 20).toFixed(1);
-
-      return `translate(${translateX}%, ${translateY}%) rotate(${rotate}deg) scale(${scale})`;
-    }
-
-    function backgroundSizeValue() {
-      const size = 125 + Math.round(Math.random() * 60);
-      return `${size}%`;
-    }
-
-    function applyTextureToLayer(layer, src, mode, opacityMin, opacityMax) {
-      layer.style.backgroundImage = `url("${src}")`;
-      layer.style.mixBlendMode = mode;
-      layer.style.opacity = (
-        opacityMin + Math.random() * (opacityMax - opacityMin)
-      ).toFixed(2);
-      layer.style.transform = staticTransformString();
-      layer.style.backgroundSize = backgroundSizeValue();
-      layer.style.filter = `
-        saturate(${(1.18 + Math.random() * 1.0).toFixed(2)})
-        contrast(${(1.0 + Math.random() * 0.75).toFixed(2)})
-        brightness(${(0.82 + Math.random() * 0.34).toFixed(2)})
-        hue-rotate(${Math.round(Math.random() * 360)}deg)
-      `;
-    }
-
-    function applyColorWashToLayer(layer, opacityMin, opacityMax) {
-      const colors = pickColors();
-      const angle = Math.round(Math.random() * 360);
-
-      layer.style.background = `
+      return `
         linear-gradient(
-          ${angle}deg,
-          ${colors[0]} 0%,
-          ${colors[1]} 50%,
-          ${colors[2]} 100%
+          ${direction}deg,
+          ${palette[0]} 0%,
+          ${palette[1]} 50%,
+          ${palette[2]} 100%
         )
       `;
 
-      layer.style.mixBlendMode = pickRandom([
-        "overlay",
-        "hard-light",
-        "screen",
-        "color-dodge",
-        "soft-light",
-        "difference"
-      ]);
-
-      layer.style.opacity = (
-        opacityMin + Math.random() * (opacityMax - opacityMin)
-      ).toFixed(2);
-
-      layer.style.transform = staticTransformString();
     }
 
-    function applyHorseTreatment() {
-      const hue = Math.round(Math.random() * 360);
-      const saturate = (1.0 + Math.random() * 2.2).toFixed(2);
-      const contrast = (1.0 + Math.random() * 0.9).toFixed(2);
-      const brightness = (0.82 + Math.random() * 0.45).toFixed(2);
-      const opacity =
-        stageIntensity < 0.35
-          ? 0.38 + Math.random() * 0.2
-          : 0.58 + Math.random() * 0.32;
 
-      horseGif.style.mixBlendMode = pickRandom(horseBlendModes);
-      horseGif.style.opacity = opacity.toFixed(2);
-      horseGif.style.filter = `
-        hue-rotate(${hue}deg)
-        saturate(${saturate})
-        contrast(${contrast})
-        brightness(${brightness})
-      `;
-    }
+    function configureTexture(
+      layer,
+      intensity,
+      isOver
+    ) {
 
-    function startStageSystem() {
-      /* initial state so there is ALWAYS something underneath */
-      const under1 = stageLayers.find((el) => el.dataset.layer === "under-1");
-      const under2 = stageLayers.find((el) => el.dataset.layer === "under-2");
-      const under3 = stageLayers.find((el) => el.dataset.layer === "under-3");
-      const over1 = stageLayers.find((el) => el.dataset.layer === "over-1");
-      const over2 = stageLayers.find((el) => el.dataset.layer === "over-2");
+      const src =
+        chooseTexture();
 
-      applyTextureToLayer(
-        under1,
-        pickTexture(weightedDirtyTextures, recentTextures),
-        pickRandom(underBlendModes),
-        0.55,
-        0.88
-      );
 
-      applyTextureToLayer(
-        under2,
-        pickTexture(weightedVividTextures, recentTextures),
-        pickRandom(underBlendModes),
-        0.16,
-        0.46
-      );
+      const palette =
+        nextPalette();
 
-      applyTextureToLayer(
-        under3,
-        pickTexture(texturePool, recentTextures),
-        pickRandom(underBlendModes),
-        0.12,
-        0.34
-      );
 
-      applyTextureToLayer(
-        over1,
-        pickTexture(weightedDirtyTextures, recentTextures),
-        pickRandom(overBlendModes),
-        0.10,
-        0.36
-      );
+      /*
+        Texture always covers the ENTIRE frame.
+      */
 
-      applyTextureToLayer(
-        over2,
-        pickTexture(weightedVividTextures, recentTextures),
-        pickRandom(overBlendModes),
-        0.08,
-        0.28
-      );
+      layer.style.backgroundImage =
+        `
+          ${makeTint(palette)},
+          url("${src}")
+        `;
 
-      applyColorWashToLayer(colorWashes[0], 0.10, 0.24);
-      applyColorWashToLayer(colorWashes[1], 0.08, 0.18);
-      applyColorWashToLayer(colorWashes[2], 0.06, 0.16);
-      applyColorWashToLayer(colorWashes[3], 0.04, 0.12);
 
-      horseWrap.style.opacity = stageIntensity < 0.45 ? "0.42" : "0.82";
-      applyHorseTreatment();
+      layer.style.backgroundSize =
+        `
+          cover,
+          cover
+        `;
 
-      animateLayerSwap(under2, weightedVividTextures, recentTextures, underBlendModes, 2500, 5000, 0.18, 0.45);
-      animateLayerSwap(under3, texturePool, recentTextures, underBlendModes, 3200, 6200, 0.12, 0.30);
-      animateLayerSwap(over1, weightedDirtyTextures, recentTextures, overBlendModes, 2100, 4300, 0.12, 0.34);
-      animateLayerSwap(over2, weightedVividTextures, recentTextures, overBlendModes, 2800, 5400, 0.08, 0.26);
 
-      animateColorWash(colorWashes[0], 2800, 5000, 0.12, 0.28);
-      animateColorWash(colorWashes[1], 3200, 6000, 0.08, 0.22);
-      animateColorWash(colorWashes[2], 2500, 4800, 0.06, 0.18);
-      animateColorWash(colorWashes[3], 3500, 6500, 0.04, 0.14);
+      layer.style.backgroundRepeat =
+        `
+          no-repeat,
+          no-repeat
+        `;
 
-      /* one under layer NEVER fully disappears */
-      const under1Interval = setInterval(() => {
-        const opacityFloor = stageIntensity < 0.35 ? 0.48 : 0.62;
-        const opacityCeil = stageIntensity < 0.35 ? 0.78 : 0.92;
 
-        under1.style.opacity = "0";
+      layer.style.backgroundPosition =
+        `
+          center,
+          ${random(10, 90)}%
+          ${random(10, 90)}%
+        `;
 
-        const t = setTimeout(() => {
-          applyTextureToLayer(
-            under1,
-            pickTexture(weightedDirtyTextures, recentTextures),
-            pickRandom(underBlendModes),
-            opacityFloor,
-            opacityCeil
+
+      /*
+        Burn the color INTO the source texture.
+      */
+
+      layer.style.backgroundBlendMode =
+        `
+          ${pick(INTERNAL_MODES)},
+          normal
+        `;
+
+
+      /*
+        Then blend the composite layer into the
+        overall image.
+      */
+
+      layer.style.mixBlendMode =
+        pick(
+          isOver
+            ? OVER_MODES
+            : UNDER_MODES
+        );
+
+
+      /*
+        Fixed crop / rotation.
+
+        NOTHING here animates after the texture
+        becomes visible.
+      */
+
+      const scale =
+        random(
+          1.08,
+          1.38
+        );
+
+
+      const rotation =
+        random(
+          -3.5,
+          3.5
+        );
+
+
+      const x =
+        random(
+          -4,
+          4
+        );
+
+
+      const y =
+        random(
+          -4,
+          4
+        );
+
+
+      layer.style.transform =
+        `
+          translate(
+            ${x}%,
+            ${y}%
+          )
+          rotate(
+            ${rotation}deg
+          )
+          scale(
+            ${scale}
+          )
+        `;
+
+
+      /*
+        Stronger print treatment.
+        No blur.
+      */
+
+      layer.style.filter =
+        `
+          contrast(
+            ${random(
+              1.05,
+              1.72
+            )}
+          )
+          saturate(
+            ${random(
+              1.05,
+              1.95
+            )}
+          )
+          brightness(
+            ${random(
+              0.75,
+              1.18
+            )}
+          )
+        `;
+
+
+      let opacity;
+
+
+      if (isOver) {
+
+        opacity =
+          random(
+            lerp(
+              0.08,
+              0.15,
+              intensity
+            ),
+            lerp(
+              0.22,
+              0.42,
+              intensity
+            )
           );
-        }, 140);
 
-        layerTimeouts.push(t);
-      }, 4500);
+      }
 
-      layerIntervals.push(under1Interval);
+      else {
 
-      horseInterval = setInterval(() => {
-        applyHorseTreatment();
-      }, 2600);
-    }
-
-    function animateLayerSwap(layer, pool, recentStore, modePool, minDelay, maxDelay, opacityMin, opacityMax) {
-      const run = () => {
-        const delay = Math.round(minDelay + Math.random() * (maxDelay - minDelay));
-
-        const interval = setInterval(() => {
-          layer.style.opacity = "0";
-
-          const timeout = setTimeout(() => {
-            applyTextureToLayer(
-              layer,
-              pickTexture(pool, recentStore),
-              pickRandom(modePool),
-              opacityMin * (0.7 + stageIntensity * 0.6),
-              opacityMax * (0.85 + stageIntensity * 0.45)
-            );
-          }, 140);
-
-          layerTimeouts.push(timeout);
-        }, delay);
-
-        layerIntervals.push(interval);
-      };
-
-      run();
-    }
-
-    function animateColorWash(layer, minDelay, maxDelay, opacityMin, opacityMax) {
-      const delay = Math.round(minDelay + Math.random() * (maxDelay - minDelay));
-
-      const interval = setInterval(() => {
-        layer.style.opacity = "0";
-
-        const timeout = setTimeout(() => {
-          applyColorWashToLayer(
-            layer,
-            opacityMin * (0.7 + stageIntensity * 0.6),
-            opacityMax * (0.9 + stageIntensity * 0.55)
+        opacity =
+          random(
+            lerp(
+              0.24,
+              0.34,
+              intensity
+            ),
+            lerp(
+              0.48,
+              0.72,
+              intensity
+            )
           );
-        }, 160);
 
-        layerTimeouts.push(timeout);
-      }, delay);
+      }
 
-      layerIntervals.push(interval);
+
+      layer.dataset.targetOpacity =
+        opacity.toFixed(3);
+
     }
 
-    function startBackgroundSystem() {
-      /* multiple full-frame things behind the stage */
-      applyTextureToLayer(
-        bgLayers[0],
-        pickTexture(weightedDirtyTextures, recentBgTextures),
-        pickRandom(bgBlendModes),
-        0.08,
-        0.18
+
+    function replaceTexture(
+      layer,
+      intensity,
+      isOver
+    ) {
+
+      layer._version =
+        (
+          layer._version ||
+          0
+        ) + 1;
+
+
+      const version =
+        layer._version;
+
+
+      /*
+        quick optical cut rather than a long mushy
+        dissolve.
+      */
+
+      layer.style.opacity =
+        "0";
+
+
+      window.setTimeout(() => {
+
+        if (
+          !overlayOpen ||
+          layer._version !== version
+        ) {
+
+          return;
+
+        }
+
+
+        configureTexture(
+          layer,
+          intensity,
+          isOver
+        );
+
+
+        requestAnimationFrame(() => {
+
+          if (
+            layer._version !== version
+          ) {
+
+            return;
+
+          }
+
+
+          layer.style.opacity =
+            layer.dataset.targetOpacity;
+
+        });
+
+      }, 90);
+
+    }
+
+
+    /* =====================================================
+       COLOR WASH
+       ===================================================== */
+
+    function replaceColorWash(
+      layer,
+      intensity,
+      isOver
+    ) {
+
+      const palette =
+        nextPalette();
+
+
+      layer.style.opacity =
+        "0";
+
+
+      window.setTimeout(() => {
+
+        const mode =
+          Math.floor(
+            Math.random() * 3
+          );
+
+
+        if (mode === 0) {
+
+          layer.style.background =
+            `
+              radial-gradient(
+                circle at
+                ${random(15, 85)}%
+                ${random(15, 85)}%,
+                ${palette[0]},
+                transparent 58%
+              ),
+              radial-gradient(
+                circle at
+                ${random(15, 85)}%
+                ${random(15, 85)}%,
+                ${palette[1]},
+                transparent 65%
+              )
+            `;
+
+        }
+
+        else {
+
+          layer.style.background =
+            `
+              linear-gradient(
+                ${random(0, 360)}deg,
+                ${palette[0]},
+                ${palette[1]},
+                ${palette[2]}
+              )
+            `;
+
+        }
+
+
+        layer.style.mixBlendMode =
+          pick(
+            isOver
+              ? OVER_MODES
+              : UNDER_MODES
+          );
+
+
+        const opacity =
+          isOver
+            ? random(
+                0.025,
+                lerp(
+                  0.08,
+                  0.20,
+                  intensity
+                )
+              )
+            : random(
+                0.04,
+                lerp(
+                  0.10,
+                  0.24,
+                  intensity
+                )
+              );
+
+
+        layer.style.opacity =
+          opacity.toFixed(3);
+
+      }, 100);
+
+    }
+
+
+    /* =====================================================
+       HORSE
+       ===================================================== */
+
+    function changeHorseTreatment(
+      intensity
+    ) {
+
+      const palette =
+        nextPalette();
+
+
+      const mode =
+        pick(
+          HORSE_MODES
+        );
+
+
+      const hue =
+        random(
+          -160,
+          160
+        );
+
+
+      horseMain.style.mixBlendMode =
+        mode;
+
+
+      horseMain.style.filter =
+        `
+          hue-rotate(${hue}deg)
+          saturate(
+            ${random(
+              1.1,
+              2.9
+            )}
+          )
+          contrast(
+            ${random(
+              1.05,
+              1.75
+            )}
+          )
+          brightness(
+            ${random(
+              0.78,
+              1.18
+            )}
+          )
+        `;
+
+
+      horseMain.style.opacity =
+        random(
+          0.58,
+          0.92
+        );
+
+
+      /*
+        Offset print register copy.
+      */
+
+      horseOffset.style.mixBlendMode =
+        pick(
+          [
+            "screen",
+            "hard-light",
+            "difference",
+            "color-burn",
+            "multiply"
+          ]
+        );
+
+
+      horseOffset.style.filter =
+        `
+          hue-rotate(
+            ${random(
+              -180,
+              180
+            )}deg
+          )
+          saturate(
+            ${random(
+              1.3,
+              3.2
+            )}
+          )
+          contrast(
+            ${random(
+              1.1,
+              1.7
+            )}
+          )
+        `;
+
+
+      horseOffset.style.opacity =
+        random(
+          0.05,
+          lerp(
+            0.10,
+            0.30,
+            intensity
+          )
+        );
+
+
+      /*
+        Fixed small registration error.
+        Not animated.
+      */
+
+      horseOffset.style.transform =
+        `
+          translate(
+            ${random(-4, 4)}px,
+            ${random(-4, 4)}px
+          )
+        `;
+
+
+      /*
+        Keep ink-key stronger as collage gets
+        denser.
+      */
+
+      horseKey.style.opacity =
+        lerp(
+          0.27,
+          0.46,
+          intensity
+        ).toFixed(3);
+
+    }
+
+
+    function normalHorse() {
+
+      horseMain.style.mixBlendMode =
+        "normal";
+
+
+      horseMain.style.filter =
+        "none";
+
+
+      horseMain.style.opacity =
+        "1";
+
+
+      horseOffset.style.opacity =
+        "0";
+
+
+      horseKey.style.opacity =
+        "0";
+
+    }
+
+
+    /* =====================================================
+       TIMELINE
+       ===================================================== */
+
+    const VISUAL_START =
+      9;
+
+
+    const VISUAL_FULL =
+      25;
+
+
+    const NORMAL_TIME =
+      243;
+
+
+    function revealAt(time) {
+
+      if (
+        time < VISUAL_START
+      ) {
+
+        return 0;
+
+      }
+
+
+      return smoothStep(
+        (
+          time -
+          VISUAL_START
+        )
+        /
+        (
+          VISUAL_FULL -
+          VISUAL_START
+        )
       );
 
-      applyTextureToLayer(
-        bgLayers[1],
-        pickTexture(weightedVividTextures, recentBgTextures),
-        pickRandom(bgBlendModes),
-        0.06,
-        0.16
+    }
+
+
+    function intensityAt(time) {
+
+      if (
+        time < VISUAL_START
+      ) {
+
+        return 0;
+
+      }
+
+
+      if (
+        time >= NORMAL_TIME
+      ) {
+
+        return 0;
+
+      }
+
+
+      if (
+        time < 70
+      ) {
+
+        return lerp(
+          0.20,
+          0.38,
+          (
+            time -
+            VISUAL_START
+          ) /
+          (
+            70 -
+            VISUAL_START
+          )
+        );
+
+      }
+
+
+      if (
+        time < 175
+      ) {
+
+        return lerp(
+          0.38,
+          0.60,
+          (
+            time -
+            70
+          ) /
+          105
+        );
+
+      }
+
+
+      if (
+        time < 220
+      ) {
+
+        return lerp(
+          0.60,
+          0.82,
+          (
+            time -
+            175
+          ) /
+          45
+        );
+
+      }
+
+
+      return lerp(
+        0.82,
+        1,
+        (
+          time -
+          220
+        ) /
+        23
       );
 
-      applyColorWashToLayer(bgColorLayers[0], 0.08, 0.18);
-      applyColorWashToLayer(bgColorLayers[1], 0.06, 0.12);
-
-      bgLayers.forEach((layer) => {
-        layer.style.backgroundPosition = "center";
-      });
-
-      const bgIntervalA = setInterval(() => {
-        bgLayers[0].style.opacity = "0";
-
-        const t = setTimeout(() => {
-          applyTextureToLayer(
-            bgLayers[0],
-            pickTexture(weightedDirtyTextures, recentBgTextures),
-            pickRandom(bgBlendModes),
-            0.08,
-            0.20
-          );
-        }, 180);
-
-        layerTimeouts.push(t);
-      }, 5200);
-
-      const bgIntervalB = setInterval(() => {
-        bgLayers[1].style.opacity = "0";
-
-        const t = setTimeout(() => {
-          applyTextureToLayer(
-            bgLayers[1],
-            pickTexture(weightedVividTextures, recentBgTextures),
-            pickRandom(bgBlendModes),
-            0.05,
-            0.14
-          );
-        }, 220);
-
-        layerTimeouts.push(t);
-      }, 6400);
-
-      const bgColorA = setInterval(() => {
-        bgColorLayers[0].style.opacity = "0";
-
-        const t = setTimeout(() => {
-          applyColorWashToLayer(bgColorLayers[0], 0.06, 0.16);
-        }, 150);
-
-        layerTimeouts.push(t);
-      }, 4800);
-
-      const bgColorB = setInterval(() => {
-        bgColorLayers[1].style.opacity = "0";
-
-        const t = setTimeout(() => {
-          applyColorWashToLayer(bgColorLayers[1], 0.05, 0.12);
-        }, 210);
-
-        layerTimeouts.push(t);
-      }, 7300);
-
-      bgIntervals.push(bgIntervalA, bgIntervalB, bgColorA, bgColorB);
     }
+
+
+    /*
+      120 BPM:
+      quarter = 0.5 seconds.
+    */
+
+    function beatsPerCut(
+      intensity
+    ) {
+
+      if (
+        intensity < 0.35
+      ) {
+        return 8;
+      }
+
+
+      if (
+        intensity < 0.58
+      ) {
+        return 4;
+      }
+
+
+      if (
+        intensity < 0.80
+      ) {
+        return 2;
+      }
+
+
+      return 1;
+
+    }
+
+
+    /* =====================================================
+       COLLAGE CUT
+       ===================================================== */
+
+    let cutCount =
+      0;
+
+
+    function collageCut(
+      intensity
+    ) {
+
+      cutCount++;
+
+
+      /*
+        Guarantee both underneath layers remain alive.
+      */
+
+      const underToChange =
+        cutCount % 2 === 0
+          ? underA
+          : underB;
+
+
+      replaceTexture(
+        underToChange,
+        intensity,
+        false
+      );
+
+
+      /*
+        Overprint doesn't change on EVERY early cut,
+        but near the climax it does.
+      */
+
+      if (
+        Math.random() <
+        lerp(
+          0.45,
+          0.94,
+          intensity
+        )
+      ) {
+
+        replaceTexture(
+          Math.random() < 0.5
+            ? overA
+            : overB,
+          intensity,
+          true
+        );
+
+      }
+
+
+      /*
+        Near climax, occasionally change a second
+        over/under layer simultaneously.
+      */
+
+      if (
+        intensity > 0.76 &&
+        Math.random() < 0.50
+      ) {
+
+        const possibilities = [
+          underA,
+          underB,
+          overA,
+          overB
+        ];
+
+
+        const second =
+          pick(
+            possibilities
+          );
+
+
+        replaceTexture(
+          second,
+          intensity,
+          overLayers.includes(
+            second
+          )
+        );
+
+      }
+
+
+      /*
+        Color wash every few cuts.
+      */
+
+      if (
+        cutCount % 2 === 0
+      ) {
+
+        replaceColorWash(
+          colorUnder,
+          intensity,
+          false
+        );
+
+      }
+
+
+      if (
+        (
+          intensity > 0.55 &&
+          cutCount % 3 === 0
+        )
+        ||
+        (
+          intensity > 0.85 &&
+          Math.random() < 0.45
+        )
+      ) {
+
+        replaceColorWash(
+          colorOver,
+          intensity,
+          true
+        );
+
+      }
+
+
+      /*
+        Horse receives a new print treatment
+        every second collage change.
+      */
+
+      if (
+        cutCount % 2 === 0
+      ) {
+
+        changeHorseTreatment(
+          intensity
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       RESET / START
+       ===================================================== */
+
+    let overlayOpen =
+      false;
+
+
+    let raf =
+      null;
+
+
+    let visualStarted =
+      false;
+
+
+    let normalState =
+      false;
+
+
+    let previousCutGroup =
+      -1;
+
+
+    function clearVisuals() {
+
+      allTextureLayers.forEach(
+        layer => {
+
+          layer.style.opacity =
+            "0";
+
+        }
+      );
+
+
+      colorUnder.style.opacity =
+        "0";
+
+
+      colorOver.style.opacity =
+        "0";
+
+
+      horseOffset.style.opacity =
+        "0";
+
+
+      horseKey.style.opacity =
+        "0";
+
+    }
+
+
+    function startVisualWorld(
+      intensity
+    ) {
+
+      if (
+        visualStarted
+      ) {
+
+        return;
+
+      }
+
+
+      visualStarted =
+        true;
+
+
+      pageShell.classList.add(
+        "is-fading-away"
+      );
+
+
+      /*
+        TWO full-frame images immediately underneath.
+      */
+
+      configureTexture(
+        underA,
+        intensity,
+        false
+      );
+
+
+      underA.style.opacity =
+        underA.dataset.targetOpacity;
+
+
+      configureTexture(
+        underB,
+        intensity,
+        false
+      );
+
+
+      underB.style.opacity =
+        underB.dataset.targetOpacity;
+
+
+      /*
+        TWO above the horse from the beginning,
+        but initially restrained.
+      */
+
+      configureTexture(
+        overA,
+        intensity,
+        true
+      );
+
+
+      overA.style.opacity =
+        (
+          parseFloat(
+            overA.dataset.targetOpacity
+          ) *
+          0.7
+        ).toFixed(3);
+
+
+      configureTexture(
+        overB,
+        intensity,
+        true
+      );
+
+
+      overB.style.opacity =
+        (
+          parseFloat(
+            overB.dataset.targetOpacity
+          ) *
+          0.5
+        ).toFixed(3);
+
+
+      replaceColorWash(
+        colorUnder,
+        intensity,
+        false
+      );
+
+
+      changeHorseTreatment(
+        intensity
+      );
+
+    }
+
+
+    function enterNormalState() {
+
+      if (
+        normalState
+      ) {
+
+        return;
+
+      }
+
+
+      normalState =
+        true;
+
+
+      clearVisuals();
+
+
+      normalHorse();
+
+
+      stage.classList.add(
+        "is-normal"
+      );
+
+    }
+
+
+    /* =====================================================
+       ANIMATION LOOP
+
+       Everything derives from actual AUDIO TIME.
+
+       No long-running JavaScript intervals.
+       ===================================================== */
+
+    function visualLoop() {
+
+      if (
+        !overlayOpen
+      ) {
+
+        return;
+
+      }
+
+
+      const time =
+        audio.currentTime || 0;
+
+
+      const reveal =
+        revealAt(time);
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        reveal.toFixed(4)
+      );
+
+
+      /*
+        Homepage fades at same rate as artwork
+        arrives.
+      */
+
+      pageShell.style.opacity =
+        (
+          1 -
+          (
+            reveal *
+            0.98
+          )
+        ).toFixed(4);
+
+
+      /*
+        Before 9 sec:
+        NOTHING except note / close.
+      */
+
+      if (
+        time < VISUAL_START
+      ) {
+
+        clearVisuals();
+
+
+        raf =
+          requestAnimationFrame(
+            visualLoop
+          );
+
+
+        return;
+
+      }
+
+
+      const intensity =
+        intensityAt(time);
+
+
+      if (
+        !visualStarted
+      ) {
+
+        startVisualWorld(
+          intensity
+        );
+
+      }
+
+
+      /*
+        At 4:03:
+        permanently return to normal GIF.
+      */
+
+      if (
+        time >= NORMAL_TIME
+      ) {
+
+        enterNormalState();
+
+
+        raf =
+          requestAnimationFrame(
+            visualLoop
+          );
+
+
+        return;
+
+      }
+
+
+      /*
+        Beat-synced cut grid.
+      */
+
+      const beatLength =
+        0.5;
+
+
+      const cadence =
+        beatsPerCut(
+          intensity
+        );
+
+
+      const beatNumber =
+        Math.floor(
+          (
+            time -
+            VISUAL_START
+          )
+          /
+          beatLength
+        );
+
+
+      const cutGroup =
+        Math.floor(
+          beatNumber /
+          cadence
+        );
+
+
+      if (
+        cutGroup !==
+        previousCutGroup
+      ) {
+
+        previousCutGroup =
+          cutGroup;
+
+
+        collageCut(
+          intensity
+        );
+
+      }
+
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
+
+    }
+
+
+    /* =====================================================
+       OPEN / CLOSE
+       ===================================================== */
+
+    async function openWip() {
+
+      overlayOpen =
+        true;
+
+
+      visualStarted =
+        false;
+
+
+      normalState =
+        false;
+
+
+      previousCutGroup =
+        -1;
+
+
+      cutCount =
+        0;
+
+
+      recentTextures =
+        [];
+
+
+      stage.classList.remove(
+        "is-normal"
+      );
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
+
+
+      pageShell.style.opacity =
+        "1";
+
+
+      clearVisuals();
+
+
+      prepareSessionTextures();
+
+
+      overlay.classList.add(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      audio.pause();
+
+
+      audio.currentTime =
+        0;
+
+
+      audio.volume =
+        0.72;
+
+
+      try {
+
+        await audio.play();
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "Audio could not start:",
+          error
+        );
+
+      }
+
+
+      cancelAnimationFrame(
+        raf
+      );
+
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
+
+    }
+
+
+    function closeWip() {
+
+      overlayOpen =
+        false;
+
+
+      cancelAnimationFrame(
+        raf
+      );
+
+
+      audio.pause();
+
+
+      audio.currentTime =
+        0;
+
+
+      clearVisuals();
+
+
+      normalHorse();
+
+
+      pageShell.style.opacity =
+        "1";
+
+
+      pageShell.classList.remove(
+        "is-fading-away"
+      );
+
+
+      overlay.classList.remove(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    }
+
+
+    /* =====================================================
+       LINKS
+       ===================================================== */
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        const link =
+          event.target.closest(
+            "a"
+          );
+
+
+        if (!link) {
+          return;
+        }
+
+
+        if (
+          link.hasAttribute(
+            "data-live-link"
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        openWip();
+
+      }
+    );
+
+
+    closeButton.addEventListener(
+      "click",
+      closeWip
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape" &&
+          overlayOpen
+        ) {
+
+          closeWip();
+
+        }
+
+      }
+    );
+
+  })();
   </script>
+
 </body>
 </html>
