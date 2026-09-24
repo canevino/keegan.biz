@@ -528,7 +528,7 @@ a {
 
 
 /* =========================================================
-   STAGE
+   WIP STAGE — CLEAN HORSE ONLY
    ========================================================= */
 
 .collage-stage {
@@ -551,36 +551,17 @@ a {
   overflow:
     hidden;
 
-  isolation:
-    isolate;
-
   border:
     0;
 
   box-shadow:
     none;
 
-  /*
-    Slightly lighter than the last version.
-
-    Gives the pigment somewhere to go without
-    making the square feel clean.
-  */
-
   background:
-    #d4d0c5;
+    transparent;
 
   opacity:
     var(--visual-reveal);
-
-  transform:
-    translateZ(0);
-
-  contain:
-    paint;
-
-  will-change:
-    opacity;
 
   transition:
     opacity
@@ -590,151 +571,8 @@ a {
 
 
 /* =========================================================
-   STATIC STAIN FIELD
-   ========================================================= */
-
-.collage-stage::before {
-  content:
-    "";
-
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  z-index:
-    1;
-
-  pointer-events:
-    none;
-
-  background:
-    radial-gradient(
-      circle at 18% 22%,
-      rgba(0, 0, 0, 0.14),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at 80% 72%,
-      rgba(255, 255, 255, 0.20),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 57% 38%,
-      rgba(0, 0, 0, 0.10),
-      transparent 40%
-    ),
-    linear-gradient(
-      125deg,
-      rgba(0, 0, 0, 0.09),
-      transparent 38%,
-      rgba(255, 255, 255, 0.08)
-    );
-
-  mix-blend-mode:
-    multiply;
-
-  opacity:
-    0.72;
-}
-
-
-/* =========================================================
-   TEXTURE SLOTS
-   ========================================================= */
-
-.texture-slot {
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  pointer-events:
-    none;
-}
-
-
-.under-slot-1 {
-  z-index:
-    4;
-}
-
-
-.under-slot-2 {
-  z-index:
-    7;
-}
-
-
-.over-slot-1 {
-  z-index:
-    26;
-}
-
-
-/* =========================================================
-   TEXTURE FRAMES
-   ========================================================= */
-
-.morph-frame {
-  position:
-    absolute;
-
-  inset:
-    -7%;
-
-  opacity:
-    0;
-
-  pointer-events:
-    none;
-
-  background-size:
-    cover;
-
-  background-repeat:
-    no-repeat;
-
-  transform-origin:
-    center;
-
-  transition-property:
-    opacity;
-
-  transition-timing-function:
-    ease-in-out;
-
-  will-change:
-    opacity;
-
-  backface-visibility:
-    hidden;
-
-  -webkit-backface-visibility:
-    hidden;
-}
-
-
-/* =========================================================
    HORSE
    ========================================================= */
-
-.horse-stack {
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  z-index:
-    20;
-
-  pointer-events:
-    none;
-}
-
 
 .horse {
   position:
@@ -761,179 +599,17 @@ a {
 
 
 .horse-main {
-  z-index:
-    2;
-
   opacity:
     1;
 
   mix-blend-mode:
-    multiply;
+    normal;
+
+  filter:
+    none;
 
   transform:
-    translateZ(0);
-
-  transition-property:
-    opacity,
-    filter;
-
-  transition-timing-function:
-    ease-in-out;
-
-  backface-visibility:
-    hidden;
-}
-
-
-.horse-offset {
-  z-index:
-    1;
-
-  opacity:
-    0;
-
-  mix-blend-mode:
-    multiply;
-
-  transition-property:
-    opacity,
-    filter;
-
-  transition-timing-function:
-    ease-in-out;
-}
-
-
-/* =========================================================
-   HORSE KEY
-   ========================================================= */
-
-.horse-key {
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  z-index:
-    40;
-
-  width:
-    100%;
-
-  height:
-    100%;
-
-  object-fit:
-    cover;
-
-  opacity:
-    0;
-
-  mix-blend-mode:
-    multiply;
-
-  filter:
-    grayscale(1)
-    saturate(0)
-    contrast(1.5);
-
-  pointer-events:
     none;
-
-  transition-property:
-    opacity;
-
-  transition-timing-function:
-    ease-in-out;
-}
-
-
-/* =========================================================
-   GRAIN
-   ========================================================= */
-
-.stage-grain {
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  z-index:
-    45;
-
-  pointer-events:
-    none;
-
-  opacity:
-    0.07;
-
-  background-image:
-    radial-gradient(
-      rgba(
-        12,
-        10,
-        8,
-        0.22
-      )
-      0.65px,
-      transparent
-      0.8px
-    );
-
-  background-size:
-    4px 4px;
-
-  mix-blend-mode:
-    multiply;
-}
-
-
-/* =========================================================
-   CLEAN END
-   ========================================================= */
-
-.collage-stage.is-normal {
-  background:
-    transparent;
-}
-
-
-.collage-stage.is-normal::before {
-  opacity:
-    0;
-}
-
-
-.collage-stage.is-normal
-.morph-frame {
-  opacity:
-    0 !important;
-}
-
-
-.collage-stage.is-normal
-.horse-offset,
-.collage-stage.is-normal
-.horse-key,
-.collage-stage.is-normal
-.stage-grain {
-  opacity:
-    0 !important;
-}
-
-
-.collage-stage.is-normal
-.horse-main {
-  opacity:
-    1 !important;
-
-  mix-blend-mode:
-    normal !important;
-
-  filter:
-    none !important;
 }
 
 
@@ -1158,47 +834,6 @@ a {
 
     font-size:
       31px;
-  }
-
-
-  .over-slot-1 {
-    display:
-      none;
-  }
-
-
-  .horse-offset {
-    display:
-      none;
-  }
-
-
-  .morph-frame {
-    inset:
-      -5%;
-  }
-
-
-  .collage-stage::before {
-    opacity:
-      0.54;
-  }
-
-
-  .stage-grain {
-    opacity:
-      0.04;
-
-    background-size:
-      5px 5px;
-  }
-
-
-  .horse-key {
-    filter:
-      grayscale(1)
-      saturate(0)
-      contrast(1.3);
   }
 
 }
