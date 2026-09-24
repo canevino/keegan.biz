@@ -256,7 +256,7 @@ button{font:inherit}
 
 /* =========================================================
    PRINT-LIKE MUSIC MARKS
-   No growth: they appear at final size and only fade.
+   Pop in at final size, then fade with only a very slight shrink.
    ========================================================= */
 
 .fuji-splash-layer{
@@ -275,18 +275,19 @@ button{font:inherit}
   border-radius:50%;
   opacity:var(--mark-opacity);
   pointer-events:none;
-  transform:translate(-50%,-50%);
+  transform:translate(-50%,-50%) scale(1);
   background:
-    radial-gradient(circle at 47% 44%,var(--mark-color-a) 0 42%,var(--mark-color-b) 64%,transparent 76%),
-    repeating-radial-gradient(circle at 38% 42%,rgba(255,255,255,.12) 0 1px,transparent 1px 5px);
+    radial-gradient(circle at 43% 39%,var(--mark-color-c) 0 18%,var(--mark-color-a) 36%,var(--mark-color-b) 67%,transparent 79%),
+    repeating-radial-gradient(circle at 38% 42%,rgba(255,255,255,.16) 0 1px,transparent 1px 4px);
   background-blend-mode:normal,soft-light;
-  filter:saturate(.82) contrast(1.05);
-  animation:fuji-mark-fade var(--mark-duration) linear forwards;
+  filter:saturate(1.10) contrast(1.06);
+  animation:fuji-mark-fade var(--mark-duration) cubic-bezier(.24,.52,.32,1) forwards;
+  transform-origin:center;
 }
 @keyframes fuji-mark-fade{
-  0%{opacity:var(--mark-opacity)}
-  16%{opacity:var(--mark-opacity)}
-  100%{opacity:0}
+  0%{opacity:var(--mark-opacity);transform:translate(-50%,-50%) scale(1)}
+  14%{opacity:var(--mark-opacity);transform:translate(-50%,-50%) scale(.992)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.93)}
 }
 
 .fuji-filter-defs{
