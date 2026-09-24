@@ -367,7 +367,17 @@
   const AUDIO={
     masterGain:.61,
     clickCooldown:320,
-    maxVoices:isMobile()?14:23,
+
+    // Soft ceiling. Above this, NEW events lose optional duplicate voices
+    // before we ever allow a tap to become silent.
+    maxVoices:isMobile()?18:24,
+
+    // Emergency ceiling. At this point the oldest tail is faded gently
+    // so the newest tap always has somewhere to go.
+    hardVoices:isMobile()?26:34,
+
+    tailRelease:isMobile()?.55:.42,
+
     gains:{concertina:[.070,.128],guitar:[.098,.172],mandolin:[.080,.145],harmonic:[.052,.100],cello:[.095,.150]},
     attacks:{concertina:[.070,.145],guitar:[.038,.095],mandolin:[.045,.110],harmonic:[.065,.145]}
   };
@@ -410,7 +420,7 @@
   const HARMONY=Object.fromEntries(HARMONIES.map(h=>[h.name,h]));
 
   const audioState={context:null,bus:null,compressor:null,master:null,droneSource:null,droneGain:null,muted:false,overlayMuted:false,buffers:new Map(),loads:new Map(),activeSources:new Set(),droneStarted:false,droneLoading:false,pending:false,lastClick:0,auto:false,autoTimer:null};
-  const MAX_CACHE=isMobile()?16:48;
+  const MAX_CACHE=isMobile()?20:48;
   const planner={
     currentHarmony:'d-open',targetHarmony:'d-minor',arc:'hover',targetTension:.20,arcSteps:0,
     clicksSinceChord:0,chordStreak:0,lastPitch:'D',lastInstrument:'guitar',gesture:null,
@@ -454,8 +464,35 @@
   const regularSamples=(instrument,pitch)=>SAMPLES.filter(s=>!s.harmonic&&s.instrument===instrument&&s.pitch===pitch);
   function chooseSample(instrument,pitch,preferred=null){ const c=regularSamples(instrument,pitch); if(!c.length)return null; return weighted(c.map(s=>({...s,weight:preferred===s.register?2:s.register===1?1:.88}))); }
   function warmPitches(pitches){
-    const list=[]; unique(pitches||[]).forEach(p=>INSTRUMENTS.forEach(i=>{const s=regularSamples(i,p)[0];if(s)list.push(s);}));
-    Promise.allSettled(list.slice(0,isMobile()?6:12).map(s=>loadBuffer(s.path)));
+    const list=[];
+
+    unique(pitches||[]).forEach(p=>{
+      INSTRUMENTS.forEach(i=>{
+        const candidates=regularSamples(i,p);
+
+        // Warm both low and upper recordings for the harmonic area that
+        // the planner is currently considering. This makes later taps much
+        // less likely to stall while a new MP3 is decoded on a phone.
+        if(candidates[0])list.push(candidates[0]);
+        if(candidates[1])list.push(candidates[1]);
+      });
+    });
+
+    const uniqueSamples=[];
+    const seen=new Set();
+
+    shuffle(list).forEach(sample=>{
+      if(!seen.has(sample.path)){
+        seen.add(sample.path);
+        uniqueSamples.push(sample);
+      }
+    });
+
+    Promise.allSettled(
+      uniqueSamples
+        .slice(0,isMobile()?10:18)
+        .map(s=>loadBuffer(s.path))
+    );
   }
   async function startDrone(point){
     if(audioState.droneStarted||audioState.droneLoading)return null; audioState.droneLoading=true;
@@ -855,28 +892,219 @@
   const gainRange=s=>s.harmonic?AUDIO.gains.harmonic:AUDIO.gains[s.instrument];
   const attackRange=s=>s.harmonic?AUDIO.attacks.harmonic:AUDIO.attacks[s.instrument];
   const panRange=s=>s.harmonic?.52:s.register===1?.24:s.register===2?.38:.50;
-  function scheduleVoice(sample,buffer,start,destination,gainMultiplier=1){
-    if(audioState.activeSources.size>=AUDIO.maxVoices)return;
-    const source=audioState.context.createBufferSource(), gain=audioState.context.createGain(), pan=audioState.context.createStereoPanner();
-    source.buffer=buffer; const gr=gainRange(sample), ar=attackRange(sample), target=rand(gr[0],gr[1])*gainMultiplier;
-    gain.gain.setValueAtTime(.0001,start); gain.gain.linearRampToValueAtTime(target,start+rand(ar[0],ar[1]));
-    const width=panRange(sample); pan.pan.setValueAtTime(rand(-width,width),start);
-    source.connect(gain); gain.connect(pan); pan.connect(destination); audioState.activeSources.add(source);
-    source.onended=()=>{audioState.activeSources.delete(source);try{source.disconnect();gain.disconnect();pan.disconnect();}catch{}};
-    source.start(start);
+
+  function minimumVoicesForMove(move){
+    if(move.type==='chord')return 3;
+    if(move.type==='ensemble-dyad')return 3;
+    if(move.type==='dyad')return 2;
+    return 1;
   }
+
+  function gentlyReleaseOldestTail(){
+    if(!audioState.activeSources.size)return;
+
+    const now=audioState.context.currentTime;
+
+    const candidates=[...audioState.activeSources]
+      .filter(source=>!source._fujiReleasing)
+      .sort((a,b)=>(a._fujiStartedAt||0)-(b._fujiStartedAt||0));
+
+    const victim=candidates[0];
+
+    if(!victim)return;
+
+    victim._fujiReleasing=true;
+
+    const release=AUDIO.tailRelease;
+
+    try{
+      const gain=victim._fujiGain;
+
+      if(gain){
+        gain.gain.cancelScheduledValues(now);
+        gain.gain.setValueAtTime(Math.max(.0001,gain.gain.value),now);
+        gain.gain.exponentialRampToValueAtTime(.0001,now+release);
+      }
+
+      victim.stop(now+release+.04);
+    }catch{}
+
+    // Free the bookkeeping slot now. The actual sound disappears over the
+    // short release above, so this does not chop the tail off abruptly.
+    audioState.activeSources.delete(victim);
+  }
+
+  function voiceBudgetForMove(move,loadedCount){
+    const active=audioState.activeSources.size;
+    const softAvailable=Math.max(0,AUDIO.maxVoices-active);
+    const minimum=Math.min(loadedCount,minimumVoicesForMove(move));
+
+    if(active+loadedCount<=AUDIO.maxVoices){
+      return loadedCount;
+    }
+
+    // Preserve the musical identity of the NEW tap. When the page is dense,
+    // optional duplicate voices are the first thing to go — not the event.
+    return Math.min(loadedCount,Math.max(minimum,softAvailable));
+  }
+
+  function scheduleVoice(sample,buffer,start,destination,gainMultiplier=1){
+
+    while(audioState.activeSources.size>=AUDIO.hardVoices){
+      const before=audioState.activeSources.size;
+
+      gentlyReleaseOldestTail();
+
+      if(audioState.activeSources.size>=before){
+        break;
+      }
+    }
+
+    const source=audioState.context.createBufferSource();
+    const gain=audioState.context.createGain();
+    const pan=audioState.context.createStereoPanner();
+
+    source.buffer=buffer;
+
+    const gr=gainRange(sample);
+    const ar=attackRange(sample);
+    const target=rand(gr[0],gr[1])*gainMultiplier;
+
+    gain.gain.setValueAtTime(.0001,start);
+    gain.gain.linearRampToValueAtTime(target,start+rand(ar[0],ar[1]));
+
+    const width=panRange(sample);
+
+    pan.pan.setValueAtTime(rand(-width,width),start);
+
+    source.connect(gain);
+    gain.connect(pan);
+    pan.connect(destination);
+
+    source._fujiGain=gain;
+    source._fujiStartedAt=start;
+    source._fujiReleasing=false;
+
+    audioState.activeSources.add(source);
+
+    let cleaned=false;
+
+    const cleanup=()=>{
+      if(cleaned)return;
+      cleaned=true;
+
+      audioState.activeSources.delete(source);
+
+      if(source._fujiCleanupTimer){
+        clearTimeout(source._fujiCleanupTimer);
+      }
+
+      try{
+        source.disconnect();
+        gain.disconnect();
+        pan.disconnect();
+      }catch{}
+    };
+
+    source.onended=cleanup;
+
+    // Safari normally fires `ended`, but this prevents the registry from
+    // getting permanently stuck if mobile Safari ever misses that callback.
+    source._fujiCleanupTimer=setTimeout(
+      cleanup,
+      Math.ceil((buffer.duration+2)*1000)
+    );
+
+    source.start(start);
+
+    return true;
+  }
+
   async function playMove(move){
-    const loaded=(await Promise.all(samplesForMove(move).map(async sample=>{try{return {sample,buffer:await loadBuffer(sample.path)};}catch{return null;}}))).filter(Boolean); if(!loaded.length)return null;
-    const bus=audioState.context.createGain(); bus.connect(audioState.bus); const start=audioState.context.currentTime+.055;
-    const attack=move.type==='chord'?rand(.070,.125):move.type==='ensemble-dyad'?rand(.055,.105):move.type==='dyad'?rand(.045,.090):rand(.028,.065);
-    bus.gain.setValueAtTime(.0001,start); bus.gain.linearRampToValueAtTime(1,start+attack); let longest=0;
-    loaded.forEach((entry,i)=>{
+    const wanted=samplesForMove(move);
+
+    const loaded=(
+      await Promise.all(
+        wanted.map(async sample=>{
+          try{
+            return {
+              sample,
+              buffer:await loadBuffer(sample.path)
+            };
+          }catch{
+            return null;
+          }
+        })
+      )
+    ).filter(Boolean);
+
+    if(!loaded.length)return null;
+
+    const bus=audioState.context.createGain();
+
+    bus.connect(audioState.bus);
+
+    const start=audioState.context.currentTime+.055;
+
+    const attack=
+      move.type==='chord'
+        ?rand(.070,.125)
+        :move.type==='ensemble-dyad'
+          ?rand(.055,.105)
+          :move.type==='dyad'
+            ?rand(.045,.090)
+            :rand(.028,.065);
+
+    bus.gain.setValueAtTime(.0001,start);
+    bus.gain.linearRampToValueAtTime(1,start+attack);
+
+    let longest=0;
+    let scheduled=0;
+
+    const budget=voiceBudgetForMove(move,loaded.length);
+
+    loaded.slice(0,budget).forEach((entry,i)=>{
       longest=Math.max(longest,entry.buffer.duration);
-      const spread=move.type==='chord'?Math.min(i*rand(.006,.016),.050):move.type==='ensemble-dyad'?Math.min(i*rand(.004,.012),.032):move.type==='dyad'?Math.min(i*.006,.018):0;
+
+      const spread=
+        move.type==='chord'
+          ?Math.min(i*rand(.006,.016),.050)
+          :move.type==='ensemble-dyad'
+            ?Math.min(i*rand(.004,.012),.032)
+            :move.type==='dyad'
+              ?Math.min(i*.006,.018)
+              :0;
+
       const perVoice=entry.sample.gainScale??1;
-      scheduleVoice(entry.sample,entry.buffer,start+spread,bus,(move.type==='chord'?.86:.94)*perVoice);
+
+      if(
+        scheduleVoice(
+          entry.sample,
+          entry.buffer,
+          start+spread,
+          bus,
+          (move.type==='chord'?.86:.94)*perVoice
+        )
+      ){
+        scheduled++;
+      }
     });
-    const ringMs=clamp(longest*1000,3300,7600); setTimeout(()=>{try{bus.disconnect();}catch{}},ringMs+1200); return {ringMs,voiceCount:loaded.length};
+
+    if(!scheduled){
+      try{bus.disconnect();}catch{}
+      return null;
+    }
+
+    const ringMs=clamp(longest*1000,3300,7600);
+
+    setTimeout(()=>{
+      try{bus.disconnect();}catch{}
+    },ringMs+1200);
+
+    return {
+      ringMs,
+      voiceCount:scheduled
+    };
   }
 
   function autoplayDelay(result){
@@ -918,7 +1146,18 @@
     const now=performance.now(); if(now-audioState.lastClick<AUDIO.clickCooldown||audioState.pending)return null;
     audioState.lastClick=now; audioState.pending=true; let result=null;
     try{
-      const ctx=ensureContext(); if(!ctx)return null; await ctx.resume();
+      const ctx=ensureContext();
+
+      if(!ctx)return null;
+
+      if(ctx.state!=='running'){
+        try{
+          await ctx.resume();
+        }catch(error){
+          console.warn('Audio context could not resume.',error);
+          return null;
+        }
+      }
       if(audioState.muted){audioState.muted=false;updateMaster();updateSoundButton();}
       if(!audioState.droneStarted) result=await startDrone(point);
       else{
