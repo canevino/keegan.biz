@@ -234,16 +234,16 @@
   const textures=()=>isMobile()?MOBILE_TEXTURES:DESKTOP_TEXTURES;
 
   const PITCH_VISUALS={
-    D:{color:'#294e38',second:'#4f6953',hue:68,tension:.06},
-    E:{color:'#879477',second:'#a6ae95',hue:76,tension:.18},
-    F:{color:'#612b38',second:'#7c3d49',hue:-18,tension:.38},
-    G:{color:'#53643d',second:'#74805b',hue:85,tension:.20},
-    A:{color:'#755c3d',second:'#927550',hue:11,tension:.12},
-    B:{color:'#526471',second:'#71818a',hue:167,tension:.43},
-    C:{color:'#844937',second:'#9b6650',hue:-2,tension:.30}
+    D:{color:'#1f5b3d',second:'#6f8d67',hue:68,tension:.05},
+    E:{color:'#91a66f',second:'#c0c68f',hue:76,tension:.17},
+    F:{color:'#7c2440',second:'#a5485e',hue:-18,tension:.34},
+    G:{color:'#536f31',second:'#82964f',hue:85,tension:.18},
+    A:{color:'#8a6731',second:'#b88c4e',hue:11,tension:.10},
+    B:{color:'#49677e',second:'#7890a0',hue:167,tension:.36},
+    C:{color:'#974b34',second:'#bd6d50',hue:-2,tension:.27}
   };
   const INSTRUMENT_VISUALS={
-    concertina:{tint:'#6f2939',hue:-11}, guitar:{tint:'#7a623f',hue:3}, mandolin:{tint:'#4a673e',hue:12}, harmonic:{tint:'#88918a',hue:0}, cello:{tint:'#505849',hue:0}
+    concertina:{tint:'#7b3346',hue:-11}, guitar:{tint:'#866b3d',hue:3}, mandolin:{tint:'#4c743d',hue:12}, harmonic:{tint:'#7b8783',hue:0}, cello:{tint:'#465b4a',hue:0}
   };
   const PITCH_LINES={D:[1,4,7,10,13],E:[2,5,8,11],F:[3,6,9,12],G:[1,5,9,13],A:[2,6,10],B:[3,7,11],C:[4,8,12]};
   const POST=['#fuji-posterize-3','#fuji-posterize-4','#fuji-posterize-6'];
@@ -344,11 +344,12 @@
     if(REDUCED.matches) return;
     const v=visualForEvent(event), mark=document.createElement('span'), p=point||randomPoint();
     mark.className=`fuji-splash fuji-splash-${event.type}`;
-    const size=event.type==='chord'?rand(10,14):event.type==='ensemble-dyad'?rand(8,11):event.type==='dyad'?rand(6.8,9.5):rand(4.8,7.1);
-    const duration=clamp(ringMs+rand(600,1700),4000,8000);
-    const opacity=event.type==='chord'?rand(.16,.23):event.type==='ensemble-dyad'?rand(.14,.21):event.type==='dyad'?rand(.13,.19):rand(.11,.17);
-    mark.style.setProperty('--x',`${p.x*100}%`); mark.style.setProperty('--y',`${p.y*100}%`); mark.style.setProperty('--size',`${size}%`); mark.style.setProperty('--mark-color-a',v.primary); mark.style.setProperty('--mark-color-b',v.secondary); mark.style.setProperty('--mark-opacity',opacity); mark.style.setProperty('--mark-duration',`${duration}ms`);
-    mark.style.mixBlendMode=weightedValue([{value:'soft-light',weight:45},{value:'overlay',weight:32},{value:'multiply',weight:23}]);
+    const size=event.type==='chord'?rand(9.2,12.2):event.type==='ensemble-dyad'?rand(7.3,9.7):event.type==='dyad'?rand(6.1,8.4):rand(4.3,6.3);
+    const duration=clamp(ringMs+rand(650,1750),4000,8000);
+    const opacity=event.type==='chord'?rand(.19,.27):event.type==='ensemble-dyad'?rand(.17,.24):event.type==='dyad'?rand(.15,.22):rand(.13,.20);
+    const accent=mixHex(v.primary,v.secondary,.34);
+    mark.style.setProperty('--x',`${p.x*100}%`); mark.style.setProperty('--y',`${p.y*100}%`); mark.style.setProperty('--size',`${size}%`); mark.style.setProperty('--mark-color-a',v.primary); mark.style.setProperty('--mark-color-b',v.secondary); mark.style.setProperty('--mark-color-c',accent); mark.style.setProperty('--mark-opacity',opacity); mark.style.setProperty('--mark-duration',`${duration}ms`);
+    mark.style.mixBlendMode=weightedValue([{value:'soft-light',weight:34},{value:'overlay',weight:43},{value:'multiply',weight:15},{value:'screen',weight:8}]);
     splashLayer.appendChild(mark); const cap=isMobile()?3:5; while(splashLayer.children.length>cap) splashLayer.firstElementChild?.remove(); setTimeout(()=>mark.remove(),duration+250);
   }
 
@@ -362,18 +363,68 @@
   addSample('concertina','D',3,'concertina_d3.mp3'); addSample('guitar','D',3,'guitar_d3.mp3');
   addSample('guitar','D',3,'guitar_hd.mp3',true); addSample('guitar','G',3,'guitar_hg.mp3',true); addSample('guitar','B',3,'guitar_hb.mp3',true); addSample('guitar','E',3,'guitar_he.mp3',true);
 
-  const AUDIO={masterGain:.62,clickCooldown:300,maxVoices:isMobile()?14:24,gains:{concertina:[.105,.19],guitar:[.10,.18],mandolin:[.078,.145],harmonic:[.060,.115],cello:[.10,.16]},attacks:{concertina:[.055,.125],guitar:[.035,.090],mandolin:[.042,.105],harmonic:[.060,.135]}};
+  const AUDIO={
+    masterGain:.61,
+    clickCooldown:320,
+    maxVoices:isMobile()?14:23,
+    gains:{concertina:[.070,.128],guitar:[.098,.172],mandolin:[.080,.145],harmonic:[.052,.100],cello:[.095,.150]},
+    attacks:{concertina:[.070,.145],guitar:[.038,.095],mandolin:[.045,.110],harmonic:[.065,.145]}
+  };
+  const VOICING={
+    lowAnchorWeights:{D:7,A:5,G:4,C:3,F:2.7,E:1.8,B:1.2},
+    instrumentWeights:{guitar:1.35,mandolin:1.20,concertina:.48},
+    concertinaChordMax:1,
+    chordHarmonicChance:.075,
+    noteHarmonicChance:.09,
+    dyadHarmonicChance:.11,
+    guitarLowPairChance:.92
+  };
 
   const HARMONIES=[
-    {name:'d-open',pitches:['D','A','E'],tension:.06,weight:18},{name:'d-minor',pitches:['D','F','A'],tension:.15,weight:17},{name:'g-open',pitches:['D','G','A'],tension:.12,weight:15},{name:'g-major',pitches:['G','B','D'],tension:.21,weight:13},{name:'c-open',pitches:['C','G','D'],tension:.19,weight:13},{name:'c-major',pitches:['C','E','G'],tension:.25,weight:11},{name:'a-open',pitches:['A','E','G'],tension:.31,weight:10},{name:'a-minor',pitches:['A','C','E'],tension:.30,weight:10},{name:'e-minor',pitches:['E','G','B'],tension:.32,weight:9},{name:'e-suspended',pitches:['E','B','D'],tension:.35,weight:9},{name:'f-major',pitches:['F','A','C'],tension:.35,weight:8},{name:'d-e-g',pitches:['D','E','G'],tension:.31,weight:9},{name:'d-f-g',pitches:['D','F','G'],tension:.39,weight:8},{name:'a-c-d',pitches:['A','C','D'],tension:.40,weight:8},{name:'d-c-e',pitches:['D','C','E'],tension:.43,weight:7},{name:'g-a-c',pitches:['G','A','C'],tension:.42,weight:7},{name:'c-f-g',pitches:['C','F','G'],tension:.45,weight:6},{name:'a-b-d',pitches:['A','B','D'],tension:.47,weight:6},{name:'g-b-c',pitches:['G','B','C'],tension:.54,weight:5},{name:'f-g-a',pitches:['F','G','A'],tension:.55,weight:4},{name:'b-c-e',pitches:['B','C','E'],tension:.60,weight:4},{name:'e-f-a',pitches:['E','F','A'],tension:.64,weight:3},{name:'b-d-f',pitches:['B','D','F'],tension:.88,weight:.55}
+    {name:'d-open',pitches:['D','A','E'],tension:.05,weight:22,color:'open'},
+    {name:'d-minor',pitches:['D','F','A'],tension:.10,weight:20,color:'minor'},
+    {name:'d-min7',pitches:['D','F','C'],tension:.16,weight:14,color:'minor'},
+    {name:'g-open',pitches:['D','G','A'],tension:.10,weight:17,color:'open'},
+    {name:'g-major',pitches:['G','B','D'],tension:.17,weight:15,color:'bright'},
+    {name:'c-open',pitches:['C','G','D'],tension:.15,weight:15,color:'open'},
+    {name:'c-major',pitches:['C','E','G'],tension:.22,weight:11,color:'open'},
+    {name:'e-suspended',pitches:['E','B','D'],tension:.23,weight:11,color:'open'},
+    {name:'d-e-g',pitches:['D','E','G'],tension:.24,weight:11,color:'haunt'},
+    {name:'a-c-d',pitches:['A','C','D'],tension:.24,weight:10,color:'minor'},
+    {name:'a-open',pitches:['A','E','G'],tension:.26,weight:10,color:'open'},
+    {name:'a-minor',pitches:['A','C','E'],tension:.27,weight:10,color:'minor'},
+    {name:'e-minor',pitches:['E','G','B'],tension:.28,weight:10,color:'minor'},
+    {name:'d-f-g',pitches:['D','F','G'],tension:.29,weight:9,color:'haunt'},
+    {name:'f-major',pitches:['F','A','C'],tension:.31,weight:8,color:'minor'},
+    {name:'d-c-e',pitches:['D','C','E'],tension:.31,weight:8,color:'haunt'},
+    {name:'a-b-d',pitches:['A','B','D'],tension:.32,weight:7,color:'dorian'},
+    {name:'c-f-g',pitches:['C','F','G'],tension:.34,weight:6,color:'open'},
+    {name:'g-a-c',pitches:['G','A','C'],tension:.36,weight:6,color:'haunt'},
+    {name:'g-b-c',pitches:['G','B','C'],tension:.43,weight:3.5,color:'shadow'},
+    {name:'f-g-a',pitches:['F','G','A'],tension:.44,weight:3.3,color:'shadow'},
+    {name:'b-c-e',pitches:['B','C','E'],tension:.49,weight:2.4,color:'shadow'},
+    {name:'e-f-a',pitches:['E','F','A'],tension:.61,weight:.95,color:'dissonant',needsResolution:true},
+    {name:'b-d-f',pitches:['B','D','F'],tension:.84,weight:.18,color:'dissonant',needsResolution:true}
   ];
   const HARMONY=Object.fromEntries(HARMONIES.map(h=>[h.name,h]));
 
   const audioState={context:null,bus:null,compressor:null,master:null,droneSource:null,droneGain:null,muted:false,overlayMuted:false,buffers:new Map(),loads:new Map(),activeSources:new Set(),droneStarted:false,droneLoading:false,pending:false,lastClick:0,auto:false,autoTimer:null};
   const MAX_CACHE=isMobile()?16:48;
-  const planner={currentHarmony:'d-open',targetHarmony:'d-minor',arc:'hover',targetTension:.24,arcSteps:0,clicksSinceChord:0,lastPitch:'D',lastInstrument:'guitar',gesture:null,history:[]};
+  const planner={
+    currentHarmony:'d-open',targetHarmony:'d-minor',arc:'hover',targetTension:.20,arcSteps:0,
+    clicksSinceChord:0,chordStreak:0,lastPitch:'D',lastInstrument:'guitar',gesture:null,
+    resolutionDue:0,resolutionPitch:null,history:[]
+  };
 
-  function cloneState(s){ return {currentHarmony:s.currentHarmony,targetHarmony:s.targetHarmony,arc:s.arc,targetTension:s.targetTension,arcSteps:s.arcSteps,clicksSinceChord:s.clicksSinceChord,lastPitch:s.lastPitch,lastInstrument:s.lastInstrument,gesture:s.gesture?{...s.gesture,instruments:s.gesture.instruments?[...s.gesture.instruments]:undefined}:null,history:s.history.slice(-8).map(x=>({...x,pitches:[...x.pitches],instruments:[...x.instruments]}))}; }
+  function cloneState(s){
+    return {
+      currentHarmony:s.currentHarmony,targetHarmony:s.targetHarmony,arc:s.arc,targetTension:s.targetTension,arcSteps:s.arcSteps,
+      clicksSinceChord:s.clicksSinceChord,chordStreak:s.chordStreak,lastPitch:s.lastPitch,lastInstrument:s.lastInstrument,
+      gesture:s.gesture?{...s.gesture,instruments:s.gesture.instruments?[...s.gesture.instruments]:undefined}:null,
+      resolutionDue:s.resolutionDue||0,resolutionPitch:s.resolutionPitch||null,
+      history:s.history.slice(-10).map(x=>({...x,pitches:[...x.pitches],instruments:[...x.instruments]}))
+    };
+  }
 
   function ensureContext(){
     if(audioState.context) return audioState.context;
@@ -426,138 +477,376 @@
   function scaleDistance(a,b){ const raw=Math.abs(scaleIndex(a)-scaleIndex(b)); return Math.min(raw,SCALE.length-raw); }
   const shared=(a,b)=>a.pitches.filter(p=>b.pitches.includes(p)).length;
   function harmonyDistance(a,b){ return b.pitches.reduce((sum,p)=>sum+Math.min(...a.pitches.map(q=>semitoneDistance(q,p))),0); }
+  function nearestPitch(from,pitches){ return [...pitches].sort((a,b)=>scaleDistance(from,a)-scaleDistance(from,b))[0]||from; }
+  function directionToward(from,to){
+    const a=scaleIndex(from),b=scaleIndex(to),up=(b-a+SCALE.length)%SCALE.length,down=(a-b+SCALE.length)%SCALE.length;
+    if(up===0)return Math.random()<.5?1:-1;
+    return up<=down?1:-1;
+  }
+  function intervalDissonance(a,b){
+    const d=semitoneDistance(a,b);
+    return ({0:0,1:1,2:.28,3:.06,4:.05,5:.08,6:.92})[d]??.12;
+  }
+  function structureDissonance(pitches){
+    const p=unique(pitches); if(p.length<2)return 0;
+    const vals=[]; for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++)vals.push(intervalDissonance(p[i],p[j]));
+    const max=Math.max(...vals),avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+    return clamp(max*.68+avg*.44,0,1);
+  }
+  function relationDissonance(pitch,s){
+    const c=HARMONY[s.currentHarmony],t=HARMONY[s.targetHarmony];
+    if(c.pitches.includes(pitch)||t.pitches.includes(pitch)||pitch==='D'||pitch==='A')return .04;
+    const d=Math.min(...unique([...c.pitches,...t.pitches]).map(p=>scaleDistance(pitch,p)));
+    return d===1?.28:.48;
+  }
+  function moveDissonance(s,m){
+    if(m.type==='chord'){
+      const h=HARMONY[m.harmonyName];
+      return clamp(structureDissonance(h.pitches)*.74+h.tension*.36,0,1);
+    }
+    if(m.pitches.length===1)return relationDissonance(m.pitches[0],s);
+    return clamp(structureDissonance(m.pitches)*.78+Math.max(...m.pitches.map(p=>relationDissonance(p,s)))*.30,0,1);
+  }
+  function isConsonantHarmony(h){ return !h.needsResolution && structureDissonance(h.pitches)<.48 && h.tension<.48; }
+  function resolvesTension(s,m){
+    const t=HARMONY[s.targetHarmony];
+    if(m.type==='chord'){
+      const h=HARMONY[m.harmonyName];
+      return isConsonantHarmony(h)&&(m.arrivesTarget||shared(h,t)>=1||h.pitches.includes('D'));
+    }
+    if(m.type==='note'){
+      const p=m.pitches[0];
+      return (t.pitches.includes(p)||HARMONY[s.currentHarmony].pitches.includes(p)||p==='D'||p==='A') && (!s.lastPitch||scaleDistance(s.lastPitch,p)<=1);
+    }
+    return moveDissonance(s,m)<.34 && m.pitches.some(p=>t.pitches.includes(p)||p==='D'||p==='A');
+  }
+  function chooseResolutionTarget(current,s,simulation=false){
+    const candidates=HARMONIES.filter(h=>h.name!==current.name&&isConsonantHarmony(h)&&h.tension<=.34);
+    const scored=candidates.map(h=>({h,score:scoreHarmonyTarget(current,h,{...s,targetTension:Math.min(s.targetTension,.24)})+(h.pitches.includes('D')?.45:0)})).sort((a,b)=>b.score-a.score);
+    if(simulation)return scored[0]?.h||HARMONY['d-open'];
+    return weightedValue(scored.slice(0,5).map((x,i)=>({value:x.h,weight:Math.exp((x.score-scored[0].score)/.9)*(1-i*.08)})))||scored[0]?.h||HARMONY['d-open'];
+  }
 
   function beginArc(s,current){
-    if(current.tension>.62){ s.arc='release'; s.targetTension=rand(.08,.28); }
+    if(current.tension>.52||current.needsResolution){ s.arc='release'; s.targetTension=rand(.07,.23); }
     else{
-      s.arc=weightedValue([{value:'hover',weight:34},{value:'build',weight:29},{value:'release',weight:25},{value:'darken',weight:12}]);
-      if(s.arc==='build')s.targetTension=rand(Math.max(current.tension+.08,.31),.68);
-      else if(s.arc==='darken')s.targetTension=rand(.50,.75);
-      else if(s.arc==='release')s.targetTension=rand(.08,.28);
-      else s.targetTension=clamp(current.tension+rand(-.12,.12),.10,.56);
+      s.arc=weightedValue([{value:'hover',weight:36},{value:'build',weight:29},{value:'release',weight:28},{value:'darken',weight:7}]);
+      if(s.arc==='build')s.targetTension=rand(Math.max(current.tension+.06,.27),.56);
+      else if(s.arc==='darken')s.targetTension=rand(.42,.60);
+      else if(s.arc==='release')s.targetTension=rand(.07,.24);
+      else s.targetTension=clamp(current.tension+rand(-.10,.10),.08,.46);
     }
-    s.arcSteps=randInt(3,7);
+    s.arcSteps=randInt(4,8);
   }
   function ensureArc(s){ if(s.arcSteps<=0)beginArc(s,HARMONY[s.currentHarmony]); }
   function scoreHarmonyTarget(current,candidate,s){
-    let score=Math.log(candidate.weight+1)+shared(current,candidate)*.8-harmonyDistance(current,candidate)*.13-Math.abs(candidate.tension-s.targetTension)*3.2;
-    if(candidate.pitches.includes('D'))score+=.22;
-    if(s.arc==='release'&&candidate.tension<current.tension)score+=.9;
-    if(s.arc==='build'&&candidate.tension>current.tension)score+=.65;
+    const internal=structureDissonance(candidate.pitches);
+    let score=Math.log(candidate.weight+1)+shared(current,candidate)*.92-harmonyDistance(current,candidate)*.145-Math.abs(candidate.tension-s.targetTension)*3.5-internal*1.65;
+    if(candidate.pitches.includes('D'))score+=.28;
+    if(candidate.color==='open'||candidate.color==='minor')score+=.16;
+    if(candidate.color==='haunt')score+=.12;
+    if(candidate.needsResolution){ score-=s.arc==='darken'?.35:2.5; }
+    if(s.arc==='release'&&candidate.tension<current.tension)score+=1.05;
+    if(s.arc==='build'&&candidate.tension>current.tension-.02&&candidate.tension<=.52)score+=.72;
+    if(s.arc==='darken'&&candidate.tension>=current.tension&&candidate.tension<=.62)score+=.54;
+    if(s.resolutionDue>0&&isConsonantHarmony(candidate))score+=1.8;
     return score;
   }
   function bestTarget(current,s){ return HARMONIES.filter(h=>h.name!==current.name).map(h=>({h,score:scoreHarmonyTarget(current,h,s)})).sort((a,b)=>b.score-a.score)[0].h; }
-  function chooseTarget(current,s){ const list=HARMONIES.filter(h=>h.name!==current.name).map(h=>({value:h,weight:Math.max(.04,Math.exp(scoreHarmonyTarget(current,h,s)*.52))})); return weightedValue(list); }
+  function chooseTarget(current,s){
+    const ranked=HARMONIES.filter(h=>h.name!==current.name).map(h=>({h,score:scoreHarmonyTarget(current,h,s)})).sort((a,b)=>b.score-a.score).slice(0,8);
+    const best=ranked[0]?.score??0;
+    return weightedValue(ranked.map((x,i)=>({value:x.h,weight:Math.exp((x.score-best)/1.05)*(1-i*.055)})))||ranked[0]?.h||HARMONY['d-open'];
+  }
 
-  const pitchTension=p=>PITCH_VISUALS[p]?.tension??.28;
-  function dyadTension(p){ const i=semitoneDistance(p[0],p[1]); return ({0:.08,1:.86,2:.42,3:.24,4:.20,5:.17,6:.82})[i]??.28; }
+  const pitchTension=p=>PITCH_VISUALS[p]?.tension??.24;
+  function dyadTension(p){ return structureDissonance(p); }
   function eventTension(m){ return m.type==='chord'?HARMONY[m.harmonyName].tension:m.pitches.length>=2?dyadTension(m.pitches):pitchTension(m.pitches[0]); }
   const signature=m=>`${m.type}:${[...m.pitches].sort().join('')}:${[...m.instruments].sort().join('-')}`;
 
   function noteMove(pitch,instrument,extras={}){ return {type:'note',pitches:[pitch],instruments:[instrument],...extras}; }
   function dyadMove(pitches,instruments,extras={}){ return {type:extras.ensemble?'ensemble-dyad':'dyad',pitches:unique(pitches).slice(0,2),instruments:[...instruments],...extras}; }
-  function chordMove(name,extras={}){ return {type:'chord',harmonyName:name,pitches:[...HARMONY[name].pitches],instruments:['concertina','guitar','mandolin'],...extras}; }
+  function chordMove(name,extras={}){ return {type:'chord',harmonyName:name,pitches:[...HARMONY[name].pitches],instruments:['guitar','mandolin','concertina'],...extras}; }
 
-  function pitchPool(s){ const c=HARMONY[s.currentHarmony],t=HARMONY[s.targetHarmony],n=s.lastPitch?[stepPitch(s.lastPitch,1),stepPitch(s.lastPitch,-1),s.lastPitch]:[]; return unique([...c.pitches,...t.pitches,...n,'D']); }
+  function pitchPool(s){
+    const c=HARMONY[s.currentHarmony],t=HARMONY[s.targetHarmony],n=s.lastPitch?[stepPitch(s.lastPitch,1),stepPitch(s.lastPitch,-1),s.lastPitch]:[];
+    return unique([...c.pitches,...t.pitches,...n,'D','A']);
+  }
   function generateMoves(s){
-    ensureArc(s); const c=HARMONY[s.currentHarmony], t=HARMONY[s.targetHarmony], moves=[];
+    ensureArc(s); const c=HARMONY[s.currentHarmony],t=HARMONY[s.targetHarmony],moves=[];
     if(s.gesture?.type==='run'){
-      const g=s.gesture, expected=stepPitch(s.lastPitch,g.direction), reverse=stepPitch(s.lastPitch,-g.direction);
-      moves.push(noteMove(expected,g.instrument,{continuesGesture:true,gestureKind:'run-step'}),noteMove(s.lastPitch,g.instrument,{continuesGesture:true,gestureKind:'run-repeat'}),noteMove(reverse,g.instrument,{continuesGesture:true,gestureKind:'run-turn'}),chordMove(s.targetHarmony,{breaksGesture:true,arrivesTarget:true}),chordMove(s.currentHarmony,{breaksGesture:true,restates:true}),dyadMove([expected,pick(t.pitches)],[g.instrument,pick(INSTRUMENTS.filter(x=>x!==g.instrument))],{breaksGesture:true}));
+      const g=s.gesture, destination=nearestPitch(s.lastPitch,t.pitches), toward=directionToward(s.lastPitch,destination), expected=stepPitch(s.lastPitch,g.direction), guided=stepPitch(s.lastPitch,toward), reverse=stepPitch(s.lastPitch,-g.direction);
+      moves.push(
+        noteMove(expected,g.instrument,{continuesGesture:true,gestureKind:'run-step'}),
+        noteMove(guided,g.instrument,{continuesGesture:true,gestureKind:'run-guide'}),
+        noteMove(s.lastPitch,g.instrument,{continuesGesture:true,gestureKind:'run-repeat'}),
+        noteMove(reverse,g.instrument,{continuesGesture:true,gestureKind:'run-turn'}),
+        chordMove(s.targetHarmony,{breaksGesture:true,arrivesTarget:true}),
+        chordMove(s.currentHarmony,{breaksGesture:true,restates:true}),
+        dyadMove([guided,pick(t.pitches)],[g.instrument,pick(INSTRUMENTS.filter(x=>x!==g.instrument))],{breaksGesture:true})
+      );
       return moves;
     }
     if(s.gesture?.type==='pair'){
-      const g=s.gesture, first=s.lastPitch||c.pitches[0], next=stepPitch(first,g.direction), target=t.pitches[Math.min(1,t.pitches.length-1)];
-      moves.push(dyadMove([next,target],g.instruments,{continuesGesture:true,gestureKind:'pair-shift'}),dyadMove([first,target],g.instruments,{continuesGesture:true,gestureKind:'pair-hold'}),chordMove(s.targetHarmony,{breaksGesture:true,arrivesTarget:true}),noteMove(next,g.instruments[0],{breaksGesture:true}));
+      const g=s.gesture,first=s.lastPitch||c.pitches[0],destination=nearestPitch(first,t.pitches),toward=directionToward(first,destination),next=stepPitch(first,toward),target=nearestPitch(next,t.pitches);
+      moves.push(
+        dyadMove([next,target],g.instruments,{continuesGesture:true,gestureKind:'pair-shift'}),
+        dyadMove([first,target],g.instruments,{continuesGesture:true,gestureKind:'pair-hold'}),
+        chordMove(s.targetHarmony,{breaksGesture:true,arrivesTarget:true}),
+        chordMove(s.currentHarmony,{breaksGesture:true,restates:true}),
+        noteMove(next,g.instruments[0],{breaksGesture:true})
+      );
       return moves;
     }
-    const pool=pitchPool(s).slice(0,6), fav=unique([s.lastInstrument,...INSTRUMENTS]).filter(Boolean);
-    pool.forEach((p,i)=>{ const instrument=fav[i%fav.length]; moves.push(noteMove(p,instrument)); if(i<3)moves.push(noteMove(p,instrument,{startsGesture:'run',gestureDirection:Math.random()<.5?1:-1})); });
-    const common=c.pitches.filter(p=>t.pitches.includes(p)), incoming=t.pitches.filter(p=>!c.pitches.includes(p));
-    const pairA=[common[0]||c.pitches[0],incoming[0]||t.pitches[1]], pairB=[t.pitches[0],t.pitches[1]];
-    moves.push(dyadMove(pairA,shuffle(INSTRUMENTS).slice(0,2)),dyadMove(pairB,shuffle(INSTRUMENTS).slice(0,2),{startsGesture:'pair',gestureDirection:Math.random()<.5?1:-1}),dyadMove(pairB,['concertina','guitar','mandolin'],{ensemble:true}),chordMove(s.currentHarmony,{restates:true}),chordMove(s.targetHarmony,{arrivesTarget:true}));
-    const alt=bestTarget(c,{...s,targetTension:clamp(s.targetTension+(s.arc==='build'?.12:-.08),.08,.78)}); if(alt.name!==s.targetHarmony)moves.push(chordMove(alt.name,{alternateHarmony:true}));
+    const pool=pitchPool(s).slice(0,7),fav=unique([s.lastInstrument,...INSTRUMENTS]).filter(Boolean);
+    pool.forEach((p,i)=>{
+      const instrument=fav[i%fav.length];
+      moves.push(noteMove(p,instrument));
+      if(i<4){ const dest=nearestPitch(p,t.pitches); moves.push(noteMove(p,instrument,{startsGesture:'run',gestureDirection:directionToward(p,dest)})); }
+    });
+    const common=c.pitches.filter(p=>t.pitches.includes(p)),incoming=t.pitches.filter(p=>!c.pitches.includes(p));
+    const bridgeStart=common[0]||nearestPitch(s.lastPitch||c.pitches[0],c.pitches), bridgeEnd=incoming[0]||nearestPitch(bridgeStart,t.pitches);
+    const pairA=[bridgeStart,bridgeEnd],pairB=[t.pitches[0],t.pitches[1]];
+    const pairDirection=directionToward(pairA[0],nearestPitch(pairA[0],t.pitches));
+    moves.push(
+      dyadMove(pairA,shuffle(INSTRUMENTS).slice(0,2)),
+      dyadMove(pairB,shuffle(INSTRUMENTS).slice(0,2),{startsGesture:'pair',gestureDirection:pairDirection}),
+      dyadMove(pairB,['guitar','mandolin','concertina'],{ensemble:true}),
+      chordMove(s.currentHarmony,{restates:true}),
+      chordMove(s.targetHarmony,{arrivesTarget:true})
+    );
+    const alt=bestTarget(c,{...s,targetTension:clamp(s.targetTension+(s.arc==='build'?.08:-.06),.07,.62)});
+    if(alt.name!==s.targetHarmony)moves.push(chordMove(alt.name,{alternateHarmony:true}));
     return moves;
   }
 
   function scoreMove(s,m){
-    const c=HARMONY[s.currentHarmony], t=HARMONY[s.targetHarmony], tension=eventTension(m); let score=-Math.abs(tension-s.targetTension)*2.4;
-    m.pitches.forEach(p=>{ if(c.pitches.includes(p))score+=.55; if(t.pitches.includes(p))score+=.68; if(p==='D')score+=.14; });
-    if(m.type==='note'&&s.lastPitch){ const d=scaleDistance(s.lastPitch,m.pitches[0]); score+=d===0?.52:d===1?1.24:d===2?.48:-.42; }
+    const c=HARMONY[s.currentHarmony],t=HARMONY[s.targetHarmony],tension=eventTension(m),diss=moveDissonance(s,m);
+    let score=-Math.abs(tension-s.targetTension)*2.55-diss*2.15;
+    m.pitches.forEach(p=>{ if(c.pitches.includes(p))score+=.58; if(t.pitches.includes(p))score+=.76; if(p==='D')score+=.17; if(p==='A')score+=.08; });
+    if(m.type==='note'&&s.lastPitch){
+      const d=scaleDistance(s.lastPitch,m.pitches[0]);
+      score+=d===0?.48:d===1?1.42:d===2?.42:-.58;
+      const destination=nearestPitch(s.lastPitch,t.pitches),toward=directionToward(s.lastPitch,destination),expected=stepPitch(s.lastPitch,toward);
+      if(m.pitches[0]===expected)score+=.36;
+    }
     if(s.gesture?.type==='run'){
-      if(m.continuesGesture){score+=3; if(m.gestureKind==='run-step')score+=1.1; if(m.gestureKind==='run-turn'&&s.gesture.remaining<=3)score+=.7;} else score-=s.gesture.remaining>2?1.7:.2;
-      if(m.type==='chord'&&s.gesture.remaining<=2)score+=1.7;
+      if(m.continuesGesture){score+=3.15;if(m.gestureKind==='run-step'||m.gestureKind==='run-guide')score+=1.15;if(m.gestureKind==='run-turn'&&s.gesture.remaining<=3)score+=.58;}else score-=s.gesture.remaining>2?1.8:.20;
+      if(m.type==='chord'&&s.gesture.remaining<=2)score+=1.8;
     }
-    if(s.gesture?.type==='pair'){ if(m.continuesGesture)score+=2.6; else score-=s.gesture.remaining>2?1.25:.15; if(m.type==='chord'&&s.gesture.remaining<=2)score+=1.35; }
-    if(m.startsGesture==='run')score+=s.clicksSinceChord<=2?1.2:.45;
-    if(m.startsGesture==='pair')score+=s.clicksSinceChord<=3?.95:.35;
+    if(s.gesture?.type==='pair'){
+      if(m.continuesGesture)score+=2.75;else score-=s.gesture.remaining>2?1.35:.16;
+      if(m.type==='chord'&&s.gesture.remaining<=2)score+=1.5;
+    }
+    if(m.startsGesture==='run')score+=s.clicksSinceChord<=2?1.08:.52;
+    if(m.startsGesture==='pair')score+=s.clicksSinceChord<=3?.88:.38;
+
+    if(s.resolutionDue>0){
+      if(resolvesTension(s,m))score+=s.resolutionDue===1?4.5:3.0;
+      else score-=s.resolutionDue===1?5.2:2.1;
+    }
+    if(diss>.58){
+      score-=2.1;
+      if(s.arc==='darken'||s.arc==='build')score+=.55;
+      if(m.type==='chord'&&HARMONY[m.harmonyName].needsResolution)score-=1.25;
+    }
+
     if(m.type==='chord'){
-      score+=s.clicksSinceChord>=7?4.1:s.clicksSinceChord>=5?2.5:s.clicksSinceChord>=3?1:-.35;
-      if(s.history.at(-1)?.type==='chord'){score-=.48;if(s.arc==='build')score+=.28;}
-      if(m.arrivesTarget)score+=1; if(m.restates&&s.history.slice(-3).some(x=>x.type!=='chord'))score+=.42;
+      const h=HARMONY[m.harmonyName],prev=s.history.at(-1),isConsecutive=prev?.type==='chord';
+      if(isConsecutive){
+        const relation=shared(c,h),voice=harmonyDistance(c,h);
+        if(s.chordStreak===1){
+          score+=.42+relation*.30-voice*.07;
+          if(s.arc==='build'&&h.tension>=c.tension-.03)score+=.52;
+          if(s.arc==='release'&&h.tension<=c.tension+.01)score+=.78;
+          if(m.arrivesTarget)score+=.42;
+        }else if(s.chordStreak===2){
+          score-=1.05;
+          if(s.arc==='release'&&h.tension<c.tension&&m.arrivesTarget)score+=.78;
+        }else score-=4.2;
+      }else{
+        score+=s.clicksSinceChord>=7?4.2:s.clicksSinceChord>=5?2.6:s.clicksSinceChord>=3?1.05:s.clicksSinceChord>=1?.18:-.28;
+      }
+      if(m.arrivesTarget)score+=1.05;
+      if(m.restates&&s.history.slice(-3).some(x=>x.type!=='chord'))score+=.38;
+      if(h.color==='open'||h.color==='minor')score+=.18;
+      if(h.color==='haunt')score+=.12;
     }
-    if(m.type==='ensemble-dyad')score+=s.clicksSinceChord>=2?.25:-.45;
-    const prev=s.history.at(-1), sig=signature(m); if(prev){if(prev.type===m.type)score+=.28;if(prev.instruments.includes(m.instruments[0]))score+=.36;}
-    const two=s.history.at(-2); if(two&&signature(two)===sig)score+=.88;
-    if(s.history.slice(-5).filter(x=>signature(x)===sig).length>=2&&!m.continuesGesture)score-=.78;
-    if(s.arc==='build'&&tension>=c.tension-.02)score+=.48;
-    if(s.arc==='release'){if(tension<c.tension+.02)score+=.70;if(m.pitches.includes('D')||m.pitches.includes('A'))score+=.34;}
-    if(m.pitches.includes('B'))score+=c.name==='d-minor'?.32:.10;
+    if(m.type==='ensemble-dyad')score+=s.clicksSinceChord>=2?.18:-.52;
+    const prev=s.history.at(-1),sig=signature(m);
+    if(prev){ if(prev.type===m.type)score+=.20; if(prev.instruments.includes(m.instruments[0]))score+=.31; }
+    const two=s.history.at(-2); if(two&&signature(two)===sig)score+=.72;
+    if(s.history.slice(-5).filter(x=>signature(x)===sig).length>=2&&!m.continuesGesture)score-=.86;
+    if(s.arc==='build'&&tension>=c.tension-.02&&tension<=.58)score+=.50;
+    if(s.arc==='release'){ if(tension<c.tension+.02)score+=.78; if(m.pitches.includes('D')||m.pitches.includes('A'))score+=.36; }
+    if(m.pitches.includes('B')&&diss<.55)score+=c.name==='d-minor'?.28:.10;
     return score;
   }
 
   function applyMove(s,m,simulation=false){
-    const n=cloneState(s); n.arcSteps=Math.max(0,n.arcSteps-1);
+    const n=cloneState(s),diss=moveDissonance(s,m),resolvedExisting=s.resolutionDue>0&&resolvesTension(s,m);
+    n.arcSteps=Math.max(0,n.arcSteps-1);
     if(m.type==='chord'){
-      const h=HARMONY[m.harmonyName]; n.currentHarmony=h.name; n.clicksSinceChord=0; n.gesture=null; ensureArc(n); n.targetHarmony=(simulation?bestTarget(h,n):chooseTarget(h,n)).name;
+      const h=HARMONY[m.harmonyName];
+      n.currentHarmony=h.name; n.clicksSinceChord=0; n.chordStreak=(s.history.at(-1)?.type==='chord')?(s.chordStreak||1)+1:1; n.gesture=null; ensureArc(n);
+      const nextTarget=(h.needsResolution||diss>.58)?chooseResolutionTarget(h,n,simulation):(simulation?bestTarget(h,n):chooseTarget(h,n));
+      n.targetHarmony=nextTarget.name;
     }else{
-      n.clicksSinceChord++; n.lastPitch=m.pitches[m.pitches.length-1]; n.lastInstrument=m.instruments[0]||n.lastInstrument;
-      if(n.gesture){ if(m.continuesGesture){n.gesture.remaining--;if(m.gestureKind==='run-turn')n.gesture.direction*=-1;if(n.gesture.remaining<=0)n.gesture=null;}else n.gesture=null; }
-      if(!n.gesture&&m.startsGesture==='run')n.gesture={type:'run',instrument:m.instruments[0],direction:m.gestureDirection||1,remaining:simulation?4:randInt(3,6)};
+      n.clicksSinceChord++; n.chordStreak=0; n.lastPitch=m.pitches[m.pitches.length-1]; n.lastInstrument=m.instruments[0]||n.lastInstrument;
+      if(n.gesture){
+        if(m.continuesGesture){n.gesture.remaining--;if(m.gestureKind==='run-turn')n.gesture.direction*=-1;if(n.gesture.remaining<=0)n.gesture=null;}
+        else n.gesture=null;
+      }
+      if(!n.gesture&&m.startsGesture==='run')n.gesture={type:'run',instrument:m.instruments[0],direction:m.gestureDirection||1,remaining:simulation?4:randInt(3,7)};
       if(!n.gesture&&m.startsGesture==='pair')n.gesture={type:'pair',instruments:[...m.instruments].slice(0,2),direction:m.gestureDirection||1,remaining:simulation?4:randInt(3,6)};
     }
-    n.history.push({type:m.type,pitches:[...m.pitches],instruments:[...m.instruments],harmonyName:m.harmonyName||null}); if(n.history.length>10)n.history=n.history.slice(-10); return n;
+
+    if(s.resolutionDue>0){
+      if(resolvedExisting){ n.resolutionDue=0; n.resolutionPitch=null; }
+      else n.resolutionDue=Math.max(0,s.resolutionDue-1);
+    }
+    if(diss>.58 && n.resolutionDue===0){
+      n.resolutionDue=m.type==='chord'?1:2;
+      n.resolutionPitch=nearestPitch(m.pitches[m.pitches.length-1],HARMONY[n.targetHarmony].pitches);
+    }
+
+    n.history.push({type:m.type,pitches:[...m.pitches],instruments:[...m.instruments],harmonyName:m.harmonyName||null,dissonance:diss});
+    if(n.history.length>12)n.history=n.history.slice(-12);
+    return n;
   }
   function futureValue(s,depth){
     if(depth<=0)return 0;
-    const scored=generateMoves(cloneState(s)).map(m=>({move:m,score:scoreMove(s,m)})).sort((a,b)=>b.score-a.score).slice(0,isMobile()?3:4); if(!scored.length)return 0;
-    let best=-Infinity; scored.forEach(x=>{ const next=applyMove(s,x.move,true), total=x.score+.54*futureValue(next,depth-1); if(total>best)best=total; }); return best;
+    const scored=generateMoves(cloneState(s)).map(m=>({move:m,score:scoreMove(s,m)})).sort((a,b)=>b.score-a.score).slice(0,isMobile()?4:5);
+    if(!scored.length)return 0;
+    let best=-Infinity;
+    scored.forEach(x=>{ const next=applyMove(s,x.move,true),total=x.score+.57*futureValue(next,depth-1); if(total>best)best=total; });
+    return best;
   }
   function planNextMove(){
     ensureArc(planner);
     if(planner.history.length===0)return chordMove(planner.currentHarmony,{restates:true});
-    const depth=isMobile()?3:4, moves=generateMoves(cloneState(planner));
-    const scored=moves.map(move=>{ const immediate=scoreMove(planner,move), next=applyMove(planner,move,true), future=futureValue(next,depth-1); return {move,score:immediate+.56*future}; });
-    return softmaxPick(scored,planner.arc==='hover'?1.30:1.08)?.move||moves[0];
+    const depth=isMobile()?3:4,moves=generateMoves(cloneState(planner));
+    const scored=moves.map(move=>{ const immediate=scoreMove(planner,move),next=applyMove(planner,move,true),future=futureValue(next,depth-1); return {move,score:immediate+.60*future}; });
+    return softmaxPick(scored,planner.arc==='hover'?1.16:1.00)?.move||moves[0];
   }
-  function commitMove(move){ const next=applyMove(planner,move,false); Object.assign(planner,next); warmPitches(unique([...HARMONY[planner.currentHarmony].pitches,...HARMONY[planner.targetHarmony].pitches])); }
+  function commitMove(move){
+    const next=applyMove(planner,move,false);
+    Object.assign(planner,next);
+    warmPitches(unique([...HARMONY[planner.currentHarmony].pitches,...HARMONY[planner.targetHarmony].pitches,planner.resolutionPitch].filter(Boolean)));
+  }
 
-  function addHarmonic(voices,pitches){
-    if(Math.random()>.15)return;
-    const hs=SAMPLES.filter(s=>s.harmonic&&pitches.includes(s.pitch)); if(hs.length)voices.push(pick(hs));
+  function addHarmonic(voices,pitches,chance=.08){
+    if(Math.random()>chance||voices.some(v=>(v.sample||v).harmonic))return;
+    const hs=SAMPLES.filter(s=>s.harmonic&&pitches.includes(s.pitch));
+    if(hs.length){ const s=pick(hs); voices.push({...s,gainScale:.72}); }
   }
+  function weightedInstrument(allowConcertina=true){
+    return weightedValue([
+      {value:'guitar',weight:VOICING.instrumentWeights.guitar},
+      {value:'mandolin',weight:VOICING.instrumentWeights.mandolin},
+      {value:'concertina',weight:allowConcertina?VOICING.instrumentWeights.concertina:0}
+    ]);
+  }
+  function preferredRegisterFor(instrument,context='free'){
+    if(instrument==='guitar'){
+      if(context==='run')return Math.random()<.80?2:1;
+      return Math.random()<.68?2:1;
+    }
+    if(instrument==='concertina')return Math.random()<.78?2:1;
+    return Math.random()<.58?2:1;
+  }
+  function pushUniqueVoice(voices,sample,gainScale=1){
+    if(!sample||voices.some(v=>v.id===sample.id))return false;
+    voices.push({...sample,gainScale});
+    return true;
+  }
+  function addLowGuitarMandolinPair(voices,pitch,guitarGain=.88,mandolinGain=.78){
+    const g=chooseSample('guitar',pitch,1),m=chooseSample('mandolin',pitch,1);
+    let added=false;
+    if(g)added=pushUniqueVoice(voices,g,guitarGain)||added;
+    if(m)added=pushUniqueVoice(voices,m,mandolinGain)||added;
+    return added;
+  }
+  function chordAnchorPitch(h){
+    return weightedValue(h.pitches.map(p=>({value:p,weight:VOICING.lowAnchorWeights[p]||1})))||h.pitches[0];
+  }
+  function sampleCountByInstrument(voices,instrument){ return voices.filter(v=>v.instrument===instrument).length; }
+  function sampleCountByPitch(voices,pitch){ return voices.filter(v=>v.pitch===pitch).length; }
+
   function samplesForMove(move){
     const voices=[];
     if(move.type==='note'){
-      const s=chooseSample(move.instruments[0],move.pitches[0],move.preferredRegister||(Math.random()<.54?1:2)); if(s)voices.push(s); addHarmonic(voices,move.pitches); return voices;
+      const instrument=move.instruments[0],context=planner.gesture?.type==='run'?'run':'free';
+      let preferred=move.preferredRegister||preferredRegisterFor(instrument,context);
+      if(instrument==='guitar'&&preferred===1&&Math.random()<VOICING.guitarLowPairChance){
+        addLowGuitarMandolinPair(voices,move.pitches[0],.86,.72);
+      }else{
+        const s=chooseSample(instrument,move.pitches[0],preferred);
+        if(s)pushUniqueVoice(voices,s,instrument==='concertina'?.80:1);
+      }
+      addHarmonic(voices,move.pitches,VOICING.noteHarmonicChance);
+      return voices;
     }
+
     if(move.type==='dyad'){
-      const i1=move.instruments[0]||planner.lastInstrument||'guitar', i2=move.instruments[1]||pick(INSTRUMENTS.filter(x=>x!==i1));
-      const a=chooseSample(i1,move.pitches[0],1), b=chooseSample(i2,move.pitches[1],2); if(a)voices.push(a); if(b)voices.push(b);
-      if(Math.random()<.34){ const da=chooseSample(i2,move.pitches[0],2), db=chooseSample(i1,move.pitches[1],1); if(da)voices.push(da); if(db)voices.push(db); }
-      addHarmonic(voices,move.pitches); return voices;
+      const i1=move.instruments[0]||planner.lastInstrument||'guitar',i2=move.instruments[1]||pick(INSTRUMENTS.filter(x=>x!==i1));
+      const p1=move.pitches[0],p2=move.pitches[1];
+      const r1=preferredRegisterFor(i1,'free'),r2=preferredRegisterFor(i2,'free');
+      if(i1==='guitar'&&r1===1&&Math.random()<VOICING.guitarLowPairChance)addLowGuitarMandolinPair(voices,p1,.84,.70);
+      else pushUniqueVoice(voices,chooseSample(i1,p1,r1),i1==='concertina'?.78:1);
+      if(i2==='guitar'&&r2===1&&Math.random()<VOICING.guitarLowPairChance)addLowGuitarMandolinPair(voices,p2,.84,.70);
+      else pushUniqueVoice(voices,chooseSample(i2,p2,r2),i2==='concertina'?.78:1);
+      if(Math.random()<.24 && structureDissonance(move.pitches)<.42){
+        const da=chooseSample(i2,p1,2),db=chooseSample(i1,p2,2);
+        pushUniqueVoice(voices,da,i2==='concertina'?.68:.78); pushUniqueVoice(voices,db,i1==='concertina'?.68:.78);
+      }
+      addHarmonic(voices,move.pitches,VOICING.dyadHarmonicChance);
+      return voices;
     }
+
     if(move.type==='ensemble-dyad'){
-      const instruments=isMobile()?shuffle(INSTRUMENTS).slice(0,2):INSTRUMENTS;
-      instruments.forEach((instrument,ii)=>move.pitches.forEach((pitch,pi)=>{ const s=chooseSample(instrument,pitch,(ii+pi)%2===0?1:2); if(s)voices.push(s); }));
-      addHarmonic(voices,move.pitches); return voices;
+      const instruments=isMobile()?['guitar','mandolin']:['guitar','mandolin','concertina'];
+      instruments.forEach((instrument,ii)=>move.pitches.forEach((pitch,pi)=>{
+        const reg=(ii+pi)%2===0?1:2;
+        if(instrument==='guitar'&&reg===1){ addLowGuitarMandolinPair(voices,pitch,.78,.65); }
+        else pushUniqueVoice(voices,chooseSample(instrument,pitch,reg),instrument==='concertina'?.64:.82);
+      }));
+      addHarmonic(voices,move.pitches,.06);
+      return voices;
     }
+
     if(move.type==='chord'){
-      const h=HARMONY[move.harmonyName];
-      h.pitches.forEach((p,i)=>{const s=chooseSample(INSTRUMENTS[i%INSTRUMENTS.length],p,i===0?1:2);if(s)voices.push(s);});
-      const target=randInt(isMobile()?4:5,isMobile()?6:8); let guard=0;
-      while(voices.length<target&&guard++<30){ const p=pick(h.pitches), instr=pick(INSTRUMENTS), s=chooseSample(instr,p,Math.random()<.5?1:2); if(s&&!voices.some(v=>v.id===s.id))voices.push(s); }
-      addHarmonic(voices,h.pitches); return voices;
+      const h=HARMONY[move.harmonyName],consecutive=planner.history.at(-1)?.type==='chord';
+      const target=randInt(isMobile()?4:5,consecutive?(isMobile()?5:6):(isMobile()?6:7));
+      const anchor=chordAnchorPitch(h);
+
+      // The guitar's register-1 samples are deliberately treated as a true low foundation.
+      // Whenever that register is used for the anchor, mandolin register 1 doubles it for body/texture.
+      addLowGuitarMandolinPair(voices,anchor,consecutive?.78:.86,consecutive?.67:.75);
+
+      // Cover every remaining pitch class clearly, mostly above the low pair.
+      h.pitches.filter(p=>p!==anchor).forEach(pitch=>{
+        const instrument=weightedInstrument(sampleCountByInstrument(voices,'concertina')<VOICING.concertinaChordMax);
+        const reg=instrument==='concertina'?2:(Math.random()<.78?2:1);
+        if(instrument==='guitar'&&reg===1)addLowGuitarMandolinPair(voices,pitch,.72,.62);
+        else pushUniqueVoice(voices,chooseSample(instrument,pitch,reg),instrument==='concertina'?.64:.86);
+      });
+
+      let guard=0;
+      while(voices.length<target&&guard++<40){
+        const pitch=weightedValue(h.pitches.map(p=>({value:p,weight:1/(1+sampleCountByPitch(voices,p))})))||pick(h.pitches);
+        const allowConcertina=sampleCountByInstrument(voices,'concertina')<VOICING.concertinaChordMax;
+        const instrument=weightedInstrument(allowConcertina);
+        const reg=instrument==='guitar'?(Math.random()<.78?2:1):instrument==='mandolin'?(Math.random()<.60?2:1):2;
+        if(instrument==='guitar'&&reg===1){
+          if(Math.random()<VOICING.guitarLowPairChance)addLowGuitarMandolinPair(voices,pitch,.70,.60);
+          else pushUniqueVoice(voices,chooseSample('guitar',pitch,1),.68);
+        }else{
+          pushUniqueVoice(voices,chooseSample(instrument,pitch,reg),instrument==='concertina'?.60:.78);
+        }
+      }
+      addHarmonic(voices,h.pitches,VOICING.chordHarmonicChance);
+      return voices;
     }
     return voices;
   }
@@ -583,18 +872,45 @@
     loaded.forEach((entry,i)=>{
       longest=Math.max(longest,entry.buffer.duration);
       const spread=move.type==='chord'?Math.min(i*rand(.006,.016),.050):move.type==='ensemble-dyad'?Math.min(i*rand(.004,.012),.032):move.type==='dyad'?Math.min(i*.006,.018):0;
-      scheduleVoice(entry.sample,entry.buffer,start+spread,bus,move.type==='chord'?.88:.94);
+      const perVoice=entry.sample.gainScale??1;
+      scheduleVoice(entry.sample,entry.buffer,start+spread,bus,(move.type==='chord'?.86:.94)*perVoice);
     });
     const ringMs=clamp(longest*1000,3300,7600); setTimeout(()=>{try{bus.disconnect();}catch{}},ringMs+1200); return {ringMs,voiceCount:loaded.length};
   }
 
   function autoplayDelay(result){
-    if(!result)return 2200; if(result.kind==='drone')return rand(6200,7600); const event=result.event;
-    if(planner.gesture?.type==='run'&&event.type==='note')return rand(planner.arc==='build'?390:520,planner.arc==='build'?700:860);
-    if(planner.gesture?.type==='pair'&&(event.type==='dyad'||event.type==='ensemble-dyad'))return rand(680,1160);
-    if(event.type==='chord'){ if(planner.arc==='release')return rand(3600,5900); if(planner.arc==='build')return rand(1800,3300); return rand(2500,4600); }
-    if(event.type==='ensemble-dyad')return rand(1100,2200); if(event.type==='dyad')return rand(760,1600);
-    return rand(planner.arc==='build'?430:650,planner.arc==='build'?980:1550);
+    if(!result)return 2200;
+    if(result.kind==='drone')return rand(6200,7600);
+    const event=result.event;
+
+    // Dissonance is allowed as color, but autoplay moves toward its resolution quickly.
+    if(planner.resolutionDue>0)return rand(planner.resolutionDue===1?460:620,planner.resolutionDue===1?820:1050);
+
+    if(planner.gesture?.type==='run'&&event.type==='note'){
+      if(planner.arc==='build'||planner.arc==='darken')return rand(430,720);
+      if(planner.arc==='release')return rand(690,1080);
+      return rand(520,900);
+    }
+    if(planner.gesture?.type==='pair'&&(event.type==='dyad'||event.type==='ensemble-dyad'))return rand(720,1250);
+
+    if(event.type==='chord'){
+      const previous=planner.history.at(-2),consecutive=previous?.type==='chord';
+      if(consecutive){
+        if(planner.chordStreak>=3)return rand(2700,4200);
+        if(planner.arc==='build'||planner.arc==='darken')return rand(1350,2350);
+        if(planner.arc==='release')return rand(2100,3500);
+        return rand(1750,2900);
+      }
+      if(planner.arc==='release')return rand(3400,5400);
+      if(planner.arc==='build'||planner.arc==='darken')return rand(2000,3400);
+      return rand(2600,4400);
+    }
+
+    if(event.type==='ensemble-dyad')return rand(1200,2200);
+    if(event.type==='dyad')return rand(820,1600);
+    if(planner.arc==='build'||planner.arc==='darken')return rand(520,1050);
+    if(planner.arc==='release')return rand(900,1750);
+    return rand(680,1450);
   }
 
   async function musicalAction(origin,point){
