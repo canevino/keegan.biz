@@ -1,1573 +1,506 @@
+:root{
+  --paper:#ece7d7;
+  --ink:#11110f;
+  --yellow:#fdb913;
+  --green:#006a44;
+  --red:#c1272d;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{min-height:100%}
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+
+.page-shell{min-height:100vh}
+.page-shell.is-hidden{display:none}
+
 /* =========================================================
-   ROOT
+   SCARF NAVIGATION
    ========================================================= */
 
-:root {
-  --paper: #ece7d7;
-  --ink: #11110f;
-
-  --yellow: #fdb913;
-  --green: #006a44;
-  --red: #c1272d;
+.scarf-rack{
+  position:fixed;
+  top:14px;
+  right:12px;
+  z-index:50;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:6px;
 }
-
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+.scarf-item{
+  position:relative;
+  display:block;
+  height:clamp(72px,calc((100vh - 84px)/8),108px);
+  transform-origin:right center;
+  transition:transform 220ms cubic-bezier(.2,.8,.2,1);
 }
-
-
-html,
-body {
-  margin: 0;
-  padding: 0;
+.scarf-item img{
+  width:auto;
+  height:100%;
+  object-fit:contain;
+  filter:drop-shadow(0 2px 1px rgba(17,17,15,.06));
 }
-
-
-html {
-  min-height: 100%;
-}
-
-
-body {
-  min-height: 100vh;
-
-  overflow-x: hidden;
-
-  background:
-    var(--paper);
-
-  color:
-    var(--ink);
-
-  font-family:
-    Helvetica,
-    Arial,
-    sans-serif;
-
-  -webkit-font-smoothing:
-    antialiased;
-}
-
-
-img {
-  display: block;
-  max-width: 100%;
-}
-
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
+.scarf-home{transform:scale(1.045)}
+.scarf-item:hover{z-index:4;transform:translateX(-22px) rotate(-.5deg) scale(1.035)}
+.scarf-home:hover{transform:translateX(-22px) rotate(-.5deg) scale(1.075)}
 
 /* =========================================================
    PAGE
    ========================================================= */
 
-.page-shell {
-  min-height: 100vh;
+.photo-page{
+  min-height:100vh;
+  padding:clamp(30px,4vw,56px) clamp(430px,36vw,575px) 100px clamp(30px,5.5vw,80px);
 }
-
-
-.page-shell.is-hidden {
-  display: none;
+.photo-header{width:100%;margin:0;padding:0}
+.photo-title{
+  display:block;
+  width:max-content;
+  max-width:100%;
+  margin:0;
+  color:var(--red);
+  font-size:clamp(34px,4.1vw,64px);
+  font-weight:700;
+  line-height:.95;
+  letter-spacing:-.06em;
+  opacity:1;
+  transition:opacity 200ms ease,color 200ms ease;
 }
-
+.photo-title.is-fading{opacity:0}
+.photo-canvas{
+  position:relative;
+  width:100%;
+  margin-top:clamp(28px,3.2vw,46px);
+  padding-bottom:60px;
+}
 
 /* =========================================================
-   SCARFS
+   INTERACTIVE PHOTO
    ========================================================= */
 
-.scarf-rack {
-  position: fixed;
+.fuji-interactive{
+  position:relative;
+  display:block;
+  width:100%;
+  max-width:1100px;
+  aspect-ratio:3/2;
+  margin:0;
+  overflow:hidden;
+  isolation:isolate;
+  background:var(--paper);
+  opacity:0;
+  contain:layout paint style;
+  touch-action:pan-y;
+  outline:none;
+  transition:opacity 280ms ease;
+}
+.fuji-interactive.is-ready{opacity:1}
+.fuji-interactive:focus-visible{outline:2px solid var(--ink);outline-offset:5px}
 
-  top: 14px;
-  right: 12px;
-
-  z-index: 50;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  gap: 6px;
+.fuji-base{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  pointer-events:none;
+  user-select:none;
+  transform:translate3d(0,0,0);
+  backface-visibility:hidden;
 }
 
-
-.scarf-item {
-  position: relative;
-
-  display: block;
-
-  height:
-    clamp(
-      72px,
-      calc((100vh - 84px) / 8),
-      108px
-    );
-
-  transform-origin:
-    right center;
-
-  transition:
-    transform
-    220ms
-    cubic-bezier(.2, .8, .2, 1);
+.fuji-photo-tint{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  opacity:0;
+  pointer-events:none;
+  will-change:opacity;
 }
 
-
-.scarf-item img {
-  width: auto;
-  height: 100%;
-
-  object-fit: contain;
-
-  filter:
-    drop-shadow(
-      0
-      2px
-      1px
-      rgba(17, 17, 15, .06)
-    );
+.fuji-building-stack{
+  position:absolute;
+  inset:0;
+  z-index:12;
+  pointer-events:none;
+}
+.fuji-building{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  opacity:0;
+  pointer-events:none;
+  user-select:none;
+  transform:translate3d(0,0,0);
+  backface-visibility:hidden;
+  transition:opacity 420ms ease,filter 420ms ease,transform 420ms ease;
 }
 
-
-.scarf-home {
-  transform:
-    scale(1.045);
+.fuji-lines{
+  position:absolute;
+  inset:0;
+  z-index:20;
+  pointer-events:none;
 }
-
-
-.scarf-item:hover {
-  z-index: 4;
-
-  transform:
-    translateX(-22px)
-    rotate(-.5deg)
-    scale(1.035);
+.fuji-line-layer{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 360ms ease-in-out;
 }
-
-
-.scarf-home:hover {
-  transform:
-    translateX(-22px)
-    rotate(-.5deg)
-    scale(1.075);
+.fuji-line-source{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  pointer-events:none;
+  user-select:none;
+  transition:filter 300ms ease,opacity 300ms ease;
 }
-
+.fuji-line-texture{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  pointer-events:none;
+  background-repeat:no-repeat;
+  transition:opacity 300ms ease,filter 300ms ease;
+}
+.fuji-line-layer.has-alpha .fuji-line-texture{
+  -webkit-mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  -webkit-mask-size:100% 100%;
+  mask-repeat:no-repeat;
+  mask-position:center;
+  mask-size:100% 100%;
+}
+.fuji-line-layer.has-white-canvas .fuji-line-texture{mix-blend-mode:multiply}
 
 /* =========================================================
-   PHOTOGRAPHY
+   ONBOARDING / CONTROLS
    ========================================================= */
 
-.photo-page {
-  min-height: 100vh;
-
-  padding:
-    clamp(30px, 4vw, 56px)
-    clamp(430px, 36vw, 575px)
-    100px
-    clamp(30px, 5.5vw, 80px);
+.fuji-click-prompt{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:90;
+  transform:translate(-50%,-50%);
+  max-width:84%;
+  color:#fff;
+  font-size:clamp(22px,2.45vw,39px);
+  font-weight:700;
+  line-height:.95;
+  letter-spacing:-.055em;
+  text-align:center;
+  white-space:nowrap;
+  mix-blend-mode:overlay;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 480ms ease,visibility 480ms ease;
 }
+.fuji-click-prompt.is-visible{opacity:.96;visibility:visible}
 
-
-.photo-header {
-  width: 100%;
-
-  margin: 0;
-  padding: 0;
+.fuji-controls{
+  position:absolute;
+  right:13px;
+  bottom:11px;
+  z-index:100;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:5px;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 520ms ease,visibility 520ms ease;
 }
-
-
-.photo-title {
-  display: block;
-
-  width: max-content;
-  max-width: 100%;
-
-  margin: 0;
-
-  color:
-    var(--red);
-
-  font-family:
-    Helvetica,
-    Arial,
-    sans-serif;
-
-  font-size:
-    clamp(
-      34px,
-      4.1vw,
-      64px
-    );
-
-  font-weight: 700;
-
-  line-height: .95;
-
-  letter-spacing:
-    -.06em;
-
-  opacity: 1;
-
-  transition:
-    opacity 200ms ease,
-    color 200ms ease;
+.fuji-controls.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+.fuji-control{
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.15;
+  letter-spacing:-.02em;
+  text-align:right;
+  cursor:pointer;
+  mix-blend-mode:screen;
+  -webkit-appearance:none;
+  appearance:none;
 }
-
-
-.photo-title.is-fading {
-  opacity: 0;
-}
-
-
-.photo-canvas {
-  position: relative;
-
-  width: 100%;
-
-  margin-top:
-    clamp(
-      28px,
-      3.2vw,
-      46px
-    );
-
-  padding-bottom: 60px;
-}
-
+.fuji-control:hover{text-decoration:underline;text-underline-offset:2px}
 
 /* =========================================================
-   ARTWORK LOAD
+   PRINT-LIKE MUSIC MARKS
+   No growth: they appear at final size and only fade.
    ========================================================= */
 
-.fuji-interactive {
-  position: relative;
-
-  display: block;
-
-  width: 100%;
-  max-width: 1100px;
-
-  aspect-ratio: 3 / 2;
-
-  margin: 0;
-
-  overflow: hidden;
-
-  isolation: isolate;
-
-  /*
-    Paper instead of black while the base photograph
-    downloads.
-  */
-
+.fuji-splash-layer{
+  position:absolute;
+  inset:0;
+  z-index:34;
+  overflow:hidden;
+  pointer-events:none;
+}
+.fuji-splash{
+  position:absolute;
+  left:var(--x);
+  top:var(--y);
+  width:var(--size);
+  aspect-ratio:1/1;
+  border-radius:50%;
+  opacity:var(--mark-opacity);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
   background:
-    var(--paper);
-
-  opacity: 0;
-
-  contain:
-    layout
-    paint
-    style;
-
-  touch-action:
-    pan-y;
-
-  outline: none;
-
-  transition:
-    opacity
-    280ms
-    ease;
+    radial-gradient(circle at 47% 44%,var(--mark-color-a) 0 42%,var(--mark-color-b) 64%,transparent 76%),
+    repeating-radial-gradient(circle at 38% 42%,rgba(255,255,255,.12) 0 1px,transparent 1px 5px);
+  background-blend-mode:normal,soft-light;
+  filter:saturate(.82) contrast(1.05);
+  animation:fuji-mark-fade var(--mark-duration) linear forwards;
+}
+@keyframes fuji-mark-fade{
+  0%{opacity:var(--mark-opacity)}
+  16%{opacity:var(--mark-opacity)}
+  100%{opacity:0}
 }
 
-
-.fuji-interactive.is-ready {
-  opacity: 1;
+.fuji-filter-defs{
+  position:absolute;
+  width:0;
+  height:0;
+  overflow:hidden;
+  pointer-events:none;
 }
-
-
-.fuji-interactive:focus-visible {
-  outline:
-    2px solid
-    var(--ink);
-
-  outline-offset: 5px;
-}
-
 
 /* =========================================================
-   BASE
+   WIP OVERLAY / HORSE
    ========================================================= */
 
-.fuji-base {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 1;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: fill;
-
-  pointer-events: none;
-
-  user-select: none;
-
-  transform:
-    translate3d(0, 0, 0);
-
-  backface-visibility:
-    hidden;
+.wip-overlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+  overflow:auto;
+  background:var(--paper);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 160ms ease,visibility 160ms ease;
 }
-
-
-/* =========================================================
-   BUILDING
-   ========================================================= */
-
-.fuji-building-stack {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 12;
-
-  pointer-events: none;
+.wip-overlay.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+.wip-inner{
+  width:min(92vw,700px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
-
-
-.fuji-building {
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: fill;
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  user-select: none;
-
-  transform:
-    translate3d(0, 0, 0);
-
-  backface-visibility:
-    hidden;
-
-  transition:
-    opacity 420ms ease,
-    filter 420ms ease,
-    transform 420ms ease;
+.wip-header{
+  position:relative;
+  z-index:100;
+  width:min(69vh,680px,88vw);
+  display:flex;
+  align-items:stretch;
+  margin:0;
+  background:var(--paper);
+  border:1px solid rgba(17,17,15,.46);
 }
-
-
-/* =========================================================
-   LINES
-   ========================================================= */
-
-.fuji-lines {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 20;
-
-  pointer-events: none;
+.wip-text{
+  flex:1 1 auto;
+  margin:0;
+  padding:14px 19px 15px;
+  color:var(--ink);
+  font-size:clamp(19px,1.65vw,26px);
+  font-weight:700;
+  line-height:1;
+  letter-spacing:-.045em;
 }
-
-
-.fuji-line-layer {
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  transition:
-    opacity
-    360ms
-    ease-in-out;
+.wip-close{
+  flex:0 0 52px;
+  width:52px;
+  margin:0;
+  padding:0;
+  border:0;
+  border-left:1px solid rgba(17,17,15,.46);
+  background:transparent;
+  color:var(--ink);
+  font-family:Helvetica,Arial,sans-serif;
+  font-size:34px;
+  line-height:1;
+  cursor:pointer;
 }
+.wip-close:hover{color:var(--paper);background:var(--ink)}
 
-
-.fuji-line-source {
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: fill;
-
-  pointer-events: none;
-
-  user-select: none;
-
-  transition:
-    filter 300ms ease,
-    opacity 300ms ease;
+.collage-stage{
+  --visual-reveal:0;
+  position:relative;
+  width:min(69vh,680px,88vw);
+  aspect-ratio:1/1;
+  overflow:hidden;
+  isolation:isolate;
+  background:#d4d0c5;
+  opacity:var(--visual-reveal);
+  contain:paint;
+  transition:opacity 90ms linear;
 }
-
-
-.fuji-line-texture {
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  background-repeat:
-    no-repeat;
-
-  transition:
-    opacity 300ms ease,
-    filter 300ms ease;
-}
-
-
-.fuji-line-layer.has-alpha
-.fuji-line-texture {
-  -webkit-mask-repeat:
-    no-repeat;
-
-  -webkit-mask-position:
-    center;
-
-  -webkit-mask-size:
-    100% 100%;
-
-  mask-repeat:
-    no-repeat;
-
-  mask-position:
-    center;
-
-  mask-size:
-    100% 100%;
-}
-
-
-.fuji-line-layer.has-white-canvas
-.fuji-line-texture {
-  mix-blend-mode:
-    multiply;
-}
-
-
-/* =========================================================
-   INSTRUCTION TEXT
-
-   White, no shadow.
-   The overlay blend allows the photographic grain/color
-   underneath to slightly roughen the lettering.
-   ========================================================= */
-
-.fuji-click-prompt {
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-
-  z-index: 90;
-
-  transform:
-    translate(-50%, -50%);
-
-  max-width: 84%;
-
-  color:
-    #fff;
-
-  font-size:
-    clamp(
-      22px,
-      2.45vw,
-      39px
-    );
-
-  font-weight: 700;
-
-  line-height: .95;
-
-  letter-spacing:
-    -.055em;
-
-  text-align: center;
-
-  white-space: nowrap;
-
-  mix-blend-mode:
-    overlay;
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  pointer-events: none;
-
-  transition:
-    opacity 480ms ease,
-    visibility 480ms ease;
-}
-
-
-.fuji-click-prompt.is-visible {
-  opacity: .96;
-
-  visibility: visible;
-}
-
-
-/* =========================================================
-   MUSICAL SPLASH
-   ========================================================= */
-
-.fuji-splash-layer {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 34;
-
-  overflow: hidden;
-
-  pointer-events: none;
-}
-
-
-.fuji-splash {
-  position: absolute;
-
-  left:
-    var(--x);
-
-  top:
-    var(--y);
-
-  width:
-    var(--size);
-
-  aspect-ratio:
-    1 / 1;
-
-  border-radius:
-    50%;
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  transform:
-    translate(-50%, -50%)
-    scale(.14);
-
-  transform-origin:
-    center;
-
-  /*
-    Flatter, more printed, less "UI bubble".
-  */
-
+.collage-stage::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
   background:
-    radial-gradient(
-      circle at 48% 46%,
-      var(--splash-color) 0%,
-      var(--splash-color) 54%,
-      transparent 56%,
-      transparent 100%
-    );
-
-  filter:
-    saturate(.84)
-    contrast(1.06);
-
-  animation:
-    fuji-splash-grow
-    var(--splash-duration)
-    cubic-bezier(.18, .74, .22, 1)
-    forwards;
+    radial-gradient(circle at 18% 22%,rgba(0,0,0,.14),transparent 32%),
+    radial-gradient(circle at 80% 72%,rgba(255,255,255,.20),transparent 34%),
+    radial-gradient(circle at 57% 38%,rgba(0,0,0,.10),transparent 40%);
+  mix-blend-mode:multiply;
+  opacity:.72;
 }
-
-
-.fuji-splash::after {
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  border-radius:
-    50%;
-
-  background:
-    repeating-radial-gradient(
-      circle at 40% 44%,
-      rgba(255, 255, 255, .09) 0 1px,
-      transparent 1px 5px
-    );
-
-  opacity: .34;
-
-  mix-blend-mode:
-    soft-light;
+.texture-slot{position:absolute;inset:0;pointer-events:none}
+.under-slot-1{z-index:4}
+.under-slot-2{z-index:7}
+.over-slot-1{z-index:26}
+.morph-frame{
+  position:absolute;
+  inset:-7%;
+  opacity:0;
+  pointer-events:none;
+  background-size:cover;
+  background-repeat:no-repeat;
+  transform-origin:center;
+  transition-property:opacity;
+  transition-timing-function:ease-in-out;
 }
-
-
-@keyframes fuji-splash-grow {
-
-  0% {
-    opacity: 0;
-
-    transform:
-      translate(-50%, -50%)
-      scale(.14);
-  }
-
-
-  13% {
-    opacity:
-      var(--splash-opacity);
-  }
-
-
-  62% {
-    opacity:
-      calc(
-        var(--splash-opacity) *
-        .60
-      );
-  }
-
-
-  100% {
-    opacity: 0;
-
-    transform:
-      translate(-50%, -50%)
-      scale(1.20);
-  }
-
+.horse-stack{position:absolute;inset:0;z-index:20;pointer-events:none}
+.horse{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none}
+.horse-main{z-index:2;opacity:1;mix-blend-mode:multiply;transition-property:opacity,filter;transition-timing-function:ease-in-out}
+.horse-offset{z-index:1;opacity:0;mix-blend-mode:multiply;transition-property:opacity,filter;transition-timing-function:ease-in-out}
+.horse-key{
+  position:absolute;
+  inset:0;
+  z-index:40;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  mix-blend-mode:multiply;
+  filter:grayscale(1) saturate(0) contrast(1.5);
+  pointer-events:none;
 }
-
-
-/* =========================================================
-   CONTROLS
-   ========================================================= */
-
-.fuji-controls {
-  position: absolute;
-
-  right: 13px;
-  bottom: 11px;
-
-  z-index: 100;
-
-  display: flex;
-
-  flex-direction:
-    column;
-
-  align-items:
-    flex-end;
-
-  gap: 5px;
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  pointer-events: none;
-
-  transition:
-    opacity 520ms ease,
-    visibility 520ms ease;
+.stage-grain{
+  position:absolute;
+  inset:0;
+  z-index:45;
+  pointer-events:none;
+  opacity:0;
+  background-image:radial-gradient(rgba(12,10,8,.22) .65px,transparent .8px);
+  background-size:4px 4px;
+  mix-blend-mode:multiply;
+  transition:opacity 700ms ease;
 }
-
-
-.fuji-controls.is-visible {
-  opacity: 1;
-
-  visibility: visible;
-
-  pointer-events: auto;
-}
-
-
-.fuji-control {
-  margin: 0;
-
-  padding: 0;
-
-  border: 0;
-
-  background:
-    transparent;
-
-  color:
-    #fff;
-
-  font:
-    inherit;
-
-  font-size:
-    11px;
-
-  font-weight:
-    700;
-
-  line-height:
-    1.15;
-
-  letter-spacing:
-    -.02em;
-
-  text-align:
-    right;
-
-  cursor:
-    pointer;
-
-  mix-blend-mode:
-    screen;
-
-  -webkit-appearance:
-    none;
-
-  appearance:
-    none;
-}
-
-
-.fuji-control:hover {
-  text-decoration:
-    underline;
-
-  text-underline-offset:
-    2px;
-}
-
-
-/* =========================================================
-   SVG
-   ========================================================= */
-
-.fuji-filter-defs {
-  position: absolute;
-
-  width: 0;
-  height: 0;
-
-  overflow: hidden;
-
-  pointer-events: none;
-}
-
-
-/* =========================================================
-   WIP
-   ========================================================= */
-
-.wip-overlay {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 99999;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  padding: 28px;
-
-  overflow: auto;
-
-  background:
-    var(--paper);
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  pointer-events: none;
-
-  transition:
-    opacity 160ms ease,
-    visibility 160ms ease;
-}
-
-
-.wip-overlay.is-visible {
-  opacity: 1;
-
-  visibility: visible;
-
-  pointer-events: auto;
-}
-
-
-.wip-inner {
-  width:
-    min(
-      92vw,
-      700px
-    );
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-}
-
-
-.wip-header {
-  position: relative;
-
-  z-index: 100;
-
-  width:
-    min(
-      69vh,
-      680px,
-      88vw
-    );
-
-  display: flex;
-
-  align-items: stretch;
-
-  margin-bottom: 0;
-
-  background:
-    var(--paper);
-
-  border:
-    1px solid
-    rgba(17, 17, 15, .46);
-}
-
-
-.wip-text {
-  flex: 1 1 auto;
-
-  margin: 0;
-
-  padding:
-    14px
-    19px
-    15px;
-
-  color:
-    var(--ink);
-
-  font-size:
-    clamp(
-      19px,
-      1.65vw,
-      26px
-    );
-
-  font-weight: 700;
-
-  line-height: 1;
-
-  letter-spacing:
-    -.045em;
-}
-
-
-.wip-close {
-  flex:
-    0 0
-    52px;
-
-  width:
-    52px;
-
-  margin: 0;
-
-  padding: 0;
-
-  border: 0;
-
-  border-left:
-    1px solid
-    rgba(17, 17, 15, .46);
-
-  background:
-    transparent;
-
-  color:
-    var(--ink);
-
-  font-family:
-    Helvetica,
-    Arial,
-    sans-serif;
-
-  font-size:
-    34px;
-
-  line-height: 1;
-
-  cursor: pointer;
-}
-
-
-.wip-close:hover {
-  color:
-    var(--paper);
-
-  background:
-    var(--ink);
-}
-
-
-/* =========================================================
-   HORSE
-   ========================================================= */
-
-.collage-stage {
-  --visual-reveal: 0;
-
-  position: relative;
-
-  width:
-    min(
-      69vh,
-      680px,
-      88vw
-    );
-
-  aspect-ratio:
-    1 / 1;
-
-  overflow: hidden;
-
-  isolation: isolate;
-
-  background:
-    #d4d0c5;
-
-  opacity:
-    var(--visual-reveal);
-
-  contain:
-    paint;
-
-  transition:
-    opacity 90ms linear;
-}
-
-
-.collage-stage::before {
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 1;
-
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      circle at 18% 22%,
-      rgba(0, 0, 0, .14),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at 80% 72%,
-      rgba(255, 255, 255, .20),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 57% 38%,
-      rgba(0, 0, 0, .10),
-      transparent 40%
-    );
-
-  mix-blend-mode:
-    multiply;
-
-  opacity: .72;
-}
-
-
-.texture-slot {
-  position: absolute;
-
-  inset: 0;
-
-  pointer-events: none;
-}
-
-
-.under-slot-1 {
-  z-index: 4;
-}
-
-
-.under-slot-2 {
-  z-index: 7;
-}
-
-
-.over-slot-1 {
-  z-index: 26;
-}
-
-
-.morph-frame {
-  position: absolute;
-
-  inset: -7%;
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  background-size:
-    cover;
-
-  background-repeat:
-    no-repeat;
-
-  transform-origin:
-    center;
-
-  transition-property:
-    opacity;
-
-  transition-timing-function:
-    ease-in-out;
-}
-
-
-.horse-stack {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 20;
-
-  pointer-events: none;
-}
-
-
-.horse {
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  pointer-events: none;
-
-  user-select: none;
-}
-
-
-.horse-main {
-  z-index: 2;
-
-  opacity: 1;
-
-  mix-blend-mode:
-    multiply;
-
-  transition-property:
-    opacity,
-    filter;
-
-  transition-timing-function:
-    ease-in-out;
-}
-
-
-.horse-offset {
-  z-index: 1;
-
-  opacity: 0;
-
-  mix-blend-mode:
-    multiply;
-
-  transition-property:
-    opacity,
-    filter;
-
-  transition-timing-function:
-    ease-in-out;
-}
-
-
-.horse-key {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 40;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  opacity: 0;
-
-  mix-blend-mode:
-    multiply;
-
-  filter:
-    grayscale(1)
-    saturate(0)
-    contrast(1.5);
-
-  pointer-events: none;
-}
-
-
-.stage-grain {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 45;
-
-  pointer-events: none;
-
-  opacity: .07;
-
-  background-image:
-    radial-gradient(
-      rgba(12, 10, 8, .22)
-      .65px,
-      transparent
-      .8px
-    );
-
-  background-size:
-    4px 4px;
-
-  mix-blend-mode:
-    multiply;
-}
-
-
-.collage-stage.is-normal {
-  background:
-    transparent;
-}
-
-
-.collage-stage.is-normal::before {
-  opacity: 0;
-}
-
-
-.collage-stage.is-normal
-.morph-frame {
-  opacity:
-    0 !important;
-}
-
-
-.collage-stage.is-normal
-.horse-offset,
-.collage-stage.is-normal
-.horse-key,
-.collage-stage.is-normal
-.stage-grain {
-  opacity:
-    0 !important;
-}
-
-
-.collage-stage.is-normal
-.horse-main {
-  opacity:
-    1 !important;
-
-  mix-blend-mode:
-    normal !important;
-
-  filter:
-    none !important;
-}
-
+.collage-stage.is-collage-active .stage-grain{opacity:.07}
+.collage-stage.is-normal{background:transparent}
+.collage-stage.is-normal::before{opacity:0}
+.collage-stage.is-normal .morph-frame{opacity:0!important}
+.collage-stage.is-normal .horse-offset,
+.collage-stage.is-normal .horse-key,
+.collage-stage.is-normal .stage-grain{opacity:0!important}
+.collage-stage.is-normal .horse-main{opacity:1!important;mix-blend-mode:normal!important;filter:none!important}
 
 /* =========================================================
    TABLET
    ========================================================= */
 
-@media (
-  max-width: 1100px
-) {
-
-  .photo-page {
-    padding-right:
-      375px;
-  }
-
-
-  .photo-title {
-    font-size:
-      clamp(
-        32px,
-        4.8vw,
-        56px
-      );
-  }
-
+@media(max-width:1100px){
+  .photo-page{padding-right:375px}
+  .photo-title{font-size:clamp(32px,4.8vw,56px)}
 }
-
 
 /* =========================================================
    MOBILE
    ========================================================= */
 
-@media (
-  max-width: 700px
-) {
-
-  .scarf-rack {
-    top: 10px;
-
-    left: 0;
-    right: 0;
-
-    flex-direction:
-      row;
-
-    align-items:
-      center;
-
-    width:
-      100%;
-
-    gap: 6px;
-
-    padding:
-      4px
-      14px
-      12px;
-
-    overflow-x:
-      auto;
-
-    overflow-y:
-      hidden;
-
-    scrollbar-width:
-      none;
-
-    -webkit-overflow-scrolling:
-      touch;
+@media(max-width:700px){
+  .scarf-rack{
+    top:10px;
+    left:0;
+    right:0;
+    flex-direction:row;
+    align-items:center;
+    width:100%;
+    gap:6px;
+    padding:4px 14px 12px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
   }
+  .scarf-rack::-webkit-scrollbar{display:none}
+  .scarf-item{flex:0 0 auto;width:285px;height:auto;transform:none}
+  .scarf-item img{width:100%;height:auto}
+  .scarf-home{width:315px;transform:none}
+  .scarf-item:hover,.scarf-home:hover{transform:none}
 
+  .photo-page{min-height:100svh;padding:180px 22px 70px}
+  .photo-title{font-size:clamp(34px,10vw,50px)}
+  .photo-canvas{margin-top:26px;padding-bottom:40px}
+  .fuji-click-prompt{font-size:clamp(20px,6.5vw,31px)}
+  .fuji-controls{right:8px;bottom:8px;gap:4px}
+  .fuji-control{font-size:10px}
+  .fuji-line-layer,.fuji-line-source,.fuji-line-texture{transition-duration:420ms}
+  .fuji-building{transition-duration:540ms}
 
-  .scarf-rack::-webkit-scrollbar {
-    display:
-      none;
-  }
-
-
-  .scarf-item {
-    flex:
-      0 0
-      auto;
-
-    width:
-      285px;
-
-    height:
-      auto;
-
-    transform:
-      none;
-  }
-
-
-  .scarf-item img {
-    width:
-      100%;
-
-    height:
-      auto;
-  }
-
-
-  .scarf-home {
-    width:
-      315px;
-
-    transform:
-      none;
-  }
-
-
-  .scarf-item:hover,
-  .scarf-home:hover {
-    transform:
-      none;
-  }
-
-
-  .photo-page {
-    min-height:
-      100svh;
-
-    padding:
-      180px
-      22px
-      70px;
-  }
-
-
-  .photo-title {
-    font-size:
-      clamp(
-        34px,
-        10vw,
-        50px
-      );
-  }
-
-
-  .photo-canvas {
-    margin-top:
-      26px;
-
-    padding-bottom:
-      40px;
-  }
-
-
-  .fuji-click-prompt {
-    font-size:
-      clamp(
-        20px,
-        6.5vw,
-        31px
-      );
-  }
-
-
-  .fuji-controls {
-    right: 8px;
-    bottom: 8px;
-
-    gap: 4px;
-  }
-
-
-  .fuji-control {
-    font-size:
-      10px;
-  }
-
-
-  /*
-    Slightly slower and calmer compositor changes on mobile.
-  */
-
-  .fuji-line-layer,
-  .fuji-line-source,
-  .fuji-line-texture {
-    transition-duration:
-      420ms;
-  }
-
-
-  .fuji-building {
-    transition-duration:
-      540ms;
-  }
-
-
-  .wip-overlay {
-    padding:
-      18px
-      12px;
-  }
-
-
-  .wip-inner {
-    width:
-      94vw;
-  }
-
-
-  .wip-header,
-  .collage-stage {
-    width:
-      min(
-        82vh,
-        94vw
-      );
-  }
-
-
-  .wip-text {
-    min-width:
-      0;
-
-    padding:
-      12px
-      13px;
-
-    font-size:
-      17px;
-  }
-
-
-  .wip-close {
-    flex-basis:
-      47px;
-
-    width:
-      47px;
-
-    font-size:
-      31px;
-  }
-
-
-  .over-slot-1 {
-    display:
-      none;
-  }
-
-
-  .horse-offset {
-    display:
-      none;
-  }
-
-
-  .morph-frame {
-    inset:
-      -5%;
-  }
-
-
-  .collage-stage::before {
-    opacity:
-      .54;
-  }
-
-
-  .stage-grain {
-    opacity:
-      .04;
-
-    background-size:
-      5px 5px;
-  }
-
+  .wip-overlay{padding:18px 12px}
+  .wip-inner{width:94vw}
+  .wip-header,.collage-stage{width:min(82vh,94vw)}
+  .wip-text{min-width:0;padding:12px 13px;font-size:17px}
+  .wip-close{flex-basis:47px;width:47px;font-size:31px}
+  .over-slot-1{display:none}
+  .horse-offset{display:none}
+  .morph-frame{inset:-5%}
+  .collage-stage::before{opacity:.54}
+  .collage-stage.is-collage-active .stage-grain{opacity:.04}
+  .stage-grain{background-size:5px 5px}
 }
 
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (
-  prefers-reduced-motion: reduce
-) {
-
-  .fuji-splash {
-    display:
-      none;
-  }
-
-
-  .fuji-building,
-  .fuji-line-layer,
-  .fuji-line-source,
-  .fuji-line-texture {
-    transition-duration:
-      700ms !important;
-  }
-
+@media(prefers-reduced-motion:reduce){
+  .fuji-splash{display:none}
+  .fuji-photo-tint{transition-duration:700ms!important}
+  .fuji-building,.fuji-line-layer,.fuji-line-source,.fuji-line-texture{transition-duration:700ms!important}
 }
 
-
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
-
-@media (
-  max-width: 420px
-) {
-
-  .scarf-item {
-    width:
-      248px;
-  }
-
-
-  .scarf-home {
-    width:
-      278px;
-  }
-
-
-  .photo-page {
-    padding-top:
-      164px;
-  }
-
-
-  .photo-title {
-    font-size:
-      clamp(
-        32px,
-        9.5vw,
-        44px
-      );
-  }
-
-
-  .photo-canvas {
-    margin-top:
-      24px;
-  }
-
+@media(max-width:420px){
+  .scarf-item{width:248px}
+  .scarf-home{width:278px}
+  .photo-page{padding-top:164px}
+  .photo-title{font-size:clamp(32px,9.5vw,44px)}
+  .photo-canvas{margin-top:24px}
 }
