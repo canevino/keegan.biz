@@ -84,13 +84,14 @@
       <p class="wip-text">sorry, i'm still working on this page.</p>
       <button class="wip-close" id="wip-close" type="button" aria-label="Close">×</button>
     </div>
-    <div class="collage-stage" id="collage-stage">
-      <div class="texture-slot under-slot under-slot-1" id="under-slot-1"><div class="morph-frame"></div><div class="morph-frame"></div></div>
-      <div class="texture-slot under-slot under-slot-2" id="under-slot-2"><div class="morph-frame"></div><div class="morph-frame"></div></div>
-      <div class="horse-stack"><img class="horse horse-main" id="horse-main" src="../assets/home/horse.gif" alt=""><img class="horse horse-offset" id="horse-offset" src="../assets/home/horse.gif" alt=""></div>
-      <div class="texture-slot over-slot over-slot-1" id="over-slot-1"><div class="morph-frame"></div><div class="morph-frame"></div></div>
-      <img class="horse horse-key" id="horse-key" src="../assets/home/horse.gif" alt="">
-      <div class="stage-grain"></div>
+
+    <div class="collage-stage" id="collage-stage" aria-hidden="true">
+      <img
+        class="horse horse-main"
+        id="horse-main"
+        src="../assets/home/horse.gif"
+        alt=""
+      >
     </div>
   </div>
 </div>
@@ -956,57 +957,358 @@
 
 <script>
 (() => {
-  const clamp=(v,min,max)=>Math.min(Math.max(v,min),max), lerp=(a,b,t)=>a+(b-a)*t, rand=(a,b)=>a+Math.random()*(b-a), pick=a=>a[Math.floor(Math.random()*a.length)];
-  function shuffle(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}return x;}
-  const smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
-  const mobile=window.matchMedia('(max-width: 700px)');
-  const pageShell=document.getElementById('page-shell'), overlay=document.getElementById('wip-overlay'), audio=document.getElementById('wip-audio'), close=document.getElementById('wip-close'), stage=document.getElementById('collage-stage'), horseMain=document.getElementById('horse-main'), horseOffset=document.getElementById('horse-offset'), horseKey=document.getElementById('horse-key');
-  const ALL=[
-    'Texturelabs_Atmosphere_121S.jpg','Texturelabs_Atmosphere_127S.jpg','Texturelabs_Atmosphere_130S.jpg','Texturelabs_Atmosphere_135S.jpg','Texturelabs_Atmosphere_201S.jpg','Texturelabs_Brick_124S.jpg','Texturelabs_Brick_158S.jpg','Texturelabs_Concrete_150S.jpg','Texturelabs_Concrete_155S.jpg','Texturelabs_Concrete_179S.jpg','Texturelabs_Concrete_205S.jpg','Texturelabs_Concrete_207S.jpg','Texturelabs_Fabric_123S.jpg','Texturelabs_Fabric_144S.jpg','Texturelabs_Fabric_172S.jpg','Texturelabs_Film_181S.jpg','Texturelabs_Film_183S.jpg','Texturelabs_Film_187S.jpg','Texturelabs_Glass_134S.jpg','Texturelabs_Glass_155S.jpg','Texturelabs_Grunge_173S.jpg','Texturelabs_Grunge_279L.jpg','Texturelabs_Grunge_334S.jpg','Texturelabs_Grunge_341S.jpg','Texturelabs_InkPaint_126S.jpg','Texturelabs_InkPaint_320S.jpg','Texturelabs_InkPaint_332S.jpg','Texturelabs_InkPaint_356S.jpg','Texturelabs_LensFX_251S.jpg','Texturelabs_LensFX_256S.jpg','Texturelabs_Metal_129S.jpg','Texturelabs_Metal_165S.jpg','Texturelabs_Metal_285S.jpg','Texturelabs_Metal_294S.jpg','Texturelabs_Paper_273S.jpg','Texturelabs_Paper_278L.jpg','Texturelabs_Paper_280S.jpg','Texturelabs_Paper_286S.jpg','Texturelabs_Paper_303S.jpg','Texturelabs_Paper_324S.jpg','Texturelabs_Paper_380L.jpg','Texturelabs_Paper_380S.jpg','Texturelabs_Sky_171S.jpg','Texturelabs_Soil_146S.jpg','Texturelabs_Soil_149S.jpg','Texturelabs_Stone_167S.jpg','Texturelabs_Stone_169S.jpg','Texturelabs_Water_124S.jpg','Texturelabs_Water_141S.jpg','Texturelabs_Wood_135S.jpg','Texturelabs_Wood_280S.jpg','Texturelabs_Wood_290S.jpg'
-  ].map(f=>`../assets/home/${f}`);
-  const DIRTY=ALL.filter(s=>/Grunge|Concrete|Soil|Stone|Wood|Metal|Film|Brick|Paper|InkPaint/i.test(s)), SOFT=ALL.filter(s=>!DIRTY.includes(s));
-  let session=[], ready=[], recent=[];
-  function prepareTextures(){
-    session=[...shuffle(DIRTY).slice(0,mobile.matches?8:18),...shuffle(SOFT).slice(0,mobile.matches?2:6)]; ready=[];
-    session.forEach(src=>{const img=new Image();img.decoding='async';img.onload=()=>{if(!ready.includes(src))ready.push(src);};img.src=src;});
+
+  const clamp = (value, min, max) =>
+    Math.min(
+      Math.max(value, min),
+      max
+    );
+
+
+  function smoothStep(value) {
+
+    const t =
+      clamp(
+        value,
+        0,
+        1
+      );
+
+
+    return (
+      t *
+      t *
+      (
+        3 -
+        (2 * t)
+      )
+    );
+
   }
-  function texture(){const dirty=ready.filter(s=>DIRTY.includes(s)),pool=(Math.random()<.82&&dirty.length>3)?dirty:(ready.length>5?ready:session);if(!pool.length)return null;let r,n=0;do{r=pick(pool);n++;}while(recent.includes(r)&&n<14);recent.push(r);if(recent.length>7)recent.shift();return r;}
-  const COLORS=[
-    {name:'burnt sienna',hue:-13,saturation:3.55,brightness:.94,contrast:1.28},{name:'forest green',hue:69,saturation:2.85,brightness:.84,contrast:1.24},{name:'ocean blue',hue:151,saturation:3.25,brightness:.91,contrast:1.22},{name:'canyon red',hue:-28,saturation:3.65,brightness:.89,contrast:1.30},{name:'dirt brown',hue:4,saturation:1.95,brightness:.78,contrast:1.24},{name:'pale sage',hue:67,saturation:1.72,brightness:1.08,contrast:1.05},{name:'blueberry',hue:187,saturation:3.05,brightness:.82,contrast:1.27}
-  ];
-  const OPEN=[COLORS[0],COLORS[1],COLORS[2],COLORS[3],COLORS[6]]; let lastColor='';
-  function nextColor(time){const pool=time<75?OPEN:COLORS;let c,n=0;do{c=pick(pool);n++;}while(c.name===lastColor&&n<12);lastColor=c.name;return c;}
-  function slot(id,o){const el=document.getElementById(id);return{el,frames:Array.from(el.querySelectorAll('.morph-frame')),active:0,next:Infinity,...o};}
-  const slots=[slot('under-slot-1',{role:'foundation',desktop:'multiply',mobile:'multiply',inside:'multiply',slow:11.5,fast:2.5,phase:0,mobileOn:true}),slot('under-slot-2',{role:'secondary',desktop:'color-burn',mobile:'soft-light',inside:'overlay',slow:13.5,fast:3,phase:2.4,mobileOn:true}),slot('over-slot-1',{role:'overprint',desktop:'hard-light',mobile:'soft-light',inside:'multiply',slow:9.5,fast:2.4,phase:4.8,mobileOn:false})];
-  function neutral(){return `linear-gradient(${rand(0,360)}deg,${pick(['#060605','#11100e','#1a1714','#25211c'])} 0%,${pick(['#49443d','#5a544b','#6e665b','#7a7164'])} 52%,${pick(['#c5bdae','#d2cabc','#ded5c7','#e8dfd1'])} 100%)`;}
-  function opacity(s,i){if(s.role==='foundation')return mobile.matches?rand(.48,.62+i*.10):rand(.60,.78+i*.10);if(s.role==='secondary')return mobile.matches?rand(.24,.35+i*.13):rand(.34,.50+i*.14);return rand(.08,.16+i*.11);}
-  function configure(frame,s,i){const tex=texture();if(!tex)return;frame.style.backgroundImage=`${neutral()},url("${tex}")`;frame.style.backgroundSize='cover,cover';frame.style.backgroundRepeat='no-repeat';frame.style.backgroundBlendMode=`${s.inside},normal`;frame.style.mixBlendMode=mobile.matches?s.mobile:s.desktop;frame.style.transform=`translate(${rand(-2,2)}%,${rand(-2,2)}%) rotate(${rand(-1.5,1.5)}deg) scale(${rand(1.06,1.20)})`;frame.style.filter=mobile.matches?`grayscale(1) saturate(0) contrast(${rand(1.16,1.42)}) brightness(${rand(.74,.94)})`:`grayscale(1) saturate(0) contrast(${rand(1.28,1.72)}) brightness(${rand(.64,.92)})`;frame.dataset.target=opacity(s,i).toFixed(3);}
-  function initSlot(s,i,time){if(mobile.matches&&!s.mobileOn){s.el.style.display='none';return;}const f=s.frames[0];configure(f,s,i);const fade=mobile.matches?6:7;f.style.transitionDuration=`${fade}s`;f.style.opacity=f.dataset.target||'0';s.next=time+s.phase+fade;}
-  function morph(s,i,time){const out=s.frames[s.active],idx=s.active?0:1,inc=s.frames[idx];let d=lerp(s.slow,s.fast,i);if(mobile.matches)d=Math.max(d,3.2);inc.style.opacity='0';configure(inc,s,i);inc.offsetHeight;inc.style.transitionDuration=out.style.transitionDuration=`${d}s`;requestAnimationFrame(()=>{inc.style.opacity=inc.dataset.target||'0';out.style.opacity='0';});s.active=idx;s.next=time+d*.96;}
-  let nextHorse=Infinity;
-  function colorHorse(c,intensity,time){const d=lerp(5.8,mobile.matches?3.4:2.5,intensity);horseMain.style.transitionDuration=`${d}s`;horseMain.style.mixBlendMode='multiply';horseMain.style.filter=`grayscale(1) sepia(1) saturate(${c.saturation}) hue-rotate(${c.hue}deg) contrast(${c.contrast}) brightness(${c.brightness})`;horseMain.style.opacity='1';horseOffset.style.opacity=mobile.matches?'0':lerp(.02,.06,intensity).toFixed(3);horseKey.style.opacity=mobile.matches?lerp(.08,.14,intensity).toFixed(3):lerp(.10,.18,intensity).toFixed(3);nextHorse=time+lerp(12,mobile.matches?5.2:4,intensity);}
-  function initialHorse(){const c=nextColor(0);horseMain.style.mixBlendMode='multiply';horseMain.style.filter=`grayscale(1) sepia(1) saturate(${c.saturation*1.12}) hue-rotate(${c.hue}deg) contrast(${c.contrast*1.04}) brightness(${c.brightness*1.03})`;horseMain.style.opacity='0';horseOffset.style.opacity='0';horseKey.style.opacity='0';nextHorse=24;}
-  function normalHorse(){horseMain.style.mixBlendMode='normal';horseMain.style.filter='none';horseMain.style.opacity='1';horseOffset.style.opacity='0';horseKey.style.opacity='0';}
-  const HORSE_START=12,HORSE_FULL=20,COLLAGE_START=30,NORMAL_TIME=243;
-  const reveal=t=>t<HORSE_START?0:smooth((t-HORSE_START)/(HORSE_FULL-HORSE_START));
-  const intensity=t=>(t<COLLAGE_START||t>=NORMAL_TIME)?0:clamp((t-COLLAGE_START)/(NORMAL_TIME-COLLAGE_START),0,1);
-  let open=false,collage=false,horse=false,normal=false,raf=null;
-  function clearSlots(){slots.forEach(s=>{s.next=Infinity;s.frames.forEach(f=>f.style.opacity='0');});}
-  function loop(){
-    if(!open)return;const t=audio.currentTime||0;stage.style.setProperty('--visual-reveal',reveal(t).toFixed(4));
-    if(t>=HORSE_START&&!horse){horse=true;initialHorse();}
-    if(t>=HORSE_START&&t<COLLAGE_START){horseMain.style.opacity=reveal(t);if(t>=nextHorse)colorHorse(nextColor(t),.08,t);}
-    if(t>=COLLAGE_START&&t<NORMAL_TIME){const i=intensity(t);if(!collage){collage=true;stage.classList.add('is-collage-active');slots.forEach(s=>initSlot(s,i,t));nextHorse=t+8;}slots.forEach(s=>{if(t>=s.next)morph(s,i,t);});if(t>=nextHorse)colorHorse(nextColor(t),i,t);}
-    if(t>=NORMAL_TIME&&!normal){normal=true;clearSlots();normalHorse();stage.classList.remove('is-collage-active');stage.classList.add('is-normal');}
-    raf=requestAnimationFrame(loop);
+
+
+  const pageShell =
+    document.getElementById(
+      "page-shell"
+    );
+
+
+  const overlay =
+    document.getElementById(
+      "wip-overlay"
+    );
+
+
+  const audio =
+    document.getElementById(
+      "wip-audio"
+    );
+
+
+  const closeButton =
+    document.getElementById(
+      "wip-close"
+    );
+
+
+  const stage =
+    document.getElementById(
+      "collage-stage"
+    );
+
+
+  const HORSE_START =
+    12;
+
+
+  const HORSE_FULL =
+    20;
+
+
+  let overlayOpen =
+    false;
+
+
+  let raf =
+    null;
+
+
+  let openedAt =
+    0;
+
+
+  function horseRevealAt(time) {
+
+    if (
+      time < HORSE_START
+    ) {
+
+      return 0;
+
+    }
+
+
+    return smoothStep(
+      (
+        time -
+        HORSE_START
+      )
+      /
+      (
+        HORSE_FULL -
+        HORSE_START
+      )
+    );
+
   }
-  async function openWip(){
-    if(open)return;open=true;collage=false;horse=false;normal=false;recent=[];lastColor='';clearSlots();normalHorse();stage.classList.remove('is-normal','is-collage-active');stage.style.setProperty('--visual-reveal','0');prepareTextures();window.fujiAudio?.setOverlayMuted(true);pageShell.classList.add('is-hidden');overlay.classList.add('is-visible');overlay.setAttribute('aria-hidden','false');audio.currentTime=0;audio.volume=.72;try{await audio.play();}catch{}raf=requestAnimationFrame(loop);
+
+
+  function visualLoop(now) {
+
+    if (
+      !overlayOpen
+    ) {
+
+      return;
+
+    }
+
+
+    /*
+      Follow the cricket track when it is playing.
+
+      The elapsed-time fallback keeps the horse fade working
+      even if a browser refuses audio playback.
+    */
+
+    const elapsed =
+      Math.max(
+        0,
+        (now - openedAt) / 1000
+      );
+
+
+    const time =
+      audio.currentTime > 0
+        ? audio.currentTime
+        : elapsed;
+
+
+    stage.style.setProperty(
+      "--visual-reveal",
+      horseRevealAt(
+        time
+      ).toFixed(4)
+    );
+
+
+    raf =
+      requestAnimationFrame(
+        visualLoop
+      );
+
   }
-  function closeWip(){open=false;cancelAnimationFrame(raf);audio.pause();audio.currentTime=0;clearSlots();normalHorse();stage.classList.remove('is-collage-active');overlay.classList.remove('is-visible');overlay.setAttribute('aria-hidden','true');pageShell.classList.remove('is-hidden');window.fujiAudio?.setOverlayMuted(false);}
-  document.addEventListener('click',event=>{const link=event.target.closest('a');if(!link||link.hasAttribute('data-live-link'))return;event.preventDefault();openWip();});
-  close.addEventListener('click',closeWip);
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&open)closeWip();});
+
+
+  async function openWip() {
+
+    if (
+      overlayOpen
+    ) {
+
+      return;
+
+    }
+
+
+    overlayOpen =
+      true;
+
+
+    openedAt =
+      performance.now();
+
+
+    stage.style.setProperty(
+      "--visual-reveal",
+      "0"
+    );
+
+
+    /*
+      Silence the photography composition while the
+      unfinished-page overlay/crickets are active.
+    */
+
+    window.fujiAudio
+      ?.setOverlayMuted(
+        true
+      );
+
+
+    pageShell.classList.add(
+      "is-hidden"
+    );
+
+
+    overlay.classList.add(
+      "is-visible"
+    );
+
+
+    overlay.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+
+    audio.pause();
+
+
+    audio.currentTime =
+      0;
+
+
+    audio.volume =
+      0.72;
+
+
+    try {
+
+      await audio.play();
+
+    }
+
+    catch (error) {
+
+      console.log(
+        "Audio could not start:",
+        error
+      );
+
+    }
+
+
+    cancelAnimationFrame(
+      raf
+    );
+
+
+    raf =
+      requestAnimationFrame(
+        visualLoop
+      );
+
+  }
+
+
+  function closeWip() {
+
+    overlayOpen =
+      false;
+
+
+    cancelAnimationFrame(
+      raf
+    );
+
+
+    audio.pause();
+
+
+    audio.currentTime =
+      0;
+
+
+    stage.style.setProperty(
+      "--visual-reveal",
+      "0"
+    );
+
+
+    overlay.classList.remove(
+      "is-visible"
+    );
+
+
+    overlay.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+
+    pageShell.classList.remove(
+      "is-hidden"
+    );
+
+
+    /*
+      Restore the photography composition to its previous
+      user-controlled sound state.
+    */
+
+    window.fujiAudio
+      ?.setOverlayMuted(
+        false
+      );
+
+  }
+
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      const link =
+        event.target.closest(
+          "a"
+        );
+
+
+      if (
+        !link ||
+        link.hasAttribute(
+          "data-live-link"
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      event.preventDefault();
+
+
+      openWip();
+
+    }
+  );
+
+
+  closeButton.addEventListener(
+    "click",
+    closeWip
+  );
+
+
+  document.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key ===
+          "Escape" &&
+        overlayOpen
+      ) {
+
+        closeWip();
+
+      }
+
+    }
+  );
+
 })();
 </script>
 
