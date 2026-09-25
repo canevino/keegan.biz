@@ -71,6 +71,13 @@
           </defs>
         </svg>
       </figure>
+
+        <div
+          class="film-gallery"
+          id="film-gallery"
+          aria-label="Film photographs"
+        ></div>
+
     </section>
   </main>
 </div>
@@ -95,6 +102,126 @@
     </div>
   </div>
 </div>
+
+
+<script>
+(() => {
+
+  const gallery =
+    document.getElementById(
+      "film-gallery"
+    );
+
+
+  if (!gallery) {
+    return;
+  }
+
+
+  const films =
+    Array.from(
+      { length: 18 },
+      (_, index) =>
+        `assets/film${index + 1}.jpg`
+    );
+
+
+  /*
+    Fisher–Yates shuffle:
+    a genuinely shuffled display order each page load.
+  */
+
+  for (
+    let i = films.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() *
+        (i + 1)
+      );
+
+
+    [
+      films[i],
+      films[j]
+    ] = [
+      films[j],
+      films[i]
+    ];
+
+  }
+
+
+  const fragment =
+    document.createDocumentFragment();
+
+
+  films.forEach(
+    (src, index) => {
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+
+      image.className =
+        "film-gallery-image";
+
+
+      image.src =
+        src;
+
+
+      image.alt =
+        "";
+
+
+      image.loading =
+        "lazy";
+
+
+      image.decoding =
+        "async";
+
+
+      image.fetchPriority =
+        "low";
+
+
+      /*
+        If one numbered file is ever missing, remove the
+        broken element instead of leaving a broken-image icon.
+      */
+
+      image.addEventListener(
+        "error",
+        () => {
+          image.remove();
+        },
+        {
+          once: true
+        }
+      );
+
+
+      fragment.appendChild(
+        image
+      );
+
+    }
+  );
+
+
+  gallery.appendChild(
+    fragment
+  );
+
+})();
+</script>
 
 <script>
 (() => {
@@ -250,15 +377,58 @@
   const POST=['#fuji-posterize-3','#fuji-posterize-4','#fuji-posterize-6'];
   const THRESH=['#fuji-threshold-low','#fuji-threshold-mid','#fuji-threshold-high'];
 
-  function visualForEvent(event){
-    const pv=event.pitches.map(p=>PITCH_VISUALS[p]);
-    const instruments=unique(event.instruments);
-    let primary=pv[0]?.color||'#53643d', secondary=pv[Math.min(1,pv.length-1)]?.second||'#755c3d';
-    instruments.forEach((name,i)=>{ const iv=INSTRUMENT_VISUALS[name]||INSTRUMENT_VISUALS.guitar; primary=mixHex(primary,iv.tint,i? .12:.22); secondary=mixHex(secondary,iv.tint,i?.10:.18); });
-    const hue=(pv.reduce((s,x)=>s+x.hue,0)/Math.max(1,pv.length))+(instruments.reduce((s,n)=>s+(INSTRUMENT_VISUALS[n]?.hue||0),0)/Math.max(1,instruments.length));
-    const intensity=event.type==='chord'?.93:event.type==='ensemble-dyad'?.80:event.type==='dyad'?.63:.38;
-    return {primary,secondary,tertiary:mixHex(primary,secondary,.5),hue,intensity,texture:pick(textures())};
+  function visualForEvent(event,actualVoices=[]){
+    const pitchStream=actualVoices.length
+      ?actualVoices.map(v=>v.pitch).filter(Boolean)
+      :event.pitches;
+
+    const instrumentStream=actualVoices.length
+      ?actualVoices.map(v=>v.harmonic?'harmonic':v.instrument).filter(Boolean)
+      :event.instruments;
+
+    const pv=pitchStream.map(p=>PITCH_VISUALS[p]).filter(Boolean);
+
+    let primary=pv[0]?.color||'#53643d';
+    let secondary=pv[Math.min(1,pv.length-1)]?.second||'#755c3d';
+
+    // Repeated pitch classes and instrument doublings count here too, so the
+    // actual orchestration changes the pigment rather than only event labels.
+    pv.slice(1).forEach((voice,index)=>{
+      const amount=Math.min(.18,.08+(index*.012));
+      primary=mixHex(primary,voice.color,amount);
+      secondary=mixHex(secondary,voice.second,amount*.92);
+    });
+
+    instrumentStream.forEach((name,index)=>{
+      const iv=INSTRUMENT_VISUALS[name]||INSTRUMENT_VISUALS.guitar;
+      const amount=index===0?.18:.085;
+      primary=mixHex(primary,iv.tint,amount);
+      secondary=mixHex(secondary,iv.tint,amount*.82);
+    });
+
+    const hue=
+      (pv.reduce((s,x)=>s+x.hue,0)/Math.max(1,pv.length))+
+      (instrumentStream.reduce((s,n)=>s+(INSTRUMENT_VISUALS[n]?.hue||0),0)/Math.max(1,instrumentStream.length));
+
+    const intensity=
+      event.type==='chord'
+        ?.93
+        :event.type==='ensemble-dyad'
+          ?.80
+          :event.type==='dyad'
+            ?.63
+            :.38;
+
+    return {
+      primary,
+      secondary,
+      tertiary:mixHex(primary,secondary,.5),
+      hue,
+      intensity,
+      texture:pick(textures())
+    };
   }
+
   function processFilter(v,intensity){
     const mobile=isMobile();
     const mode=mobile?weightedValue([{value:'normal',weight:49},{value:'exposed',weight:30},{value:'hard',weight:16},{value:'poster',weight:5}]):weightedValue([{value:'normal',weight:32},{value:'exposed',weight:27},{value:'poster',weight:18},{value:'threshold',weight:4+intensity*9},{value:'hard',weight:10+intensity*5}]);
@@ -322,16 +492,36 @@
     setTimeout(()=>{ if(token!==tintToken)return; tint.style.transition=`opacity ${Math.max(1200,ringMs*.48)}ms ease`; tint.style.opacity=(.012+v.intensity*.04).toFixed(3); },clamp(ringMs*.12,260,800));
     setTimeout(()=>{ if(token!==tintToken)return; tint.style.transition=`opacity ${Math.max(1600,ringMs*.42)}ms ease`; tint.style.opacity='0'; },clamp(ringMs*.58,1700,4800));
   }
-  function driveVisuals(event,ringMs){
+  function driveVisuals(event,ringMs,voiceCount=1,actualVoices=[]){
     if(REDUCED.matches) return;
-    const v=visualForEvent(event); attackTint(v,ringMs);
-    const n=event.type==='chord'?randInt(3,isMobile()?4:6):event.type==='ensemble-dyad'?randInt(2,4):event.type==='dyad'?randInt(2,3):1;
+
+    const v=visualForEvent(event,actualVoices);
+    const density=clamp((voiceCount-1)/7,0,1);
+
+    v.intensity=clamp(v.intensity*(.82+density*.30),.20,1);
+    attackTint(v,ringMs);
+
+    // More actual sounding voices = more architectural activity.
+    const densityLines=clamp(Math.ceil(voiceCount*.72),1,isMobile()?4:6);
+    const n=Math.max(
+      densityLines,
+      event.type==='chord'?3:event.type==='ensemble-dyad'?2:1
+    );
     preferredLines(event,n).forEach((item,i)=>{
       const token=++item.token; configureLine(item,v,v.intensity,'attack'); item.layer.style.transitionDuration=`${rand(70,event.type==='chord'?145:120)}ms`; item.layer.style.opacity=item.layer.dataset.targetOpacity;
       setTimeout(()=>{ if(token!==item.token)return; const softer={...v,primary:mixHex(v.primary,'#8a8a73',.16),secondary:mixHex(v.secondary,'#6f735f',.18)}; configureLine(item,softer,v.intensity*.72,'bloom'); item.layer.style.transitionDuration=`${clamp(ringMs*.34,900,2600)}ms`; item.layer.style.opacity=item.layer.dataset.targetOpacity; },170+i*32+rand(0,110));
       setTimeout(()=>{ if(token!==item.token)return; item.layer.style.transitionDuration=`${clamp(ringMs*.40,1300,3100)}ms`; item.layer.style.opacity=event.type==='note'?'0':(Math.random()<.55?'0':(Number(item.layer.dataset.targetOpacity)*.34).toFixed(3)); },clamp(ringMs*.58,1800,5000));
     });
-    const count=event.type==='chord'?Math.min(activeBuildings.length,isMobile()?2:3):event.type==='ensemble-dyad'?Math.min(activeBuildings.length,2):event.type==='dyad'?Math.min(activeBuildings.length,Math.random()<.62?1:2):(Math.random()<.58?Math.min(activeBuildings.length,1):0);
+    const count=
+      event.type==='chord'
+        ?Math.min(activeBuildings.length,isMobile()?2:3)
+        :event.type==='ensemble-dyad'
+          ?Math.min(activeBuildings.length,2)
+          :voiceCount>=3
+            ?Math.min(activeBuildings.length,isMobile()?1:2)
+            :event.type==='dyad'
+              ?Math.min(activeBuildings.length,1)
+              :(Math.random()<.42?Math.min(activeBuildings.length,1):0);
     shuffle(activeBuildings).slice(0,count).forEach((el,i)=>{
       el._token=(el._token||0)+1; const token=el._token; configureBuilding(el,v,v.intensity,'attack'); el.style.transitionDuration=`${rand(85,150)}ms`; el.style.opacity=el.dataset.targetOpacity;
       setTimeout(()=>{ if(token!==el._token)return; configureBuilding(el,v,v.intensity*.68,'bloom'); el.style.transitionDuration=`${clamp(ringMs*.36,1000,2800)}ms`; el.style.opacity=el.dataset.targetOpacity; },220+i*70);
@@ -341,17 +531,54 @@
 
   function pointFromEvent(event){ const r=artwork.getBoundingClientRect(); return {x:clamp((event.clientX-r.left)/r.width,.04,.96),y:clamp((event.clientY-r.top)/r.height,.04,.96)}; }
   const randomPoint=()=>({x:rand(.18,.82),y:rand(.20,.80)});
-  function createMark(event,point,ringMs){
-    if(REDUCED.matches) return;
-    const v=visualForEvent(event), mark=document.createElement('span'), p=point||randomPoint();
+  function createMark(event,point,ringMs,voiceCount=1,actualVoices=[]){
+    if(REDUCED.matches)return;
+
+    const v=visualForEvent(event,actualVoices);
+    const mark=document.createElement('span');
+    const p=point||randomPoint();
+
     mark.className=`fuji-splash fuji-splash-${event.type}`;
-    const size=event.type==='chord'?rand(9.2,12.2):event.type==='ensemble-dyad'?rand(7.3,9.7):event.type==='dyad'?rand(6.1,8.4):rand(4.3,6.3);
-    const duration=clamp(ringMs+rand(650,1750),4000,8000);
-    const opacity=event.type==='chord'?rand(.19,.27):event.type==='ensemble-dyad'?rand(.17,.24):event.type==='dyad'?rand(.15,.22):rand(.13,.20);
-    const accent=mixHex(v.primary,v.secondary,.34);
-    mark.style.setProperty('--x',`${p.x*100}%`); mark.style.setProperty('--y',`${p.y*100}%`); mark.style.setProperty('--size',`${size}%`); mark.style.setProperty('--mark-color-a',v.primary); mark.style.setProperty('--mark-color-b',v.secondary); mark.style.setProperty('--mark-color-c',accent); mark.style.setProperty('--mark-opacity',opacity); mark.style.setProperty('--mark-duration',`${duration}ms`);
-    mark.style.mixBlendMode=weightedValue([{value:'soft-light',weight:34},{value:'overlay',weight:43},{value:'multiply',weight:15},{value:'screen',weight:8}]);
-    splashLayer.appendChild(mark); const cap=isMobile()?3:5; while(splashLayer.children.length>cap) splashLayer.firstElementChild?.remove(); setTimeout(()=>mark.remove(),duration+250);
+
+    // Linear relationship to ACTUAL samples scheduled, including doubles of
+    // the same pitch by different instruments.
+    const voices=Math.max(1,voiceCount);
+    const size=clamp(3.7+(voices*1.22),4.9,15.9);
+    const duration=clamp(ringMs+rand(700,1900),4000,8000);
+    const opacity=clamp(.115+(voices*.021),.13,.31);
+
+    const siteAccent=pick(['#fdb913','#006a44','#c1272d']);
+    const accent=mixHex(v.primary,v.secondary,.38);
+    const bright=mixHex(accent,siteAccent,event.type==='chord'?.28:.18);
+
+    mark.style.setProperty('--x',`${p.x*100}%`);
+    mark.style.setProperty('--y',`${p.y*100}%`);
+    mark.style.setProperty('--size',`${size}%`);
+    mark.style.setProperty('--mark-color-a',v.primary);
+    mark.style.setProperty('--mark-color-b',v.secondary);
+    mark.style.setProperty('--mark-color-c',accent);
+    mark.style.setProperty('--mark-color-d',bright);
+    mark.style.setProperty('--mark-opacity',opacity);
+    mark.style.setProperty('--mark-duration',`${duration}ms`);
+    mark.style.setProperty('--mark-angle',`${rand(0,360)}deg`);
+
+    mark.style.borderRadius=
+      `${rand(44,56)}% ${rand(44,56)}% ${rand(44,56)}% ${rand(44,56)}% / `+
+      `${rand(45,55)}% ${rand(45,55)}% ${rand(45,55)}% ${rand(45,55)}%`;
+
+    mark.style.mixBlendMode=weightedValue([
+      {value:'overlay',weight:45},
+      {value:'soft-light',weight:30},
+      {value:'multiply',weight:15},
+      {value:'screen',weight:10}
+    ]);
+
+    splashLayer.appendChild(mark);
+
+    const cap=isMobile()?3:5;
+    while(splashLayer.children.length>cap)splashLayer.firstElementChild?.remove();
+
+    setTimeout(()=>mark.remove(),duration+250);
   }
 
   const AUDIO_ROOT='assets/audio/';
@@ -378,23 +605,32 @@
 
     tailRelease:isMobile()?.55:.42,
 
-    gains:{concertina:[.070,.128],guitar:[.098,.172],mandolin:[.080,.145],harmonic:[.052,.100],cello:[.095,.150]},
-    attacks:{concertina:[.070,.145],guitar:[.038,.095],mandolin:[.045,.110],harmonic:[.065,.145]}
+    // This concertina is the longest, most reedy source in the library.
+    // Keep it lower and slower so it colors the harmony without smearing it.
+    gains:{concertina:[.048,.094],guitar:[.098,.172],mandolin:[.080,.145],harmonic:[.050,.094],cello:[.095,.150]},
+    attacks:{concertina:[.095,.185],guitar:[.038,.095],mandolin:[.045,.110],harmonic:[.070,.150]}
   };
+
   const VOICING={
-    lowAnchorWeights:{D:7,A:5,G:4,C:3,F:2.7,E:1.8,B:1.2},
-    instrumentWeights:{guitar:1.35,mandolin:1.20,concertina:.48},
+    lowAnchorWeights:{D:9,A:6,G:4,C:3,F:2.5,E:1.5,B:.8},
+    instrumentWeights:{guitar:1.48,mandolin:1.34,concertina:.18},
     concertinaChordMax:1,
-    chordHarmonicChance:.075,
-    noteHarmonicChance:.09,
-    dyadHarmonicChance:.11,
-    guitarLowPairChance:.92
+    chordHarmonicChance:.045,
+    noteHarmonicChance:.055,
+    dyadHarmonicChance:.075,
+    guitarLowPairChance:.96
+  };
+
+  const INSTRUMENT_PROFILE={
+    guitar:{melodyWeight:1.42,ring:'long',lowRegister:true},
+    mandolin:{melodyWeight:1.30,ring:'short',lowRegister:false},
+    concertina:{melodyWeight:.16,ring:'very-long',lowRegister:false}
   };
 
   const HARMONIES=[
     {name:'d-open',pitches:['D','A','E'],tension:.05,weight:22,color:'open'},
     {name:'d-minor',pitches:['D','F','A'],tension:.10,weight:20,color:'minor'},
-    {name:'d-min7',pitches:['D','F','C'],tension:.16,weight:14,color:'minor'},
+    {name:'d-min7',pitches:['D','F','A','C'],tension:.14,weight:15,color:'minor'},
     {name:'g-open',pitches:['D','G','A'],tension:.10,weight:17,color:'open'},
     {name:'g-major',pitches:['G','B','D'],tension:.17,weight:15,color:'bright'},
     {name:'c-open',pitches:['C','G','D'],tension:.15,weight:15,color:'open'},
@@ -404,7 +640,8 @@
     {name:'a-c-d',pitches:['A','C','D'],tension:.24,weight:10,color:'minor'},
     {name:'a-open',pitches:['A','E','G'],tension:.26,weight:10,color:'open'},
     {name:'a-minor',pitches:['A','C','E'],tension:.27,weight:10,color:'minor'},
-    {name:'e-minor',pitches:['E','G','B'],tension:.28,weight:10,color:'minor'},
+    {name:'e-minor',pitches:['E','G','B'],tension:.25,weight:10,color:'dorian'},
+    {name:'e-min7',pitches:['E','G','B','D'],tension:.20,weight:10,color:'dorian'},
     {name:'d-f-g',pitches:['D','F','G'],tension:.29,weight:9,color:'haunt'},
     {name:'f-major',pitches:['F','A','C'],tension:.31,weight:8,color:'minor'},
     {name:'d-c-e',pitches:['D','C','E'],tension:.31,weight:8,color:'haunt'},
@@ -422,9 +659,31 @@
   const audioState={context:null,bus:null,compressor:null,master:null,droneSource:null,droneGain:null,muted:false,overlayMuted:false,buffers:new Map(),loads:new Map(),activeSources:new Set(),droneStarted:false,droneLoading:false,pending:false,lastClick:0,auto:false,autoTimer:null};
   const MAX_CACHE=isMobile()?20:48;
   const planner={
-    currentHarmony:'d-open',targetHarmony:'d-minor',arc:'hover',targetTension:.20,arcSteps:0,
-    clicksSinceChord:0,chordStreak:0,lastPitch:'D',lastInstrument:'guitar',gesture:null,
-    resolutionDue:0,resolutionPitch:null,history:[]
+    currentHarmony:'d-open',
+    targetHarmony:'d-minor',
+
+    phraseQueue:[],
+    roadmap:[],
+    lastRoute:null,
+    lastPhraseKind:null,
+    motifMemory:{},
+    phraseNumber:0,
+    eventsSinceB:0,
+    justEndedPhrase:false,
+
+    clicksSinceChord:0,
+    chordStreak:0,
+    lastPitch:'D',
+    lastInstrument:'guitar',
+    gesture:null,
+
+    // Compatibility fields retained for the safety helpers.
+    arc:'hover',
+    targetTension:.20,
+    arcSteps:0,
+    resolutionDue:0,
+    resolutionPitch:null,
+    history:[]
   };
 
   function cloneState(s){
@@ -502,7 +761,7 @@
       const now=ctx.currentTime, level=rand(AUDIO.gains.cello[0],AUDIO.gains.cello[1]);
       audioState.droneGain.gain.cancelScheduledValues(now); audioState.droneGain.gain.setValueAtTime(.0001,now); audioState.droneGain.gain.linearRampToValueAtTime(level,now+2.8);
       audioState.droneStarted=true; audioState.droneLoading=false; warmPitches(HARMONY[planner.currentHarmony].pitches);
-      const event={type:'note',pitches:['D'],instruments:['cello'],harmonyName:planner.currentHarmony}; createMark(event,point,5600); driveVisuals(event,5600); updateSoundButton();
+      const event={type:'note',pitches:['D'],instruments:['cello'],harmonyName:planner.currentHarmony}; createMark(event,point,5600,1); driveVisuals(event,5600,1); updateSoundButton();
       return {kind:'drone',event,ringMs:5600};
     }catch(e){audioState.droneLoading=false;console.warn('Unable to start drone.',e);return null;}
   }
@@ -606,171 +865,523 @@
   function dyadMove(pitches,instruments,extras={}){ return {type:extras.ensemble?'ensemble-dyad':'dyad',pitches:unique(pitches).slice(0,2),instruments:[...instruments],...extras}; }
   function chordMove(name,extras={}){ return {type:'chord',harmonyName:name,pitches:[...HARMONY[name].pitches],instruments:['guitar','mandolin','concertina'],...extras}; }
 
-  function pitchPool(s){
-    const c=HARMONY[s.currentHarmony],t=HARMONY[s.targetHarmony],n=s.lastPitch?[stepPitch(s.lastPitch,1),stepPitch(s.lastPitch,-1),s.lastPitch]:[];
-    return unique([...c.pitches,...t.pitches,...n,'D','A']);
-  }
-  function generateMoves(s){
-    ensureArc(s); const c=HARMONY[s.currentHarmony],t=HARMONY[s.targetHarmony],moves=[];
-    if(s.gesture?.type==='run'){
-      const g=s.gesture, destination=nearestPitch(s.lastPitch,t.pitches), toward=directionToward(s.lastPitch,destination), expected=stepPitch(s.lastPitch,g.direction), guided=stepPitch(s.lastPitch,toward), reverse=stepPitch(s.lastPitch,-g.direction);
-      moves.push(
-        noteMove(expected,g.instrument,{continuesGesture:true,gestureKind:'run-step'}),
-        noteMove(guided,g.instrument,{continuesGesture:true,gestureKind:'run-guide'}),
-        noteMove(s.lastPitch,g.instrument,{continuesGesture:true,gestureKind:'run-repeat'}),
-        noteMove(reverse,g.instrument,{continuesGesture:true,gestureKind:'run-turn'}),
-        chordMove(s.targetHarmony,{breaksGesture:true,arrivesTarget:true}),
-        chordMove(s.currentHarmony,{breaksGesture:true,restates:true}),
-        dyadMove([guided,pick(t.pitches)],[g.instrument,pick(INSTRUMENTS.filter(x=>x!==g.instrument))],{breaksGesture:true})
-      );
-      return moves;
-    }
-    if(s.gesture?.type==='pair'){
-      const g=s.gesture,first=s.lastPitch||c.pitches[0],destination=nearestPitch(first,t.pitches),toward=directionToward(first,destination),next=stepPitch(first,toward),target=nearestPitch(next,t.pitches);
-      moves.push(
-        dyadMove([next,target],g.instruments,{continuesGesture:true,gestureKind:'pair-shift'}),
-        dyadMove([first,target],g.instruments,{continuesGesture:true,gestureKind:'pair-hold'}),
-        chordMove(s.targetHarmony,{breaksGesture:true,arrivesTarget:true}),
-        chordMove(s.currentHarmony,{breaksGesture:true,restates:true}),
-        noteMove(next,g.instruments[0],{breaksGesture:true})
-      );
-      return moves;
-    }
-    const pool=pitchPool(s).slice(0,7),fav=unique([s.lastInstrument,...INSTRUMENTS]).filter(Boolean);
-    pool.forEach((p,i)=>{
-      const instrument=fav[i%fav.length];
-      moves.push(noteMove(p,instrument));
-      if(i<4){ const dest=nearestPitch(p,t.pitches); moves.push(noteMove(p,instrument,{startsGesture:'run',gestureDirection:directionToward(p,dest)})); }
-    });
-    const common=c.pitches.filter(p=>t.pitches.includes(p)),incoming=t.pitches.filter(p=>!c.pitches.includes(p));
-    const bridgeStart=common[0]||nearestPitch(s.lastPitch||c.pitches[0],c.pitches), bridgeEnd=incoming[0]||nearestPitch(bridgeStart,t.pitches);
-    const pairA=[bridgeStart,bridgeEnd],pairB=[t.pitches[0],t.pitches[1]];
-    const pairDirection=directionToward(pairA[0],nearestPitch(pairA[0],t.pitches));
-    moves.push(
-      dyadMove(pairA,shuffle(INSTRUMENTS).slice(0,2)),
-      dyadMove(pairB,shuffle(INSTRUMENTS).slice(0,2),{startsGesture:'pair',gestureDirection:pairDirection}),
-      dyadMove(pairB,['guitar','mandolin','concertina'],{ensemble:true}),
-      chordMove(s.currentHarmony,{restates:true}),
-      chordMove(s.targetHarmony,{arrivesTarget:true})
-    );
-    const alt=bestTarget(c,{...s,targetTension:clamp(s.targetTension+(s.arc==='build'?.08:-.06),.07,.62)});
-    if(alt.name!==s.targetHarmony)moves.push(chordMove(alt.name,{alternateHarmony:true}));
-    return moves;
+  /* =====================================================
+     PHRASE / HARMONIC ROADMAP
+
+     One click still equals exactly one musical event.
+     The difference is that the system now decides what a whole phrase is
+     trying to do before the first note of that phrase is played.
+     ===================================================== */
+
+  const HOME_HARMONIES=['d-open','d-minor','d-min7'];
+
+  const HARMONIC_ROUTES=[
+    {name:'dorian-lift',weight:18,path:['g-major','d-minor']},
+    {name:'open-lift',weight:13,path:['g-open','g-major','d-open']},
+    {name:'seventh-return',weight:17,path:['c-open','d-minor']},
+    {name:'third-seventh-home',weight:11,path:['f-major','c-open','d-minor']},
+    {name:'second-fourth-home',weight:11,path:['e-min7','g-major','d-minor']},
+    {name:'minor-shadow',weight:9,path:['a-minor','c-open','d-minor']},
+    {name:'suspended-walk',weight:10,path:['e-suspended','g-open','d-open']},
+    {name:'home-colors',weight:11,path:['d-min7','d-open','d-minor']}
+  ];
+
+  const MOTIF_SHAPES={
+    rise:[[0,1,2,1,2],[0,1,0,2,1],[0,1,2,3,2]],
+    fall:[[0,-1,-2,-1,-2],[0,-1,0,-2,-1],[0,-1,-2,-3,-2]],
+    arch:[[0,1,2,1,0],[0,1,2,2,1,0],[0,1,2,1,-1,0]],
+    turn:[[0,1,0,-1,0],[0,-1,0,1,0],[0,1,0,1,-1,0]],
+    pedal:[[0,0,1,0,2,0],[0,1,0,0,-1,0],[0,0,2,1,0]]
+  };
+
+  function weightedInstrumentForPhrase(allowConcertina=true){
+    return weightedValue([
+      {value:'guitar',weight:INSTRUMENT_PROFILE.guitar.melodyWeight},
+      {value:'mandolin',weight:INSTRUMENT_PROFILE.mandolin.melodyWeight},
+      {value:'concertina',weight:allowConcertina?INSTRUMENT_PROFILE.concertina.melodyWeight:0}
+    ])||'guitar';
   }
 
-  function scoreMove(s,m){
-    const c=HARMONY[s.currentHarmony],t=HARMONY[s.targetHarmony],tension=eventTension(m),diss=moveDissonance(s,m);
-    let score=-Math.abs(tension-s.targetTension)*2.55-diss*2.15;
-    m.pitches.forEach(p=>{ if(c.pitches.includes(p))score+=.58; if(t.pitches.includes(p))score+=.76; if(p==='D')score+=.17; if(p==='A')score+=.08; });
-    if(m.type==='note'&&s.lastPitch){
-      const d=scaleDistance(s.lastPitch,m.pitches[0]);
-      score+=d===0?.48:d===1?1.42:d===2?.42:-.58;
-      const destination=nearestPitch(s.lastPitch,t.pitches),toward=directionToward(s.lastPitch,destination),expected=stepPitch(s.lastPitch,toward);
-      if(m.pitches[0]===expected)score+=.36;
-    }
-    if(s.gesture?.type==='run'){
-      if(m.continuesGesture){score+=3.15;if(m.gestureKind==='run-step'||m.gestureKind==='run-guide')score+=1.15;if(m.gestureKind==='run-turn'&&s.gesture.remaining<=3)score+=.58;}else score-=s.gesture.remaining>2?1.8:.20;
-      if(m.type==='chord'&&s.gesture.remaining<=2)score+=1.8;
-    }
-    if(s.gesture?.type==='pair'){
-      if(m.continuesGesture)score+=2.75;else score-=s.gesture.remaining>2?1.35:.16;
-      if(m.type==='chord'&&s.gesture.remaining<=2)score+=1.5;
-    }
-    if(m.startsGesture==='run')score+=s.clicksSinceChord<=2?1.08:.52;
-    if(m.startsGesture==='pair')score+=s.clicksSinceChord<=3?.88:.38;
+  function safeHarmony(name){
+    const h=HARMONY[name];
+    return Boolean(h&&!h.needsResolution&&structureDissonance(h.pitches)<.48);
+  }
 
-    if(s.resolutionDue>0){
-      if(resolvesTension(s,m))score+=s.resolutionDue===1?4.5:3.0;
-      else score-=s.resolutionDue===1?5.2:2.1;
-    }
-    if(diss>.58){
-      score-=2.1;
-      if(s.arc==='darken'||s.arc==='build')score+=.55;
-      if(m.type==='chord'&&HARMONY[m.harmonyName].needsResolution)score-=1.25;
+  function chooseRoadmap(){
+    const current=planner.currentHarmony;
+    const needsB=planner.eventsSinceB>=10;
+
+    const route=weightedValue(
+      HARMONIC_ROUTES.map(item=>{
+        let weight=item.weight;
+        if(item.name===planner.lastRoute)weight*=.34;
+        if(needsB&&item.path.some(name=>HARMONY[name]?.pitches.includes('B')))weight*=2.45;
+        if(item.path[0]===current)weight*=.48;
+        return {value:item,weight};
+      })
+    )||HARMONIC_ROUTES[0];
+
+    planner.lastRoute=route.name;
+    planner.roadmap=route.path.filter((name,i)=>safeHarmony(name)&&(i>0||name!==current));
+
+    if(!planner.roadmap.length)planner.roadmap=['d-minor'];
+  }
+
+  function nextRoadmapHarmony(){
+    if(!planner.roadmap.length)chooseRoadmap();
+
+    while(planner.roadmap.length>1&&planner.roadmap[0]===planner.currentHarmony){
+      planner.roadmap.shift();
     }
 
-    if(m.type==='chord'){
-      const h=HARMONY[m.harmonyName],prev=s.history.at(-1),isConsecutive=prev?.type==='chord';
-      if(isConsecutive){
-        const relation=shared(c,h),voice=harmonyDistance(c,h);
-        if(s.chordStreak===1){
-          score+=.42+relation*.30-voice*.07;
-          if(s.arc==='build'&&h.tension>=c.tension-.03)score+=.52;
-          if(s.arc==='release'&&h.tension<=c.tension+.01)score+=.78;
-          if(m.arrivesTarget)score+=.42;
-        }else if(s.chordStreak===2){
-          score-=1.05;
-          if(s.arc==='release'&&h.tension<c.tension&&m.arrivesTarget)score+=.78;
-        }else score-=4.2;
-      }else{
-        score+=s.clicksSinceChord>=7?4.2:s.clicksSinceChord>=5?2.6:s.clicksSinceChord>=3?1.05:s.clicksSinceChord>=1?.18:-.28;
+    return planner.roadmap.shift()||'d-minor';
+  }
+
+  function linearTargetIndex(fromPitch,targetPitches){
+    const from=scaleIndex(fromPitch);
+
+    return targetPitches
+      .map(p=>({pitch:p,index:scaleIndex(p),distance:Math.abs(scaleIndex(p)-from)}))
+      .sort((a,b)=>a.distance-b.distance)[0]||{pitch:fromPitch,index:from,distance:0};
+  }
+
+  function reflectScaleIndex(index){
+    let i=index;
+
+    while(i<0||i>=SCALE.length){
+      if(i<0)i=-i;
+      if(i>=SCALE.length)i=(SCALE.length-1)-(i-(SCALE.length-1));
+    }
+
+    return clamp(i,0,SCALE.length-1);
+  }
+
+  function phraseKindFor(current,target){
+    if(target.pitches.includes('B')&&!current.pitches.includes('B')){
+      return weightedValue([
+        {value:'rise',weight:7},
+        {value:'arch',weight:4},
+        {value:'turn',weight:2}
+      ])||'rise';
+    }
+
+    if(HOME_HARMONIES.includes(target.name)){
+      return weightedValue([
+        {value:'fall',weight:5},
+        {value:'arch',weight:4},
+        {value:'turn',weight:4},
+        {value:'pedal',weight:2}
+      ])||'fall';
+    }
+
+    return weightedValue([
+      {value:'arch',weight:5},
+      {value:'turn',weight:5},
+      {value:'rise',weight:3},
+      {value:'fall',weight:3},
+      {value:'pedal',weight:2}
+    ])||'turn';
+  }
+
+  function choosePhraseTexture(kind){
+    if(kind==='pedal'&&Math.random()<.38){
+      return {type:'dialogue',instruments:['guitar','mandolin']};
+    }
+
+    const type=weightedValue([
+      {value:'solo',weight:50},
+      {value:'dialogue',weight:30},
+      {value:'braid',weight:12},
+      {value:'concertina-answer',weight:8}
+    ])||'solo';
+
+    if(type==='solo'){
+      // The concertina recordings ring much longer than the plucked strings.
+      // Keep them out of free-running solo lines: use them as deliberate answers
+      // and common-tone glue instead.
+      return {
+        type,
+        instruments:[
+          weightedValue([
+            {value:'guitar',weight:1.15},
+            {value:'mandolin',weight:1}
+          ])||'guitar'
+        ]
+      };
+    }
+
+    if(type==='concertina-answer'){
+      return {
+        type:'concertina-answer',
+        instruments:[Math.random()<.58?'guitar':'mandolin','concertina']
+      };
+    }
+
+    const pair=weightedValue([
+      {value:['guitar','mandolin'],weight:78},
+      {value:['guitar','concertina'],weight:12},
+      {value:['mandolin','concertina'],weight:10}
+    ])||['guitar','mandolin'];
+
+    return {type,instruments:[...pair]};
+  }
+
+  function instrumentAt(texture,index){
+    if(texture.type==='solo')return texture.instruments[0];
+
+    if(texture.type==='braid'){
+      return texture.instruments[Math.floor(index/2)%texture.instruments.length];
+    }
+
+    if(texture.type==='concertina-answer'){
+      // Plucked instrument states the thought; the long concertina answers
+      // only at selected points instead of smearing every other note.
+      return index===1||index===texture.answerIndex
+        ?'concertina'
+        :texture.instruments[0];
+    }
+
+    return texture.instruments[index%texture.instruments.length];
+  }
+
+  function melodyRegister(instrument,pitch,index,kind){
+    if(instrument==='guitar'){
+      // Register 1 is the genuinely low guitar D-string octave.
+      // Use it deliberately and let mandolin register 1 supply the octave body.
+      if((pitch==='D'||pitch==='A')&&(kind==='pedal'||index===0)&&Math.random()<.22)return 1;
+      return 2;
+    }
+
+    if(instrument==='concertina')return 2;
+
+    // Mandolin register 1 starts on its D course and already sits well above
+    // the low guitar foundation.
+    return Math.random()<.67?1:2;
+  }
+
+  function chooseMotifShape(kind){
+    const library=MOTIF_SHAPES[kind]||MOTIF_SHAPES.turn;
+    const remembered=planner.motifMemory[kind];
+
+    let shape;
+
+    // Irish dance-tune syntax depends heavily on recognisable motives.
+    // Reuse a cell often enough that the ear can learn it, then make small
+    // variations rather than generating a fresh contour every phrase.
+    if(remembered&&Math.random()<.56){
+      shape=[...remembered];
+
+      if(shape.length>3&&Math.random()<.34){
+        const index=randInt(1,shape.length-2);
+        const delta=Math.random()<.5?-1:1;
+        shape[index]=clamp(shape[index]+delta,-3,3);
       }
-      if(m.arrivesTarget)score+=1.05;
-      if(m.restates&&s.history.slice(-3).some(x=>x.type!=='chord'))score+=.38;
-      if(h.color==='open'||h.color==='minor')score+=.18;
-      if(h.color==='haunt')score+=.12;
-    }
-    if(m.type==='ensemble-dyad')score+=s.clicksSinceChord>=2?.18:-.52;
-    const prev=s.history.at(-1),sig=signature(m);
-    if(prev){ if(prev.type===m.type)score+=.20; if(prev.instruments.includes(m.instruments[0]))score+=.31; }
-    const two=s.history.at(-2); if(two&&signature(two)===sig)score+=.72;
-    if(s.history.slice(-5).filter(x=>signature(x)===sig).length>=2&&!m.continuesGesture)score-=.86;
-    if(s.arc==='build'&&tension>=c.tension-.02&&tension<=.58)score+=.50;
-    if(s.arc==='release'){ if(tension<c.tension+.02)score+=.78; if(m.pitches.includes('D')||m.pitches.includes('A'))score+=.36; }
-    if(m.pitches.includes('B')&&diss<.55)score+=c.name==='d-minor'?.28:.10;
-    return score;
-  }
-
-  function applyMove(s,m,simulation=false){
-    const n=cloneState(s),diss=moveDissonance(s,m),resolvedExisting=s.resolutionDue>0&&resolvesTension(s,m);
-    n.arcSteps=Math.max(0,n.arcSteps-1);
-    if(m.type==='chord'){
-      const h=HARMONY[m.harmonyName];
-      n.currentHarmony=h.name; n.clicksSinceChord=0; n.chordStreak=(s.history.at(-1)?.type==='chord')?(s.chordStreak||1)+1:1; n.gesture=null; ensureArc(n);
-      const nextTarget=(h.needsResolution||diss>.58)?chooseResolutionTarget(h,n,simulation):(simulation?bestTarget(h,n):chooseTarget(h,n));
-      n.targetHarmony=nextTarget.name;
     }else{
-      n.clicksSinceChord++; n.chordStreak=0; n.lastPitch=m.pitches[m.pitches.length-1]; n.lastInstrument=m.instruments[0]||n.lastInstrument;
-      if(n.gesture){
-        if(m.continuesGesture){n.gesture.remaining--;if(m.gestureKind==='run-turn')n.gesture.direction*=-1;if(n.gesture.remaining<=0)n.gesture=null;}
-        else n.gesture=null;
+      shape=[...pick(library)];
+    }
+
+    planner.motifMemory[kind]=[...shape];
+    return shape;
+  }
+
+  function buildPitchPath(current,target,kind,noteCount){
+    const startPitch=planner.lastPitch&&SCALE.includes(planner.lastPitch)
+      ?planner.lastPitch
+      :(pick(current.pitches)||'D');
+
+    const startIndex=scaleIndex(startPitch);
+    const landing=linearTargetIndex(startPitch,target.pitches);
+    const shape=chooseMotifShape(kind);
+    const result=[];
+
+    for(let i=0;i<noteCount;i++){
+      const offset=shape[i%shape.length];
+      result.push(SCALE[reflectScaleIndex(startIndex+offset)]);
+    }
+
+    // For longer fragments, let the middle behave like a repeated cell rather
+    // than an unrelated string of scale notes.
+    if(noteCount>=6){
+      const cellLength=3;
+      const shift=
+        kind==='rise'
+          ?1
+          :kind==='fall'
+            ?-1
+            :0;
+
+      for(let i=cellLength;i<Math.min(noteCount-2,cellLength*2);i++){
+        const source=result[i-cellLength];
+        result[i]=shift===0
+          ?source
+          :stepPitch(source,shift);
       }
-      if(!n.gesture&&m.startsGesture==='run')n.gesture={type:'run',instrument:m.instruments[0],direction:m.gestureDirection||1,remaining:simulation?4:randInt(3,7)};
-      if(!n.gesture&&m.startsGesture==='pair')n.gesture={type:'pair',instruments:[...m.instruments].slice(0,2),direction:m.gestureDirection||1,remaining:simulation?4:randInt(3,6)};
     }
 
-    if(s.resolutionDue>0){
-      if(resolvedExisting){ n.resolutionDue=0; n.resolutionPitch=null; }
-      else n.resolutionDue=Math.max(0,s.resolutionDue-1);
-    }
-    if(diss>.58 && n.resolutionDue===0){
-      n.resolutionDue=m.type==='chord'?1:2;
-      n.resolutionPitch=nearestPitch(m.pitches[m.pitches.length-1],HARMONY[n.targetHarmony].pitches);
+    // B natural is the characteristic Dorian sixth. Use it as a purposeful
+    // lift when the destination is G/Em-ish, never as a random "spicy" note.
+    if(noteCount>=4&&target.pitches.includes('B')&&!result.includes('B')){
+      result[Math.max(1,noteCount-2)]='B';
     }
 
-    n.history.push({type:m.type,pitches:[...m.pitches],instruments:[...m.instruments],harmonyName:m.harmonyName||null,dissonance:diss});
-    if(n.history.length>12)n.history=n.history.slice(-12);
-    return n;
+    // The end of the fragment has a destination. The penultimate note is
+    // adjusted to approach it by step whenever the generated cell wandered.
+    result[result.length-1]=landing.pitch;
+
+    if(result.length>=2){
+      const before=result[result.length-2];
+
+      if(scaleDistance(before,landing.pitch)>1){
+        const direction=directionToward(before,landing.pitch);
+        result[result.length-2]=stepPitch(landing.pitch,-direction);
+      }
+    }
+
+    return result;
   }
-  function futureValue(s,depth){
-    if(depth<=0)return 0;
-    const scored=generateMoves(cloneState(s)).map(m=>({move:m,score:scoreMove(s,m)})).sort((a,b)=>b.score-a.score).slice(0,isMobile()?4:5);
-    if(!scored.length)return 0;
-    let best=-Infinity;
-    scored.forEach(x=>{ const next=applyMove(s,x.move,true),total=x.score+.57*futureValue(next,depth-1); if(total>best)best=total; });
-    return best;
+
+  function safeDyadFor(pitch,target){
+    const candidates=unique([...target.pitches,'D','A','G'])
+      .filter(p=>p!==pitch)
+      .map(p=>({
+        pitch:p,
+        diss:structureDissonance([pitch,p]),
+        distance:scaleDistance(pitch,p)
+      }))
+      .filter(x=>x.diss<.34)
+      .sort((a,b)=>(a.diss-b.diss)||(a.distance-b.distance));
+
+    return candidates[0]?.pitch||null;
   }
+
+  function choosePhraseLength(kind){
+    if(kind==='pedal'){
+      return weightedValue([
+        {value:3,weight:18},
+        {value:4,weight:34},
+        {value:5,weight:30},
+        {value:6,weight:18}
+      ])||4;
+    }
+
+    const family=weightedValue([
+      {value:'fragment',weight:20},
+      {value:'phrase',weight:60},
+      {value:'long',weight:20}
+    ])||'phrase';
+
+    if(family==='fragment')return randInt(1,3);
+    if(family==='long')return randInt(6,8);
+    return randInt(4,6);
+  }
+
+  function stableConcertinaPitch(pitch,current,target){
+    const common=current.pitches.filter(p=>target.pitches.includes(p));
+    const stable=unique([
+      ...common,
+      ...target.pitches.filter(p=>['D','A','G','C'].includes(p)),
+      'D',
+      'A'
+    ]);
+
+    return nearestPitch(pitch,stable);
+  }
+
+  function buildPhrase(){
+    const current=HARMONY[planner.currentHarmony]||HARMONY['d-open'];
+    const targetName=nextRoadmapHarmony();
+    const target=HARMONY[targetName]||HARMONY['d-minor'];
+
+    planner.targetHarmony=target.name;
+    planner.phraseNumber++;
+
+    let kind=phraseKindFor(current,target);
+
+    if(kind===planner.lastPhraseKind&&Math.random()<.56){
+      kind=pick(['rise','fall','arch','turn','pedal'].filter(x=>x!==kind));
+    }
+
+    planner.lastPhraseKind=kind;
+
+    const texture=choosePhraseTexture(kind);
+    let noteCount=choosePhraseLength(kind);
+
+    // The concertina samples are sustained/reedy. Treat them as held harmonic
+    // material, not as a fast melodic stream.
+    if(texture.type==='concertina-answer'){
+      noteCount=Math.min(Math.max(noteCount,2),4);
+      texture.answerIndex=noteCount>2?noteCount-2:1;
+    }
+    else if(texture.instruments.includes('concertina')){
+      noteCount=Math.min(noteCount,4);
+    }
+
+    const pitchPath=buildPitchPath(current,target,kind,noteCount);
+    const queue=[];
+
+    pitchPath.forEach((rawPitch,index)=>{
+      const instrument=instrumentAt(texture,index);
+
+      // If the long concertina is sounding, put it on a common/stable tone so
+      // its tail remains consonant underneath the next click or two.
+      const pitch=instrument==='concertina'
+        ?stableConcertinaPitch(rawPitch,current,target)
+        :rawPitch;
+
+      const preferredRegister=melodyRegister(instrument,pitch,index,kind);
+
+      let move=noteMove(
+        pitch,
+        instrument,
+        {
+          preferredRegister,
+          phraseKind:kind,
+          phraseTexture:texture.type,
+          phraseIndex:index,
+          phraseLength:noteCount,
+          motifRepeat:index>=3&&pitch===pitchPath[index-3]
+        }
+      );
+
+      const middle=index>0&&index<pitchPath.length-1;
+      const partner=safeDyadFor(pitch,target);
+
+      // A rare "two-note choir": on desktop this becomes the two pitches
+      // across guitar + mandolin + concertina (six actual source voices).
+      // It only happens on a consonant dyad and never immediately before the
+      // cadence, so the long concertina tail has somewhere safe to live.
+      const ensembleMoment=
+        middle&&
+        partner&&
+        structureDissonance([pitch,partner])<.24&&
+        Math.random()<.055;
+
+      if(ensembleMoment){
+        move=dyadMove(
+          [pitch,partner],
+          ['guitar','mandolin','concertina'],
+          {
+            ensemble:true,
+            phraseKind:kind,
+            phraseTexture:texture.type,
+            phraseIndex:index,
+            phraseLength:noteCount
+          }
+        );
+      }
+      else{
+        const dyadChance=
+          texture.type==='dialogue'
+            ?.15
+            :texture.type==='braid'
+              ?.12
+              :.065;
+
+        if(middle&&partner&&Math.random()<dyadChance){
+          const second=texture.instruments.find(x=>x!==instrument)||(
+            instrument==='guitar'?'mandolin':'guitar'
+          );
+
+          move=dyadMove(
+            [pitch,partner],
+            [instrument,second],
+            {
+              phraseKind:kind,
+              phraseTexture:texture.type,
+              phraseIndex:index,
+              phraseLength:noteCount
+            }
+          );
+        }
+      }
+
+      queue.push(move);
+    });
+
+    // Consecutive chords are a punctuation device, not a random coincidence.
+    // They occur at phrase endings when the two sonorities share tones or move
+    // with short voice-leading distance.
+    const canDouble=
+      current.name!==target.name&&
+      (shared(current,target)>=1||harmonyDistance(current,target)<=5)&&
+      structureDissonance(target.pitches)<.45;
+
+    const doubleChord=canDouble&&Math.random()<.27;
+
+    if(doubleChord){
+      queue.push(
+        chordMove(
+          current.name,
+          {
+            restates:true,
+            phraseKind:kind,
+            phraseTexture:texture.type,
+            chordRole:'preparation'
+          }
+        )
+      );
+    }
+
+    queue.push(
+      chordMove(
+        target.name,
+        {
+          arrivesTarget:true,
+          phraseEnd:true,
+          phraseKind:kind,
+          phraseTexture:texture.type,
+          chordRole:doubleChord?'answer':'cadence'
+        }
+      )
+    );
+
+    while(planner.roadmap[0]===target.name)planner.roadmap.shift();
+
+    planner.phraseQueue=queue;
+
+    warmPitches(unique([...current.pitches,...target.pitches,...pitchPath]));
+  }
+
   function planNextMove(){
-    ensureArc(planner);
-    if(planner.history.length===0)return chordMove(planner.currentHarmony,{restates:true});
-    const depth=isMobile()?3:4,moves=generateMoves(cloneState(planner));
-    const scored=moves.map(move=>{ const immediate=scoreMove(planner,move),next=applyMove(planner,move,true),future=futureValue(next,depth-1); return {move,score:immediate+.60*future}; });
-    return softmaxPick(scored,planner.arc==='hover'?1.16:1.00)?.move||moves[0];
+    if(!planner.phraseQueue.length)buildPhrase();
+    return planner.phraseQueue.shift();
   }
+
   function commitMove(move){
-    const next=applyMove(planner,move,false);
-    Object.assign(planner,next);
-    warmPitches(unique([...HARMONY[planner.currentHarmony].pitches,...HARMONY[planner.targetHarmony].pitches,planner.resolutionPitch].filter(Boolean)));
+    const previous=planner.history.at(-1);
+
+    planner.justEndedPhrase=Boolean(move.phraseEnd);
+
+    if(move.type==='chord'){
+      planner.currentHarmony=move.harmonyName;
+      planner.targetHarmony=move.harmonyName;
+      planner.clicksSinceChord=0;
+      planner.chordStreak=previous?.type==='chord'?planner.chordStreak+1:1;
+    }else{
+      planner.clicksSinceChord++;
+      planner.chordStreak=0;
+      planner.lastPitch=move.pitches.at(-1)||planner.lastPitch;
+      planner.lastInstrument=move.instruments[0]||planner.lastInstrument;
+    }
+
+    planner.eventsSinceB=move.pitches.includes('B')?0:planner.eventsSinceB+1;
+
+    planner.history.push({
+      type:move.type,
+      pitches:[...move.pitches],
+      instruments:[...move.instruments],
+      harmonyName:move.harmonyName||null,
+      phraseKind:move.phraseKind||null,
+      phraseEnd:Boolean(move.phraseEnd)
+    });
+
+    if(planner.history.length>16)planner.history=planner.history.slice(-16);
+
+    const nextHarmony=planner.roadmap[0]&&HARMONY[planner.roadmap[0]]
+      ?HARMONY[planner.roadmap[0]].pitches
+      :[];
+
+    warmPitches(unique([...HARMONY[planner.currentHarmony].pitches,...nextHarmony]));
   }
 
   function addHarmonic(voices,pitches,chance=.08){
@@ -787,11 +1398,10 @@
   }
   function preferredRegisterFor(instrument,context='free'){
     if(instrument==='guitar'){
-      if(context==='run')return Math.random()<.80?2:1;
-      return Math.random()<.68?2:1;
+      return Math.random()<(context==='run'?.94:.88)?2:1;
     }
-    if(instrument==='concertina')return Math.random()<.78?2:1;
-    return Math.random()<.58?2:1;
+    if(instrument==='concertina')return Math.random()<.88?2:1;
+    return Math.random()<.62?1:2;
   }
   function pushUniqueVoice(voices,sample,gainScale=1){
     if(!sample||voices.some(v=>v.id===sample.id))return false;
@@ -854,36 +1464,100 @@
     }
 
     if(move.type==='chord'){
-      const h=HARMONY[move.harmonyName],consecutive=planner.history.at(-1)?.type==='chord';
-      const target=randInt(isMobile()?4:5,consecutive?(isMobile()?5:6):(isMobile()?6:7));
+      const h=HARMONY[move.harmonyName];
+      const consecutive=planner.history.at(-1)?.type==='chord';
+
+      const target=consecutive
+        ?randInt(isMobile()?4:5,isMobile()?5:6)
+        :randInt(isMobile()?5:6,isMobile()?6:7);
+
       const anchor=chordAnchorPitch(h);
 
-      // The guitar's register-1 samples are deliberately treated as a true low foundation.
-      // Whenever that register is used for the anchor, mandolin register 1 doubles it for body/texture.
-      addLowGuitarMandolinPair(voices,anchor,consecutive?.78:.86,consecutive?.67:.75);
+      // Guitar register 1 is the lowest recorded foundation. Mandolin
+      // register 1 doubles the same pitch class an octave-ish higher for body.
+      addLowGuitarMandolinPair(
+        voices,
+        anchor,
+        consecutive?.72:.82,
+        consecutive?.60:.70
+      );
 
-      // Cover every remaining pitch class clearly, mostly above the low pair.
-      h.pitches.filter(p=>p!==anchor).forEach(pitch=>{
-        const instrument=weightedInstrument(sampleCountByInstrument(voices,'concertina')<VOICING.concertinaChordMax);
-        const reg=instrument==='concertina'?2:(Math.random()<.78?2:1);
-        if(instrument==='guitar'&&reg===1)addLowGuitarMandolinPair(voices,pitch,.72,.62);
-        else pushUniqueVoice(voices,chooseSample(instrument,pitch,reg),instrument==='concertina'?.64:.86);
-      });
+      // Guitar and mandolin alternate the upper chord tones. That stable
+      // orchestration gives one chord a family resemblance to the next.
+      let upperIndex=0;
+
+      h.pitches
+        .filter(p=>p!==anchor)
+        .forEach(pitch=>{
+          const instrument=upperIndex++%2===0?'guitar':'mandolin';
+
+          pushUniqueVoice(
+            voices,
+            chooseSample(instrument,pitch,2),
+            instrument==='guitar'?.80:.76
+          );
+        });
+
+      // Let concertina sustain a COMMON TONE when possible. This uses its
+      // long reed decay as glue instead of adding another random chord tone.
+      const previousChord=[...planner.history]
+        .reverse()
+        .find(x=>x.type==='chord'&&x.harmonyName&&HARMONY[x.harmonyName]);
+
+      const previousHarmony=previousChord?HARMONY[previousChord.harmonyName]:null;
+      const common=previousHarmony
+        ?h.pitches.filter(p=>previousHarmony.pitches.includes(p))
+        :[];
+
+      const concertinaPitch=
+        common.find(p=>['D','A','G','C'].includes(p))||
+        h.pitches.find(p=>['D','A','G'].includes(p));
+
+      if(concertinaPitch&&Math.random()<(consecutive?.42:.58)){
+        pushUniqueVoice(
+          voices,
+          chooseSample('concertina',concertinaPitch,2),
+          .50
+        );
+      }
 
       let guard=0;
-      while(voices.length<target&&guard++<40){
-        const pitch=weightedValue(h.pitches.map(p=>({value:p,weight:1/(1+sampleCountByPitch(voices,p))})))||pick(h.pitches);
-        const allowConcertina=sampleCountByInstrument(voices,'concertina')<VOICING.concertinaChordMax;
-        const instrument=weightedInstrument(allowConcertina);
-        const reg=instrument==='guitar'?(Math.random()<.78?2:1):instrument==='mandolin'?(Math.random()<.60?2:1):2;
-        if(instrument==='guitar'&&reg===1){
-          if(Math.random()<VOICING.guitarLowPairChance)addLowGuitarMandolinPair(voices,pitch,.70,.60);
-          else pushUniqueVoice(voices,chooseSample('guitar',pitch,1),.68);
-        }else{
-          pushUniqueVoice(voices,chooseSample(instrument,pitch,reg),instrument==='concertina'?.60:.78);
+
+      while(voices.length<target&&guard++<30){
+        const pitch=weightedValue(
+          h.pitches.map(p=>({
+            value:p,
+            weight:1/(1+sampleCountByPitch(voices,p))
+          }))
+        )||anchor;
+
+        const instrument=
+          sampleCountByInstrument(voices,'guitar')<=sampleCountByInstrument(voices,'mandolin')
+            ?'guitar'
+            :'mandolin';
+
+        const added=pushUniqueVoice(
+          voices,
+          chooseSample(instrument,pitch,2),
+          instrument==='guitar'?.72:.68
+        );
+
+        if(!added){
+          pushUniqueVoice(
+            voices,
+            chooseSample(instrument==='guitar'?'mandolin':'guitar',pitch,2),
+            .66
+          );
         }
       }
-      addHarmonic(voices,h.pitches,VOICING.chordHarmonicChance);
+
+      if(
+        (h.color==='open'||h.color==='dorian'||h.name==='g-major')&&
+        !consecutive
+      ){
+        addHarmonic(voices,h.pitches,VOICING.chordHarmonicChance);
+      }
+
       return voices;
     }
     return voices;
@@ -1060,6 +1734,7 @@
 
     let longest=0;
     let scheduled=0;
+    const scheduledVoices=[];
 
     const budget=voiceBudgetForMove(move,loaded.length);
 
@@ -1087,6 +1762,7 @@
         )
       ){
         scheduled++;
+        scheduledVoices.push(entry.sample);
       }
     });
 
@@ -1103,43 +1779,89 @@
 
     return {
       ringMs,
-      voiceCount:scheduled
+      voiceCount:scheduled,
+      voices:scheduledVoices
     };
   }
 
   function autoplayDelay(result){
-    if(!result)return 2200;
-    if(result.kind==='drone')return rand(6200,7600);
+    if(!result)return rand(4200,7000);
+    if(result.kind==='drone')return rand(8200,11600);
+
     const event=result.event;
+    const ring=result.ringMs||4200;
+    const instruments=event.instruments||[];
 
-    // Dissonance is allowed as color, but autoplay moves toward its resolution quickly.
-    if(planner.resolutionDue>0)return rand(planner.resolutionDue===1?460:620,planner.resolutionDue===1?820:1050);
-
-    if(planner.gesture?.type==='run'&&event.type==='note'){
-      if(planner.arc==='build'||planner.arc==='darken')return rand(430,720);
-      if(planner.arc==='release')return rand(690,1080);
-      return rand(520,900);
-    }
-    if(planner.gesture?.type==='pair'&&(event.type==='dyad'||event.type==='ensemble-dyad'))return rand(720,1250);
+    let delay;
 
     if(event.type==='chord'){
-      const previous=planner.history.at(-2),consecutive=previous?.type==='chord';
-      if(consecutive){
-        if(planner.chordStreak>=3)return rand(2700,4200);
-        if(planner.arc==='build'||planner.arc==='darken')return rand(1350,2350);
-        if(planner.arc==='release')return rand(2100,3500);
-        return rand(1750,2900);
+      const previous=planner.history.at(-2);
+      const consecutive=previous?.type==='chord';
+
+      /*
+        Consecutive chords may answer each other, so they are
+        a little closer together — but still never rushed.
+      */
+
+      delay=consecutive
+        ?rand(4200,7200)
+        :rand(5600,9800);
+    }
+    else if(event.type==='ensemble-dyad'){
+      delay=rand(4000,7400);
+    }
+    else if(event.type==='dyad'){
+      delay=rand(3400,6400);
+    }
+    else{
+      if(event.motifRepeat){
+        /*
+          A repeated motive can tighten slightly, but it
+          still breathes enough to avoid becoming a beat.
+        */
+        delay=rand(2200,4200);
       }
-      if(planner.arc==='release')return rand(3400,5400);
-      if(planner.arc==='build'||planner.arc==='darken')return rand(2000,3400);
-      return rand(2600,4400);
+      else if(instruments.length===1&&instruments[0]==='mandolin'){
+        delay=rand(2600,5100);
+      }
+      else{
+        delay=rand(3100,6200);
+      }
     }
 
-    if(event.type==='ensemble-dyad')return rand(1200,2200);
-    if(event.type==='dyad')return rand(820,1600);
-    if(planner.arc==='build'||planner.arc==='darken')return rand(520,1050);
-    if(planner.arc==='release')return rand(900,1750);
-    return rand(680,1450);
+    /*
+      Respect the recorded envelopes:
+      concertina = longest;
+      guitar = lingering;
+      mandolin = shortest / tremolo punctuation.
+    */
+
+    if(instruments.includes('concertina')){
+      delay+=rand(2300,4700);
+    }
+    else if(instruments.includes('guitar')){
+      delay+=rand(700,1900);
+    }
+    else if(instruments.length===1&&instruments[0]==='mandolin'){
+      delay+=rand(0,700);
+    }
+
+    delay+=clamp(ring*.12,380,920);
+
+    /*
+      Phrase endings get substantial negative space.
+      Smaller breaths can also occur inside phrases at
+      irregular points, never on a fixed count.
+    */
+
+    if(event.phraseEnd){
+      delay+=rand(4200,8400);
+    }
+    else if(Math.random()<.28){
+      delay+=rand(2000,5400);
+    }
+
+    return clamp(delay,2200,16500);
   }
 
   async function musicalAction(origin,point){
@@ -1161,7 +1883,33 @@
       if(audioState.muted){audioState.muted=false;updateMaster();updateSoundButton();}
       if(!audioState.droneStarted) result=await startDrone(point);
       else{
-        const move=planNextMove(), playback=await playMove(move); if(!playback)return null; commitMove(move); createMark(move,point,playback.ringMs); driveVisuals(move,playback.ringMs); result={kind:'music',event:move,ringMs:playback.ringMs};
+        const move=planNextMove(), playback=await playMove(move);
+
+        if(!playback)return null;
+
+        commitMove(move);
+
+        createMark(
+          move,
+          point,
+          playback.ringMs,
+          playback.voiceCount,
+          playback.voices
+        );
+
+        driveVisuals(
+          move,
+          playback.ringMs,
+          playback.voiceCount,
+          playback.voices
+        );
+
+        result={
+          kind:'music',
+          event:move,
+          ringMs:playback.ringMs,
+          voiceCount:playback.voiceCount
+        };
       }
       return result;
     }finally{
