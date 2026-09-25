@@ -94,3 +94,453 @@ button{font:inherit}
   display:block;
   width:100%;
   max-width:1100px;
+  aspect-ratio:3/2;
+  margin:0;
+  overflow:hidden;
+  isolation:isolate;
+  background:var(--paper);
+  opacity:0;
+  contain:layout paint style;
+  touch-action:pan-y;
+  outline:none;
+  transition:opacity 280ms ease;
+}
+.fuji-interactive.is-ready{opacity:1}
+.fuji-interactive:focus-visible{outline:2px solid var(--ink);outline-offset:5px}
+
+.fuji-base{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  pointer-events:none;
+  user-select:none;
+  transform:translate3d(0,0,0);
+  backface-visibility:hidden;
+}
+
+.fuji-photo-tint{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  opacity:0;
+  pointer-events:none;
+  will-change:opacity;
+}
+
+.fuji-building-stack{
+  position:absolute;
+  inset:0;
+  z-index:12;
+  pointer-events:none;
+}
+.fuji-building{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  opacity:0;
+  pointer-events:none;
+  user-select:none;
+  transform:translate3d(0,0,0);
+  backface-visibility:hidden;
+  transition:opacity 420ms ease,filter 420ms ease,transform 420ms ease;
+}
+
+.fuji-lines{
+  position:absolute;
+  inset:0;
+  z-index:20;
+  pointer-events:none;
+}
+.fuji-line-layer{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 360ms ease-in-out;
+}
+.fuji-line-source{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  pointer-events:none;
+  user-select:none;
+  transition:filter 300ms ease,opacity 300ms ease;
+}
+.fuji-line-texture{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  pointer-events:none;
+  background-repeat:no-repeat;
+  transition:opacity 300ms ease,filter 300ms ease;
+}
+.fuji-line-layer.has-alpha .fuji-line-texture{
+  -webkit-mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  -webkit-mask-size:100% 100%;
+  mask-repeat:no-repeat;
+  mask-position:center;
+  mask-size:100% 100%;
+}
+.fuji-line-layer.has-white-canvas .fuji-line-texture{mix-blend-mode:multiply}
+
+/* =========================================================
+   ONBOARDING / CONTROLS
+   ========================================================= */
+
+.fuji-click-prompt{
+  position:absolute;
+  left:50%;
+  top:50%;
+  z-index:90;
+  transform:translate(-50%,-50%);
+  max-width:84%;
+  color:#fff;
+  font-size:clamp(22px,2.45vw,39px);
+  font-weight:700;
+  line-height:.95;
+  letter-spacing:-.055em;
+  text-align:center;
+  white-space:nowrap;
+  mix-blend-mode:overlay;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 480ms ease,visibility 480ms ease;
+}
+.fuji-click-prompt.is-visible{opacity:.96;visibility:visible}
+
+.fuji-controls{
+  position:absolute;
+  right:13px;
+  bottom:11px;
+  z-index:100;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:5px;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 520ms ease,visibility 520ms ease;
+}
+.fuji-controls.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+.fuji-control{
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.15;
+  letter-spacing:-.02em;
+  text-align:right;
+  cursor:pointer;
+  mix-blend-mode:screen;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.fuji-control:hover{text-decoration:underline;text-underline-offset:2px}
+
+/* =========================================================
+   PRINT-LIKE MUSIC MARKS
+   Pop in at final size, then fade with only a very slight shrink.
+   ========================================================= */
+
+.fuji-splash-layer{
+  position:absolute;
+  inset:0;
+  z-index:34;
+  overflow:hidden;
+  pointer-events:none;
+}
+.fuji-splash{
+  position:absolute;
+  left:var(--x);
+  top:var(--y);
+  width:var(--size);
+  aspect-ratio:1/1;
+
+  border-radius:50%;
+
+  opacity:var(--mark-opacity);
+  pointer-events:none;
+
+  transform:translate(-50%,-50%) scale(1);
+  transform-origin:center;
+
+  /*
+    Deliberately simple and visible:
+    a translucent photographic/ink circle, not a UI bubble.
+  */
+
+  background:
+    radial-gradient(
+      circle at 42% 38%,
+      var(--mark-color-c) 0 18%,
+      var(--mark-color-a) 37%,
+      var(--mark-color-b) 68%,
+      transparent 82%
+    ),
+    repeating-radial-gradient(
+      circle at 38% 42%,
+      rgba(255,255,255,.15) 0 1px,
+      transparent 1px 4px
+    );
+
+  background-blend-mode:normal,soft-light;
+
+  filter:
+    saturate(1.22)
+    contrast(1.05);
+
+  animation:
+    fuji-mark-fade
+    var(--mark-duration)
+    cubic-bezier(.24,.52,.32,1)
+    forwards;
+}
+
+@keyframes fuji-mark-fade{
+  0%{
+    opacity:var(--mark-opacity);
+    transform:translate(-50%,-50%) scale(1);
+  }
+
+  15%{
+    opacity:var(--mark-opacity);
+    transform:translate(-50%,-50%) scale(.995);
+  }
+
+  100%{
+    opacity:0;
+    transform:translate(-50%,-50%) scale(.97);
+  }
+}
+
+.fuji-filter-defs{
+  position:absolute;
+  width:0;
+  height:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+
+/* =========================================================
+   FILM GALLERY
+
+   A quieter second layer beneath the interactive piece:
+   one photograph per row, all the same width, slightly
+   narrower than the top artwork.
+   ========================================================= */
+
+.film-gallery{
+  width:92%;
+  max-width:1012px;
+  margin-top:clamp(62px,7vw,108px);
+
+  display:flex;
+  flex-direction:column;
+
+  gap:clamp(38px,5vw,72px);
+}
+
+.film-gallery-image{
+  display:block;
+
+  width:100%;
+  height:auto;
+
+  margin:0;
+
+  background:transparent;
+}
+
+
+/* Keep the gallery slightly inset on small screens too. */
+
+@media(max-width:700px){
+  .film-gallery{
+    width:94%;
+    margin-top:54px;
+    gap:38px;
+  }
+}
+
+@media(max-width:420px){
+  .film-gallery{
+    width:95%;
+    margin-top:46px;
+    gap:32px;
+  }
+}
+
+
+/* =========================================================
+   WIP OVERLAY / HORSE
+   ========================================================= */
+
+.wip-overlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+  overflow:auto;
+  background:var(--paper);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 160ms ease,visibility 160ms ease;
+}
+.wip-overlay.is-visible{opacity:1;visibility:visible;pointer-events:auto}
+.wip-inner{
+  width:min(92vw,700px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.wip-header{
+  position:relative;
+  z-index:100;
+  width:min(69vh,680px,88vw);
+  display:flex;
+  align-items:stretch;
+  margin:0;
+  background:var(--paper);
+  border:1px solid rgba(17,17,15,.46);
+}
+.wip-text{
+  flex:1 1 auto;
+  margin:0;
+  padding:14px 19px 15px;
+  color:var(--ink);
+  font-size:clamp(19px,1.65vw,26px);
+  font-weight:700;
+  line-height:1;
+  letter-spacing:-.045em;
+}
+.wip-close{
+  flex:0 0 52px;
+  width:52px;
+  margin:0;
+  padding:0;
+  border:0;
+  border-left:1px solid rgba(17,17,15,.46);
+  background:transparent;
+  color:var(--ink);
+  font-family:Helvetica,Arial,sans-serif;
+  font-size:34px;
+  line-height:1;
+  cursor:pointer;
+}
+.wip-close:hover{color:var(--paper);background:var(--ink)}
+
+.collage-stage{
+  --visual-reveal:0;
+  position:relative;
+  width:min(69vh,680px,88vw);
+  aspect-ratio:1/1;
+  overflow:hidden;
+  border:0;
+  box-shadow:none;
+  background:transparent;
+  opacity:var(--visual-reveal);
+  transition:opacity 90ms linear;
+}
+
+.horse{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  pointer-events:none;
+  user-select:none;
+}
+
+.horse-main{
+  opacity:1;
+  mix-blend-mode:normal;
+  filter:none;
+  transform:none;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media(max-width:1100px){
+  .photo-page{padding-right:375px}
+  .photo-title{font-size:clamp(32px,4.8vw,56px)}
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:700px){
+  .scarf-rack{
+    top:10px;
+    left:0;
+    right:0;
+    flex-direction:row;
+    align-items:center;
+    width:100%;
+    gap:6px;
+    padding:4px 14px 12px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .scarf-rack::-webkit-scrollbar{display:none}
+  .scarf-item{flex:0 0 auto;width:285px;height:auto;transform:none}
+  .scarf-item img{width:100%;height:auto}
+  .scarf-home{width:315px;transform:none}
+  .scarf-item:hover,.scarf-home:hover{transform:none}
+
+  .photo-page{min-height:100svh;padding:180px 22px 70px}
+  .photo-title{font-size:clamp(34px,10vw,50px)}
+  .photo-canvas{margin-top:26px;padding-bottom:40px}
+  .fuji-click-prompt{font-size:clamp(20px,6.5vw,31px)}
+  .fuji-controls{right:8px;bottom:8px;gap:4px}
+  .fuji-control{font-size:10px}
+  .fuji-line-layer,.fuji-line-source,.fuji-line-texture{transition-duration:420ms}
+  .fuji-building{transition-duration:540ms}
+
+  .wip-overlay{padding:18px 12px}
+  .wip-inner{width:94vw}
+  .wip-header,.collage-stage{width:min(82vh,94vw)}
+  .wip-text{min-width:0;padding:12px 13px;font-size:17px}
+  .wip-close{flex-basis:47px;width:47px;font-size:31px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .fuji-splash{display:none}
+  .fuji-photo-tint{transition-duration:700ms!important}
+  .fuji-building,.fuji-line-layer,.fuji-line-source,.fuji-line-texture{transition-duration:700ms!important}
+}
+
+@media(max-width:420px){
+  .scarf-item{width:248px}
+  .scarf-home{width:278px}
+  .photo-page{padding-top:164px}
+  .photo-title{font-size:clamp(32px,9.5vw,44px)}
+  .photo-canvas{margin-top:24px}
+}
