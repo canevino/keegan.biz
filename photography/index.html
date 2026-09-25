@@ -180,8 +180,16 @@
         "";
 
 
+      /*
+        Keep the gallery lightweight, but make the first few shuffled
+        photographs load immediately. This prevents the gallery from
+        looking blank until the user starts scrolling.
+      */
+
       image.loading =
-        "lazy";
+        index < 3
+          ? "eager"
+          : "lazy";
 
 
       image.decoding =
@@ -189,7 +197,9 @@
 
 
       image.fetchPriority =
-        "low";
+        index === 0
+          ? "auto"
+          : "low";
 
 
       /*
@@ -313,24 +323,140 @@
       return n/(c.width*c.height)>.025;
     }catch{return false;}
   }
-  async function prepareOverlayAssets(){
-    activeBuildings = buildingEls.slice(0,isMobile()?2:4);
-    buildingEls.slice(activeBuildings.length).forEach(el=>el.style.display='none');
-    const selected = isMobile()?shuffle(allLines).slice(0,6):allLines;
-    allLines.forEach(item=>{ if(!selected.includes(item)) item.layer.style.display='none'; });
-    await Promise.allSettled(activeBuildings.map(hydrate));
-    await Promise.allSettled(selected.map(item=>hydrate(item.source)));
-    const w=base.naturalWidth,h=base.naturalHeight;
-    validLines=selected.filter(item=>{
-      if(item.source.naturalWidth!==w || item.source.naturalHeight!==h){ item.layer.style.display='none'; return false; }
-      if(hasAlpha(item.source)){
-        item.layer.classList.add('has-alpha');
-        item.texture.style.webkitMaskImage=`url("${item.source.src}")`;
-        item.texture.style.maskImage=`url("${item.source.src}")`;
-      }else item.layer.classList.add('has-white-canvas');
-      return true;
+  let overlayAssetsPromise=null;
+
+  function hardResetArtworkVisuals(){
+    tintToken++;
+    tint.style.transition='none';
+    tint.style.opacity='0';
+
+    splashLayer.replaceChildren();
+
+    allLines.forEach(item=>{
+      item.token++;
+      item.layer.style.display='';
+      item.layer.style.transitionDuration='0ms';
+      item.layer.style.opacity='0';
+
+      item.source.style.opacity='0';
+      item.source.style.filter='none';
+      item.source.style.mixBlendMode='normal';
+
+      item.texture.style.opacity='0';
+      item.texture.style.backgroundImage='none';
+
+      item.layer.classList.remove(
+        'has-alpha',
+        'has-white-canvas'
+      );
     });
-    resetVisuals(true);
+
+    buildingEls.forEach(el=>{
+      el._token=(el._token||0)+1;
+      el.style.display='';
+      el.style.transitionDuration='0ms';
+      el.style.opacity='0';
+      el.style.filter='none';
+      el.style.transform='translate3d(0,0,0)';
+      el.style.mixBlendMode='normal';
+    });
+  }
+
+  async function prepareOverlayAssets(){
+    if(overlayAssetsPromise)return overlayAssetsPromise;
+
+    overlayAssetsPromise=(async()=>{
+      /*
+        Always begin from a completely hidden visual state.
+        This matters on refresh/back-forward-cache restores, where inline
+        animation styles from the previous page instance can otherwise
+        survive long enough to flash or remain visible.
+      */
+      hardResetArtworkVisuals();
+
+      activeBuildings =
+        buildingEls.slice(
+          0,
+          isMobile()
+            ? 2
+            : 4
+        );
+
+      buildingEls
+        .slice(activeBuildings.length)
+        .forEach(
+          el=>{
+            el.style.display='none';
+          }
+        );
+
+      const selected =
+        isMobile()
+          ? shuffle(allLines).slice(0,6)
+          : allLines;
+
+      allLines.forEach(
+        item=>{
+          if(!selected.includes(item)){
+            item.layer.style.display='none';
+          }
+        }
+      );
+
+      await Promise.allSettled(
+        activeBuildings.map(hydrate)
+      );
+
+      await Promise.allSettled(
+        selected.map(
+          item=>hydrate(item.source)
+        )
+      );
+
+      const w=base.naturalWidth;
+      const h=base.naturalHeight;
+
+      validLines=
+        selected.filter(
+          item=>{
+            if(
+              item.source.naturalWidth!==w ||
+              item.source.naturalHeight!==h
+            ){
+              item.layer.style.display='none';
+              return false;
+            }
+
+            if(hasAlpha(item.source)){
+              item.layer.classList.add(
+                'has-alpha'
+              );
+
+              item.texture.style.webkitMaskImage=
+                `url("${item.source.src}")`;
+
+              item.texture.style.maskImage=
+                `url("${item.source.src}")`;
+            }
+            else{
+              item.layer.classList.add(
+                'has-white-canvas'
+              );
+            }
+
+            return true;
+          }
+        );
+
+      resetVisuals(true);
+    })();
+
+    try{
+      await overlayAssetsPromise;
+    }
+    finally{
+      overlayAssetsPromise=null;
+    }
   }
 
   const tutorial={step:0,timers:[]};
@@ -493,40 +619,245 @@
     setTimeout(()=>{ if(token!==tintToken)return; tint.style.transition=`opacity ${Math.max(1600,ringMs*.42)}ms ease`; tint.style.opacity='0'; },clamp(ringMs*.58,1700,4800));
   }
   function driveVisuals(event,ringMs,voiceCount=1,actualVoices=[]){
-    if(REDUCED.matches) return;
+    if(REDUCED.matches)return;
 
-    const v=visualForEvent(event,actualVoices);
-    const density=clamp((voiceCount-1)/7,0,1);
+    /*
+      Actual sounding voices still inform the pigment,
+      but the architectural drawing goes back to the stable
+      EVENT-based behavior from the earlier version.
 
-    v.intensity=clamp(v.intensity*(.82+density*.30),.20,1);
-    attackTint(v,ringMs);
+      This prevents a seven-source chord from suddenly exposing
+      seven competing perspective-line directions.
+    */
 
-    // More actual sounding voices = more architectural activity.
-    const densityLines=clamp(Math.ceil(voiceCount*.72),1,isMobile()?4:6);
-    const n=Math.max(
-      densityLines,
-      event.type==='chord'?3:event.type==='ensemble-dyad'?2:1
+    const v=
+      visualForEvent(
+        event,
+        actualVoices
+      );
+
+    attackTint(
+      v,
+      ringMs
     );
-    preferredLines(event,n).forEach((item,i)=>{
-      const token=++item.token; configureLine(item,v,v.intensity,'attack'); item.layer.style.transitionDuration=`${rand(70,event.type==='chord'?145:120)}ms`; item.layer.style.opacity=item.layer.dataset.targetOpacity;
-      setTimeout(()=>{ if(token!==item.token)return; const softer={...v,primary:mixHex(v.primary,'#8a8a73',.16),secondary:mixHex(v.secondary,'#6f735f',.18)}; configureLine(item,softer,v.intensity*.72,'bloom'); item.layer.style.transitionDuration=`${clamp(ringMs*.34,900,2600)}ms`; item.layer.style.opacity=item.layer.dataset.targetOpacity; },170+i*32+rand(0,110));
-      setTimeout(()=>{ if(token!==item.token)return; item.layer.style.transitionDuration=`${clamp(ringMs*.40,1300,3100)}ms`; item.layer.style.opacity=event.type==='note'?'0':(Math.random()<.55?'0':(Number(item.layer.dataset.targetOpacity)*.34).toFixed(3)); },clamp(ringMs*.58,1800,5000));
-    });
+
+    const n=
+      event.type==='chord'
+        ?randInt(
+            3,
+            isMobile()
+              ? 4
+              : 6
+          )
+        :event.type==='ensemble-dyad'
+          ?randInt(2,4)
+          :event.type==='dyad'
+            ?randInt(2,3)
+            :1;
+
+    preferredLines(
+      event,
+      n
+    ).forEach(
+      (item,i)=>{
+        const token=
+          ++item.token;
+
+        configureLine(
+          item,
+          v,
+          v.intensity,
+          'attack'
+        );
+
+        item.layer.style.transitionDuration=
+          `${rand(
+            70,
+            event.type==='chord'
+              ? 145
+              : 120
+          )}ms`;
+
+        item.layer.style.opacity=
+          item.layer.dataset.targetOpacity;
+
+        setTimeout(
+          ()=>{
+            if(token!==item.token)return;
+
+            const softer={
+              ...v,
+              primary:mixHex(
+                v.primary,
+                '#8a8a73',
+                .16
+              ),
+              secondary:mixHex(
+                v.secondary,
+                '#6f735f',
+                .18
+              )
+            };
+
+            configureLine(
+              item,
+              softer,
+              v.intensity*.72,
+              'bloom'
+            );
+
+            item.layer.style.transitionDuration=
+              `${clamp(
+                ringMs*.34,
+                900,
+                2600
+              )}ms`;
+
+            item.layer.style.opacity=
+              item.layer.dataset.targetOpacity;
+          },
+          170+
+          i*32+
+          rand(0,110)
+        );
+
+        setTimeout(
+          ()=>{
+            if(token!==item.token)return;
+
+            item.layer.style.transitionDuration=
+              `${clamp(
+                ringMs*.40,
+                1300,
+                3100
+              )}ms`;
+
+            item.layer.style.opacity=
+              event.type==='note'
+                ? '0'
+                : (
+                    Math.random()<.55
+                      ? '0'
+                      : (
+                          Number(
+                            item.layer.dataset.targetOpacity
+                          )*
+                          .34
+                        ).toFixed(3)
+                  );
+          },
+          clamp(
+            ringMs*.58,
+            1800,
+            5000
+          )
+        );
+      }
+    );
+
     const count=
       event.type==='chord'
-        ?Math.min(activeBuildings.length,isMobile()?2:3)
+        ?Math.min(
+            activeBuildings.length,
+            isMobile()
+              ? 2
+              : 3
+          )
         :event.type==='ensemble-dyad'
-          ?Math.min(activeBuildings.length,2)
-          :voiceCount>=3
-            ?Math.min(activeBuildings.length,isMobile()?1:2)
-            :event.type==='dyad'
-              ?Math.min(activeBuildings.length,1)
-              :(Math.random()<.42?Math.min(activeBuildings.length,1):0);
-    shuffle(activeBuildings).slice(0,count).forEach((el,i)=>{
-      el._token=(el._token||0)+1; const token=el._token; configureBuilding(el,v,v.intensity,'attack'); el.style.transitionDuration=`${rand(85,150)}ms`; el.style.opacity=el.dataset.targetOpacity;
-      setTimeout(()=>{ if(token!==el._token)return; configureBuilding(el,v,v.intensity*.68,'bloom'); el.style.transitionDuration=`${clamp(ringMs*.36,1000,2800)}ms`; el.style.opacity=el.dataset.targetOpacity; },220+i*70);
-      setTimeout(()=>{ if(token!==el._token)return; el.style.transitionDuration=`${clamp(ringMs*.43,1400,3300)}ms`; el.style.opacity='0'; },clamp(ringMs*.57,1900,5000));
-    });
+          ?Math.min(
+              activeBuildings.length,
+              2
+            )
+          :event.type==='dyad'
+            ?Math.min(
+                activeBuildings.length,
+                Math.random()<.62
+                  ? 1
+                  : 2
+              )
+            :(
+                Math.random()<.58
+                  ? Math.min(
+                      activeBuildings.length,
+                      1
+                    )
+                  : 0
+              );
+
+    shuffle(
+      activeBuildings
+    )
+      .slice(
+        0,
+        count
+      )
+      .forEach(
+        (el,i)=>{
+          el._token=
+            (el._token||0)+1;
+
+          const token=
+            el._token;
+
+          configureBuilding(
+            el,
+            v,
+            v.intensity,
+            'attack'
+          );
+
+          el.style.transitionDuration=
+            `${rand(85,150)}ms`;
+
+          el.style.opacity=
+            el.dataset.targetOpacity;
+
+          setTimeout(
+            ()=>{
+              if(token!==el._token)return;
+
+              configureBuilding(
+                el,
+                v,
+                v.intensity*.68,
+                'bloom'
+              );
+
+              el.style.transitionDuration=
+                `${clamp(
+                  ringMs*.36,
+                  1000,
+                  2800
+                )}ms`;
+
+              el.style.opacity=
+                el.dataset.targetOpacity;
+            },
+            220+
+            i*70
+          );
+
+          setTimeout(
+            ()=>{
+              if(token!==el._token)return;
+
+              el.style.transitionDuration=
+                `${clamp(
+                  ringMs*.43,
+                  1400,
+                  3300
+                )}ms`;
+
+              el.style.opacity='0';
+            },
+            clamp(
+              ringMs*.57,
+              1900,
+              5000
+            )
+          );
+        }
+      );
   }
 
   function pointFromEvent(event){ const r=artwork.getBoundingClientRect(); return {x:clamp((event.clientX-r.left)/r.width,.04,.96),y:clamp((event.clientY-r.top)/r.height,.04,.96)}; }
@@ -534,51 +865,169 @@
   function createMark(event,point,ringMs,voiceCount=1,actualVoices=[]){
     if(REDUCED.matches)return;
 
-    const v=visualForEvent(event,actualVoices);
-    const mark=document.createElement('span');
-    const p=point||randomPoint();
+    const v=
+      visualForEvent(
+        event,
+        actualVoices
+      );
 
-    mark.className=`fuji-splash fuji-splash-${event.type}`;
+    const mark=
+      document.createElement(
+        'span'
+      );
 
-    // Linear relationship to ACTUAL samples scheduled, including doubles of
-    // the same pitch by different instruments.
-    const voices=Math.max(1,voiceCount);
-    const size=clamp(3.7+(voices*1.22),4.9,15.9);
-    const duration=clamp(ringMs+rand(700,1900),4000,8000);
-    const opacity=clamp(.115+(voices*.021),.13,.31);
+    const p=
+      point||
+      randomPoint();
 
-    const siteAccent=pick(['#fdb913','#006a44','#c1272d']);
-    const accent=mixHex(v.primary,v.secondary,.38);
-    const bright=mixHex(accent,siteAccent,event.type==='chord'?.28:.18);
+    mark.className=
+      `fuji-splash fuji-splash-${event.type}`;
 
-    mark.style.setProperty('--x',`${p.x*100}%`);
-    mark.style.setProperty('--y',`${p.y*100}%`);
-    mark.style.setProperty('--size',`${size}%`);
-    mark.style.setProperty('--mark-color-a',v.primary);
-    mark.style.setProperty('--mark-color-b',v.secondary);
-    mark.style.setProperty('--mark-color-c',accent);
-    mark.style.setProperty('--mark-color-d',bright);
-    mark.style.setProperty('--mark-opacity',opacity);
-    mark.style.setProperty('--mark-duration',`${duration}ms`);
-    mark.style.setProperty('--mark-angle',`${rand(0,360)}deg`);
+    /*
+      DIRECT proportional relationship to the number of actual
+      samples that successfully started — including duplicated pitches
+      played by different instruments.
 
-    mark.style.borderRadius=
-      `${rand(44,56)}% ${rand(44,56)}% ${rand(44,56)}% ${rand(44,56)}% / `+
-      `${rand(45,55)}% ${rand(45,55)}% ${rand(45,55)}% ${rand(45,55)}%`;
+      1 voice  ≈ 5.4%
+      2 voices ≈ 6.7%
+      4 voices ≈ 9.3%
+      6 voices ≈ 11.9%
+      8 voices ≈ 14.5%
+    */
 
-    mark.style.mixBlendMode=weightedValue([
-      {value:'overlay',weight:45},
-      {value:'soft-light',weight:30},
-      {value:'multiply',weight:15},
-      {value:'screen',weight:10}
-    ]);
+    const voices=
+      Math.max(
+        1,
+        voiceCount
+      );
 
-    splashLayer.appendChild(mark);
+    const size=
+      clamp(
+        4.1+
+        voices*1.3,
+        5.4,
+        14.8
+      );
 
-    const cap=isMobile()?3:5;
-    while(splashLayer.children.length>cap)splashLayer.firstElementChild?.remove();
+    const duration=
+      clamp(
+        ringMs+
+        rand(
+          650,
+          1650
+        ),
+        4000,
+        8000
+      );
 
-    setTimeout(()=>mark.remove(),duration+250);
+    const opacity=
+      clamp(
+        .17+
+        voices*.018,
+        .18,
+        .31
+      );
+
+    const accent=
+      mixHex(
+        v.primary,
+        v.secondary,
+        .34
+      );
+
+    const bright=
+      mixHex(
+        accent,
+        pick([
+          '#fdb913',
+          '#006a44',
+          '#c1272d'
+        ]),
+        .20
+      );
+
+    mark.style.setProperty(
+      '--x',
+      `${p.x*100}%`
+    );
+
+    mark.style.setProperty(
+      '--y',
+      `${p.y*100}%`
+    );
+
+    mark.style.setProperty(
+      '--size',
+      `${size}%`
+    );
+
+    mark.style.setProperty(
+      '--mark-color-a',
+      v.primary
+    );
+
+    mark.style.setProperty(
+      '--mark-color-b',
+      v.secondary
+    );
+
+    mark.style.setProperty(
+      '--mark-color-c',
+      bright
+    );
+
+    mark.style.setProperty(
+      '--mark-opacity',
+      opacity
+    );
+
+    mark.style.setProperty(
+      '--mark-duration',
+      `${duration}ms`
+    );
+
+    mark.style.mixBlendMode=
+      weightedValue([
+        {
+          value:'overlay',
+          weight:42
+        },
+        {
+          value:'soft-light',
+          weight:32
+        },
+        {
+          value:'multiply',
+          weight:18
+        },
+        {
+          value:'screen',
+          weight:8
+        }
+      ]);
+
+    splashLayer.appendChild(
+      mark
+    );
+
+    const cap=
+      isMobile()
+        ? 4
+        : 6;
+
+    while(
+      splashLayer.children.length>
+      cap
+    ){
+      splashLayer
+        .firstElementChild
+        ?.remove();
+    }
+
+    setTimeout(
+      ()=>mark.remove(),
+      duration+250
+    );
   }
 
   const AUDIO_ROOT='assets/audio/';
@@ -876,14 +1325,22 @@
   const HOME_HARMONIES=['d-open','d-minor','d-min7'];
 
   const HARMONIC_ROUTES=[
-    {name:'dorian-lift',weight:18,path:['g-major','d-minor']},
-    {name:'open-lift',weight:13,path:['g-open','g-major','d-open']},
-    {name:'seventh-return',weight:17,path:['c-open','d-minor']},
-    {name:'third-seventh-home',weight:11,path:['f-major','c-open','d-minor']},
-    {name:'second-fourth-home',weight:11,path:['e-min7','g-major','d-minor']},
-    {name:'minor-shadow',weight:9,path:['a-minor','c-open','d-minor']},
-    {name:'suspended-walk',weight:10,path:['e-suspended','g-open','d-open']},
-    {name:'home-colors',weight:11,path:['d-min7','d-open','d-minor']}
+    /*
+      These are not "chord progressions" in a pop sense.
+
+      They are modal tension arcs around the permanent D drone:
+      establish → color → pressure → release.
+
+      The route is chosen once and then heard across several phrases, so the
+      listener can actually feel where the music is going.
+    */
+    {name:'dorian-arc',weight:21,path:['e-min7','g-major','a-b-d','d-minor']},
+    {name:'haunted-arc',weight:18,path:['d-e-g','a-b-d','g-major','d-open']},
+    {name:'minor-shadow',weight:17,path:['a-minor','f-major','c-open','d-minor']},
+    {name:'open-lift',weight:15,path:['g-open','g-major','e-min7','d-open']},
+    {name:'suspended-return',weight:12,path:['e-suspended','g-open','c-open','d-minor']},
+    {name:'seventh-return',weight:10,path:['d-min7','c-open','d-minor']},
+    {name:'short-breath',weight:7,path:['g-major','d-minor']}
   ];
 
   const MOTIF_SHAPES={
@@ -1175,6 +1632,81 @@
     return randInt(4,6);
   }
 
+  function phraseTensionAt(kind,index,length,current,target,pitch){
+    const progress=length<=1?1:index/(length-1);
+
+    /*
+      A phrase now has an actual dramatic curve.
+
+      rise   = increasing urgency
+      fall   = release
+      arch   = tension peaks in the middle / late-middle
+      turn   = a smaller rise and return
+      pedal  = low pressure around a repeated tonal center
+    */
+
+    let contour;
+
+    if(kind==='rise'){
+      contour=.18+progress*.72;
+    }
+    else if(kind==='fall'){
+      contour=.78-progress*.60;
+    }
+    else if(kind==='arch'){
+      contour=.18+Math.sin(progress*Math.PI)*.68;
+    }
+    else if(kind==='turn'){
+      contour=.27+Math.sin(progress*Math.PI)*.42;
+    }
+    else{
+      contour=.20+Math.sin(progress*Math.PI)*.28;
+    }
+
+    const harmonic=
+      current.tension+
+      (
+        target.tension-
+        current.tension
+      )*
+      progress;
+
+    /*
+      D and A feel like ground against the cello drone.
+      C/E/G/B/F carry progressively more modal color/pressure.
+      This is only one ingredient: the contour and destination still govern.
+    */
+
+    const pitchPressure={
+      D:.04,
+      A:.07,
+      F:.18,
+      G:.22,
+      C:.31,
+      E:.34,
+      B:.40
+    }[pitch]??.22;
+
+    return clamp(
+      contour*.55+
+      harmonic*.27+
+      pitchPressure*.18,
+      .06,
+      .90
+    );
+  }
+
+  function phraseAcceleration(tension){
+    /*
+      Higher tension shortens the next autoplay gap.
+      Resolution lengthens it again.
+
+      This is what makes the automatic performance feel like it leans
+      forward instead of scattering isolated notes across empty time.
+    */
+    return 1-clamp(tension,0,1)*.48;
+  }
+
   function stableConcertinaPitch(pitch,current,target){
     const common=current.pitches.filter(p=>target.pitches.includes(p));
     const stable=unique([
@@ -1230,6 +1762,16 @@
 
       const preferredRegister=melodyRegister(instrument,pitch,index,kind);
 
+      const phraseTension=
+        phraseTensionAt(
+          kind,
+          index,
+          noteCount,
+          current,
+          target,
+          pitch
+        );
+
       let move=noteMove(
         pitch,
         instrument,
@@ -1239,6 +1781,7 @@
           phraseTexture:texture.type,
           phraseIndex:index,
           phraseLength:noteCount,
+          phraseTension,
           motifRepeat:index>=3&&pitch===pitchPath[index-3]
         }
       );
@@ -1253,8 +1796,13 @@
       const ensembleMoment=
         middle&&
         partner&&
+        phraseTension>.57&&
         structureDissonance([pitch,partner])<.24&&
-        Math.random()<.055;
+        Math.random()<
+          (
+            .035+
+            phraseTension*.07
+          );
 
       if(ensembleMoment){
         move=dyadMove(
@@ -1265,17 +1813,21 @@
             phraseKind:kind,
             phraseTexture:texture.type,
             phraseIndex:index,
-            phraseLength:noteCount
+            phraseLength:noteCount,
+            phraseTension
           }
         );
       }
       else{
         const dyadChance=
-          texture.type==='dialogue'
-            ?.15
-            :texture.type==='braid'
-              ?.12
-              :.065;
+          (
+            texture.type==='dialogue'
+              ?.11
+              :texture.type==='braid'
+                ?.09
+                :.045
+          )+
+          phraseTension*.10;
 
         if(middle&&partner&&Math.random()<dyadChance){
           const second=texture.instruments.find(x=>x!==instrument)||(
@@ -1289,7 +1841,8 @@
               phraseKind:kind,
               phraseTexture:texture.type,
               phraseIndex:index,
-              phraseLength:noteCount
+              phraseLength:noteCount,
+              phraseTension
             }
           );
         }
@@ -1316,6 +1869,14 @@
             restates:true,
             phraseKind:kind,
             phraseTexture:texture.type,
+            phraseTension:clamp(
+              Math.max(
+                current.tension,
+                target.tension
+              )+.14,
+              .18,
+              .72
+            ),
             chordRole:'preparation'
           }
         )
@@ -1330,6 +1891,12 @@
           phraseEnd:true,
           phraseKind:kind,
           phraseTexture:texture.type,
+
+          /*
+            The arrival chord releases the phrase-level tension unless the
+            roadmap itself is still climbing. That distinction feeds autoplay.
+          */
+          phraseTension:target.tension,
           chordRole:doubleChord?'answer':'cadence'
         }
       )
@@ -1785,12 +2352,22 @@
   }
 
   function autoplayDelay(result){
-    if(!result)return rand(4200,7000);
-    if(result.kind==='drone')return rand(8200,11600);
+    if(!result)return rand(2200,3900);
+    if(result.kind==='drone')return rand(4300,6800);
 
     const event=result.event;
-    const ring=result.ringMs||4200;
     const instruments=event.instruments||[];
+    const tension=clamp(
+      event.phraseTension??
+      eventTension(event),
+      0,
+      1
+    );
+
+    const acceleration=
+      phraseAcceleration(
+        tension
+      );
 
     let delay;
 
@@ -1799,71 +2376,108 @@
       const consecutive=previous?.type==='chord';
 
       /*
-        Consecutive chords may answer each other, so they are
-        a little closer together — but still never rushed.
+        A preparation chord should pull into its answer.
+        A settled cadence gets more air.
       */
 
-      delay=consecutive
-        ?rand(4200,7200)
-        :rand(5600,9800);
+      if(consecutive||event.chordRole==='preparation'){
+        delay=rand(1450,2650);
+      }
+      else{
+        delay=rand(2400,4300);
+      }
     }
     else if(event.type==='ensemble-dyad'){
-      delay=rand(4000,7400);
+      delay=rand(1750,3150);
     }
     else if(event.type==='dyad'){
-      delay=rand(3400,6400);
+      delay=rand(1450,2850);
     }
     else{
       if(event.motifRepeat){
-        /*
-          A repeated motive can tighten slightly, but it
-          still breathes enough to avoid becoming a beat.
-        */
-        delay=rand(2200,4200);
+        delay=rand(900,1850);
       }
       else if(instruments.length===1&&instruments[0]==='mandolin'){
-        delay=rand(2600,5100);
+        delay=rand(950,2200);
       }
       else{
-        delay=rand(3100,6200);
+        delay=rand(1150,2550);
       }
     }
 
     /*
-      Respect the recorded envelopes:
-      concertina = longest;
-      guitar = lingering;
-      mandolin = shortest / tremolo punctuation.
+      Tension creates forward motion:
+      as the phrase leans harder toward its destination,
+      events arrive closer together.
+
+      A calm beginning is not rushed; a rising/arching phrase
+      can noticeably gather momentum.
+    */
+
+    delay*=acceleration;
+
+    /*
+      Instrument envelope correction, kept much smaller than before.
+      We want to hear the natural tails overlap — especially the guitar —
+      rather than waiting for each recording to die before continuing.
     */
 
     if(instruments.includes('concertina')){
-      delay+=rand(2300,4700);
+      delay+=rand(650,1350);
     }
     else if(instruments.includes('guitar')){
-      delay+=rand(700,1900);
+      delay+=rand(180,650);
     }
     else if(instruments.length===1&&instruments[0]==='mandolin'){
-      delay+=rand(0,700);
+      delay+=rand(0,240);
     }
 
-    delay+=clamp(ring*.12,380,920);
+    /*
+      Small, uncommon breaths inside a thought.
+      These are punctuation, not the default pacing.
+    */
+
+    if(!event.phraseEnd&&Math.random()<.11){
+      delay+=rand(450,1350);
+    }
 
     /*
-      Phrase endings get substantial negative space.
-      Smaller breaths can also occur inside phrases at
-      irregular points, never on a fixed count.
+      The phrase ending is where the large breath belongs.
+      Even here it is shorter than the previous version so autoplay
+      does not keep feeling as though it has stopped.
     */
 
     if(event.phraseEnd){
-      delay+=rand(4200,8400);
-    }
-    else if(Math.random()<.28){
-      delay+=rand(2000,5400);
+      const home=
+        HOME_HARMONIES.includes(
+          event.harmonyName
+        );
+
+      delay+=home
+        ?rand(2200,4300)
+        :rand(1300,3000);
     }
 
-    return clamp(delay,2200,16500);
+    /*
+      Rare full silence after a genuine home cadence.
+    */
+
+    if(
+      event.phraseEnd&&
+      HOME_HARMONIES.includes(
+        event.harmonyName
+      )&&
+      Math.random()<.12
+    ){
+      delay+=rand(1800,3600);
+    }
+
+    return clamp(
+      delay,
+      700,
+      7600
+    );
   }
-
   async function musicalAction(origin,point){
     const now=performance.now(); if(now-audioState.lastClick<AUDIO.clickCooldown||audioState.pending)return null;
     audioState.lastClick=now; audioState.pending=true; let result=null;
@@ -1935,10 +2549,48 @@
   window.fujiAudio={setOverlayMuted(muted){ audioState.overlayMuted=Boolean(muted); updateMaster(); if(audioState.overlayMuted){clearTimeout(audioState.autoTimer);resetVisuals(false);}else if(audioState.auto)scheduleAuto(null); }};
 
   updateAutoButton(); updateSoundButton();
+  hardResetArtworkVisuals();
+
   revealBase().then(()=>{
-    setTimeout(prepareOverlayAssets,isMobile()?520:240);
-    tutorial.timers.push(setTimeout(()=>{ if(tutorial.step===0&&!audioState.droneStarted)showPrompt(WORDS.here()); },3200));
+    setTimeout(
+      prepareOverlayAssets,
+      isMobile()
+        ? 520
+        : 240
+    );
+
+    tutorial.timers.push(
+      setTimeout(
+        ()=>{
+          if(
+            tutorial.step===0&&
+            !audioState.droneStarted
+          ){
+            showPrompt(
+              WORDS.here()
+            );
+          }
+        },
+        3200
+      )
+    );
   });
+
+  /*
+    Safari/Chrome may restore a page from memory with inline visual styles
+    still attached. Rebuild the overlay state on BFCache restores rather
+    than trusting the preserved DOM.
+  */
+  window.addEventListener(
+    'pageshow',
+    event=>{
+      if(!event.persisted)return;
+
+      overlayAssetsPromise=null;
+      hardResetArtworkVisuals();
+      prepareOverlayAssets();
+    }
+  );
 })();
 </script>
 
