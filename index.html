@@ -1,2914 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>photography — keegan.biz</title>
-  <link rel="preload" as="image" href="assets/Fuji400-web.png">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>keegan.biz</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
+
 <body>
 
-<div class="page-shell" id="page-shell">
-  <nav class="scarf-rack" aria-label="Sections">
-    <a class="scarf-item scarf-home" href="../" data-live-link aria-label="Home"><img src="../assets/home/home-scarf-update.png" alt=""></a>
-    <a class="scarf-item" href="#" aria-label="Illustration"><img src="../assets/home/scarf-illustration.png" alt=""></a>
-    <a class="scarf-item" href="./" data-live-link aria-current="page" aria-label="Photography"><img src="../assets/home/scarf-photography.png" alt=""></a>
-    <a class="scarf-item" href="#" aria-label="Graphic Design"><img src="../assets/home/scarf-design.png" alt=""></a>
-    <a class="scarf-item" href="#" aria-label="Music"><img src="../assets/home/scarf-music.png" alt=""></a>
-    <a class="scarf-item" href="#" aria-label="Motion"><img src="../assets/home/scarf-motion.png" alt=""></a>
-    <a class="scarf-item" href="#" aria-label="Miscellaneous"><img src="../assets/home/scarf-misc.png" alt=""></a>
-    <a class="scarf-item" href="#" aria-label="Gastronomy"><img src="../assets/home/scarf-gastronomy.png" alt=""></a>
-  </nav>
+  <!-- =====================================================
+       HOME
+       ===================================================== -->
 
-  <main class="photo-page">
-    <header class="photo-header"><h1 class="photo-title" id="photo-title">photography</h1></header>
+  <div
+    class="page-shell"
+    id="page-shell"
+  >
 
-    <section class="photo-canvas" aria-label="Photography">
-      <figure class="fuji-interactive" id="fuji-interactive" tabindex="0" aria-label="Interactive landscape photograph with architectural drawing and generative sound">
-        <img class="fuji-base" id="fuji-base" src="assets/Fuji400-web.png" alt="Landscape photograph" draggable="false" fetchpriority="high">
-        <div class="fuji-photo-tint" id="fuji-photo-tint" aria-hidden="true"></div>
+    <nav
+      class="scarf-rack"
+      aria-label="Sections"
+    >
 
-        <div class="fuji-building-stack" aria-hidden="true">
-          <img class="fuji-building" data-src="assets/building.png" alt="" draggable="false" decoding="async">
-          <img class="fuji-building" data-src="assets/building.png" alt="" draggable="false" decoding="async">
-          <img class="fuji-building" data-src="assets/building.png" alt="" draggable="false" decoding="async">
-          <img class="fuji-building" data-src="assets/building.png" alt="" draggable="false" decoding="async">
-        </div>
-
-        <div class="fuji-lines" aria-hidden="true">
-          <div class="fuji-line-layer" data-line="1"><img class="fuji-line-source" data-src="assets/line1.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="2"><img class="fuji-line-source" data-src="assets/line2.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="3"><img class="fuji-line-source" data-src="assets/line3.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="4"><img class="fuji-line-source" data-src="assets/line4.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="5"><img class="fuji-line-source" data-src="assets/line5.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="6"><img class="fuji-line-source" data-src="assets/line6.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="7"><img class="fuji-line-source" data-src="assets/line7.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="8"><img class="fuji-line-source" data-src="assets/line8.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="9"><img class="fuji-line-source" data-src="assets/line9.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="10"><img class="fuji-line-source" data-src="assets/line10.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="11"><img class="fuji-line-source" data-src="assets/line11.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="12"><img class="fuji-line-source" data-src="assets/line12.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-          <div class="fuji-line-layer" data-line="13"><img class="fuji-line-source" data-src="assets/line13.png" alt="" draggable="false" decoding="async"><div class="fuji-line-texture"></div></div>
-        </div>
-
-        <div class="fuji-splash-layer" id="fuji-splash-layer" aria-hidden="true"></div>
-        <div class="fuji-click-prompt" id="fuji-click-prompt" aria-live="polite" aria-hidden="true"></div>
-
-        <div class="fuji-controls" id="fuji-controls" aria-hidden="true">
-          <button class="fuji-control" id="fuji-auto-song" type="button">randomly generate a song</button>
-          <button class="fuji-control" id="fuji-sound-toggle" type="button">click to turn off</button>
-        </div>
-
-        <svg class="fuji-filter-defs" width="0" height="0" aria-hidden="true">
-          <defs>
-            <filter id="fuji-posterize-3" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="discrete" tableValues="0 .5 1"/><feFuncG type="discrete" tableValues="0 .5 1"/><feFuncB type="discrete" tableValues="0 .5 1"/><feFuncA type="identity"/></feComponentTransfer></filter>
-            <filter id="fuji-posterize-4" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="discrete" tableValues="0 .33 .66 1"/><feFuncG type="discrete" tableValues="0 .33 .66 1"/><feFuncB type="discrete" tableValues="0 .33 .66 1"/><feFuncA type="identity"/></feComponentTransfer></filter>
-            <filter id="fuji-posterize-6" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="discrete" tableValues="0 .2 .4 .6 .8 1"/><feFuncG type="discrete" tableValues="0 .2 .4 .6 .8 1"/><feFuncB type="discrete" tableValues="0 .2 .4 .6 .8 1"/><feFuncA type="identity"/></feComponentTransfer></filter>
-            <filter id="fuji-threshold-low" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="discrete" tableValues="0 1 1 1 1 1 1 1"/><feFuncG type="discrete" tableValues="0 1 1 1 1 1 1 1"/><feFuncB type="discrete" tableValues="0 1 1 1 1 1 1 1"/><feFuncA type="identity"/></feComponentTransfer></filter>
-            <filter id="fuji-threshold-mid" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="discrete" tableValues="0 0 0 0 1 1 1 1"/><feFuncG type="discrete" tableValues="0 0 0 0 1 1 1 1"/><feFuncB type="discrete" tableValues="0 0 0 0 1 1 1 1"/><feFuncA type="identity"/></feComponentTransfer></filter>
-            <filter id="fuji-threshold-high" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="discrete" tableValues="0 0 0 0 0 0 1 1"/><feFuncG type="discrete" tableValues="0 0 0 0 0 0 1 1"/><feFuncB type="discrete" tableValues="0 0 0 0 0 0 1 1"/><feFuncA type="identity"/></feComponentTransfer></filter>
-          </defs>
-        </svg>
-      </figure>
-
-        <div
-          class="film-gallery"
-          id="film-gallery"
-          aria-label="Film photographs"
-        ></div>
-
-    </section>
-  </main>
-</div>
-
-<audio id="fuji-drone" src="assets/audio/cello_drone_d.mp3" preload="metadata" loop playsinline hidden></audio>
-<audio id="wip-audio" preload="auto"><source src="../assets/home/crickets.mp3" type="audio/mpeg"></audio>
-
-<div class="wip-overlay" id="wip-overlay" aria-hidden="true">
-  <div class="wip-inner">
-    <div class="wip-header">
-      <p class="wip-text">sorry, i'm still working on this page.</p>
-      <button class="wip-close" id="wip-close" type="button" aria-label="Close">×</button>
-    </div>
-
-    <div class="collage-stage" id="collage-stage" aria-hidden="true">
-      <img
-        class="horse horse-main"
-        id="horse-main"
-        src="../assets/home/horse.gif"
-        alt=""
+      <a
+        class="scarf-item scarf-home"
+        href="./"
+        data-live-link
+        aria-label="Home"
       >
-    </div>
+        <img
+          src="assets/home/home-scarf-update.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Illustration"
+      >
+        <img
+          src="assets/home/scarf-illustration.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="photography/"
+        data-live-link
+        aria-label="Photography"
+      >
+        <img
+          src="assets/home/scarf-photography.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Graphic Design"
+      >
+        <img
+          src="assets/home/scarf-design.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Music"
+      >
+        <img
+          src="assets/home/scarf-music.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Motion"
+      >
+        <img
+          src="assets/home/scarf-motion.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Miscellaneous"
+      >
+        <img
+          src="assets/home/scarf-misc.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Gastronomy"
+      >
+        <img
+          src="assets/home/scarf-gastronomy.png"
+          alt=""
+        >
+      </a>
+
+    </nav>
+
+
+    <main class="home">
+
+      <section class="hero">
+
+        <div class="welcome-slot">
+
+          <span
+            class="welcome-word"
+            id="welcome-word"
+            aria-hidden="true"
+          >
+            Welcome
+          </span>
+
+        </div>
+
+        <div class="site-title">
+          to keegan.biz
+        </div>
+
+      </section>
+
+    </main>
+
   </div>
-</div>
 
 
-<script>
-(() => {
+  <!-- =====================================================
+       AUDIO
+       ===================================================== -->
 
-  const gallery =
-    document.getElementById(
-      "film-gallery"
-    );
-
-
-  if (!gallery) {
-    return;
-  }
-
-
-  const films =
-    Array.from(
-      { length: 18 },
-      (_, index) =>
-        `assets/film${index + 1}.jpg`
-    );
+  <audio
+    id="wip-audio"
+    preload="auto"
+  >
+    <source
+      src="assets/home/crickets.mp3"
+      type="audio/mpeg"
+    >
+  </audio>
 
 
-  /*
-    Fisher–Yates shuffle:
-    a genuinely shuffled display order each page load.
-  */
+  <!-- =====================================================
+       WIP
+       ===================================================== -->
 
-  for (
-    let i = films.length - 1;
-    i > 0;
-    i--
-  ) {
+  <div
+    class="wip-overlay"
+    id="wip-overlay"
+    aria-hidden="true"
+  >
 
-    const j =
-      Math.floor(
-        Math.random() *
-        (i + 1)
+    <div class="wip-inner">
+
+      <div class="wip-header">
+
+        <p class="wip-text">
+          sorry, i'm still working on this page.
+        </p>
+
+        <button
+          class="wip-close"
+          id="wip-close"
+          type="button"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div
+        class="collage-stage"
+        id="collage-stage"
+        aria-hidden="true"
+      >
+
+        <img
+          class="horse horse-main"
+          id="horse-main"
+          src="assets/home/horse.gif"
+          alt=""
+        >
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+  (() => {
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    const clamp = (value, min, max) =>
+      Math.min(
+        Math.max(value, min),
+        max
       );
 
 
-    [
-      films[i],
-      films[j]
-    ] = [
-      films[j],
-      films[i]
+    function differentIndex(
+      length,
+      current
+    ) {
+
+      let next;
+
+
+      do {
+
+        next =
+          Math.floor(
+            Math.random() *
+            length
+          );
+
+      }
+      while (
+        length > 1 &&
+        next === current
+      );
+
+
+      return next;
+
+    }
+
+
+    function smoothStep(value) {
+
+      const t =
+        clamp(
+          value,
+          0,
+          1
+        );
+
+
+      return (
+        t *
+        t *
+        (
+          3 -
+          (2 * t)
+        )
+      );
+
+    }
+
+
+    /* =====================================================
+       WELCOME
+       ===================================================== */
+
+    const welcomeWord =
+      document.getElementById(
+        "welcome-word"
+      );
+
+
+    const greetings = [
+
+      "Welcome",
+      "Fáilte",
+      "Benvenuti",
+      "Bienvenue",
+      "Bienvenidos",
+      "Benvinguts",
+      "Bem-vindos",
+
+      "Welkom",
+      "Willkommen",
+      "Velkommen",
+      "Välkommen",
+      "Velkomin",
+
+      "Tervetuloa",
+      "Sveiki atvykę",
+      "Laipni lūdzam",
+      "Tere tulemast",
+
+      "Witamy",
+      "Vítejte",
+      "Vitajte",
+
+      "Добродошли",
+      "Добре дошли",
+      "Ласкаво просимо",
+
+      "Bun venit",
+      "Üdvözöljük",
+      "Mirë se vini",
+
+      "Ongi etorri",
+      "Καλώς ήρθατε",
+      "Hoş geldiniz",
+
+      "Croeso",
+      "Nau mai",
+
+      "Karibu",
+      "Siyakwamukela",
+      "Ẹ káàbọ̀",
+
+      "እንኳን ደህና መጡ",
+      "स्वागत है",
+      "স্বাগতম",
+
+      "欢迎",
+      "ようこそ",
+      "환영합니다",
+      "ยินดีต้อนรับ",
+
+      "Chào mừng",
+      "Selamat datang",
+      "Maligayang pagdating",
+
+      "ברוכים הבאים",
+      "أهلاً وسهلاً",
+      "خوش آمدید",
+
+      "Bonvenon",
+      "Salvete",
+
+      "Yá’át’ééh",
+      "Aloha",
+
+      "Mae govannen",
+
+      "01010111 01100101 01101100 01100011 01101111 01101101 01100101"
+
     ];
 
-  }
 
+    const welcomeColors = [
+      "#fdb913",
+      "#006a44",
+      "#c1272d"
+    ];
 
-  const fragment =
-    document.createDocumentFragment();
 
-
-  films.forEach(
-    (src, index) => {
-
-      const image =
-        document.createElement(
-          "img"
-        );
-
-
-      image.className =
-        "film-gallery-image";
-
-
-      image.src =
-        src;
-
-
-      image.alt =
-        "";
-
-
-      /*
-        Keep the gallery lightweight, but make the first few shuffled
-        photographs load immediately. This prevents the gallery from
-        looking blank until the user starts scrolling.
-      */
-
-      image.loading =
-        index < 3
-          ? "eager"
-          : "lazy";
-
-
-      image.decoding =
-        "async";
-
-
-      image.fetchPriority =
-        index === 0
-          ? "auto"
-          : "low";
-
-
-      /*
-        If one numbered file is ever missing, remove the
-        broken element instead of leaving a broken-image icon.
-      */
-
-      image.addEventListener(
-        "error",
-        () => {
-          image.remove();
-        },
-        {
-          once: true
-        }
-      );
-
-
-      fragment.appendChild(
-        image
-      );
-
-    }
-  );
-
-
-  gallery.appendChild(
-    fragment
-  );
-
-})();
-</script>
-
-<script>
-(() => {
-  const title = document.getElementById('photo-title');
-  const colors = ['#c1272d','#006a44','#fdb913'];
-  let current = 0;
-  title.style.color = colors[current];
-  setInterval(() => {
-    let next;
-    do next = Math.floor(Math.random()*colors.length); while (next === current);
-    title.classList.add('is-fading');
-    setTimeout(() => { current = next; title.style.color = colors[current]; title.classList.remove('is-fading'); }, 200);
-  }, 2300);
-})();
-</script>
-
-<script>
-(() => {
-  const WIDTH_MOBILE = window.matchMedia('(max-width: 700px)');
-  const COARSE = window.matchMedia('(pointer: coarse)');
-  const NO_HOVER = window.matchMedia('(hover: none)');
-  const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const isMobile = () => WIDTH_MOBILE.matches || COARSE.matches;
-  const touchWords = () => COARSE.matches || NO_HOVER.matches || 'ontouchstart' in window;
-  const WORDS = {
-    here: () => touchWords() ? 'tap here' : 'click here',
-    again: () => touchWords() ? 'tap again!' : 'click again!',
-    keep: () => touchWords() ? 'keep tapping!' : 'keep clicking!',
-    off: () => touchWords() ? 'tap to turn off' : 'click to turn off',
-    on: () => touchWords() ? 'tap to turn on' : 'click to turn on'
-  };
-
-  const artwork = document.getElementById('fuji-interactive');
-  const base = document.getElementById('fuji-base');
-  const tint = document.getElementById('fuji-photo-tint');
-  const prompt = document.getElementById('fuji-click-prompt');
-  const controls = document.getElementById('fuji-controls');
-  const autoButton = document.getElementById('fuji-auto-song');
-  const soundButton = document.getElementById('fuji-sound-toggle');
-  const splashLayer = document.getElementById('fuji-splash-layer');
-  const droneEl = document.getElementById('fuji-drone');
-  const buildingEls = Array.from(document.querySelectorAll('.fuji-building'));
-  const allLines = Array.from(document.querySelectorAll('.fuji-line-layer')).map(layer => ({
-    layer,
-    source: layer.querySelector('.fuji-line-source'),
-    texture: layer.querySelector('.fuji-line-texture'),
-    lineNumber: Number(layer.dataset.line),
-    token: 0
-  }));
-  let activeBuildings = [];
-  let validLines = [];
-
-  const clamp = (v,min,max) => Math.min(Math.max(v,min),max);
-  const rand = (min,max) => min + Math.random()*(max-min);
-  const randInt = (min,max) => Math.floor(rand(min,max+1));
-  const pick = arr => arr[Math.floor(Math.random()*arr.length)];
-  const unique = arr => [...new Set(arr)];
-  function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-  function weighted(items){
-    const list = items.filter(x => x && x.weight > 0);
-    if(!list.length) return null;
-    let r = Math.random()*list.reduce((s,x)=>s+x.weight,0);
-    for(const x of list){ r -= x.weight; if(r <= 0) return x; }
-    return list[list.length-1];
-  }
-  const weightedValue = items => weighted(items)?.value ?? null;
-  function softmaxPick(scored, temperature=1.15){
-    if(!scored.length) return null;
-    const top=[...scored].sort((a,b)=>b.score-a.score).slice(0,8);
-    const max=top[0].score;
-    return weighted(top.map(x=>({...x,weight:Math.exp((x.score-max)/temperature)})));
-  }
-  function waitImage(img){
-    if(img.complete && img.naturalWidth>0) return Promise.resolve(img);
-    return new Promise((resolve,reject)=>{ img.addEventListener('load',()=>resolve(img),{once:true}); img.addEventListener('error',reject,{once:true}); });
-  }
-  async function hydrate(img){ if(!img.getAttribute('src')) img.src=img.dataset.src; await waitImage(img); return img; }
-
-  function hexToRgb(hex){ const h=hex.replace('#',''); return {r:parseInt(h.slice(0,2),16),g:parseInt(h.slice(2,4),16),b:parseInt(h.slice(4,6),16)}; }
-  function rgbToHex(c){ const h=v=>clamp(Math.round(v),0,255).toString(16).padStart(2,'0'); return `#${h(c.r)}${h(c.g)}${h(c.b)}`; }
-  function mixHex(a,b,t){ const x=hexToRgb(a), y=hexToRgb(b); return rgbToHex({r:x.r+(y.r-x.r)*t,g:x.g+(y.g-x.g)*t,b:x.b+(y.b-x.b)*t}); }
-
-  async function revealBase(){ try{ await waitImage(base); }catch{} requestAnimationFrame(()=>artwork.classList.add('is-ready')); }
-  function hasAlpha(img){
-    try{
-      const c=document.createElement('canvas'); c.width=96; c.height=Math.max(1,Math.round(96*img.naturalHeight/img.naturalWidth));
-      const x=c.getContext('2d',{willReadFrequently:true}); x.drawImage(img,0,0,c.width,c.height);
-      const d=x.getImageData(0,0,c.width,c.height).data; let n=0; for(let i=3;i<d.length;i+=4) if(d[i]<235)n++;
-      return n/(c.width*c.height)>.025;
-    }catch{return false;}
-  }
-  let overlayAssetsPromise=null;
-
-  function hardResetArtworkVisuals(){
-    tintToken++;
-    tint.style.transition='none';
-    tint.style.opacity='0';
-
-    splashLayer.replaceChildren();
-
-    allLines.forEach(item=>{
-      item.token++;
-      item.layer.style.display='';
-      item.layer.style.transitionDuration='0ms';
-      item.layer.style.opacity='0';
-
-      item.source.style.opacity='0';
-      item.source.style.filter='none';
-      item.source.style.mixBlendMode='normal';
-
-      item.texture.style.opacity='0';
-      item.texture.style.backgroundImage='none';
-
-      item.layer.classList.remove(
-        'has-alpha',
-        'has-white-canvas'
-      );
-    });
-
-    buildingEls.forEach(el=>{
-      el._token=(el._token||0)+1;
-      el.style.display='';
-      el.style.transitionDuration='0ms';
-      el.style.opacity='0';
-      el.style.filter='none';
-      el.style.transform='translate3d(0,0,0)';
-      el.style.mixBlendMode='normal';
-    });
-  }
-
-  async function prepareOverlayAssets(){
-    if(overlayAssetsPromise)return overlayAssetsPromise;
-
-    overlayAssetsPromise=(async()=>{
-      /*
-        Always begin from a completely hidden visual state.
-        This matters on refresh/back-forward-cache restores, where inline
-        animation styles from the previous page instance can otherwise
-        survive long enough to flash or remain visible.
-      */
-      hardResetArtworkVisuals();
-
-      activeBuildings =
-        buildingEls.slice(
-          0,
-          isMobile()
-            ? 2
-            : 4
-        );
-
-      buildingEls
-        .slice(activeBuildings.length)
-        .forEach(
-          el=>{
-            el.style.display='none';
-          }
-        );
-
-      const selected =
-        isMobile()
-          ? shuffle(allLines).slice(0,6)
-          : allLines;
-
-      allLines.forEach(
-        item=>{
-          if(!selected.includes(item)){
-            item.layer.style.display='none';
-          }
-        }
-      );
-
-      await Promise.allSettled(
-        activeBuildings.map(hydrate)
-      );
-
-      await Promise.allSettled(
-        selected.map(
-          item=>hydrate(item.source)
-        )
-      );
-
-      const w=base.naturalWidth;
-      const h=base.naturalHeight;
-
-      validLines=
-        selected.filter(
-          item=>{
-            if(
-              item.source.naturalWidth!==w ||
-              item.source.naturalHeight!==h
-            ){
-              item.layer.style.display='none';
-              return false;
-            }
-
-            if(hasAlpha(item.source)){
-              item.layer.classList.add(
-                'has-alpha'
-              );
-
-              item.texture.style.webkitMaskImage=
-                `url("${item.source.src}")`;
-
-              item.texture.style.maskImage=
-                `url("${item.source.src}")`;
-            }
-            else{
-              item.layer.classList.add(
-                'has-white-canvas'
-              );
-            }
-
-            return true;
-          }
-        );
-
-      resetVisuals(true);
-    })();
-
-    try{
-      await overlayAssetsPromise;
-    }
-    finally{
-      overlayAssetsPromise=null;
-    }
-  }
-
-  const tutorial={step:0,timers:[]};
-  const clearTutorialTimers=()=>{ tutorial.timers.forEach(clearTimeout); tutorial.timers=[]; };
-  function hidePrompt(){ prompt.classList.remove('is-visible'); prompt.setAttribute('aria-hidden','true'); }
-  function showPrompt(text){ prompt.textContent=text; prompt.classList.add('is-visible'); prompt.setAttribute('aria-hidden','false'); }
-  function showControls(){ controls.classList.add('is-visible'); controls.setAttribute('aria-hidden','false'); }
-  function later(fn,ms){ const id=setTimeout(fn,ms); tutorial.timers.push(id); return id; }
-  function advanceTutorial(){
-    hidePrompt(); clearTutorialTimers();
-    if(tutorial.step===0){
-      tutorial.step=1;
-      later(()=>showPrompt('turn up volume'),900);
-      later(hidePrompt,2800);
-      later(()=>showPrompt(WORDS.again()),5200);
-      return;
-    }
-    if(tutorial.step===1){ tutorial.step=2; later(()=>showPrompt(WORDS.keep()),4100); return; }
-    if(tutorial.step===2){ tutorial.step=3; later(showControls,650); }
-  }
-
-  const DESKTOP_TEXTURES=[
-    '../assets/home/Texturelabs_Grunge_173S.jpg','../assets/home/Texturelabs_Grunge_279L.jpg','../assets/home/Texturelabs_Grunge_334S.jpg','../assets/home/Texturelabs_Grunge_341S.jpg',
-    '../assets/home/Texturelabs_InkPaint_126S.jpg','../assets/home/Texturelabs_InkPaint_320S.jpg','../assets/home/Texturelabs_InkPaint_332S.jpg',
-    '../assets/home/Texturelabs_Concrete_150S.jpg','../assets/home/Texturelabs_Concrete_155S.jpg','../assets/home/Texturelabs_Concrete_179S.jpg',
-    '../assets/home/Texturelabs_Film_181S.jpg','../assets/home/Texturelabs_Film_183S.jpg','../assets/home/Texturelabs_Metal_129S.jpg','../assets/home/Texturelabs_Paper_280S.jpg','../assets/home/Texturelabs_Paper_286S.jpg','../assets/home/Texturelabs_Wood_135S.jpg'
-  ];
-  const MOBILE_TEXTURES=['../assets/home/Texturelabs_Grunge_341S.jpg','../assets/home/Texturelabs_Film_183S.jpg','../assets/home/Texturelabs_Paper_280S.jpg','../assets/home/Texturelabs_Concrete_155S.jpg'];
-  const textures=()=>isMobile()?MOBILE_TEXTURES:DESKTOP_TEXTURES;
-
-  const PITCH_VISUALS={
-    D:{color:'#1f5b3d',second:'#6f8d67',hue:68,tension:.05},
-    E:{color:'#91a66f',second:'#c0c68f',hue:76,tension:.17},
-    F:{color:'#7c2440',second:'#a5485e',hue:-18,tension:.34},
-    G:{color:'#536f31',second:'#82964f',hue:85,tension:.18},
-    A:{color:'#8a6731',second:'#b88c4e',hue:11,tension:.10},
-    B:{color:'#49677e',second:'#7890a0',hue:167,tension:.36},
-    C:{color:'#974b34',second:'#bd6d50',hue:-2,tension:.27}
-  };
-  const INSTRUMENT_VISUALS={
-    concertina:{tint:'#7b3346',hue:-11}, guitar:{tint:'#866b3d',hue:3}, mandolin:{tint:'#4c743d',hue:12}, harmonic:{tint:'#7b8783',hue:0}, cello:{tint:'#465b4a',hue:0}
-  };
-  const PITCH_LINES={D:[1,4,7,10,13],E:[2,5,8,11],F:[3,6,9,12],G:[1,5,9,13],A:[2,6,10],B:[3,7,11],C:[4,8,12]};
-  const POST=['#fuji-posterize-3','#fuji-posterize-4','#fuji-posterize-6'];
-  const THRESH=['#fuji-threshold-low','#fuji-threshold-mid','#fuji-threshold-high'];
-
-  function visualForEvent(event,actualVoices=[]){
-    const pitchStream=actualVoices.length
-      ?actualVoices.map(v=>v.pitch).filter(Boolean)
-      :event.pitches;
-
-    const instrumentStream=actualVoices.length
-      ?actualVoices.map(v=>v.harmonic?'harmonic':v.instrument).filter(Boolean)
-      :event.instruments;
-
-    const pv=pitchStream.map(p=>PITCH_VISUALS[p]).filter(Boolean);
-
-    let primary=pv[0]?.color||'#53643d';
-    let secondary=pv[Math.min(1,pv.length-1)]?.second||'#755c3d';
-
-    // Repeated pitch classes and instrument doublings count here too, so the
-    // actual orchestration changes the pigment rather than only event labels.
-    pv.slice(1).forEach((voice,index)=>{
-      const amount=Math.min(.18,.08+(index*.012));
-      primary=mixHex(primary,voice.color,amount);
-      secondary=mixHex(secondary,voice.second,amount*.92);
-    });
-
-    instrumentStream.forEach((name,index)=>{
-      const iv=INSTRUMENT_VISUALS[name]||INSTRUMENT_VISUALS.guitar;
-      const amount=index===0?.18:.085;
-      primary=mixHex(primary,iv.tint,amount);
-      secondary=mixHex(secondary,iv.tint,amount*.82);
-    });
-
-    const hue=
-      (pv.reduce((s,x)=>s+x.hue,0)/Math.max(1,pv.length))+
-      (instrumentStream.reduce((s,n)=>s+(INSTRUMENT_VISUALS[n]?.hue||0),0)/Math.max(1,instrumentStream.length));
-
-    const intensity=
-      event.type==='chord'
-        ?.93
-        :event.type==='ensemble-dyad'
-          ?.80
-          :event.type==='dyad'
-            ?.63
-            :.38;
-
-    return {
-      primary,
-      secondary,
-      tertiary:mixHex(primary,secondary,.5),
-      hue,
-      intensity,
-      texture:pick(textures())
-    };
-  }
-
-  function processFilter(v,intensity){
-    const mobile=isMobile();
-    const mode=mobile?weightedValue([{value:'normal',weight:49},{value:'exposed',weight:30},{value:'hard',weight:16},{value:'poster',weight:5}]):weightedValue([{value:'normal',weight:32},{value:'exposed',weight:27},{value:'poster',weight:18},{value:'threshold',weight:4+intensity*9},{value:'hard',weight:10+intensity*5}]);
-    const h=v.hue+rand(-4,4);
-    if(mode==='poster'&&!mobile) return `grayscale(.14) sepia(.36) url("${pick(POST)}") hue-rotate(${h}deg) saturate(${rand(.76,1.02)}) contrast(${rand(1.08,1.34)})`;
-    if(mode==='threshold'&&!mobile) return `grayscale(.22) sepia(.38) url("${pick(THRESH)}") hue-rotate(${h}deg) saturate(${rand(.74,.98)})`;
-    if(mode==='hard') return `grayscale(.10) sepia(.33) hue-rotate(${h}deg) saturate(${rand(.76,1.03)}) brightness(${rand(.90,1.03)}) contrast(${rand(mobile?1.16:1.26,mobile?1.39:1.58)})`;
-    if(mode==='exposed') return `grayscale(.08) sepia(.28) hue-rotate(${h}deg) saturate(${rand(.74,1.02)}) brightness(${rand(1,1.10+intensity*.08)}) contrast(${rand(1.03,1.23)})`;
-    if(mode==='poster') return `grayscale(.12) sepia(.34) hue-rotate(${h}deg) saturate(${rand(.72,.98)}) brightness(${rand(.95,1.05)}) contrast(${rand(1.30,1.48)})`;
-    return `grayscale(.08) sepia(.28) hue-rotate(${h}deg) saturate(${rand(.70,.98)}) brightness(${rand(.86,1.02)}) contrast(${rand(1.02,1.18)})`;
-  }
-
-  function configureLine(item,v,intensity,phase){
-    const attack=phase==='attack';
-    const whiteCanvas=item.layer.classList.contains('has-white-canvas');
-    item.source.style.mixBlendMode=whiteCanvas
-      ? weightedValue([{value:'multiply',weight:62},{value:'darken',weight:30},{value:'color-burn',weight:isMobile()?0:8}])
-      : weightedValue([{value:'soft-light',weight:attack?15:28},{value:'overlay',weight:attack?27:24},{value:'multiply',weight:24},{value:'screen',weight:11},{value:'hard-light',weight:isMobile()?(attack?7:3):(attack?18:9)},{value:'color-burn',weight:isMobile()?0:(attack?7:3)}]);
-    item.source.style.filter=processFilter(v,intensity);
-    item.source.style.opacity=attack?rand(.48,.86):rand(.34,.67);
-    if(item.layer.classList.contains('has-alpha')){
-      item.texture.style.backgroundImage=`linear-gradient(${rand(0,360)}deg,${v.primary},${v.secondary},${v.tertiary}),url("${v.texture}")`;
-      item.texture.style.backgroundSize='100% 100%,cover';
-      item.texture.style.backgroundPosition='center,center';
-      item.texture.style.backgroundBlendMode='normal,multiply';
-      item.texture.style.mixBlendMode=weightedValue([{value:'soft-light',weight:34},{value:'overlay',weight:28},{value:'multiply',weight:22},{value:'screen',weight:10},{value:'hard-light',weight:isMobile()?2:6}]);
-      item.texture.style.filter=`grayscale(${rand(.02,.10)}) contrast(${rand(1.04,isMobile()?1.22:1.34)}) saturate(${rand(.82,1.06)})`;
-      item.texture.style.opacity=attack?rand(.18,.34+intensity*.12):rand(.11,.25+intensity*.08);
-    }else{
-      item.texture.style.backgroundImage='none';
-      item.texture.style.opacity='0';
-    }
-    item.layer.dataset.targetOpacity=clamp(attack?rand(.38,.66+intensity*.19):rand(.25,.48+intensity*.12),.16,.84).toFixed(3);
-  }
-  function configureBuilding(el,v,intensity,phase){
-    const attack=phase==='attack';
-    el.style.mixBlendMode=weightedValue([{value:'soft-light',weight:attack?21:30},{value:'overlay',weight:attack?28:22},{value:'screen',weight:17},{value:'lighten',weight:14},{value:'multiply',weight:12},{value:'hard-light',weight:isMobile()?3:(attack?8:4)}]);
-    el.style.filter=`grayscale(${rand(.16,.34)}) sepia(${rand(.20,.40)}) hue-rotate(${v.hue+rand(-5,5)}deg) saturate(${rand(.62,.92)}) brightness(${rand(attack?.96:.90,attack?1.09:1.02)}) contrast(${rand(1.03,attack?1.18:1.12)})`;
-    el.style.transform=`translate3d(${rand(-.55,.55)}px,${rand(-.55,.55)}px,0)`;
-    el.dataset.targetOpacity=clamp(attack?rand(.10,.20+intensity*.11):rand(.06,.15+intensity*.07),.04,.31).toFixed(3);
-  }
-
-  let tintToken=0;
-  function resetVisuals(immediate=false){
-    tintToken++; tint.style.transitionDuration=immediate?'0ms':'1200ms'; tint.style.opacity='0';
-    validLines.forEach(item=>{ item.token++; item.layer.style.transitionDuration=immediate?'0ms':'1100ms'; item.layer.style.opacity='0'; });
-    activeBuildings.forEach(el=>{ el._token=(el._token||0)+1; el.style.transitionDuration=immediate?'0ms':'1200ms'; el.style.opacity='0'; });
-  }
-  function preferredLines(event,count){
-    const ids=unique(event.pitches.flatMap(p=>PITCH_LINES[p]||[]));
-    const preferred=shuffle(validLines.filter(x=>ids.includes(x.lineNumber)));
-    const rest=shuffle(validLines.filter(x=>!preferred.includes(x)));
-    return [...preferred,...rest].slice(0,Math.min(count,validLines.length));
-  }
-  function attackTint(v,ringMs){
-    const token=++tintToken;
-    tint.style.transition='opacity 90ms ease-out';
-    tint.style.background=`radial-gradient(circle at ${rand(34,66)}% ${rand(34,66)}%,${v.primary} 0%,transparent 46%),linear-gradient(${rand(0,360)}deg,${v.secondary},${v.primary})`;
-    tint.style.mixBlendMode=weightedValue([{value:'soft-light',weight:48},{value:'overlay',weight:34},{value:'color',weight:18}]);
-    tint.style.opacity=(.025+v.intensity*(isMobile()?.085:.12)).toFixed(3);
-    setTimeout(()=>{ if(token!==tintToken)return; tint.style.transition=`opacity ${Math.max(1200,ringMs*.48)}ms ease`; tint.style.opacity=(.012+v.intensity*.04).toFixed(3); },clamp(ringMs*.12,260,800));
-    setTimeout(()=>{ if(token!==tintToken)return; tint.style.transition=`opacity ${Math.max(1600,ringMs*.42)}ms ease`; tint.style.opacity='0'; },clamp(ringMs*.58,1700,4800));
-  }
-  function driveVisuals(event,ringMs,voiceCount=1,actualVoices=[]){
-    if(REDUCED.matches)return;
-
-    /*
-      Actual sounding voices still inform the pigment,
-      but the architectural drawing goes back to the stable
-      EVENT-based behavior from the earlier version.
-
-      This prevents a seven-source chord from suddenly exposing
-      seven competing perspective-line directions.
-    */
-
-    const v=
-      visualForEvent(
-        event,
-        actualVoices
-      );
-
-    attackTint(
-      v,
-      ringMs
-    );
-
-    const n=
-      event.type==='chord'
-        ?randInt(
-            3,
-            isMobile()
-              ? 4
-              : 6
-          )
-        :event.type==='ensemble-dyad'
-          ?randInt(2,4)
-          :event.type==='dyad'
-            ?randInt(2,3)
-            :1;
-
-    preferredLines(
-      event,
-      n
-    ).forEach(
-      (item,i)=>{
-        const token=
-          ++item.token;
-
-        configureLine(
-          item,
-          v,
-          v.intensity,
-          'attack'
-        );
-
-        item.layer.style.transitionDuration=
-          `${rand(
-            70,
-            event.type==='chord'
-              ? 145
-              : 120
-          )}ms`;
-
-        item.layer.style.opacity=
-          item.layer.dataset.targetOpacity;
-
-        setTimeout(
-          ()=>{
-            if(token!==item.token)return;
-
-            const softer={
-              ...v,
-              primary:mixHex(
-                v.primary,
-                '#8a8a73',
-                .16
-              ),
-              secondary:mixHex(
-                v.secondary,
-                '#6f735f',
-                .18
-              )
-            };
-
-            configureLine(
-              item,
-              softer,
-              v.intensity*.72,
-              'bloom'
-            );
-
-            item.layer.style.transitionDuration=
-              `${clamp(
-                ringMs*.34,
-                900,
-                2600
-              )}ms`;
-
-            item.layer.style.opacity=
-              item.layer.dataset.targetOpacity;
-          },
-          170+
-          i*32+
-          rand(0,110)
-        );
-
-        setTimeout(
-          ()=>{
-            if(token!==item.token)return;
-
-            item.layer.style.transitionDuration=
-              `${clamp(
-                ringMs*.40,
-                1300,
-                3100
-              )}ms`;
-
-            item.layer.style.opacity=
-              event.type==='note'
-                ? '0'
-                : (
-                    Math.random()<.55
-                      ? '0'
-                      : (
-                          Number(
-                            item.layer.dataset.targetOpacity
-                          )*
-                          .34
-                        ).toFixed(3)
-                  );
-          },
-          clamp(
-            ringMs*.58,
-            1800,
-            5000
-          )
-        );
-      }
-    );
-
-    const count=
-      event.type==='chord'
-        ?Math.min(
-            activeBuildings.length,
-            isMobile()
-              ? 2
-              : 3
-          )
-        :event.type==='ensemble-dyad'
-          ?Math.min(
-              activeBuildings.length,
-              2
-            )
-          :event.type==='dyad'
-            ?Math.min(
-                activeBuildings.length,
-                Math.random()<.62
-                  ? 1
-                  : 2
-              )
-            :(
-                Math.random()<.58
-                  ? Math.min(
-                      activeBuildings.length,
-                      1
-                    )
-                  : 0
-              );
-
-    shuffle(
-      activeBuildings
-    )
-      .slice(
-        0,
-        count
-      )
-      .forEach(
-        (el,i)=>{
-          el._token=
-            (el._token||0)+1;
-
-          const token=
-            el._token;
-
-          configureBuilding(
-            el,
-            v,
-            v.intensity,
-            'attack'
-          );
-
-          el.style.transitionDuration=
-            `${rand(85,150)}ms`;
-
-          el.style.opacity=
-            el.dataset.targetOpacity;
-
-          setTimeout(
-            ()=>{
-              if(token!==el._token)return;
-
-              configureBuilding(
-                el,
-                v,
-                v.intensity*.68,
-                'bloom'
-              );
-
-              el.style.transitionDuration=
-                `${clamp(
-                  ringMs*.36,
-                  1000,
-                  2800
-                )}ms`;
-
-              el.style.opacity=
-                el.dataset.targetOpacity;
-            },
-            220+
-            i*70
-          );
-
-          setTimeout(
-            ()=>{
-              if(token!==el._token)return;
-
-              el.style.transitionDuration=
-                `${clamp(
-                  ringMs*.43,
-                  1400,
-                  3300
-                )}ms`;
-
-              el.style.opacity='0';
-            },
-            clamp(
-              ringMs*.57,
-              1900,
-              5000
-            )
-          );
-        }
-      );
-  }
-
-  function pointFromEvent(event){ const r=artwork.getBoundingClientRect(); return {x:clamp((event.clientX-r.left)/r.width,.04,.96),y:clamp((event.clientY-r.top)/r.height,.04,.96)}; }
-  const randomPoint=()=>({x:rand(.18,.82),y:rand(.20,.80)});
-  function createMark(event,point,ringMs,voiceCount=1,actualVoices=[]){
-    if(REDUCED.matches)return;
-
-    const v=
-      visualForEvent(
-        event,
-        actualVoices
-      );
-
-    const mark=
-      document.createElement(
-        'span'
-      );
-
-    const p=
-      point||
-      randomPoint();
-
-    mark.className=
-      `fuji-splash fuji-splash-${event.type}`;
-
-    /*
-      DIRECT proportional relationship to the number of actual
-      samples that successfully started — including duplicated pitches
-      played by different instruments.
-
-      1 voice  ≈ 5.4%
-      2 voices ≈ 6.7%
-      4 voices ≈ 9.3%
-      6 voices ≈ 11.9%
-      8 voices ≈ 14.5%
-    */
-
-    const voices=
-      Math.max(
-        1,
-        voiceCount
-      );
-
-    const size=
-      clamp(
-        4.1+
-        voices*1.3,
-        5.4,
-        14.8
-      );
-
-    const duration=
-      clamp(
-        ringMs+
-        rand(
-          650,
-          1650
-        ),
-        4000,
-        8000
-      );
-
-    const opacity=
-      clamp(
-        .17+
-        voices*.018,
-        .18,
-        .31
-      );
-
-    const accent=
-      mixHex(
-        v.primary,
-        v.secondary,
-        .34
-      );
-
-    const bright=
-      mixHex(
-        accent,
-        pick([
-          '#fdb913',
-          '#006a44',
-          '#c1272d'
-        ]),
-        .20
-      );
-
-    mark.style.setProperty(
-      '--x',
-      `${p.x*100}%`
-    );
-
-    mark.style.setProperty(
-      '--y',
-      `${p.y*100}%`
-    );
-
-    mark.style.setProperty(
-      '--size',
-      `${size}%`
-    );
-
-    mark.style.setProperty(
-      '--mark-color-a',
-      v.primary
-    );
-
-    mark.style.setProperty(
-      '--mark-color-b',
-      v.secondary
-    );
-
-    mark.style.setProperty(
-      '--mark-color-c',
-      bright
-    );
-
-    mark.style.setProperty(
-      '--mark-opacity',
-      opacity
-    );
-
-    mark.style.setProperty(
-      '--mark-duration',
-      `${duration}ms`
-    );
-
-    mark.style.mixBlendMode=
-      weightedValue([
-        {
-          value:'overlay',
-          weight:42
-        },
-        {
-          value:'soft-light',
-          weight:32
-        },
-        {
-          value:'multiply',
-          weight:18
-        },
-        {
-          value:'screen',
-          weight:8
-        }
-      ]);
-
-    splashLayer.appendChild(
-      mark
-    );
-
-    const cap=
-      isMobile()
-        ? 4
-        : 6;
-
-    while(
-      splashLayer.children.length>
-      cap
-    ){
-      splashLayer
-        .firstElementChild
-        ?.remove();
-    }
-
-    setTimeout(
-      ()=>mark.remove(),
-      duration+250
-    );
-  }
-
-  const AUDIO_ROOT='assets/audio/';
-  const SCALE=['D','E','F','G','A','B','C'];
-  const SEMITONES={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
-  const INSTRUMENTS=['concertina','guitar','mandolin'];
-  const SAMPLES=[];
-  function addSample(instrument,pitch,register,filename,harmonic=false){ SAMPLES.push({instrument,pitch,register,filename,harmonic,id:filename.replace('.mp3',''),path:AUDIO_ROOT+filename}); }
-  SCALE.forEach(pitch=>{ const p=pitch.toLowerCase(); addSample('concertina',pitch,1,`concertina_${p}1.mp3`); addSample('concertina',pitch,2,`concertina_${p}2.mp3`); addSample('guitar',pitch,1,`guitar_${p}1.mp3`); addSample('guitar',pitch,2,`guitar_${p}2.mp3`); addSample('mandolin',pitch,1,`mandolin_${p}1.mp3`); addSample('mandolin',pitch,2,`mandolin_${p}2.mp3`); });
-  addSample('concertina','D',3,'concertina_d3.mp3'); addSample('guitar','D',3,'guitar_d3.mp3');
-  addSample('guitar','D',3,'guitar_hd.mp3',true); addSample('guitar','G',3,'guitar_hg.mp3',true); addSample('guitar','B',3,'guitar_hb.mp3',true); addSample('guitar','E',3,'guitar_he.mp3',true);
-
-  const AUDIO={
-    masterGain:.61,
-    clickCooldown:320,
-
-    // Soft ceiling. Above this, NEW events lose optional duplicate voices
-    // before we ever allow a tap to become silent.
-    maxVoices:isMobile()?18:24,
-
-    // Emergency ceiling. At this point the oldest tail is faded gently
-    // so the newest tap always has somewhere to go.
-    hardVoices:isMobile()?26:34,
-
-    tailRelease:isMobile()?.55:.42,
-
-    // This concertina is the longest, most reedy source in the library.
-    // Keep it lower and slower so it colors the harmony without smearing it.
-    gains:{concertina:[.048,.094],guitar:[.098,.172],mandolin:[.080,.145],harmonic:[.050,.094],cello:[.095,.150]},
-    attacks:{concertina:[.095,.185],guitar:[.038,.095],mandolin:[.045,.110],harmonic:[.070,.150]}
-  };
-
-  const VOICING={
-    lowAnchorWeights:{D:9,A:6,G:4,C:3,F:2.5,E:1.5,B:.8},
-    instrumentWeights:{guitar:1.48,mandolin:1.34,concertina:.18},
-    concertinaChordMax:1,
-    chordHarmonicChance:.045,
-    noteHarmonicChance:.055,
-    dyadHarmonicChance:.075,
-    guitarLowPairChance:.96
-  };
-
-  const INSTRUMENT_PROFILE={
-    guitar:{melodyWeight:1.42,ring:'long',lowRegister:true},
-    mandolin:{melodyWeight:1.30,ring:'short',lowRegister:false},
-    concertina:{melodyWeight:.16,ring:'very-long',lowRegister:false}
-  };
-
-  const HARMONIES=[
-    {name:'d-open',pitches:['D','A','E'],tension:.05,weight:22,color:'open'},
-    {name:'d-minor',pitches:['D','F','A'],tension:.10,weight:20,color:'minor'},
-    {name:'d-min7',pitches:['D','F','A','C'],tension:.14,weight:15,color:'minor'},
-    {name:'g-open',pitches:['D','G','A'],tension:.10,weight:17,color:'open'},
-    {name:'g-major',pitches:['G','B','D'],tension:.17,weight:15,color:'bright'},
-    {name:'c-open',pitches:['C','G','D'],tension:.15,weight:15,color:'open'},
-    {name:'c-major',pitches:['C','E','G'],tension:.22,weight:11,color:'open'},
-    {name:'e-suspended',pitches:['E','B','D'],tension:.23,weight:11,color:'open'},
-    {name:'d-e-g',pitches:['D','E','G'],tension:.24,weight:11,color:'haunt'},
-    {name:'a-c-d',pitches:['A','C','D'],tension:.24,weight:10,color:'minor'},
-    {name:'a-open',pitches:['A','E','G'],tension:.26,weight:10,color:'open'},
-    {name:'a-minor',pitches:['A','C','E'],tension:.27,weight:10,color:'minor'},
-    {name:'e-minor',pitches:['E','G','B'],tension:.25,weight:10,color:'dorian'},
-    {name:'e-min7',pitches:['E','G','B','D'],tension:.20,weight:10,color:'dorian'},
-    {name:'d-f-g',pitches:['D','F','G'],tension:.29,weight:9,color:'haunt'},
-    {name:'f-major',pitches:['F','A','C'],tension:.31,weight:8,color:'minor'},
-    {name:'d-c-e',pitches:['D','C','E'],tension:.31,weight:8,color:'haunt'},
-    {name:'a-b-d',pitches:['A','B','D'],tension:.32,weight:7,color:'dorian'},
-    {name:'c-f-g',pitches:['C','F','G'],tension:.34,weight:6,color:'open'},
-    {name:'g-a-c',pitches:['G','A','C'],tension:.36,weight:6,color:'haunt'},
-    {name:'g-b-c',pitches:['G','B','C'],tension:.43,weight:3.5,color:'shadow'},
-    {name:'f-g-a',pitches:['F','G','A'],tension:.44,weight:3.3,color:'shadow'},
-    {name:'b-c-e',pitches:['B','C','E'],tension:.49,weight:2.4,color:'shadow'},
-    {name:'e-f-a',pitches:['E','F','A'],tension:.61,weight:.95,color:'dissonant',needsResolution:true},
-    {name:'b-d-f',pitches:['B','D','F'],tension:.84,weight:.18,color:'dissonant',needsResolution:true}
-  ];
-  const HARMONY=Object.fromEntries(HARMONIES.map(h=>[h.name,h]));
-
-  const audioState={context:null,bus:null,compressor:null,master:null,droneSource:null,droneGain:null,muted:false,overlayMuted:false,buffers:new Map(),loads:new Map(),activeSources:new Set(),droneStarted:false,droneLoading:false,pending:false,lastClick:0,auto:false,autoTimer:null};
-  const MAX_CACHE=isMobile()?20:48;
-  const planner={
-    currentHarmony:'d-open',
-    targetHarmony:'d-minor',
-
-    phraseQueue:[],
-    roadmap:[],
-    lastRoute:null,
-    lastPhraseKind:null,
-    motifMemory:{},
-    phraseNumber:0,
-    eventsSinceB:0,
-    justEndedPhrase:false,
-
-    clicksSinceChord:0,
-    chordStreak:0,
-    lastPitch:'D',
-    lastInstrument:'guitar',
-    gesture:null,
-
-    // Compatibility fields retained for the safety helpers.
-    arc:'hover',
-    targetTension:.20,
-    arcSteps:0,
-    resolutionDue:0,
-    resolutionPitch:null,
-    history:[]
-  };
-
-  function cloneState(s){
-    return {
-      currentHarmony:s.currentHarmony,targetHarmony:s.targetHarmony,arc:s.arc,targetTension:s.targetTension,arcSteps:s.arcSteps,
-      clicksSinceChord:s.clicksSinceChord,chordStreak:s.chordStreak,lastPitch:s.lastPitch,lastInstrument:s.lastInstrument,
-      gesture:s.gesture?{...s.gesture,instruments:s.gesture.instruments?[...s.gesture.instruments]:undefined}:null,
-      resolutionDue:s.resolutionDue||0,resolutionPitch:s.resolutionPitch||null,
-      history:s.history.slice(-10).map(x=>({...x,pitches:[...x.pitches],instruments:[...x.instruments]}))
-    };
-  }
-
-  function ensureContext(){
-    if(audioState.context) return audioState.context;
-    const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return null;
-    const ctx=new AC(), bus=ctx.createGain(), comp=ctx.createDynamicsCompressor(), master=ctx.createGain();
-    comp.threshold.value=-12; comp.knee.value=12; comp.ratio.value=2.25; comp.attack.value=.018; comp.release.value=.34; master.gain.value=AUDIO.masterGain;
-    bus.connect(comp); comp.connect(master); master.connect(ctx.destination);
-    const droneSource=ctx.createMediaElementSource(droneEl), droneGain=ctx.createGain(); droneGain.gain.value=.0001; droneSource.connect(droneGain); droneGain.connect(bus);
-    Object.assign(audioState,{context:ctx,bus,compressor:comp,master,droneSource,droneGain});
-    return ctx;
-  }
-  function updateMaster(){
-    if(!audioState.context||!audioState.master)return;
-    const now=audioState.context.currentTime, target=(audioState.muted||audioState.overlayMuted)?.0001:AUDIO.masterGain;
-    audioState.master.gain.cancelScheduledValues(now); audioState.master.gain.setValueAtTime(Math.max(.0001,audioState.master.gain.value),now); audioState.master.gain.exponentialRampToValueAtTime(target,now+.22);
-  }
-  function updateSoundButton(){ soundButton.textContent=audioState.muted?WORDS.on():WORDS.off(); soundButton.setAttribute('aria-label',audioState.muted?'Turn sound on':'Turn sound off'); }
-  function rememberBuffer(path,buffer){ if(audioState.buffers.has(path))audioState.buffers.delete(path); audioState.buffers.set(path,buffer); while(audioState.buffers.size>MAX_CACHE)audioState.buffers.delete(audioState.buffers.keys().next().value); }
-  async function loadBuffer(path){
-    if(audioState.buffers.has(path)){ const b=audioState.buffers.get(path); audioState.buffers.delete(path); audioState.buffers.set(path,b); return b; }
-    if(audioState.loads.has(path))return audioState.loads.get(path);
-    const ctx=ensureContext();
-    const promise=fetch(path).then(r=>{if(!r.ok)throw new Error(`Failed to load ${path}`);return r.arrayBuffer();}).then(a=>ctx.decodeAudioData(a)).then(b=>{rememberBuffer(path,b);audioState.loads.delete(path);return b;}).catch(e=>{audioState.loads.delete(path);throw e;});
-    audioState.loads.set(path,promise); return promise;
-  }
-  const regularSamples=(instrument,pitch)=>SAMPLES.filter(s=>!s.harmonic&&s.instrument===instrument&&s.pitch===pitch);
-  function chooseSample(instrument,pitch,preferred=null){ const c=regularSamples(instrument,pitch); if(!c.length)return null; return weighted(c.map(s=>({...s,weight:preferred===s.register?2:s.register===1?1:.88}))); }
-  function warmPitches(pitches){
-    const list=[];
-
-    unique(pitches||[]).forEach(p=>{
-      INSTRUMENTS.forEach(i=>{
-        const candidates=regularSamples(i,p);
-
-        // Warm both low and upper recordings for the harmonic area that
-        // the planner is currently considering. This makes later taps much
-        // less likely to stall while a new MP3 is decoded on a phone.
-        if(candidates[0])list.push(candidates[0]);
-        if(candidates[1])list.push(candidates[1]);
-      });
-    });
-
-    const uniqueSamples=[];
-    const seen=new Set();
-
-    shuffle(list).forEach(sample=>{
-      if(!seen.has(sample.path)){
-        seen.add(sample.path);
-        uniqueSamples.push(sample);
-      }
-    });
-
-    Promise.allSettled(
-      uniqueSamples
-        .slice(0,isMobile()?10:18)
-        .map(s=>loadBuffer(s.path))
-    );
-  }
-  async function startDrone(point){
-    if(audioState.droneStarted||audioState.droneLoading)return null; audioState.droneLoading=true;
-    const ctx=ensureContext(); if(!ctx){audioState.droneLoading=false;return null;} await ctx.resume();
-    try{
-      droneEl.loop=true; droneEl.currentTime=0; await droneEl.play();
-      const now=ctx.currentTime, level=rand(AUDIO.gains.cello[0],AUDIO.gains.cello[1]);
-      audioState.droneGain.gain.cancelScheduledValues(now); audioState.droneGain.gain.setValueAtTime(.0001,now); audioState.droneGain.gain.linearRampToValueAtTime(level,now+2.8);
-      audioState.droneStarted=true; audioState.droneLoading=false; warmPitches(HARMONY[planner.currentHarmony].pitches);
-      const event={type:'note',pitches:['D'],instruments:['cello'],harmonyName:planner.currentHarmony}; createMark(event,point,5600,1); driveVisuals(event,5600,1); updateSoundButton();
-      return {kind:'drone',event,ringMs:5600};
-    }catch(e){audioState.droneLoading=false;console.warn('Unable to start drone.',e);return null;}
-  }
-  droneEl.addEventListener('ended',async()=>{ if(!audioState.droneStarted)return; try{droneEl.currentTime=0;await droneEl.play();}catch{} });
-  document.addEventListener('visibilitychange',async()=>{ if(document.visibilityState==='visible'&&audioState.droneStarted&&droneEl.paused&&!audioState.muted&&!audioState.overlayMuted){try{await audioState.context?.resume();await droneEl.play();}catch{}} });
-
-  const scaleIndex=p=>SCALE.indexOf(p);
-  function stepPitch(p,n){ return SCALE[(scaleIndex(p)+n+SCALE.length*20)%SCALE.length]; }
-  function semitoneDistance(a,b){ const raw=Math.abs(SEMITONES[a]-SEMITONES[b]); return Math.min(raw,12-raw); }
-  function scaleDistance(a,b){ const raw=Math.abs(scaleIndex(a)-scaleIndex(b)); return Math.min(raw,SCALE.length-raw); }
-  const shared=(a,b)=>a.pitches.filter(p=>b.pitches.includes(p)).length;
-  function harmonyDistance(a,b){ return b.pitches.reduce((sum,p)=>sum+Math.min(...a.pitches.map(q=>semitoneDistance(q,p))),0); }
-  function nearestPitch(from,pitches){ return [...pitches].sort((a,b)=>scaleDistance(from,a)-scaleDistance(from,b))[0]||from; }
-  function directionToward(from,to){
-    const a=scaleIndex(from),b=scaleIndex(to),up=(b-a+SCALE.length)%SCALE.length,down=(a-b+SCALE.length)%SCALE.length;
-    if(up===0)return Math.random()<.5?1:-1;
-    return up<=down?1:-1;
-  }
-  function intervalDissonance(a,b){
-    const d=semitoneDistance(a,b);
-    return ({0:0,1:1,2:.28,3:.06,4:.05,5:.08,6:.92})[d]??.12;
-  }
-  function structureDissonance(pitches){
-    const p=unique(pitches); if(p.length<2)return 0;
-    const vals=[]; for(let i=0;i<p.length;i++)for(let j=i+1;j<p.length;j++)vals.push(intervalDissonance(p[i],p[j]));
-    const max=Math.max(...vals),avg=vals.reduce((a,b)=>a+b,0)/vals.length;
-    return clamp(max*.68+avg*.44,0,1);
-  }
-  function relationDissonance(pitch,s){
-    const c=HARMONY[s.currentHarmony],t=HARMONY[s.targetHarmony];
-    if(c.pitches.includes(pitch)||t.pitches.includes(pitch)||pitch==='D'||pitch==='A')return .04;
-    const d=Math.min(...unique([...c.pitches,...t.pitches]).map(p=>scaleDistance(pitch,p)));
-    return d===1?.28:.48;
-  }
-  function moveDissonance(s,m){
-    if(m.type==='chord'){
-      const h=HARMONY[m.harmonyName];
-      return clamp(structureDissonance(h.pitches)*.74+h.tension*.36,0,1);
-    }
-    if(m.pitches.length===1)return relationDissonance(m.pitches[0],s);
-    return clamp(structureDissonance(m.pitches)*.78+Math.max(...m.pitches.map(p=>relationDissonance(p,s)))*.30,0,1);
-  }
-  function isConsonantHarmony(h){ return !h.needsResolution && structureDissonance(h.pitches)<.48 && h.tension<.48; }
-  function resolvesTension(s,m){
-    const t=HARMONY[s.targetHarmony];
-    if(m.type==='chord'){
-      const h=HARMONY[m.harmonyName];
-      return isConsonantHarmony(h)&&(m.arrivesTarget||shared(h,t)>=1||h.pitches.includes('D'));
-    }
-    if(m.type==='note'){
-      const p=m.pitches[0];
-      return (t.pitches.includes(p)||HARMONY[s.currentHarmony].pitches.includes(p)||p==='D'||p==='A') && (!s.lastPitch||scaleDistance(s.lastPitch,p)<=1);
-    }
-    return moveDissonance(s,m)<.34 && m.pitches.some(p=>t.pitches.includes(p)||p==='D'||p==='A');
-  }
-  function chooseResolutionTarget(current,s,simulation=false){
-    const candidates=HARMONIES.filter(h=>h.name!==current.name&&isConsonantHarmony(h)&&h.tension<=.34);
-    const scored=candidates.map(h=>({h,score:scoreHarmonyTarget(current,h,{...s,targetTension:Math.min(s.targetTension,.24)})+(h.pitches.includes('D')?.45:0)})).sort((a,b)=>b.score-a.score);
-    if(simulation)return scored[0]?.h||HARMONY['d-open'];
-    return weightedValue(scored.slice(0,5).map((x,i)=>({value:x.h,weight:Math.exp((x.score-scored[0].score)/.9)*(1-i*.08)})))||scored[0]?.h||HARMONY['d-open'];
-  }
-
-  function beginArc(s,current){
-    if(current.tension>.52||current.needsResolution){ s.arc='release'; s.targetTension=rand(.07,.23); }
-    else{
-      s.arc=weightedValue([{value:'hover',weight:36},{value:'build',weight:29},{value:'release',weight:28},{value:'darken',weight:7}]);
-      if(s.arc==='build')s.targetTension=rand(Math.max(current.tension+.06,.27),.56);
-      else if(s.arc==='darken')s.targetTension=rand(.42,.60);
-      else if(s.arc==='release')s.targetTension=rand(.07,.24);
-      else s.targetTension=clamp(current.tension+rand(-.10,.10),.08,.46);
-    }
-    s.arcSteps=randInt(4,8);
-  }
-  function ensureArc(s){ if(s.arcSteps<=0)beginArc(s,HARMONY[s.currentHarmony]); }
-  function scoreHarmonyTarget(current,candidate,s){
-    const internal=structureDissonance(candidate.pitches);
-    let score=Math.log(candidate.weight+1)+shared(current,candidate)*.92-harmonyDistance(current,candidate)*.145-Math.abs(candidate.tension-s.targetTension)*3.5-internal*1.65;
-    if(candidate.pitches.includes('D'))score+=.28;
-    if(candidate.color==='open'||candidate.color==='minor')score+=.16;
-    if(candidate.color==='haunt')score+=.12;
-    if(candidate.needsResolution){ score-=s.arc==='darken'?.35:2.5; }
-    if(s.arc==='release'&&candidate.tension<current.tension)score+=1.05;
-    if(s.arc==='build'&&candidate.tension>current.tension-.02&&candidate.tension<=.52)score+=.72;
-    if(s.arc==='darken'&&candidate.tension>=current.tension&&candidate.tension<=.62)score+=.54;
-    if(s.resolutionDue>0&&isConsonantHarmony(candidate))score+=1.8;
-    return score;
-  }
-  function bestTarget(current,s){ return HARMONIES.filter(h=>h.name!==current.name).map(h=>({h,score:scoreHarmonyTarget(current,h,s)})).sort((a,b)=>b.score-a.score)[0].h; }
-  function chooseTarget(current,s){
-    const ranked=HARMONIES.filter(h=>h.name!==current.name).map(h=>({h,score:scoreHarmonyTarget(current,h,s)})).sort((a,b)=>b.score-a.score).slice(0,8);
-    const best=ranked[0]?.score??0;
-    return weightedValue(ranked.map((x,i)=>({value:x.h,weight:Math.exp((x.score-best)/1.05)*(1-i*.055)})))||ranked[0]?.h||HARMONY['d-open'];
-  }
-
-  const pitchTension=p=>PITCH_VISUALS[p]?.tension??.24;
-  function dyadTension(p){ return structureDissonance(p); }
-  function eventTension(m){ return m.type==='chord'?HARMONY[m.harmonyName].tension:m.pitches.length>=2?dyadTension(m.pitches):pitchTension(m.pitches[0]); }
-  const signature=m=>`${m.type}:${[...m.pitches].sort().join('')}:${[...m.instruments].sort().join('-')}`;
-
-  function noteMove(pitch,instrument,extras={}){ return {type:'note',pitches:[pitch],instruments:[instrument],...extras}; }
-  function dyadMove(pitches,instruments,extras={}){ return {type:extras.ensemble?'ensemble-dyad':'dyad',pitches:unique(pitches).slice(0,2),instruments:[...instruments],...extras}; }
-  function chordMove(name,extras={}){ return {type:'chord',harmonyName:name,pitches:[...HARMONY[name].pitches],instruments:['guitar','mandolin','concertina'],...extras}; }
-
-  /* =====================================================
-     PHRASE / HARMONIC ROADMAP
-
-     One click still equals exactly one musical event.
-     The difference is that the system now decides what a whole phrase is
-     trying to do before the first note of that phrase is played.
-     ===================================================== */
-
-  const HOME_HARMONIES=['d-open','d-minor','d-min7'];
-
-  const HARMONIC_ROUTES=[
-    /*
-      These are not "chord progressions" in a pop sense.
-
-      They are modal tension arcs around the permanent D drone:
-      establish → color → pressure → release.
-
-      The route is chosen once and then heard across several phrases, so the
-      listener can actually feel where the music is going.
-    */
-    {name:'dorian-arc',weight:21,path:['e-min7','g-major','a-b-d','d-minor']},
-    {name:'haunted-arc',weight:18,path:['d-e-g','a-b-d','g-major','d-open']},
-    {name:'minor-shadow',weight:17,path:['a-minor','f-major','c-open','d-minor']},
-    {name:'open-lift',weight:15,path:['g-open','g-major','e-min7','d-open']},
-    {name:'suspended-return',weight:12,path:['e-suspended','g-open','c-open','d-minor']},
-    {name:'seventh-return',weight:10,path:['d-min7','c-open','d-minor']},
-    {name:'short-breath',weight:7,path:['g-major','d-minor']}
-  ];
-
-  const MOTIF_SHAPES={
-    rise:[[0,1,2,1,2],[0,1,0,2,1],[0,1,2,3,2]],
-    fall:[[0,-1,-2,-1,-2],[0,-1,0,-2,-1],[0,-1,-2,-3,-2]],
-    arch:[[0,1,2,1,0],[0,1,2,2,1,0],[0,1,2,1,-1,0]],
-    turn:[[0,1,0,-1,0],[0,-1,0,1,0],[0,1,0,1,-1,0]],
-    pedal:[[0,0,1,0,2,0],[0,1,0,0,-1,0],[0,0,2,1,0]]
-  };
-
-  function weightedInstrumentForPhrase(allowConcertina=true){
-    return weightedValue([
-      {value:'guitar',weight:INSTRUMENT_PROFILE.guitar.melodyWeight},
-      {value:'mandolin',weight:INSTRUMENT_PROFILE.mandolin.melodyWeight},
-      {value:'concertina',weight:allowConcertina?INSTRUMENT_PROFILE.concertina.melodyWeight:0}
-    ])||'guitar';
-  }
-
-  function safeHarmony(name){
-    const h=HARMONY[name];
-    return Boolean(h&&!h.needsResolution&&structureDissonance(h.pitches)<.48);
-  }
-
-  function chooseRoadmap(){
-    const current=planner.currentHarmony;
-    const needsB=planner.eventsSinceB>=10;
-
-    const route=weightedValue(
-      HARMONIC_ROUTES.map(item=>{
-        let weight=item.weight;
-        if(item.name===planner.lastRoute)weight*=.34;
-        if(needsB&&item.path.some(name=>HARMONY[name]?.pitches.includes('B')))weight*=2.45;
-        if(item.path[0]===current)weight*=.48;
-        return {value:item,weight};
-      })
-    )||HARMONIC_ROUTES[0];
-
-    planner.lastRoute=route.name;
-    planner.roadmap=route.path.filter((name,i)=>safeHarmony(name)&&(i>0||name!==current));
-
-    if(!planner.roadmap.length)planner.roadmap=['d-minor'];
-  }
-
-  function nextRoadmapHarmony(){
-    if(!planner.roadmap.length)chooseRoadmap();
-
-    while(planner.roadmap.length>1&&planner.roadmap[0]===planner.currentHarmony){
-      planner.roadmap.shift();
-    }
-
-    return planner.roadmap.shift()||'d-minor';
-  }
-
-  function linearTargetIndex(fromPitch,targetPitches){
-    const from=scaleIndex(fromPitch);
-
-    return targetPitches
-      .map(p=>({pitch:p,index:scaleIndex(p),distance:Math.abs(scaleIndex(p)-from)}))
-      .sort((a,b)=>a.distance-b.distance)[0]||{pitch:fromPitch,index:from,distance:0};
-  }
-
-  function reflectScaleIndex(index){
-    let i=index;
-
-    while(i<0||i>=SCALE.length){
-      if(i<0)i=-i;
-      if(i>=SCALE.length)i=(SCALE.length-1)-(i-(SCALE.length-1));
-    }
-
-    return clamp(i,0,SCALE.length-1);
-  }
-
-  function phraseKindFor(current,target){
-    if(target.pitches.includes('B')&&!current.pitches.includes('B')){
-      return weightedValue([
-        {value:'rise',weight:7},
-        {value:'arch',weight:4},
-        {value:'turn',weight:2}
-      ])||'rise';
-    }
-
-    if(HOME_HARMONIES.includes(target.name)){
-      return weightedValue([
-        {value:'fall',weight:5},
-        {value:'arch',weight:4},
-        {value:'turn',weight:4},
-        {value:'pedal',weight:2}
-      ])||'fall';
-    }
-
-    return weightedValue([
-      {value:'arch',weight:5},
-      {value:'turn',weight:5},
-      {value:'rise',weight:3},
-      {value:'fall',weight:3},
-      {value:'pedal',weight:2}
-    ])||'turn';
-  }
-
-  function choosePhraseTexture(kind){
-    if(kind==='pedal'&&Math.random()<.38){
-      return {type:'dialogue',instruments:['guitar','mandolin']};
-    }
-
-    const type=weightedValue([
-      {value:'solo',weight:50},
-      {value:'dialogue',weight:30},
-      {value:'braid',weight:12},
-      {value:'concertina-answer',weight:8}
-    ])||'solo';
-
-    if(type==='solo'){
-      // The concertina recordings ring much longer than the plucked strings.
-      // Keep them out of free-running solo lines: use them as deliberate answers
-      // and common-tone glue instead.
-      return {
-        type,
-        instruments:[
-          weightedValue([
-            {value:'guitar',weight:1.15},
-            {value:'mandolin',weight:1}
-          ])||'guitar'
-        ]
-      };
-    }
-
-    if(type==='concertina-answer'){
-      return {
-        type:'concertina-answer',
-        instruments:[Math.random()<.58?'guitar':'mandolin','concertina']
-      };
-    }
-
-    const pair=weightedValue([
-      {value:['guitar','mandolin'],weight:78},
-      {value:['guitar','concertina'],weight:12},
-      {value:['mandolin','concertina'],weight:10}
-    ])||['guitar','mandolin'];
-
-    return {type,instruments:[...pair]};
-  }
-
-  function instrumentAt(texture,index){
-    if(texture.type==='solo')return texture.instruments[0];
-
-    if(texture.type==='braid'){
-      return texture.instruments[Math.floor(index/2)%texture.instruments.length];
-    }
-
-    if(texture.type==='concertina-answer'){
-      // Plucked instrument states the thought; the long concertina answers
-      // only at selected points instead of smearing every other note.
-      return index===1||index===texture.answerIndex
-        ?'concertina'
-        :texture.instruments[0];
-    }
-
-    return texture.instruments[index%texture.instruments.length];
-  }
-
-  function melodyRegister(instrument,pitch,index,kind){
-    if(instrument==='guitar'){
-      // Register 1 is the genuinely low guitar D-string octave.
-      // Use it deliberately and let mandolin register 1 supply the octave body.
-      if((pitch==='D'||pitch==='A')&&(kind==='pedal'||index===0)&&Math.random()<.22)return 1;
-      return 2;
-    }
-
-    if(instrument==='concertina')return 2;
-
-    // Mandolin register 1 starts on its D course and already sits well above
-    // the low guitar foundation.
-    return Math.random()<.67?1:2;
-  }
-
-  function chooseMotifShape(kind){
-    const library=MOTIF_SHAPES[kind]||MOTIF_SHAPES.turn;
-    const remembered=planner.motifMemory[kind];
-
-    let shape;
-
-    // Irish dance-tune syntax depends heavily on recognisable motives.
-    // Reuse a cell often enough that the ear can learn it, then make small
-    // variations rather than generating a fresh contour every phrase.
-    if(remembered&&Math.random()<.56){
-      shape=[...remembered];
-
-      if(shape.length>3&&Math.random()<.34){
-        const index=randInt(1,shape.length-2);
-        const delta=Math.random()<.5?-1:1;
-        shape[index]=clamp(shape[index]+delta,-3,3);
-      }
-    }else{
-      shape=[...pick(library)];
-    }
-
-    planner.motifMemory[kind]=[...shape];
-    return shape;
-  }
-
-  function buildPitchPath(current,target,kind,noteCount){
-    const startPitch=planner.lastPitch&&SCALE.includes(planner.lastPitch)
-      ?planner.lastPitch
-      :(pick(current.pitches)||'D');
-
-    const startIndex=scaleIndex(startPitch);
-    const landing=linearTargetIndex(startPitch,target.pitches);
-    const shape=chooseMotifShape(kind);
-    const result=[];
-
-    for(let i=0;i<noteCount;i++){
-      const offset=shape[i%shape.length];
-      result.push(SCALE[reflectScaleIndex(startIndex+offset)]);
-    }
-
-    // For longer fragments, let the middle behave like a repeated cell rather
-    // than an unrelated string of scale notes.
-    if(noteCount>=6){
-      const cellLength=3;
-      const shift=
-        kind==='rise'
-          ?1
-          :kind==='fall'
-            ?-1
-            :0;
-
-      for(let i=cellLength;i<Math.min(noteCount-2,cellLength*2);i++){
-        const source=result[i-cellLength];
-        result[i]=shift===0
-          ?source
-          :stepPitch(source,shift);
-      }
-    }
-
-    // B natural is the characteristic Dorian sixth. Use it as a purposeful
-    // lift when the destination is G/Em-ish, never as a random "spicy" note.
-    if(noteCount>=4&&target.pitches.includes('B')&&!result.includes('B')){
-      result[Math.max(1,noteCount-2)]='B';
-    }
-
-    // The end of the fragment has a destination. The penultimate note is
-    // adjusted to approach it by step whenever the generated cell wandered.
-    result[result.length-1]=landing.pitch;
-
-    if(result.length>=2){
-      const before=result[result.length-2];
-
-      if(scaleDistance(before,landing.pitch)>1){
-        const direction=directionToward(before,landing.pitch);
-        result[result.length-2]=stepPitch(landing.pitch,-direction);
-      }
-    }
-
-    return result;
-  }
-
-  function safeDyadFor(pitch,target){
-    const candidates=unique([...target.pitches,'D','A','G'])
-      .filter(p=>p!==pitch)
-      .map(p=>({
-        pitch:p,
-        diss:structureDissonance([pitch,p]),
-        distance:scaleDistance(pitch,p)
-      }))
-      .filter(x=>x.diss<.34)
-      .sort((a,b)=>(a.diss-b.diss)||(a.distance-b.distance));
-
-    return candidates[0]?.pitch||null;
-  }
-
-  function choosePhraseLength(kind){
-    if(kind==='pedal'){
-      return weightedValue([
-        {value:3,weight:18},
-        {value:4,weight:34},
-        {value:5,weight:30},
-        {value:6,weight:18}
-      ])||4;
-    }
-
-    const family=weightedValue([
-      {value:'fragment',weight:20},
-      {value:'phrase',weight:60},
-      {value:'long',weight:20}
-    ])||'phrase';
-
-    if(family==='fragment')return randInt(1,3);
-    if(family==='long')return randInt(6,8);
-    return randInt(4,6);
-  }
-
-  function phraseTensionAt(kind,index,length,current,target,pitch){
-    const progress=length<=1?1:index/(length-1);
-
-    /*
-      A phrase now has an actual dramatic curve.
-
-      rise   = increasing urgency
-      fall   = release
-      arch   = tension peaks in the middle / late-middle
-      turn   = a smaller rise and return
-      pedal  = low pressure around a repeated tonal center
-    */
-
-    let contour;
-
-    if(kind==='rise'){
-      contour=.18+progress*.72;
-    }
-    else if(kind==='fall'){
-      contour=.78-progress*.60;
-    }
-    else if(kind==='arch'){
-      contour=.18+Math.sin(progress*Math.PI)*.68;
-    }
-    else if(kind==='turn'){
-      contour=.27+Math.sin(progress*Math.PI)*.42;
-    }
-    else{
-      contour=.20+Math.sin(progress*Math.PI)*.28;
-    }
-
-    const harmonic=
-      current.tension+
-      (
-        target.tension-
-        current.tension
-      )*
-      progress;
-
-    /*
-      D and A feel like ground against the cello drone.
-      C/E/G/B/F carry progressively more modal color/pressure.
-      This is only one ingredient: the contour and destination still govern.
-    */
-
-    const pitchPressure={
-      D:.04,
-      A:.07,
-      F:.18,
-      G:.22,
-      C:.31,
-      E:.34,
-      B:.40
-    }[pitch]??.22;
-
-    return clamp(
-      contour*.55+
-      harmonic*.27+
-      pitchPressure*.18,
-      .06,
-      .90
-    );
-  }
-
-  function phraseAcceleration(tension){
-    /*
-      Higher tension shortens the next autoplay gap.
-      Resolution lengthens it again.
-
-      This is what makes the automatic performance feel like it leans
-      forward instead of scattering isolated notes across empty time.
-    */
-    return 1-clamp(tension,0,1)*.48;
-  }
-
-  function stableConcertinaPitch(pitch,current,target){
-    const common=current.pitches.filter(p=>target.pitches.includes(p));
-    const stable=unique([
-      ...common,
-      ...target.pitches.filter(p=>['D','A','G','C'].includes(p)),
-      'D',
-      'A'
-    ]);
-
-    return nearestPitch(pitch,stable);
-  }
-
-  function buildPhrase(){
-    const current=HARMONY[planner.currentHarmony]||HARMONY['d-open'];
-    const targetName=nextRoadmapHarmony();
-    const target=HARMONY[targetName]||HARMONY['d-minor'];
-
-    planner.targetHarmony=target.name;
-    planner.phraseNumber++;
-
-    let kind=phraseKindFor(current,target);
-
-    if(kind===planner.lastPhraseKind&&Math.random()<.56){
-      kind=pick(['rise','fall','arch','turn','pedal'].filter(x=>x!==kind));
-    }
-
-    planner.lastPhraseKind=kind;
-
-    const texture=choosePhraseTexture(kind);
-    let noteCount=choosePhraseLength(kind);
-
-    // The concertina samples are sustained/reedy. Treat them as held harmonic
-    // material, not as a fast melodic stream.
-    if(texture.type==='concertina-answer'){
-      noteCount=Math.min(Math.max(noteCount,2),4);
-      texture.answerIndex=noteCount>2?noteCount-2:1;
-    }
-    else if(texture.instruments.includes('concertina')){
-      noteCount=Math.min(noteCount,4);
-    }
-
-    const pitchPath=buildPitchPath(current,target,kind,noteCount);
-    const queue=[];
-
-    pitchPath.forEach((rawPitch,index)=>{
-      const instrument=instrumentAt(texture,index);
-
-      // If the long concertina is sounding, put it on a common/stable tone so
-      // its tail remains consonant underneath the next click or two.
-      const pitch=instrument==='concertina'
-        ?stableConcertinaPitch(rawPitch,current,target)
-        :rawPitch;
-
-      const preferredRegister=melodyRegister(instrument,pitch,index,kind);
-
-      const phraseTension=
-        phraseTensionAt(
-          kind,
-          index,
-          noteCount,
-          current,
-          target,
-          pitch
-        );
-
-      let move=noteMove(
-        pitch,
-        instrument,
-        {
-          preferredRegister,
-          phraseKind:kind,
-          phraseTexture:texture.type,
-          phraseIndex:index,
-          phraseLength:noteCount,
-          phraseTension,
-          motifRepeat:index>=3&&pitch===pitchPath[index-3]
-        }
-      );
-
-      const middle=index>0&&index<pitchPath.length-1;
-      const partner=safeDyadFor(pitch,target);
-
-      // A rare "two-note choir": on desktop this becomes the two pitches
-      // across guitar + mandolin + concertina (six actual source voices).
-      // It only happens on a consonant dyad and never immediately before the
-      // cadence, so the long concertina tail has somewhere safe to live.
-      const ensembleMoment=
-        middle&&
-        partner&&
-        phraseTension>.57&&
-        structureDissonance([pitch,partner])<.24&&
-        Math.random()<
-          (
-            .035+
-            phraseTension*.07
-          );
-
-      if(ensembleMoment){
-        move=dyadMove(
-          [pitch,partner],
-          ['guitar','mandolin','concertina'],
-          {
-            ensemble:true,
-            phraseKind:kind,
-            phraseTexture:texture.type,
-            phraseIndex:index,
-            phraseLength:noteCount,
-            phraseTension
-          }
-        );
-      }
-      else{
-        const dyadChance=
-          (
-            texture.type==='dialogue'
-              ?.11
-              :texture.type==='braid'
-                ?.09
-                :.045
-          )+
-          phraseTension*.10;
-
-        if(middle&&partner&&Math.random()<dyadChance){
-          const second=texture.instruments.find(x=>x!==instrument)||(
-            instrument==='guitar'?'mandolin':'guitar'
-          );
-
-          move=dyadMove(
-            [pitch,partner],
-            [instrument,second],
-            {
-              phraseKind:kind,
-              phraseTexture:texture.type,
-              phraseIndex:index,
-              phraseLength:noteCount,
-              phraseTension
-            }
-          );
-        }
-      }
-
-      queue.push(move);
-    });
-
-    // Consecutive chords are a punctuation device, not a random coincidence.
-    // They occur at phrase endings when the two sonorities share tones or move
-    // with short voice-leading distance.
-    const canDouble=
-      current.name!==target.name&&
-      (shared(current,target)>=1||harmonyDistance(current,target)<=5)&&
-      structureDissonance(target.pitches)<.45;
-
-    const doubleChord=canDouble&&Math.random()<.27;
-
-    if(doubleChord){
-      queue.push(
-        chordMove(
-          current.name,
-          {
-            restates:true,
-            phraseKind:kind,
-            phraseTexture:texture.type,
-            phraseTension:clamp(
-              Math.max(
-                current.tension,
-                target.tension
-              )+.14,
-              .18,
-              .72
-            ),
-            chordRole:'preparation'
-          }
-        )
-      );
-    }
-
-    queue.push(
-      chordMove(
-        target.name,
-        {
-          arrivesTarget:true,
-          phraseEnd:true,
-          phraseKind:kind,
-          phraseTexture:texture.type,
-
-          /*
-            The arrival chord releases the phrase-level tension unless the
-            roadmap itself is still climbing. That distinction feeds autoplay.
-          */
-          phraseTension:target.tension,
-          chordRole:doubleChord?'answer':'cadence'
-        }
-      )
-    );
-
-    while(planner.roadmap[0]===target.name)planner.roadmap.shift();
-
-    planner.phraseQueue=queue;
-
-    warmPitches(unique([...current.pitches,...target.pitches,...pitchPath]));
-  }
-
-  function planNextMove(){
-    if(!planner.phraseQueue.length)buildPhrase();
-    return planner.phraseQueue.shift();
-  }
-
-  function commitMove(move){
-    const previous=planner.history.at(-1);
-
-    planner.justEndedPhrase=Boolean(move.phraseEnd);
-
-    if(move.type==='chord'){
-      planner.currentHarmony=move.harmonyName;
-      planner.targetHarmony=move.harmonyName;
-      planner.clicksSinceChord=0;
-      planner.chordStreak=previous?.type==='chord'?planner.chordStreak+1:1;
-    }else{
-      planner.clicksSinceChord++;
-      planner.chordStreak=0;
-      planner.lastPitch=move.pitches.at(-1)||planner.lastPitch;
-      planner.lastInstrument=move.instruments[0]||planner.lastInstrument;
-    }
-
-    planner.eventsSinceB=move.pitches.includes('B')?0:planner.eventsSinceB+1;
-
-    planner.history.push({
-      type:move.type,
-      pitches:[...move.pitches],
-      instruments:[...move.instruments],
-      harmonyName:move.harmonyName||null,
-      phraseKind:move.phraseKind||null,
-      phraseEnd:Boolean(move.phraseEnd)
-    });
-
-    if(planner.history.length>16)planner.history=planner.history.slice(-16);
-
-    const nextHarmony=planner.roadmap[0]&&HARMONY[planner.roadmap[0]]
-      ?HARMONY[planner.roadmap[0]].pitches
-      :[];
-
-    warmPitches(unique([...HARMONY[planner.currentHarmony].pitches,...nextHarmony]));
-  }
-
-  function addHarmonic(voices,pitches,chance=.08){
-    if(Math.random()>chance||voices.some(v=>(v.sample||v).harmonic))return;
-    const hs=SAMPLES.filter(s=>s.harmonic&&pitches.includes(s.pitch));
-    if(hs.length){ const s=pick(hs); voices.push({...s,gainScale:.72}); }
-  }
-  function weightedInstrument(allowConcertina=true){
-    return weightedValue([
-      {value:'guitar',weight:VOICING.instrumentWeights.guitar},
-      {value:'mandolin',weight:VOICING.instrumentWeights.mandolin},
-      {value:'concertina',weight:allowConcertina?VOICING.instrumentWeights.concertina:0}
-    ]);
-  }
-  function preferredRegisterFor(instrument,context='free'){
-    if(instrument==='guitar'){
-      return Math.random()<(context==='run'?.94:.88)?2:1;
-    }
-    if(instrument==='concertina')return Math.random()<.88?2:1;
-    return Math.random()<.62?1:2;
-  }
-  function pushUniqueVoice(voices,sample,gainScale=1){
-    if(!sample||voices.some(v=>v.id===sample.id))return false;
-    voices.push({...sample,gainScale});
-    return true;
-  }
-  function addLowGuitarMandolinPair(voices,pitch,guitarGain=.88,mandolinGain=.78){
-    const g=chooseSample('guitar',pitch,1),m=chooseSample('mandolin',pitch,1);
-    let added=false;
-    if(g)added=pushUniqueVoice(voices,g,guitarGain)||added;
-    if(m)added=pushUniqueVoice(voices,m,mandolinGain)||added;
-    return added;
-  }
-  function chordAnchorPitch(h){
-    return weightedValue(h.pitches.map(p=>({value:p,weight:VOICING.lowAnchorWeights[p]||1})))||h.pitches[0];
-  }
-  function sampleCountByInstrument(voices,instrument){ return voices.filter(v=>v.instrument===instrument).length; }
-  function sampleCountByPitch(voices,pitch){ return voices.filter(v=>v.pitch===pitch).length; }
-
-  function samplesForMove(move){
-    const voices=[];
-    if(move.type==='note'){
-      const instrument=move.instruments[0],context=planner.gesture?.type==='run'?'run':'free';
-      let preferred=move.preferredRegister||preferredRegisterFor(instrument,context);
-      if(instrument==='guitar'&&preferred===1&&Math.random()<VOICING.guitarLowPairChance){
-        addLowGuitarMandolinPair(voices,move.pitches[0],.86,.72);
-      }else{
-        const s=chooseSample(instrument,move.pitches[0],preferred);
-        if(s)pushUniqueVoice(voices,s,instrument==='concertina'?.80:1);
-      }
-      addHarmonic(voices,move.pitches,VOICING.noteHarmonicChance);
-      return voices;
-    }
-
-    if(move.type==='dyad'){
-      const i1=move.instruments[0]||planner.lastInstrument||'guitar',i2=move.instruments[1]||pick(INSTRUMENTS.filter(x=>x!==i1));
-      const p1=move.pitches[0],p2=move.pitches[1];
-      const r1=preferredRegisterFor(i1,'free'),r2=preferredRegisterFor(i2,'free');
-      if(i1==='guitar'&&r1===1&&Math.random()<VOICING.guitarLowPairChance)addLowGuitarMandolinPair(voices,p1,.84,.70);
-      else pushUniqueVoice(voices,chooseSample(i1,p1,r1),i1==='concertina'?.78:1);
-      if(i2==='guitar'&&r2===1&&Math.random()<VOICING.guitarLowPairChance)addLowGuitarMandolinPair(voices,p2,.84,.70);
-      else pushUniqueVoice(voices,chooseSample(i2,p2,r2),i2==='concertina'?.78:1);
-      if(Math.random()<.24 && structureDissonance(move.pitches)<.42){
-        const da=chooseSample(i2,p1,2),db=chooseSample(i1,p2,2);
-        pushUniqueVoice(voices,da,i2==='concertina'?.68:.78); pushUniqueVoice(voices,db,i1==='concertina'?.68:.78);
-      }
-      addHarmonic(voices,move.pitches,VOICING.dyadHarmonicChance);
-      return voices;
-    }
-
-    if(move.type==='ensemble-dyad'){
-      const instruments=isMobile()?['guitar','mandolin']:['guitar','mandolin','concertina'];
-      instruments.forEach((instrument,ii)=>move.pitches.forEach((pitch,pi)=>{
-        const reg=(ii+pi)%2===0?1:2;
-        if(instrument==='guitar'&&reg===1){ addLowGuitarMandolinPair(voices,pitch,.78,.65); }
-        else pushUniqueVoice(voices,chooseSample(instrument,pitch,reg),instrument==='concertina'?.64:.82);
-      }));
-      addHarmonic(voices,move.pitches,.06);
-      return voices;
-    }
-
-    if(move.type==='chord'){
-      const h=HARMONY[move.harmonyName];
-      const consecutive=planner.history.at(-1)?.type==='chord';
-
-      const target=consecutive
-        ?randInt(isMobile()?4:5,isMobile()?5:6)
-        :randInt(isMobile()?5:6,isMobile()?6:7);
-
-      const anchor=chordAnchorPitch(h);
-
-      // Guitar register 1 is the lowest recorded foundation. Mandolin
-      // register 1 doubles the same pitch class an octave-ish higher for body.
-      addLowGuitarMandolinPair(
-        voices,
-        anchor,
-        consecutive?.72:.82,
-        consecutive?.60:.70
-      );
-
-      // Guitar and mandolin alternate the upper chord tones. That stable
-      // orchestration gives one chord a family resemblance to the next.
-      let upperIndex=0;
-
-      h.pitches
-        .filter(p=>p!==anchor)
-        .forEach(pitch=>{
-          const instrument=upperIndex++%2===0?'guitar':'mandolin';
-
-          pushUniqueVoice(
-            voices,
-            chooseSample(instrument,pitch,2),
-            instrument==='guitar'?.80:.76
-          );
-        });
-
-      // Let concertina sustain a COMMON TONE when possible. This uses its
-      // long reed decay as glue instead of adding another random chord tone.
-      const previousChord=[...planner.history]
-        .reverse()
-        .find(x=>x.type==='chord'&&x.harmonyName&&HARMONY[x.harmonyName]);
-
-      const previousHarmony=previousChord?HARMONY[previousChord.harmonyName]:null;
-      const common=previousHarmony
-        ?h.pitches.filter(p=>previousHarmony.pitches.includes(p))
-        :[];
-
-      const concertinaPitch=
-        common.find(p=>['D','A','G','C'].includes(p))||
-        h.pitches.find(p=>['D','A','G'].includes(p));
-
-      if(concertinaPitch&&Math.random()<(consecutive?.42:.58)){
-        pushUniqueVoice(
-          voices,
-          chooseSample('concertina',concertinaPitch,2),
-          .50
-        );
-      }
-
-      let guard=0;
-
-      while(voices.length<target&&guard++<30){
-        const pitch=weightedValue(
-          h.pitches.map(p=>({
-            value:p,
-            weight:1/(1+sampleCountByPitch(voices,p))
-          }))
-        )||anchor;
-
-        const instrument=
-          sampleCountByInstrument(voices,'guitar')<=sampleCountByInstrument(voices,'mandolin')
-            ?'guitar'
-            :'mandolin';
-
-        const added=pushUniqueVoice(
-          voices,
-          chooseSample(instrument,pitch,2),
-          instrument==='guitar'?.72:.68
-        );
-
-        if(!added){
-          pushUniqueVoice(
-            voices,
-            chooseSample(instrument==='guitar'?'mandolin':'guitar',pitch,2),
-            .66
-          );
-        }
-      }
-
-      if(
-        (h.color==='open'||h.color==='dorian'||h.name==='g-major')&&
-        !consecutive
-      ){
-        addHarmonic(voices,h.pitches,VOICING.chordHarmonicChance);
-      }
-
-      return voices;
-    }
-    return voices;
-  }
-
-  const gainRange=s=>s.harmonic?AUDIO.gains.harmonic:AUDIO.gains[s.instrument];
-  const attackRange=s=>s.harmonic?AUDIO.attacks.harmonic:AUDIO.attacks[s.instrument];
-  const panRange=s=>s.harmonic?.52:s.register===1?.24:s.register===2?.38:.50;
-
-  function minimumVoicesForMove(move){
-    if(move.type==='chord')return 3;
-    if(move.type==='ensemble-dyad')return 3;
-    if(move.type==='dyad')return 2;
-    return 1;
-  }
-
-  function gentlyReleaseOldestTail(){
-    if(!audioState.activeSources.size)return;
-
-    const now=audioState.context.currentTime;
-
-    const candidates=[...audioState.activeSources]
-      .filter(source=>!source._fujiReleasing)
-      .sort((a,b)=>(a._fujiStartedAt||0)-(b._fujiStartedAt||0));
-
-    const victim=candidates[0];
-
-    if(!victim)return;
-
-    victim._fujiReleasing=true;
-
-    const release=AUDIO.tailRelease;
-
-    try{
-      const gain=victim._fujiGain;
-
-      if(gain){
-        gain.gain.cancelScheduledValues(now);
-        gain.gain.setValueAtTime(Math.max(.0001,gain.gain.value),now);
-        gain.gain.exponentialRampToValueAtTime(.0001,now+release);
-      }
-
-      victim.stop(now+release+.04);
-    }catch{}
-
-    // Free the bookkeeping slot now. The actual sound disappears over the
-    // short release above, so this does not chop the tail off abruptly.
-    audioState.activeSources.delete(victim);
-  }
-
-  function voiceBudgetForMove(move,loadedCount){
-    const active=audioState.activeSources.size;
-    const softAvailable=Math.max(0,AUDIO.maxVoices-active);
-    const minimum=Math.min(loadedCount,minimumVoicesForMove(move));
-
-    if(active+loadedCount<=AUDIO.maxVoices){
-      return loadedCount;
-    }
-
-    // Preserve the musical identity of the NEW tap. When the page is dense,
-    // optional duplicate voices are the first thing to go — not the event.
-    return Math.min(loadedCount,Math.max(minimum,softAvailable));
-  }
-
-  function scheduleVoice(sample,buffer,start,destination,gainMultiplier=1){
-
-    while(audioState.activeSources.size>=AUDIO.hardVoices){
-      const before=audioState.activeSources.size;
-
-      gentlyReleaseOldestTail();
-
-      if(audioState.activeSources.size>=before){
-        break;
-      }
-    }
-
-    const source=audioState.context.createBufferSource();
-    const gain=audioState.context.createGain();
-    const pan=audioState.context.createStereoPanner();
-
-    source.buffer=buffer;
-
-    const gr=gainRange(sample);
-    const ar=attackRange(sample);
-    const target=rand(gr[0],gr[1])*gainMultiplier;
-
-    gain.gain.setValueAtTime(.0001,start);
-    gain.gain.linearRampToValueAtTime(target,start+rand(ar[0],ar[1]));
-
-    const width=panRange(sample);
-
-    pan.pan.setValueAtTime(rand(-width,width),start);
-
-    source.connect(gain);
-    gain.connect(pan);
-    pan.connect(destination);
-
-    source._fujiGain=gain;
-    source._fujiStartedAt=start;
-    source._fujiReleasing=false;
-
-    audioState.activeSources.add(source);
-
-    let cleaned=false;
-
-    const cleanup=()=>{
-      if(cleaned)return;
-      cleaned=true;
-
-      audioState.activeSources.delete(source);
-
-      if(source._fujiCleanupTimer){
-        clearTimeout(source._fujiCleanupTimer);
-      }
-
-      try{
-        source.disconnect();
-        gain.disconnect();
-        pan.disconnect();
-      }catch{}
-    };
-
-    source.onended=cleanup;
-
-    // Safari normally fires `ended`, but this prevents the registry from
-    // getting permanently stuck if mobile Safari ever misses that callback.
-    source._fujiCleanupTimer=setTimeout(
-      cleanup,
-      Math.ceil((buffer.duration+2)*1000)
-    );
-
-    source.start(start);
-
-    return true;
-  }
-
-  async function playMove(move){
-    const wanted=samplesForMove(move);
-
-    const loaded=(
-      await Promise.all(
-        wanted.map(async sample=>{
-          try{
-            return {
-              sample,
-              buffer:await loadBuffer(sample.path)
-            };
-          }catch{
-            return null;
-          }
-        })
-      )
-    ).filter(Boolean);
-
-    if(!loaded.length)return null;
-
-    const bus=audioState.context.createGain();
-
-    bus.connect(audioState.bus);
-
-    const start=audioState.context.currentTime+.055;
-
-    const attack=
-      move.type==='chord'
-        ?rand(.070,.125)
-        :move.type==='ensemble-dyad'
-          ?rand(.055,.105)
-          :move.type==='dyad'
-            ?rand(.045,.090)
-            :rand(.028,.065);
-
-    bus.gain.setValueAtTime(.0001,start);
-    bus.gain.linearRampToValueAtTime(1,start+attack);
-
-    let longest=0;
-    let scheduled=0;
-    const scheduledVoices=[];
-
-    const budget=voiceBudgetForMove(move,loaded.length);
-
-    loaded.slice(0,budget).forEach((entry,i)=>{
-      longest=Math.max(longest,entry.buffer.duration);
-
-      const spread=
-        move.type==='chord'
-          ?Math.min(i*rand(.006,.016),.050)
-          :move.type==='ensemble-dyad'
-            ?Math.min(i*rand(.004,.012),.032)
-            :move.type==='dyad'
-              ?Math.min(i*.006,.018)
-              :0;
-
-      const perVoice=entry.sample.gainScale??1;
-
-      if(
-        scheduleVoice(
-          entry.sample,
-          entry.buffer,
-          start+spread,
-          bus,
-          (move.type==='chord'?.86:.94)*perVoice
-        )
-      ){
-        scheduled++;
-        scheduledVoices.push(entry.sample);
-      }
-    });
-
-    if(!scheduled){
-      try{bus.disconnect();}catch{}
-      return null;
-    }
-
-    const ringMs=clamp(longest*1000,3300,7600);
-
-    setTimeout(()=>{
-      try{bus.disconnect();}catch{}
-    },ringMs+1200);
-
-    return {
-      ringMs,
-      voiceCount:scheduled,
-      voices:scheduledVoices
-    };
-  }
-
-  function autoplayDelay(result){
-    if(!result)return rand(2200,3900);
-    if(result.kind==='drone')return rand(4300,6800);
-
-    const event=result.event;
-    const instruments=event.instruments||[];
-    const tension=clamp(
-      event.phraseTension??
-      eventTension(event),
-      0,
-      1
-    );
-
-    const acceleration=
-      phraseAcceleration(
-        tension
-      );
-
-    let delay;
-
-    if(event.type==='chord'){
-      const previous=planner.history.at(-2);
-      const consecutive=previous?.type==='chord';
-
-      /*
-        A preparation chord should pull into its answer.
-        A settled cadence gets more air.
-      */
-
-      if(consecutive||event.chordRole==='preparation'){
-        delay=rand(1450,2650);
-      }
-      else{
-        delay=rand(2400,4300);
-      }
-    }
-    else if(event.type==='ensemble-dyad'){
-      delay=rand(1750,3150);
-    }
-    else if(event.type==='dyad'){
-      delay=rand(1450,2850);
-    }
-    else{
-      if(event.motifRepeat){
-        delay=rand(900,1850);
-      }
-      else if(instruments.length===1&&instruments[0]==='mandolin'){
-        delay=rand(950,2200);
-      }
-      else{
-        delay=rand(1150,2550);
-      }
-    }
-
-    /*
-      Tension creates forward motion:
-      as the phrase leans harder toward its destination,
-      events arrive closer together.
-
-      A calm beginning is not rushed; a rising/arching phrase
-      can noticeably gather momentum.
-    */
-
-    delay*=acceleration;
-
-    /*
-      Instrument envelope correction, kept much smaller than before.
-      We want to hear the natural tails overlap — especially the guitar —
-      rather than waiting for each recording to die before continuing.
-    */
-
-    if(instruments.includes('concertina')){
-      delay+=rand(650,1350);
-    }
-    else if(instruments.includes('guitar')){
-      delay+=rand(180,650);
-    }
-    else if(instruments.length===1&&instruments[0]==='mandolin'){
-      delay+=rand(0,240);
-    }
-
-    /*
-      Small, uncommon breaths inside a thought.
-      These are punctuation, not the default pacing.
-    */
-
-    if(!event.phraseEnd&&Math.random()<.11){
-      delay+=rand(450,1350);
-    }
-
-    /*
-      The phrase ending is where the large breath belongs.
-      Even here it is shorter than the previous version so autoplay
-      does not keep feeling as though it has stopped.
-    */
-
-    if(event.phraseEnd){
-      const home=
-        HOME_HARMONIES.includes(
-          event.harmonyName
-        );
-
-      delay+=home
-        ?rand(2200,4300)
-        :rand(1300,3000);
-    }
-
-    /*
-      Rare full silence after a genuine home cadence.
-    */
-
-    if(
-      event.phraseEnd&&
-      HOME_HARMONIES.includes(
-        event.harmonyName
-      )&&
-      Math.random()<.12
-    ){
-      delay+=rand(1800,3600);
-    }
-
-    return clamp(
-      delay,
-      700,
-      7600
-    );
-  }
-  async function musicalAction(origin,point){
-    const now=performance.now(); if(now-audioState.lastClick<AUDIO.clickCooldown||audioState.pending)return null;
-    audioState.lastClick=now; audioState.pending=true; let result=null;
-    try{
-      const ctx=ensureContext();
-
-      if(!ctx)return null;
-
-      if(ctx.state!=='running'){
-        try{
-          await ctx.resume();
-        }catch(error){
-          console.warn('Audio context could not resume.',error);
-          return null;
-        }
-      }
-      if(audioState.muted){audioState.muted=false;updateMaster();updateSoundButton();}
-      if(!audioState.droneStarted) result=await startDrone(point);
-      else{
-        const move=planNextMove(), playback=await playMove(move);
-
-        if(!playback)return null;
-
-        commitMove(move);
-
-        createMark(
-          move,
-          point,
-          playback.ringMs,
-          playback.voiceCount,
-          playback.voices
-        );
-
-        driveVisuals(
-          move,
-          playback.ringMs,
-          playback.voiceCount,
-          playback.voices
-        );
-
-        result={
-          kind:'music',
-          event:move,
-          ringMs:playback.ringMs,
-          voiceCount:playback.voiceCount
-        };
-      }
-      return result;
-    }finally{
-      audioState.pending=false;
-      if(result&&origin==='manual')advanceTutorial();
-      if(result&&origin==='manual'&&audioState.auto)scheduleAuto(result);
-    }
-  }
-
-  function updateAutoButton(){ autoButton.textContent=audioState.auto?'stop randomly generating':'randomly generate a song'; }
-  function scheduleAuto(previous){
-    clearTimeout(audioState.autoTimer); if(!audioState.auto||audioState.overlayMuted)return;
-    audioState.autoTimer=setTimeout(async()=>{ if(!audioState.auto||audioState.overlayMuted)return; const result=await musicalAction('auto',randomPoint()); scheduleAuto(result); },autoplayDelay(previous));
-  }
-  async function startAuto(){ audioState.auto=true; audioState.muted=false; updateMaster(); updateSoundButton(); updateAutoButton(); const result=await musicalAction('auto',randomPoint()); scheduleAuto(result); }
-  function stopAuto(){ audioState.auto=false; clearTimeout(audioState.autoTimer); updateAutoButton(); }
-
-  artwork.addEventListener('click',async event=>{ if(event.target.closest('.fuji-controls'))return; hidePrompt(); await musicalAction('manual',pointFromEvent(event)); });
-  artwork.addEventListener('keydown',async event=>{ if(event.key!=='Enter'&&event.key!==' ')return; if(event.target.closest('.fuji-controls'))return; event.preventDefault(); hidePrompt(); await musicalAction('manual',{x:.5,y:.52}); });
-  soundButton.addEventListener('click',event=>{ event.preventDefault(); event.stopPropagation(); audioState.muted=!audioState.muted; if(audioState.muted&&audioState.auto)stopAuto(); updateMaster(); updateSoundButton(); });
-  autoButton.addEventListener('click',async event=>{ event.preventDefault(); event.stopPropagation(); if(audioState.auto)stopAuto(); else await startAuto(); });
-
-  window.fujiAudio={setOverlayMuted(muted){ audioState.overlayMuted=Boolean(muted); updateMaster(); if(audioState.overlayMuted){clearTimeout(audioState.autoTimer);resetVisuals(false);}else if(audioState.auto)scheduleAuto(null); }};
-
-  updateAutoButton(); updateSoundButton();
-  hardResetArtworkVisuals();
-
-  revealBase().then(()=>{
-    setTimeout(
-      prepareOverlayAssets,
-      isMobile()
-        ? 520
-        : 240
-    );
-
-    tutorial.timers.push(
-      setTimeout(
-        ()=>{
-          if(
-            tutorial.step===0&&
-            !audioState.droneStarted
-          ){
-            showPrompt(
-              WORDS.here()
-            );
-          }
-        },
-        3200
-      )
-    );
-  });
-
-  /*
-    Safari/Chrome may restore a page from memory with inline visual styles
-    still attached. Rebuild the overlay state on BFCache restores rather
-    than trusting the preserved DOM.
-  */
-  window.addEventListener(
-    'pageshow',
-    event=>{
-      if(!event.persisted)return;
-
-      overlayAssetsPromise=null;
-      hardResetArtworkVisuals();
-      prepareOverlayAssets();
-    }
-  );
-})();
-</script>
-
-<script>
-(() => {
-
-  const clamp = (value, min, max) =>
-    Math.min(
-      Math.max(value, min),
-      max
-    );
-
-
-  function smoothStep(value) {
-
-    const t =
-      clamp(
-        value,
-        0,
-        1
-      );
-
-
-    return (
-      t *
-      t *
-      (
-        3 -
-        (2 * t)
-      )
-    );
-
-  }
-
-
-  const pageShell =
-    document.getElementById(
-      "page-shell"
-    );
-
-
-  const overlay =
-    document.getElementById(
-      "wip-overlay"
-    );
-
-
-  const audio =
-    document.getElementById(
-      "wip-audio"
-    );
-
-
-  const closeButton =
-    document.getElementById(
-      "wip-close"
-    );
-
-
-  const stage =
-    document.getElementById(
-      "collage-stage"
-    );
-
-
-  const HORSE_START =
-    12;
-
-
-  const HORSE_FULL =
-    20;
-
-
-  let overlayOpen =
-    false;
-
-
-  let raf =
-    null;
-
-
-  let openedAt =
-    0;
-
-
-  function horseRevealAt(time) {
-
-    if (
-      time < HORSE_START
-    ) {
-
-      return 0;
-
-    }
-
-
-    return smoothStep(
-      (
-        time -
-        HORSE_START
-      )
-      /
-      (
-        HORSE_FULL -
-        HORSE_START
-      )
-    );
-
-  }
-
-
-  function visualLoop(now) {
-
-    if (
-      !overlayOpen
-    ) {
-
-      return;
-
-    }
-
-
-    /*
-      Follow the cricket track when it is playing.
-
-      The elapsed-time fallback keeps the horse fade working
-      even if a browser refuses audio playback.
-    */
-
-    const elapsed =
-      Math.max(
-        0,
-        (now - openedAt) / 1000
-      );
-
-
-    const time =
-      audio.currentTime > 0
-        ? audio.currentTime
-        : elapsed;
-
-
-    stage.style.setProperty(
-      "--visual-reveal",
-      horseRevealAt(
-        time
-      ).toFixed(4)
-    );
-
-
-    raf =
-      requestAnimationFrame(
-        visualLoop
-      );
-
-  }
-
-
-  async function openWip() {
-
-    if (
-      overlayOpen
-    ) {
-
-      return;
-
-    }
-
-
-    overlayOpen =
-      true;
-
-
-    openedAt =
-      performance.now();
-
-
-    stage.style.setProperty(
-      "--visual-reveal",
-      "0"
-    );
-
-
-    /*
-      Silence the photography composition while the
-      unfinished-page overlay/crickets are active.
-    */
-
-    window.fujiAudio
-      ?.setOverlayMuted(
-        true
-      );
-
-
-    pageShell.classList.add(
-      "is-hidden"
-    );
-
-
-    overlay.classList.add(
-      "is-visible"
-    );
-
-
-    overlay.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-
-    audio.pause();
-
-
-    audio.currentTime =
+    let greetingIndex =
       0;
 
 
-    audio.volume =
-      0.72;
+    let welcomeColorIndex =
+      1;
 
 
-    try {
-
-      await audio.play();
-
-    }
-
-    catch (error) {
-
-      console.log(
-        "Audio could not start:",
-        error
-      );
-
-    }
-
-
-    cancelAnimationFrame(
-      raf
-    );
-
-
-    raf =
-      requestAnimationFrame(
-        visualLoop
-      );
-
-  }
-
-
-  function closeWip() {
-
-    overlayOpen =
+    let greetingBusy =
       false;
 
 
-    cancelAnimationFrame(
-      raf
-    );
+    function fitWelcome() {
+
+      welcomeWord.style.fontSize =
+        "";
 
 
-    audio.pause();
+      const available =
+        welcomeWord
+          .parentElement
+          .clientWidth;
 
 
-    audio.currentTime =
-      0;
-
-
-    stage.style.setProperty(
-      "--visual-reveal",
-      "0"
-    );
-
-
-    overlay.classList.remove(
-      "is-visible"
-    );
-
-
-    overlay.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-
-    pageShell.classList.remove(
-      "is-hidden"
-    );
-
-
-    /*
-      Restore the photography composition to its previous
-      user-controlled sound state.
-    */
-
-    window.fujiAudio
-      ?.setOverlayMuted(
-        false
-      );
-
-  }
-
-
-  document.addEventListener(
-    "click",
-    event => {
-
-      const link =
-        event.target.closest(
-          "a"
+      let size =
+        parseFloat(
+          getComputedStyle(
+            welcomeWord
+          ).fontSize
         );
 
 
+      while (
+        welcomeWord.scrollWidth >
+        available &&
+        size > 27
+      ) {
+
+        size -= 2;
+
+
+        welcomeWord.style.fontSize =
+          `${size}px`;
+
+      }
+
+    }
+
+
+    function changeGreeting() {
+
+      if (greetingBusy) {
+        return;
+      }
+
+
+      greetingBusy =
+        true;
+
+
+      const nextGreeting =
+        differentIndex(
+          greetings.length,
+          greetingIndex
+        );
+
+
+      const nextColor =
+        differentIndex(
+          welcomeColors.length,
+          welcomeColorIndex
+        );
+
+
+      welcomeWord.classList.add(
+        "is-fading"
+      );
+
+
+      window.setTimeout(() => {
+
+        greetingIndex =
+          nextGreeting;
+
+
+        welcomeColorIndex =
+          nextColor;
+
+
+        welcomeWord.textContent =
+          greetings[
+            greetingIndex
+          ];
+
+
+        welcomeWord.style.color =
+          welcomeColors[
+            welcomeColorIndex
+          ];
+
+
+        fitWelcome();
+
+
+        welcomeWord.classList.remove(
+          "is-fading"
+        );
+
+
+        window.setTimeout(() => {
+
+          greetingBusy =
+            false;
+
+        }, 300);
+
+      }, 250);
+
+    }
+
+
+    welcomeWord.style.color =
+      welcomeColors[
+        welcomeColorIndex
+      ];
+
+
+    fitWelcome();
+
+
+    window.addEventListener(
+      "resize",
+      fitWelcome
+    );
+
+
+    window.setInterval(
+      changeGreeting,
+      2500
+    );
+
+
+    /* =====================================================
+       WIP — CLEAN HORSE ONLY
+       ===================================================== */
+
+    const pageShell =
+      document.getElementById(
+        "page-shell"
+      );
+
+
+    const overlay =
+      document.getElementById(
+        "wip-overlay"
+      );
+
+
+    const audio =
+      document.getElementById(
+        "wip-audio"
+      );
+
+
+    const closeButton =
+      document.getElementById(
+        "wip-close"
+      );
+
+
+    const stage =
+      document.getElementById(
+        "collage-stage"
+      );
+
+
+    const HORSE_START =
+      12;
+
+
+    const HORSE_FULL =
+      20;
+
+
+    let overlayOpen =
+      false;
+
+
+    let raf =
+      null;
+
+
+    let openedAt =
+      0;
+
+
+    function horseRevealAt(time) {
+
       if (
-        !link ||
-        link.hasAttribute(
-          "data-live-link"
+        time < HORSE_START
+      ) {
+
+        return 0;
+
+      }
+
+
+      return smoothStep(
+        (
+          time -
+          HORSE_START
         )
+        /
+        (
+          HORSE_FULL -
+          HORSE_START
+        )
+      );
+
+    }
+
+
+    function visualLoop(now) {
+
+      if (
+        !overlayOpen
       ) {
 
         return;
@@ -2916,40 +604,233 @@
       }
 
 
-      event.preventDefault();
+      /*
+        Normally this follows the cricket/music track.
+        Elapsed time is a fallback so the horse still
+        fades in if a browser refuses audio playback.
+      */
+
+      const elapsed =
+        Math.max(
+          0,
+          (now - openedAt) / 1000
+        );
 
 
-      openWip();
+      const time =
+        audio.currentTime > 0
+          ? audio.currentTime
+          : elapsed;
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        horseRevealAt(
+          time
+        ).toFixed(4)
+      );
+
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
 
     }
-  );
 
 
-  closeButton.addEventListener(
-    "click",
-    closeWip
-  );
-
-
-  document.addEventListener(
-    "keydown",
-    event => {
+    async function openWip() {
 
       if (
-        event.key ===
-          "Escape" &&
         overlayOpen
       ) {
 
-        closeWip();
+        return;
 
       }
 
-    }
-  );
 
-})();
-</script>
+      overlayOpen =
+        true;
+
+
+      openedAt =
+        performance.now();
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
+
+
+      pageShell.classList.add(
+        "is-hidden"
+      );
+
+
+      overlay.classList.add(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      audio.pause();
+
+
+      audio.currentTime =
+        0;
+
+
+      audio.volume =
+        0.72;
+
+
+      try {
+
+        await audio.play();
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "Audio could not start:",
+          error
+        );
+
+      }
+
+
+      cancelAnimationFrame(
+        raf
+      );
+
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
+
+    }
+
+
+    function closeWip() {
+
+      overlayOpen =
+        false;
+
+
+      cancelAnimationFrame(
+        raf
+      );
+
+
+      audio.pause();
+
+
+      audio.currentTime =
+        0;
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
+
+
+      overlay.classList.remove(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      window.setTimeout(() => {
+
+        pageShell.classList.remove(
+          "is-hidden"
+        );
+
+      }, 160);
+
+    }
+
+
+    /* =====================================================
+       LINKS
+       ===================================================== */
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        const link =
+          event.target.closest(
+            "a"
+          );
+
+
+        if (!link) {
+          return;
+        }
+
+
+        if (
+          link.hasAttribute(
+            "data-live-link"
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        openWip();
+
+      }
+    );
+
+
+    closeButton.addEventListener(
+      "click",
+      closeWip
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key ===
+          "Escape" &&
+          overlayOpen
+        ) {
+
+          closeWip();
+
+        }
+
+      }
+    );
+
+  })();
+  </script>
 
 </body>
+
 </html>
