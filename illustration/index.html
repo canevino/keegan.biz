@@ -141,24 +141,35 @@
     <main class="illustration-page">
 
       <header class="illustration-header">
-
         <h1 class="illustration-title">
           illustration
         </h1>
-
       </header>
 
 
       <section
-        class="sketchbook"
-        id="sketchbook"
+        class="sketchbook-stage"
         aria-label="Illustration sketchbook"
       >
 
         <div
-          class="sketchbook-inner"
-          id="sketchbook-inner"
-        ></div>
+          class="sketchbook-viewport"
+          id="sketchbook-viewport"
+        >
+
+          <div
+            class="sketchbook-paper"
+            id="sketchbook-paper"
+          >
+
+            <div
+              class="sketchbook-field"
+              id="sketchbook-field"
+            ></div>
+
+          </div>
+
+        </div>
 
       </section>
 
@@ -266,63 +277,30 @@
 
 
     /* =====================================================
-       THEMATIC GROUPS
-
-       These categories stay near related material.
-
-       There are deliberately no visible group labels.
-       ===================================================== */
-
-    const clusterOrder = [
-
-      [
-        "figure",
-        "face",
-        "group",
-        "multiple"
-      ],
-
-      [
-        "city",
-        "house",
-        "perspective",
-        "vehicle"
-      ],
-
-      [
-        "food",
-        "kitchen",
-        "object"
-      ],
-
-      [
-        "nature",
-        "animal",
-        "insect",
-        "fishing"
-      ],
-
-      [
-        "music",
-        "ghost",
-        "misc"
-      ]
-
-    ];
-
-
-
-    /* =====================================================
        ELEMENTS
        ===================================================== */
 
-    const root =
+    const viewport =
       document.getElementById(
-        "sketchbook-inner"
+        "sketchbook-viewport"
+      );
+
+    const paper =
+      document.getElementById(
+        "sketchbook-paper"
+      );
+
+    const field =
+      document.getElementById(
+        "sketchbook-field"
       );
 
 
-    if (!root) {
+    if (
+      !viewport ||
+      !paper ||
+      !field
+    ) {
       return;
     }
 
@@ -331,6 +309,57 @@
     /* =====================================================
        HELPERS
        ===================================================== */
+
+    function clamp(
+      value,
+      min,
+      max
+    ) {
+      return Math.min(
+        Math.max(value, min),
+        max
+      );
+    }
+
+
+    function randomBetween(
+      min,
+      max
+    ) {
+      return min + Math.random() * (max - min);
+    }
+
+
+    function shuffle(array) {
+
+      const copy =
+        [...array];
+
+      for (
+        let i = copy.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() * (i + 1)
+          );
+
+        [
+          copy[i],
+          copy[j]
+        ] = [
+          copy[j],
+          copy[i]
+        ];
+
+      }
+
+      return copy;
+
+    }
+
 
     function categoryFromFilename(filename) {
 
@@ -341,51 +370,17 @@
     }
 
 
-    function clamp(
-      value,
-      min,
-      max
+    function overlaps(
+      a,
+      b,
+      padding
     ) {
 
-      return Math.min(
-        Math.max(
-          value,
-          min
-        ),
-        max
-      );
-
-    }
-
-
-    function hashString(string) {
-
-      let hash =
-        0;
-
-
-      for (
-        let i = 0;
-        i < string.length;
-        i++
-      ) {
-
-        hash =
-          (
-            (hash << 5) -
-            hash
-          )
-          +
-          string.charCodeAt(i);
-
-
-        hash |= 0;
-
-      }
-
-
-      return Math.abs(
-        hash
+      return !(
+        a.right + padding < b.left ||
+        a.left > b.right + padding ||
+        a.bottom + padding < b.top ||
+        a.top > b.bottom + padding
       );
 
     }
@@ -393,10 +388,41 @@
 
 
     /* =====================================================
-       IMAGE LOADING
+       CATEGORY ANCHORS
 
-       Images live directly inside /illustration/,
-       so filenames are used directly.
+       These are only general zones.
+       Final position is randomized around them.
+       ===================================================== */
+
+    const categoryAnchors = {
+      figure: [0.20, 0.21],
+      face: [0.15, 0.44],
+      group: [0.35, 0.24],
+      multiple: [0.33, 0.47],
+
+      city: [0.58, 0.18],
+      house: [0.79, 0.21],
+      perspective: [0.72, 0.43],
+      vehicle: [0.87, 0.32],
+
+      food: [0.20, 0.67],
+      kitchen: [0.41, 0.66],
+      object: [0.51, 0.80],
+
+      nature: [0.74, 0.71],
+      animal: [0.61, 0.57],
+      insect: [0.58, 0.82],
+      fishing: [0.85, 0.58],
+
+      music: [0.69, 0.87],
+      ghost: [0.15, 0.87],
+      misc: [0.88, 0.84]
+    };
+
+
+
+    /* =====================================================
+       IMAGE LOADING
        ===================================================== */
 
     function loadImageData(filename) {
@@ -406,14 +432,11 @@
         const image =
           new Image();
 
-
         image.src =
           filename;
 
-
         image.decoding =
           "async";
-
 
         image.onload =
           () => {
@@ -441,7 +464,6 @@
 
           };
 
-
         image.onerror =
           () => {
 
@@ -449,10 +471,7 @@
               `Could not load ${filename}`
             );
 
-
-            resolve(
-              null
-            );
+            resolve(null);
 
           };
 
@@ -463,12 +482,10 @@
 
 
     /* =====================================================
-       DISPLAY SCALE FROM ORIGINAL DIMENSIONS
+       SIZE SYSTEM
 
-       Larger original files display larger.
-
-       Using square-root area keeps the difference visible
-       without letting giant exports dominate the page.
+       Larger exports display larger, but everything
+       stays within a relatively tight sketchbook range.
        ===================================================== */
 
     function calculateDisplayWidth(
@@ -477,41 +494,29 @@
       maxArea
     ) {
 
-      const compact =
+      const mobile =
         window.matchMedia(
           "(max-width: 700px)"
         ).matches;
 
-
       const minWidth =
-        compact
-          ? 42
-          : 52;
-
+        mobile
+          ? 48
+          : 62;
 
       const maxWidth =
-        compact
-          ? 108
-          : 172;
-
+        mobile
+          ? 150
+          : 235;
 
       const areaRoot =
-        Math.sqrt(
-          item.area
-        );
-
+        Math.sqrt(item.area);
 
       const minRoot =
-        Math.sqrt(
-          minArea
-        );
-
+        Math.sqrt(minArea);
 
       const maxRoot =
-        Math.sqrt(
-          maxArea
-        );
-
+        Math.sqrt(maxArea);
 
       let normalized =
         (
@@ -525,7 +530,6 @@
           minRoot
         );
 
-
       normalized =
         clamp(
           normalized,
@@ -533,31 +537,318 @@
           1
         );
 
-
-      /*
-        Compress the range.
-
-        This keeps even the biggest drawings
-        relatively small.
-      */
-
       normalized =
         Math.pow(
           normalized,
-          0.72
+          0.80
         );
-
 
       return (
         minWidth +
+        normalized *
         (
-          normalized *
-          (
-            maxWidth -
-            minWidth
-          )
+          maxWidth -
+          minWidth
         )
       );
+
+    }
+
+
+
+    /* =====================================================
+       PAPER SIZE
+       ===================================================== */
+
+    let paperWidth = 0;
+    let paperHeight = 0;
+
+
+    function updatePaperDimensions() {
+
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
+
+      const viewportWidth =
+        viewport.clientWidth;
+
+      const viewportHeight =
+        viewport.clientHeight;
+
+      paperWidth =
+        mobile
+          ? Math.max(
+              viewportWidth * 1.55,
+              1200
+            )
+          : Math.max(
+              viewportWidth * 1.50,
+              2000
+            );
+
+      paperHeight =
+        mobile
+          ? Math.max(
+              viewportHeight * 1.85,
+              1700
+            )
+          : Math.max(
+              viewportHeight * 1.55,
+              1550
+            );
+
+      paper.style.width =
+        `${paperWidth}px`;
+
+      paper.style.height =
+        `${paperHeight}px`;
+
+    }
+
+
+
+    /* =====================================================
+       RANDOM ORGANIC PLACEMENT
+       ===================================================== */
+
+    function getAnchorForCategory(category) {
+
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
+
+      const base =
+        categoryAnchors[category] ||
+        [0.5, 0.5];
+
+      const anchorJitter =
+        mobile
+          ? 0.035
+          : 0.05;
+
+      const x =
+        clamp(
+          base[0] + randomBetween(-anchorJitter, anchorJitter),
+          0.10,
+          0.90
+        ) * paperWidth;
+
+      const y =
+        clamp(
+          base[1] + randomBetween(-anchorJitter, anchorJitter),
+          0.10,
+          0.90
+        ) * paperHeight;
+
+      return { x, y };
+
+    }
+
+
+    function findPositionForItem(
+      item,
+      anchor,
+      placedBoxes,
+      minArea,
+      maxArea
+    ) {
+
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
+
+      const width =
+        calculateDisplayWidth(
+          item,
+          minArea,
+          maxArea
+        );
+
+      const height =
+        width *
+        (
+          item.height /
+          item.width
+        );
+
+      const margin =
+        mobile
+          ? 28
+          : 38;
+
+      const collisionPadding =
+        mobile
+          ? 5
+          : 7;
+
+      const baseSpreadX =
+        mobile
+          ? 80
+          : 125;
+
+      const baseSpreadY =
+        mobile
+          ? 65
+          : 100;
+
+      const maxSpreadX =
+        mobile
+          ? 290
+          : 470;
+
+      const maxSpreadY =
+        mobile
+          ? 250
+          : 390;
+
+      for (
+        let attempt = 0;
+        attempt < 240;
+        attempt++
+      ) {
+
+        const progress =
+          attempt / 239;
+
+        const radiusX =
+          randomBetween(
+            baseSpreadX,
+            baseSpreadX +
+            progress * maxSpreadX
+          );
+
+        const radiusY =
+          randomBetween(
+            baseSpreadY,
+            baseSpreadY +
+            progress * maxSpreadY
+          );
+
+        const angle =
+          randomBetween(
+            0,
+            Math.PI * 2
+          );
+
+        const centerX =
+          anchor.x +
+          Math.cos(angle) * radiusX +
+          randomBetween(-14, 14);
+
+        const centerY =
+          anchor.y +
+          Math.sin(angle) * radiusY +
+          randomBetween(-14, 14);
+
+        const left =
+          clamp(
+            centerX - width / 2,
+            margin,
+            paperWidth - width - margin
+          );
+
+        const top =
+          clamp(
+            centerY - height / 2,
+            margin,
+            paperHeight - height - margin
+          );
+
+        const box = {
+          left,
+          top,
+          right: left + width,
+          bottom: top + height
+        };
+
+        const hit =
+          placedBoxes.some(
+            other =>
+              overlaps(
+                box,
+                other,
+                collisionPadding
+              )
+          );
+
+        if (!hit) {
+
+          return {
+            left,
+            top,
+            width,
+            height
+          };
+
+        }
+
+      }
+
+
+      /*
+        Fallback scan if random attempts fail.
+      */
+
+      const step =
+        mobile
+          ? 16
+          : 20;
+
+      for (
+        let y = margin;
+        y <= paperHeight - height - margin;
+        y += step
+      ) {
+
+        for (
+          let x = margin;
+          x <= paperWidth - width - margin;
+          x += step
+        ) {
+
+          const box = {
+            left: x,
+            top: y,
+            right: x + width,
+            bottom: y + height
+          };
+
+          const hit =
+            placedBoxes.some(
+              other =>
+                overlaps(
+                  box,
+                  other,
+                  collisionPadding
+                )
+            );
+
+          if (!hit) {
+
+            return {
+              left: x,
+              top: y,
+              width,
+              height
+            };
+
+          }
+
+        }
+
+      }
+
+
+      return {
+        left: margin,
+        top: margin,
+        width,
+        height
+      };
 
     }
 
@@ -567,10 +858,9 @@
        CREATE DRAWING
        ===================================================== */
 
-    function createDrawing(
+    function createDrawingElement(
       item,
-      minArea,
-      maxArea
+      placement
     ) {
 
       const wrapper =
@@ -578,84 +868,46 @@
           "div"
         );
 
-
       wrapper.className =
         "drawing";
 
+      wrapper.style.left =
+        `${placement.left}px`;
 
-      const width =
-        calculateDisplayWidth(
-          item,
-          minArea,
-          maxArea
-        );
-
+      wrapper.style.top =
+        `${placement.top}px`;
 
       wrapper.style.width =
-        `${width}px`;
-
-
-      /*
-        Small stable rotation based on filename.
-
-        The drawings therefore keep the same orientation
-        between reloads rather than randomly changing.
-      */
-
-      const seed =
-        hashString(
-          item.filename
-        );
-
-
-      const rotation =
-        (
-          (
-            seed % 401
-          )
-          /
-          100
-        )
-        -
-        2;
-
+        `${placement.width}px`;
 
       wrapper.style.setProperty(
         "--rotation",
-        `${rotation}deg`
+        `${randomBetween(-4.5, 4.5).toFixed(2)}deg`
       );
-
 
       const image =
         document.createElement(
           "img"
         );
 
-
       image.src =
         item.filename;
-
 
       image.alt =
         "";
 
-
       image.loading =
         "lazy";
-
 
       image.decoding =
         "async";
 
-
       image.draggable =
         false;
-
 
       wrapper.appendChild(
         image
       );
-
 
       return wrapper;
 
@@ -664,96 +916,15 @@
 
 
     /* =====================================================
-       CREATE CATEGORY GROUP
-       ===================================================== */
-
-    function createCategoryGroup(
-      name,
-      items,
-      minArea,
-      maxArea
-    ) {
-
-      const group =
-        document.createElement(
-          "div"
-        );
-
-
-      group.className =
-        "drawing-group";
-
-
-      group.dataset.category =
-        name;
-
-
-      const count =
-        items.length;
-
-
-      if (
-        count >= 10
-      ) {
-
-        group.classList.add(
-          "drawing-group-large"
-        );
-
-      }
-
-      else if (
-        count >= 5
-      ) {
-
-        group.classList.add(
-          "drawing-group-medium"
-        );
-
-      }
-
-      else {
-
-        group.classList.add(
-          "drawing-group-small"
-        );
-
-      }
-
-
-      items.forEach(item => {
-
-        group.appendChild(
-          createDrawing(
-            item,
-            minArea,
-            maxArea
-          )
-        );
-
-      });
-
-
-      return group;
-
-    }
-
-
-
-    /* =====================================================
-       BUILD PAGE
+       BUILD SKETCHBOOK
        ===================================================== */
 
     async function buildSketchbook() {
 
-      root.innerHTML =
+      field.innerHTML =
         "";
 
-
-      root.classList.remove(
-        "is-ready"
-      );
-
+      updatePaperDimensions();
 
       const loaded =
         (
@@ -765,43 +936,26 @@
         )
         .filter(Boolean);
 
-
-      if (
-        !loaded.length
-      ) {
-
+      if (!loaded.length) {
         return;
-
       }
-
-
-      const areas =
-        loaded.map(
-          item =>
-            item.area
-        );
-
 
       const minArea =
         Math.min(
-          ...areas
+          ...loaded.map(
+            item => item.area
+          )
         );
-
 
       const maxArea =
         Math.max(
-          ...areas
+          ...loaded.map(
+            item => item.area
+          )
         );
-
-
-
-      /* ---------------------------------------------
-         GROUP IMAGES BY THEIR FILENAME PREFIX
-         --------------------------------------------- */
 
       const byCategory =
         new Map();
-
 
       loaded.forEach(item => {
 
@@ -810,167 +964,345 @@
             item.category
           )
         ) {
-
           byCategory.set(
             item.category,
             []
           );
-
         }
-
 
         byCategory
-          .get(
-            item.category
-          )
-          .push(
-            item
-          );
+          .get(item.category)
+          .push(item);
 
       });
 
+      const renderOrder = [
+        "figure",
+        "face",
+        "group",
+        "multiple",
 
+        "city",
+        "house",
+        "perspective",
+        "vehicle",
 
-      /* ---------------------------------------------
-         BUILD THE MAIN THEMATIC CLUSTERS
-         --------------------------------------------- */
+        "food",
+        "kitchen",
+        "object",
 
-      clusterOrder.forEach(
-        (
-          categoryNames,
-          clusterIndex
-        ) => {
+        "nature",
+        "animal",
+        "insect",
+        "fishing",
 
-          const cluster =
-            document.createElement(
-              "section"
-            );
-
-
-          cluster.className =
-            "drawing-cluster";
-
-
-          cluster.dataset.cluster =
-            clusterIndex + 1;
-
-
-          categoryNames.forEach(
-            category => {
-
-              const items =
-                byCategory.get(
-                  category
-                );
-
-
-              if (
-                !items ||
-                !items.length
-              ) {
-
-                return;
-
-              }
-
-
-              cluster.appendChild(
-                createCategoryGroup(
-                  category,
-                  items,
-                  minArea,
-                  maxArea
-                )
-              );
-
-            }
-          );
-
-
-          if (
-            cluster.children.length
-          ) {
-
-            root.appendChild(
-              cluster
-            );
-
-          }
-
-        }
-      );
-
-
-
-      /* ---------------------------------------------
-         FUTURE-PROOFING
-
-         If you later add a new filename category
-         that is not included above, it still shows
-         at the bottom rather than disappearing.
-         --------------------------------------------- */
-
-      const knownCategories =
-        new Set(
-          clusterOrder.flat()
-        );
-
+        "music",
+        "ghost",
+        "misc"
+      ];
 
       byCategory.forEach(
-        (
-          items,
-          category
-        ) => {
+        (items, category) => {
 
           if (
-            knownCategories.has(
-              category
-            )
+            !renderOrder.includes(category)
           ) {
-
-            return;
-
+            renderOrder.push(category);
           }
-
-
-          const cluster =
-            document.createElement(
-              "section"
-            );
-
-
-          cluster.className =
-            "drawing-cluster";
-
-
-          cluster.appendChild(
-            createCategoryGroup(
-              category,
-              items,
-              minArea,
-              maxArea
-            )
-          );
-
-
-          root.appendChild(
-            cluster
-          );
 
         }
       );
 
+      const placedBoxes =
+        [];
 
+      renderOrder.forEach(category => {
 
-      requestAnimationFrame(() => {
+        const items =
+          byCategory.get(category);
 
-        root.classList.add(
-          "is-ready"
-        );
+        if (
+          !items ||
+          !items.length
+        ) {
+          return;
+        }
+
+        const anchor =
+          getAnchorForCategory(
+            category
+          );
+
+        const sorted =
+          shuffle(items).sort(
+            (a, b) =>
+              b.area - a.area
+          );
+
+        sorted.forEach(item => {
+
+          const placement =
+            findPositionForItem(
+              item,
+              anchor,
+              placedBoxes,
+              minArea,
+              maxArea
+            );
+
+          const box = {
+            left: placement.left,
+            top: placement.top,
+            right: placement.left + placement.width,
+            bottom: placement.top + placement.height
+          };
+
+          placedBoxes.push(
+            box
+          );
+
+          field.appendChild(
+            createDrawingElement(
+              item,
+              placement
+            )
+          );
+
+        });
 
       });
 
+      centerPaper();
+
     }
+
+
+
+    /* =====================================================
+       DRAG / PAN
+       ===================================================== */
+
+    const pan = {
+      x: 0,
+      y: 0,
+      startX: 0,
+      startY: 0,
+      originX: 0,
+      originY: 0,
+      dragging: false
+    };
+
+
+    function clampPan(
+      x,
+      y
+    ) {
+
+      const viewportWidth =
+        viewport.clientWidth;
+
+      const viewportHeight =
+        viewport.clientHeight;
+
+      let minX;
+      let maxX;
+      let minY;
+      let maxY;
+
+      if (
+        paperWidth <= viewportWidth
+      ) {
+        minX =
+          maxX =
+          (viewportWidth - paperWidth) / 2;
+      }
+
+      else {
+        minX =
+          viewportWidth - paperWidth - 18;
+        maxX =
+          18;
+      }
+
+      if (
+        paperHeight <= viewportHeight
+      ) {
+        minY =
+          maxY =
+          (viewportHeight - paperHeight) / 2;
+      }
+
+      else {
+        minY =
+          viewportHeight - paperHeight - 18;
+        maxY =
+          18;
+      }
+
+      return {
+        x: clamp(x, minX, maxX),
+        y: clamp(y, minY, maxY)
+      };
+
+    }
+
+
+    function setPan(
+      x,
+      y
+    ) {
+
+      const next =
+        clampPan(x, y);
+
+      pan.x =
+        next.x;
+
+      pan.y =
+        next.y;
+
+      paper.style.transform =
+        `translate3d(${pan.x}px, ${pan.y}px, 0)`;
+
+    }
+
+
+    function centerPaper() {
+
+      const viewportWidth =
+        viewport.clientWidth;
+
+      const viewportHeight =
+        viewport.clientHeight;
+
+      const x =
+        (viewportWidth - paperWidth) / 2;
+
+      const y =
+        (viewportHeight - paperHeight) / 2;
+
+      setPan(x, y);
+
+    }
+
+
+    viewport.addEventListener(
+      "pointerdown",
+      event => {
+
+        pan.dragging =
+          true;
+
+        pan.startX =
+          event.clientX;
+
+        pan.startY =
+          event.clientY;
+
+        pan.originX =
+          pan.x;
+
+        pan.originY =
+          pan.y;
+
+        viewport.classList.add(
+          "is-dragging"
+        );
+
+        viewport.setPointerCapture(
+          event.pointerId
+        );
+
+      }
+    );
+
+
+    viewport.addEventListener(
+      "pointermove",
+      event => {
+
+        if (
+          !pan.dragging
+        ) {
+          return;
+        }
+
+        const dx =
+          event.clientX - pan.startX;
+
+        const dy =
+          event.clientY - pan.startY;
+
+        setPan(
+          pan.originX + dx,
+          pan.originY + dy
+        );
+
+      }
+    );
+
+
+    function endDrag() {
+
+      pan.dragging =
+        false;
+
+      viewport.classList.remove(
+        "is-dragging"
+      );
+
+    }
+
+
+    viewport.addEventListener(
+      "pointerup",
+      endDrag
+    );
+
+    viewport.addEventListener(
+      "pointercancel",
+      endDrag
+    );
+
+    viewport.addEventListener(
+      "pointerleave",
+      event => {
+
+        if (
+          event.pointerType === "mouse" &&
+          pan.dragging
+        ) {
+          endDrag();
+        }
+
+      }
+    );
+
+
+
+    /* =====================================================
+       RESIZE
+       ===================================================== */
+
+    let resizeTimer =
+      null;
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        clearTimeout(
+          resizeTimer
+        );
+
+        resizeTimer =
+          window.setTimeout(
+            buildSketchbook,
+            120
+          );
+
+      }
+    );
 
 
 
