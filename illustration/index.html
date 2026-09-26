@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>illustration — keegan.biz</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+  <div
+    class="page-shell"
+    id="page-shell"
+  >
+
+    <!-- =====================================================
+         SCARF NAVIGATION
+         ===================================================== -->
+
+    <nav
+      class="scarf-rack"
+      aria-label="Sections"
+    >
+
+      <a
+        class="scarf-item scarf-home"
+        href="../"
+        data-live-link
+        aria-label="Home"
+      >
+        <img
+          src="../assets/home/home-scarf-update.png"
+          alt=""
+        >
+      </a>
+
+
+      <a
+        class="scarf-item"
+        href="./"
+        data-live-link
+        aria-current="page"
+        aria-label="Illustration"
+      >
+        <img
+          src="../assets/home/scarf-illustration.png"
+          alt=""
+        >
+      </a>
+
+
+      <a
+        class="scarf-item"
+        href="../photography/"
+        data-live-link
+        aria-label="Photography"
+      >
+        <img
+          src="../assets/home/scarf-photography.png"
+          alt=""
+        >
+      </a>
+
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Graphic Design"
+      >
+        <img
+          src="../assets/home/scarf-design.png"
+          alt=""
+        >
+      </a>
+
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Music"
+      >
+        <img
+          src="../assets/home/scarf-music.png"
+          alt=""
+        >
+      </a>
+
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Motion"
+      >
+        <img
+          src="../assets/home/scarf-motion.png"
+          alt=""
+        >
+      </a>
+
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Miscellaneous"
+      >
+        <img
+          src="../assets/home/scarf-misc.png"
+          alt=""
+        >
+      </a>
+
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Gastronomy"
+      >
+        <img
+          src="../assets/home/scarf-gastronomy.png"
+          alt=""
+        >
+      </a>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         ILLUSTRATION PAGE
+         ===================================================== -->
+
+    <main class="illustration-page">
+
+      <header class="illustration-header">
+
+        <h1 class="illustration-title">
+          illustration
+        </h1>
+
+      </header>
+
+
+      <section
+        class="sketchbook"
+        id="sketchbook"
+        aria-label="Illustration sketchbook"
+      >
+
+        <div
+          class="sketchbook-inner"
+          id="sketchbook-inner"
+        ></div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+
+  <script>
+  (() => {
+
+    /* =====================================================
+       FILES
+       ===================================================== */
+
+    const files = [
+
+      "animal-01.webp",
+      "animal-02.webp",
+
+      "city-01.webp",
+      "city-02.webp",
+
+      "face-01.webp",
+      "face-02.webp",
+      "face-03.webp",
+      "face-04.webp",
+      "face-05.webp",
+
+      "figure-01.webp",
+      "figure-02.webp",
+      "figure-03.webp",
+      "figure-04.webp",
+      "figure-05.webp",
+      "figure-06.webp",
+      "figure-07.webp",
+      "figure-08.webp",
+      "figure-09.webp",
+      "figure-10.webp",
+      "figure-11.webp",
+      "figure-12.webp",
+      "figure-13.webp",
+      "figure-14.webp",
+
+      "fishing-01.webp",
+      "fishing-02.webp",
+
+      "food-01.webp",
+      "food-02.webp",
+      "food-03.webp",
+      "food-04.webp",
+      "food-05.webp",
+      "food-06.webp",
+      "food-07.webp",
+      "food-08.webp",
+
+      "ghost-1.webp",
+      "ghost-02.webp",
+
+      "group-01.webp",
+
+      "house-1.webp",
+      "house-2.webp",
+      "house-03.webp",
+      "house-04.webp",
+
+      "insect-01.webp",
+
+      "kitchen-01.webp",
+      "kitchen-02.webp",
+      "kitchen-03.webp",
+      "kitchen-04.webp",
+      "kitchen-05.webp",
+      "kitchen-06.webp",
+
+      "misc-01.webp",
+
+      "multiple-01.webp",
+      "multiple-02.webp",
+      "multiple-03.webp",
+      "multiple-04.webp",
+      "multiple-05.webp",
+
+      "music-01.webp",
+      "music-02.webp",
+      "music-03.webp",
+      "music-04.webp",
+
+      "nature-01.webp",
+
+      "object-1.webp",
+      "object-2.webp",
+      "object-03.webp",
+      "object-04.webp",
+
+      "perspective-01.webp",
+
+      "vehicle-01.webp",
+      "vehicle-02.webp",
+      "vehicle-03.webp"
+
+    ];
+
+
+
+    /* =====================================================
+       CATEGORY RELATIONSHIPS
+
+       These categories are placed near related categories.
+       No headings are shown on the page.
+       ===================================================== */
+
+    const clusterOrder = [
+
+      [
+        "figure",
+        "face",
+        "group",
+        "multiple"
+      ],
+
+      [
+        "city",
+        "house",
+        "perspective",
+        "vehicle"
+      ],
+
+      [
+        "food",
+        "kitchen",
+        "object"
+      ],
+
+      [
+        "nature",
+        "animal",
+        "insect",
+        "fishing"
+      ],
+
+      [
+        "music",
+        "ghost",
+        "misc"
+      ]
+
+    ];
+
+
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    const root =
+      document.getElementById(
+        "sketchbook-inner"
+      );
+
+
+    if (!root) {
+      return;
+    }
+
+
+    function categoryFromFilename(filename) {
+
+      return filename
+        .split("-")[0]
+        .toLowerCase();
+
+    }
+
+
+    function clamp(
+      value,
+      min,
+      max
+    ) {
+
+      return Math.min(
+        Math.max(
+          value,
+          min
+        ),
+        max
+      );
+
+    }
+
+
+    function hashString(string) {
+
+      let hash = 0;
+
+      for (
+        let i = 0;
+        i < string.length;
+        i++
+      ) {
+
+        hash =
+          (
+            (hash << 5) -
+            hash
+          )
+          +
+          string.charCodeAt(i);
+
+        hash |= 0;
+
+      }
+
+      return Math.abs(hash);
+
+    }
+
+
+
+    /* =====================================================
+       BUILD CATEGORY MAP
+       ===================================================== */
+
+    const categories =
+      new Map();
+
+
+    files.forEach(filename => {
+
+      const category =
+        categoryFromFilename(
+          filename
+        );
+
+
+      if (
+        !categories.has(
+          category
+        )
+      ) {
+
+        categories.set(
+          category,
+          []
+        );
+
+      }
+
+
+      categories
+        .get(category)
+        .push(filename);
+
+    });
+
+
+
+    /* =====================================================
+       IMAGE LOADING
+       ===================================================== */
+
+    function loadImageData(filename) {
+
+      return new Promise(resolve => {
+
+        const image =
+          new Image();
+
+
+        image.src =
+          `assets/${filename}`;
+
+
+        image.decoding =
+          "async";
+
+
+        image.onload =
+          () => {
+
+            resolve({
+
+              filename,
+
+              category:
+                categoryFromFilename(
+                  filename
+                ),
+
+              width:
+                image.naturalWidth,
+
+              height:
+                image.naturalHeight,
+
+              area:
+                image.naturalWidth *
+                image.naturalHeight
+
+            });
+
+          };
+
+
+        image.onerror =
+          () => {
+
+            console.warn(
+              `Could not load ${filename}`
+            );
+
+
+            resolve(null);
+
+          };
+
+      });
+
+    }
+
+
+
+    /* =====================================================
+       SCALE FROM ORIGINAL DIMENSIONS
+
+       Display size uses square-root area rather than raw width.
+
+       That means:
+       - physically larger source drawings appear larger
+       - portrait drawings are not punished for being narrow
+       - huge exports cannot completely dominate the page
+       ===================================================== */
+
+    function calculateDisplayWidth(
+      item,
+      minArea,
+      maxArea
+    ) {
+
+      const compact =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
+
+
+      const minWidth =
+        compact
+          ? 42
+          : 52;
+
+
+      const maxWidth =
+        compact
+          ? 108
+          : 172;
+
+
+      const areaRoot =
+        Math.sqrt(
+          item.area
+        );
+
+
+      const minRoot =
+        Math.sqrt(
+          minArea
+        );
+
+
+      const maxRoot =
+        Math.sqrt(
+          maxArea
+        );
+
+
+      let normalized =
+        (
+          areaRoot -
+          minRoot
+        )
+        /
+        Math.max(
+          1,
+          maxRoot -
+          minRoot
+        );
+
+
+      normalized =
+        clamp(
+          normalized,
+          0,
+          1
+        );
+
+
+      /*
+        Compress the scale range slightly.
+
+        Larger drawings still read as larger,
+        but everything stays sketchbook-small.
+      */
+
+      normalized =
+        Math.pow(
+          normalized,
+          0.72
+        );
+
+
+      return (
+        minWidth +
+        (
+          normalized *
+          (
+            maxWidth -
+            minWidth
+          )
+        )
+      );
+
+    }
+
+
+
+    /* =====================================================
+       CREATE ONE DRAWING
+       ===================================================== */
+
+    function createDrawing(
+      item,
+      minArea,
+      maxArea
+    ) {
+
+      const wrapper =
+        document.createElement(
+          "div"
+        );
+
+
+      wrapper.className =
+        "drawing";
+
+
+      const width =
+        calculateDisplayWidth(
+          item,
+          minArea,
+          maxArea
+        );
+
+
+      wrapper.style.width =
+        `${width}px`;
+
+
+      /*
+        Stable tiny rotation based on filename.
+        It does not change every reload.
+      */
+
+      const seed =
+        hashString(
+          item.filename
+        );
+
+
+      const rotation =
+        (
+          (
+            seed % 401
+          )
+          /
+          100
+        )
+        -
+        2;
+
+
+      wrapper.style.setProperty(
+        "--rotation",
+        `${rotation}deg`
+      );
+
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+
+      image.src =
+        `assets/${item.filename}`;
+
+
+      image.alt =
+        "";
+
+
+      image.loading =
+        "lazy";
+
+
+      image.decoding =
+        "async";
+
+
+      image.draggable =
+        false;
+
+
+      wrapper.appendChild(
+        image
+      );
+
+
+      return wrapper;
+
+    }
+
+
+
+    /* =====================================================
+       CREATE CATEGORY GROUP
+
+       Flex-wrap gives us a natural packed drawing-table feel
+       without allowing pieces to overlap.
+       ===================================================== */
+
+    function createCategoryGroup(
+      name,
+      items,
+      minArea,
+      maxArea
+    ) {
+
+      const group =
+        document.createElement(
+          "div"
+        );
+
+
+      group.className =
+        "drawing-group";
+
+
+      group.dataset.category =
+        name;
+
+
+      /*
+        Larger categories are permitted more width.
+      */
+
+      const count =
+        items.length;
+
+
+      if (
+        count >= 10
+      ) {
+
+        group.classList.add(
+          "drawing-group-large"
+        );
+
+      }
+
+      else if (
+        count >= 5
+      ) {
+
+        group.classList.add(
+          "drawing-group-medium"
+        );
+
+      }
+
+      else {
+
+        group.classList.add(
+          "drawing-group-small"
+        );
+
+      }
+
+
+      items.forEach(item => {
+
+        group.appendChild(
+          createDrawing(
+            item,
+            minArea,
+            maxArea
+          )
+        );
+
+      });
+
+
+      return group;
+
+    }
+
+
+
+    /* =====================================================
+       RENDER
+       ===================================================== */
+
+    async function buildSketchbook() {
+
+      root.classList.remove(
+        "is-ready"
+      );
+
+
+      const loaded =
+        (
+          await Promise.all(
+            files.map(
+              loadImageData
+            )
+          )
+        )
+        .filter(Boolean);
+
+
+      if (
+        !loaded.length
+      ) {
+
+        return;
+
+      }
+
+
+      const areas =
+        loaded.map(
+          item => item.area
+        );
+
+
+      const minArea =
+        Math.min(
+          ...areas
+        );
+
+
+      const maxArea =
+        Math.max(
+          ...areas
+        );
+
+
+      const byCategory =
+        new Map();
+
+
+      loaded.forEach(item => {
+
+        if (
+          !byCategory.has(
+            item.category
+          )
+        ) {
+
+          byCategory.set(
+            item.category,
+            []
+          );
+
+        }
+
+
+        byCategory
+          .get(item.category)
+          .push(item);
+
+      });
+
+
+
+      clusterOrder.forEach(
+        (
+          categoryNames,
+          clusterIndex
+        ) => {
+
+          const cluster =
+            document.createElement(
+              "section"
+            );
+
+
+          cluster.className =
+            "drawing-cluster";
+
+
+          cluster.dataset.cluster =
+            clusterIndex + 1;
+
+
+          categoryNames.forEach(
+            category => {
+
+              const items =
+                byCategory.get(
+                  category
+                );
+
+
+              if (
+                !items ||
+                !items.length
+              ) {
+
+                return;
+
+              }
+
+
+              cluster.appendChild(
+                createCategoryGroup(
+                  category,
+                  items,
+                  minArea,
+                  maxArea
+                )
+              );
+
+            }
+          );
+
+
+          if (
+            cluster.children.length
+          ) {
+
+            root.appendChild(
+              cluster
+            );
+
+          }
+
+        }
+      );
+
+
+
+      /*
+        Safety:
+        if a future filename uses a new category
+        that is not yet in clusterOrder,
+        it still appears at the end.
+      */
+
+      const knownCategories =
+        new Set(
+          clusterOrder.flat()
+        );
+
+
+      byCategory.forEach(
+        (
+          items,
+          category
+        ) => {
+
+          if (
+            knownCategories.has(
+              category
+            )
+          ) {
+
+            return;
+
+          }
+
+
+          const cluster =
+            document.createElement(
+              "section"
+            );
+
+
+          cluster.className =
+            "drawing-cluster";
+
+
+          cluster.appendChild(
+            createCategoryGroup(
+              category,
+              items,
+              minArea,
+              maxArea
+            )
+          );
+
+
+          root.appendChild(
+            cluster
+          );
+
+        }
+      );
+
+
+      requestAnimationFrame(() => {
+
+        root.classList.add(
+          "is-ready"
+        );
+
+      });
+
+    }
+
+
+
+    buildSketchbook();
+
+  })();
+  </script>
+
+</body>
+</html>
