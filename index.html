@@ -1,105 +1,837 @@
-<nav
-  class="scarf-rack"
-  aria-label="Sections"
->
+<!DOCTYPE html>
+<html lang="en">
 
-  <a
-    class="scarf-item scarf-home"
-    href="./"
-    data-live-link
-    aria-current="page"
-    aria-label="Home"
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
   >
-    <img
-      src="assets/home/home-scarf-update.png"
-      alt=""
-    >
-  </a>
+
+  <title>keegan.biz</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
 
 
-  <a
-    class="scarf-item"
-    href="illustration/"
-    data-live-link
-    aria-label="Illustration"
+<body>
+
+  <!-- =====================================================
+       HOME
+       ===================================================== -->
+
+  <div
+    class="page-shell"
+    id="page-shell"
   >
-    <img
-      src="assets/home/scarf-illustration.png"
-      alt=""
+
+    <nav
+      class="scarf-rack"
+      aria-label="Sections"
     >
-  </a>
+
+      <a
+        class="scarf-item scarf-home"
+        href="./"
+        data-live-link
+        aria-label="Home"
+      >
+        <img
+          src="assets/home/home-scarf-update.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="illustration/"
+        data-live-link
+        aria-label="Illustration"
+      >
+        <img
+          src="assets/home/scarf-illustration.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="photography/"
+        data-live-link
+        aria-label="Photography"
+      >
+        <img
+          src="assets/home/scarf-photography.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Graphic Design"
+      >
+        <img
+          src="assets/home/scarf-design.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Music"
+      >
+        <img
+          src="assets/home/scarf-music.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Motion"
+      >
+        <img
+          src="assets/home/scarf-motion.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Miscellaneous"
+      >
+        <img
+          src="assets/home/scarf-misc.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Gastronomy"
+      >
+        <img
+          src="assets/home/scarf-gastronomy.png"
+          alt=""
+        >
+      </a>
+
+    </nav>
 
 
-  <a
-    class="scarf-item"
-    href="photography/"
-    data-live-link
-    aria-label="Photography"
+    <main class="home">
+
+      <section class="hero">
+
+        <div class="welcome-slot">
+
+          <span
+            class="welcome-word"
+            id="welcome-word"
+            aria-hidden="true"
+          >
+            Welcome
+          </span>
+
+        </div>
+
+        <div class="site-title">
+          to keegan.biz
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- =====================================================
+       AUDIO
+       ===================================================== -->
+
+  <audio
+    id="wip-audio"
+    preload="auto"
   >
-    <img
-      src="assets/home/scarf-photography.png"
-      alt=""
+    <source
+      src="assets/home/crickets.mp3"
+      type="audio/mpeg"
     >
-  </a>
+  </audio>
 
 
-  <a
-    class="scarf-item"
-    href="#"
-    aria-label="Graphic Design"
+  <!-- =====================================================
+       WIP
+       ===================================================== -->
+
+  <div
+    class="wip-overlay"
+    id="wip-overlay"
+    aria-hidden="true"
   >
-    <img
-      src="assets/home/scarf-design.png"
-      alt=""
-    >
-  </a>
+
+    <div class="wip-inner">
+
+      <div class="wip-header">
+
+        <p class="wip-text">
+          sorry, i'm still working on this page.
+        </p>
+
+        <button
+          class="wip-close"
+          id="wip-close"
+          type="button"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
 
 
-  <a
-    class="scarf-item"
-    href="#"
-    aria-label="Music"
-  >
-    <img
-      src="assets/home/scarf-music.png"
-      alt=""
-    >
-  </a>
+      <div
+        class="collage-stage"
+        id="collage-stage"
+        aria-hidden="true"
+      >
+
+        <img
+          class="horse horse-main"
+          id="horse-main"
+          src="assets/home/horse.gif"
+          alt=""
+        >
+
+      </div>
+
+    </div>
+
+  </div>
 
 
-  <a
-    class="scarf-item"
-    href="#"
-    aria-label="Motion"
-  >
-    <img
-      src="assets/home/scarf-motion.png"
-      alt=""
-    >
-  </a>
+  <script>
+  (() => {
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    const clamp = (value, min, max) =>
+      Math.min(
+        Math.max(value, min),
+        max
+      );
 
 
-  <a
-    class="scarf-item"
-    href="#"
-    aria-label="Miscellaneous"
-  >
-    <img
-      src="assets/home/scarf-misc.png"
-      alt=""
-    >
-  </a>
+    function differentIndex(
+      length,
+      current
+    ) {
+
+      let next;
 
 
-  <a
-    class="scarf-item"
-    href="#"
-    aria-label="Gastronomy"
-  >
-    <img
-      src="assets/home/scarf-gastronomy.png"
-      alt=""
-    >
-  </a>
+      do {
 
-</nav>
+        next =
+          Math.floor(
+            Math.random() *
+            length
+          );
+
+      }
+      while (
+        length > 1 &&
+        next === current
+      );
+
+
+      return next;
+
+    }
+
+
+    function smoothStep(value) {
+
+      const t =
+        clamp(
+          value,
+          0,
+          1
+        );
+
+
+      return (
+        t *
+        t *
+        (
+          3 -
+          (2 * t)
+        )
+      );
+
+    }
+
+
+    /* =====================================================
+       WELCOME
+       ===================================================== */
+
+    const welcomeWord =
+      document.getElementById(
+        "welcome-word"
+      );
+
+
+    const greetings = [
+
+      "Welcome",
+      "Fáilte",
+      "Benvenuti",
+      "Bienvenue",
+      "Bienvenidos",
+      "Benvinguts",
+      "Bem-vindos",
+
+      "Welkom",
+      "Willkommen",
+      "Velkommen",
+      "Välkommen",
+      "Velkomin",
+
+      "Tervetuloa",
+      "Sveiki atvykę",
+      "Laipni lūdzam",
+      "Tere tulemast",
+
+      "Witamy",
+      "Vítejte",
+      "Vitajte",
+
+      "Добродошли",
+      "Добре дошли",
+      "Ласкаво просимо",
+
+      "Bun venit",
+      "Üdvözöljük",
+      "Mirë se vini",
+
+      "Ongi etorri",
+      "Καλώς ήρθατε",
+      "Hoş geldiniz",
+
+      "Croeso",
+      "Nau mai",
+
+      "Karibu",
+      "Siyakwamukela",
+      "Ẹ káàbọ̀",
+
+      "እንኳን ደህና መጡ",
+      "स्वागत है",
+      "স্বাগতম",
+
+      "欢迎",
+      "ようこそ",
+      "환영합니다",
+      "ยินดีต้อนรับ",
+
+      "Chào mừng",
+      "Selamat datang",
+      "Maligayang pagdating",
+
+      "ברוכים הבאים",
+      "أهلاً وسهلاً",
+      "خوش آمدید",
+
+      "Bonvenon",
+      "Salvete",
+
+      "Yá’át’ééh",
+      "Aloha",
+
+      "Mae govannen",
+
+      "01010111 01100101 01101100 01100011 01101111 01101101 01100101"
+
+    ];
+
+
+    const welcomeColors = [
+      "#fdb913",
+      "#006a44",
+      "#c1272d"
+    ];
+
+
+    let greetingIndex =
+      0;
+
+
+    let welcomeColorIndex =
+      1;
+
+
+    let greetingBusy =
+      false;
+
+
+    function fitWelcome() {
+
+      welcomeWord.style.fontSize =
+        "";
+
+
+      const available =
+        welcomeWord
+          .parentElement
+          .clientWidth;
+
+
+      let size =
+        parseFloat(
+          getComputedStyle(
+            welcomeWord
+          ).fontSize
+        );
+
+
+      while (
+        welcomeWord.scrollWidth >
+        available &&
+        size > 27
+      ) {
+
+        size -= 2;
+
+
+        welcomeWord.style.fontSize =
+          `${size}px`;
+
+      }
+
+    }
+
+
+    function changeGreeting() {
+
+      if (greetingBusy) {
+        return;
+      }
+
+
+      greetingBusy =
+        true;
+
+
+      const nextGreeting =
+        differentIndex(
+          greetings.length,
+          greetingIndex
+        );
+
+
+      const nextColor =
+        differentIndex(
+          welcomeColors.length,
+          welcomeColorIndex
+        );
+
+
+      welcomeWord.classList.add(
+        "is-fading"
+      );
+
+
+      window.setTimeout(() => {
+
+        greetingIndex =
+          nextGreeting;
+
+
+        welcomeColorIndex =
+          nextColor;
+
+
+        welcomeWord.textContent =
+          greetings[
+            greetingIndex
+          ];
+
+
+        welcomeWord.style.color =
+          welcomeColors[
+            welcomeColorIndex
+          ];
+
+
+        fitWelcome();
+
+
+        welcomeWord.classList.remove(
+          "is-fading"
+        );
+
+
+        window.setTimeout(() => {
+
+          greetingBusy =
+            false;
+
+        }, 300);
+
+      }, 250);
+
+    }
+
+
+    welcomeWord.style.color =
+      welcomeColors[
+        welcomeColorIndex
+      ];
+
+
+    fitWelcome();
+
+
+    window.addEventListener(
+      "resize",
+      fitWelcome
+    );
+
+
+    window.setInterval(
+      changeGreeting,
+      2500
+    );
+
+
+    /* =====================================================
+       WIP — CLEAN HORSE ONLY
+       ===================================================== */
+
+    const pageShell =
+      document.getElementById(
+        "page-shell"
+      );
+
+
+    const overlay =
+      document.getElementById(
+        "wip-overlay"
+      );
+
+
+    const audio =
+      document.getElementById(
+        "wip-audio"
+      );
+
+
+    const closeButton =
+      document.getElementById(
+        "wip-close"
+      );
+
+
+    const stage =
+      document.getElementById(
+        "collage-stage"
+      );
+
+
+    const HORSE_START =
+      12;
+
+
+    const HORSE_FULL =
+      20;
+
+
+    let overlayOpen =
+      false;
+
+
+    let raf =
+      null;
+
+
+    let openedAt =
+      0;
+
+
+    function horseRevealAt(time) {
+
+      if (
+        time < HORSE_START
+      ) {
+
+        return 0;
+
+      }
+
+
+      return smoothStep(
+        (
+          time -
+          HORSE_START
+        )
+        /
+        (
+          HORSE_FULL -
+          HORSE_START
+        )
+      );
+
+    }
+
+
+    function visualLoop(now) {
+
+      if (
+        !overlayOpen
+      ) {
+
+        return;
+
+      }
+
+
+      /*
+        Normally this follows the cricket/music track.
+        Elapsed time is a fallback so the horse still
+        fades in if a browser refuses audio playback.
+      */
+
+      const elapsed =
+        Math.max(
+          0,
+          (now - openedAt) / 1000
+        );
+
+
+      const time =
+        audio.currentTime > 0
+          ? audio.currentTime
+          : elapsed;
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        horseRevealAt(
+          time
+        ).toFixed(4)
+      );
+
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
+
+    }
+
+
+    async function openWip() {
+
+      if (
+        overlayOpen
+      ) {
+
+        return;
+
+      }
+
+
+      overlayOpen =
+        true;
+
+
+      openedAt =
+        performance.now();
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
+
+
+      pageShell.classList.add(
+        "is-hidden"
+      );
+
+
+      overlay.classList.add(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      audio.pause();
+
+
+      audio.currentTime =
+        0;
+
+
+      audio.volume =
+        0.72;
+
+
+      try {
+
+        await audio.play();
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "Audio could not start:",
+          error
+        );
+
+      }
+
+
+      cancelAnimationFrame(
+        raf
+      );
+
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
+
+    }
+
+
+    function closeWip() {
+
+      overlayOpen =
+        false;
+
+
+      cancelAnimationFrame(
+        raf
+      );
+
+
+      audio.pause();
+
+
+      audio.currentTime =
+        0;
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
+
+
+      overlay.classList.remove(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      window.setTimeout(() => {
+
+        pageShell.classList.remove(
+          "is-hidden"
+        );
+
+      }, 160);
+
+    }
+
+
+    /* =====================================================
+       LINKS
+       ===================================================== */
+
+    document.addEventListener(
+      "click",
+      event => {
+
+        const link =
+          event.target.closest(
+            "a"
+          );
+
+
+        if (!link) {
+          return;
+        }
+
+
+        if (
+          link.hasAttribute(
+            "data-live-link"
+          )
+        ) {
+
+          return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        openWip();
+
+      }
+    );
+
+
+    closeButton.addEventListener(
+      "click",
+      closeWip
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key ===
+          "Escape" &&
+          overlayOpen
+        ) {
+
+          closeWip();
+
+        }
+
+      }
+    );
+
+  })();
+  </script>
+
+</body>
+
+</html>
