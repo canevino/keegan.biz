@@ -266,10 +266,11 @@
 
 
     /* =====================================================
-       CATEGORY RELATIONSHIPS
+       THEMATIC GROUPS
 
-       These categories are placed near related categories.
-       No headings are shown on the page.
+       These categories stay near related material.
+
+       There are deliberately no visible group labels.
        ===================================================== */
 
     const clusterOrder = [
@@ -312,7 +313,7 @@
 
 
     /* =====================================================
-       HELPERS
+       ELEMENTS
        ===================================================== */
 
     const root =
@@ -325,6 +326,11 @@
       return;
     }
 
+
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
 
     function categoryFromFilename(filename) {
 
@@ -354,7 +360,9 @@
 
     function hashString(string) {
 
-      let hash = 0;
+      let hash =
+        0;
+
 
       for (
         let i = 0;
@@ -370,56 +378,25 @@
           +
           string.charCodeAt(i);
 
+
         hash |= 0;
 
       }
 
-      return Math.abs(hash);
+
+      return Math.abs(
+        hash
+      );
 
     }
 
 
 
     /* =====================================================
-       BUILD CATEGORY MAP
-       ===================================================== */
-
-    const categories =
-      new Map();
-
-
-    files.forEach(filename => {
-
-      const category =
-        categoryFromFilename(
-          filename
-        );
-
-
-      if (
-        !categories.has(
-          category
-        )
-      ) {
-
-        categories.set(
-          category,
-          []
-        );
-
-      }
-
-
-      categories
-        .get(category)
-        .push(filename);
-
-    });
-
-
-
-    /* =====================================================
        IMAGE LOADING
+
+       Images live directly inside /illustration/,
+       so filenames are used directly.
        ===================================================== */
 
     function loadImageData(filename) {
@@ -431,7 +408,7 @@
 
 
         image.src =
-          `assets/${filename}`;
+          filename;
 
 
         image.decoding =
@@ -473,7 +450,9 @@
             );
 
 
-            resolve(null);
+            resolve(
+              null
+            );
 
           };
 
@@ -484,14 +463,12 @@
 
 
     /* =====================================================
-       SCALE FROM ORIGINAL DIMENSIONS
+       DISPLAY SCALE FROM ORIGINAL DIMENSIONS
 
-       Display size uses square-root area rather than raw width.
+       Larger original files display larger.
 
-       That means:
-       - physically larger source drawings appear larger
-       - portrait drawings are not punished for being narrow
-       - huge exports cannot completely dominate the page
+       Using square-root area keeps the difference visible
+       without letting giant exports dominate the page.
        ===================================================== */
 
     function calculateDisplayWidth(
@@ -558,10 +535,10 @@
 
 
       /*
-        Compress the scale range slightly.
+        Compress the range.
 
-        Larger drawings still read as larger,
-        but everything stays sketchbook-small.
+        This keeps even the biggest drawings
+        relatively small.
       */
 
       normalized =
@@ -587,7 +564,7 @@
 
 
     /* =====================================================
-       CREATE ONE DRAWING
+       CREATE DRAWING
        ===================================================== */
 
     function createDrawing(
@@ -619,8 +596,10 @@
 
 
       /*
-        Stable tiny rotation based on filename.
-        It does not change every reload.
+        Small stable rotation based on filename.
+
+        The drawings therefore keep the same orientation
+        between reloads rather than randomly changing.
       */
 
       const seed =
@@ -654,7 +633,7 @@
 
 
       image.src =
-        `assets/${item.filename}`;
+        item.filename;
 
 
       image.alt =
@@ -686,9 +665,6 @@
 
     /* =====================================================
        CREATE CATEGORY GROUP
-
-       Flex-wrap gives us a natural packed drawing-table feel
-       without allowing pieces to overlap.
        ===================================================== */
 
     function createCategoryGroup(
@@ -711,10 +687,6 @@
       group.dataset.category =
         name;
 
-
-      /*
-        Larger categories are permitted more width.
-      */
 
       const count =
         items.length;
@@ -769,10 +741,14 @@
 
 
     /* =====================================================
-       RENDER
+       BUILD PAGE
        ===================================================== */
 
     async function buildSketchbook() {
+
+      root.innerHTML =
+        "";
+
 
       root.classList.remove(
         "is-ready"
@@ -801,7 +777,8 @@
 
       const areas =
         loaded.map(
-          item => item.area
+          item =>
+            item.area
         );
 
 
@@ -816,6 +793,11 @@
           ...areas
         );
 
+
+
+      /* ---------------------------------------------
+         GROUP IMAGES BY THEIR FILENAME PREFIX
+         --------------------------------------------- */
 
       const byCategory =
         new Map();
@@ -838,12 +820,20 @@
 
 
         byCategory
-          .get(item.category)
-          .push(item);
+          .get(
+            item.category
+          )
+          .push(
+            item
+          );
 
       });
 
 
+
+      /* ---------------------------------------------
+         BUILD THE MAIN THEMATIC CLUSTERS
+         --------------------------------------------- */
 
       clusterOrder.forEach(
         (
@@ -912,12 +902,13 @@
 
 
 
-      /*
-        Safety:
-        if a future filename uses a new category
-        that is not yet in clusterOrder,
-        it still appears at the end.
-      */
+      /* ---------------------------------------------
+         FUTURE-PROOFING
+
+         If you later add a new filename category
+         that is not included above, it still shows
+         at the bottom rather than disappearing.
+         --------------------------------------------- */
 
       const knownCategories =
         new Set(
@@ -970,6 +961,7 @@
       );
 
 
+
       requestAnimationFrame(() => {
 
         root.classList.add(
@@ -981,6 +973,10 @@
     }
 
 
+
+    /* =====================================================
+       START
+       ===================================================== */
 
     buildSketchbook();
 
