@@ -141,9 +141,11 @@
     <main class="illustration-page">
 
       <header class="illustration-header">
+
         <h1 class="illustration-title">
           illustration
         </h1>
+
       </header>
 
 
@@ -285,10 +287,12 @@
         "sketchbook-viewport"
       );
 
+
     const paper =
       document.getElementById(
         "sketchbook-paper"
       );
+
 
     const field =
       document.getElementById(
@@ -315,10 +319,15 @@
       min,
       max
     ) {
+
       return Math.min(
-        Math.max(value, min),
+        Math.max(
+          value,
+          min
+        ),
         max
       );
+
     }
 
 
@@ -326,7 +335,16 @@
       min,
       max
     ) {
-      return min + Math.random() * (max - min);
+
+      return (
+        min +
+        Math.random() *
+        (
+          max -
+          min
+        )
+      );
+
     }
 
 
@@ -334,6 +352,7 @@
 
       const copy =
         [...array];
+
 
       for (
         let i = copy.length - 1;
@@ -343,8 +362,10 @@
 
         const j =
           Math.floor(
-            Math.random() * (i + 1)
+            Math.random() *
+            (i + 1)
           );
+
 
         [
           copy[i],
@@ -356,12 +377,15 @@
 
       }
 
+
       return copy;
 
     }
 
 
-    function categoryFromFilename(filename) {
+    function categoryFromFilename(
+      filename
+    ) {
 
       return filename
         .split("-")[0]
@@ -370,17 +394,17 @@
     }
 
 
-    function overlaps(
+    function boxesOverlap(
       a,
       b,
-      padding
+      padding = 0
     ) {
 
       return !(
-        a.right + padding < b.left ||
-        a.left > b.right + padding ||
-        a.bottom + padding < b.top ||
-        a.top > b.bottom + padding
+        a.right + padding <= b.left ||
+        a.left >= b.right + padding ||
+        a.bottom + padding <= b.top ||
+        a.top >= b.bottom + padding
       );
 
     }
@@ -388,104 +412,81 @@
 
 
     /* =====================================================
-       CATEGORY ANCHORS
-
-       These are only general zones.
-       Final position is randomized around them.
-       ===================================================== */
-
-    const categoryAnchors = {
-      figure: [0.20, 0.21],
-      face: [0.15, 0.44],
-      group: [0.35, 0.24],
-      multiple: [0.33, 0.47],
-
-      city: [0.58, 0.18],
-      house: [0.79, 0.21],
-      perspective: [0.72, 0.43],
-      vehicle: [0.87, 0.32],
-
-      food: [0.20, 0.67],
-      kitchen: [0.41, 0.66],
-      object: [0.51, 0.80],
-
-      nature: [0.74, 0.71],
-      animal: [0.61, 0.57],
-      insect: [0.58, 0.82],
-      fishing: [0.85, 0.58],
-
-      music: [0.69, 0.87],
-      ghost: [0.15, 0.87],
-      misc: [0.88, 0.84]
-    };
-
-
-
-    /* =====================================================
        IMAGE LOADING
        ===================================================== */
 
-    function loadImageData(filename) {
+    function loadImageData(
+      filename
+    ) {
 
-      return new Promise(resolve => {
+      return new Promise(
+        resolve => {
 
-        const image =
-          new Image();
+          const image =
+            new Image();
 
-        image.src =
-          filename;
 
-        image.decoding =
-          "async";
+          image.src =
+            filename;
 
-        image.onload =
-          () => {
 
-            resolve({
+          image.decoding =
+            "async";
 
-              filename,
 
-              category:
-                categoryFromFilename(
-                  filename
-                ),
+          image.onload =
+            () => {
 
-              width:
-                image.naturalWidth,
+              resolve({
 
-              height:
-                image.naturalHeight,
+                filename,
 
-              area:
-                image.naturalWidth *
-                image.naturalHeight
+                category:
+                  categoryFromFilename(
+                    filename
+                  ),
 
-            });
+                width:
+                  image.naturalWidth,
 
-          };
+                height:
+                  image.naturalHeight,
 
-        image.onerror =
-          () => {
+                area:
+                  image.naturalWidth *
+                  image.naturalHeight
 
-            console.warn(
-              `Could not load ${filename}`
-            );
+              });
 
-            resolve(null);
+            };
 
-          };
 
-      });
+          image.onerror =
+            () => {
+
+              console.warn(
+                `Could not load ${filename}`
+              );
+
+
+              resolve(
+                null
+              );
+
+            };
+
+        }
+      );
 
     }
 
 
 
     /* =====================================================
-       SIZE SYSTEM
+       DISPLAY SIZE
 
-       Larger exports display larger, but everything
-       stays within a relatively tight sketchbook range.
+       Still proportional to source dimensions,
+       but compressed into a manageable range.
        ===================================================== */
 
     function calculateDisplayWidth(
@@ -499,28 +500,40 @@
           "(max-width: 700px)"
         ).matches;
 
+
       const minWidth =
         mobile
-          ? 48
-          : 62;
+          ? 44
+          : 58;
+
 
       const maxWidth =
         mobile
-          ? 150
-          : 235;
+          ? 132
+          : 205;
 
-      const areaRoot =
-        Math.sqrt(item.area);
+
+      const itemRoot =
+        Math.sqrt(
+          item.area
+        );
+
 
       const minRoot =
-        Math.sqrt(minArea);
+        Math.sqrt(
+          minArea
+        );
+
 
       const maxRoot =
-        Math.sqrt(maxArea);
+        Math.sqrt(
+          maxArea
+        );
+
 
       let normalized =
         (
-          areaRoot -
+          itemRoot -
           minRoot
         )
         /
@@ -530,6 +543,7 @@
           minRoot
         );
 
+
       normalized =
         clamp(
           normalized,
@@ -537,11 +551,13 @@
           1
         );
 
+
       normalized =
         Math.pow(
           normalized,
-          0.80
+          0.78
         );
+
 
       return (
         minWidth +
@@ -557,109 +573,65 @@
 
 
     /* =====================================================
-       PAPER SIZE
+       ROTATED BOUNDING BOX
+
+       Collision checking uses the real footprint of the
+       rotated artwork rather than the original rectangle.
        ===================================================== */
 
-    let paperWidth = 0;
-    let paperHeight = 0;
+    function rotatedBounds(
+      width,
+      height,
+      degrees
+    ) {
+
+      const radians =
+        degrees *
+        Math.PI /
+        180;
 
 
-    function updatePaperDimensions() {
+      const cos =
+        Math.abs(
+          Math.cos(
+            radians
+          )
+        );
 
-      const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
 
-      const viewportWidth =
-        viewport.clientWidth;
+      const sin =
+        Math.abs(
+          Math.sin(
+            radians
+          )
+        );
 
-      const viewportHeight =
-        viewport.clientHeight;
 
-      paperWidth =
-        mobile
-          ? Math.max(
-              viewportWidth * 1.55,
-              1200
-            )
-          : Math.max(
-              viewportWidth * 1.50,
-              2000
-            );
+      return {
 
-      paperHeight =
-        mobile
-          ? Math.max(
-              viewportHeight * 1.85,
-              1700
-            )
-          : Math.max(
-              viewportHeight * 1.55,
-              1550
-            );
+        width:
+          width * cos +
+          height * sin,
 
-      paper.style.width =
-        `${paperWidth}px`;
+        height:
+          width * sin +
+          height * cos
 
-      paper.style.height =
-        `${paperHeight}px`;
+      };
 
     }
 
 
 
     /* =====================================================
-       RANDOM ORGANIC PLACEMENT
+       PREPARE DRAWING
        ===================================================== */
 
-    function getAnchorForCategory(category) {
-
-      const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
-
-      const base =
-        categoryAnchors[category] ||
-        [0.5, 0.5];
-
-      const anchorJitter =
-        mobile
-          ? 0.035
-          : 0.05;
-
-      const x =
-        clamp(
-          base[0] + randomBetween(-anchorJitter, anchorJitter),
-          0.10,
-          0.90
-        ) * paperWidth;
-
-      const y =
-        clamp(
-          base[1] + randomBetween(-anchorJitter, anchorJitter),
-          0.10,
-          0.90
-        ) * paperHeight;
-
-      return { x, y };
-
-    }
-
-
-    function findPositionForItem(
+    function prepareDrawing(
       item,
-      anchor,
-      placedBoxes,
       minArea,
       maxArea
     ) {
-
-      const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
 
       const width =
         calculateDisplayWidth(
@@ -668,6 +640,7 @@
           maxArea
         );
 
+
       const height =
         width *
         (
@@ -675,179 +648,47 @@
           item.width
         );
 
-      const margin =
-        mobile
-          ? 28
-          : 38;
-
-      const collisionPadding =
-        mobile
-          ? 5
-          : 7;
-
-      const baseSpreadX =
-        mobile
-          ? 80
-          : 125;
-
-      const baseSpreadY =
-        mobile
-          ? 65
-          : 100;
-
-      const maxSpreadX =
-        mobile
-          ? 290
-          : 470;
-
-      const maxSpreadY =
-        mobile
-          ? 250
-          : 390;
-
-      for (
-        let attempt = 0;
-        attempt < 240;
-        attempt++
-      ) {
-
-        const progress =
-          attempt / 239;
-
-        const radiusX =
-          randomBetween(
-            baseSpreadX,
-            baseSpreadX +
-            progress * maxSpreadX
-          );
-
-        const radiusY =
-          randomBetween(
-            baseSpreadY,
-            baseSpreadY +
-            progress * maxSpreadY
-          );
-
-        const angle =
-          randomBetween(
-            0,
-            Math.PI * 2
-          );
-
-        const centerX =
-          anchor.x +
-          Math.cos(angle) * radiusX +
-          randomBetween(-14, 14);
-
-        const centerY =
-          anchor.y +
-          Math.sin(angle) * radiusY +
-          randomBetween(-14, 14);
-
-        const left =
-          clamp(
-            centerX - width / 2,
-            margin,
-            paperWidth - width - margin
-          );
-
-        const top =
-          clamp(
-            centerY - height / 2,
-            margin,
-            paperHeight - height - margin
-          );
-
-        const box = {
-          left,
-          top,
-          right: left + width,
-          bottom: top + height
-        };
-
-        const hit =
-          placedBoxes.some(
-            other =>
-              overlaps(
-                box,
-                other,
-                collisionPadding
-              )
-          );
-
-        if (!hit) {
-
-          return {
-            left,
-            top,
-            width,
-            height
-          };
-
-        }
-
-      }
-
 
       /*
-        Fallback scan if random attempts fail.
+        Keep rotations restrained.
+
+        Enough irregularity to feel placed by hand,
+        but not enough to create large dead spaces.
       */
 
-      const step =
-        mobile
-          ? 16
-          : 20;
+      const rotation =
+        randomBetween(
+          -3.4,
+          3.4
+        );
 
-      for (
-        let y = margin;
-        y <= paperHeight - height - margin;
-        y += step
-      ) {
 
-        for (
-          let x = margin;
-          x <= paperWidth - width - margin;
-          x += step
-        ) {
-
-          const box = {
-            left: x,
-            top: y,
-            right: x + width,
-            bottom: y + height
-          };
-
-          const hit =
-            placedBoxes.some(
-              other =>
-                overlaps(
-                  box,
-                  other,
-                  collisionPadding
-                )
-            );
-
-          if (!hit) {
-
-            return {
-              left: x,
-              top: y,
-              width,
-              height
-            };
-
-          }
-
-        }
-
-      }
+      const bounds =
+        rotatedBounds(
+          width,
+          height,
+          rotation
+        );
 
 
       return {
-        left: margin,
-        top: margin,
-        width,
-        height
+
+        ...item,
+
+        displayWidth:
+          width,
+
+        displayHeight:
+          height,
+
+        rotation,
+
+        boxWidth:
+          bounds.width,
+
+        boxHeight:
+          bounds.height
+
       };
 
     }
@@ -855,59 +696,722 @@
 
 
     /* =====================================================
-       CREATE DRAWING
+       PACK ONE CATEGORY
+
+       Each filename prefix gets its own tight cluster.
+
+       Example:
+       figure-* stays with figure-*
+       food-* stays with food-*
+       etc.
        ===================================================== */
 
-    function createDrawingElement(
-      item,
-      placement
+    function packCategory(
+      items
     ) {
+
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
+
+
+      const itemGap =
+        mobile
+          ? 2
+          : 3;
+
+
+      const placed =
+        [];
+
+
+      /*
+        Largest pieces first gives the smaller drawings
+        more opportunities to fill the gaps later.
+      */
+
+      const ordered =
+        [...items]
+          .sort(
+            (a, b) =>
+              (
+                b.boxWidth *
+                b.boxHeight
+              )
+              -
+              (
+                a.boxWidth *
+                a.boxHeight
+              )
+          );
+
+
+      ordered.forEach(
+        (
+          item,
+          itemIndex
+        ) => {
+
+          /*
+            First item starts at the local origin.
+          */
+
+          if (
+            itemIndex === 0
+          ) {
+
+            placed.push({
+
+              ...item,
+
+              left:
+                -item.boxWidth / 2,
+
+              top:
+                -item.boxHeight / 2,
+
+              right:
+                item.boxWidth / 2,
+
+              bottom:
+                item.boxHeight / 2
+
+            });
+
+
+            return;
+
+          }
+
+
+          let best =
+            null;
+
+
+          /*
+            Golden-angle spiral.
+
+            We test lots of extremely close candidate positions
+            and accept the first collision-free one.
+          */
+
+          const GOLDEN_ANGLE =
+            Math.PI *
+            (
+              3 -
+              Math.sqrt(5)
+            );
+
+
+          for (
+            let attempt = 0;
+            attempt < 5000;
+            attempt++
+          ) {
+
+            const radius =
+              2.4 *
+              Math.sqrt(
+                attempt
+              );
+
+
+            const angle =
+              attempt *
+              GOLDEN_ANGLE +
+              randomBetween(
+                -0.10,
+                0.10
+              );
+
+
+            const centerX =
+              Math.cos(
+                angle
+              ) *
+              radius;
+
+
+            const centerY =
+              Math.sin(
+                angle
+              ) *
+              radius;
+
+
+            const candidate = {
+
+              left:
+                centerX -
+                item.boxWidth / 2,
+
+              top:
+                centerY -
+                item.boxHeight / 2,
+
+              right:
+                centerX +
+                item.boxWidth / 2,
+
+              bottom:
+                centerY +
+                item.boxHeight / 2
+
+            };
+
+
+            const collision =
+              placed.some(
+                other =>
+                  boxesOverlap(
+                    candidate,
+                    other,
+                    itemGap
+                  )
+              );
+
+
+            if (
+              !collision
+            ) {
+
+              best =
+                candidate;
+
+              break;
+
+            }
+
+          }
+
+
+          /*
+            Very unlikely fallback.
+          */
+
+          if (
+            !best
+          ) {
+
+            const furthestRight =
+              Math.max(
+                ...placed.map(
+                  box =>
+                    box.right
+                )
+              );
+
+
+            best = {
+
+              left:
+                furthestRight +
+                itemGap,
+
+              top:
+                -item.boxHeight / 2,
+
+              right:
+                furthestRight +
+                itemGap +
+                item.boxWidth,
+
+              bottom:
+                item.boxHeight / 2
+
+            };
+
+          }
+
+
+          placed.push({
+
+            ...item,
+            ...best
+
+          });
+
+        }
+      );
+
+
+
+      /* ---------------------------------------------
+         NORMALIZE CATEGORY TO 0 / 0
+         --------------------------------------------- */
+
+      const minX =
+        Math.min(
+          ...placed.map(
+            item =>
+              item.left
+          )
+        );
+
+
+      const minY =
+        Math.min(
+          ...placed.map(
+            item =>
+              item.top
+          )
+        );
+
+
+      const maxX =
+        Math.max(
+          ...placed.map(
+            item =>
+              item.right
+          )
+        );
+
+
+      const maxY =
+        Math.max(
+          ...placed.map(
+            item =>
+              item.bottom
+          )
+        );
+
+
+      const normalized =
+        placed.map(
+          item => ({
+
+            ...item,
+
+            left:
+              item.left -
+              minX,
+
+            top:
+              item.top -
+              minY,
+
+            right:
+              item.right -
+              minX,
+
+            bottom:
+              item.bottom -
+              minY
+
+          })
+        );
+
+
+      return {
+
+        items:
+          normalized,
+
+        width:
+          maxX -
+          minX,
+
+        height:
+          maxY -
+          minY
+
+      };
+
+    }
+
+
+
+    /* =====================================================
+       PACK CATEGORY GROUPS
+
+       Same basic idea again, but now every object being
+       packed is a complete category cluster.
+       ===================================================== */
+
+    function packGroups(
+      groups
+    ) {
+
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
+
+
+      const groupGap =
+        mobile
+          ? 12
+          : 18;
+
+
+      const ordered =
+        shuffle(
+          groups
+        )
+        .sort(
+          (a, b) =>
+            (
+              b.width *
+              b.height
+            )
+            -
+            (
+              a.width *
+              a.height
+            )
+        );
+
+
+      const placed =
+        [];
+
+
+      ordered.forEach(
+        (
+          group,
+          index
+        ) => {
+
+          if (
+            index === 0
+          ) {
+
+            placed.push({
+
+              ...group,
+
+              left:
+                -group.width / 2,
+
+              top:
+                -group.height / 2,
+
+              right:
+                group.width / 2,
+
+              bottom:
+                group.height / 2
+
+            });
+
+
+            return;
+
+          }
+
+
+          let best =
+            null;
+
+
+          const GOLDEN_ANGLE =
+            Math.PI *
+            (
+              3 -
+              Math.sqrt(5)
+            );
+
+
+          for (
+            let attempt = 0;
+            attempt < 7000;
+            attempt++
+          ) {
+
+            const radius =
+              5.5 *
+              Math.sqrt(
+                attempt
+              );
+
+
+            const angle =
+              attempt *
+              GOLDEN_ANGLE +
+              randomBetween(
+                -0.18,
+                0.18
+              );
+
+
+            /*
+              Slight horizontal bias gives us something closer
+              to an open sketchbook spread than a perfect circle.
+            */
+
+            const centerX =
+              Math.cos(
+                angle
+              ) *
+              radius *
+              1.18;
+
+
+            const centerY =
+              Math.sin(
+                angle
+              ) *
+              radius *
+              0.90;
+
+
+            const candidate = {
+
+              left:
+                centerX -
+                group.width / 2,
+
+              top:
+                centerY -
+                group.height / 2,
+
+              right:
+                centerX +
+                group.width / 2,
+
+              bottom:
+                centerY +
+                group.height / 2
+
+            };
+
+
+            const collision =
+              placed.some(
+                other =>
+                  boxesOverlap(
+                    candidate,
+                    other,
+                    groupGap
+                  )
+              );
+
+
+            if (
+              !collision
+            ) {
+
+              best =
+                candidate;
+
+              break;
+
+            }
+
+          }
+
+
+          if (
+            !best
+          ) {
+
+            const furthestRight =
+              Math.max(
+                ...placed.map(
+                  box =>
+                    box.right
+                )
+              );
+
+
+            best = {
+
+              left:
+                furthestRight +
+                groupGap,
+
+              top:
+                -group.height / 2,
+
+              right:
+                furthestRight +
+                groupGap +
+                group.width,
+
+              bottom:
+                group.height / 2
+
+            };
+
+          }
+
+
+          placed.push({
+
+            ...group,
+            ...best
+
+          });
+
+        }
+      );
+
+
+
+      /* ---------------------------------------------
+         FIND GLOBAL EXTENTS
+         --------------------------------------------- */
+
+      const minX =
+        Math.min(
+          ...placed.map(
+            group =>
+              group.left
+          )
+        );
+
+
+      const minY =
+        Math.min(
+          ...placed.map(
+            group =>
+              group.top
+          )
+        );
+
+
+      const maxX =
+        Math.max(
+          ...placed.map(
+            group =>
+              group.right
+          )
+        );
+
+
+      const maxY =
+        Math.max(
+          ...placed.map(
+            group =>
+              group.bottom
+          )
+        );
+
+
+      return {
+
+        groups:
+          placed.map(
+            group => ({
+
+              ...group,
+
+              left:
+                group.left -
+                minX,
+
+              top:
+                group.top -
+                minY
+
+            })
+          ),
+
+        width:
+          maxX -
+          minX,
+
+        height:
+          maxY -
+          minY
+
+      };
+
+    }
+
+
+
+    /* =====================================================
+       CREATE DRAWING DOM
+       ===================================================== */
+
+    function createDrawing(
+      item
+    ) {
+
+      /*
+        Outer wrapper is the ROTATED bounding box.
+        This is what collision detection packed.
+      */
 
       const wrapper =
         document.createElement(
           "div"
         );
 
+
       wrapper.className =
         "drawing";
 
+
       wrapper.style.left =
-        `${placement.left}px`;
+        `${item.left}px`;
+
 
       wrapper.style.top =
-        `${placement.top}px`;
+        `${item.top}px`;
+
 
       wrapper.style.width =
-        `${placement.width}px`;
+        `${item.boxWidth}px`;
 
-      wrapper.style.setProperty(
-        "--rotation",
-        `${randomBetween(-4.5, 4.5).toFixed(2)}deg`
-      );
+
+      wrapper.style.height =
+        `${item.boxHeight}px`;
+
+
+
+      /*
+        Inner image uses the true artwork dimensions.
+      */
 
       const image =
         document.createElement(
           "img"
         );
 
+
+      image.className =
+        "drawing-art";
+
+
       image.src =
         item.filename;
+
 
       image.alt =
         "";
 
+
       image.loading =
         "lazy";
+
 
       image.decoding =
         "async";
 
+
       image.draggable =
         false;
+
+
+      image.style.width =
+        `${item.displayWidth}px`;
+
+
+      image.style.height =
+        `${item.displayHeight}px`;
+
+
+      image.style.transform =
+        `translate(-50%, -50%) rotate(${item.rotation}deg)`;
+
 
       wrapper.appendChild(
         image
       );
+
 
       return wrapper;
 
@@ -919,12 +1423,19 @@
        BUILD SKETCHBOOK
        ===================================================== */
 
+    let paperWidth =
+      0;
+
+
+    let paperHeight =
+      0;
+
+
     async function buildSketchbook() {
 
       field.innerHTML =
         "";
 
-      updatePaperDimensions();
 
       const loaded =
         (
@@ -936,141 +1447,279 @@
         )
         .filter(Boolean);
 
-      if (!loaded.length) {
+
+      if (
+        !loaded.length
+      ) {
         return;
       }
+
+
 
       const minArea =
         Math.min(
           ...loaded.map(
-            item => item.area
+            item =>
+              item.area
           )
         );
+
 
       const maxArea =
         Math.max(
           ...loaded.map(
-            item => item.area
+            item =>
+              item.area
           )
         );
+
+
+
+      /* ---------------------------------------------
+         PREPARE IMAGE DIMENSIONS + ROTATIONS
+         --------------------------------------------- */
+
+      const prepared =
+        loaded.map(
+          item =>
+            prepareDrawing(
+              item,
+              minArea,
+              maxArea
+            )
+        );
+
+
+
+      /* ---------------------------------------------
+         EXACT PREFIX GROUPS
+         --------------------------------------------- */
 
       const byCategory =
         new Map();
 
-      loaded.forEach(item => {
 
-        if (
-          !byCategory.has(
-            item.category
-          )
-        ) {
-          byCategory.set(
-            item.category,
-            []
-          );
-        }
-
-        byCategory
-          .get(item.category)
-          .push(item);
-
-      });
-
-      const renderOrder = [
-        "figure",
-        "face",
-        "group",
-        "multiple",
-
-        "city",
-        "house",
-        "perspective",
-        "vehicle",
-
-        "food",
-        "kitchen",
-        "object",
-
-        "nature",
-        "animal",
-        "insect",
-        "fishing",
-
-        "music",
-        "ghost",
-        "misc"
-      ];
-
-      byCategory.forEach(
-        (items, category) => {
+      prepared.forEach(
+        item => {
 
           if (
-            !renderOrder.includes(category)
+            !byCategory.has(
+              item.category
+            )
           ) {
-            renderOrder.push(category);
+
+            byCategory.set(
+              item.category,
+              []
+            );
+
           }
+
+
+          byCategory
+            .get(
+              item.category
+            )
+            .push(
+              item
+            );
 
         }
       );
 
-      const placedBoxes =
+
+
+      /* ---------------------------------------------
+         PACK EACH CATEGORY SEPARATELY
+         --------------------------------------------- */
+
+      const groups =
         [];
 
-      renderOrder.forEach(category => {
 
-        const items =
-          byCategory.get(category);
+      byCategory.forEach(
+        (
+          items,
+          category
+        ) => {
 
-        if (
-          !items ||
-          !items.length
-        ) {
-          return;
-        }
-
-        const anchor =
-          getAnchorForCategory(
-            category
-          );
-
-        const sorted =
-          shuffle(items).sort(
-            (a, b) =>
-              b.area - a.area
-          );
-
-        sorted.forEach(item => {
-
-          const placement =
-            findPositionForItem(
-              item,
-              anchor,
-              placedBoxes,
-              minArea,
-              maxArea
+          const packed =
+            packCategory(
+              items
             );
 
-          const box = {
-            left: placement.left,
-            top: placement.top,
-            right: placement.left + placement.width,
-            bottom: placement.top + placement.height
-          };
 
-          placedBoxes.push(
-            box
+          groups.push({
+
+            category,
+
+            ...packed
+
+          });
+
+        }
+      );
+
+
+
+      /* ---------------------------------------------
+         PACK THE COMPLETE CATEGORY GROUPS
+         --------------------------------------------- */
+
+      const layout =
+        packGroups(
+          groups
+        );
+
+
+
+      /* ---------------------------------------------
+         PAPER PADDING
+         --------------------------------------------- */
+
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
+
+
+      const paperPadding =
+        mobile
+          ? 42
+          : 62;
+
+
+
+      paperWidth =
+        layout.width +
+        paperPadding * 2;
+
+
+      paperHeight =
+        layout.height +
+        paperPadding * 2;
+
+
+
+      /*
+        Ensure the sheet still feels like a larger physical
+        surface that can be dragged a little even if the
+        packed composition happens to be small.
+      */
+
+      paperWidth =
+        Math.max(
+          paperWidth,
+          viewport.clientWidth *
+          (
+            mobile
+              ? 1.35
+              : 1.18
+          )
+        );
+
+
+      paperHeight =
+        Math.max(
+          paperHeight,
+          viewport.clientHeight *
+          (
+            mobile
+              ? 1.35
+              : 1.16
+          )
+        );
+
+
+      paper.style.width =
+        `${paperWidth}px`;
+
+
+      paper.style.height =
+        `${paperHeight}px`;
+
+
+
+      /* ---------------------------------------------
+         CENTER PACKED CONTENT ON PAPER
+         --------------------------------------------- */
+
+      const contentOffsetX =
+        (
+          paperWidth -
+          layout.width
+        )
+        / 2;
+
+
+      const contentOffsetY =
+        (
+          paperHeight -
+          layout.height
+        )
+        / 2;
+
+
+
+      layout.groups.forEach(
+        group => {
+
+          const groupElement =
+            document.createElement(
+              "div"
+            );
+
+
+          groupElement.className =
+            "drawing-group";
+
+
+          groupElement.dataset.category =
+            group.category;
+
+
+          groupElement.style.left =
+            `${
+              contentOffsetX +
+              group.left
+            }px`;
+
+
+          groupElement.style.top =
+            `${
+              contentOffsetY +
+              group.top
+            }px`;
+
+
+          groupElement.style.width =
+            `${group.width}px`;
+
+
+          groupElement.style.height =
+            `${group.height}px`;
+
+
+          group.items.forEach(
+            item => {
+
+              groupElement.appendChild(
+                createDrawing(
+                  item
+                )
+              );
+
+            }
           );
+
 
           field.appendChild(
-            createDrawingElement(
-              item,
-              placement
-            )
+            groupElement
           );
 
-        });
+        }
+      );
 
-      });
 
       centerPaper();
 
@@ -1083,13 +1732,28 @@
        ===================================================== */
 
     const pan = {
-      x: 0,
-      y: 0,
-      startX: 0,
-      startY: 0,
-      originX: 0,
-      originY: 0,
-      dragging: false
+
+      x:
+        0,
+
+      y:
+        0,
+
+      startX:
+        0,
+
+      startY:
+        0,
+
+      originX:
+        0,
+
+      originY:
+        0,
+
+      dragging:
+        false
+
     };
 
 
@@ -1101,47 +1765,89 @@
       const viewportWidth =
         viewport.clientWidth;
 
+
       const viewportHeight =
         viewport.clientHeight;
+
 
       let minX;
       let maxX;
       let minY;
       let maxY;
 
+
+
       if (
-        paperWidth <= viewportWidth
+        paperWidth <=
+        viewportWidth
       ) {
+
         minX =
           maxX =
-          (viewportWidth - paperWidth) / 2;
+          (
+            viewportWidth -
+            paperWidth
+          )
+          / 2;
+
       }
 
       else {
+
         minX =
-          viewportWidth - paperWidth - 18;
+          viewportWidth -
+          paperWidth;
+
         maxX =
-          18;
+          0;
+
       }
+
+
 
       if (
-        paperHeight <= viewportHeight
+        paperHeight <=
+        viewportHeight
       ) {
+
         minY =
           maxY =
-          (viewportHeight - paperHeight) / 2;
+          (
+            viewportHeight -
+            paperHeight
+          )
+          / 2;
+
       }
 
       else {
+
         minY =
-          viewportHeight - paperHeight - 18;
+          viewportHeight -
+          paperHeight;
+
         maxY =
-          18;
+          0;
+
       }
 
+
       return {
-        x: clamp(x, minX, maxX),
-        y: clamp(y, minY, maxY)
+
+        x:
+          clamp(
+            x,
+            minX,
+            maxX
+          ),
+
+        y:
+          clamp(
+            y,
+            minY,
+            maxY
+          )
+
       };
 
     }
@@ -1153,13 +1859,19 @@
     ) {
 
       const next =
-        clampPan(x, y);
+        clampPan(
+          x,
+          y
+        );
+
 
       pan.x =
         next.x;
 
+
       pan.y =
         next.y;
+
 
       paper.style.transform =
         `translate3d(${pan.x}px, ${pan.y}px, 0)`;
@@ -1169,21 +1881,29 @@
 
     function centerPaper() {
 
-      const viewportWidth =
-        viewport.clientWidth;
-
-      const viewportHeight =
-        viewport.clientHeight;
-
       const x =
-        (viewportWidth - paperWidth) / 2;
+        (
+          viewport.clientWidth -
+          paperWidth
+        )
+        / 2;
+
 
       const y =
-        (viewportHeight - paperHeight) / 2;
+        (
+          viewport.clientHeight -
+          paperHeight
+        )
+        / 2;
 
-      setPan(x, y);
+
+      setPan(
+        x,
+        y
+      );
 
     }
+
 
 
     viewport.addEventListener(
@@ -1193,21 +1913,27 @@
         pan.dragging =
           true;
 
+
         pan.startX =
           event.clientX;
+
 
         pan.startY =
           event.clientY;
 
+
         pan.originX =
           pan.x;
+
 
         pan.originY =
           pan.y;
 
+
         viewport.classList.add(
           "is-dragging"
         );
+
 
         viewport.setPointerCapture(
           event.pointerId
@@ -1227,25 +1953,34 @@
           return;
         }
 
+
         const dx =
-          event.clientX - pan.startX;
+          event.clientX -
+          pan.startX;
+
 
         const dy =
-          event.clientY - pan.startY;
+          event.clientY -
+          pan.startY;
+
 
         setPan(
-          pan.originX + dx,
-          pan.originY + dy
+          pan.originX +
+          dx,
+
+          pan.originY +
+          dy
         );
 
       }
     );
 
 
-    function endDrag() {
+    function finishDrag() {
 
       pan.dragging =
         false;
+
 
       viewport.classList.remove(
         "is-dragging"
@@ -1256,26 +1991,13 @@
 
     viewport.addEventListener(
       "pointerup",
-      endDrag
+      finishDrag
     );
+
 
     viewport.addEventListener(
       "pointercancel",
-      endDrag
-    );
-
-    viewport.addEventListener(
-      "pointerleave",
-      event => {
-
-        if (
-          event.pointerType === "mouse" &&
-          pan.dragging
-        ) {
-          endDrag();
-        }
-
-      }
+      finishDrag
     );
 
 
@@ -1287,6 +2009,7 @@
     let resizeTimer =
       null;
 
+
     window.addEventListener(
       "resize",
       () => {
@@ -1295,10 +2018,11 @@
           resizeTimer
         );
 
+
         resizeTimer =
           window.setTimeout(
             buildSketchbook,
-            120
+            160
           );
 
       }
