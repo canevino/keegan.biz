@@ -84,7 +84,6 @@ a {
 
 /* =========================================================
    SCARF NAVIGATION
-   Matches the rest of keegan.biz
    ========================================================= */
 
 .scarf-rack {
@@ -134,9 +133,11 @@ a {
 
 .scarf-item img {
   width: auto;
+
   height: 100%;
 
-  object-fit: contain;
+  object-fit:
+    contain;
 
   filter:
     drop-shadow(
@@ -155,7 +156,9 @@ a {
 
 .scarf-home {
   transform:
-    scale(1.045);
+    scale(
+      1.045
+    );
 }
 
 
@@ -163,17 +166,29 @@ a {
   z-index: 4;
 
   transform:
-    translateX(-22px)
-    rotate(-.5deg)
-    scale(1.035);
+    translateX(
+      -22px
+    )
+    rotate(
+      -.5deg
+    )
+    scale(
+      1.035
+    );
 }
 
 
 .scarf-home:hover {
   transform:
-    translateX(-22px)
-    rotate(-.5deg)
-    scale(1.075);
+    translateX(
+      -22px
+    )
+    rotate(
+      -.5deg
+    )
+    scale(
+      1.075
+    );
 }
 
 
@@ -225,11 +240,14 @@ a {
 .illustration-title {
   display: block;
 
-  width: max-content;
+  width:
+    max-content;
 
-  max-width: 100%;
+  max-width:
+    100%;
 
-  margin: 0;
+  margin:
+    0;
 
   color:
     var(--green);
@@ -241,29 +259,31 @@ a {
       64px
     );
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  line-height: .95;
+  line-height:
+    .95;
 
-  letter-spacing: -.06em;
+  letter-spacing:
+    -.06em;
 }
 
 
 
 /* =========================================================
    SKETCHBOOK
-
-   One continuous loose field rather than a gallery.
    ========================================================= */
 
 .sketchbook {
   position: relative;
 
-  width: 100%;
+  width:
+    100%;
 
   margin-top:
     clamp(
-      45px,
+      44px,
       5vw,
       76px
     );
@@ -271,20 +291,24 @@ a {
 
 
 .sketchbook-inner {
-  width: 100%;
+  width:
+    100%;
 
-  display: flex;
+  display:
+    flex;
 
-  flex-direction: column;
+  flex-direction:
+    column;
 
   gap:
     clamp(
-      72px,
-      9vw,
-      150px
+      68px,
+      8vw,
+      130px
     );
 
-  opacity: 0;
+  opacity:
+    0;
 
   transition:
     opacity
@@ -294,82 +318,98 @@ a {
 
 
 .sketchbook-inner.is-ready {
-  opacity: 1;
+  opacity:
+    1;
 }
 
 
 
 /* =========================================================
-   LARGE THEMATIC CLUSTERS
+   THEMATIC CLUSTERS
    ========================================================= */
 
 .drawing-cluster {
-  width: 100%;
+  width:
+    100%;
 
-  display: flex;
+  display:
+    flex;
 
-  flex-wrap: wrap;
+  flex-wrap:
+    wrap;
 
-  align-items: flex-start;
+  align-items:
+    flex-start;
 
-  align-content: flex-start;
+  align-content:
+    flex-start;
 
   gap:
     clamp(
-      22px,
-      2.8vw,
-      48px
+      20px,
+      2.4vw,
+      42px
     );
 }
 
 
 
 /*
-  Alternating cluster alignment keeps the whole page
-  from turning into one invisible rigid column.
+  Slightly shift clusters left/right so the whole page
+  doesn't read like a normal portfolio grid.
 */
 
 .drawing-cluster:nth-child(2n) {
-  padding-left: 5%;
+  padding-left:
+    4%;
 }
 
 
 .drawing-cluster:nth-child(3n) {
-  padding-right: 7%;
+  padding-right:
+    6%;
 }
 
 
 .drawing-cluster:nth-child(4n) {
-  padding-left: 11%;
+  padding-left:
+    9%;
 }
 
 
 
 /* =========================================================
-   CATEGORY GROUP
+   CATEGORY GROUPS
    ========================================================= */
 
 .drawing-group {
-  display: flex;
+  display:
+    flex;
 
-  flex-wrap: wrap;
+  flex-wrap:
+    wrap;
 
-  align-items: center;
+  align-items:
+    center;
 
-  align-content: flex-start;
+  align-content:
+    flex-start;
 
-  justify-content: flex-start;
+  justify-content:
+    flex-start;
 
   gap:
     clamp(
-      8px,
-      .9vw,
-      16px
+      7px,
+      .8vw,
+      14px
     );
 
-  width: auto;
+  width:
+    auto;
 
-  max-width: 100%;
+  max-width:
+    100%;
 }
 
 
@@ -427,7 +467,8 @@ a {
    ========================================================= */
 
 .drawing {
-  position: relative;
+  position:
+    relative;
 
   flex:
     0 0 auto;
@@ -446,11 +487,14 @@ a {
 
 
 .drawing img {
-  display: block;
+  display:
+    block;
 
-  width: 100%;
+  width:
+    100%;
 
-  height: auto;
+  height:
+    auto;
 
   mix-blend-mode:
     multiply;
@@ -465,18 +509,23 @@ a {
     none;
 
   transform:
-    translateZ(0);
+    translateZ(
+      0
+    );
 }
 
 
 
-/*
-  Almost imperceptible response.
+/* =========================================================
+   HOVER
 
-  No zooming, cards, frames or UI treatment.
-*/
+   Extremely restrained:
+   slight straighten + slight lift only.
+   ========================================================= */
 
-@media (hover: hover) {
+@media (
+  hover: hover
+) {
 
   .drawing {
     transition:
@@ -487,11 +536,16 @@ a {
 
 
   .drawing:hover {
-    z-index: 2;
+    z-index:
+      2;
 
     transform:
-      rotate(0deg)
-      translateY(-2px);
+      rotate(
+        0deg
+      )
+      translateY(
+        -2px
+      );
   }
 
 }
@@ -530,29 +584,40 @@ a {
 ) {
 
   .scarf-rack {
-    top: 10px;
+    top:
+      10px;
 
-    left: 0;
-    right: 0;
+    left:
+      0;
 
-    flex-direction: row;
+    right:
+      0;
 
-    align-items: center;
+    flex-direction:
+      row;
 
-    width: 100%;
+    align-items:
+      center;
 
-    gap: 6px;
+    width:
+      100%;
+
+    gap:
+      6px;
 
     padding:
       4px
       14px
       12px;
 
-    overflow-x: auto;
+    overflow-x:
+      auto;
 
-    overflow-y: hidden;
+    overflow-y:
+      hidden;
 
-    scrollbar-width: none;
+    scrollbar-width:
+      none;
 
     -webkit-overflow-scrolling:
       touch;
@@ -560,7 +625,8 @@ a {
 
 
   .scarf-rack::-webkit-scrollbar {
-    display: none;
+    display:
+      none;
   }
 
 
@@ -625,13 +691,13 @@ a {
 
   .sketchbook {
     margin-top:
-      46px;
+      44px;
   }
 
 
   .sketchbook-inner {
     gap:
-      72px;
+      68px;
   }
 
 
@@ -646,7 +712,7 @@ a {
       0;
 
     gap:
-      22px;
+      20px;
   }
 
 
@@ -665,7 +731,7 @@ a {
       100%;
 
     gap:
-      8px;
+      7px;
   }
 
 }
@@ -697,7 +763,7 @@ a {
 
   .sketchbook-inner {
     gap:
-      58px;
+      56px;
   }
 
 }
