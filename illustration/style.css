@@ -41,33 +41,39 @@ body {
 
   overflow-x: hidden;
 
-  background: var(--paper);
-  color: var(--ink);
+  background:
+    var(--paper);
+
+  color:
+    var(--ink);
 
   font-family:
     Helvetica,
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing:
+    antialiased;
 }
 
 
 img {
   display: block;
+
   max-width: 100%;
 }
 
 
 a {
   color: inherit;
+
   text-decoration: none;
 }
 
 
 
 /* =========================================================
-   PAGE SHELL
+   PAGE
    ========================================================= */
 
 .page-shell {
@@ -82,19 +88,25 @@ a {
 
 .scarf-rack {
   position: fixed;
+
   top: 14px;
   right: 12px;
+
   z-index: 50;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-end;
+
   gap: 6px;
 }
 
 
 .scarf-item {
   position: relative;
+
   display: block;
 
   height:
@@ -104,32 +116,49 @@ a {
       108px
     );
 
-  transform-origin: right center;
+  transform-origin:
+    right center;
 
   transition:
     transform
     220ms
-    cubic-bezier(.2, .8, .2, 1);
+    cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
 }
 
 
 .scarf-item img {
   width: auto;
+
   height: 100%;
-  object-fit: contain;
+
+  object-fit:
+    contain;
 
   filter:
     drop-shadow(
       0
       2px
       1px
-      rgba(17, 17, 15, .06)
+      rgba(
+        17,
+        17,
+        15,
+        .06
+      )
     );
 }
 
 
 .scarf-home {
-  transform: scale(1.045);
+  transform:
+    scale(
+      1.045
+    );
 }
 
 
@@ -153,39 +182,68 @@ a {
 
 
 /* =========================================================
-   PAGE
+   ILLUSTRATION PAGE
    ========================================================= */
 
 .illustration-page {
-  min-height: 100vh;
+  min-height:
+    100vh;
 
   padding:
-    clamp(30px, 4vw, 56px)
-    clamp(430px, 36vw, 575px)
-    120px
-    clamp(30px, 5.5vw, 80px);
+    clamp(
+      30px,
+      4vw,
+      56px
+    )
+
+    clamp(
+      430px,
+      36vw,
+      575px
+    )
+
+    100px
+
+    clamp(
+      30px,
+      5.5vw,
+      80px
+    );
 }
 
 
 
 /* =========================================================
-   HEADER
+   TITLE
    ========================================================= */
 
 .illustration-header {
-  width: 100%;
-  margin: 0;
-  padding: 0;
+  width:
+    100%;
+
+  margin:
+    0;
+
+  padding:
+    0;
 }
 
 
 .illustration-title {
-  display: block;
-  width: max-content;
-  max-width: 100%;
-  margin: 0;
+  display:
+    block;
 
-  color: var(--green);
+  width:
+    max-content;
+
+  max-width:
+    100%;
+
+  margin:
+    0;
+
+  color:
+    var(--green);
 
   font-size:
     clamp(
@@ -194,126 +252,193 @@ a {
       64px
     );
 
-  font-weight: 700;
-  line-height: .95;
-  letter-spacing: -.06em;
+  font-weight:
+    700;
+
+  line-height:
+    .95;
+
+  letter-spacing:
+    -.06em;
 }
 
 
 
 /* =========================================================
-   SKETCHBOOK STAGE
+   SKETCHBOOK
    ========================================================= */
 
 .sketchbook-stage {
-  width: 100%;
+  width:
+    100%;
 
   margin-top:
     clamp(
-      32px,
-      4vw,
-      54px
+      30px,
+      3.5vw,
+      48px
     );
 }
 
 
 .sketchbook-viewport {
-  position: relative;
+  position:
+    relative;
 
-  width: 100%;
+  width:
+    100%;
+
   height:
     clamp(
       620px,
-      78vh,
-      980px
+      76vh,
+      900px
     );
 
-  overflow: hidden;
+  overflow:
+    hidden;
 
-  background: transparent;
+  cursor:
+    grab;
 
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
+  user-select:
+    none;
+
+  touch-action:
+    none;
 }
 
 
 .sketchbook-viewport.is-dragging {
-  cursor: grabbing;
-}
-
-
-.sketchbook-paper {
-  position: absolute;
-  left: 0;
-  top: 0;
-
-  background: #ffffff;
-
-  border:
-    1px solid
-    rgba(17, 17, 15, .10);
-
-  box-shadow:
-    0 12px 28px rgba(17, 17, 15, .07);
-}
-
-
-.sketchbook-field {
-  position: relative;
-  width: 100%;
-  height: 100%;
+  cursor:
+    grabbing;
 }
 
 
 
 /* =========================================================
-   DRAWINGS
+   WHITE PAPER
+   ========================================================= */
+
+.sketchbook-paper {
+  position:
+    absolute;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  background:
+    #ffffff;
+
+  border:
+    1px solid
+    rgba(
+      17,
+      17,
+      15,
+      .08
+    );
+
+  box-shadow:
+    0
+    9px
+    22px
+    rgba(
+      17,
+      17,
+      15,
+      .045
+    );
+
+  will-change:
+    transform;
+}
+
+
+.sketchbook-field {
+  position:
+    relative;
+
+  width:
+    100%;
+
+  height:
+    100%;
+}
+
+
+
+/* =========================================================
+   CATEGORY GROUP
+
+   Invisible container only.
+   No cards, backgrounds or labels.
+   ========================================================= */
+
+.drawing-group {
+  position:
+    absolute;
+}
+
+
+
+/* =========================================================
+   DRAWING COLLISION BOX
    ========================================================= */
 
 .drawing {
-  position: absolute;
+  position:
+    absolute;
 
-  transform:
-    rotate(
-      var(--rotation, 0deg)
-    );
-
-  transform-origin: center center;
+  pointer-events:
+    none;
 }
 
 
-.drawing img {
-  display: block;
-  width: 100%;
-  height: auto;
 
-  mix-blend-mode: multiply;
-  opacity: .98;
+/* =========================================================
+   ACTUAL ARTWORK
+   ========================================================= */
 
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
-}
+.drawing-art {
+  position:
+    absolute;
 
+  left:
+    50%;
 
-@media (hover: hover) {
+  top:
+    50%;
 
-  .drawing {
-    transition:
-      transform
-      180ms
-      ease;
-  }
+  display:
+    block;
 
-  .drawing:hover {
-    transform:
-      rotate(
-        calc(var(--rotation, 0deg) * .35)
-      )
-      translateY(-2px);
-  }
+  max-width:
+    none;
 
+  object-fit:
+    contain;
+
+  mix-blend-mode:
+    multiply;
+
+  opacity:
+    .98;
+
+  transform-origin:
+    center center;
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+
+  pointer-events:
+    none;
 }
 
 
@@ -323,19 +448,22 @@ a {
    ========================================================= */
 
 @media (
-  max-width: 1100px
+  max-width:
+  1100px
 ) {
 
   .illustration-page {
-    padding-right: 375px;
+    padding-right:
+      375px;
   }
+
 
   .sketchbook-viewport {
     height:
       clamp(
         560px,
         72vh,
-        900px
+        820px
       );
   }
 
@@ -348,69 +476,103 @@ a {
    ========================================================= */
 
 @media (
-  max-width: 700px
+  max-width:
+  700px
 ) {
 
   .scarf-rack {
-    top: 10px;
-    left: 0;
-    right: 0;
+    top:
+      10px;
 
-    flex-direction: row;
-    align-items: center;
+    left:
+      0;
 
-    width: 100%;
-    gap: 6px;
+    right:
+      0;
+
+    flex-direction:
+      row;
+
+    align-items:
+      center;
+
+    width:
+      100%;
+
+    gap:
+      6px;
 
     padding:
       4px
       14px
       12px;
 
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-x:
+      auto;
 
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    overflow-y:
+      hidden;
+
+    scrollbar-width:
+      none;
+
+    -webkit-overflow-scrolling:
+      touch;
   }
 
 
   .scarf-rack::-webkit-scrollbar {
-    display: none;
+    display:
+      none;
   }
 
 
   .scarf-item {
-    flex: 0 0 auto;
-    width: 285px;
-    height: auto;
-    transform: none;
+    flex:
+      0 0 auto;
+
+    width:
+      285px;
+
+    height:
+      auto;
+
+    transform:
+      none;
   }
 
 
   .scarf-item img {
-    width: 100%;
-    height: auto;
+    width:
+      100%;
+
+    height:
+      auto;
   }
 
 
   .scarf-home {
-    width: 315px;
-    transform: none;
+    width:
+      315px;
+
+    transform:
+      none;
   }
 
 
   .scarf-item:hover,
   .scarf-home:hover {
-    transform: none;
+    transform:
+      none;
   }
+
 
 
   .illustration-page {
     padding:
       180px
       18px
-      70px;
+      64px;
   }
 
 
@@ -425,7 +587,8 @@ a {
 
 
   .sketchbook-stage {
-    margin-top: 26px;
+    margin-top:
+      26px;
   }
 
 
@@ -433,8 +596,8 @@ a {
     height:
       clamp(
         500px,
-        68svh,
-        760px
+        66svh,
+        720px
       );
   }
 
@@ -447,22 +610,28 @@ a {
    ========================================================= */
 
 @media (
-  max-width: 420px
+  max-width:
+  420px
 ) {
 
   .illustration-page {
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left:
+      14px;
+
+    padding-right:
+      14px;
   }
 
 
   .scarf-item {
-    width: 248px;
+    width:
+      248px;
   }
 
 
   .scarf-home {
-    width: 278px;
+    width:
+      278px;
   }
 
 
@@ -470,8 +639,8 @@ a {
     height:
       clamp(
         460px,
-        64svh,
-        700px
+        62svh,
+        660px
       );
   }
 
