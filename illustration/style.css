@@ -59,12 +59,14 @@ body {
 
 img {
   display: block;
+
   max-width: 100%;
 }
 
 
 a {
   color: inherit;
+
   text-decoration: none;
 }
 
@@ -80,7 +82,8 @@ button {
    ========================================================= */
 
 .page-shell {
-  min-height: 100vh;
+  min-height:
+    100vh;
 }
 
 
@@ -135,10 +138,14 @@ button {
 
 
 .scarf-item img {
-  width: auto;
-  height: 100%;
+  width:
+    auto;
 
-  object-fit: contain;
+  height:
+    100%;
+
+  object-fit:
+    contain;
 
   filter:
     drop-shadow(
@@ -185,12 +192,13 @@ button {
    ========================================================= */
 
 .illustration-page {
-  min-height: 100vh;
+  min-height:
+    100vh;
 
   padding:
     clamp(30px, 4vw, 56px)
     clamp(430px, 36vw, 575px)
-    96px
+    90px
     clamp(30px, 5.5vw, 80px);
 }
 
@@ -201,22 +209,29 @@ button {
    ========================================================= */
 
 .illustration-header {
-  width: 100%;
+  width:
+    100%;
 
-  margin: 0;
+  margin:
+    0;
 
-  padding: 0;
+  padding:
+    0;
 }
 
 
 .illustration-title {
-  display: block;
+  display:
+    block;
 
-  width: max-content;
+  width:
+    max-content;
 
-  max-width: 100%;
+  max-width:
+    100%;
 
-  margin: 0;
+  margin:
+    0;
 
   color:
     var(--green);
@@ -245,21 +260,24 @@ button {
    ========================================================= */
 
 .sketchbook-stage {
-  width: 100%;
+  width:
+    100%;
 
   margin-top:
     clamp(
-      28px,
-      3.2vw,
-      44px
+      26px,
+      3vw,
+      42px
     );
 }
 
 
 .sketchbook-viewport {
-  position: relative;
+  position:
+    relative;
 
-  width: 100%;
+  width:
+    100%;
 
   height:
     clamp(
@@ -268,13 +286,17 @@ button {
       930px
     );
 
-  overflow: hidden;
+  overflow:
+    hidden;
 
-  cursor: grab;
+  cursor:
+    grab;
 
-  user-select: none;
+  user-select:
+    none;
 
-  touch-action: none;
+  touch-action:
+    none;
 
   background:
     transparent;
@@ -289,14 +311,18 @@ button {
 
 
 /* =========================================================
-   WHITE SKETCHBOOK SHEET
+   PAPER
    ========================================================= */
 
 .sketchbook-paper {
-  position: absolute;
+  position:
+    absolute;
 
-  top: 0;
-  left: 0;
+  top:
+    0;
+
+  left:
+    0;
 
   transform-origin:
     top left;
@@ -310,18 +336,18 @@ button {
       17,
       17,
       15,
-      .08
+      .07
     );
 
   box-shadow:
     0
     8px
-    20px
+    18px
     rgba(
       17,
       17,
       15,
-      .04
+      .035
     );
 
   will-change:
@@ -330,31 +356,28 @@ button {
 
 
 .sketchbook-field {
-  position: relative;
+  position:
+    relative;
 
-  width: 100%;
+  width:
+    100%;
 
-  height: 100%;
-}
-
-
-
-/* =========================================================
-   CATEGORY GROUPS
-   ========================================================= */
-
-.drawing-group {
-  position: absolute;
+  height:
+    100%;
 }
 
 
 
 /* =========================================================
    DRAWINGS
+
+   No category containers anymore.
+   Every drawing lives directly on the page.
    ========================================================= */
 
 .drawing {
-  position: absolute;
+  position:
+    absolute;
 
   pointer-events:
     none;
@@ -362,15 +385,14 @@ button {
 
 
 .drawing-art {
-  position: absolute;
+  display:
+    block;
 
-  left: 50%;
-  top: 50%;
+  width:
+    100%;
 
-  display: block;
-
-  max-width:
-    none;
+  height:
+    100%;
 
   object-fit:
     contain;
@@ -401,30 +423,47 @@ button {
    ========================================================= */
 
 .zoom-controls {
-  position: absolute;
+  position:
+    absolute;
 
-  right: 14px;
-  bottom: 14px;
+  right:
+    13px;
 
-  z-index: 20;
+  bottom:
+    13px;
 
-  display: flex;
+  z-index:
+    20;
 
-  gap: 5px;
+  display:
+    flex;
+
+  gap:
+    4px;
 }
 
 
 .zoom-button {
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
-  justify-content: center;
+  align-items:
+    center;
 
-  width: 34px;
-  height: 34px;
+  justify-content:
+    center;
 
-  margin: 0;
-  padding: 0;
+  width:
+    32px;
+
+  height:
+    32px;
+
+  margin:
+    0;
+
+  padding:
+    0;
 
   border:
     1px solid
@@ -445,7 +484,7 @@ button {
     sans-serif;
 
   font-size:
-    24px;
+    23px;
 
   font-weight:
     400;
@@ -601,7 +640,7 @@ button {
     padding:
       180px
       18px
-      64px;
+      60px;
   }
 
 
@@ -633,19 +672,19 @@ button {
 
   .zoom-controls {
     right:
-      10px;
+      9px;
 
     bottom:
-      10px;
+      9px;
   }
 
 
   .zoom-button {
     width:
-      32px;
+      31px;
 
     height:
-      32px;
+      31px;
 
     font-size:
       22px;
