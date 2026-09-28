@@ -135,7 +135,7 @@
 
 
     <!-- =====================================================
-         MOTION PAGE
+         MOTION
          ===================================================== -->
 
     <main class="motion-page">
@@ -149,55 +149,78 @@
       </header>
 
 
+      <!-- ===================================================
+           LOADING
+           =================================================== -->
+
+      <div
+        class="motion-loading"
+        id="motion-loading"
+        role="status"
+        aria-live="polite"
+      >
+        loading...
+      </div>
+
+
+      <!-- ===================================================
+           VIDEO GRID
+           =================================================== -->
+
       <section
-        class="motion-grid"
+        class="motion-grid is-loading"
+        id="motion-grid"
         aria-label="Motion work"
       >
 
         <figure class="motion-item">
           <video
+            class="motion-video"
             src="assets/bike_web.mp4"
             autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="auto"
           ></video>
         </figure>
 
 
         <figure class="motion-item">
           <video
+            class="motion-video"
             src="assets/house_web.mp4"
             autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="auto"
           ></video>
         </figure>
 
 
         <figure class="motion-item">
           <video
+            class="motion-video"
             src="assets/rocky_web.mp4"
             autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="auto"
           ></video>
         </figure>
 
 
         <figure class="motion-item">
           <video
+            class="motion-video"
             src="assets/snow_web.mp4"
             autoplay
             muted
             loop
             playsinline
-            preload="metadata"
+            preload="auto"
           ></video>
         </figure>
 
@@ -206,6 +229,339 @@
     </main>
 
   </div>
+
+
+
+  <script>
+  (() => {
+
+    "use strict";
+
+
+    const loading =
+      document.getElementById(
+        "motion-loading"
+      );
+
+
+    const grid =
+      document.getElementById(
+        "motion-grid"
+      );
+
+
+    const videos =
+      Array.from(
+        document.querySelectorAll(
+          ".motion-video"
+        )
+      );
+
+
+    if (
+      !loading ||
+      !grid ||
+      !videos.length
+    ) {
+      return;
+    }
+
+
+
+    /* =====================================================
+       MAKE AUTOPLAY AS RELIABLE AS POSSIBLE
+       ===================================================== */
+
+    videos.forEach(
+      video => {
+
+        /*
+          Setting these in JavaScript as well as HTML helps
+          Safari / mobile browsers understand immediately
+          that these are silent inline autoplay videos.
+        */
+
+        video.muted =
+          true;
+
+
+        video.defaultMuted =
+          true;
+
+
+        video.loop =
+          true;
+
+
+        video.playsInline =
+          true;
+
+
+        video.setAttribute(
+          "muted",
+          ""
+        );
+
+
+        video.setAttribute(
+          "playsinline",
+          ""
+        );
+
+
+        /*
+          Explicitly begin loading each file.
+        */
+
+        video.load();
+
+      }
+    );
+
+
+
+    /* =====================================================
+       WAIT UNTIL EVERY VIDEO IS READY
+       ===================================================== */
+
+    function waitForVideo(
+      video
+    ) {
+
+      return new Promise(
+        resolve => {
+
+          /*
+            HAVE_FUTURE_DATA = 3.
+
+            If it already has enough buffered data to begin,
+            there's no reason to wait for another event.
+          */
+
+          if (
+            video.readyState >=
+            3
+          ) {
+
+            resolve();
+
+            return;
+
+          }
+
+
+          let finished =
+            false;
+
+
+          function complete() {
+
+            if (
+              finished
+            ) {
+              return;
+            }
+
+
+            finished =
+              true;
+
+
+            video.removeEventListener(
+              "canplay",
+              complete
+            );
+
+
+            video.removeEventListener(
+              "canplaythrough",
+              complete
+            );
+
+
+            video.removeEventListener(
+              "error",
+              complete
+            );
+
+
+            resolve();
+
+          }
+
+
+          /*
+            canplaythrough is ideal.
+
+            canplay is included as a fallback because browsers
+            are sometimes conservative about firing
+            canplaythrough for looping web video.
+          */
+
+          video.addEventListener(
+            "canplaythrough",
+            complete,
+            {
+              once:
+                true
+            }
+          );
+
+
+          video.addEventListener(
+            "canplay",
+            complete,
+            {
+              once:
+                true
+            }
+          );
+
+
+          /*
+            Don't leave the entire page permanently stuck on
+            loading if one file happens to fail.
+          */
+
+          video.addEventListener(
+            "error",
+            complete,
+            {
+              once:
+                true
+            }
+          );
+
+        }
+      );
+
+    }
+
+
+
+    /* =====================================================
+       START ALL FOUR TOGETHER
+       ===================================================== */
+
+    async function startMotionPage() {
+
+      await Promise.all(
+        videos.map(
+          waitForVideo
+        )
+      );
+
+
+      /*
+        Bring all four back to their first frame so one video
+        hasn't been secretly running for several seconds while
+        another was still buffering.
+      */
+
+      videos.forEach(
+        video => {
+
+          try {
+
+            video.currentTime =
+              0;
+
+          }
+
+          catch {
+            /* no-op */
+          }
+
+        }
+      );
+
+
+      /*
+        Ask all four to play.
+
+        Because they're muted, this should be accepted by
+        modern desktop and mobile browsers without user input.
+      */
+
+      const playAttempts =
+        videos.map(
+          video => {
+
+            const promise =
+              video.play();
+
+
+            if (
+              promise &&
+              typeof promise.catch ===
+              "function"
+            ) {
+
+              return promise.catch(
+                () => {
+
+                  /*
+                    A second attempt shortly after rendering
+                    catches occasional Safari timing issues.
+                  */
+
+                  window.setTimeout(
+                    () => {
+
+                      video
+                        .play()
+                        .catch(
+                          () => {}
+                        );
+
+                    },
+                    180
+                  );
+
+                }
+              );
+
+            }
+
+
+            return Promise.resolve();
+
+          }
+        );
+
+
+      await Promise.all(
+        playAttempts
+      );
+
+
+      /*
+        Only reveal the work once every video has reached
+        a playable state.
+      */
+
+      loading.classList.add(
+        "is-hidden"
+      );
+
+
+      grid.classList.remove(
+        "is-loading"
+      );
+
+
+      grid.classList.add(
+        "is-ready"
+      );
+
+    }
+
+
+
+    startMotionPage();
+
+  })();
+  </script>
 
 </body>
 
