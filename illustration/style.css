@@ -427,9 +427,9 @@ button {
   z-index: 2;
 
   /*
-    The wrapper is interactive so taps/clicks can trigger its
-    assigned guitar triad. The image itself remains non-
-    interactive so all pointer handling stays on the wrapper.
+    Keep the wrapper pointer-active so desktop hover can gently
+    move the illustration. Pointer events still bubble to the
+    sketchbook viewport for drag / pan / pinch gestures.
   */
 
   pointer-events: auto;
