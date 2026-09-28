@@ -390,7 +390,6 @@
       min,
       max
     ) {
-
       return Math.min(
         Math.max(
           value,
@@ -398,7 +397,6 @@
         ),
         max
       );
-
     }
 
 
@@ -407,7 +405,6 @@
       min,
       max
     ) {
-
       return (
         min +
         Math.random() *
@@ -416,7 +413,6 @@
           min
         )
       );
-
     }
 
 
@@ -424,7 +420,6 @@
     function shuffle(
       array
     ) {
-
       const copy =
         [...array];
 
@@ -435,13 +430,11 @@
         i > 0;
         i--
       ) {
-
         const j =
           Math.floor(
             Math.random() *
             (i + 1)
           );
-
 
         [
           copy[i],
@@ -450,12 +443,10 @@
           copy[j],
           copy[i]
         ];
-
       }
 
 
       return copy;
-
     }
 
 
@@ -463,7 +454,6 @@
     function categoryFromFilename(
       filename
     ) {
-
       let category =
         filename
           .split("-")[0]
@@ -473,15 +463,12 @@
       if (
         category === "animals"
       ) {
-
         category =
           "animal";
-
       }
 
 
       return category;
-
     }
 
 
@@ -491,14 +478,12 @@
       b,
       gap = 0
     ) {
-
       return !(
         a.right + gap <= b.left ||
         a.left >= b.right + gap ||
         a.bottom + gap <= b.top ||
         a.top >= b.bottom + gap
       );
-
     }
 
 
@@ -506,11 +491,9 @@
     function getBounds(
       boxes
     ) {
-
       if (
         !boxes.length
       ) {
-
         return {
           left: 0,
           top: 0,
@@ -519,7 +502,6 @@
           width: 0,
           height: 0
         };
-
       }
 
 
@@ -560,22 +542,17 @@
 
 
       return {
-
         left,
         top,
         right,
         bottom,
-
         width:
           right -
           left,
-
         height:
           bottom -
           top
-
       };
-
     }
 
 
@@ -587,7 +564,6 @@
     function analyzeVisibleBounds(
       image
     ) {
-
       const SAMPLE_LIMIT =
         120;
 
@@ -650,14 +626,12 @@
       if (
         !context
       ) {
-
         return {
           left: 0,
           top: 0,
           right: 1,
           bottom: 1
         };
-
       }
 
 
@@ -674,7 +648,6 @@
 
 
       try {
-
         pixels =
           context.getImageData(
             0,
@@ -682,18 +655,15 @@
             width,
             height
           ).data;
-
       }
 
       catch {
-
         return {
           left: 0,
           top: 0,
           right: 1,
           bottom: 1
         };
-
       }
 
 
@@ -727,13 +697,11 @@
         y < height;
         y++
       ) {
-
         for (
           let x = 0;
           x < width;
           x++
         ) {
-
           const index =
             (
               y *
@@ -806,9 +774,7 @@
               maxY,
               y
             );
-
         }
-
       }
 
 
@@ -819,14 +785,12 @@
         maxY <
         minY
       ) {
-
         return {
           left: 0,
           top: 0,
           right: 1,
           bottom: 1
         };
-
       }
 
 
@@ -869,33 +833,23 @@
 
 
       return {
-
         left:
           minX /
           width,
-
         top:
           minY /
           height,
-
         right:
           (
             maxX +
             1
-          )
-          /
-          width,
-
+          ) / width,
         bottom:
           (
             maxY +
             1
-          )
-          /
-          height
-
+          ) / height
       };
-
     }
 
 
@@ -907,10 +861,8 @@
     function loadImageData(
       filename
     ) {
-
       return new Promise(
         resolve => {
-
           const image =
             new Image();
 
@@ -925,49 +877,34 @@
 
           image.onload =
             () => {
-
               resolve({
-
                 filename,
-
                 category:
                   categoryFromFilename(
                     filename
                   ),
-
                 width:
                   image.naturalWidth,
-
                 height:
                   image.naturalHeight,
-
                 visibleBounds:
                   analyzeVisibleBounds(
                     image
                   )
-
               });
-
             };
 
 
           image.onerror =
             () => {
-
               console.warn(
                 `Could not load ${filename}`
               );
 
-
-              resolve(
-                null
-              );
-
+              resolve(null);
             };
-
         }
       );
-
     }
 
 
@@ -982,7 +919,6 @@
       item,
       referenceLinear
     ) {
-
       const mobile =
         window.matchMedia(
           "(max-width: 700px)"
@@ -1034,10 +970,8 @@
         item.width >=
         item.height
       ) {
-
         width =
           longest;
-
 
         height =
           longest *
@@ -1045,14 +979,11 @@
             item.height /
             item.width
           );
-
       }
 
       else {
-
         height =
           longest;
-
 
         width =
           longest *
@@ -1060,7 +991,6 @@
             item.width /
             item.height
           );
-
       }
 
 
@@ -1068,7 +998,6 @@
         width,
         height
       };
-
     }
 
 
@@ -1081,7 +1010,6 @@
       item,
       referenceLinear
     ) {
-
       const size =
         calculateDisplaySize(
           item,
@@ -1091,8 +1019,8 @@
 
       const rotation =
         randomBetween(
-          -4,
-          4
+          -5,
+          5
         );
 
 
@@ -1101,49 +1029,37 @@
 
 
       return {
-
         ...item,
-
         displayWidth:
           size.width,
-
         displayHeight:
           size.height,
-
         rotation,
-
         visibleLeft:
           visible.left *
           size.width,
-
         visibleTop:
           visible.top *
           size.height,
-
         visibleWidth:
           Math.max(
             4,
             (
               visible.right -
               visible.left
-            )
-            *
+            ) *
             size.width
           ),
-
         visibleHeight:
           Math.max(
             4,
             (
               visible.bottom -
               visible.top
-            )
-            *
+            ) *
             size.height
           )
-
       };
-
     }
 
 
@@ -1157,37 +1073,30 @@
       x,
       y
     ) {
-
       const safety =
         2.5;
 
 
       return {
-
         left:
           x +
           item.visibleLeft -
           safety,
-
         top:
           y +
           item.visibleTop -
           safety,
-
         right:
           x +
           item.visibleLeft +
           item.visibleWidth +
           safety,
-
         bottom:
           y +
           item.visibleTop +
           item.visibleHeight +
           safety
-
       };
-
     }
 
 
@@ -1201,7 +1110,6 @@
       target,
       count
     ) {
-
       const GAP =
         3;
 
@@ -1228,18 +1136,14 @@
         (
           ownBox.left +
           ownBox.right
-        )
-        /
-        2;
+        ) / 2;
 
 
       const ownCenterOffsetY =
         (
           ownBox.top +
           ownBox.bottom
-        )
-        /
-        2;
+        ) / 2;
 
 
       const targetWidth =
@@ -1256,37 +1160,25 @@
         (
           target.collision.left +
           target.collision.right
-        )
-        /
-        2;
+        ) / 2;
 
 
       const targetCenterY =
         (
           target.collision.top +
           target.collision.bottom
-        )
-        /
-        2;
+        ) / 2;
 
 
       const combinedWidth =
-        targetWidth /
-        2
-        +
-        ownWidth /
-        2
-        +
+        targetWidth / 2 +
+        ownWidth / 2 +
         GAP;
 
 
       const combinedHeight =
-        targetHeight /
-        2
-        +
-        ownHeight /
-        2
-        +
+        targetHeight / 2 +
+        ownHeight / 2 +
         GAP;
 
 
@@ -1299,33 +1191,25 @@
         i < count;
         i++
       ) {
-
         const angle =
           randomBetween(
             0,
-            Math.PI *
-            2
+            Math.PI * 2
           );
 
 
         const cosine =
-          Math.cos(
-            angle
-          );
+          Math.cos(angle);
 
 
         const sine =
-          Math.sin(
-            angle
-          );
+          Math.sin(angle);
 
 
         const radiusX =
           combinedWidth /
           Math.max(
-            Math.abs(
-              cosine
-            ),
+            Math.abs(cosine),
             .0001
           );
 
@@ -1333,9 +1217,7 @@
         const radiusY =
           combinedHeight /
           Math.max(
-            Math.abs(
-              sine
-            ),
+            Math.abs(sine),
             .0001
           );
 
@@ -1360,22 +1242,17 @@
 
 
         candidates.push({
-
           x:
             centerX -
             ownCenterOffsetX,
-
           y:
             centerY -
             ownCenterOffsetY
-
         });
-
       }
 
 
       return candidates;
-
     }
 
 
@@ -1387,7 +1264,6 @@
     function packDrawings(
       drawings
     ) {
-
       const COLLISION_GAP =
         1;
 
@@ -1403,8 +1279,7 @@
               (
                 b.visibleWidth *
                 b.visibleHeight
-              )
-              -
+              ) -
               (
                 a.visibleWidth *
                 a.visibleHeight
@@ -1424,44 +1299,35 @@
         ) => {
 
           if (
-            index ===
-            0
+            index === 0
           ) {
-
             const x =
               0;
-
 
             const y =
               0;
 
 
             placed.push({
-
               ...item,
-
               x,
               y,
-
               collision:
                 collisionBoxAt(
                   item,
                   x,
                   y
                 )
-
             });
 
 
             return;
-
           }
 
 
 
           let winner =
             null;
-
 
           let winnerScore =
             Infinity;
@@ -1489,10 +1355,8 @@
 
 
           const targets = [
-
             ...related,
             ...others
-
           ];
 
 
@@ -1513,7 +1377,6 @@
                     ? 72
                     : 28
                 );
-
 
 
               candidates.forEach(
@@ -1546,14 +1409,11 @@
 
 
                   const boxes = [
-
                     ...placed.map(
                       other =>
                         other.collision
                     ),
-
                     collision
-
                   ];
 
 
@@ -1624,15 +1484,12 @@
                   const imbalancePenalty =
                     imbalance >
                     1.20
-
                       ? area *
                         (
                           imbalance -
                           1.20
-                        )
-                        *
+                        ) *
                         4
-
                       : 0;
 
 
@@ -1640,36 +1497,28 @@
                     (
                       bounds.left +
                       bounds.right
-                    )
-                    /
-                    2;
+                    ) / 2;
 
 
                   const massCenterY =
                     (
                       bounds.top +
                       bounds.bottom
-                    )
-                    /
-                    2;
+                    ) / 2;
 
 
                   const candidateX =
                     (
                       collision.left +
                       collision.right
-                    )
-                    /
-                    2;
+                    ) / 2;
 
 
                   const candidateY =
                     (
                       collision.top +
                       collision.bottom
-                    )
-                    /
-                    2;
+                    ) / 2;
 
 
                   const centerPenalty =
@@ -1678,8 +1527,7 @@
                       massCenterX,
                       candidateY -
                       massCenterY
-                    )
-                    *
+                    ) *
                     20;
 
 
@@ -1690,7 +1538,6 @@
                   if (
                     related.length
                   ) {
-
                     let nearest =
                       Infinity;
 
@@ -1702,31 +1549,24 @@
                           (
                             relative.collision.left +
                             relative.collision.right
-                          )
-                          /
-                          2;
+                          ) / 2;
 
 
                         const y =
                           (
                             relative.collision.top +
                             relative.collision.bottom
-                          )
-                          /
-                          2;
+                          ) / 2;
 
 
                         nearest =
                           Math.min(
                             nearest,
                             Math.hypot(
-                              candidateX -
-                              x,
-                              candidateY -
-                              y
+                              candidateX - x,
+                              candidateY - y
                             )
                           );
-
                       }
                     );
 
@@ -1734,7 +1574,6 @@
                     categoryPenalty =
                       nearest *
                       38;
-
                   }
 
 
@@ -1745,18 +1584,12 @@
 
 
                   const score =
-                    area
-                    +
-                    squarePenalty
-                    +
-                    imbalancePenalty
-                    +
-                    centerPenalty
-                    +
-                    categoryPenalty
-                    +
-                    categoryReward
-                    +
+                    area +
+                    squarePenalty +
+                    imbalancePenalty +
+                    centerPenalty +
+                    categoryPenalty +
+                    categoryReward +
                     Math.random() *
                     900;
 
@@ -1765,41 +1598,27 @@
                     score <
                     winnerScore
                   ) {
-
                     winnerScore =
                       score;
 
-
                     winner = {
-
                       x:
                         candidate.x,
-
                       y:
                         candidate.y,
-
                       collision
-
                     };
-
                   }
-
                 }
               );
-
             }
           );
 
 
 
-          /* =================================================
-             SMART FALLBACK
-             ================================================= */
-
           if (
             !winner
           ) {
-
             const bounds =
               getBounds(
                 placed.map(
@@ -1831,36 +1650,28 @@
               (
                 ownBox.left +
                 ownBox.right
-              )
-              /
-              2;
+              ) / 2;
 
 
             const ownOffsetY =
               (
                 ownBox.top +
                 ownBox.bottom
-              )
-              /
-              2;
+              ) / 2;
 
 
             const centerX =
               (
                 bounds.left +
                 bounds.right
-              )
-              /
-              2;
+              ) / 2;
 
 
             const centerY =
               (
                 bounds.top +
                 bounds.bottom
-              )
-              /
-              2;
+              ) / 2;
 
 
             const GAP =
@@ -1874,107 +1685,77 @@
               bounds.height >
               bounds.width
             ) {
-
               fallbackPoints = [
-
                 {
                   x:
                     bounds.right +
                     GAP +
-                    ownWidth /
-                    2,
-
+                    ownWidth / 2,
                   y:
                     centerY
                 },
-
                 {
                   x:
                     bounds.left -
                     GAP -
-                    ownWidth /
-                    2,
-
+                    ownWidth / 2,
                   y:
                     centerY
                 },
-
                 {
                   x:
                     centerX,
-
                   y:
                     bounds.bottom +
                     GAP +
-                    ownHeight /
-                    2
+                    ownHeight / 2
                 },
-
                 {
                   x:
                     centerX,
-
                   y:
                     bounds.top -
                     GAP -
-                    ownHeight /
-                    2
+                    ownHeight / 2
                 }
-
               ];
-
             }
 
             else {
-
               fallbackPoints = [
-
                 {
                   x:
                     centerX,
-
                   y:
                     bounds.bottom +
                     GAP +
-                    ownHeight /
-                    2
+                    ownHeight / 2
                 },
-
                 {
                   x:
                     centerX,
-
                   y:
                     bounds.top -
                     GAP -
-                    ownHeight /
-                    2
+                    ownHeight / 2
                 },
-
                 {
                   x:
                     bounds.right +
                     GAP +
-                    ownWidth /
-                    2,
-
+                    ownWidth / 2,
                   y:
                     centerY
                 },
-
                 {
                   x:
                     bounds.left -
                     GAP -
-                    ownWidth /
-                    2,
-
+                    ownWidth / 2,
                   y:
                     centerY
                 }
-
               ];
-
             }
 
 
@@ -1982,7 +1763,6 @@
               const point of
               fallbackPoints
             ) {
-
               const x =
                 point.x -
                 ownOffsetX;
@@ -2015,20 +1795,15 @@
               if (
                 !overlaps
               ) {
-
                 winner = {
                   x,
                   y,
                   collision
                 };
 
-
                 break;
-
               }
-
             }
-
           }
 
 
@@ -2036,7 +1811,6 @@
           if (
             !winner
           ) {
-
             const bounds =
               getBounds(
                 placed.map(
@@ -2050,44 +1824,33 @@
               bounds.right +
               20;
 
-
             const y =
               bounds.bottom +
               20;
 
 
             winner = {
-
               x,
               y,
-
               collision:
                 collisionBoxAt(
                   item,
                   x,
                   y
                 )
-
             };
-
           }
 
 
           placed.push({
-
             ...item,
-
             x:
               winner.x,
-
             y:
               winner.y,
-
             collision:
               winner.collision
-
           });
-
         }
       );
 
@@ -2102,7 +1865,6 @@
         pass < 260;
         pass++
       ) {
-
         const bounds =
           getBounds(
             placed.map(
@@ -2116,41 +1878,32 @@
           (
             bounds.left +
             bounds.right
-          )
-          /
-          2;
+          ) / 2;
 
 
         const centerY =
           (
             bounds.top +
             bounds.bottom
-          )
-          /
-          2;
+          ) / 2;
 
 
         shuffle(
           placed
         ).forEach(
           item => {
-
             const itemX =
               (
                 item.collision.left +
                 item.collision.right
-              )
-              /
-              2;
+              ) / 2;
 
 
             const itemY =
               (
                 item.collision.top +
                 item.collision.bottom
-              )
-              /
-              2;
+              ) / 2;
 
 
             const dx =
@@ -2186,38 +1939,22 @@
 
 
             const angles = [
-
               baseAngle,
-
-              baseAngle +
-              .14,
-
-              baseAngle -
-              .14,
-
-              baseAngle +
-              .3,
-
-              baseAngle -
-              .3,
-
-              baseAngle +
-              .55,
-
-              baseAngle -
-              .55
-
+              baseAngle + .14,
+              baseAngle - .14,
+              baseAngle + .3,
+              baseAngle - .3,
+              baseAngle + .55,
+              baseAngle - .55
             ];
 
 
             const steps = [
-
               9,
               6,
               3,
               1.5,
               .75
-
             ];
 
 
@@ -2229,7 +1966,6 @@
               const step of
               steps
             ) {
-
               if (
                 moved
               ) {
@@ -2239,24 +1975,17 @@
 
               for (
                 const angle of
-                  angles
+                angles
               ) {
-
                 const nextX =
                   item.x +
-                  Math.cos(
-                    angle
-                  )
-                  *
+                  Math.cos(angle) *
                   step;
 
 
                 const nextY =
                   item.y +
-                  Math.sin(
-                    angle
-                  )
-                  *
+                  Math.sin(angle) *
                   step;
 
 
@@ -2271,21 +2000,17 @@
                 const overlaps =
                   placed.some(
                     other => {
-
                       if (
-                        other ===
-                        item
+                        other === item
                       ) {
                         return false;
                       }
-
 
                       return boxesOverlap(
                         nextCollision,
                         other.collision,
                         .1
                       );
-
                     }
                   );
 
@@ -2293,34 +2018,24 @@
                 if (
                   !overlaps
                 ) {
-
                   item.x =
                     nextX;
-
 
                   item.y =
                     nextY;
 
-
                   item.collision =
                     nextCollision;
-
 
                   moved =
                     true;
 
-
                   break;
-
                 }
-
               }
-
             }
-
           }
         );
-
       }
 
 
@@ -2359,31 +2074,25 @@
 
       const paperSize =
         squareContentSize +
-        CONTENT_PADDING *
-        2;
+        CONTENT_PADDING * 2;
 
 
       const extraX =
         (
           squareContentSize -
           contentWidth
-        )
-        /
-        2;
+        ) / 2;
 
 
       const extraY =
         (
           squareContentSize -
           contentHeight
-        )
-        /
-        2;
+        ) / 2;
 
 
       placed.forEach(
         item => {
-
           item.x =
             item.x -
             finalBounds.left +
@@ -2396,24 +2105,18 @@
             finalBounds.top +
             CONTENT_PADDING +
             extraY;
-
         }
       );
 
 
       return {
-
         width:
           paperSize,
-
         height:
           paperSize,
-
         items:
           placed
-
       };
-
     }
 
 
@@ -2425,7 +2128,6 @@
     function createDrawingElement(
       item
     ) {
-
       const wrapper =
         document.createElement(
           "div"
@@ -2492,7 +2194,6 @@
 
 
       return wrapper;
-
     }
 
 
@@ -2504,10 +2205,8 @@
     let paperWidth =
       1;
 
-
     let paperHeight =
       1;
-
 
     let buildGeneration =
       0;
@@ -2515,7 +2214,6 @@
 
 
     async function buildSketchbook() {
-
       const generation =
         ++buildGeneration;
 
@@ -2531,8 +2229,7 @@
               loadImageData
             )
           )
-        )
-        .filter(Boolean);
+        ).filter(Boolean);
 
 
       if (
@@ -2561,8 +2258,7 @@
           )
           .sort(
             (a, b) =>
-              a -
-              b
+              a - b
           );
 
 
@@ -2574,25 +2270,18 @@
 
 
       const referenceLinear =
-        linearSizes.length %
-        2
-
+        linearSizes.length % 2
           ? linearSizes[
               midpoint
             ]
-
           : (
               linearSizes[
-                midpoint -
-                1
-              ]
-              +
+                midpoint - 1
+              ] +
               linearSizes[
                 midpoint
               ]
-            )
-            /
-            2;
+            ) / 2;
 
 
       const prepared =
@@ -2622,14 +2311,12 @@
       paperWidth =
         layout.width;
 
-
       paperHeight =
         layout.height;
 
 
       paper.style.width =
         `${paperWidth}px`;
-
 
       paper.style.height =
         `${paperHeight}px`;
@@ -2641,13 +2328,11 @@
 
       layout.items.forEach(
         item => {
-
           fragment.appendChild(
             createDrawingElement(
               item
             )
           );
-
         }
       );
 
@@ -2658,7 +2343,6 @@
 
 
       setInitialView();
-
     }
 
 
@@ -2668,48 +2352,22 @@
        ===================================================== */
 
     const view = {
-
-      x:
-        0,
-
-      y:
-        0,
-
-      zoom:
-        1,
-
-      minZoom:
-        .1,
-
-      maxZoom:
-        4,
-
-      dragging:
-        false,
-
-      startX:
-        0,
-
-      startY:
-        0,
-
-      originX:
-        0,
-
-      originY:
-        0
-
+      x: 0,
+      y: 0,
+      zoom: 1,
+      minZoom: .1,
+      maxZoom: 4,
+      dragging: false,
+      startX: 0,
+      startY: 0,
+      originX: 0,
+      originY: 0
     };
 
 
 
     /* =====================================================
        PAN CONSTRAINTS
-
-       Paper remains larger than viewport.
-
-       The user can drag until the actual paper edge reaches
-       the viewport edge, but never farther.
        ===================================================== */
 
     function constrainPan(
@@ -2717,7 +2375,6 @@
       y,
       zoom
     ) {
-
       const scaledWidth =
         paperWidth *
         zoom;
@@ -2736,91 +2393,70 @@
         viewport.clientHeight;
 
 
-
       let minX;
       let maxX;
       let minY;
       let maxY;
 
 
-
       if (
         scaledWidth <=
         viewportWidth
       ) {
-
         minX =
           maxX =
           (
             viewportWidth -
             scaledWidth
-          )
-          /
-          2;
-
+          ) / 2;
       }
 
       else {
-
         minX =
           viewportWidth -
           scaledWidth;
 
-
         maxX =
           0;
-
       }
-
 
 
       if (
         scaledHeight <=
         viewportHeight
       ) {
-
         minY =
           maxY =
           (
             viewportHeight -
             scaledHeight
-          )
-          /
-          2;
-
+          ) / 2;
       }
 
       else {
-
         minY =
           viewportHeight -
           scaledHeight;
 
-
         maxY =
           0;
-
       }
 
 
       return {
-
         x:
           clamp(
             x,
             minX,
             maxX
           ),
-
         y:
           clamp(
             y,
             minY,
             maxY
           )
-
       };
-
     }
 
 
@@ -2830,32 +2466,24 @@
        ===================================================== */
 
     function updateZoomButtons() {
-
       const epsilon =
         .0005;
 
 
       zoomOutButton.classList.toggle(
-
         "is-hidden",
-
         view.zoom <=
         view.minZoom +
         epsilon
-
       );
 
 
       zoomInButton.classList.toggle(
-
         "is-hidden",
-
         view.zoom >=
         view.maxZoom -
         epsilon
-
       );
-
     }
 
 
@@ -2865,13 +2493,10 @@
        ===================================================== */
 
     function applyView() {
-
       paper.style.transform =
         `translate3d(${view.x}px, ${view.y}px, 0) scale(${view.zoom})`;
 
-
       updateZoomButtons();
-
     }
 
 
@@ -2885,7 +2510,6 @@
       y,
       zoom
     ) {
-
       view.zoom =
         clamp(
           zoom,
@@ -2905,35 +2529,26 @@
       view.x =
         constrained.x;
 
-
       view.y =
         constrained.y;
 
 
       applyView();
-
     }
 
 
 
     /* =====================================================
        INITIAL VIEW
-
-       Minimum zoom still leaves the square paper larger
-       than the fixed viewing window.
-
-       You must pan to reveal the actual paper edges.
        ===================================================== */
 
     function setInitialView() {
-
       const viewportWidth =
         viewport.clientWidth;
 
 
       const viewportHeight =
         viewport.clientHeight;
-
 
 
       const coverWidth =
@@ -2946,12 +2561,6 @@
         paperHeight;
 
 
-
-      /*
-        Math.max = paper covers viewport
-        rather than fitting inside it.
-      */
-
       const coverZoom =
         Math.max(
           coverWidth,
@@ -2959,16 +2568,9 @@
         );
 
 
-
-      /*
-        Minimum zoom still keeps the paper 25% larger
-        than the viewport.
-      */
-
       view.minZoom =
         coverZoom *
         1.25;
-
 
 
       view.maxZoom =
@@ -2979,18 +2581,12 @@
         );
 
 
-
-      /*
-        Start noticeably closer than minimum.
-      */
-
       const initialZoom =
         Math.min(
           view.minZoom *
           1.38,
           view.maxZoom
         );
-
 
 
       const scaledWidth =
@@ -3003,24 +2599,18 @@
         initialZoom;
 
 
-
       const initialX =
         (
           viewportWidth -
           scaledWidth
-        )
-        /
-        2;
+        ) / 2;
 
 
       const initialY =
         (
           viewportHeight -
           scaledHeight
-        )
-        /
-        2;
-
+        ) / 2;
 
 
       setView(
@@ -3028,7 +2618,6 @@
         initialY,
         initialZoom
       );
-
     }
 
 
@@ -3042,23 +2631,18 @@
       screenY,
       targetZoom
     ) {
-
       const worldX =
         (
           screenX -
           view.x
-        )
-        /
-        view.zoom;
+        ) / view.zoom;
 
 
       const worldY =
         (
           screenY -
           view.y
-        )
-        /
-        view.zoom;
+        ) / view.zoom;
 
 
       const zoom =
@@ -3086,7 +2670,6 @@
         nextY,
         zoom
       );
-
     }
 
 
@@ -3098,20 +2681,11 @@
     function zoomCenter(
       factor
     ) {
-
       zoomAt(
-
-        viewport.clientWidth /
-        2,
-
-        viewport.clientHeight /
-        2,
-
-        view.zoom *
-        factor
-
+        viewport.clientWidth / 2,
+        viewport.clientHeight / 2,
+        view.zoom * factor
       );
-
     }
 
 
@@ -3123,11 +2697,9 @@
     zoomInButton.addEventListener(
       "click",
       () => {
-
         zoomCenter(
           1.22
         );
-
       }
     );
 
@@ -3135,12 +2707,9 @@
     zoomOutButton.addEventListener(
       "click",
       () => {
-
         zoomCenter(
-          1 /
-          1.22
+          1 / 1.22
         );
-
       }
     );
 
@@ -3153,7 +2722,6 @@
     viewport.addEventListener(
       "wheel",
       event => {
-
         event.preventDefault();
 
 
@@ -3184,7 +2752,6 @@
           view.zoom *
           factor
         );
-
       },
       {
         passive:
@@ -3201,7 +2768,6 @@
     viewport.addEventListener(
       "pointerdown",
       event => {
-
         if (
           event.target.closest(
             ".zoom-controls"
@@ -3237,17 +2803,14 @@
 
 
         try {
-
           viewport.setPointerCapture(
             event.pointerId
           );
-
         }
 
         catch {
           /* no-op */
         }
-
       }
     );
 
@@ -3256,7 +2819,6 @@
     viewport.addEventListener(
       "pointermove",
       event => {
-
         if (
           !view.dragging
         ) {
@@ -3277,28 +2839,22 @@
         setView(
           view.originX +
           dx,
-
           view.originY +
           dy,
-
           view.zoom
         );
-
       }
     );
 
 
 
     function finishDrag() {
-
       view.dragging =
         false;
-
 
       viewport.classList.remove(
         "is-dragging"
       );
-
     }
 
 
@@ -3332,18 +2888,15 @@
     window.addEventListener(
       "resize",
       () => {
-
         clearTimeout(
           resizeTimer
         );
-
 
         resizeTimer =
           window.setTimeout(
             buildSketchbook,
             200
           );
-
       }
     );
 
