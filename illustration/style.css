@@ -133,7 +133,8 @@ a {
   width: auto;
   height: 100%;
 
-  object-fit: contain;
+  object-fit:
+    contain;
 
   filter:
     drop-shadow(
@@ -192,7 +193,7 @@ a {
 
 
 /* =========================================================
-   HEADER
+   TITLE
    ========================================================= */
 
 .illustration-header {
@@ -259,29 +260,25 @@ a {
 
   overflow: hidden;
 
+  cursor: grab;
+
+  user-select: none;
+
+  touch-action: none;
+
   background:
     transparent;
-
-  cursor:
-    grab;
-
-  user-select:
-    none;
-
-  touch-action:
-    none;
 }
 
 
 .sketchbook-viewport.is-dragging {
-  cursor:
-    grabbing;
+  cursor: grabbing;
 }
 
 
 
 /* =========================================================
-   PAPER
+   WHITE SKETCHBOOK PAPER
    ========================================================= */
 
 .sketchbook-paper {
@@ -331,7 +328,7 @@ a {
 
 
 /* =========================================================
-   GROUPS
+   CATEGORY CLUSTERS
    ========================================================= */
 
 .drawing-group {
@@ -341,7 +338,7 @@ a {
 
 
 /* =========================================================
-   COLLISION BOX
+   DRAWINGS
    ========================================================= */
 
 .drawing {
@@ -352,11 +349,6 @@ a {
 }
 
 
-
-/* =========================================================
-   ARTWORK
-   ========================================================= */
-
 .drawing-art {
   position: absolute;
 
@@ -365,15 +357,11 @@ a {
 
   display: block;
 
-  max-width: none;
+  max-width:
+    none;
 
   object-fit:
     contain;
-
-  /*
-    White sketchbook page + multiply means the baked-in
-    white backgrounds disappear visually.
-  */
 
   mix-blend-mode:
     multiply;
@@ -443,9 +431,11 @@ a {
     align-items:
       center;
 
-    width: 100%;
+    width:
+      100%;
 
-    gap: 6px;
+    gap:
+      6px;
 
     padding:
       4px
@@ -467,8 +457,7 @@ a {
 
 
   .scarf-rack::-webkit-scrollbar {
-    display:
-      none;
+    display: none;
   }
 
 
