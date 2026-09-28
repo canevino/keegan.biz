@@ -1,0 +1,742 @@
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+:root {
+  --paper: #ded8c8;
+  --ink: #11110f;
+
+  --yellow: #fdb913;
+  --green: #006a44;
+  --red: #c1272d;
+}
+
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+html {
+  min-height: 100%;
+}
+
+
+body {
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+  background:
+    var(--paper);
+
+  color:
+    var(--ink);
+
+  font-family:
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  text-rendering:
+    optimizeLegibility;
+}
+
+
+img,
+video {
+  display: block;
+}
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page-shell {
+  min-height: 100vh;
+}
+
+
+
+/* =========================================================
+   SCARF NAVIGATION — LARGE DESKTOP
+   ========================================================= */
+
+.scarf-rack {
+  position: fixed;
+
+  top: 14px;
+  right: 12px;
+
+  z-index: 50;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 6px;
+
+  width:
+    min(
+      32vw,
+      430px
+    );
+}
+
+
+.scarf-item {
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+
+  height:
+    clamp(
+      68px,
+      calc((100vh - 82px) / 8),
+      106px
+    );
+
+  transform-origin:
+    right center;
+
+  transition:
+    transform
+    220ms
+    cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
+}
+
+
+.scarf-item img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  object-position:
+    right center;
+
+  filter:
+    drop-shadow(
+      0
+      2px
+      1px
+      rgba(
+        17,
+        17,
+        15,
+        .06
+      )
+    );
+}
+
+
+.scarf-home {
+  transform:
+    scale(1.045);
+}
+
+
+.scarf-item:hover {
+  z-index: 4;
+
+  transform:
+    translateX(-18px)
+    rotate(-.5deg)
+    scale(1.025);
+}
+
+
+.scarf-home:hover {
+  transform:
+    translateX(-18px)
+    rotate(-.5deg)
+    scale(1.06);
+}
+
+
+
+/* =========================================================
+   MOTION PAGE
+   ========================================================= */
+
+.motion-page {
+  min-height: 100vh;
+
+  padding:
+    clamp(30px, 4vw, 56px)
+    clamp(350px, 34vw, 500px)
+    90px
+    clamp(30px, 5vw, 76px);
+}
+
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.motion-header {
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+}
+
+
+.motion-title {
+  display: block;
+
+  width: max-content;
+  max-width: 100%;
+
+  margin: 0;
+
+  color:
+    var(--yellow);
+
+  font-size:
+    clamp(
+      34px,
+      4vw,
+      62px
+    );
+
+  font-weight: 700;
+
+  line-height: .95;
+
+  letter-spacing: -.06em;
+}
+
+
+
+/* =========================================================
+   VIDEO GRID
+   ========================================================= */
+
+.motion-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(
+        0,
+        1fr
+      )
+    );
+
+  gap:
+    clamp(
+      12px,
+      1.4vw,
+      22px
+    );
+
+  width: 100%;
+
+  margin-top:
+    clamp(
+      26px,
+      3vw,
+      42px
+    );
+}
+
+
+.motion-item {
+  margin: 0;
+
+  width: 100%;
+
+  overflow: hidden;
+
+  background:
+    transparent;
+}
+
+
+.motion-item video {
+  width: 100%;
+
+  height: auto;
+
+  aspect-ratio: 9 / 16;
+
+  object-fit: cover;
+
+  background:
+    #000;
+}
+
+
+
+/* =========================================================
+   MEDIUM / WEIRD DESKTOPS
+   ========================================================= */
+
+@media (
+  min-width: 901px
+)
+and (
+  max-width: 1250px
+) {
+
+  .scarf-rack {
+    width:
+      min(
+        31vw,
+        345px
+      );
+
+    gap: 3px;
+  }
+
+
+  .scarf-item {
+    height:
+      clamp(
+        58px,
+        calc((100vh - 65px) / 8),
+        91px
+      );
+  }
+
+
+  .motion-page {
+    padding:
+      38px
+      clamp(
+        290px,
+        33vw,
+        375px
+      )
+      72px
+      clamp(
+        28px,
+        4vw,
+        54px
+      );
+  }
+
+
+  .motion-title {
+    font-size:
+      clamp(
+        38px,
+        4.3vw,
+        54px
+      );
+  }
+
+}
+
+
+
+/* =========================================================
+   NARROW DESKTOP / TABLET
+   ========================================================= */
+
+@media (
+  min-width: 701px
+)
+and (
+  max-width: 900px
+) {
+
+  .scarf-rack {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    z-index: 20;
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding:
+      16px
+      22px
+      0;
+  }
+
+
+  .scarf-item {
+    width: 100%;
+    height: auto;
+
+    transform: none;
+  }
+
+
+  .scarf-item img {
+    width: 100%;
+    height: auto;
+
+    object-fit: contain;
+
+    object-position: center;
+  }
+
+
+  .scarf-home {
+    transform: none;
+  }
+
+
+  .scarf-item:hover,
+  .scarf-home:hover {
+    transform:
+      translateY(-2px);
+  }
+
+
+  .motion-page {
+    min-height: auto;
+
+    padding:
+      30px
+      28px
+      72px;
+  }
+
+
+  .motion-title {
+    font-size:
+      clamp(
+        40px,
+        7vw,
+        58px
+      );
+  }
+
+}
+
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (
+  max-width: 700px
+) {
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: hidden;
+  }
+
+
+  .page-shell {
+    width: 100%;
+  }
+
+
+  .scarf-rack {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    z-index: 30;
+
+    display: flex;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    width: 100%;
+
+    gap: 8px;
+
+    padding:
+      10px
+      14px
+      5px;
+
+    overflow-x: auto;
+
+    overflow-y: hidden;
+
+    scrollbar-width: none;
+
+    -webkit-overflow-scrolling:
+      touch;
+
+    overscroll-behavior-x:
+      contain;
+  }
+
+
+  .scarf-rack::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .scarf-item,
+  .scarf-home {
+    flex:
+      0
+      0
+      auto;
+
+    width:
+      min(
+        68vw,
+        275px
+      );
+
+    height:
+      auto;
+
+    transform: none;
+  }
+
+
+  .scarf-item img {
+    width: 100%;
+    height: auto;
+
+    object-fit: contain;
+
+    object-position: center;
+  }
+
+
+  .scarf-home {
+    width:
+      min(
+        74vw,
+        300px
+      );
+  }
+
+
+  .scarf-item:hover,
+  .scarf-home:hover {
+    transform: none;
+  }
+
+
+  .motion-page {
+    width: 100%;
+
+    min-height: auto;
+
+    padding:
+      28px
+      14px
+      50px;
+  }
+
+
+  .motion-title {
+    font-size:
+      clamp(
+        42px,
+        13vw,
+        58px
+      );
+
+    line-height: .91;
+  }
+
+
+  /*
+    Keep the 2×2 structure on mobile too.
+    Since these are portrait videos, two across should
+    still read well.
+  */
+
+  .motion-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap:
+      8px;
+
+    margin-top:
+      24px;
+  }
+
+
+  .motion-item video {
+    width: 100%;
+
+    aspect-ratio:
+      9 / 16;
+
+    object-fit:
+      cover;
+  }
+
+}
+
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (
+  max-width: 430px
+) {
+
+  .motion-page {
+    padding-left:
+      12px;
+
+    padding-right:
+      12px;
+  }
+
+
+  .scarf-item,
+  .scarf-home {
+    width:
+      245px;
+  }
+
+
+  .scarf-home {
+    width:
+      270px;
+  }
+
+
+  .motion-grid {
+    gap:
+      6px;
+  }
+
+}
+
+
+
+/* =========================================================
+   VERY SHORT DESKTOPS
+   ========================================================= */
+
+@media (
+  min-width: 901px
+)
+and (
+  max-height: 700px
+) {
+
+  .scarf-rack {
+    gap: 1px;
+  }
+
+
+  .scarf-item {
+    height:
+      calc((100vh - 34px) / 8);
+  }
+
+
+  .motion-page {
+    padding-top:
+      24px;
+
+    padding-bottom:
+      45px;
+  }
+
+
+  .motion-title {
+    font-size:
+      clamp(
+        36px,
+        3.4vw,
+        50px
+      );
+  }
+
+
+  .motion-grid {
+    margin-top:
+      22px;
+  }
+
+}
+
+
+
+/* =========================================================
+   REDUCED MOTION
+
+   Don't stop the artwork itself — these are motion pieces.
+   Only remove interface animation.
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .scarf-item {
+    transition: none;
+  }
+
+}
