@@ -4,9 +4,10 @@
 
 :root {
   --site-paper: #ded8c8;
+
   --paper-base: #ffffff;
-  --paper-warm: rgba(243, 236, 220, 0.34);
-  --paper-warm-deep: rgba(227, 216, 192, 0.18);
+  --paper-warm: rgba(250, 244, 232, 0.26);
+  --paper-warm-deep: rgba(244, 236, 220, 0.18);
 
   --ink: #11110f;
 
@@ -238,12 +239,11 @@ button {
 
   overflow: hidden;
 
-  background: #f2ebdb;
+  background: #f3eddf;
 
   border:
-    1px solid rgba(37, 30, 19, .05);
+    1px solid rgba(37, 30, 19, .035);
 
-  /* hard, fully opaque green shadow */
   box-shadow:
     12px 12px 0 var(--green);
 
@@ -261,12 +261,12 @@ button {
 
 /* =========================================================
    SKETCHBOOK PAPER
-   LAYER ORDER:
-   1. white paper base
+   True stack:
+   1. white base
    2. drawings
-   3. texture overlay
-   4. warm tone overlay
-   5. subtle gutter / shading overlay
+   3. paper texture overlay
+   4. warm cream overlay
+   5. subtle shading overlays
    ========================================================= */
 
 .sketchbook-paper {
@@ -284,7 +284,7 @@ button {
 }
 
 
-/* texture layer ABOVE the drawings */
+/* paper texture ABOVE the drawings */
 
 .sketchbook-paper::before {
   content: "";
@@ -300,12 +300,12 @@ button {
   background-position: center;
   background-repeat: no-repeat;
 
-  opacity: .46;
+  opacity: .30;
   mix-blend-mode: multiply;
 }
 
 
-/* warmth / tone layer ABOVE the drawings and texture */
+/* warm cream wash ABOVE the drawings */
 
 .sketchbook-paper::after {
   content: "";
@@ -323,7 +323,7 @@ button {
       var(--paper-warm-deep) 100%
     );
 
-  mix-blend-mode: multiply;
+  mix-blend-mode: normal;
 }
 
 
@@ -340,7 +340,7 @@ button {
 }
 
 
-/* subtle sketchbook edge / gutter ABOVE the art */
+/* subtle left-edge sketchbook depth ABOVE the art */
 
 .sketchbook-field::before {
   content: "";
@@ -357,14 +357,14 @@ button {
   background:
     linear-gradient(
       90deg,
-      rgba(52, 40, 24, .050) 0%,
-      rgba(52, 40, 24, .020) 24%,
-      rgba(52, 40, 24, 0) 100%
+      rgba(72, 55, 28, .040) 0%,
+      rgba(72, 55, 28, .014) 24%,
+      rgba(72, 55, 28, 0) 100%
     );
 }
 
 
-/* very light inner vignette / page depth ABOVE everything */
+/* faint overall page depth ABOVE everything */
 
 .sketchbook-field::after {
   content: "";
@@ -376,8 +376,8 @@ button {
   pointer-events: none;
 
   box-shadow:
-    inset 0 0 0 1px rgba(38, 31, 20, .03),
-    inset 0 0 42px rgba(60, 48, 29, .035);
+    inset 0 0 0 1px rgba(40, 31, 18, .022),
+    inset 0 0 22px rgba(88, 72, 44, .022);
 }
 
 
@@ -400,7 +400,6 @@ button {
 
   object-fit: contain;
 
-  /* keep art clean; paper overlays sit above it */
   mix-blend-mode: normal;
   opacity: 1;
 
