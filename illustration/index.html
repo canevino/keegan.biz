@@ -135,7 +135,7 @@
 
 
     <!-- =====================================================
-         ILLUSTRATION PAGE
+         ILLUSTRATION
          ===================================================== -->
 
     <main class="illustration-page">
@@ -168,6 +168,36 @@
               class="sketchbook-field"
               id="sketchbook-field"
             ></div>
+
+          </div>
+
+
+          <!-- ===============================================
+               SIMPLE ZOOM CONTROLS
+               =============================================== -->
+
+          <div
+            class="zoom-controls"
+            aria-label="Zoom controls"
+          >
+
+            <button
+              class="zoom-button"
+              id="zoom-out"
+              type="button"
+              aria-label="Zoom out"
+            >
+              −
+            </button>
+
+            <button
+              class="zoom-button"
+              id="zoom-in"
+              type="button"
+              aria-label="Zoom in"
+            >
+              +
+            </button>
 
           </div>
 
@@ -253,7 +283,6 @@
       "group-01.webp",
       "group-02.webp",
       "group-03.webp",
-      "group-04.webp",
 
       "house-1.webp",
       "house-2.webp",
@@ -324,6 +353,18 @@
     const field =
       document.getElementById(
         "sketchbook-field"
+      );
+
+
+    const zoomInButton =
+      document.getElementById(
+        "zoom-in"
+      );
+
+
+    const zoomOutButton =
+      document.getElementById(
+        "zoom-out"
       );
 
 
@@ -552,7 +593,7 @@
 
 
     /* =====================================================
-       IMAGE LOADING
+       LOAD IMAGES
        ===================================================== */
 
     function loadImageData(
@@ -623,16 +664,10 @@
 
 
     /* =====================================================
-       SOURCE-DIMENSION SCALING
+       SOURCE-DIMENSION SCALE
 
-       THIS IS THE MAIN SIZE SYSTEM.
-
-       A file that is physically larger in pixel dimensions
-       appears larger on the sketchbook.
-
-       sqrt(width × height) gives us a linear-size value.
-
-       We only soften extreme differences slightly.
+       Actual file dimensions are the main determinant
+       of visible scale.
        ===================================================== */
 
     function calculateDisplaySize(
@@ -656,49 +691,31 @@
       const ratio =
         sourceLinear /
         Math.max(
-          1,
-          referenceLinear
+          referenceLinear,
+          1
         );
 
 
-      /*
-        Average-size file lands around here.
-      */
-
-      const baseLongest =
+      const averageLongest =
         mobile
-          ? 86
-          : 112;
+          ? 88
+          : 118;
 
 
       /*
-        Very close to proportional.
-
-        .88 is only enough compression to stop
-        extreme exports getting completely absurd.
+        Strong source-size relationship.
       */
 
       let longest =
-        baseLongest *
+        averageLongest *
         Math.pow(
           ratio,
-          .88
+          .92
         );
 
 
       /*
-        Tiny handmade variation.
-      */
-
-      longest *=
-        randomBetween(
-          .98,
-          1.02
-        );
-
-
-      /*
-        Emergency limits only.
+        Just enough safety for extreme files.
       */
 
       longest =
@@ -708,8 +725,8 @@
             ? 42
             : 52,
           mobile
-            ? 220
-            : 320
+            ? 230
+            : 330
         );
 
 
@@ -778,8 +795,8 @@
 
       const rotation =
         randomBetween(
-          -4.5,
-          4.5
+          -4,
+          4
         );
 
 
@@ -816,10 +833,7 @@
 
 
     /* =====================================================
-       CANDIDATES AROUND AN EXISTING ITEM
-
-       New drawings grow outward around drawings already
-       placed, rather than along rows.
+       RANDOM CANDIDATES AROUND EXISTING OBJECT
        ===================================================== */
 
     function candidatesAround(
@@ -827,24 +841,8 @@
       height,
       target,
       gap,
-      count = 28
+      count
     ) {
-
-      const cx =
-        (
-          target.left +
-          target.right
-        )
-        / 2;
-
-
-      const cy =
-        (
-          target.top +
-          target.bottom
-        )
-        / 2;
-
 
       const targetWidth =
         target.right -
@@ -854,6 +852,22 @@
       const targetHeight =
         target.bottom -
         target.top;
+
+
+      const centerX =
+        (
+          target.left +
+          target.right
+        )
+        / 2;
+
+
+      const centerY =
+        (
+          target.top +
+          target.bottom
+        )
+        / 2;
 
 
       const candidates =
@@ -885,42 +899,26 @@
           gap;
 
 
-        /*
-          Pull candidates slightly inward.
-
-          This produces a tighter pile while collision
-          checking still prevents actual overlap.
-        */
-
-        const compression =
-          randomBetween(
-            .82,
-            .98
-          );
-
-
-        const centerX =
-          cx +
+        const x =
+          centerX +
           Math.cos(angle) *
-          radiusX *
-          compression;
+          radiusX;
 
 
-        const centerY =
-          cy +
+        const y =
+          centerY +
           Math.sin(angle) *
-          radiusY *
-          compression;
+          radiusY;
 
 
         candidates.push({
 
           left:
-            centerX -
+            x -
             width / 2,
 
           top:
-            centerY -
+            y -
             height / 2
 
         });
@@ -935,14 +933,9 @@
 
 
     /* =====================================================
-       PACK A CATEGORY
+       PACK ONE CATEGORY
 
-       Same-name drawings stay together.
-
-       Example:
-       figure-* = one cluster
-       food-* = one cluster
-       etc.
+       Tight irregular 2D cluster.
        ===================================================== */
 
     function packCategory(
@@ -950,7 +943,7 @@
     ) {
 
       const gap =
-        1;
+        2;
 
 
       const ordered =
@@ -959,7 +952,6 @@
         )
         .sort(
           (a, b) =>
-
             (
               b.boxWidth *
               b.boxHeight
@@ -969,7 +961,6 @@
               a.boxWidth *
               a.boxHeight
             )
-
         );
 
 
@@ -1030,7 +1021,7 @@
                   item.boxHeight,
                   target,
                   gap,
-                  34
+                  42
                 );
 
 
@@ -1083,40 +1074,40 @@
                     );
 
 
-                  /*
-                    Prefer tight, approximately round/irregular
-                    category clumps rather than mini rows.
-                  */
-
-                  const aspect =
-                    bounds.width /
-                    Math.max(
-                      1,
-                      bounds.height
-                    );
-
-
                   const area =
                     bounds.width *
                     bounds.height;
 
 
-                  const aspectPenalty =
+                  const aspect =
+                    bounds.width /
+                    Math.max(
+                      bounds.height,
+                      1
+                    );
+
+
+                  /*
+                    Category clusters should spread
+                    in both X and Y — not become rows.
+                  */
+
+                  const shapePenalty =
                     Math.abs(
                       Math.log(
                         aspect /
-                        1.15
+                        1.25
                       )
                     )
                     *
-                    1500;
+                    1700;
 
 
                   const score =
                     area +
-                    aspectPenalty +
+                    shapePenalty +
                     Math.random() *
-                    500;
+                    700;
 
 
                   if (
@@ -1222,22 +1213,96 @@
 
 
     /* =====================================================
-       PACK THE CATEGORY CLUSTERS
+       PLACE CATEGORY CLUSTERS ON A REAL 2D SPREAD
 
-       The result should read like one wide sketchbook spread,
-       not a grid of groups.
+       Instead of building out infinitely from a single
+       cluster, we create a finite rectangular sketchbook
+       and scatter/pack clusters throughout it.
        ===================================================== */
 
-    function packGroups(
+    function placeGroupsInSpread(
       groups
     ) {
 
-      const gap =
-        4;
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
 
+
+      const TOTAL_GROUP_AREA =
+        groups.reduce(
+          (
+            total,
+            group
+          ) =>
+            total +
+            group.width *
+            group.height,
+          0
+        );
+
+
+      /*
+        Roughly landscape sketchbook proportions.
+      */
 
       const targetAspect =
-        3.25;
+        mobile
+          ? 1.9
+          : 2.55;
+
+
+      /*
+        More than the literal occupied area so groups can
+        weave together naturally without becoming one slab.
+      */
+
+      const density =
+        .67;
+
+
+      const targetArea =
+        TOTAL_GROUP_AREA /
+        density;
+
+
+      let spreadWidth =
+        Math.sqrt(
+          targetArea *
+          targetAspect
+        );
+
+
+      let spreadHeight =
+        spreadWidth /
+        targetAspect;
+
+
+      /*
+        Guarantee a reasonable physical field.
+      */
+
+      spreadWidth =
+        Math.max(
+          spreadWidth,
+          mobile
+            ? 1050
+            : 1750
+        );
+
+
+      spreadHeight =
+        Math.max(
+          spreadHeight,
+          mobile
+            ? 620
+            : 760
+        );
+
+
+      const groupGap =
+        7;
 
 
       const ordered =
@@ -1246,7 +1311,6 @@
         )
         .sort(
           (a, b) =>
-
             (
               b.width *
               b.height
@@ -1256,7 +1320,6 @@
               a.width *
               a.height
             )
-
         );
 
 
@@ -1264,221 +1327,269 @@
         [];
 
 
-      ordered.forEach(
-        (
-          group,
-          index
-        ) => {
+      function attemptPlacement(
+        group
+      ) {
+
+        let best =
+          null;
+
+
+        let bestScore =
+          Infinity;
+
+
+        /*
+          Try many positions anywhere in the spread.
+        */
+
+        for (
+          let attempt = 0;
+          attempt < 3500;
+          attempt++
+        ) {
+
+          const left =
+            randomBetween(
+              0,
+              Math.max(
+                0,
+                spreadWidth -
+                group.width
+              )
+            );
+
+
+          const top =
+            randomBetween(
+              0,
+              Math.max(
+                0,
+                spreadHeight -
+                group.height
+              )
+            );
+
+
+          const box = {
+
+            left,
+            top,
+
+            right:
+              left +
+              group.width,
+
+            bottom:
+              top +
+              group.height
+
+          };
+
+
+          const collision =
+            placed.some(
+              other =>
+                boxesOverlap(
+                  box,
+                  other,
+                  groupGap
+                )
+            );
+
 
           if (
-            index === 0
+            collision
+          ) {
+            continue;
+          }
+
+
+          /*
+            Prefer positions near existing material,
+            so we get one spread rather than isolated islands.
+          */
+
+          let nearestDistance =
+            Infinity;
+
+
+          const cx =
+            left +
+            group.width / 2;
+
+
+          const cy =
+            top +
+            group.height / 2;
+
+
+          if (
+            placed.length
           ) {
 
-            placed.push({
+            placed.forEach(
+              other => {
 
-              ...group,
-
-              left:
-                0,
-
-              top:
-                0,
-
-              right:
-                group.width,
-
-              bottom:
-                group.height
-
-            });
+                const otherX =
+                  (
+                    other.left +
+                    other.right
+                  )
+                  / 2;
 
 
-            return;
+                const otherY =
+                  (
+                    other.top +
+                    other.bottom
+                  )
+                  / 2;
+
+
+                const distance =
+                  Math.hypot(
+                    cx -
+                    otherX,
+
+                    cy -
+                    otherY
+                  );
+
+
+                nearestDistance =
+                  Math.min(
+                    nearestDistance,
+                    distance
+                  );
+
+              }
+            );
+
+          }
+
+          else {
+
+            nearestDistance =
+              0;
 
           }
 
 
-          let winner =
-            null;
+          /*
+            Slight preference for central positions,
+            but not enough to make a circle.
+          */
+
+          const centerDistance =
+            Math.hypot(
+
+              cx -
+              spreadWidth / 2,
+
+              cy -
+              spreadHeight / 2
+
+            );
 
 
-          let winnerScore =
-            Infinity;
-
-
-          shuffle(
-            placed
-          ).forEach(
-            target => {
-
-              const candidates =
-                candidatesAround(
-                  group.width,
-                  group.height,
-                  target,
-                  gap,
-                  48
-                );
-
-
-              candidates.forEach(
-                candidate => {
-
-                  const box = {
-
-                    left:
-                      candidate.left,
-
-                    top:
-                      candidate.top,
-
-                    right:
-                      candidate.left +
-                      group.width,
-
-                    bottom:
-                      candidate.top +
-                      group.height
-
-                  };
-
-
-                  const collision =
-                    placed.some(
-                      other =>
-                        boxesOverlap(
-                          box,
-                          other,
-                          gap
-                        )
-                    );
-
-
-                  if (
-                    collision
-                  ) {
-                    return;
-                  }
-
-
-                  const bounds =
-                    getBounds(
-                      [
-                        ...placed,
-                        box
-                      ]
-                    );
-
-
-                  const aspect =
-                    bounds.width /
-                    Math.max(
-                      1,
-                      bounds.height
-                    );
-
-
-                  const area =
-                    bounds.width *
-                    bounds.height;
-
-
-                  /*
-                    Strongly favor a wide page,
-                    but still allow clusters to move
-                    above and below each other.
-                  */
-
-                  const aspectPenalty =
-                    Math.abs(
-                      Math.log(
-                        aspect /
-                        targetAspect
-                      )
-                    )
-                    *
-                    13500;
-
-
-                  /*
-                    Penalize overly flat layouts.
-                  */
-
-                  const desiredHeight =
-                    bounds.width /
-                    3.6;
-
-
-                  const flatPenalty =
-                    bounds.height <
-                    desiredHeight
-
-                      ? (
-                          desiredHeight -
-                          bounds.height
-                        )
-                        *
-                        650
-
-                      : 0;
-
-
-                  const score =
-                    area +
-                    aspectPenalty +
-                    flatPenalty +
-                    Math.random() *
-                    3000;
-
-
-                  if (
-                    score <
-                    winnerScore
-                  ) {
-
-                    winnerScore =
-                      score;
-
-
-                    winner =
-                      box;
-
-                  }
-
-                }
-              );
-
-            }
-          );
+          const score =
+            nearestDistance *
+            .80
+            +
+            centerDistance *
+            .09
+            +
+            Math.random() *
+            40;
 
 
           if (
-            !winner
+            score <
+            bestScore
           ) {
 
-            const bounds =
-              getBounds(
-                placed
+            bestScore =
+              score;
+
+
+            best =
+              box;
+
+          }
+
+        }
+
+
+        return best;
+
+      }
+
+
+
+      ordered.forEach(
+        group => {
+
+          let position =
+            attemptPlacement(
+              group
+            );
+
+
+          /*
+            If the sheet happened to be too tight,
+            expand both dimensions and try again.
+          */
+
+          let expansions =
+            0;
+
+
+          while (
+            !position &&
+            expansions < 8
+          ) {
+
+            spreadWidth *=
+              1.06;
+
+
+            spreadHeight *=
+              1.06;
+
+
+            expansions++;
+
+
+            position =
+              attemptPlacement(
+                group
               );
 
+          }
 
-            winner = {
+
+          if (
+            !position
+          ) {
+
+            position = {
 
               left:
-                bounds.right +
-                gap,
+                spreadWidth / 2 -
+                group.width / 2,
 
               top:
-                bounds.top,
+                spreadHeight / 2 -
+                group.height / 2,
 
               right:
-                bounds.right +
-                gap +
-                group.width,
+                spreadWidth / 2 +
+                group.width / 2,
 
               bottom:
-                bounds.top +
-                group.height
+                spreadHeight / 2 +
+                group.height / 2
 
             };
 
@@ -1488,7 +1599,7 @@
           placed.push({
 
             ...group,
-            ...winner
+            ...position
 
           });
 
@@ -1496,36 +1607,16 @@
       );
 
 
-      const bounds =
-        getBounds(
-          placed
-        );
-
-
       return {
 
         width:
-          bounds.width,
+          spreadWidth,
 
         height:
-          bounds.height,
+          spreadHeight,
 
         groups:
-          placed.map(
-            group => ({
-
-              ...group,
-
-              left:
-                group.left -
-                bounds.left,
-
-              top:
-                group.top -
-                bounds.top
-
-            })
-          )
+          placed
 
       };
 
@@ -1622,7 +1713,7 @@
 
 
     /* =====================================================
-       BUILD SKETCHBOOK
+       BUILD
        ===================================================== */
 
     let paperWidth =
@@ -1659,14 +1750,10 @@
 
 
       /* ---------------------------------------------
-         REFERENCE SOURCE DIMENSION
-
-         Median linear source size.
-
-         Every drawing then scales relative to this.
+         MEDIAN SOURCE SIZE
          --------------------------------------------- */
 
-      const sourceLinearSizes =
+      const linearSizes =
         loaded
           .map(
             item =>
@@ -1683,24 +1770,24 @@
 
       const middle =
         Math.floor(
-          sourceLinearSizes.length /
+          linearSizes.length /
           2
         );
 
 
       const referenceLinear =
-        sourceLinearSizes.length % 2
+        linearSizes.length % 2
 
-          ? sourceLinearSizes[
+          ? linearSizes[
               middle
             ]
 
           : (
-              sourceLinearSizes[
+              linearSizes[
                 middle - 1
               ]
               +
-              sourceLinearSizes[
+              linearSizes[
                 middle
               ]
             )
@@ -1709,7 +1796,7 @@
 
 
       /* ---------------------------------------------
-         PREPARE EACH DRAWING
+         PREPARE
          --------------------------------------------- */
 
       const prepared =
@@ -1724,7 +1811,7 @@
 
 
       /* ---------------------------------------------
-         GROUP BY FILENAME PREFIX
+         GROUP BY NAME
          --------------------------------------------- */
 
       const categories =
@@ -1791,19 +1878,14 @@
 
 
       /* ---------------------------------------------
-         PACK ALL GROUPS
+         CREATE FULL SPREAD
          --------------------------------------------- */
 
       const layout =
-        packGroups(
+        placeGroupsInSpread(
           groups
         );
 
-
-
-      /* ---------------------------------------------
-         PAPER
-         --------------------------------------------- */
 
       const mobile =
         window.matchMedia(
@@ -1813,9 +1895,8 @@
 
       const padding =
         mobile
-          ? 26
-          : 38;
-
+          ? 30
+          : 44;
 
 
       paperWidth =
@@ -1828,35 +1909,6 @@
         padding * 2;
 
 
-
-      /*
-        Keep the final sheet wide.
-
-        If the random pack ended too square,
-        add width as breathing room rather than
-        rearranging everything into rows.
-      */
-
-      const minimumAspect =
-        mobile
-          ? 2.25
-          : 3.0;
-
-
-      if (
-        paperWidth /
-        paperHeight <
-        minimumAspect
-      ) {
-
-        paperWidth =
-          paperHeight *
-          minimumAspect;
-
-      }
-
-
-
       paper.style.width =
         `${paperWidth}px`;
 
@@ -1866,22 +1918,9 @@
 
 
 
-      const offsetX =
-        (
-          paperWidth -
-          layout.width
-        )
-        / 2;
-
-
-      const offsetY =
-        (
-          paperHeight -
-          layout.height
-        )
-        / 2;
-
-
+      /* ---------------------------------------------
+         RENDER GROUPS
+         --------------------------------------------- */
 
       layout.groups.forEach(
         group => {
@@ -1900,38 +1939,17 @@
             group.category;
 
 
-          /*
-            Very small displacement breaks the
-            invisible category-box precision.
-          */
-
-          const nudgeX =
-            randomBetween(
-              -3,
-              3
-            );
-
-
-          const nudgeY =
-            randomBetween(
-              -3,
-              3
-            );
-
-
           groupElement.style.left =
             `${
-              offsetX +
-              group.left +
-              nudgeX
+              padding +
+              group.left
             }px`;
 
 
           groupElement.style.top =
             `${
-              offsetY +
-              group.top +
-              nudgeY
+              padding +
+              group.top
             }px`;
 
 
@@ -1964,14 +1982,14 @@
       );
 
 
-      setInitialView();
+      fitEntireSketchbook();
 
     }
 
 
 
     /* =====================================================
-       PAN + ZOOM
+       VIEW STATE
        ===================================================== */
 
     const view = {
@@ -1985,11 +2003,14 @@
       zoom:
         1,
 
+      fitZoom:
+        1,
+
       minZoom:
-        .35,
+        .1,
 
       maxZoom:
-        3,
+        4,
 
       startX:
         0,
@@ -2010,18 +2031,22 @@
 
 
 
+    /* =====================================================
+       VIEW HELPERS
+       ===================================================== */
+
     function clampPan(
       x,
       y,
       zoom
     ) {
 
-      const scaledWidth =
+      const width =
         paperWidth *
         zoom;
 
 
-      const scaledHeight =
+      const height =
         paperHeight *
         zoom;
 
@@ -2042,7 +2067,7 @@
 
 
       if (
-        scaledWidth <=
+        width <=
         viewportWidth
       ) {
 
@@ -2050,7 +2075,7 @@
           maxX =
           (
             viewportWidth -
-            scaledWidth
+            width
           )
           / 2;
 
@@ -2060,7 +2085,7 @@
 
         minX =
           viewportWidth -
-          scaledWidth;
+          width;
 
         maxX =
           0;
@@ -2070,7 +2095,7 @@
 
 
       if (
-        scaledHeight <=
+        height <=
         viewportHeight
       ) {
 
@@ -2078,7 +2103,7 @@
           maxY =
           (
             viewportHeight -
-            scaledHeight
+            height
           )
           / 2;
 
@@ -2088,7 +2113,7 @@
 
         minY =
           viewportHeight -
-          scaledHeight;
+          height;
 
         maxY =
           0;
@@ -2162,51 +2187,63 @@
 
 
     /* =====================================================
-       INITIAL VIEW
+       FIT ENTIRE SKETCHBOOK
 
-       Paper fills viewport vertically.
-
-       Because paper is much wider, you only see
-       part of the sketchbook and drag left/right.
+       INITIAL STATE:
+       YOU CAN SEE THE WHOLE THING.
        ===================================================== */
 
-    function setInitialView() {
+    function fitEntireSketchbook() {
 
-      const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
+      const viewportWidth =
+        viewport.clientWidth;
 
 
-      let zoom =
+      const viewportHeight =
+        viewport.clientHeight;
+
+
+      const margin =
+        18;
+
+
+      const zoomX =
         (
-          viewport.clientHeight *
-          .94
+          viewportWidth -
+          margin * 2
+        )
+        /
+        paperWidth;
+
+
+      const zoomY =
+        (
+          viewportHeight -
+          margin * 2
         )
         /
         paperHeight;
 
 
-      zoom *=
-        mobile
-          ? 1.06
-          : 1.12;
-
-
-      zoom =
-        clamp(
-          zoom,
-          .48,
-          1.75
+      const zoom =
+        Math.min(
+          zoomX,
+          zoomY
         );
 
+
+      view.fitZoom =
+        zoom;
+
+
+      /*
+        Don't allow wheel/− button to go wildly smaller
+        than the full-sheet view.
+      */
 
       view.minZoom =
-        Math.max(
-          .32,
-          zoom *
-          .58
-        );
+        zoom *
+        .82;
 
 
       const scaledWidth =
@@ -2221,7 +2258,7 @@
 
       const x =
         (
-          viewport.clientWidth -
+          viewportWidth -
           scaledWidth
         )
         / 2;
@@ -2229,7 +2266,7 @@
 
       const y =
         (
-          viewport.clientHeight -
+          viewportHeight -
           scaledHeight
         )
         / 2;
@@ -2246,12 +2283,190 @@
 
 
     /* =====================================================
-       DRAG
+       ZOOM AROUND A SCREEN POINT
+       ===================================================== */
+
+    function zoomAt(
+      screenX,
+      screenY,
+      nextZoom
+    ) {
+
+      const worldX =
+        (
+          screenX -
+          view.x
+        )
+        /
+        view.zoom;
+
+
+      const worldY =
+        (
+          screenY -
+          view.y
+        )
+        /
+        view.zoom;
+
+
+      const zoom =
+        clamp(
+          nextZoom,
+          view.minZoom,
+          view.maxZoom
+        );
+
+
+      const nextX =
+        screenX -
+        worldX *
+        zoom;
+
+
+      const nextY =
+        screenY -
+        worldY *
+        zoom;
+
+
+      setView(
+        nextX,
+        nextY,
+        zoom
+      );
+
+    }
+
+
+
+    /* =====================================================
+       ZOOM BUTTONS
+
+       Zoom around center of viewport.
+       ===================================================== */
+
+    function zoomFromCenter(
+      factor
+    ) {
+
+      const centerX =
+        viewport.clientWidth /
+        2;
+
+
+      const centerY =
+        viewport.clientHeight /
+        2;
+
+
+      zoomAt(
+        centerX,
+        centerY,
+        view.zoom *
+        factor
+      );
+
+    }
+
+
+    zoomInButton.addEventListener(
+      "click",
+      () => {
+
+        zoomFromCenter(
+          1.22
+        );
+
+      }
+    );
+
+
+    zoomOutButton.addEventListener(
+      "click",
+      () => {
+
+        zoomFromCenter(
+          1 / 1.22
+        );
+
+      }
+    );
+
+
+
+    /* =====================================================
+       MOUSE / TRACKPAD ZOOM
+       ===================================================== */
+
+    viewport.addEventListener(
+      "wheel",
+      event => {
+
+        event.preventDefault();
+
+
+        const rect =
+          viewport.getBoundingClientRect();
+
+
+        const x =
+          event.clientX -
+          rect.left;
+
+
+        const y =
+          event.clientY -
+          rect.top;
+
+
+        /*
+          Smaller factor makes trackpad zoom much smoother.
+        */
+
+        const factor =
+          Math.exp(
+            -event.deltaY *
+            .0015
+          );
+
+
+        zoomAt(
+          x,
+          y,
+          view.zoom *
+          factor
+        );
+
+      },
+      {
+        passive:
+          false
+      }
+    );
+
+
+
+    /* =====================================================
+       DRAG / PAN
        ===================================================== */
 
     viewport.addEventListener(
       "pointerdown",
       event => {
+
+        /*
+          Don't initiate drag when clicking zoom buttons.
+        */
+
+        if (
+          event.target.closest(
+            ".zoom-controls"
+          )
+        ) {
+          return;
+        }
+
 
         view.dragging =
           true;
@@ -2343,92 +2558,6 @@
     viewport.addEventListener(
       "pointercancel",
       finishDrag
-    );
-
-
-
-    /* =====================================================
-       WHEEL / TRACKPAD ZOOM
-       ===================================================== */
-
-    viewport.addEventListener(
-      "wheel",
-      event => {
-
-        event.preventDefault();
-
-
-        const rect =
-          viewport.getBoundingClientRect();
-
-
-        const pointerX =
-          event.clientX -
-          rect.left;
-
-
-        const pointerY =
-          event.clientY -
-          rect.top;
-
-
-        const worldX =
-          (
-            pointerX -
-            view.x
-          )
-          /
-          view.zoom;
-
-
-        const worldY =
-          (
-            pointerY -
-            view.y
-          )
-          /
-          view.zoom;
-
-
-        const factor =
-          event.deltaY < 0
-            ? 1.07
-            : 1 / 1.07;
-
-
-        const nextZoom =
-          clamp(
-            view.zoom *
-            factor,
-
-            view.minZoom,
-            view.maxZoom
-          );
-
-
-        const nextX =
-          pointerX -
-          worldX *
-          nextZoom;
-
-
-        const nextY =
-          pointerY -
-          worldY *
-          nextZoom;
-
-
-        setView(
-          nextX,
-          nextY,
-          nextZoom
-        );
-
-      },
-      {
-        passive:
-          false
-      }
     );
 
 
