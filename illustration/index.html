@@ -3,17 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
-
   <title>illustration — keegan.biz</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
@@ -43,7 +39,6 @@
         >
       </a>
 
-
       <a
         class="scarf-item"
         href="./"
@@ -57,7 +52,6 @@
         >
       </a>
 
-
       <a
         class="scarf-item"
         href="../photography/"
@@ -70,7 +64,6 @@
         >
       </a>
 
-
       <a
         class="scarf-item"
         href="#"
@@ -81,7 +74,6 @@
           alt=""
         >
       </a>
-
 
       <a
         class="scarf-item"
@@ -94,7 +86,6 @@
         >
       </a>
 
-
       <a
         class="scarf-item"
         href="#"
@@ -106,7 +97,6 @@
         >
       </a>
 
-
       <a
         class="scarf-item"
         href="#"
@@ -117,7 +107,6 @@
           alt=""
         >
       </a>
-
 
       <a
         class="scarf-item"
@@ -141,19 +130,13 @@
     <main class="illustration-page">
 
       <header class="illustration-header">
-
-        <h1 class="illustration-title">
-          illustration
-        </h1>
-
+        <h1 class="illustration-title">illustration</h1>
       </header>
-
 
       <section
         class="sketchbook-stage"
         aria-label="Illustration sketchbook"
       >
-
         <div
           class="sketchbook-viewport"
           id="sketchbook-viewport"
@@ -163,20 +146,16 @@
             class="sketchbook-paper"
             id="sketchbook-paper"
           >
-
             <div
               class="sketchbook-field"
               id="sketchbook-field"
             ></div>
-
           </div>
-
 
           <div
             class="zoom-controls"
             aria-label="Zoom controls"
           >
-
             <button
               class="zoom-button"
               id="zoom-out"
@@ -194,11 +173,9 @@
             >
               +
             </button>
-
           </div>
 
         </div>
-
       </section>
 
     </main>
@@ -212,12 +189,8 @@
 
     "use strict";
 
-
-
     /* =====================================================
        FILES
-
-       group-04.webp has been removed.
        ===================================================== */
 
     const files = [
@@ -341,34 +314,19 @@
        ===================================================== */
 
     const viewport =
-      document.getElementById(
-        "sketchbook-viewport"
-      );
-
+      document.getElementById("sketchbook-viewport");
 
     const paper =
-      document.getElementById(
-        "sketchbook-paper"
-      );
-
+      document.getElementById("sketchbook-paper");
 
     const field =
-      document.getElementById(
-        "sketchbook-field"
-      );
-
+      document.getElementById("sketchbook-field");
 
     const zoomInButton =
-      document.getElementById(
-        "zoom-in"
-      );
-
+      document.getElementById("zoom-in");
 
     const zoomOutButton =
-      document.getElementById(
-        "zoom-out"
-      );
-
+      document.getElementById("zoom-out");
 
     if (
       !viewport ||
@@ -383,138 +341,54 @@
 
 
     /* =====================================================
-       GENERAL HELPERS
+       HELPERS
        ===================================================== */
 
-    function clamp(
-      value,
-      min,
-      max
-    ) {
-
-      return Math.min(
-        Math.max(
-          value,
-          min
-        ),
-        max
-      );
-
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
     }
 
-
-
-    function randomBetween(
-      min,
-      max
-    ) {
-
-      return (
-        min +
-        Math.random() *
-        (
-          max -
-          min
-        )
-      );
-
+    function randomBetween(min, max) {
+      return min + Math.random() * (max - min);
     }
 
+    function shuffle(array) {
+      const copy = [...array];
 
-
-    function shuffle(
-      array
-    ) {
-
-      const copy =
-        [...array];
-
-
-      for (
-        let i = copy.length - 1;
-        i > 0;
-        i--
-      ) {
-
+      for (let i = copy.length - 1; i > 0; i--) {
         const j =
-          Math.floor(
-            Math.random() *
-            (i + 1)
-          );
+          Math.floor(Math.random() * (i + 1));
 
-
-        [
-          copy[i],
-          copy[j]
-        ] = [
-          copy[j],
-          copy[i]
-        ];
-
+        [copy[i], copy[j]] = [copy[j], copy[i]];
       }
 
-
       return copy;
-
     }
 
-
-
-    function categoryFromFilename(
-      filename
-    ) {
-
+    function categoryFromFilename(filename) {
       let category =
         filename
           .split("-")[0]
           .toLowerCase();
 
-
-      /*
-        Keep animals-06 with animal-*.
-      */
-
-      if (
-        category === "animals"
-      ) {
-
-        category =
-          "animal";
-
+      if (category === "animals") {
+        category = "animal";
       }
 
-
       return category;
-
     }
 
-
-
-    function boxesOverlap(
-      a,
-      b,
-      gap = 0
-    ) {
-
+    function boxesOverlap(a, b, gap = 0) {
       return !(
         a.right + gap <= b.left ||
         a.left >= b.right + gap ||
         a.bottom + gap <= b.top ||
         a.top >= b.bottom + gap
       );
-
     }
 
-
-
-    function getBounds(
-      boxes
-    ) {
-
-      if (
-        !boxes.length
-      ) {
-
+    function getBounds(boxes) {
+      if (!boxes.length) {
         return {
           left: 0,
           top: 0,
@@ -523,79 +397,38 @@
           width: 0,
           height: 0
         };
-
       }
 
-
       const left =
-        Math.min(
-          ...boxes.map(
-            box => box.left
-          )
-        );
-
+        Math.min(...boxes.map(box => box.left));
 
       const top =
-        Math.min(
-          ...boxes.map(
-            box => box.top
-          )
-        );
-
+        Math.min(...boxes.map(box => box.top));
 
       const right =
-        Math.max(
-          ...boxes.map(
-            box => box.right
-          )
-        );
-
+        Math.max(...boxes.map(box => box.right));
 
       const bottom =
-        Math.max(
-          ...boxes.map(
-            box => box.bottom
-          )
-        );
-
+        Math.max(...boxes.map(box => box.bottom));
 
       return {
-
         left,
         top,
         right,
         bottom,
-
-        width:
-          right -
-          left,
-
-        height:
-          bottom -
-          top
-
+        width: right - left,
+        height: bottom - top
       };
-
     }
 
 
 
     /* =====================================================
-       VISIBLE-ART ANALYSIS
-
-       Finds approximate non-white content inside each WebP.
-
-       This lets drawings sit close even when an export
-       contains white margins around the illustration.
+       VISIBLE BOUNDS
        ===================================================== */
 
-    function analyzeVisibleBounds(
-      image
-    ) {
-
-      const SAMPLE_LIMIT =
-        120;
-
+    function analyzeVisibleBounds(image) {
+      const SAMPLE_LIMIT = 120;
 
       const scale =
         Math.min(
@@ -607,64 +440,37 @@
           )
         );
 
-
       const width =
         Math.max(
           1,
-          Math.round(
-            image.naturalWidth *
-            scale
-          )
+          Math.round(image.naturalWidth * scale)
         );
-
 
       const height =
         Math.max(
           1,
-          Math.round(
-            image.naturalHeight *
-            scale
-          )
+          Math.round(image.naturalHeight * scale)
         );
-
 
       const canvas =
-        document.createElement(
-          "canvas"
-        );
+        document.createElement("canvas");
 
-
-      canvas.width =
-        width;
-
-
-      canvas.height =
-        height;
-
+      canvas.width = width;
+      canvas.height = height;
 
       const context =
-        canvas.getContext(
-          "2d",
-          {
-            willReadFrequently:
-              true
-          }
-        );
+        canvas.getContext("2d", {
+          willReadFrequently: true
+        });
 
-
-      if (
-        !context
-      ) {
-
+      if (!context) {
         return {
           left: 0,
           top: 0,
           right: 1,
           bottom: 1
         };
-
       }
-
 
       context.drawImage(
         image,
@@ -674,12 +480,9 @@
         height
       );
 
-
       let pixels;
 
-
       try {
-
         pixels =
           context.getImageData(
             0,
@@ -687,18 +490,13 @@
             width,
             height
           ).data;
-
       }
 
-      catch (
-        error
-      ) {
-
+      catch (error) {
         console.warn(
           "Could not inspect image margins:",
           error
         );
-
 
         return {
           left: 0,
@@ -706,417 +504,165 @@
           right: 1,
           bottom: 1
         };
-
       }
 
+      const WHITE_THRESHOLD = 247;
+      const ALPHA_THRESHOLD = 12;
 
+      let minX = width;
+      let minY = height;
+      let maxX = -1;
+      let maxY = -1;
 
-      const WHITE_THRESHOLD =
-        247;
-
-
-      const ALPHA_THRESHOLD =
-        12;
-
-
-      let minX =
-        width;
-
-
-      let minY =
-        height;
-
-
-      let maxX =
-        -1;
-
-
-      let maxY =
-        -1;
-
-
-
-      for (
-        let y = 0;
-        y < height;
-        y++
-      ) {
-
-        for (
-          let x = 0;
-          x < width;
-          x++
-        ) {
-
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
           const index =
-            (
-              y *
-              width +
-              x
-            )
-            *
-            4;
+            (y * width + x) * 4;
 
+          const red = pixels[index];
+          const green = pixels[index + 1];
+          const blue = pixels[index + 2];
+          const alpha = pixels[index + 3];
 
-          const red =
-            pixels[
-              index
-            ];
-
-
-          const green =
-            pixels[
-              index + 1
-            ];
-
-
-          const blue =
-            pixels[
-              index + 2
-            ];
-
-
-          const alpha =
-            pixels[
-              index + 3
-            ];
-
-
-          if (
-            alpha <=
-            ALPHA_THRESHOLD
-          ) {
+          if (alpha <= ALPHA_THRESHOLD) {
             continue;
           }
-
 
           const nearWhite =
             red >= WHITE_THRESHOLD &&
             green >= WHITE_THRESHOLD &&
             blue >= WHITE_THRESHOLD;
 
-
-          if (
-            nearWhite
-          ) {
+          if (nearWhite) {
             continue;
           }
 
-
-          minX =
-            Math.min(
-              minX,
-              x
-            );
-
-
-          minY =
-            Math.min(
-              minY,
-              y
-            );
-
-
-          maxX =
-            Math.max(
-              maxX,
-              x
-            );
-
-
-          maxY =
-            Math.max(
-              maxY,
-              y
-            );
-
+          minX = Math.min(minX, x);
+          minY = Math.min(minY, y);
+          maxX = Math.max(maxX, x);
+          maxY = Math.max(maxY, y);
         }
-
       }
 
-
-
-      /*
-        If detection finds nothing, don't discard the image.
-      */
-
-      if (
-        maxX < minX ||
-        maxY < minY
-      ) {
-
+      if (maxX < minX || maxY < minY) {
         return {
           left: 0,
           top: 0,
           right: 1,
           bottom: 1
         };
-
       }
 
-
-
-      const margin =
-        2;
-
+      const margin = 2;
 
       minX =
-        Math.max(
-          0,
-          minX -
-          margin
-        );
-
+        Math.max(0, minX - margin);
 
       minY =
-        Math.max(
-          0,
-          minY -
-          margin
-        );
-
+        Math.max(0, minY - margin);
 
       maxX =
-        Math.min(
-          width - 1,
-          maxX +
-          margin
-        );
-
+        Math.min(width - 1, maxX + margin);
 
       maxY =
-        Math.min(
-          height - 1,
-          maxY +
-          margin
-        );
-
+        Math.min(height - 1, maxY + margin);
 
       return {
-
-        left:
-          minX /
-          width,
-
-        top:
-          minY /
-          height,
-
-        right:
-          (
-            maxX + 1
-          )
-          /
-          width,
-
-        bottom:
-          (
-            maxY + 1
-          )
-          /
-          height
-
+        left: minX / width,
+        top: minY / height,
+        right: (maxX + 1) / width,
+        bottom: (maxY + 1) / height
       };
-
     }
 
 
 
     /* =====================================================
-       IMAGE LOADING
-
-       Individual failures do not stop the collection.
+       LOAD IMAGES
        ===================================================== */
 
-    function loadImageData(
-      filename
-    ) {
+    function loadImageData(filename) {
+      return new Promise(resolve => {
+        const image = new Image();
 
-      return new Promise(
-        resolve => {
+        image.src = filename;
+        image.decoding = "async";
 
-          const image =
-            new Image();
+        image.onload = () => {
+          resolve({
+            filename,
+            category:
+              categoryFromFilename(filename),
+            width: image.naturalWidth,
+            height: image.naturalHeight,
+            area:
+              image.naturalWidth *
+              image.naturalHeight,
+            visibleBounds:
+              analyzeVisibleBounds(image)
+          });
+        };
 
-
-          image.src =
-            filename;
-
-
-          image.decoding =
-            "async";
-
-
-          image.onload =
-            () => {
-
-              resolve({
-
-                filename,
-
-                category:
-                  categoryFromFilename(
-                    filename
-                  ),
-
-                width:
-                  image.naturalWidth,
-
-                height:
-                  image.naturalHeight,
-
-                area:
-                  image.naturalWidth *
-                  image.naturalHeight,
-
-                visibleBounds:
-                  analyzeVisibleBounds(
-                    image
-                  )
-
-              });
-
-            };
-
-
-          image.onerror =
-            () => {
-
-              console.warn(
-                `Could not load ${filename}`
-              );
-
-
-              resolve(
-                null
-              );
-
-            };
-
-        }
-      );
-
+        image.onerror = () => {
+          console.warn(`Could not load ${filename}`);
+          resolve(null);
+        };
+      });
     }
 
 
 
     /* =====================================================
-       SOURCE-DIMENSION SIZE SYSTEM
+       SIZE SYSTEM
 
-       Source dimensions are the PRIMARY scale relationship.
-
-       A physically larger export displays larger.
-
-       Only extreme outliers are softened.
+       Larger file = larger displayed drawing.
        ===================================================== */
 
     function calculateDisplaySize(
       item,
       referenceLinear
     ) {
-
       const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
-
+        window.matchMedia("(max-width: 700px)").matches;
 
       const sourceLinear =
-        Math.sqrt(
-          item.width *
-          item.height
-        );
-
+        Math.sqrt(item.width * item.height);
 
       let ratio =
         sourceLinear /
-        Math.max(
-          referenceLinear,
-          1
-        );
-
-
-      /*
-        Preserve meaningful size variation,
-        but prevent catastrophic extremes.
-      */
+        Math.max(referenceLinear, 1);
 
       ratio =
-        clamp(
-          ratio,
-          .42,
-          2.55
-        );
-
+        clamp(ratio, 0.45, 2.55);
 
       const baseLongest =
-        mobile
-          ? 88
-          : 118;
-
+        mobile ? 98 : 138;
 
       let longest =
         baseLongest *
-        Math.pow(
-          ratio,
-          .92
-        );
-
-
-      /*
-        Barely perceptible irregularity.
-      */
+        Math.pow(ratio, 0.94);
 
       longest *=
-        randomBetween(
-          .985,
-          1.015
-        );
-
+        randomBetween(0.99, 1.02);
 
       let width;
       let height;
 
-
-      if (
-        item.width >=
-        item.height
-      ) {
-
-        width =
-          longest;
-
-
+      if (item.width >= item.height) {
+        width = longest;
         height =
           longest *
-          (
-            item.height /
-            item.width
-          );
-
+          (item.height / item.width);
       }
 
       else {
-
-        height =
-          longest;
-
-
+        height = longest;
         width =
           longest *
-          (
-            item.width /
-            item.height
-          );
-
+          (item.width / item.height);
       }
 
-
-      return {
-        width,
-        height
-      };
-
+      return { width, height };
     }
 
 
@@ -1129,133 +675,77 @@
       item,
       referenceLinear
     ) {
-
       const size =
         calculateDisplaySize(
           item,
           referenceLinear
         );
 
-
       const rotation =
-        randomBetween(
-          -4.25,
-          4.25
-        );
-
+        randomBetween(-4, 4);
 
       const visible =
         item.visibleBounds;
 
-
       return {
-
         ...item,
-
-        displayWidth:
-          size.width,
-
-        displayHeight:
-          size.height,
-
+        displayWidth: size.width,
+        displayHeight: size.height,
         rotation,
 
         visibleLeft:
-          visible.left *
-          size.width,
+          visible.left * size.width,
 
         visibleTop:
-          visible.top *
-          size.height,
+          visible.top * size.height,
 
         visibleWidth:
           Math.max(
             4,
-            (
-              visible.right -
-              visible.left
-            )
-            *
+            (visible.right - visible.left) *
             size.width
           ),
 
         visibleHeight:
           Math.max(
             4,
-            (
-              visible.bottom -
-              visible.top
-            )
-            *
+            (visible.bottom - visible.top) *
             size.height
           )
-
       };
-
     }
 
 
 
     /* =====================================================
        COLLISION BOX
-
-       Based on visible drawing, not full export rectangle.
        ===================================================== */
 
-    function collisionBoxAt(
-      item,
-      x,
-      y
-    ) {
-
-      /*
-        Small amount of room for rotation.
-
-        Not enough to create big white gaps.
-      */
-
-      const safety =
-        2.5;
-
+    function collisionBoxAt(item, x, y) {
+      const safety = 2.5;
 
       return {
-
         left:
-          x +
-          item.visibleLeft -
-          safety,
-
+          x + item.visibleLeft - safety,
         top:
-          y +
-          item.visibleTop -
-          safety,
-
+          y + item.visibleTop - safety,
         right:
           x +
           item.visibleLeft +
           item.visibleWidth +
           safety,
-
         bottom:
           y +
           item.visibleTop +
           item.visibleHeight +
           safety
-
       };
-
     }
 
 
 
     /* =====================================================
-       CREATE CANDIDATE POSITIONS
-
-       Every candidate is constructed OUTSIDE an existing
-       drawing with a genuine gap.
-
-       This avoids the bug that previously rejected every
-       candidate after the first image.
+       CREATE CANDIDATES AROUND EXISTING ITEM
        ===================================================== */
 
     function createCandidatesAround(
@@ -1263,254 +753,124 @@
       target,
       count
     ) {
-
-      const GAP =
-        3;
-
+      const GAP = 3;
 
       const ownTest =
-        collisionBoxAt(
-          item,
-          0,
-          0
-        );
-
+        collisionBoxAt(item, 0, 0);
 
       const ownWidth =
-        ownTest.right -
-        ownTest.left;
-
+        ownTest.right - ownTest.left;
 
       const ownHeight =
-        ownTest.bottom -
-        ownTest.top;
-
+        ownTest.bottom - ownTest.top;
 
       const ownOffsetX =
-        (
-          ownTest.left +
-          ownTest.right
-        )
-        /
-        2;
-
+        (ownTest.left + ownTest.right) / 2;
 
       const ownOffsetY =
-        (
-          ownTest.top +
-          ownTest.bottom
-        )
-        /
-        2;
-
-
+        (ownTest.top + ownTest.bottom) / 2;
 
       const targetWidth =
         target.collision.right -
         target.collision.left;
 
-
       const targetHeight =
         target.collision.bottom -
         target.collision.top;
-
 
       const targetCenterX =
         (
           target.collision.left +
           target.collision.right
-        )
-        /
-        2;
-
+        ) / 2;
 
       const targetCenterY =
         (
           target.collision.top +
           target.collision.bottom
-        )
-        /
-        2;
-
-
+        ) / 2;
 
       const halfCombinedWidth =
-        targetWidth /
-        2
-        +
-        ownWidth /
-        2
-        +
+        targetWidth / 2 +
+        ownWidth / 2 +
         GAP;
-
 
       const halfCombinedHeight =
-        targetHeight /
-        2
-        +
-        ownHeight /
-        2
-        +
+        targetHeight / 2 +
+        ownHeight / 2 +
         GAP;
 
+      const candidates = [];
 
-
-      const candidates =
-        [];
-
-
-
-      for (
-        let i = 0;
-        i < count;
-        i++
-      ) {
-
+      for (let i = 0; i < count; i++) {
         const angle =
-          randomBetween(
-            0,
-            Math.PI * 2
-          );
+          randomBetween(0, Math.PI * 2);
 
-
-        const cosine =
-          Math.cos(
-            angle
-          );
-
-
-        const sine =
-          Math.sin(
-            angle
-          );
-
-
-        /*
-          Distance needed to sit outside the target box
-          along this direction.
-        */
+        const cosine = Math.cos(angle);
+        const sine = Math.sin(angle);
 
         const xDistance =
           halfCombinedWidth /
-          Math.max(
-            Math.abs(
-              cosine
-            ),
-            .0001
-          );
-
+          Math.max(Math.abs(cosine), 0.0001);
 
         const yDistance =
           halfCombinedHeight /
-          Math.max(
-            Math.abs(
-              sine
-            ),
-            .0001
-          );
-
+          Math.max(Math.abs(sine), 0.0001);
 
         const radius =
-          Math.min(
-            xDistance,
-            yDistance
-          );
-
+          Math.min(xDistance, yDistance);
 
         const desiredCenterX =
-          targetCenterX +
-          cosine *
-          radius;
-
+          targetCenterX + cosine * radius;
 
         const desiredCenterY =
-          targetCenterY +
-          sine *
-          radius;
-
+          targetCenterY + sine * radius;
 
         candidates.push({
-
           x:
-            desiredCenterX -
-            ownOffsetX,
-
+            desiredCenterX - ownOffsetX,
           y:
-            desiredCenterY -
-            ownOffsetY
-
+            desiredCenterY - ownOffsetY
         });
-
       }
 
-
-
-      /*
-        Guaranteed positions on all four sides.
-      */
-
-      const fixedCenters = [
-
+      [
         {
           x:
             targetCenterX +
             halfCombinedWidth,
-
           y:
             targetCenterY
         },
-
         {
           x:
             targetCenterX -
             halfCombinedWidth,
-
           y:
             targetCenterY
         },
-
         {
           x:
             targetCenterX,
-
           y:
             targetCenterY +
             halfCombinedHeight
         },
-
         {
           x:
             targetCenterX,
-
           y:
             targetCenterY -
             halfCombinedHeight
         }
-
-      ];
-
-
-      fixedCenters.forEach(
-        point => {
-
-          candidates.push({
-
-            x:
-              point.x -
-              ownOffsetX,
-
-            y:
-              point.y -
-              ownOffsetY
-
-          });
-
-        }
-      );
-
+      ].forEach(point => {
+        candidates.push({
+          x: point.x - ownOffsetX,
+          y: point.y - ownOffsetY
+        });
+      });
 
       return candidates;
-
     }
 
 
@@ -1518,1061 +878,530 @@
     /* =====================================================
        PACK DRAWINGS
 
-       IMPORTANT:
-
-       There are no category boxes.
-       There are no predefined rows.
-       There are no category territories.
-
-       Every drawing attaches to the same continuous mass.
-
-       Filename categories only affect which placements
-       receive a scoring preference.
+       Goal:
+       - square / blocky spread
+       - no rows
+       - category proximity, but no category zones
        ===================================================== */
 
-    function packDrawings(
-      drawings
-    ) {
-
-      const TARGET_ASPECT =
-        2.0;
-
-
-      const COLLISION_GAP =
-        1;
-
-
-      /*
-        Largest visible artworks first.
-
-        Smaller pieces can fill the irregular pockets.
-      */
+    function packDrawings(drawings) {
+      const TARGET_ASPECT = 1.08;
+      const COLLISION_GAP = 1;
 
       const ordered =
-        [...drawings]
-          .sort(
-            (a, b) =>
-              (
-                b.visibleWidth *
-                b.visibleHeight
-              )
-              -
-              (
-                a.visibleWidth *
-                a.visibleHeight
-              )
-          );
-
-
-      const placed =
-        [];
-
-
-
-      ordered.forEach(
-        (
-          item,
-          index
-        ) => {
-
-          /* ------------------------------------------------
-             FIRST IMAGE
-             ------------------------------------------------ */
-
-          if (
-            index === 0
-          ) {
-
-            const x =
-              0;
-
-
-            const y =
-              0;
-
-
-            placed.push({
-
-              ...item,
-
-              x,
-              y,
-
-              collision:
-                collisionBoxAt(
-                  item,
-                  x,
-                  y
-                )
-
-            });
-
-
-            return;
-
-          }
-
-
-
-          let winner =
-            null;
-
-
-          let winnerScore =
-            Infinity;
-
-
-
-          /* ------------------------------------------------
-             TARGET ORDER
-
-             Same-name images receive more candidate tests,
-             but ALL drawings can attach to ALL others.
-             ------------------------------------------------ */
-
-          const related =
-            shuffle(
-              placed.filter(
-                other =>
-                  other.category ===
-                  item.category
-              )
-            );
-
-
-          const unrelated =
-            shuffle(
-              placed.filter(
-                other =>
-                  other.category !==
-                  item.category
-              )
-            );
-
-
-          const targets = [
-
-            ...related,
-            ...unrelated
-
-          ];
-
-
-
-          targets.forEach(
-            target => {
-
-              const sameCategory =
-                target.category ===
-                item.category;
-
-
-              const candidates =
-                createCandidatesAround(
-                  item,
-                  target,
-                  sameCategory
-                    ? 64
-                    : 20
-                );
-
-
-
-              candidates.forEach(
-                candidate => {
-
-                  const collision =
-                    collisionBoxAt(
-                      item,
-                      candidate.x,
-                      candidate.y
-                    );
-
-
-                  const overlaps =
-                    placed.some(
-                      other =>
-                        boxesOverlap(
-                          collision,
-                          other.collision,
-                          COLLISION_GAP
-                        )
-                    );
-
-
-                  if (
-                    overlaps
-                  ) {
-                    return;
-                  }
-
-
-
-                  /* ----------------------------------------
-                     OVERALL SHAPE
-                     ---------------------------------------- */
-
-                  const allBoxes = [
-
-                    ...placed.map(
-                      other =>
-                        other.collision
-                    ),
-
-                    collision
-
-                  ];
-
-
-                  const bounds =
-                    getBounds(
-                      allBoxes
-                    );
-
-
-                  const width =
-                    bounds.width;
-
-
-                  const height =
-                    bounds.height;
-
-
-                  const area =
-                    width *
-                    height;
-
-
-                  const aspect =
-                    width /
-                    Math.max(
-                      1,
-                      height
-                    );
-
-
-                  const aspectPenalty =
-                    Math.abs(
-                      Math.log(
-                        aspect /
-                        TARGET_ASPECT
-                      )
-                    )
-                    *
-                    9000;
-
-
-
-                  /*
-                    Strongly discourage becoming a row.
-                  */
-
-                  const desiredMinimumHeight =
-                    width /
-                    2.65;
-
-
-                  const flatPenalty =
-                    height <
-                    desiredMinimumHeight
-
-                      ? (
-                          desiredMinimumHeight -
-                          height
-                        )
-                        *
-                        260
-
-                      : 0;
-
-
-
-                  /* ----------------------------------------
-                     MASS CENTER
-                     ---------------------------------------- */
-
-                  const massCenterX =
-                    (
-                      bounds.left +
-                      bounds.right
-                    )
-                    /
-                    2;
-
-
-                  const massCenterY =
-                    (
-                      bounds.top +
-                      bounds.bottom
-                    )
-                    /
-                    2;
-
-
-                  const candidateCenterX =
-                    (
-                      collision.left +
-                      collision.right
-                    )
-                    /
-                    2;
-
-
-                  const candidateCenterY =
-                    (
-                      collision.top +
-                      collision.bottom
-                    )
-                    /
-                    2;
-
-
-                  const centerPenalty =
-                    Math.hypot(
-
-                      candidateCenterX -
-                      massCenterX,
-
-                      candidateCenterY -
-                      massCenterY
-
-                    )
-                    *
-                    30;
-
-
-
-                  /* ----------------------------------------
-                     CATEGORY PROXIMITY
-                     ---------------------------------------- */
-
-                  let categoryPenalty =
-                    0;
-
-
-                  if (
-                    related.length
-                  ) {
-
-                    let nearest =
-                      Infinity;
-
-
-                    related.forEach(
-                      relative => {
-
-                        const relativeX =
-                          (
-                            relative.collision.left +
-                            relative.collision.right
-                          )
-                          /
-                          2;
-
-
-                        const relativeY =
-                          (
-                            relative.collision.top +
-                            relative.collision.bottom
-                          )
-                          /
-                          2;
-
-
-                        nearest =
-                          Math.min(
-
-                            nearest,
-
-                            Math.hypot(
-
-                              candidateCenterX -
-                              relativeX,
-
-                              candidateCenterY -
-                              relativeY
-
-                            )
-
-                          );
-
-                      }
-                    );
-
-
-                    categoryPenalty =
-                      nearest *
-                      45;
-
-                  }
-
-
-
-                  /*
-                    Reward directly touching a related
-                    drawing, but don't force it.
-                  */
-
-                  const categoryReward =
-                    sameCategory
-                      ? -5000
-                      : 0;
-
-
-
-                  const score =
-                    area
-                    +
-                    aspectPenalty
-                    +
-                    flatPenalty
-                    +
-                    centerPenalty
-                    +
-                    categoryPenalty
-                    +
-                    categoryReward
-                    +
-                    Math.random() *
-                    1800;
-
-
-
-                  if (
-                    score <
-                    winnerScore
-                  ) {
-
-                    winnerScore =
-                      score;
-
-
-                    winner = {
-
-                      x:
-                        candidate.x,
-
-                      y:
-                        candidate.y,
-
-                      collision
-
-                    };
-
-                  }
-
-                }
-              );
-
-            }
-          );
-
-
-
-          /* ------------------------------------------------
-             GUARANTEED FALLBACK
-
-             This ensures NO loaded image gets dropped.
-             ------------------------------------------------ */
-
-          if (
-            !winner
-          ) {
-
-            const bounds =
-              getBounds(
-                placed.map(
-                  other =>
-                    other.collision
-                )
-              );
-
-
-            const testBox =
-              collisionBoxAt(
-                item,
-                0,
-                0
-              );
-
-
-            const ownWidth =
-              testBox.right -
-              testBox.left;
-
-
-            const ownHeight =
-              testBox.bottom -
-              testBox.top;
-
-
-            const ownOffsetX =
-              (
-                testBox.left +
-                testBox.right
-              )
-              /
-              2;
-
-
-            const ownOffsetY =
-              (
-                testBox.top +
-                testBox.bottom
-              )
-              /
-              2;
-
-
-            const centerX =
-              (
-                bounds.left +
-                bounds.right
-              )
-              /
-              2;
-
-
-            const centerY =
-              (
-                bounds.top +
-                bounds.bottom
-              )
-              /
-              2;
-
-
-            const FALLBACK_GAP =
-              12;
-
-
-            const fallbackPoints = [
-
-              {
-                x:
-                  bounds.right +
-                  FALLBACK_GAP +
-                  ownWidth /
-                  2,
-
-                y:
-                  centerY
-              },
-
-              {
-                x:
-                  bounds.left -
-                  FALLBACK_GAP -
-                  ownWidth /
-                  2,
-
-                y:
-                  centerY
-              },
-
-              {
-                x:
-                  centerX,
-
-                y:
-                  bounds.bottom +
-                  FALLBACK_GAP +
-                  ownHeight /
-                  2
-              },
-
-              {
-                x:
-                  centerX,
-
-                y:
-                  bounds.top -
-                  FALLBACK_GAP -
-                  ownHeight /
-                  2
-              }
-
-            ];
-
-
-
-            /*
-              One of these positions MUST be free because
-              it sits completely outside the current bounds.
-            */
-
-            for (
-              const point of
-              shuffle(
-                fallbackPoints
-              )
-            ) {
-
-              const x =
-                point.x -
-                ownOffsetX;
-
-
-              const y =
-                point.y -
-                ownOffsetY;
-
-
-              const collision =
-                collisionBoxAt(
-                  item,
-                  x,
-                  y
-                );
-
-
-              const overlaps =
-                placed.some(
-                  other =>
-                    boxesOverlap(
-                      collision,
-                      other.collision,
-                      COLLISION_GAP
-                    )
-                );
-
-
-              if (
-                !overlaps
-              ) {
-
-                winner = {
-                  x,
-                  y,
-                  collision
-                };
-
-
-                break;
-
-              }
-
-            }
-
-          }
-
-
-
-          /* ------------------------------------------------
-             FINAL FAIL-SAFE
-
-             This should essentially never execute,
-             but it still guarantees rendering.
-             ------------------------------------------------ */
-
-          if (
-            !winner
-          ) {
-
-            const bounds =
-              getBounds(
-                placed.map(
-                  other =>
-                    other.collision
-                )
-              );
-
-
-            const x =
-              bounds.right +
-              50;
-
-
-            const y =
-              bounds.bottom +
-              50;
-
-
-            winner = {
-
-              x,
-              y,
-
-              collision:
-                collisionBoxAt(
-                  item,
-                  x,
-                  y
-                )
-
-            };
-
-          }
-
-
+        [...drawings].sort(
+          (a, b) =>
+            (b.visibleWidth * b.visibleHeight) -
+            (a.visibleWidth * a.visibleHeight)
+        );
+
+      const placed = [];
+
+      ordered.forEach((item, index) => {
+        if (index === 0) {
+          const x = 0;
+          const y = 0;
 
           placed.push({
-
             ...item,
-
-            x:
-              winner.x,
-
-            y:
-              winner.y,
-
+            x,
+            y,
             collision:
-              winner.collision
-
+              collisionBoxAt(item, x, y)
           });
 
+          return;
         }
-      );
+
+        let winner = null;
+        let winnerScore = Infinity;
+
+        const related =
+          shuffle(
+            placed.filter(
+              other =>
+                other.category === item.category
+            )
+          );
+
+        const unrelated =
+          shuffle(
+            placed.filter(
+              other =>
+                other.category !== item.category
+            )
+          );
+
+        const targets = [
+          ...related,
+          ...unrelated
+        ];
+
+        targets.forEach(target => {
+          const sameCategory =
+            target.category === item.category;
+
+          const candidates =
+            createCandidatesAround(
+              item,
+              target,
+              sameCategory ? 70 : 24
+            );
+
+          candidates.forEach(candidate => {
+            const collision =
+              collisionBoxAt(
+                item,
+                candidate.x,
+                candidate.y
+              );
+
+            const overlaps =
+              placed.some(
+                other =>
+                  boxesOverlap(
+                    collision,
+                    other.collision,
+                    COLLISION_GAP
+                  )
+              );
+
+            if (overlaps) {
+              return;
+            }
+
+            const allBoxes = [
+              ...placed.map(
+                other => other.collision
+              ),
+              collision
+            ];
+
+            const bounds =
+              getBounds(allBoxes);
+
+            const width = bounds.width;
+            const height = bounds.height;
+            const area = width * height;
+
+            const aspect =
+              width / Math.max(1, height);
+
+            const aspectPenalty =
+              Math.abs(
+                Math.log(
+                  aspect / TARGET_ASPECT
+                )
+              ) * 18000;
+
+            /*
+              Very strong penalty against banner shapes.
+            */
+            const tooWidePenalty =
+              width > height * 1.35
+                ? (width - height * 1.35) * 320
+                : 0;
+
+            const tooTallPenalty =
+              height > width * 1.35
+                ? (height - width * 1.35) * 180
+                : 0;
+
+            /*
+              Encourage using the middle of the mass.
+            */
+            const massCenterX =
+              (bounds.left + bounds.right) / 2;
+
+            const massCenterY =
+              (bounds.top + bounds.bottom) / 2;
+
+            const candidateCenterX =
+              (collision.left + collision.right) / 2;
+
+            const candidateCenterY =
+              (collision.top + collision.bottom) / 2;
+
+            const centerPenalty =
+              Math.hypot(
+                candidateCenterX - massCenterX,
+                candidateCenterY - massCenterY
+              ) * 24;
+
+            /*
+              Category proximity.
+            */
+            let categoryPenalty = 0;
+
+            if (related.length) {
+              let nearest = Infinity;
+
+              related.forEach(relative => {
+                const relativeX =
+                  (
+                    relative.collision.left +
+                    relative.collision.right
+                  ) / 2;
+
+                const relativeY =
+                  (
+                    relative.collision.top +
+                    relative.collision.bottom
+                  ) / 2;
+
+                nearest =
+                  Math.min(
+                    nearest,
+                    Math.hypot(
+                      candidateCenterX - relativeX,
+                      candidateCenterY - relativeY
+                    )
+                  );
+              });
+
+              categoryPenalty =
+                nearest * 40;
+            }
+
+            const categoryReward =
+              sameCategory ? -4200 : 0;
+
+            /*
+              Mild reward for inward / compact growth.
+            */
+            const compactnessReward =
+              -(Math.min(width, height) * 22);
+
+            const score =
+              area +
+              aspectPenalty +
+              tooWidePenalty +
+              tooTallPenalty +
+              centerPenalty +
+              categoryPenalty +
+              categoryReward +
+              compactnessReward +
+              Math.random() * 1100;
+
+            if (score < winnerScore) {
+              winnerScore = score;
+
+              winner = {
+                x: candidate.x,
+                y: candidate.y,
+                collision
+              };
+            }
+          });
+        });
+
+        /* ------------------------------------------------
+           Fallback positions:
+           grow the whole cloud outward as a block,
+           not as a horizontal strip.
+           ------------------------------------------------ */
+
+        if (!winner) {
+          const bounds =
+            getBounds(
+              placed.map(
+                other => other.collision
+              )
+            );
+
+          const testBox =
+            collisionBoxAt(item, 0, 0);
+
+          const ownWidth =
+            testBox.right - testBox.left;
+
+          const ownHeight =
+            testBox.bottom - testBox.top;
+
+          const ownOffsetX =
+            (testBox.left + testBox.right) / 2;
+
+          const ownOffsetY =
+            (testBox.top + testBox.bottom) / 2;
+
+          const centerX =
+            (bounds.left + bounds.right) / 2;
+
+          const centerY =
+            (bounds.top + bounds.bottom) / 2;
+
+          const FALLBACK_GAP = 12;
+
+          const fallbackPoints = shuffle([
+            {
+              x:
+                centerX,
+              y:
+                bounds.bottom +
+                FALLBACK_GAP +
+                ownHeight / 2
+            },
+            {
+              x:
+                centerX,
+              y:
+                bounds.top -
+                FALLBACK_GAP -
+                ownHeight / 2
+            },
+            {
+              x:
+                bounds.right +
+                FALLBACK_GAP +
+                ownWidth / 2,
+              y:
+                centerY
+            },
+            {
+              x:
+                bounds.left -
+                FALLBACK_GAP -
+                ownWidth / 2,
+              y:
+                centerY
+            }
+          ]);
+
+          for (const point of fallbackPoints) {
+            const x =
+              point.x - ownOffsetX;
+
+            const y =
+              point.y - ownOffsetY;
+
+            const collision =
+              collisionBoxAt(item, x, y);
+
+            const overlaps =
+              placed.some(
+                other =>
+                  boxesOverlap(
+                    collision,
+                    other.collision,
+                    COLLISION_GAP
+                  )
+              );
+
+            if (!overlaps) {
+              winner = {
+                x,
+                y,
+                collision
+              };
+
+              break;
+            }
+          }
+        }
+
+        if (!winner) {
+          const bounds =
+            getBounds(
+              placed.map(
+                other => other.collision
+              )
+            );
+
+          const x = bounds.right + 50;
+          const y = bounds.bottom + 50;
+
+          winner = {
+            x,
+            y,
+            collision:
+              collisionBoxAt(item, x, y)
+          };
+        }
+
+        placed.push({
+          ...item,
+          x: winner.x,
+          y: winner.y,
+          collision: winner.collision
+        });
+      });
 
 
 
       /* ===================================================
          COMPACTION
 
-         All drawings exist before this begins.
-
-         Repeatedly move them inward to close valleys.
+         Pull inward repeatedly so the composition becomes
+         a dense spread instead of separated islands.
          =================================================== */
 
-      for (
-        let pass = 0;
-        pass < 240;
-        pass++
-      ) {
-
+      for (let pass = 0; pass < 280; pass++) {
         const overallBounds =
           getBounds(
-            placed.map(
-              item =>
-                item.collision
-            )
+            placed.map(item => item.collision)
           );
-
 
         const overallCenterX =
           (
             overallBounds.left +
             overallBounds.right
-          )
-          /
-          2;
-
+          ) / 2;
 
         const overallCenterY =
           (
             overallBounds.top +
             overallBounds.bottom
-          )
-          /
-          2;
-
-
+          ) / 2;
 
         const passItems =
-          shuffle(
-            placed
-          );
+          shuffle(placed);
 
+        passItems.forEach(item => {
+          const itemCenterX =
+            (
+              item.collision.left +
+              item.collision.right
+            ) / 2;
 
+          const itemCenterY =
+            (
+              item.collision.top +
+              item.collision.bottom
+            ) / 2;
 
-        passItems.forEach(
-          item => {
+          const relatives =
+            placed.filter(
+              other =>
+                other !== item &&
+                other.category === item.category
+            );
 
-            const itemCenterX =
-              (
-                item.collision.left +
-                item.collision.right
-              )
-              /
-              2;
+          let targetX = overallCenterX;
+          let targetY = overallCenterY;
 
+          if (relatives.length) {
+            let closest = null;
+            let closestDistance = Infinity;
 
-            const itemCenterY =
-              (
-                item.collision.top +
-                item.collision.bottom
-              )
-              /
-              2;
+            relatives.forEach(relative => {
+              const x =
+                (
+                  relative.collision.left +
+                  relative.collision.right
+                ) / 2;
 
+              const y =
+                (
+                  relative.collision.top +
+                  relative.collision.bottom
+                ) / 2;
 
+              const distance =
+                Math.hypot(
+                  itemCenterX - x,
+                  itemCenterY - y
+                );
 
-            /* ----------------------------------------------
-               FIND NEAREST RELATED DRAWING
-               ---------------------------------------------- */
+              if (distance < closestDistance) {
+                closestDistance = distance;
+                closest = { x, y };
+              }
+            });
 
-            const relatives =
-              placed.filter(
-                other =>
-                  other !== item &&
-                  other.category ===
-                  item.category
-              );
+            if (closest) {
+              targetX =
+                overallCenterX * 0.82 +
+                closest.x * 0.18;
 
+              targetY =
+                overallCenterY * 0.82 +
+                closest.y * 0.18;
+            }
+          }
 
-            let targetX =
-              overallCenterX;
+          const dx =
+            targetX - itemCenterX;
 
+          const dy =
+            targetY - itemCenterY;
 
-            let targetY =
-              overallCenterY;
+          const distance =
+            Math.hypot(dx, dy);
 
+          if (distance < 0.25) {
+            return;
+          }
 
+          const baseAngle =
+            Math.atan2(dy, dx);
 
-            if (
-              relatives.length
-            ) {
+          const angles = [
+            baseAngle,
+            baseAngle + 0.16,
+            baseAngle - 0.16,
+            baseAngle + 0.33,
+            baseAngle - 0.33,
+            baseAngle + 0.6,
+            baseAngle - 0.6
+          ];
 
-              let closest =
-                null;
+          const steps = [
+            11,
+            7,
+            4,
+            2,
+            1,
+            0.5
+          ];
 
+          let moved = false;
 
-              let closestDistance =
-                Infinity;
+          for (const step of steps) {
+            if (moved) {
+              break;
+            }
 
+            for (const angle of angles) {
+              const nextX =
+                item.x +
+                Math.cos(angle) * step;
 
-              relatives.forEach(
-                relative => {
+              const nextY =
+                item.y +
+                Math.sin(angle) * step;
 
-                  const x =
-                    (
-                      relative.collision.left +
-                      relative.collision.right
-                    )
-                    /
-                    2;
+              const collision =
+                collisionBoxAt(
+                  item,
+                  nextX,
+                  nextY
+                );
 
-
-                  const y =
-                    (
-                      relative.collision.top +
-                      relative.collision.bottom
-                    )
-                    /
-                    2;
-
-
-                  const distance =
-                    Math.hypot(
-                      itemCenterX -
-                      x,
-                      itemCenterY -
-                      y
-                    );
-
-
-                  if (
-                    distance <
-                    closestDistance
-                  ) {
-
-                    closestDistance =
-                      distance;
-
-
-                    closest = {
-                      x,
-                      y
-                    };
-
+              const overlaps =
+                placed.some(other => {
+                  if (other === item) {
+                    return false;
                   }
 
-                }
-              );
-
-
-              if (
-                closest
-              ) {
-
-                targetX =
-                  overallCenterX *
-                  .77
-                  +
-                  closest.x *
-                  .23;
-
-
-                targetY =
-                  overallCenterY *
-                  .77
-                  +
-                  closest.y *
-                  .23;
-
-              }
-
-            }
-
-
-
-            const dx =
-              targetX -
-              itemCenterX;
-
-
-            const dy =
-              targetY -
-              itemCenterY;
-
-
-            const distance =
-              Math.hypot(
-                dx,
-                dy
-              );
-
-
-            if (
-              distance <
-              .25
-            ) {
-              return;
-            }
-
-
-
-            const baseAngle =
-              Math.atan2(
-                dy,
-                dx
-              );
-
-
-            /*
-              Give the drawing several routes around blockers.
-            */
-
-            const angles = [
-
-              baseAngle,
-
-              baseAngle + .12,
-              baseAngle - .12,
-
-              baseAngle + .25,
-              baseAngle - .25,
-
-              baseAngle + .40,
-              baseAngle - .40,
-
-              baseAngle + .62,
-              baseAngle - .62
-
-            ];
-
-
-            const steps = [
-
-              9,
-              6,
-              4,
-              2,
-              1,
-              .5
-
-            ];
-
-
-            let moved =
-              false;
-
-
-
-            for (
-              const step of steps
-            ) {
-
-              if (
-                moved
-              ) {
-                break;
-              }
-
-
-              for (
-                const angle of angles
-              ) {
-
-                const nextX =
-                  item.x +
-                  Math.cos(
-                    angle
-                  )
-                  *
-                  step;
-
-
-                const nextY =
-                  item.y +
-                  Math.sin(
-                    angle
-                  )
-                  *
-                  step;
-
-
-                const collision =
-                  collisionBoxAt(
-                    item,
-                    nextX,
-                    nextY
+                  return boxesOverlap(
+                    collision,
+                    other.collision,
+                    0.1
                   );
+                });
 
-
-                const overlaps =
-                  placed.some(
-                    other => {
-
-                      if (
-                        other === item
-                      ) {
-                        return false;
-                      }
-
-
-                      return boxesOverlap(
-                        collision,
-                        other.collision,
-                        .1
-                      );
-
-                    }
-                  );
-
-
-                if (
-                  overlaps
-                ) {
-                  continue;
-                }
-
-
-                item.x =
-                  nextX;
-
-
-                item.y =
-                  nextY;
-
-
-                item.collision =
-                  collision;
-
-
-                moved =
-                  true;
-
-
-                break;
-
+              if (overlaps) {
+                continue;
               }
 
+              item.x = nextX;
+              item.y = nextY;
+              item.collision = collision;
+              moved = true;
+              break;
             }
-
           }
-        );
-
+        });
       }
 
 
@@ -2584,128 +1413,64 @@
       const finalBounds =
         getBounds(
           placed.map(
-            item =>
-              item.collision
+            item => item.collision
           )
         );
 
+      const PAPER_PADDING = 42;
 
-      const PAPER_PADDING =
-        42;
+      placed.forEach(item => {
+        item.x -=
+          finalBounds.left - PAPER_PADDING;
 
-
-      placed.forEach(
-        item => {
-
-          item.x -=
-            finalBounds.left -
-            PAPER_PADDING;
-
-
-          item.y -=
-            finalBounds.top -
-            PAPER_PADDING;
-
-        }
-      );
-
+        item.y -=
+          finalBounds.top - PAPER_PADDING;
+      });
 
       return {
-
         width:
           finalBounds.width +
-          PAPER_PADDING *
-          2,
+          PAPER_PADDING * 2,
 
         height:
           finalBounds.height +
-          PAPER_PADDING *
-          2,
+          PAPER_PADDING * 2,
 
-        items:
-          placed
-
+        items: placed
       };
-
     }
 
 
 
     /* =====================================================
-       CREATE DRAWING ELEMENT
+       CREATE DOM ELEMENT
        ===================================================== */
 
-    function createDrawingElement(
-      item
-    ) {
-
+    function createDrawingElement(item) {
       const wrapper =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
 
-
-      wrapper.className =
-        "drawing";
-
-
-      wrapper.style.left =
-        `${item.x}px`;
-
-
-      wrapper.style.top =
-        `${item.y}px`;
-
-
-      wrapper.style.width =
-        `${item.displayWidth}px`;
-
-
-      wrapper.style.height =
-        `${item.displayHeight}px`;
-
+      wrapper.className = "drawing";
+      wrapper.style.left = `${item.x}px`;
+      wrapper.style.top = `${item.y}px`;
+      wrapper.style.width = `${item.displayWidth}px`;
+      wrapper.style.height = `${item.displayHeight}px`;
 
       const image =
-        document.createElement(
-          "img"
-        );
+        document.createElement("img");
 
-
-      image.className =
-        "drawing-art";
-
-
-      image.src =
-        item.filename;
-
-
-      image.alt =
-        "";
-
-
-      image.loading =
-        "lazy";
-
-
-      image.decoding =
-        "async";
-
-
-      image.draggable =
-        false;
-
-
+      image.className = "drawing-art";
+      image.src = item.filename;
+      image.alt = "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      image.draggable = false;
       image.style.transform =
         `rotate(${item.rotation}deg)`;
 
-
-      wrapper.appendChild(
-        image
-      );
-
+      wrapper.appendChild(image);
 
       return wrapper;
-
     }
 
 
@@ -2714,214 +1479,112 @@
        BUILD
        ===================================================== */
 
-    let paperWidth =
-      1;
-
-
-    let paperHeight =
-      1;
-
-
-    let buildGeneration =
-      0;
-
-
+    let paperWidth = 1;
+    let paperHeight = 1;
+    let buildGeneration = 0;
 
     async function buildSketchbook() {
-
-      /*
-        Generation token prevents an older async build
-        finishing after a newer resize-triggered build.
-      */
-
       const generation =
         ++buildGeneration;
 
-
-      field.innerHTML =
-        "";
-
+      field.innerHTML = "";
 
       const loaded =
         (
           await Promise.all(
-            files.map(
-              loadImageData
-            )
+            files.map(loadImageData)
           )
-        )
-        .filter(Boolean);
-
+        ).filter(Boolean);
 
       if (
-        generation !==
-        buildGeneration
+        generation !== buildGeneration
       ) {
         return;
       }
 
-
-      if (
-        !loaded.length
-      ) {
-
+      if (!loaded.length) {
         console.warn(
           "No illustration files loaded."
         );
-
-
         return;
-
       }
-
-
 
       console.info(
         `Loaded ${loaded.length} of ${files.length} illustration files.`
       );
-
-
-
-      /* ---------------------------------------------
-         MEDIAN SOURCE DIMENSION
-         --------------------------------------------- */
 
       const linearSizes =
         loaded
           .map(
             item =>
               Math.sqrt(
-                item.width *
-                item.height
+                item.width * item.height
               )
           )
-          .sort(
-            (a, b) =>
-              a - b
-          );
-
+          .sort((a, b) => a - b);
 
       const midpoint =
         Math.floor(
-          linearSizes.length /
-          2
+          linearSizes.length / 2
         );
-
 
       const referenceLinear =
-        linearSizes.length %
-        2
-
-          ? linearSizes[
-              midpoint
-            ]
-
+        linearSizes.length % 2
+          ? linearSizes[midpoint]
           : (
-              linearSizes[
-                midpoint - 1
-              ]
-              +
-              linearSizes[
-                midpoint
-              ]
-            )
-            /
-            2;
-
-
+              linearSizes[midpoint - 1] +
+              linearSizes[midpoint]
+            ) / 2;
 
       const prepared =
-        loaded.map(
-          item =>
-            prepareDrawing(
-              item,
-              referenceLinear
-            )
+        loaded.map(item =>
+          prepareDrawing(
+            item,
+            referenceLinear
+          )
         );
-
-
 
       const layout =
-        packDrawings(
-          prepared
-        );
-
+        packDrawings(prepared);
 
       if (
-        generation !==
-        buildGeneration
+        generation !== buildGeneration
       ) {
         return;
       }
 
-
-
-      /*
-        Sanity check.
-
-        A packing bug should never silently hide files.
-      */
-
       if (
-        layout.items.length !==
-        loaded.length
+        layout.items.length !== loaded.length
       ) {
-
         console.error(
           `Packing error: loaded ${loaded.length}, placed ${layout.items.length}.`
         );
-
       }
 
-
-
       paperWidth =
-        Math.max(
-          1,
-          layout.width
-        );
-
+        Math.max(1, layout.width);
 
       paperHeight =
-        Math.max(
-          1,
-          layout.height
-        );
-
+        Math.max(1, layout.height);
 
       paper.style.width =
         `${paperWidth}px`;
 
-
       paper.style.height =
         `${paperHeight}px`;
-
-
 
       const fragment =
         document.createDocumentFragment();
 
+      layout.items.forEach(item => {
+        fragment.appendChild(
+          createDrawingElement(item)
+        );
+      });
 
-      layout.items.forEach(
-        item => {
-
-          fragment.appendChild(
-            createDrawingElement(
-              item
-            )
-          );
-
-        }
-      );
-
-
-      field.appendChild(
-        fragment
-      );
-
+      field.appendChild(fragment);
 
       setInitialView();
-
     }
 
 
@@ -2931,214 +1594,100 @@
        ===================================================== */
 
     const view = {
-
-      x:
-        0,
-
-      y:
-        0,
-
-      zoom:
-        1,
-
-      minZoom:
-        .1,
-
-      maxZoom:
-        4,
-
-      dragging:
-        false,
-
-      startX:
-        0,
-
-      startY:
-        0,
-
-      originX:
-        0,
-
-      originY:
-        0
-
+      x: 0,
+      y: 0,
+      zoom: 1,
+      minZoom: 0.1,
+      maxZoom: 4,
+      dragging: false,
+      startX: 0,
+      startY: 0,
+      originX: 0,
+      originY: 0
     };
 
 
 
     /* =====================================================
-       PAN CONSTRAINTS
+       VIEW HELPERS
        ===================================================== */
 
-    function constrainPan(
-      x,
-      y,
-      zoom
-    ) {
-
+    function constrainPan(x, y, zoom) {
       const scaledWidth =
-        paperWidth *
-        zoom;
-
+        paperWidth * zoom;
 
       const scaledHeight =
-        paperHeight *
-        zoom;
-
+        paperHeight * zoom;
 
       const viewportWidth =
         viewport.clientWidth;
 
-
       const viewportHeight =
         viewport.clientHeight;
-
-
 
       let minX;
       let maxX;
       let minY;
       let maxY;
 
-
-
-      if (
-        scaledWidth <=
-        viewportWidth
-      ) {
-
+      if (scaledWidth <= viewportWidth) {
         minX =
           maxX =
-          (
-            viewportWidth -
-            scaledWidth
-          )
-          /
-          2;
-
+          (viewportWidth - scaledWidth) / 2;
       }
 
       else {
-
         minX =
-          viewportWidth -
-          scaledWidth;
-
-        maxX =
-          0;
-
+          viewportWidth - scaledWidth;
+        maxX = 0;
       }
 
-
-
-      if (
-        scaledHeight <=
-        viewportHeight
-      ) {
-
+      if (scaledHeight <= viewportHeight) {
         minY =
           maxY =
-          (
-            viewportHeight -
-            scaledHeight
-          )
-          /
-          2;
-
+          (viewportHeight - scaledHeight) / 2;
       }
 
       else {
-
         minY =
-          viewportHeight -
-          scaledHeight;
-
-        maxY =
-          0;
-
+          viewportHeight - scaledHeight;
+        maxY = 0;
       }
 
-
       return {
-
-        x:
-          clamp(
-            x,
-            minX,
-            maxX
-          ),
-
-        y:
-          clamp(
-            y,
-            minY,
-            maxY
-          )
-
+        x: clamp(x, minX, maxX),
+        y: clamp(y, minY, maxY)
       };
-
     }
 
-
-
-    /* =====================================================
-       ZOOM BUTTON STATE
-       ===================================================== */
-
     function updateZoomButtonState() {
-
-      const epsilon =
-        .0005;
-
+      const epsilon = 0.0005;
 
       zoomOutButton.classList.toggle(
         "is-hidden",
-        view.zoom <=
-        view.minZoom +
-        epsilon
+        view.zoom <= view.minZoom + epsilon
       );
-
 
       zoomInButton.classList.toggle(
         "is-hidden",
-        view.zoom >=
-        view.maxZoom -
-        epsilon
+        view.zoom >= view.maxZoom - epsilon
       );
-
     }
 
-
-
-    /* =====================================================
-       APPLY VIEW
-       ===================================================== */
-
     function applyView() {
-
       paper.style.transform =
         `translate3d(${view.x}px, ${view.y}px, 0) scale(${view.zoom})`;
 
-
       updateZoomButtonState();
-
     }
 
-
-
-    function setView(
-      x,
-      y,
-      zoom
-    ) {
-
+    function setView(x, y, zoom) {
       view.zoom =
         clamp(
           zoom,
           view.minZoom,
           view.maxZoom
         );
-
 
       const constrained =
         constrainPan(
@@ -3147,17 +1696,10 @@
           view.zoom
         );
 
-
-      view.x =
-        constrained.x;
-
-
-      view.y =
-        constrained.y;
-
+      view.x = constrained.x;
+      view.y = constrained.y;
 
       applyView();
-
     }
 
 
@@ -3165,109 +1707,61 @@
     /* =====================================================
        INITIAL VIEW
 
-       Minimum zoom = whole sketchbook visible.
-
-       Initial view = moderately zoomed into the spread.
+       Starts clearly zoomed in.
        ===================================================== */
 
     function setInitialView() {
-
-      const OUTER_MARGIN =
-        14;
-
+      const OUTER_MARGIN = 14;
 
       const fitWidth =
         (
           viewport.clientWidth -
-          OUTER_MARGIN *
-          2
-        )
-        /
-        paperWidth;
-
+          OUTER_MARGIN * 2
+        ) / paperWidth;
 
       const fitHeight =
         (
           viewport.clientHeight -
-          OUTER_MARGIN *
-          2
-        )
-        /
-        paperHeight;
-
+          OUTER_MARGIN * 2
+        ) / paperHeight;
 
       const fitZoom =
-        Math.min(
-          fitWidth,
-          fitHeight
-        );
+        Math.min(fitWidth, fitHeight);
 
-
-      view.minZoom =
-        fitZoom;
-
-
-      /*
-        Enough zoom range for close inspection.
-      */
+      view.minZoom = fitZoom;
 
       view.maxZoom =
         Math.max(
-          fitZoom *
-          5.5,
-          2.8
+          fitZoom * 6.2,
+          3.2
         );
 
-
       /*
-        Start fairly close, but not so close that
-        the composition becomes impossible to understand.
+        Start more zoomed in than before.
       */
-
       const initialZoom =
         Math.min(
-          fitZoom *
-          1.5,
+          fitZoom * 2.15,
           view.maxZoom
         );
 
-
       const scaledWidth =
-        paperWidth *
-        initialZoom;
-
+        paperWidth * initialZoom;
 
       const scaledHeight =
-        paperHeight *
-        initialZoom;
-
+        paperHeight * initialZoom;
 
       setView(
-
-        (
-          viewport.clientWidth -
-          scaledWidth
-        )
-        /
-        2,
-
-        (
-          viewport.clientHeight -
-          scaledHeight
-        )
-        /
-        2,
-
+        (viewport.clientWidth - scaledWidth) / 2,
+        (viewport.clientHeight - scaledHeight) / 2,
         initialZoom
-
       );
-
     }
 
 
 
     /* =====================================================
-       ZOOM AROUND POINT
+       ZOOM
        ===================================================== */
 
     function zoomAt(
@@ -3275,24 +1769,11 @@
       screenY,
       nextZoom
     ) {
-
       const worldX =
-        (
-          screenX -
-          view.x
-        )
-        /
-        view.zoom;
-
+        (screenX - view.x) / view.zoom;
 
       const worldY =
-        (
-          screenY -
-          view.y
-        )
-        /
-        view.zoom;
-
+        (screenY - view.y) / view.zoom;
 
       const zoom =
         clamp(
@@ -3301,251 +1782,137 @@
           view.maxZoom
         );
 
-
       const nextX =
-        screenX -
-        worldX *
-        zoom;
-
+        screenX - worldX * zoom;
 
       const nextY =
-        screenY -
-        worldY *
-        zoom;
-
+        screenY - worldY * zoom;
 
       setView(
         nextX,
         nextY,
         zoom
       );
-
     }
 
-
-
-    function zoomAroundCenter(
-      factor
-    ) {
-
+    function zoomAroundCenter(factor) {
       zoomAt(
-
-        viewport.clientWidth /
-        2,
-
-        viewport.clientHeight /
-        2,
-
-        view.zoom *
-        factor
-
+        viewport.clientWidth / 2,
+        viewport.clientHeight / 2,
+        view.zoom * factor
       );
-
     }
-
-
-
-    /* =====================================================
-       ZOOM BUTTONS
-       ===================================================== */
 
     zoomInButton.addEventListener(
       "click",
       () => {
-
-        zoomAroundCenter(
-          1.22
-        );
-
+        zoomAroundCenter(1.22);
       }
     );
-
 
     zoomOutButton.addEventListener(
       "click",
       () => {
-
-        zoomAroundCenter(
-          1 /
-          1.22
-        );
-
+        zoomAroundCenter(1 / 1.22);
       }
     );
-
-
-
-    /* =====================================================
-       TRACKPAD / MOUSE WHEEL ZOOM
-       ===================================================== */
 
     viewport.addEventListener(
       "wheel",
       event => {
-
         event.preventDefault();
-
 
         const rect =
           viewport.getBoundingClientRect();
 
-
         const screenX =
-          event.clientX -
-          rect.left;
-
+          event.clientX - rect.left;
 
         const screenY =
-          event.clientY -
-          rect.top;
-
-
-        /*
-          Smooth exponential zoom works for both
-          trackpads and mouse wheels.
-        */
+          event.clientY - rect.top;
 
         const factor =
-          Math.exp(
-            -event.deltaY *
-            .00135
-          );
-
+          Math.exp(-event.deltaY * 0.00135);
 
         zoomAt(
           screenX,
           screenY,
-          view.zoom *
-          factor
+          view.zoom * factor
         );
-
       },
       {
-        passive:
-          false
+        passive: false
       }
     );
 
 
 
     /* =====================================================
-       DRAG TO PAN
+       DRAG
        ===================================================== */
 
     viewport.addEventListener(
       "pointerdown",
       event => {
-
         if (
-          event.target.closest(
-            ".zoom-controls"
-          )
+          event.target.closest(".zoom-controls")
         ) {
           return;
         }
 
+        view.dragging = true;
+        view.startX = event.clientX;
+        view.startY = event.clientY;
+        view.originX = view.x;
+        view.originY = view.y;
 
-        view.dragging =
-          true;
-
-
-        view.startX =
-          event.clientX;
-
-
-        view.startY =
-          event.clientY;
-
-
-        view.originX =
-          view.x;
-
-
-        view.originY =
-          view.y;
-
-
-        viewport.classList.add(
-          "is-dragging"
-        );
-
+        viewport.classList.add("is-dragging");
 
         try {
-
-          viewport.setPointerCapture(
-            event.pointerId
-          );
-
+          viewport.setPointerCapture(event.pointerId);
         }
 
         catch {
           /* no-op */
         }
-
       }
     );
-
-
 
     viewport.addEventListener(
       "pointermove",
       event => {
-
-        if (
-          !view.dragging
-        ) {
+        if (!view.dragging) {
           return;
         }
 
-
         const dx =
-          event.clientX -
-          view.startX;
-
+          event.clientX - view.startX;
 
         const dy =
-          event.clientY -
-          view.startY;
-
+          event.clientY - view.startY;
 
         setView(
-          view.originX +
-          dx,
-          view.originY +
-          dy,
+          view.originX + dx,
+          view.originY + dy,
           view.zoom
         );
-
       }
     );
 
-
-
     function finishDrag() {
-
-      view.dragging =
-        false;
-
-
-      viewport.classList.remove(
-        "is-dragging"
-      );
-
+      view.dragging = false;
+      viewport.classList.remove("is-dragging");
     }
-
-
 
     viewport.addEventListener(
       "pointerup",
       finishDrag
     );
 
-
     viewport.addEventListener(
       "pointercancel",
       finishDrag
     );
-
 
     window.addEventListener(
       "blur",
@@ -3556,33 +1923,19 @@
 
     /* =====================================================
        RESIZE
-
-       Debounced to prevent several simultaneous builds.
        ===================================================== */
 
-    let resizeTimer =
-      null;
-
+    let resizeTimer = null;
 
     window.addEventListener(
       "resize",
       () => {
-
-        clearTimeout(
-          resizeTimer
-        );
-
+        clearTimeout(resizeTimer);
 
         resizeTimer =
-          window.setTimeout(
-            () => {
-
-              buildSketchbook();
-
-            },
-            200
-          );
-
+          window.setTimeout(() => {
+            buildSketchbook();
+          }, 200);
       }
     );
 
@@ -3598,5 +1951,4 @@
   </script>
 
 </body>
-
 </html>
