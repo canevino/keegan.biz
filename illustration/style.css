@@ -426,7 +426,15 @@ button {
 
   z-index: 2;
 
-  pointer-events: none;
+  /*
+    The wrapper is interactive so taps/clicks can trigger its
+    assigned guitar triad. The image itself remains non-
+    interactive so all pointer handling stays on the wrapper.
+  */
+
+  pointer-events: auto;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 
