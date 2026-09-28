@@ -415,6 +415,7 @@
       const copy =
         [...array];
 
+
       for (
         let i = copy.length - 1;
         i > 0;
@@ -427,6 +428,7 @@
             (i + 1)
           );
 
+
         [
           copy[i],
           copy[j]
@@ -436,6 +438,7 @@
         ];
 
       }
+
 
       return copy;
 
@@ -451,12 +454,14 @@
           .split("-")[0]
           .toLowerCase();
 
+
       if (
         category === "animals"
       ) {
         category =
           "animal";
       }
+
 
       return category;
 
@@ -520,7 +525,9 @@
 
 
     /* =====================================================
-       ANALYZE VISIBLE ARTWORK
+       ANALYZE VISIBLE CONTENT
+
+       Ignore near-white margins inside WebPs.
        ===================================================== */
 
     function analyzeVisibleBounds(
@@ -530,7 +537,8 @@
       const maxSample =
         120;
 
-      const ratio =
+
+      const scale =
         Math.min(
           1,
           maxSample /
@@ -540,45 +548,51 @@
           )
         );
 
+
       const width =
         Math.max(
           1,
           Math.round(
             image.naturalWidth *
-            ratio
+            scale
           )
         );
+
 
       const height =
         Math.max(
           1,
           Math.round(
             image.naturalHeight *
-            ratio
+            scale
           )
         );
+
 
       const canvas =
         document.createElement(
           "canvas"
         );
 
+
       canvas.width =
         width;
+
 
       canvas.height =
         height;
 
-      const context =
+
+      const ctx =
         canvas.getContext(
           "2d",
           {
-            willReadFrequently:
-              true
+            willReadFrequently: true
           }
         );
 
-      context.drawImage(
+
+      ctx.drawImage(
         image,
         0,
         0,
@@ -589,10 +603,11 @@
 
       let data;
 
+
       try {
 
         data =
-          context.getImageData(
+          ctx.getImageData(
             0,
             0,
             width,
@@ -626,11 +641,8 @@
         -1;
 
 
-      const WHITE_THRESHOLD =
+      const white =
         247;
-
-      const ALPHA_THRESHOLD =
-        14;
 
 
       for (
@@ -654,6 +666,7 @@
             *
             4;
 
+
           const r =
             data[i];
 
@@ -668,17 +681,16 @@
 
 
           if (
-            a <=
-            ALPHA_THRESHOLD
+            a < 14
           ) {
             continue;
           }
 
 
           if (
-            r >= WHITE_THRESHOLD &&
-            g >= WHITE_THRESHOLD &&
-            b >= WHITE_THRESHOLD
+            r >= white &&
+            g >= white &&
+            b >= white
           ) {
             continue;
           }
@@ -728,55 +740,36 @@
       }
 
 
-      const margin =
-        1;
-
-
-      minX =
-        Math.max(
-          0,
-          minX - margin
-        );
-
-      minY =
-        Math.max(
-          0,
-          minY - margin
-        );
-
-      maxX =
-        Math.min(
-          width - 1,
-          maxX + margin
-        );
-
-      maxY =
-        Math.min(
-          height - 1,
-          maxY + margin
-        );
-
-
       return {
 
         left:
-          minX /
+          Math.max(
+            0,
+            minX - 1
+          )
+          /
           width,
 
         top:
-          minY /
+          Math.max(
+            0,
+            minY - 1
+          )
+          /
           height,
 
         right:
-          (
-            maxX + 1
+          Math.min(
+            width,
+            maxX + 2
           )
           /
           width,
 
         bottom:
-          (
-            maxY + 1
+          Math.min(
+            height,
+            maxY + 2
           )
           /
           height
@@ -788,7 +781,7 @@
 
 
     /* =====================================================
-       LOAD IMAGES
+       LOAD
        ===================================================== */
 
     function loadImageData(
@@ -801,8 +794,10 @@
           const image =
             new Image();
 
+
           image.src =
             filename;
+
 
           image.decoding =
             "async";
@@ -826,11 +821,7 @@
                 height:
                   image.naturalHeight,
 
-                area:
-                  image.naturalWidth *
-                  image.naturalHeight,
-
-                visibleBounds:
+                visible:
                   analyzeVisibleBounds(
                     image
                   )
@@ -847,6 +838,7 @@
                 `Could not load ${filename}`
               );
 
+
               resolve(null);
 
             };
@@ -859,13 +851,11 @@
 
 
     /* =====================================================
-       SOURCE-DIMENSION SCALE
+       SIZE
 
-       Original file dimensions are still the main
-       determinant of size.
+       Primarily driven by actual source dimensions.
 
-       We only restrain extreme ratios enough to stop
-       a single file from dominating the whole spread.
+       Ratio clamp only restrains extreme outliers.
        ===================================================== */
 
     function calculateDisplaySize(
@@ -889,36 +879,30 @@
       let ratio =
         sourceLinear /
         Math.max(
-          1,
-          referenceLinear
+          referenceLinear,
+          1
         );
 
-
-      /*
-        Actual dimensions still drive the hierarchy.
-
-        Guardrails only affect very extreme outliers.
-      */
 
       ratio =
         clamp(
           ratio,
-          .48,
-          2.35
+          .52,
+          2.15
         );
 
 
       const base =
         mobile
-          ? 90
-          : 122;
+          ? 88
+          : 116;
 
 
       const longest =
         base *
         Math.pow(
           ratio,
-          .90
+          .92
         );
 
 
@@ -934,6 +918,7 @@
         width =
           longest;
 
+
         height =
           longest *
           (
@@ -947,6 +932,7 @@
 
         height =
           longest;
+
 
         width =
           longest *
@@ -968,7 +954,7 @@
 
 
     /* =====================================================
-       PREPARE DRAWING
+       PREPARE
        ===================================================== */
 
     function prepareDrawing(
@@ -985,13 +971,9 @@
 
       const rotation =
         randomBetween(
-          -4.8,
-          4.8
+          -4.5,
+          4.5
         );
-
-
-      const visible =
-        item.visibleBounds;
 
 
       return {
@@ -1007,25 +989,25 @@
         rotation,
 
         visibleLeft:
-          visible.left *
+          item.visible.left *
           size.width,
 
         visibleTop:
-          visible.top *
+          item.visible.top *
           size.height,
 
         visibleWidth:
           (
-            visible.right -
-            visible.left
+            item.visible.right -
+            item.visible.left
           )
           *
           size.width,
 
         visibleHeight:
           (
-            visible.bottom -
-            visible.top
+            item.visible.bottom -
+            item.visible.top
           )
           *
           size.height
@@ -1038,8 +1020,6 @@
 
     /* =====================================================
        COLLISION BOX
-
-       Uses visible marks, not blank image canvas.
        ===================================================== */
 
     function collisionBoxAt(
@@ -1048,22 +1028,7 @@
       y
     ) {
 
-      /*
-        Rotation safety is deliberately small.
-
-        Slight visual interlocking is desirable.
-      */
-
       const safety =
-        1.5 +
-        (
-          Math.abs(
-            item.rotation
-          )
-          /
-          4.8
-        )
-        *
         2;
 
 
@@ -1098,25 +1063,34 @@
 
 
     /* =====================================================
-       CANDIDATES AROUND EXISTING DRAWING
+       TANGENT CANDIDATES
 
-       New work is attached directly to the existing mass.
+       Candidate centers sit just OUTSIDE an existing
+       rectangle rather than inside it.
+
+       This is the bug fix that ensures every image
+       can actually be placed.
        ===================================================== */
 
-    function candidatesAroundPlaced(
+    function tangentCandidates(
       item,
       target,
-      count = 48
+      count
     ) {
 
-      const targetCX =
+      const result =
+        [];
+
+
+      const tcx =
         (
           target.collision.left +
           target.collision.right
         )
         / 2;
 
-      const targetCY =
+
+      const tcy =
         (
           target.collision.top +
           target.collision.bottom
@@ -1124,24 +1098,41 @@
         / 2;
 
 
-      const targetW =
+      const tw =
         target.collision.right -
         target.collision.left;
 
-      const targetH =
+
+      const th =
         target.collision.bottom -
         target.collision.top;
 
 
-      const ownW =
+      const iw =
         item.visibleWidth;
 
-      const ownH =
+
+      const ih =
         item.visibleHeight;
 
 
-      const results =
-        [];
+      const halfW =
+        (
+          tw +
+          iw
+        )
+        /
+        2;
+
+
+      const halfH =
+        (
+          th +
+          ih
+        )
+        /
+        2;
+
 
 
       for (
@@ -1157,75 +1148,79 @@
           );
 
 
-        /*
-          Almost touching.
-
-          Slight inward pressure means the collision
-          check itself determines the final boundary.
-        */
-
-        const compression =
-          randomBetween(
-            .74,
-            .95
+        const cos =
+          Math.cos(
+            angle
           );
 
 
-        const radiusX =
-          (
-            targetW / 2 +
-            ownW / 2 +
-            1
-          )
-          *
-          compression;
-
-
-        const radiusY =
-          (
-            targetH / 2 +
-            ownH / 2 +
-            1
-          )
-          *
-          compression;
-
-
-        const visibleCX =
-          targetCX +
-          Math.cos(
-            angle
-          )
-          *
-          radiusX;
-
-
-        const visibleCY =
-          targetCY +
+        const sin =
           Math.sin(
             angle
-          )
-          *
-          radiusY;
+          );
+
+
+        /*
+          Scale direction until AT LEAST one axis
+          reaches rectangle-separation distance.
+
+          This places the new box tangent to the old box.
+        */
+
+        const denominator =
+          Math.max(
+            Math.abs(cos),
+            Math.abs(sin),
+            .001
+          );
+
+
+        const scale =
+          1 /
+          denominator;
+
+
+        const dx =
+          cos *
+          halfW *
+          scale;
+
+
+        const dy =
+          sin *
+          halfH *
+          scale;
+
+
+        const visibleCenterX =
+          tcx +
+          dx;
+
+
+        const visibleCenterY =
+          tcy +
+          dy;
 
 
         const x =
-          visibleCX -
+          visibleCenterX -
           (
             item.visibleLeft +
-            item.visibleWidth / 2
+            item.visibleWidth /
+            2
           );
 
 
         const y =
-          visibleCY -
+          visibleCenterY -
           (
             item.visibleTop +
-            item.visibleHeight / 2
+            item.visibleHeight /
+            2
           );
 
 
-        results.push({
+        result.push({
           x,
           y
         });
@@ -1233,22 +1228,88 @@
       }
 
 
-      return results;
+
+      /*
+        Guaranteed cardinal candidates.
+      */
+
+      const cardinals = [
+
+        {
+          cx:
+            tcx +
+            halfW,
+          cy:
+            tcy
+        },
+
+        {
+          cx:
+            tcx -
+            halfW,
+          cy:
+            tcy
+        },
+
+        {
+          cx:
+            tcx,
+          cy:
+            tcy +
+            halfH
+        },
+
+        {
+          cx:
+            tcx,
+          cy:
+            tcy -
+            halfH
+        }
+
+      ];
+
+
+      cardinals.forEach(
+        position => {
+
+          result.push({
+
+            x:
+              position.cx -
+              (
+                item.visibleLeft +
+                item.visibleWidth /
+                2
+              ),
+
+            y:
+              position.cy -
+              (
+                item.visibleTop +
+                item.visibleHeight /
+                2
+              )
+
+          });
+
+        }
+      );
+
+
+      return result;
 
     }
 
 
 
     /* =====================================================
-       GLOBAL PACK
+       PACK
 
-       NO CATEGORY REGIONS.
+       ONE SINGLE MASS.
 
-       Every drawing attaches to the same mass.
-
-       Same-category drawings receive a score bonus for
-       remaining near one another, but categories never
-       create walls or empty valleys.
+       Categories only affect scoring.
+       They never create their own region.
        ===================================================== */
 
     function packDrawings(
@@ -1275,13 +1336,9 @@
         [];
 
 
-      /*
-        Slightly wide target — sketchbook spread,
-        not panorama.
-      */
-
       const TARGET_ASPECT =
-        2.15;
+        2.05;
+
 
 
       ordered.forEach(
@@ -1296,6 +1353,7 @@
 
             const x =
               0;
+
 
             const y =
               0;
@@ -1327,40 +1385,62 @@
           let winner =
             null;
 
+
           let winnerScore =
             Infinity;
 
 
 
-          /*
-            Attach candidates to every existing drawing.
+          const sameCategoryTargets =
+            shuffle(
+              placed.filter(
+                other =>
+                  other.category ===
+                  item.category
+              )
+            );
 
-            We favor targets from the same category,
-            but also test unrelated drawings so groups
-            interlock rather than form islands.
+
+          const otherTargets =
+            shuffle(
+              placed.filter(
+                other =>
+                  other.category !==
+                  item.category
+              )
+            );
+
+
+          /*
+            Same-category drawings get tested first,
+            but unrelated drawings remain valid anchors.
           */
 
-          const targets =
-            shuffle(
-              placed
-            );
+          const targets = [
+
+            ...sameCategoryTargets,
+
+            ...otherTargets
+
+          ];
+
 
 
           targets.forEach(
             target => {
 
-              const sameCategory =
+              const same =
                 target.category ===
                 item.category;
 
 
               const candidates =
-                candidatesAroundPlaced(
+                tangentCandidates(
                   item,
                   target,
-                  sameCategory
-                    ? 72
-                    : 26
+                  same
+                    ? 42
+                    : 18
                 );
 
 
@@ -1381,7 +1461,7 @@
                         boxesOverlap(
                           collision,
                           other.collision,
-                          .35
+                          .5
                         )
                     );
 
@@ -1393,7 +1473,8 @@
                   }
 
 
-                  const boxes = [
+
+                  const allBoxes = [
 
                     ...placed.map(
                       other =>
@@ -1407,7 +1488,7 @@
 
                   const bounds =
                     getBounds(
-                      boxes
+                      allBoxes
                     );
 
 
@@ -1435,8 +1516,8 @@
 
 
                   /*
-                    Keep the overall cloud wide,
-                    but never force horizontal bands.
+                    Broad sketchbook shape,
+                    not an ultra-wide row.
                   */
 
                   const aspectPenalty =
@@ -1447,54 +1528,76 @@
                       )
                     )
                     *
-                    8500;
+                    5500;
 
 
 
-                  /* -----------------------------------------
-                     CATEGORY PROXIMITY
+                  /*
+                    Encourage filling around the center
+                    of the existing mass.
+                  */
 
-                     Same-name images prefer one another,
-                     but this is a preference, not territory.
-                     ----------------------------------------- */
+                  const centerX =
+                    (
+                      bounds.left +
+                      bounds.right
+                    )
+                    / 2;
 
-                  const sameItems =
-                    placed.filter(
-                      other =>
-                        other.category ===
-                        item.category
-                    );
 
+                  const centerY =
+                    (
+                      bounds.top +
+                      bounds.bottom
+                    )
+                    / 2;
+
+
+                  const cx =
+                    (
+                      collision.left +
+                      collision.right
+                    )
+                    / 2;
+
+
+                  const cy =
+                    (
+                      collision.top +
+                      collision.bottom
+                    )
+                    / 2;
+
+
+                  const centerPenalty =
+                    Math.hypot(
+                      cx -
+                      centerX,
+                      cy -
+                      centerY
+                    )
+                    *
+                    17;
+
+
+
+                  /*
+                    Related things still cluster.
+                  */
 
                   let categoryPenalty =
                     0;
 
 
                   if (
-                    sameItems.length
+                    sameCategoryTargets.length
                   ) {
-
-                    const cx =
-                      (
-                        collision.left +
-                        collision.right
-                      )
-                      / 2;
-
-
-                    const cy =
-                      (
-                        collision.top +
-                        collision.bottom
-                      )
-                      / 2;
-
 
                     let nearest =
                       Infinity;
 
 
-                    sameItems.forEach(
+                    sameCategoryTargets.forEach(
                       other => {
 
                         const ox =
@@ -1502,7 +1605,8 @@
                             other.collision.left +
                             other.collision.right
                           )
-                          / 2;
+                          /
+                          2;
 
 
                         const oy =
@@ -1510,7 +1614,8 @@
                             other.collision.top +
                             other.collision.bottom
                           )
-                          / 2;
+                          /
+                          2;
 
 
                         nearest =
@@ -1531,82 +1636,26 @@
 
                     categoryPenalty =
                       nearest *
-                      175;
+                      55;
 
                   }
 
 
 
-                  /*
-                    Encourage using the existing mass,
-                    especially interior pockets.
-                  */
-
-                  const globalCenterX =
-                    (
-                      bounds.left +
-                      bounds.right
-                    )
-                    / 2;
-
-
-                  const globalCenterY =
-                    (
-                      bounds.top +
-                      bounds.bottom
-                    )
-                    / 2;
-
-
-                  const candidateCenterX =
-                    (
-                      collision.left +
-                      collision.right
-                    )
-                    / 2;
-
-
-                  const candidateCenterY =
-                    (
-                      collision.top +
-                      collision.bottom
-                    )
-                    / 2;
-
-
-                  const centerPenalty =
-                    Math.hypot(
-
-                      candidateCenterX -
-                      globalCenterX,
-
-                      candidateCenterY -
-                      globalCenterY
-
-                    )
-                    *
-                    28;
-
-
-                  /*
-                    Same-category target gets an additional
-                    reward without creating a rigid cluster.
-                  */
-
-                  const sameCategoryReward =
-                    sameCategory
-                      ? -14500
+                  const sameReward =
+                    same
+                      ? -3500
                       : 0;
 
 
                   const score =
                     area +
                     aspectPenalty +
-                    categoryPenalty +
                     centerPenalty +
-                    sameCategoryReward +
+                    categoryPenalty +
+                    sameReward +
                     Math.random() *
-                    4200;
+                    1800;
 
 
                   if (
@@ -1640,9 +1689,12 @@
 
 
 
-          /*
-            Fallback if required.
-          */
+          /* ---------------------------------------------
+             ABSOLUTE FALLBACK
+
+             Always succeeds by placing outside
+             the complete current bounds.
+             --------------------------------------------- */
 
           if (
             !winner
@@ -1657,39 +1709,95 @@
               );
 
 
+            const centerX =
+              (
+                bounds.left +
+                bounds.right
+              )
+              /
+              2;
+
+
+            const centerY =
+              (
+                bounds.top +
+                bounds.bottom
+              )
+              /
+              2;
+
+
+            const candidates = [
+
+              {
+                cx:
+                  bounds.right +
+                  item.visibleWidth /
+                  2 +
+                  2,
+
+                cy:
+                  centerY
+              },
+
+              {
+                cx:
+                  bounds.left -
+                  item.visibleWidth /
+                  2 -
+                  2,
+
+                cy:
+                  centerY
+              },
+
+              {
+                cx:
+                  centerX,
+
+                cy:
+                  bounds.bottom +
+                  item.visibleHeight /
+                  2 +
+                  2
+              },
+
+              {
+                cx:
+                  centerX,
+
+                cy:
+                  bounds.top -
+                  item.visibleHeight /
+                  2 -
+                  2
+              }
+
+            ];
+
+
             for (
-              let attempt = 0;
-              attempt < 5000;
-              attempt++
+              const candidate of
+              shuffle(
+                candidates
+              )
             ) {
 
-              const centerX =
-                randomBetween(
-                  bounds.left,
-                  bounds.right
-                );
-
-
-              const centerY =
-                randomBetween(
-                  bounds.top,
-                  bounds.bottom
-                );
-
-
               const x =
-                centerX -
+                candidate.cx -
                 (
                   item.visibleLeft +
-                  item.visibleWidth / 2
+                  item.visibleWidth /
+                  2
                 );
 
 
               const y =
-                centerY -
+                candidate.cy -
                 (
                   item.visibleTop +
-                  item.visibleHeight / 2
+                  item.visibleHeight /
+                  2
                 );
 
 
@@ -1707,7 +1815,7 @@
                     boxesOverlap(
                       collision,
                       other.collision,
-                      .35
+                      .5
                     )
                 );
 
@@ -1729,6 +1837,7 @@
             }
 
           }
+
 
 
           if (
@@ -1758,18 +1867,18 @@
 
 
       /* ===================================================
-         COMPACTION PASSES
+         COMPACT THE MASS
 
-         Pull every drawing toward the overall center.
+         Pull items inward repeatedly.
 
-         Because every movement is collision checked,
-         drawings slide into available valleys until they
-         physically cannot move closer.
+         Multiple directions are tested, which is much
+         better at filling valleys than only moving toward
+         the exact center.
          =================================================== */
 
       for (
         let pass = 0;
-        pass < 140;
+        pass < 180;
         pass++
       ) {
 
@@ -1782,20 +1891,22 @@
           );
 
 
-        const centerX =
+        const globalX =
           (
             bounds.left +
             bounds.right
           )
-          / 2;
+          /
+          2;
 
 
-        const centerY =
+        const globalY =
           (
             bounds.top +
             bounds.bottom
           )
-          / 2;
+          /
+          2;
 
 
 
@@ -1809,7 +1920,8 @@
                 item.collision.left +
                 item.collision.right
               )
-              / 2;
+              /
+              2;
 
 
             const cy =
@@ -1817,36 +1929,27 @@
                 item.collision.top +
                 item.collision.bottom
               )
-              / 2;
+              /
+              2;
 
 
-            /*
-              Main pull: global center.
-            */
-
-            let targetX =
-              centerX;
-
-
-            let targetY =
-              centerY;
-
-
-
-            /*
-              Mild same-category pull.
-
-              This keeps related material nearby without
-              opening gaps between categories.
-            */
 
             const relatives =
-              placed.filter(
-                other =>
-                  other !== item &&
-                  other.category ===
+              placed
+                .filter(
+                  other =>
+                    other !== item &&
+                    other.category ===
                     item.category
-              );
+                );
+
+
+            let categoryX =
+              globalX;
+
+
+            let categoryY =
+              globalY;
 
 
             if (
@@ -1855,6 +1958,7 @@
 
               let nearest =
                 null;
+
 
               let nearestDistance =
                 Infinity;
@@ -1868,7 +1972,8 @@
                       other.collision.left +
                       other.collision.right
                     )
-                    / 2;
+                    /
+                    2;
 
 
                   const oy =
@@ -1876,10 +1981,11 @@
                       other.collision.top +
                       other.collision.bottom
                     )
-                    / 2;
+                    /
+                    2;
 
 
-                  const distance =
+                  const d =
                     Math.hypot(
                       cx - ox,
                       cy - oy
@@ -1887,18 +1993,18 @@
 
 
                   if (
-                    distance <
+                    d <
                     nearestDistance
                   ) {
 
                     nearestDistance =
-                      distance;
+                      d;
 
-                    nearest =
-                      {
-                        x: ox,
-                        y: oy
-                      };
+
+                    nearest = {
+                      x: ox,
+                      y: oy
+                    };
 
                   }
 
@@ -1910,22 +2016,31 @@
                 nearest
               ) {
 
-                targetX =
-                  centerX *
-                  .66 +
-                  nearest.x *
-                  .34;
+                categoryX =
+                  nearest.x;
 
 
-                targetY =
-                  centerY *
-                  .66 +
-                  nearest.y *
-                  .34;
+                categoryY =
+                  nearest.y;
 
               }
 
             }
+
+
+
+            const targetX =
+              globalX *
+              .74 +
+              categoryX *
+              .26;
+
+
+            const targetY =
+              globalY *
+              .74 +
+              categoryY *
+              .26;
 
 
 
@@ -1948,95 +2063,139 @@
 
             if (
               distance <
-              .5
+              1
             ) {
               return;
             }
 
 
-            /*
-              Several step sizes are attempted.
 
-              Large first, then smaller,
-              so objects settle into narrow pockets.
+            /*
+              Also test slightly rotated movement vectors.
+
+              This allows drawings to slide around blockers
+              and fall into holes instead of getting stuck.
             */
 
-            const steps = [
-              7,
-              4,
-              2,
-              1
+            const baseAngle =
+              Math.atan2(
+                dy,
+                dx
+              );
+
+
+            const angles = [
+
+              baseAngle,
+
+              baseAngle + .16,
+
+              baseAngle - .16,
+
+              baseAngle + .32,
+
+              baseAngle - .32
+
             ];
+
+
+            const steps = [
+              8,
+              5,
+              3,
+              1.5
+            ];
+
+
+            let moved =
+              false;
 
 
             for (
               const step of steps
             ) {
 
-              const amount =
-                Math.min(
-                  step,
-                  distance
-                );
-
-
-              const nextX =
-                item.x +
-                dx /
-                distance *
-                amount;
-
-
-              const nextY =
-                item.y +
-                dy /
-                distance *
-                amount;
-
-
-              const nextCollision =
-                collisionBoxAt(
-                  item,
-                  nextX,
-                  nextY
-                );
-
-
-              const hit =
-                placed.some(
-                  other => {
-
-                    if (
-                      other === item
-                    ) {
-                      return false;
-                    }
-
-
-                    return boxesOverlap(
-                      nextCollision,
-                      other.collision,
-                      .15
-                    );
-
-                  }
-                );
-
-
               if (
-                !hit
+                moved
+              ) {
+                break;
+              }
+
+
+              for (
+                const angle of angles
               ) {
 
-                item.x =
-                  nextX;
+                const nextX =
+                  item.x +
+                  Math.cos(
+                    angle
+                  )
+                  *
+                  step;
 
-                item.y =
-                  nextY;
 
-                item.collision =
-                  nextCollision;
+                const nextY =
+                  item.y +
+                  Math.sin(
+                    angle
+                  )
+                  *
+                  step;
 
-                break;
+
+                const collision =
+                  collisionBoxAt(
+                    item,
+                    nextX,
+                    nextY
+                  );
+
+
+                const hit =
+                  placed.some(
+                    other => {
+
+                      if (
+                        other === item
+                      ) {
+                        return false;
+                      }
+
+
+                      return boxesOverlap(
+                        collision,
+                        other.collision,
+                        .1
+                      );
+
+                    }
+                  );
+
+
+                if (
+                  !hit
+                ) {
+
+                  item.x =
+                    nextX;
+
+
+                  item.y =
+                    nextY;
+
+
+                  item.collision =
+                    collision;
+
+
+                  moved =
+                    true;
+
+
+                  break;
+
+                }
 
               }
 
@@ -2050,10 +2209,10 @@
 
 
       /* ===================================================
-         CROP TO ACTUAL MASS
+         CROP TO FINAL CONTENT
          =================================================== */
 
-      const finalBounds =
+      const bounds =
         getBounds(
           placed.map(
             item =>
@@ -2063,19 +2222,19 @@
 
 
       const padding =
-        42;
+        38;
 
 
       placed.forEach(
         item => {
 
           item.x -=
-            finalBounds.left -
+            bounds.left -
             padding;
 
 
           item.y -=
-            finalBounds.top -
+            bounds.top -
             padding;
 
         }
@@ -2086,8 +2245,8 @@
 
         width:
           (
-            finalBounds.right -
-            finalBounds.left
+            bounds.right -
+            bounds.left
           )
           +
           padding *
@@ -2095,8 +2254,8 @@
 
         height:
           (
-            finalBounds.bottom -
-            finalBounds.top
+            bounds.bottom -
+            bounds.top
           )
           +
           padding *
@@ -2112,7 +2271,7 @@
 
 
     /* =====================================================
-       CREATE DRAWING
+       DRAW ELEMENT
        ===================================================== */
 
     function createDrawing(
@@ -2198,6 +2357,7 @@
     let paperWidth =
       0;
 
+
     let paperHeight =
       0;
 
@@ -2228,10 +2388,6 @@
 
 
 
-      /* ---------------------------------------------
-         MEDIAN SOURCE SIZE
-         --------------------------------------------- */
-
       const linear =
         loaded
           .map(
@@ -2255,7 +2411,8 @@
 
 
       const referenceLinear =
-        linear.length % 2
+        linear.length %
+        2
 
           ? linear[
               middle
@@ -2270,7 +2427,8 @@
                 middle
               ]
             )
-            / 2;
+            /
+            2;
 
 
 
@@ -2306,6 +2464,7 @@
         `${paperHeight}px`;
 
 
+
       layout.items.forEach(
         item => {
 
@@ -2331,35 +2490,21 @@
 
     const view = {
 
-      x:
-        0,
+      x: 0,
+      y: 0,
 
-      y:
-        0,
+      zoom: 1,
 
-      zoom:
-        1,
+      minZoom: .1,
+      maxZoom: 4,
 
-      minZoom:
-        .1,
+      startX: 0,
+      startY: 0,
 
-      maxZoom:
-        4,
+      originX: 0,
+      originY: 0,
 
-      startX:
-        0,
-
-      startY:
-        0,
-
-      originX:
-        0,
-
-      originY:
-        0,
-
-      dragging:
-        false
+      dragging: false
 
     };
 
@@ -2371,22 +2516,23 @@
       zoom
     ) {
 
-      const width =
+      const scaledWidth =
         paperWidth *
         zoom;
 
 
-      const height =
+      const scaledHeight =
         paperHeight *
         zoom;
 
 
-      const vw =
+      const viewportWidth =
         viewport.clientWidth;
 
 
-      const vh =
+      const viewportHeight =
         viewport.clientHeight;
+
 
 
       let minX;
@@ -2397,24 +2543,26 @@
 
 
       if (
-        width <= vw
+        scaledWidth <=
+        viewportWidth
       ) {
 
         minX =
           maxX =
           (
-            vw -
-            width
+            viewportWidth -
+            scaledWidth
           )
-          / 2;
+          /
+          2;
 
       }
 
       else {
 
         minX =
-          vw -
-          width;
+          viewportWidth -
+          scaledWidth;
 
         maxX =
           0;
@@ -2424,24 +2572,26 @@
 
 
       if (
-        height <= vh
+        scaledHeight <=
+        viewportHeight
       ) {
 
         minY =
           maxY =
           (
-            vh -
-            height
+            viewportHeight -
+            scaledHeight
           )
-          / 2;
+          /
+          2;
 
       }
 
       else {
 
         minY =
-          vh -
-          height;
+          viewportHeight -
+          scaledHeight;
 
         maxY =
           0;
@@ -2450,6 +2600,7 @@
 
 
       return {
+
         x:
           clamp(
             x,
@@ -2463,6 +2614,7 @@
             minY,
             maxY
           )
+
       };
 
     }
@@ -2471,31 +2623,29 @@
 
     function updateZoomButtons() {
 
-      const epsilon =
+      const threshold =
         .0005;
 
 
-      const atMin =
+      zoomOutButton.classList.toggle(
+
+        "is-hidden",
+
         view.zoom <=
         view.minZoom +
-        epsilon;
+        threshold
 
-
-      const atMax =
-        view.zoom >=
-        view.maxZoom -
-        epsilon;
-
-
-      zoomOutButton.classList.toggle(
-        "is-hidden",
-        atMin
       );
 
 
       zoomInButton.classList.toggle(
+
         "is-hidden",
-        atMax
+
+        view.zoom >=
+        view.maxZoom -
+        threshold
+
       );
 
     }
@@ -2551,18 +2701,17 @@
 
 
     /* =====================================================
-       INITIAL VIEW
+       INITIAL ZOOM
 
-       Fit all first, then move in substantially.
+       Full spread remains minimum zoom.
 
-       So you begin seeing the whole concept,
-       but already close enough to enjoy the drawings.
+       Start noticeably closer.
        ===================================================== */
 
     function setInitialView() {
 
       const margin =
-        15;
+        12;
 
 
       const fitX =
@@ -2592,35 +2741,26 @@
         );
 
 
-      /*
-        Minimum zoom = true full-spread view.
-      */
-
       view.minZoom =
         fitZoom;
 
 
-      /*
-        Maximum is relative to natural fitted view,
-        so controls remain useful on different screens.
-      */
-
       view.maxZoom =
         Math.max(
           fitZoom *
-          5.2,
-          2.5
+          5,
+          2.7
         );
 
 
       /*
-        Start pretty zoomed in.
+        Starts significantly zoomed in.
       */
 
       const initialZoom =
         Math.min(
           fitZoom *
-          1.38,
+          1.55,
           view.maxZoom
         );
 
@@ -2641,13 +2781,15 @@
           viewport.clientWidth -
           width
         )
-        / 2,
+        /
+        2,
 
         (
           viewport.clientHeight -
           height
         )
-        / 2,
+        /
+        2,
 
         initialZoom
 
@@ -2658,13 +2800,13 @@
 
 
     /* =====================================================
-       ZOOM AROUND POINT
+       ZOOM
        ===================================================== */
 
     function zoomAt(
       x,
       y,
-      nextZoom
+      targetZoom
     ) {
 
       const worldX =
@@ -2687,7 +2829,7 @@
 
       const zoom =
         clamp(
-          nextZoom,
+          targetZoom,
           view.minZoom,
           view.maxZoom
         );
@@ -2749,17 +2891,14 @@
       () => {
 
         zoomCenter(
-          1 / 1.24
+          1 /
+          1.24
         );
 
       }
     );
 
 
-
-    /* =====================================================
-       TRACKPAD / MOUSE ZOOM
-       ===================================================== */
 
     viewport.addEventListener(
       "wheel",
@@ -2798,8 +2937,7 @@
 
       },
       {
-        passive:
-          false
+        passive: false
       }
     );
 
