@@ -135,15 +135,17 @@
 
 
     <!-- =====================================================
-         ILLUSTRATION PAGE
+         ILLUSTRATION
          ===================================================== -->
 
     <main class="illustration-page">
 
       <header class="illustration-header">
+
         <h1 class="illustration-title">
           illustration
         </h1>
+
       </header>
 
 
@@ -161,10 +163,12 @@
             class="sketchbook-paper"
             id="sketchbook-paper"
           >
+
             <div
               class="sketchbook-field"
               id="sketchbook-field"
             ></div>
+
           </div>
 
         </div>
@@ -310,10 +314,12 @@
         "sketchbook-viewport"
       );
 
+
     const paper =
       document.getElementById(
         "sketchbook-paper"
       );
+
 
     const field =
       document.getElementById(
@@ -340,19 +346,12 @@
       min,
       max
     ) {
+
       return Math.min(
         Math.max(value, min),
         max
       );
-    }
 
-
-    function lerp(
-      min,
-      max,
-      t
-    ) {
-      return min + (max - min) * t;
     }
 
 
@@ -360,25 +359,42 @@
       min,
       max
     ) {
-      return min + Math.random() * (max - min);
+
+      return (
+        min +
+        Math.random() *
+        (
+          max -
+          min
+        )
+      );
+
     }
 
 
-    function shuffle(array) {
+    function shuffle(
+      array
+    ) {
 
       const copy =
         [...array];
 
+
       for (
-        let i = copy.length - 1;
+        let i =
+          copy.length - 1;
+
         i > 0;
+
         i--
       ) {
 
         const j =
           Math.floor(
-            Math.random() * (i + 1)
+            Math.random() *
+            (i + 1)
           );
+
 
         [
           copy[i],
@@ -390,31 +406,8 @@
 
       }
 
+
       return copy;
-
-    }
-
-
-    function prefixFromFilename(
-      filename
-    ) {
-
-      return filename
-        .split("-")[0]
-        .toLowerCase();
-
-    }
-
-
-    function normalizeCategory(
-      prefix
-    ) {
-
-      if (prefix === "animals") {
-        return "animal";
-      }
-
-      return prefix;
 
     }
 
@@ -422,9 +415,28 @@
     function categoryFromFilename(
       filename
     ) {
-      return normalizeCategory(
-        prefixFromFilename(filename)
-      );
+
+      let category =
+        filename
+          .split("-")[0]
+          .toLowerCase();
+
+
+      /*
+        Keep the accidentally plural filename
+        with the rest of the animals.
+      */
+
+      if (
+        category === "animals"
+      ) {
+        category =
+          "animal";
+      }
+
+
+      return category;
+
     }
 
 
@@ -435,10 +447,17 @@
     ) {
 
       return !(
-        a.right + padding <= b.left ||
-        a.left >= b.right + padding ||
-        a.bottom + padding <= b.top ||
-        a.top >= b.bottom + padding
+        a.right + padding <=
+          b.left ||
+
+        a.left >=
+          b.right + padding ||
+
+        a.bottom + padding <=
+          b.top ||
+
+        a.top >=
+          b.bottom + padding
       );
 
     }
@@ -455,23 +474,91 @@
         Math.PI /
         180;
 
+
       const cos =
         Math.abs(
-          Math.cos(radians)
+          Math.cos(
+            radians
+          )
         );
+
 
       const sin =
         Math.abs(
-          Math.sin(radians)
+          Math.sin(
+            radians
+          )
         );
 
+
       return {
+
         width:
           width * cos +
           height * sin,
+
         height:
           width * sin +
           height * cos
+
+      };
+
+    }
+
+
+    function boundingBox(
+      boxes
+    ) {
+
+      const left =
+        Math.min(
+          ...boxes.map(
+            box =>
+              box.left
+          )
+        );
+
+
+      const top =
+        Math.min(
+          ...boxes.map(
+            box =>
+              box.top
+          )
+        );
+
+
+      const right =
+        Math.max(
+          ...boxes.map(
+            box =>
+              box.right
+          )
+        );
+
+
+      const bottom =
+        Math.max(
+          ...boxes.map(
+            box =>
+              box.bottom
+          )
+        );
+
+
+      return {
+
+        left,
+        top,
+        right,
+        bottom,
+
+        width:
+          right - left,
+
+        height:
+          bottom - top
+
       };
 
     }
@@ -486,71 +573,144 @@
       filename
     ) {
 
-      return new Promise(resolve => {
+      return new Promise(
+        resolve => {
 
-        const image =
-          new Image();
+          const image =
+            new Image();
 
-        image.src =
-          filename;
 
-        image.decoding =
-          "async";
+          image.src =
+            filename;
 
-        image.onload =
-          () => {
 
-            resolve({
+          image.decoding =
+            "async";
 
-              filename,
 
-              category:
-                categoryFromFilename(filename),
+          image.onload =
+            () => {
 
-              width:
-                image.naturalWidth,
+              resolve({
 
-              height:
-                image.naturalHeight,
+                filename,
 
-              area:
-                image.naturalWidth *
-                image.naturalHeight
+                category:
+                  categoryFromFilename(
+                    filename
+                  ),
 
-            });
+                width:
+                  image.naturalWidth,
 
-          };
+                height:
+                  image.naturalHeight,
 
-        image.onerror =
-          () => {
+                area:
+                  image.naturalWidth *
+                  image.naturalHeight
 
-            console.warn(
-              `Could not load ${filename}`
-            );
+              });
 
-            resolve(null);
+            };
 
-          };
 
-      });
+          image.onerror =
+            () => {
+
+              console.warn(
+                `Could not load ${filename}`
+              );
+
+
+              resolve(
+                null
+              );
+
+            };
+
+        }
+      );
 
     }
 
 
 
     /* =====================================================
-       RENDER SIZE
+       ROBUST SIZE RANGE
 
-       Larger source files still read larger, but:
-       - very tall drawings do not become absurdly huge
-       - tiny drawings do not disappear
-       - everything sits in a tighter common family
+       Use percentiles instead of absolute min/max.
+
+       This stops one giant source file from making
+       everything else microscopic.
+       ===================================================== */
+
+    function percentile(
+      values,
+      fraction
+    ) {
+
+      const sorted =
+        [...values]
+          .sort(
+            (a, b) =>
+              a - b
+          );
+
+
+      const index =
+        (
+          sorted.length - 1
+        ) *
+        fraction;
+
+
+      const lower =
+        Math.floor(index);
+
+
+      const upper =
+        Math.ceil(index);
+
+
+      if (
+        lower === upper
+      ) {
+        return sorted[lower];
+      }
+
+
+      const t =
+        index - lower;
+
+
+      return (
+        sorted[lower] *
+        (1 - t)
+      )
+      +
+      (
+        sorted[upper] *
+        t
+      );
+
+    }
+
+
+
+    /* =====================================================
+       DISPLAY SIZE
+
+       Source dimensions still matter, but subtly.
+
+       The goal is one coherent sketchbook family,
+       not dramatic differences in scale.
        ===================================================== */
 
     function calculateDisplaySize(
       item,
-      minArea,
-      maxArea
+      lowArea,
+      highArea
     ) {
 
       const mobile =
@@ -558,135 +718,186 @@
           "(max-width: 700px)"
         ).matches;
 
-      const sqrtArea =
-        Math.sqrt(item.area);
 
-      const minRoot =
-        Math.sqrt(minArea);
+      const root =
+        Math.sqrt(
+          item.area
+        );
 
-      const maxRoot =
-        Math.sqrt(maxArea);
 
-      let normalized =
+      const lowRoot =
+        Math.sqrt(
+          lowArea
+        );
+
+
+      const highRoot =
+        Math.sqrt(
+          highArea
+        );
+
+
+      let t =
         (
-          sqrtArea -
-          minRoot
+          root -
+          lowRoot
         )
         /
         Math.max(
           1,
-          maxRoot - minRoot
+          highRoot -
+          lowRoot
         );
 
-      normalized =
+
+      t =
         clamp(
-          normalized,
+          t,
           0,
           1
         );
 
-      normalized =
-        Math.pow(
-          normalized,
-          0.82
-        );
-
-      const baseLongest =
-        mobile
-          ? lerp(54, 150, normalized)
-          : lerp(68, 225, normalized);
-
-      const aspect =
-        item.width / item.height;
-
-      let longest =
-        baseLongest;
 
       /*
-        Restrain extreme aspect-ratio drawings
-        such as very tall knives or very wide objects.
+        Very compressed scale variation.
       */
 
-      if (aspect < 0.48) {
-        longest *= 0.86;
-      }
+      const longest =
+        mobile
+          ? 58 + t * 74
+          : 70 + t * 105;
 
-      if (aspect > 2.5) {
-        longest *= 0.88;
-      }
 
-      let displayWidth;
-      let displayHeight;
+      let width;
+      let height;
 
-      if (item.width >= item.height) {
 
-        displayWidth =
+      if (
+        item.width >=
+        item.height
+      ) {
+
+        width =
           longest;
 
-        displayHeight =
+
+        height =
           longest *
-          (
-            item.height /
-            item.width
-          );
+          item.height /
+          item.width;
 
       }
 
       else {
 
-        displayHeight =
+        height =
           longest;
 
-        displayWidth =
+
+        width =
           longest *
-          (
-            item.width /
-            item.height
+          item.width /
+          item.height;
+
+      }
+
+
+      /*
+        Stop ultra-tall/ultra-wide drawings dominating.
+      */
+
+      const maxHeight =
+        mobile
+          ? 150
+          : 215;
+
+
+      const maxWidth =
+        mobile
+          ? 165
+          : 235;
+
+
+      if (
+        height >
+        maxHeight
+      ) {
+
+        const scale =
+          maxHeight /
+          height;
+
+
+        width *=
+          scale;
+
+
+        height *=
+          scale;
+
+      }
+
+
+      if (
+        width >
+        maxWidth
+      ) {
+
+        const scale =
+          maxWidth /
+          width;
+
+
+        width *=
+          scale;
+
+
+        height *=
+          scale;
+
+      }
+
+
+      /*
+        And don't let tiny aspect-ratio drawings disappear.
+      */
+
+      const minLongest =
+        mobile
+          ? 52
+          : 64;
+
+
+      if (
+        Math.max(
+          width,
+          height
+        )
+        <
+        minLongest
+      ) {
+
+        const scale =
+          minLongest /
+          Math.max(
+            width,
+            height
           );
 
-      }
 
-      const maxRenderedHeight =
-        mobile
-          ? 170
-          : 290;
+        width *=
+          scale;
 
-      const minRenderedHeight =
-        mobile
-          ? 34
-          : 44;
 
-      if (
-        displayHeight >
-        maxRenderedHeight
-      ) {
-
-        const scale =
-          maxRenderedHeight /
-          displayHeight;
-
-        displayWidth *= scale;
-        displayHeight *= scale;
+        height *=
+          scale;
 
       }
 
-      if (
-        displayHeight <
-        minRenderedHeight
-      ) {
-
-        const scale =
-          minRenderedHeight /
-          displayHeight;
-
-        displayWidth *= scale;
-        displayHeight *= scale;
-
-      }
 
       return {
-        width: displayWidth,
-        height: displayHeight
+        width,
+        height
       };
 
     }
@@ -694,27 +905,29 @@
 
 
     /* =====================================================
-       PREPARE DRAWINGS
+       PREPARE DRAWING
        ===================================================== */
 
     function prepareDrawing(
       item,
-      minArea,
-      maxArea
+      lowArea,
+      highArea
     ) {
 
       const size =
         calculateDisplaySize(
           item,
-          minArea,
-          maxArea
+          lowArea,
+          highArea
         );
+
 
       const rotation =
         randomBetween(
-          -2.8,
-          2.8
+          -2.5,
+          2.5
         );
+
 
       const bounds =
         rotatedBounds(
@@ -722,6 +935,7 @@
           size.height,
           rotation
         );
+
 
       return {
 
@@ -748,9 +962,191 @@
 
 
     /* =====================================================
-       TIGHT CATEGORY PACKING
+       CANDIDATE POSITIONS
 
-       Each filename prefix gets its own dense little pile.
+       Instead of a spiral from one origin, each new item
+       tries to attach itself to the side/corner of an
+       EXISTING item.
+
+       That's what creates a real clump.
+       ===================================================== */
+
+    function candidatesAroundBox(
+      itemWidth,
+      itemHeight,
+      target,
+      gap
+    ) {
+
+      const cx =
+        (
+          target.left +
+          target.right
+        )
+        / 2;
+
+
+      const cy =
+        (
+          target.top +
+          target.bottom
+        )
+        / 2;
+
+
+      const jitterX =
+        () =>
+          randomBetween(
+            -10,
+            10
+          );
+
+
+      const jitterY =
+        () =>
+          randomBetween(
+            -10,
+            10
+          );
+
+
+      return shuffle([
+
+        /* right */
+
+        {
+          left:
+            target.right +
+            gap,
+
+          top:
+            cy -
+            itemHeight / 2 +
+            jitterY()
+        },
+
+
+        /* left */
+
+        {
+          left:
+            target.left -
+            gap -
+            itemWidth,
+
+          top:
+            cy -
+            itemHeight / 2 +
+            jitterY()
+        },
+
+
+        /* below */
+
+        {
+          left:
+            cx -
+            itemWidth / 2 +
+            jitterX(),
+
+          top:
+            target.bottom +
+            gap
+        },
+
+
+        /* above */
+
+        {
+          left:
+            cx -
+            itemWidth / 2 +
+            jitterX(),
+
+          top:
+            target.top -
+            gap -
+            itemHeight
+        },
+
+
+        /* lower-right */
+
+        {
+          left:
+            target.right +
+            gap,
+
+          top:
+            target.bottom -
+            itemHeight *
+            randomBetween(
+              .20,
+              .78
+            )
+        },
+
+
+        /* upper-right */
+
+        {
+          left:
+            target.right +
+            gap,
+
+          top:
+            target.top -
+            itemHeight *
+            randomBetween(
+              .20,
+              .78
+            )
+        },
+
+
+        /* lower-left */
+
+        {
+          left:
+            target.left -
+            gap -
+            itemWidth,
+
+          top:
+            target.bottom -
+            itemHeight *
+            randomBetween(
+              .20,
+              .78
+            )
+        },
+
+
+        /* upper-left */
+
+        {
+          left:
+            target.left -
+            gap -
+            itemWidth,
+
+          top:
+            target.top -
+            itemHeight *
+            randomBetween(
+              .20,
+              .78
+            )
+        }
+
+      ]);
+
+    }
+
+
+
+    /* =====================================================
+       PACK ONE CATEGORY
        ===================================================== */
 
     function packCategory(
@@ -762,328 +1158,307 @@
           "(max-width: 700px)"
         ).matches;
 
-      const itemGap =
+
+      const gap =
         mobile
           ? 1
           : 2;
 
+
+      const targetAspect =
+        randomBetween(
+          1.05,
+          1.70
+        );
+
+
+      const ordered =
+        [...items]
+          .sort(
+            (a, b) =>
+
+              (
+                b.boxWidth *
+                b.boxHeight
+              )
+              -
+              (
+                a.boxWidth *
+                a.boxHeight
+              )
+
+          );
+
+
       const placed =
         [];
 
-      const ordered =
-        [...items].sort(
-          (a, b) =>
-            (
-              b.boxWidth *
-              b.boxHeight
-            ) -
-            (
-              a.boxWidth *
-              a.boxHeight
-            )
-        );
 
       ordered.forEach(
         (
           item,
-          itemIndex
+          index
         ) => {
 
-          if (itemIndex === 0) {
+          if (
+            index === 0
+          ) {
 
             placed.push({
 
               ...item,
 
               left:
-                -item.boxWidth / 2,
+                0,
 
               top:
-                -item.boxHeight / 2,
+                0,
 
               right:
-                item.boxWidth / 2,
+                item.boxWidth,
 
               bottom:
-                item.boxHeight / 2
+                item.boxHeight
 
             });
+
 
             return;
 
           }
 
-          const GOLDEN_ANGLE =
-            Math.PI *
-            (
-              3 -
-              Math.sqrt(5)
-            );
 
-          let best =
+          let winner =
             null;
 
-          let bestScore =
+
+          let winnerScore =
             Infinity;
 
-          const existing =
-            placed.map(box => ({
-              left: box.left,
-              top: box.top,
-              right: box.right,
-              bottom: box.bottom
-            }));
 
-          for (
-            let attempt = 0;
-            attempt < 2600;
-            attempt++
+          /*
+            Try attaching to every existing drawing.
+          */
+
+          shuffle(
+            placed
+          ).forEach(
+            target => {
+
+              const candidates =
+                candidatesAroundBox(
+                  item.boxWidth,
+                  item.boxHeight,
+                  target,
+                  gap
+                );
+
+
+              candidates.forEach(
+                candidate => {
+
+                  const box = {
+
+                    ...candidate,
+
+                    right:
+                      candidate.left +
+                      item.boxWidth,
+
+                    bottom:
+                      candidate.top +
+                      item.boxHeight
+
+                  };
+
+
+                  const collision =
+                    placed.some(
+                      other =>
+                        boxesOverlap(
+                          box,
+                          other,
+                          gap
+                        )
+                    );
+
+
+                  if (
+                    collision
+                  ) {
+                    return;
+                  }
+
+
+                  const testBoxes = [
+
+                    ...placed,
+
+                    box
+
+                  ];
+
+
+                  const bounds =
+                    boundingBox(
+                      testBoxes
+                    );
+
+
+                  const aspect =
+                    bounds.width /
+                    Math.max(
+                      1,
+                      bounds.height
+                    );
+
+
+                  const area =
+                    bounds.width *
+                    bounds.height;
+
+
+                  const aspectPenalty =
+                    Math.abs(
+                      Math.log(
+                        Math.max(
+                          .01,
+                          aspect /
+                          targetAspect
+                        )
+                      )
+                    )
+                    *
+                    6500;
+
+
+                  /*
+                    Prefer compactness strongly.
+                  */
+
+                  const score =
+                    area +
+                    aspectPenalty +
+                    Math.random() *
+                    1600;
+
+
+                  if (
+                    score <
+                    winnerScore
+                  ) {
+
+                    winnerScore =
+                      score;
+
+
+                    winner =
+                      box;
+
+                  }
+
+                }
+              );
+
+            }
+          );
+
+
+          /*
+            Emergency fallback.
+          */
+
+          if (
+            !winner
           ) {
 
-            const radius =
-              2.1 *
-              Math.sqrt(attempt);
-
-            const angle =
-              attempt *
-              GOLDEN_ANGLE +
-              randomBetween(
-                -0.07,
-                0.07
+            const bounds =
+              boundingBox(
+                placed
               );
 
-            const centerX =
-              Math.cos(angle) *
-              radius;
 
-            const centerY =
-              Math.sin(angle) *
-              radius;
-
-            const candidate = {
+            winner = {
 
               left:
-                centerX -
-                item.boxWidth / 2,
+                bounds.right +
+                gap,
 
               top:
-                centerY -
-                item.boxHeight / 2,
+                bounds.top,
 
               right:
-                centerX +
-                item.boxWidth / 2,
-
-              bottom:
-                centerY +
-                item.boxHeight / 2
-
-            };
-
-            const collision =
-              existing.some(
-                other =>
-                  boxesOverlap(
-                    candidate,
-                    other,
-                    itemGap
-                  )
-              );
-
-            if (collision) {
-              continue;
-            }
-
-            let minX =
-              candidate.left;
-
-            let minY =
-              candidate.top;
-
-            let maxX =
-              candidate.right;
-
-            let maxY =
-              candidate.bottom;
-
-            existing.forEach(other => {
-              minX =
-                Math.min(minX, other.left);
-              minY =
-                Math.min(minY, other.top);
-              maxX =
-                Math.max(maxX, other.right);
-              maxY =
-                Math.max(maxY, other.bottom);
-            });
-
-            const unionWidth =
-              maxX - minX;
-
-            const unionHeight =
-              maxY - minY;
-
-            const unionArea =
-              unionWidth *
-              unionHeight;
-
-            const distance =
-              Math.hypot(
-                centerX,
-                centerY
-              );
-
-            const compactnessPenalty =
-              unionArea +
-              distance * 22;
-
-            if (
-              compactnessPenalty <
-              bestScore
-            ) {
-
-              bestScore =
-                compactnessPenalty;
-
-              best =
-                candidate;
-
-            }
-
-          }
-
-          if (!best) {
-
-            const furthestRight =
-              Math.max(
-                ...placed.map(
-                  box => box.right
-                )
-              );
-
-            best = {
-
-              left:
-                furthestRight +
-                itemGap,
-
-              top:
-                -item.boxHeight / 2,
-
-              right:
-                furthestRight +
-                itemGap +
+                bounds.right +
+                gap +
                 item.boxWidth,
 
               bottom:
-                item.boxHeight / 2
+                bounds.top +
+                item.boxHeight
 
             };
 
           }
 
+
           placed.push({
+
             ...item,
-            ...best
+            ...winner
+
           });
 
         }
       );
 
-      const minX =
-        Math.min(
-          ...placed.map(
-            item => item.left
-          )
+
+
+      /* ---------------------------------------------
+         NORMALIZE
+         --------------------------------------------- */
+
+      const bounds =
+        boundingBox(
+          placed
         );
 
-      const minY =
-        Math.min(
-          ...placed.map(
-            item => item.top
-          )
-        );
 
-      const maxX =
-        Math.max(
-          ...placed.map(
-            item => item.right
-          )
-        );
-
-      const maxY =
-        Math.max(
-          ...placed.map(
-            item => item.bottom
-          )
-        );
-
-      return {
-
-        items:
-          placed.map(item => ({
+      const normalized =
+        placed.map(
+          item => ({
 
             ...item,
 
             left:
-              item.left - minX,
+              item.left -
+              bounds.left,
 
             top:
-              item.top - minY,
+              item.top -
+              bounds.top,
 
             right:
-              item.right - minX,
+              item.right -
+              bounds.left,
 
             bottom:
-              item.bottom - minY
+              item.bottom -
+              bounds.top
 
-          })),
+          })
+        );
 
-        width:
-          maxX - minX,
-
-        height:
-          maxY - minY
-
-      };
-
-    }
-
-
-
-    /* =====================================================
-       GROUP ANCHORS
-
-       These keep the overall spread wide and top-to-bottom,
-       but still allow local randomness.
-       ===================================================== */
-
-    function buildAnchors() {
 
       return {
 
-        vehicle: [0.07, 0.12],
-        group: [0.18, 0.16],
-        fishing: [0.88, 0.12],
-        insect: [0.49, 0.13],
+        items:
+          normalized,
 
-        figure: [0.40, 0.33],
-        ghost: [0.52, 0.35],
-        multiple: [0.63, 0.34],
-        kitchen: [0.74, 0.33],
+        width:
+          bounds.width,
 
-        animal: [0.16, 0.46],
-        face: [0.10, 0.66],
-        object: [0.67, 0.53],
-        perspective: [0.83, 0.47],
-
-        house: [0.21, 0.78],
-        city: [0.86, 0.76],
-        nature: [0.38, 0.84],
-        food: [0.55, 0.80],
-
-        music: [0.72, 0.88],
-        misc: [0.92, 0.89]
+        height:
+          bounds.height
 
       };
 
@@ -1092,13 +1467,16 @@
 
 
     /* =====================================================
-       PLACE GROUPS INTO A WIDE COMPOSITION
+       PACK CATEGORY CLUSTERS
+
+       Same idea as individual artwork:
+       groups attach to groups.
+
+       No rows.
        ===================================================== */
 
-    function placeGroupsIntoComposition(
-      groups,
-      compositionWidth,
-      compositionHeight
+    function packGroups(
+      groups
     ) {
 
       const mobile =
@@ -1106,236 +1484,321 @@
           "(max-width: 700px)"
         ).matches;
 
-      const groupGap =
-        mobile
-          ? 8
-          : 12;
 
-      const anchorMap =
-        buildAnchors();
+      const gap =
+        mobile
+          ? 7
+          : 11;
+
+
+      /*
+        Overall spread should be deliberately wide.
+      */
+
+      const TARGET_ASPECT =
+        mobile
+          ? 2.2
+          : 3.15;
+
+
+      const ordered =
+        shuffle(
+          groups
+        )
+        .sort(
+          (a, b) =>
+
+            (
+              b.width *
+              b.height
+            )
+            -
+            (
+              a.width *
+              a.height
+            )
+
+        );
+
 
       const placed =
         [];
 
-      const renderOrder = [
-        "vehicle",
-        "group",
-        "fishing",
-        "insect",
 
-        "figure",
-        "ghost",
-        "multiple",
-        "kitchen",
+      ordered.forEach(
+        (
+          group,
+          index
+        ) => {
 
-        "animal",
-        "face",
-        "object",
-        "perspective",
-
-        "house",
-        "city",
-        "nature",
-        "food",
-
-        "music",
-        "misc"
-      ];
-
-      const completeOrder =
-        [
-          ...renderOrder,
-          ...groups
-            .map(group => group.category)
-            .filter(
-              category =>
-                !renderOrder.includes(category)
-            )
-        ];
-
-      completeOrder.forEach(
-        category => {
-
-          const group =
-            groups.find(
-              item =>
-                item.category === category
-            );
-
-          if (!group) {
-            return;
-          }
-
-          const anchor =
-            anchorMap[group.category] ||
-            [0.5, 0.5];
-
-          const anchorX =
-            anchor[0] *
-            compositionWidth;
-
-          const anchorY =
-            anchor[1] *
-            compositionHeight;
-
-          const GOLDEN_ANGLE =
-            Math.PI *
-            (
-              3 -
-              Math.sqrt(5)
-            );
-
-          let best =
-            null;
-
-          let bestScore =
-            Infinity;
-
-          for (
-            let attempt = 0;
-            attempt < 3500;
-            attempt++
+          if (
+            index === 0
           ) {
 
-            let centerX;
-            let centerY;
+            placed.push({
 
-            if (attempt === 0) {
+              ...group,
 
-              centerX =
-                anchorX;
+              left:
+                0,
 
-              centerY =
-                anchorY;
+              top:
+                0,
 
-            }
+              right:
+                group.width,
 
-            else {
+              bottom:
+                group.height
 
-              const radius =
-                5.8 *
-                Math.sqrt(attempt);
+            });
 
-              const angle =
-                attempt *
-                GOLDEN_ANGLE +
-                randomBetween(
-                  -0.16,
-                  0.16
+
+            return;
+
+          }
+
+
+          let winner =
+            null;
+
+
+          let winnerScore =
+            Infinity;
+
+
+          shuffle(
+            placed
+          ).forEach(
+            target => {
+
+              /*
+                More candidate variations for whole groups.
+              */
+
+              for (
+                let repeat = 0;
+                repeat < 8;
+                repeat++
+              ) {
+
+                const candidates =
+                  candidatesAroundBox(
+                    group.width,
+                    group.height,
+                    target,
+                    gap
+                  );
+
+
+                candidates.forEach(
+                  candidate => {
+
+                    const box = {
+
+                      ...candidate,
+
+                      right:
+                        candidate.left +
+                        group.width,
+
+                      bottom:
+                        candidate.top +
+                        group.height
+
+                    };
+
+
+                    const collision =
+                      placed.some(
+                        other =>
+                          boxesOverlap(
+                            box,
+                            other,
+                            gap
+                          )
+                      );
+
+
+                    if (
+                      collision
+                    ) {
+                      return;
+                    }
+
+
+                    const test =
+                      [
+                        ...placed,
+                        box
+                      ];
+
+
+                    const bounds =
+                      boundingBox(
+                        test
+                      );
+
+
+                    const aspect =
+                      bounds.width /
+                      Math.max(
+                        1,
+                        bounds.height
+                      );
+
+
+                    const area =
+                      bounds.width *
+                      bounds.height;
+
+
+                    /*
+                      Encourage ~3:1 width,
+                      but do NOT force rows.
+                    */
+
+                    const aspectPenalty =
+                      Math.abs(
+                        Math.log(
+                          Math.max(
+                            .01,
+                            aspect /
+                            TARGET_ASPECT
+                          )
+                        )
+                      )
+                      *
+                      26000;
+
+
+                    /*
+                      Also reward using the full vertical field.
+                    */
+
+                    const tooFlatPenalty =
+                      bounds.height <
+                      bounds.width /
+                      4.25
+
+                        ? (
+                            bounds.width /
+                            4.25 -
+                            bounds.height
+                          )
+                          *
+                          750
+
+                        : 0;
+
+
+                    const score =
+                      area +
+                      aspectPenalty +
+                      tooFlatPenalty +
+                      Math.random() *
+                      8000;
+
+
+                    if (
+                      score <
+                      winnerScore
+                    ) {
+
+                      winnerScore =
+                        score;
+
+
+                      winner =
+                        box;
+
+                    }
+
+                  }
                 );
 
-              centerX =
-                anchorX +
-                Math.cos(angle) *
-                radius *
-                1.24;
-
-              centerY =
-                anchorY +
-                Math.sin(angle) *
-                radius *
-                0.95;
+              }
 
             }
+          );
 
-            const left =
-              clamp(
-                centerX -
-                group.width / 2,
-                0,
-                compositionWidth - group.width
+
+          if (
+            !winner
+          ) {
+
+            const bounds =
+              boundingBox(
+                placed
               );
 
-            const top =
-              clamp(
-                centerY -
-                group.height / 2,
-                0,
-                compositionHeight - group.height
-              );
 
-            const candidate = {
+            winner = {
 
-              left,
-              top,
+              left:
+                bounds.right +
+                gap,
+
+              top:
+                bounds.top,
+
               right:
-                left + group.width,
+                bounds.right +
+                gap +
+                group.width,
+
               bottom:
-                top + group.height
+                bounds.top +
+                group.height
 
             };
 
-            const collision =
-              placed.some(
-                other =>
-                  boxesOverlap(
-                    candidate,
-                    other,
-                    groupGap
-                  )
-              );
-
-            if (collision) {
-              continue;
-            }
-
-            const distanceFromAnchor =
-              Math.hypot(
-                (
-                  left + group.width / 2
-                ) - anchorX,
-                (
-                  top + group.height / 2
-                ) - anchorY
-              );
-
-            const score =
-              distanceFromAnchor +
-              attempt * 0.06;
-
-            if (score < bestScore) {
-              bestScore = score;
-              best = candidate;
-            }
-
           }
 
-          if (!best) {
-
-            const fallbackLeft =
-              clamp(
-                anchorX - group.width / 2,
-                0,
-                compositionWidth - group.width
-              );
-
-            const fallbackTop =
-              clamp(
-                anchorY - group.height / 2,
-                0,
-                compositionHeight - group.height
-              );
-
-            best = {
-              left: fallbackLeft,
-              top: fallbackTop,
-              right:
-                fallbackLeft + group.width,
-              bottom:
-                fallbackTop + group.height
-            };
-
-          }
 
           placed.push({
+
             ...group,
-            ...best
+            ...winner
+
           });
 
         }
       );
 
-      return placed;
+
+      const bounds =
+        boundingBox(
+          placed
+        );
+
+
+      return {
+
+        groups:
+          placed.map(
+            group => ({
+
+              ...group,
+
+              left:
+                group.left -
+                bounds.left,
+
+              top:
+                group.top -
+                bounds.top
+
+            })
+          ),
+
+        width:
+          bounds.width,
+
+        height:
+          bounds.height
+
+      };
 
     }
 
@@ -1345,59 +1808,83 @@
        DRAWING DOM
        ===================================================== */
 
-    function createDrawingElement(
+    function createDrawing(
       item
     ) {
 
       const wrapper =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       wrapper.className =
         "drawing";
 
+
       wrapper.style.left =
         `${item.left}px`;
+
 
       wrapper.style.top =
         `${item.top}px`;
 
+
       wrapper.style.width =
         `${item.boxWidth}px`;
+
 
       wrapper.style.height =
         `${item.boxHeight}px`;
 
+
+
       const image =
-        document.createElement("img");
+        document.createElement(
+          "img"
+        );
+
 
       image.className =
         "drawing-art";
 
+
       image.src =
         item.filename;
+
 
       image.alt =
         "";
 
+
       image.loading =
         "lazy";
+
 
       image.decoding =
         "async";
 
+
       image.draggable =
         false;
+
 
       image.style.width =
         `${item.displayWidth}px`;
 
+
       image.style.height =
         `${item.displayHeight}px`;
+
 
       image.style.transform =
         `translate(-50%, -50%) rotate(${item.rotation}deg)`;
 
-      wrapper.appendChild(image);
+
+      wrapper.appendChild(
+        image
+      );
+
 
       return wrapper;
 
@@ -1406,181 +1893,292 @@
 
 
     /* =====================================================
-       BUILD LAYOUT
+       BUILD
        ===================================================== */
 
-    let paperWidth = 0;
-    let paperHeight = 0;
+    let paperWidth =
+      0;
 
-    let compositionWidth = 0;
-    let compositionHeight = 0;
+
+    let paperHeight =
+      0;
+
 
     async function buildSketchbook() {
 
       field.innerHTML =
         "";
 
+
       const loaded =
         (
           await Promise.all(
-            files.map(loadImageData)
+            files.map(
+              loadImageData
+            )
           )
         )
         .filter(Boolean);
 
-      if (!loaded.length) {
+
+      if (
+        !loaded.length
+      ) {
         return;
       }
 
-      const minArea =
-        Math.min(
-          ...loaded.map(
-            item => item.area
-          )
+
+
+      /* ---------------------------------------------
+         ROBUST SOURCE DIMENSION RANGE
+         --------------------------------------------- */
+
+      const areas =
+        loaded.map(
+          item =>
+            item.area
         );
 
-      const maxArea =
-        Math.max(
-          ...loaded.map(
-            item => item.area
-          )
+
+      const lowArea =
+        percentile(
+          areas,
+          .10
         );
+
+
+      const highArea =
+        percentile(
+          areas,
+          .90
+        );
+
+
 
       const prepared =
-        loaded.map(item =>
-          prepareDrawing(
-            item,
-            minArea,
-            maxArea
-          )
+        loaded.map(
+          item =>
+            prepareDrawing(
+              item,
+              lowArea,
+              highArea
+            )
         );
 
-      const byCategory =
+
+
+      /* ---------------------------------------------
+         GROUP EXACTLY BY NAME PREFIX
+         --------------------------------------------- */
+
+      const categories =
         new Map();
 
-      prepared.forEach(item => {
 
-        if (
-          !byCategory.has(item.category)
-        ) {
-          byCategory.set(
-            item.category,
-            []
-          );
+      prepared.forEach(
+        item => {
+
+          if (
+            !categories.has(
+              item.category
+            )
+          ) {
+
+            categories.set(
+              item.category,
+              []
+            );
+
+          }
+
+
+          categories
+            .get(
+              item.category
+            )
+            .push(
+              item
+            );
+
         }
+      );
 
-        byCategory
-          .get(item.category)
-          .push(item);
 
-      });
 
-      const packedGroups =
+      /* ---------------------------------------------
+         PACK EACH GROUP
+         --------------------------------------------- */
+
+      const groups =
         [];
 
-      byCategory.forEach(
-        (items, category) => {
 
-          packedGroups.push({
+      categories.forEach(
+        (
+          items,
+          category
+        ) => {
+
+          groups.push({
 
             category,
 
-            ...packCategory(items)
+            ...packCategory(
+              items
+            )
 
           });
 
         }
       );
 
+
+
+      /* ---------------------------------------------
+         PACK GROUPS TOGETHER
+         --------------------------------------------- */
+
+      const layout =
+        packGroups(
+          groups
+        );
+
+
+
       const mobile =
         window.matchMedia(
           "(max-width: 700px)"
         ).matches;
 
-      /*
-        Wide strip, more like the Photoshop composition.
-      */
-
-      compositionWidth =
-        mobile
-          ? Math.max(
-              1350,
-              viewport.clientWidth * 2.35
-            )
-          : Math.max(
-              2900,
-              viewport.clientWidth * 2.65
-            );
-
-      compositionHeight =
-        mobile
-          ? Math.max(
-              760,
-              viewport.clientHeight * 1.20
-            )
-          : Math.max(
-              1120,
-              viewport.clientHeight * 1.34
-            );
-
-      const placedGroups =
-        placeGroupsIntoComposition(
-          packedGroups,
-          compositionWidth,
-          compositionHeight
-        );
 
       const padding =
         mobile
-          ? 36
-          : 54;
+          ? 28
+          : 40;
+
+
 
       paperWidth =
-        compositionWidth +
+        layout.width +
         padding * 2;
 
+
       paperHeight =
-        compositionHeight +
+        layout.height +
         padding * 2;
+
+
+
+      /*
+        Preserve a convincingly wide sheet,
+        but let the content determine most dimensions.
+      */
+
+      const minimumAspect =
+        mobile
+          ? 2.15
+          : 2.85;
+
+
+      if (
+        paperWidth /
+        paperHeight <
+        minimumAspect
+      ) {
+
+        paperWidth =
+          paperHeight *
+          minimumAspect;
+
+      }
+
+
 
       paper.style.width =
         `${paperWidth}px`;
 
+
       paper.style.height =
         `${paperHeight}px`;
 
-      placedGroups.forEach(group => {
 
-        const groupElement =
-          document.createElement("div");
 
-        groupElement.className =
-          "drawing-group";
+      const xOffset =
+        (
+          paperWidth -
+          layout.width
+        )
+        / 2;
 
-        groupElement.dataset.category =
-          group.category;
 
-        groupElement.style.left =
-          `${padding + group.left}px`;
+      const yOffset =
+        (
+          paperHeight -
+          layout.height
+        )
+        / 2;
 
-        groupElement.style.top =
-          `${padding + group.top}px`;
 
-        groupElement.style.width =
-          `${group.width}px`;
 
-        groupElement.style.height =
-          `${group.height}px`;
+      layout.groups.forEach(
+        group => {
 
-        group.items.forEach(item => {
-          groupElement.appendChild(
-            createDrawingElement(item)
+          const element =
+            document.createElement(
+              "div"
+            );
+
+
+          element.className =
+            "drawing-group";
+
+
+          element.dataset.category =
+            group.category;
+
+
+          element.style.left =
+            `${
+              xOffset +
+              group.left
+            }px`;
+
+
+          element.style.top =
+            `${
+              yOffset +
+              group.top
+            }px`;
+
+
+          element.style.width =
+            `${group.width}px`;
+
+
+          element.style.height =
+            `${group.height}px`;
+
+
+          group.items.forEach(
+            item => {
+
+              element.appendChild(
+                createDrawing(
+                  item
+                )
+              );
+
+            }
           );
-        });
 
-        field.appendChild(groupElement);
 
-      });
+          field.appendChild(
+            element
+          );
+
+        }
+      );
+
 
       setInitialView();
 
@@ -1593,17 +2191,39 @@
        ===================================================== */
 
     const view = {
-      x: 0,
-      y: 0,
-      zoom: 1,
-      minZoom: 0.85,
-      maxZoom: 2.15,
-      startX: 0,
-      startY: 0,
-      originX: 0,
-      originY: 0,
-      dragging: false
+
+      x:
+        0,
+
+      y:
+        0,
+
+      zoom:
+        1,
+
+      minZoom:
+        .45,
+
+      maxZoom:
+        2.8,
+
+      startX:
+        0,
+
+      startY:
+        0,
+
+      originX:
+        0,
+
+      originY:
+        0,
+
+      dragging:
+        false
+
     };
+
 
 
     function clampPan(
@@ -1613,24 +2233,34 @@
     ) {
 
       const scaledWidth =
-        paperWidth * zoom;
+        paperWidth *
+        zoom;
+
 
       const scaledHeight =
-        paperHeight * zoom;
+        paperHeight *
+        zoom;
+
 
       const viewportWidth =
         viewport.clientWidth;
 
+
       const viewportHeight =
         viewport.clientHeight;
+
+
 
       let minX;
       let maxX;
       let minY;
       let maxY;
 
+
+
       if (
-        scaledWidth <= viewportWidth
+        scaledWidth <=
+        viewportWidth
       ) {
 
         minX =
@@ -1638,7 +2268,8 @@
           (
             viewportWidth -
             scaledWidth
-          ) / 2;
+          )
+          / 2;
 
       }
 
@@ -1653,8 +2284,11 @@
 
       }
 
+
+
       if (
-        scaledHeight <= viewportHeight
+        scaledHeight <=
+        viewportHeight
       ) {
 
         minY =
@@ -1662,7 +2296,8 @@
           (
             viewportHeight -
             scaledHeight
-          ) / 2;
+          )
+          / 2;
 
       }
 
@@ -1677,14 +2312,25 @@
 
       }
 
+
       return {
         x:
-          clamp(x, minX, maxX),
+          clamp(
+            x,
+            minX,
+            maxX
+          ),
+
         y:
-          clamp(y, minY, maxY)
+          clamp(
+            y,
+            minY,
+            maxY
+          )
       };
 
     }
+
 
 
     function applyView() {
@@ -1695,36 +2341,53 @@
     }
 
 
+
     function setView(
-      nextX,
-      nextY,
-      nextZoom
+      x,
+      y,
+      zoom
     ) {
 
       view.zoom =
         clamp(
-          nextZoom,
+          zoom,
           view.minZoom,
           view.maxZoom
         );
 
-      const clamped =
+
+      const position =
         clampPan(
-          nextX,
-          nextY,
+          x,
+          y,
           view.zoom
         );
 
+
       view.x =
-        clamped.x;
+        position.x;
+
 
       view.y =
-        clamped.y;
+        position.y;
+
 
       applyView();
 
     }
 
+
+
+    /* =====================================================
+       INITIAL VIEW
+
+       Scale by PAPER HEIGHT.
+
+       So the sheet fills the viewport vertically,
+       while its much greater width extends off-screen.
+
+       This is the Photoshop-reference behavior.
+       ===================================================== */
 
     function setInitialView() {
 
@@ -1733,33 +2396,82 @@
           "(max-width: 700px)"
         ).matches;
 
-      const initialZoom =
+
+      const verticalFill =
         mobile
-          ? 1.04
-          : 1.15;
+          ? .96
+          : .97;
+
+
+      let zoom =
+        (
+          viewport.clientHeight *
+          verticalFill
+        )
+        /
+        paperHeight;
+
+
+      /*
+        Start a little more zoomed-in than "fit".
+      */
+
+      zoom *=
+        mobile
+          ? 1.08
+          : 1.14;
+
+
+      zoom =
+        clamp(
+          zoom,
+          .58,
+          1.55
+        );
+
+
+      /*
+        Min zoom should still allow the user
+        to pull back and see most of the spread.
+      */
+
+      view.minZoom =
+        Math.max(
+          .38,
+          zoom * .68
+        );
+
 
       const scaledWidth =
-        paperWidth * initialZoom;
+        paperWidth *
+        zoom;
+
 
       const scaledHeight =
-        paperHeight * initialZoom;
+        paperHeight *
+        zoom;
 
-      const startX =
+
+      const x =
         (
           viewport.clientWidth -
           scaledWidth
-        ) / 2;
+        )
+        / 2;
 
-      const startY =
+
+      const y =
         (
           viewport.clientHeight -
           scaledHeight
-        ) / 2;
+        )
+        / 2;
+
 
       setView(
-        startX,
-        startY,
-        initialZoom
+        x,
+        y,
+        zoom
       );
 
     }
@@ -1767,7 +2479,7 @@
 
 
     /* =====================================================
-       POINTER DRAGGING
+       DRAG
        ===================================================== */
 
     viewport.addEventListener(
@@ -1777,21 +2489,27 @@
         view.dragging =
           true;
 
+
         view.startX =
           event.clientX;
+
 
         view.startY =
           event.clientY;
 
+
         view.originX =
           view.x;
+
 
         view.originY =
           view.y;
 
+
         viewport.classList.add(
           "is-dragging"
         );
+
 
         viewport.setPointerCapture(
           event.pointerId
@@ -1805,19 +2523,30 @@
       "pointermove",
       event => {
 
-        if (!view.dragging) {
+        if (
+          !view.dragging
+        ) {
           return;
         }
 
+
         const dx =
-          event.clientX - view.startX;
+          event.clientX -
+          view.startX;
+
 
         const dy =
-          event.clientY - view.startY;
+          event.clientY -
+          view.startY;
+
 
         setView(
-          view.originX + dx,
-          view.originY + dy,
+          view.originX +
+          dx,
+
+          view.originY +
+          dy,
+
           view.zoom
         );
 
@@ -1830,6 +2559,7 @@
       view.dragging =
         false;
 
+
       viewport.classList.remove(
         "is-dragging"
       );
@@ -1841,6 +2571,7 @@
       "pointerup",
       finishDrag
     );
+
 
     viewport.addEventListener(
       "pointercancel",
@@ -1859,44 +2590,66 @@
 
         event.preventDefault();
 
+
         const rect =
           viewport.getBoundingClientRect();
 
+
         const pointerX =
-          event.clientX - rect.left;
+          event.clientX -
+          rect.left;
+
 
         const pointerY =
-          event.clientY - rect.top;
+          event.clientY -
+          rect.top;
 
-        const contentX =
+
+        const worldX =
           (
-            pointerX - view.x
-          ) / view.zoom;
+            pointerX -
+            view.x
+          )
+          /
+          view.zoom;
 
-        const contentY =
+
+        const worldY =
           (
-            pointerY - view.y
-          ) / view.zoom;
+            pointerY -
+            view.y
+          )
+          /
+          view.zoom;
 
-        const zoomFactor =
+
+        const factor =
           event.deltaY < 0
-            ? 1.08
-            : 1 / 1.08;
+            ? 1.075
+            : 1 / 1.075;
+
 
         const nextZoom =
           clamp(
-            view.zoom * zoomFactor,
+            view.zoom *
+            factor,
+
             view.minZoom,
             view.maxZoom
           );
 
+
         const nextX =
           pointerX -
-          contentX * nextZoom;
+          worldX *
+          nextZoom;
+
 
         const nextY =
           pointerY -
-          contentY * nextZoom;
+          worldY *
+          nextZoom;
+
 
         setView(
           nextX,
@@ -1906,7 +2659,8 @@
 
       },
       {
-        passive: false
+        passive:
+          false
       }
     );
 
@@ -1919,6 +2673,7 @@
     let resizeTimer =
       null;
 
+
     window.addEventListener(
       "resize",
       () => {
@@ -1927,10 +2682,11 @@
           resizeTimer
         );
 
+
         resizeTimer =
           window.setTimeout(
             buildSketchbook,
-            160
+            180
           );
 
       }
