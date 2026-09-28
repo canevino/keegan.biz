@@ -68,6 +68,7 @@ video {
 
 a {
   color: inherit;
+
   text-decoration: none;
 }
 
@@ -84,7 +85,7 @@ a {
 
 
 /* =========================================================
-   SCARF NAVIGATION — LARGE DESKTOP
+   SCARF NAVIGATION — DESKTOP
    ========================================================= */
 
 .scarf-rack {
@@ -144,7 +145,8 @@ a {
   width: 100%;
   height: 100%;
 
-  object-fit: contain;
+  object-fit:
+    contain;
 
   object-position:
     right center;
@@ -245,6 +247,55 @@ a {
 
 
 /* =========================================================
+   LOADING
+   ========================================================= */
+
+.motion-loading {
+  display: block;
+
+  min-height:
+    clamp(
+      500px,
+      70vh,
+      840px
+    );
+
+  margin-top:
+    clamp(
+      26px,
+      3vw,
+      42px
+    );
+
+  color:
+    var(--red);
+
+  font-size:
+    clamp(
+      18px,
+      1.5vw,
+      24px
+    );
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing:
+    -.035em;
+
+  text-transform:
+    lowercase;
+}
+
+
+.motion-loading.is-hidden {
+  display: none;
+}
+
+
+
+/* =========================================================
    VIDEO GRID
    ========================================================= */
 
@@ -275,8 +326,51 @@ a {
       3vw,
       42px
     );
+
+  opacity: 1;
+
+  visibility: visible;
 }
 
+
+.motion-grid.is-loading {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+}
+
+
+.motion-grid.is-ready {
+  position: relative;
+
+  width: 100%;
+  height: auto;
+
+  overflow: visible;
+
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+}
+
+
+
+/* =========================================================
+   VIDEO
+   ========================================================= */
 
 .motion-item {
   margin: 0;
@@ -286,21 +380,38 @@ a {
   overflow: hidden;
 
   background:
-    transparent;
+    #000;
 }
 
 
 .motion-item video {
-  width: 100%;
+  display: block;
 
+  width: 100%;
   height: auto;
 
-  aspect-ratio: 9 / 16;
+  aspect-ratio:
+    9 / 16;
 
-  object-fit: cover;
+  object-fit:
+    cover;
 
   background:
     #000;
+
+  /*
+    Prevent browsers from presenting the video itself like
+    a tappable media-player UI.
+  */
+
+  pointer-events:
+    none;
+
+  -webkit-user-select:
+    none;
+
+  user-select:
+    none;
 }
 
 
@@ -422,9 +533,11 @@ and (
     width: 100%;
     height: auto;
 
-    object-fit: contain;
+    object-fit:
+      contain;
 
-    object-position: center;
+    object-position:
+      center;
   }
 
 
@@ -485,6 +598,11 @@ and (
   }
 
 
+
+  /* -------------------------------------------------------
+     SCARFS
+     ------------------------------------------------------- */
+
   .scarf-rack {
     position: relative;
 
@@ -540,8 +658,7 @@ and (
         275px
       );
 
-    height:
-      auto;
+    height: auto;
 
     transform: none;
   }
@@ -551,9 +668,11 @@ and (
     width: 100%;
     height: auto;
 
-    object-fit: contain;
+    object-fit:
+      contain;
 
-    object-position: center;
+    object-position:
+      center;
   }
 
 
@@ -571,6 +690,11 @@ and (
     transform: none;
   }
 
+
+
+  /* -------------------------------------------------------
+     PAGE
+     ------------------------------------------------------- */
 
   .motion-page {
     width: 100%;
@@ -596,11 +720,27 @@ and (
   }
 
 
-  /*
-    Keep the 2×2 structure on mobile too.
-    Since these are portrait videos, two across should
-    still read well.
-  */
+
+  /* -------------------------------------------------------
+     LOADING
+     ------------------------------------------------------- */
+
+  .motion-loading {
+    min-height:
+      55svh;
+
+    margin-top:
+      24px;
+
+    font-size:
+      20px;
+  }
+
+
+
+  /* -------------------------------------------------------
+     GRID
+     ------------------------------------------------------- */
 
   .motion-grid {
     grid-template-columns:
@@ -612,8 +752,7 @@ and (
         )
       );
 
-    gap:
-      8px;
+    gap: 8px;
 
     margin-top:
       24px;
@@ -665,8 +804,7 @@ and (
 
 
   .motion-grid {
-    gap:
-      6px;
+    gap: 6px;
   }
 
 }
@@ -726,8 +864,8 @@ and (
 /* =========================================================
    REDUCED MOTION
 
-   Don't stop the artwork itself — these are motion pieces.
-   Only remove interface animation.
+   These videos are the artwork, so don't disable them.
+   Only disable interface animation.
    ========================================================= */
 
 @media (
