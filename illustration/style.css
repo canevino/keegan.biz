@@ -41,15 +41,19 @@ body {
 
   overflow-x: hidden;
 
-  background: var(--paper);
-  color: var(--ink);
+  background:
+    var(--paper);
+
+  color:
+    var(--ink);
 
   font-family:
     Helvetica,
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing:
+    antialiased;
 }
 
 
@@ -67,7 +71,7 @@ a {
 
 
 /* =========================================================
-   PAGE SHELL
+   PAGE
    ========================================================= */
 
 .page-shell {
@@ -82,19 +86,25 @@ a {
 
 .scarf-rack {
   position: fixed;
+
   top: 14px;
   right: 12px;
+
   z-index: 50;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-end;
+
   gap: 6px;
 }
 
 
 .scarf-item {
   position: relative;
+
   display: block;
 
   height:
@@ -104,18 +114,25 @@ a {
       108px
     );
 
-  transform-origin: right center;
+  transform-origin:
+    right center;
 
   transition:
     transform
     220ms
-    cubic-bezier(.2, .8, .2, 1);
+    cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
 }
 
 
 .scarf-item img {
   width: auto;
   height: 100%;
+
   object-fit: contain;
 
   filter:
@@ -123,13 +140,19 @@ a {
       0
       2px
       1px
-      rgba(17, 17, 15, .06)
+      rgba(
+        17,
+        17,
+        15,
+        .06
+      )
     );
 }
 
 
 .scarf-home {
-  transform: scale(1.045);
+  transform:
+    scale(1.045);
 }
 
 
@@ -169,7 +192,7 @@ a {
 
 
 /* =========================================================
-   TITLE
+   HEADER
    ========================================================= */
 
 .illustration-header {
@@ -181,11 +204,14 @@ a {
 
 .illustration-title {
   display: block;
+
   width: max-content;
   max-width: 100%;
+
   margin: 0;
 
-  color: var(--green);
+  color:
+    var(--green);
 
   font-size:
     clamp(
@@ -195,14 +221,16 @@ a {
     );
 
   font-weight: 700;
+
   line-height: .95;
+
   letter-spacing: -.06em;
 }
 
 
 
 /* =========================================================
-   SKETCHBOOK STAGE
+   SKETCHBOOK
    ========================================================= */
 
 .sketchbook-stage {
@@ -211,8 +239,8 @@ a {
   margin-top:
     clamp(
       28px,
-      3.3vw,
-      46px
+      3.2vw,
+      44px
     );
 }
 
@@ -231,44 +259,71 @@ a {
 
   overflow: hidden;
 
-  cursor: grab;
-  user-select: none;
-  touch-action: none;
+  background:
+    transparent;
 
-  background: transparent;
+  cursor:
+    grab;
+
+  user-select:
+    none;
+
+  touch-action:
+    none;
 }
 
 
 .sketchbook-viewport.is-dragging {
-  cursor: grabbing;
+  cursor:
+    grabbing;
 }
 
 
+
+/* =========================================================
+   PAPER
+   ========================================================= */
+
 .sketchbook-paper {
   position: absolute;
+
   top: 0;
   left: 0;
 
-  transform-origin: top left;
+  transform-origin:
+    top left;
 
-  background: #ffffff;
+  background:
+    #ffffff;
 
   border:
     1px solid
-    rgba(17, 17, 15, .08);
+    rgba(
+      17,
+      17,
+      15,
+      .07
+    );
 
   box-shadow:
     0
-    10px
-    24px
-    rgba(17, 17, 15, .045);
+    9px
+    22px
+    rgba(
+      17,
+      17,
+      15,
+      .04
+    );
 
-  will-change: transform;
+  will-change:
+    transform;
 }
 
 
 .sketchbook-field {
   position: relative;
+
   width: 100%;
   height: 100%;
 }
@@ -284,29 +339,59 @@ a {
 }
 
 
+
+/* =========================================================
+   COLLISION BOX
+   ========================================================= */
+
 .drawing {
   position: absolute;
-  pointer-events: none;
+
+  pointer-events:
+    none;
 }
 
 
+
+/* =========================================================
+   ARTWORK
+   ========================================================= */
+
 .drawing-art {
   position: absolute;
+
   left: 50%;
   top: 50%;
 
   display: block;
+
   max-width: none;
-  object-fit: contain;
 
-  mix-blend-mode: multiply;
-  opacity: .99;
+  object-fit:
+    contain;
 
-  transform-origin: center center;
+  /*
+    White sketchbook page + multiply means the baked-in
+    white backgrounds disappear visually.
+  */
 
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
+  mix-blend-mode:
+    multiply;
+
+  opacity:
+    .99;
+
+  transform-origin:
+    center center;
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+
+  pointer-events:
+    none;
 }
 
 
@@ -320,8 +405,10 @@ a {
 ) {
 
   .illustration-page {
-    padding-right: 375px;
+    padding-right:
+      375px;
   }
+
 
   .sketchbook-viewport {
     height:
@@ -346,13 +433,18 @@ a {
 
   .scarf-rack {
     top: 10px;
+
     left: 0;
     right: 0;
 
-    flex-direction: row;
-    align-items: center;
+    flex-direction:
+      row;
+
+    align-items:
+      center;
 
     width: 100%;
+
     gap: 6px;
 
     padding:
@@ -360,43 +452,65 @@ a {
       14px
       12px;
 
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-x:
+      auto;
 
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    overflow-y:
+      hidden;
+
+    scrollbar-width:
+      none;
+
+    -webkit-overflow-scrolling:
+      touch;
   }
 
 
   .scarf-rack::-webkit-scrollbar {
-    display: none;
+    display:
+      none;
   }
 
 
   .scarf-item {
-    flex: 0 0 auto;
-    width: 285px;
-    height: auto;
-    transform: none;
+    flex:
+      0 0 auto;
+
+    width:
+      285px;
+
+    height:
+      auto;
+
+    transform:
+      none;
   }
 
 
   .scarf-item img {
-    width: 100%;
-    height: auto;
+    width:
+      100%;
+
+    height:
+      auto;
   }
 
 
   .scarf-home {
-    width: 315px;
-    transform: none;
+    width:
+      315px;
+
+    transform:
+      none;
   }
 
 
   .scarf-item:hover,
   .scarf-home:hover {
-    transform: none;
+    transform:
+      none;
   }
+
 
 
   .illustration-page {
@@ -418,7 +532,8 @@ a {
 
 
   .sketchbook-stage {
-    margin-top: 24px;
+    margin-top:
+      24px;
   }
 
 
@@ -444,18 +559,23 @@ a {
 ) {
 
   .illustration-page {
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left:
+      14px;
+
+    padding-right:
+      14px;
   }
 
 
   .scarf-item {
-    width: 248px;
+    width:
+      248px;
   }
 
 
   .scarf-home {
-    width: 278px;
+    width:
+      278px;
   }
 
 
