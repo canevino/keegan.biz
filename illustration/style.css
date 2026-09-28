@@ -5,15 +5,12 @@
 :root {
   --site-paper: #ded8c8;
 
-  --paper-base: #ffffff;
-  --paper-warm: rgba(250, 244, 232, 0.26);
-  --paper-warm-deep: rgba(244, 236, 220, 0.18);
+  --paper-white: #ffffff;
+
+  --green: #006a44;
+  --yellow: #fdb913;
 
   --ink: #11110f;
-
-  --yellow: #fdb913;
-  --green: #006a44;
-  --red: #c1272d;
 }
 
 
@@ -43,17 +40,22 @@ html {
 
 body {
   min-height: 100vh;
+
   overflow-x: hidden;
 
-  background: var(--site-paper);
-  color: var(--ink);
+  background:
+    var(--site-paper);
+
+  color:
+    var(--ink);
 
   font-family:
     Helvetica,
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing:
+    antialiased;
 }
 
 
@@ -91,19 +93,25 @@ button {
 
 .scarf-rack {
   position: fixed;
+
   top: 14px;
   right: 12px;
+
   z-index: 50;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: flex-end;
+
   gap: 6px;
 }
 
 
 .scarf-item {
   position: relative;
+
   display: block;
 
   height:
@@ -113,27 +121,45 @@ button {
       108px
     );
 
-  transform-origin: right center;
+  transform-origin:
+    right center;
 
   transition:
-    transform 220ms cubic-bezier(.2, .8, .2, 1);
+    transform
+    220ms
+    cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
 }
 
 
 .scarf-item img {
   width: auto;
   height: 100%;
+
   object-fit: contain;
 
   filter:
     drop-shadow(
-      0 2px 1px rgba(17, 17, 15, .06)
+      0
+      2px
+      1px
+      rgba(
+        17,
+        17,
+        15,
+        .06
+      )
     );
 }
 
 
 .scarf-home {
-  transform: scale(1.045);
+  transform:
+    scale(1.045);
 }
 
 
@@ -178,6 +204,7 @@ button {
 
 .illustration-header {
   width: 100%;
+
   margin: 0;
   padding: 0;
 }
@@ -185,11 +212,14 @@ button {
 
 .illustration-title {
   display: block;
+
   width: max-content;
   max-width: 100%;
+
   margin: 0;
 
-  color: var(--green);
+  color:
+    var(--green);
 
   font-size:
     clamp(
@@ -199,7 +229,9 @@ button {
     );
 
   font-weight: 700;
+
   line-height: .95;
+
   letter-spacing: -.06em;
 }
 
@@ -223,11 +255,15 @@ button {
 
 
 /* =========================================================
-   FIXED VIEW WINDOW
+   FIXED VIEWPORT
+
+   The green shadow is stylistic only.
+   No blur, no spread, full opacity.
    ========================================================= */
 
 .sketchbook-viewport {
   position: relative;
+
   width: 100%;
 
   height:
@@ -239,16 +275,26 @@ button {
 
   overflow: hidden;
 
-  background: #f3eddf;
+  /*
+    Outside actual sketchbook paper.
+    Only visible if user pans all the way to a real edge.
+  */
 
-  border:
-    1px solid rgba(37, 30, 19, .035);
+  background:
+    var(--site-paper);
+
+  border: 0;
 
   box-shadow:
-    12px 12px 0 var(--green);
+    12px
+    12px
+    0
+    var(--green);
 
   cursor: grab;
+
   user-select: none;
+
   touch-action: none;
 }
 
@@ -260,154 +306,248 @@ button {
 
 
 /* =========================================================
-   SKETCHBOOK PAPER
-   True stack:
-   1. white base
-   2. drawings
-   3. paper texture overlay
-   4. warm cream overlay
-   5. subtle shading overlays
+   ACTUAL SKETCHBOOK PAPER
+
+   LAYER 1:
+   PURE WHITE.
+
+   Nothing grey.
+   Nothing cream underneath the artwork.
    ========================================================= */
 
 .sketchbook-paper {
   position: absolute;
+
   top: 0;
   left: 0;
 
-  transform-origin: top left;
-  will-change: transform;
+  transform-origin:
+    top left;
 
-  isolation: isolate;
-  overflow: hidden;
+  will-change:
+    transform;
 
-  background: var(--paper-base);
-}
+  overflow:
+    hidden;
 
-
-/* paper texture ABOVE the drawings */
-
-.sketchbook-paper::before {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-
-  pointer-events: none;
-
-  background-image: url("paper_texture.webp");
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  opacity: .30;
-  mix-blend-mode: multiply;
-}
-
-
-/* warm cream wash ABOVE the drawings */
-
-.sketchbook-paper::after {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-
-  pointer-events: none;
+  isolation:
+    isolate;
 
   background:
-    linear-gradient(
-      180deg,
-      var(--paper-warm) 0%,
-      var(--paper-warm-deep) 100%
-    );
-
-  mix-blend-mode: normal;
+    var(--paper-white);
 }
 
 
 
 /* =========================================================
-   DRAWING FIELD
+   LAYER 2 — ILLUSTRATIONS
    ========================================================= */
 
 .sketchbook-field {
   position: relative;
+
+  z-index: 2;
+
   width: 100%;
   height: 100%;
-  z-index: 2;
 }
 
-
-/* subtle left-edge sketchbook depth ABOVE the art */
-
-.sketchbook-field::before {
-  content: "";
-
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 36px;
-
-  z-index: 7;
-  pointer-events: none;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(72, 55, 28, .040) 0%,
-      rgba(72, 55, 28, .014) 24%,
-      rgba(72, 55, 28, 0) 100%
-    );
-}
-
-
-/* faint overall page depth ABOVE everything */
-
-.sketchbook-field::after {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-  z-index: 8;
-
-  pointer-events: none;
-
-  box-shadow:
-    inset 0 0 0 1px rgba(40, 31, 18, .022),
-    inset 0 0 22px rgba(88, 72, 44, .022);
-}
-
-
-
-/* =========================================================
-   DRAWINGS
-   ========================================================= */
 
 .drawing {
   position: absolute;
-  z-index: 3;
+
+  z-index: 2;
+
   pointer-events: none;
 }
 
 
 .drawing-art {
   display: block;
+
   width: 100%;
   height: 100%;
 
-  object-fit: contain;
+  object-fit:
+    contain;
 
-  mix-blend-mode: normal;
-  opacity: 1;
+  /*
+    No image-level blending.
 
-  transform-origin: center center;
+    The paper treatment happens ABOVE the illustration.
+  */
 
-  user-select: none;
-  -webkit-user-drag: none;
+  mix-blend-mode:
+    normal;
+
+  opacity:
+    1;
+
+  transform-origin:
+    center center;
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+
+  pointer-events:
+    none;
+}
+
+
+
+/* =========================================================
+   LAYER 3 — REAL PAPER TEXTURE
+
+   Above every illustration.
+
+   Fairly subtle because the source texture itself has
+   grey information in it.
+   ========================================================= */
+
+.paper-texture-layer {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 10;
+
   pointer-events: none;
+
+  background-image:
+    url("paper_texture.webp");
+
+  background-size:
+    100%
+    100%;
+
+  background-position:
+    center;
+
+  background-repeat:
+    no-repeat;
+
+  /*
+    Strong enough to read when zoomed in,
+    but weak enough to preserve pencil contrast.
+  */
+
+  opacity:
+    .18;
+
+  mix-blend-mode:
+    multiply;
+
+  /*
+    Brighten the original grey texture before applying it.
+  */
+
+  filter:
+    brightness(1.13)
+    contrast(.90)
+    sepia(.08);
+}
+
+
+
+/* =========================================================
+   LAYER 4 — WARM / CREAM TONE
+
+   This is deliberately ABOVE the illustration.
+
+   It is a color cast, not an opaque beige sheet.
+   ========================================================= */
+
+.paper-warmth-layer {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 11;
+
+  pointer-events: none;
+
+  /*
+    Warm cream with very low opacity.
+
+    Because this layer is physically above the art,
+    whites and pencil lines share the same paper color.
+  */
+
+  background:
+    rgba(
+      255,
+      236,
+      198,
+      .14
+    );
+
+  mix-blend-mode:
+    multiply;
+}
+
+
+
+/* =========================================================
+   LAYER 5 — PAPER SHADING
+
+   Barely there.
+
+   No milky haze.
+   ========================================================= */
+
+.paper-shading-layer {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 12;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+
+      rgba(
+        91,
+        64,
+        29,
+        .022
+      )
+      0%,
+
+      rgba(
+        91,
+        64,
+        29,
+        .004
+      )
+      5%,
+
+      rgba(
+        91,
+        64,
+        29,
+        0
+      )
+      13%
+    );
+
+  box-shadow:
+    inset
+    0
+    0
+    0
+    1px
+    rgba(
+      30,
+      25,
+      16,
+      .018
+    );
 }
 
 
@@ -418,18 +558,23 @@ button {
 
 .zoom-controls {
   position: absolute;
+
   right: 12px;
   bottom: 8px;
+
   z-index: 30;
 
   display: flex;
+
   align-items: center;
+
   gap: 10px;
 }
 
 
 .zoom-button {
   display: block;
+
   width: auto;
   height: auto;
 
@@ -437,40 +582,57 @@ button {
   padding: 0;
 
   border: 0;
+
   border-radius: 0;
 
-  background: transparent;
+  background:
+    transparent;
 
-  color: var(--green);
+  color:
+    var(--green);
 
   font-family:
     Helvetica,
     Arial,
     sans-serif;
 
-  font-size: 29px;
-  font-weight: 400;
-  line-height: 1;
+  font-size:
+    29px;
 
-  cursor: pointer;
-  opacity: 1;
+  font-weight:
+    400;
+
+  line-height:
+    1;
+
+  cursor:
+    pointer;
+
+  opacity:
+    1;
 
   transition:
-    color 120ms ease,
-    opacity 120ms ease,
-    transform 120ms ease;
+    color
+    120ms
+    ease,
+    opacity
+    120ms
+    ease;
 }
 
 
 .zoom-button:hover {
-  color: var(--yellow);
-  transform: translateY(-1px);
+  color:
+    var(--yellow);
 }
 
 
 .zoom-button.is-hidden {
-  opacity: 0;
-  pointer-events: none;
+  opacity:
+    0;
+
+  pointer-events:
+    none;
 }
 
 
@@ -479,10 +641,14 @@ button {
    TABLET
    ========================================================= */
 
-@media (max-width: 1100px) {
+@media (
+  max-width:
+  1100px
+) {
 
   .illustration-page {
-    padding-right: 375px;
+    padding-right:
+      375px;
   }
 
 
@@ -503,29 +669,45 @@ button {
    MOBILE
    ========================================================= */
 
-@media (max-width: 700px) {
+@media (
+  max-width:
+  700px
+) {
 
   .scarf-rack {
     top: 10px;
+
     left: 0;
     right: 0;
 
-    flex-direction: row;
-    align-items: center;
+    flex-direction:
+      row;
 
-    width: 100%;
-    gap: 6px;
+    align-items:
+      center;
+
+    width:
+      100%;
+
+    gap:
+      6px;
 
     padding:
       4px
       14px
       12px;
 
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-x:
+      auto;
 
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    overflow-y:
+      hidden;
+
+    scrollbar-width:
+      none;
+
+    -webkit-overflow-scrolling:
+      touch;
   }
 
 
@@ -535,28 +717,44 @@ button {
 
 
   .scarf-item {
-    flex: 0 0 auto;
-    width: 285px;
-    height: auto;
-    transform: none;
+    flex:
+      0
+      0
+      auto;
+
+    width:
+      285px;
+
+    height:
+      auto;
+
+    transform:
+      none;
   }
 
 
   .scarf-item img {
-    width: 100%;
-    height: auto;
+    width:
+      100%;
+
+    height:
+      auto;
   }
 
 
   .scarf-home {
-    width: 315px;
-    transform: none;
+    width:
+      315px;
+
+    transform:
+      none;
   }
 
 
   .scarf-item:hover,
   .scarf-home:hover {
-    transform: none;
+    transform:
+      none;
   }
 
 
@@ -579,7 +777,8 @@ button {
 
 
   .sketchbook-stage {
-    margin-top: 24px;
+    margin-top:
+      24px;
   }
 
 
@@ -590,18 +789,30 @@ button {
         68svh,
         760px
       );
+
+    box-shadow:
+      8px
+      8px
+      0
+      var(--green);
   }
 
 
   .zoom-controls {
-    right: 9px;
-    bottom: 7px;
-    gap: 9px;
+    right:
+      9px;
+
+    bottom:
+      7px;
+
+    gap:
+      9px;
   }
 
 
   .zoom-button {
-    font-size: 27px;
+    font-size:
+      27px;
   }
 
 }
@@ -612,21 +823,29 @@ button {
    SMALL MOBILE
    ========================================================= */
 
-@media (max-width: 420px) {
+@media (
+  max-width:
+  420px
+) {
 
   .illustration-page {
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left:
+      14px;
+
+    padding-right:
+      14px;
   }
 
 
   .scarf-item {
-    width: 248px;
+    width:
+      248px;
   }
 
 
   .scarf-home {
-    width: 278px;
+    width:
+      278px;
   }
 
 
