@@ -172,10 +172,6 @@
           </div>
 
 
-          <!-- ===============================================
-               SIMPLE ZOOM CONTROLS
-               =============================================== -->
-
           <div
             class="zoom-controls"
             aria-label="Zoom controls"
@@ -356,13 +352,13 @@
       );
 
 
-    const zoomInButton =
+    const zoomIn =
       document.getElementById(
         "zoom-in"
       );
 
 
-    const zoomOutButton =
+    const zoomOut =
       document.getElementById(
         "zoom-out"
       );
@@ -389,7 +385,10 @@
     ) {
 
       return Math.min(
-        Math.max(value, min),
+        Math.max(
+          value,
+          min
+        ),
         max
       );
 
@@ -466,10 +465,8 @@
       if (
         category === "animals"
       ) {
-
         category =
           "animal";
-
       }
 
 
@@ -478,122 +475,18 @@
     }
 
 
-    function boxesOverlap(
-      a,
-      b,
-      padding = 0
-    ) {
-
-      return !(
-        a.right + padding <= b.left ||
-        a.left >= b.right + padding ||
-        a.bottom + padding <= b.top ||
-        a.top >= b.bottom + padding
-      );
-
-    }
-
-
-    function getBounds(
-      boxes
-    ) {
-
-      const left =
-        Math.min(
-          ...boxes.map(
-            box => box.left
-          )
-        );
-
-
-      const top =
-        Math.min(
-          ...boxes.map(
-            box => box.top
-          )
-        );
-
-
-      const right =
-        Math.max(
-          ...boxes.map(
-            box => box.right
-          )
-        );
-
-
-      const bottom =
-        Math.max(
-          ...boxes.map(
-            box => box.bottom
-          )
-        );
-
-
-      return {
-
-        left,
-        top,
-        right,
-        bottom,
-
-        width:
-          right - left,
-
-        height:
-          bottom - top
-
-      };
-
-    }
-
-
-    function rotatedBounds(
-      width,
-      height,
-      degrees
-    ) {
-
-      const radians =
-        degrees *
-        Math.PI /
-        180;
-
-
-      const cos =
-        Math.abs(
-          Math.cos(
-            radians
-          )
-        );
-
-
-      const sin =
-        Math.abs(
-          Math.sin(
-            radians
-          )
-        );
-
-
-      return {
-
-        width:
-          width * cos +
-          height * sin,
-
-        height:
-          width * sin +
-          height * cos
-
-      };
-
-    }
-
-
 
     /* =====================================================
-       LOAD IMAGES
+       LOAD + ANALYZE VISIBLE CONTENT
+
+       We estimate where the actual drawing is inside
+       each WebP.
+
+       Near-white pixels are treated as empty paper.
+
+       This is important:
+       collision detection will use the visible drawing,
+       NOT the entire rectangular exported image.
        ===================================================== */
 
     function loadImageData(
@@ -618,6 +511,12 @@
           image.onload =
             () => {
 
+              const visibleBounds =
+                analyzeVisibleBounds(
+                  image
+                );
+
+
               resolve({
 
                 filename,
@@ -635,7 +534,9 @@
 
                 area:
                   image.naturalWidth *
-                  image.naturalHeight
+                  image.naturalHeight,
+
+                visibleBounds
 
               });
 
@@ -663,11 +564,330 @@
 
 
 
+    function analyzeVisibleBounds(
+      image
+    ) {
+
+      /*
+        Analyze a small version.
+        This keeps startup fast even with lots of images.
+      */
+
+      const maxSample =
+        110;
+
+
+      const ratio =
+        Math.min(
+          1,
+          maxSample /
+          Math.max(
+            image.naturalWidth,
+            image.naturalHeight
+          )
+        );
+
+
+      const width =
+        Math.max(
+          1,
+          Math.round(
+            image.naturalWidth *
+            ratio
+          )
+        );
+
+
+      const height =
+        Math.max(
+          1,
+          Math.round(
+            image.naturalHeight *
+            ratio
+          )
+        );
+
+
+      const canvas =
+        document.createElement(
+          "canvas"
+        );
+
+
+      canvas.width =
+        width;
+
+
+      canvas.height =
+        height;
+
+
+      const context =
+        canvas.getContext(
+          "2d",
+          {
+            willReadFrequently:
+              true
+          }
+        );
+
+
+      context.drawImage(
+        image,
+        0,
+        0,
+        width,
+        height
+      );
+
+
+      let data;
+
+
+      try {
+
+        data =
+          context.getImageData(
+            0,
+            0,
+            width,
+            height
+          ).data;
+
+      }
+
+      catch {
+
+        return {
+          left: 0,
+          top: 0,
+          right: 1,
+          bottom: 1
+        };
+
+      }
+
+
+
+      let minX =
+        width;
+
+
+      let minY =
+        height;
+
+
+      let maxX =
+        -1;
+
+
+      let maxY =
+        -1;
+
+
+
+      /*
+        White / nearly-white pixels count as empty.
+        Lower threshold = looser visible crop.
+      */
+
+      const WHITE_THRESHOLD =
+        246;
+
+
+      const ALPHA_THRESHOLD =
+        18;
+
+
+
+      for (
+        let y = 0;
+        y < height;
+        y++
+      ) {
+
+        for (
+          let x = 0;
+          x < width;
+          x++
+        ) {
+
+          const index =
+            (
+              y *
+              width +
+              x
+            )
+            *
+            4;
+
+
+          const r =
+            data[index];
+
+
+          const g =
+            data[
+              index + 1
+            ];
+
+
+          const b =
+            data[
+              index + 2
+            ];
+
+
+          const a =
+            data[
+              index + 3
+            ];
+
+
+          if (
+            a <=
+            ALPHA_THRESHOLD
+          ) {
+            continue;
+          }
+
+
+          const nearlyWhite =
+            r >= WHITE_THRESHOLD &&
+            g >= WHITE_THRESHOLD &&
+            b >= WHITE_THRESHOLD;
+
+
+          if (
+            nearlyWhite
+          ) {
+            continue;
+          }
+
+
+          minX =
+            Math.min(
+              minX,
+              x
+            );
+
+
+          minY =
+            Math.min(
+              minY,
+              y
+            );
+
+
+          maxX =
+            Math.max(
+              maxX,
+              x
+            );
+
+
+          maxY =
+            Math.max(
+              maxY,
+              y
+            );
+
+        }
+
+      }
+
+
+
+      if (
+        maxX < minX ||
+        maxY < minY
+      ) {
+
+        return {
+          left: 0,
+          top: 0,
+          right: 1,
+          bottom: 1
+        };
+
+      }
+
+
+
+      /*
+        Tiny safety margin around detected marks.
+      */
+
+      const margin =
+        2;
+
+
+      minX =
+        Math.max(
+          0,
+          minX -
+          margin
+        );
+
+
+      minY =
+        Math.max(
+          0,
+          minY -
+          margin
+        );
+
+
+      maxX =
+        Math.min(
+          width - 1,
+          maxX +
+          margin
+        );
+
+
+      maxY =
+        Math.min(
+          height - 1,
+          maxY +
+          margin
+        );
+
+
+      return {
+
+        left:
+          minX /
+          width,
+
+        top:
+          minY /
+          height,
+
+        right:
+          (
+            maxX + 1
+          )
+          /
+          width,
+
+        bottom:
+          (
+            maxY + 1
+          )
+          /
+          height
+
+      };
+
+    }
+
+
+
     /* =====================================================
        SOURCE-DIMENSION SCALE
 
-       Actual file dimensions are the main determinant
-       of visible scale.
+       Actual source dimensions remain the primary scale.
        ===================================================== */
 
     function calculateDisplaySize(
@@ -691,31 +911,31 @@
       const ratio =
         sourceLinear /
         Math.max(
-          referenceLinear,
-          1
+          1,
+          referenceLinear
         );
 
 
-      const averageLongest =
+      const base =
         mobile
-          ? 88
-          : 118;
+          ? 90
+          : 122;
 
 
       /*
-        Strong source-size relationship.
+        Strong relationship to original dimensions.
       */
 
       let longest =
-        averageLongest *
+        base *
         Math.pow(
           ratio,
-          .92
+          .94
         );
 
 
       /*
-        Just enough safety for extreme files.
+        Safety only.
       */
 
       longest =
@@ -786,7 +1006,7 @@
       referenceLinear
     ) {
 
-      const size =
+      const display =
         calculateDisplaySize(
           item,
           referenceLinear
@@ -795,17 +1015,13 @@
 
       const rotation =
         randomBetween(
-          -4,
-          4
+          -4.5,
+          4.5
         );
 
 
-      const bounds =
-        rotatedBounds(
-          size.width,
-          size.height,
-          rotation
-        );
+      const visible =
+        item.visibleBounds;
 
 
       return {
@@ -813,18 +1029,36 @@
         ...item,
 
         displayWidth:
-          size.width,
+          display.width,
 
         displayHeight:
-          size.height,
+          display.height,
 
         rotation,
 
-        boxWidth:
-          bounds.width,
+        visibleLeft:
+          visible.left *
+          display.width,
 
-        boxHeight:
-          bounds.height
+        visibleTop:
+          visible.top *
+          display.height,
+
+        visibleWidth:
+          (
+            visible.right -
+            visible.left
+          )
+          *
+          display.width,
+
+        visibleHeight:
+          (
+            visible.bottom -
+            visible.top
+          )
+          *
+          display.height
 
       };
 
@@ -833,134 +1067,282 @@
 
 
     /* =====================================================
-       RANDOM CANDIDATES AROUND EXISTING OBJECT
+       VISIBLE COLLISION BOX
+
+       For packing, use actual visible drawing bounds.
+       Rotation gets a small safety expansion.
        ===================================================== */
 
-    function candidatesAround(
-      width,
-      height,
-      target,
-      gap,
-      count
+    function collisionBoxAt(
+      item,
+      x,
+      y
     ) {
 
-      const targetWidth =
-        target.right -
-        target.left;
-
-
-      const targetHeight =
-        target.bottom -
-        target.top;
-
-
-      const centerX =
-        (
-          target.left +
-          target.right
+      const rotationSafety =
+        Math.abs(
+          item.rotation
         )
-        / 2;
+        /
+        4.5 *
+        4;
 
 
-      const centerY =
-        (
-          target.top +
-          target.bottom
-        )
-        / 2;
+      return {
+
+        left:
+          x +
+          item.visibleLeft -
+          rotationSafety,
+
+        top:
+          y +
+          item.visibleTop -
+          rotationSafety,
+
+        right:
+          x +
+          item.visibleLeft +
+          item.visibleWidth +
+          rotationSafety,
+
+        bottom:
+          y +
+          item.visibleTop +
+          item.visibleHeight +
+          rotationSafety
+
+      };
+
+    }
 
 
-      const candidates =
-        [];
 
+    function boxesOverlap(
+      a,
+      b,
+      gap = 0
+    ) {
 
-      for (
-        let i = 0;
-        i < count;
-        i++
-      ) {
-
-        const angle =
-          randomBetween(
-            0,
-            Math.PI * 2
-          );
-
-
-        const radiusX =
-          targetWidth / 2 +
-          width / 2 +
-          gap;
-
-
-        const radiusY =
-          targetHeight / 2 +
-          height / 2 +
-          gap;
-
-
-        const x =
-          centerX +
-          Math.cos(angle) *
-          radiusX;
-
-
-        const y =
-          centerY +
-          Math.sin(angle) *
-          radiusY;
-
-
-        candidates.push({
-
-          left:
-            x -
-            width / 2,
-
-          top:
-            y -
-            height / 2
-
-        });
-
-      }
-
-
-      return candidates;
+      return !(
+        a.right + gap <= b.left ||
+        a.left >= b.right + gap ||
+        a.bottom + gap <= b.top ||
+        a.top >= b.bottom + gap
+      );
 
     }
 
 
 
     /* =====================================================
-       PACK ONE CATEGORY
+       CATEGORY CENTERS
 
-       Tight irregular 2D cluster.
+       Categories are NOT containers.
+
+       They only provide loose attraction points.
+
+       Centers themselves are distributed irregularly
+       around the spread, not in rows.
        ===================================================== */
 
-    function packCategory(
-      items
+    function createCategoryCenters(
+      categories,
+      width,
+      height
     ) {
 
-      const gap =
-        2;
-
-
-      const ordered =
+      const names =
         shuffle(
-          items
-        )
-        .sort(
-          (a, b) =>
+          [...categories]
+        );
+
+
+      const centers =
+        new Map();
+
+
+      /*
+        Start from a staggered 2D constellation.
+      */
+
+      const cols =
+        5;
+
+
+      const rows =
+        Math.ceil(
+          names.length /
+          cols
+        );
+
+
+      names.forEach(
+        (
+          name,
+          index
+        ) => {
+
+          const column =
+            index %
+            cols;
+
+
+          const row =
+            Math.floor(
+              index /
+              cols
+            );
+
+
+          const cellWidth =
+            width /
+            cols;
+
+
+          const cellHeight =
+            height /
+            rows;
+
+
+          let x =
             (
-              b.boxWidth *
-              b.boxHeight
+              column +
+              .5
             )
-            -
+            *
+            cellWidth;
+
+
+          let y =
             (
-              a.boxWidth *
-              a.boxHeight
+              row +
+              .5
             )
+            *
+            cellHeight;
+
+
+          /*
+            Destroy the grid visually.
+          */
+
+          x +=
+            randomBetween(
+              -cellWidth * .34,
+              cellWidth * .34
+            );
+
+
+          y +=
+            randomBetween(
+              -cellHeight * .34,
+              cellHeight * .34
+            );
+
+
+          /*
+            Alternate rows sideways.
+          */
+
+          if (
+            row % 2
+          ) {
+
+            x +=
+              cellWidth *
+              .22;
+
+          }
+
+
+          x =
+            clamp(
+              x,
+              cellWidth * .25,
+              width -
+              cellWidth * .25
+            );
+
+
+          y =
+            clamp(
+              y,
+              cellHeight * .22,
+              height -
+              cellHeight * .22
+            );
+
+
+          centers.set(
+            name,
+            {
+              x,
+              y
+            }
+          );
+
+        }
+      );
+
+
+      return centers;
+
+    }
+
+
+
+    /* =====================================================
+       PACK EVERYTHING INDIVIDUALLY
+
+       No rows.
+       No category boxes.
+       No group rectangles.
+
+       Each drawing searches outward from its category
+       gravity point for the tightest available position.
+       ===================================================== */
+
+    function packDrawings(
+      drawings
+    ) {
+
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
+
+
+      /*
+        Wide sketchbook spread.
+      */
+
+      const paperWidth =
+        mobile
+          ? 1500
+          : 2700;
+
+
+      const paperHeight =
+        mobile
+          ? 930
+          : 1350;
+
+
+      const categories =
+        new Set(
+          drawings.map(
+            item =>
+              item.category
+          )
+        );
+
+
+      const centers =
+        createCategoryCenters(
+          categories,
+          paperWidth,
+          paperHeight
         );
 
 
@@ -968,38 +1350,37 @@
         [];
 
 
+      /*
+        Larger artwork first.
+        Smaller work fills the gaps afterward.
+      */
+
+      const ordered =
+        [...drawings]
+          .sort(
+            (a, b) =>
+
+              (
+                b.visibleWidth *
+                b.visibleHeight
+              )
+              -
+              (
+                a.visibleWidth *
+                a.visibleHeight
+              )
+
+          );
+
+
+
       ordered.forEach(
-        (
-          item,
-          index
-        ) => {
+        item => {
 
-          if (
-            index === 0
-          ) {
-
-            placed.push({
-
-              ...item,
-
-              left:
-                0,
-
-              top:
-                0,
-
-              right:
-                item.boxWidth,
-
-              bottom:
-                item.boxHeight
-
-            });
-
-
-            return;
-
-          }
+          const center =
+            centers.get(
+              item.category
+            );
 
 
           let winner =
@@ -1010,614 +1391,576 @@
             Infinity;
 
 
-          shuffle(
-            placed
-          ).forEach(
-            target => {
+          /*
+            Golden-angle search outward from category center.
 
-              const candidates =
-                candidatesAround(
-                  item.boxWidth,
-                  item.boxHeight,
-                  target,
-                  gap,
-                  42
-                );
+            Every image gets an independent position.
+          */
 
-
-              candidates.forEach(
-                candidate => {
-
-                  const box = {
-
-                    left:
-                      candidate.left,
-
-                    top:
-                      candidate.top,
-
-                    right:
-                      candidate.left +
-                      item.boxWidth,
-
-                    bottom:
-                      candidate.top +
-                      item.boxHeight
-
-                  };
+          const GOLDEN_ANGLE =
+            Math.PI *
+            (
+              3 -
+              Math.sqrt(5)
+            );
 
 
-                  const collision =
-                    placed.some(
-                      other =>
-                        boxesOverlap(
-                          box,
-                          other,
-                          gap
-                        )
-                    );
+          for (
+            let attempt = 0;
+            attempt < 9000;
+            attempt++
+          ) {
 
-
-                  if (
-                    collision
-                  ) {
-                    return;
-                  }
-
-
-                  const bounds =
-                    getBounds(
-                      [
-                        ...placed,
-                        box
-                      ]
-                    );
-
-
-                  const area =
-                    bounds.width *
-                    bounds.height;
-
-
-                  const aspect =
-                    bounds.width /
-                    Math.max(
-                      bounds.height,
-                      1
-                    );
-
-
-                  /*
-                    Category clusters should spread
-                    in both X and Y — not become rows.
-                  */
-
-                  const shapePenalty =
-                    Math.abs(
-                      Math.log(
-                        aspect /
-                        1.25
-                      )
-                    )
-                    *
-                    1700;
-
-
-                  const score =
-                    area +
-                    shapePenalty +
-                    Math.random() *
-                    700;
-
-
-                  if (
-                    score <
-                    winnerScore
-                  ) {
-
-                    winnerScore =
-                      score;
-
-
-                    winner =
-                      box;
-
-                  }
-
-                }
+            const radius =
+              3.1 *
+              Math.sqrt(
+                attempt
               );
 
-            }
-          );
 
+            const angle =
+              attempt *
+              GOLDEN_ANGLE +
+              randomBetween(
+                -.10,
+                .10
+              );
+
+
+            /*
+              Non-circular spread.
+              Wider sideways, but still genuinely 2D.
+            */
+
+            const visibleCenterX =
+              center.x +
+              Math.cos(
+                angle
+              )
+              *
+              radius
+              *
+              1.18;
+
+
+            const visibleCenterY =
+              center.y +
+              Math.sin(
+                angle
+              )
+              *
+              radius
+              *
+              .94;
+
+
+            /*
+              Convert desired VISIBLE center to full-image
+              top-left position.
+            */
+
+            const x =
+              visibleCenterX -
+              (
+                item.visibleLeft +
+                item.visibleWidth / 2
+              );
+
+
+            const y =
+              visibleCenterY -
+              (
+                item.visibleTop +
+                item.visibleHeight / 2
+              );
+
+
+            const collision =
+              collisionBoxAt(
+                item,
+                x,
+                y
+              );
+
+
+            /*
+              Keep actual visible artwork on the sheet.
+            */
+
+            const edge =
+              24;
+
+
+            if (
+              collision.left < edge ||
+              collision.top < edge ||
+              collision.right >
+                paperWidth - edge ||
+              collision.bottom >
+                paperHeight - edge
+            ) {
+              continue;
+            }
+
+
+            const hit =
+              placed.some(
+                other =>
+                  boxesOverlap(
+                    collision,
+                    other.collision,
+                    1
+                  )
+              );
+
+
+            if (
+              hit
+            ) {
+              continue;
+            }
+
+
+            /*
+              Prefer positions very close to the
+              category center, but add a little noise
+              to avoid mathematical regularity.
+            */
+
+            const distance =
+              Math.hypot(
+                visibleCenterX -
+                center.x,
+
+                visibleCenterY -
+                center.y
+              );
+
+
+            const score =
+              distance +
+              Math.random() *
+              18;
+
+
+            if (
+              score <
+              winnerScore
+            ) {
+
+              winnerScore =
+                score;
+
+
+              winner = {
+                x,
+                y,
+                collision
+              };
+
+            }
+
+
+            /*
+              Once we're clearly getting farther out
+              than the best solution, stop searching.
+            */
+
+            if (
+              winner &&
+              radius >
+              winnerScore +
+              80
+            ) {
+              break;
+            }
+
+          }
+
+
+
+          /*
+            Fallback anywhere on canvas.
+          */
 
           if (
             !winner
           ) {
 
-            const bounds =
-              getBounds(
-                placed
-              );
+            for (
+              let attempt = 0;
+              attempt < 6000;
+              attempt++
+            ) {
+
+              const x =
+                randomBetween(
+                  30 -
+                  item.visibleLeft,
+                  paperWidth -
+                  item.visibleLeft -
+                  item.visibleWidth -
+                  30
+                );
 
 
-            winner = {
+              const y =
+                randomBetween(
+                  30 -
+                  item.visibleTop,
+                  paperHeight -
+                  item.visibleTop -
+                  item.visibleHeight -
+                  30
+                );
 
-              left:
-                bounds.right +
-                gap,
 
-              top:
-                bounds.top,
+              const collision =
+                collisionBoxAt(
+                  item,
+                  x,
+                  y
+                );
 
-              right:
-                bounds.right +
-                gap +
-                item.boxWidth,
 
-              bottom:
-                bounds.top +
-                item.boxHeight
+              const hit =
+                placed.some(
+                  other =>
+                    boxesOverlap(
+                      collision,
+                      other.collision,
+                      1
+                    )
+                );
 
-            };
+
+              if (
+                !hit
+              ) {
+
+                winner = {
+                  x,
+                  y,
+                  collision
+                };
+
+                break;
+
+              }
+
+            }
 
           }
 
 
-          placed.push({
+          if (
+            winner
+          ) {
 
-            ...item,
-            ...winner
+            placed.push({
 
-          });
+              ...item,
+
+              x:
+                winner.x,
+
+              y:
+                winner.y,
+
+              collision:
+                winner.collision
+
+            });
+
+          }
 
         }
       );
 
 
-      const bounds =
-        getBounds(
-          placed
-        );
+
+      /* ===================================================
+         GLOBAL COMPACTION
+
+         Pull everything toward center/category center
+         in many tiny steps.
+
+         This removes large pockets of empty space.
+         =================================================== */
+
+      const spreadCenterX =
+        paperWidth /
+        2;
 
 
-      return {
-
-        width:
-          bounds.width,
-
-        height:
-          bounds.height,
-
-        items:
-          placed.map(
-            item => ({
-
-              ...item,
-
-              left:
-                item.left -
-                bounds.left,
-
-              top:
-                item.top -
-                bounds.top
-
-            })
-          )
-
-      };
-
-    }
+      const spreadCenterY =
+        paperHeight /
+        2;
 
 
 
-    /* =====================================================
-       PLACE CATEGORY CLUSTERS ON A REAL 2D SPREAD
-
-       Instead of building out infinitely from a single
-       cluster, we create a finite rectangular sketchbook
-       and scatter/pack clusters throughout it.
-       ===================================================== */
-
-    function placeGroupsInSpread(
-      groups
-    ) {
-
-      const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
-
-
-      const TOTAL_GROUP_AREA =
-        groups.reduce(
-          (
-            total,
-            group
-          ) =>
-            total +
-            group.width *
-            group.height,
-          0
-        );
-
-
-      /*
-        Roughly landscape sketchbook proportions.
-      */
-
-      const targetAspect =
-        mobile
-          ? 1.9
-          : 2.55;
-
-
-      /*
-        More than the literal occupied area so groups can
-        weave together naturally without becoming one slab.
-      */
-
-      const density =
-        .67;
-
-
-      const targetArea =
-        TOTAL_GROUP_AREA /
-        density;
-
-
-      let spreadWidth =
-        Math.sqrt(
-          targetArea *
-          targetAspect
-        );
-
-
-      let spreadHeight =
-        spreadWidth /
-        targetAspect;
-
-
-      /*
-        Guarantee a reasonable physical field.
-      */
-
-      spreadWidth =
-        Math.max(
-          spreadWidth,
-          mobile
-            ? 1050
-            : 1750
-        );
-
-
-      spreadHeight =
-        Math.max(
-          spreadHeight,
-          mobile
-            ? 620
-            : 760
-        );
-
-
-      const groupGap =
-        7;
-
-
-      const ordered =
-        shuffle(
-          groups
-        )
-        .sort(
-          (a, b) =>
-            (
-              b.width *
-              b.height
-            )
-            -
-            (
-              a.width *
-              a.height
-            )
-        );
-
-
-      const placed =
-        [];
-
-
-      function attemptPlacement(
-        group
+      for (
+        let pass = 0;
+        pass < 85;
+        pass++
       ) {
 
-        let best =
-          null;
+        const order =
+          shuffle(
+            placed
+          );
 
 
-        let bestScore =
-          Infinity;
+        order.forEach(
+          item => {
+
+            const categoryCenter =
+              centers.get(
+                item.category
+              );
 
 
-        /*
-          Try many positions anywhere in the spread.
-        */
+            /*
+              Blend global-center gravity and
+              category-center gravity.
+            */
 
-        for (
-          let attempt = 0;
-          attempt < 3500;
-          attempt++
-        ) {
+            const targetX =
+              categoryCenter.x *
+              .68 +
+              spreadCenterX *
+              .32;
 
-          const left =
-            randomBetween(
-              0,
-              Math.max(
-                0,
-                spreadWidth -
-                group.width
+
+            const targetY =
+              categoryCenter.y *
+              .68 +
+              spreadCenterY *
+              .32;
+
+
+            const visibleCenterX =
+              (
+                item.collision.left +
+                item.collision.right
               )
-            );
+              / 2;
 
 
-          const top =
-            randomBetween(
-              0,
-              Math.max(
-                0,
-                spreadHeight -
-                group.height
+            const visibleCenterY =
+              (
+                item.collision.top +
+                item.collision.bottom
               )
-            );
+              / 2;
 
 
-          const box = {
-
-            left,
-            top,
-
-            right:
-              left +
-              group.width,
-
-            bottom:
-              top +
-              group.height
-
-          };
+            const dx =
+              targetX -
+              visibleCenterX;
 
 
-          const collision =
-            placed.some(
-              other =>
-                boxesOverlap(
-                  box,
-                  other,
-                  groupGap
-                )
-            );
+            const dy =
+              targetY -
+              visibleCenterY;
 
 
-          if (
-            collision
-          ) {
-            continue;
-          }
+            const distance =
+              Math.hypot(
+                dx,
+                dy
+              );
 
 
-          /*
-            Prefer positions near existing material,
-            so we get one spread rather than isolated islands.
-          */
-
-          let nearestDistance =
-            Infinity;
-
-
-          const cx =
-            left +
-            group.width / 2;
+            if (
+              distance <
+              .01
+            ) {
+              return;
+            }
 
 
-          const cy =
-            top +
-            group.height / 2;
+            /*
+              Tiny movement per pass.
+            */
+
+            const step =
+              Math.min(
+                5.5,
+                distance *
+                .12
+              );
 
 
-          if (
-            placed.length
-          ) {
-
-            placed.forEach(
-              other => {
-
-                const otherX =
-                  (
-                    other.left +
-                    other.right
-                  )
-                  / 2;
+            const nextX =
+              item.x +
+              dx /
+              distance *
+              step;
 
 
-                const otherY =
-                  (
-                    other.top +
-                    other.bottom
-                  )
-                  / 2;
+            const nextY =
+              item.y +
+              dy /
+              distance *
+              step;
 
 
-                const distance =
-                  Math.hypot(
-                    cx -
-                    otherX,
+            const nextCollision =
+              collisionBoxAt(
+                item,
+                nextX,
+                nextY
+              );
 
-                    cy -
-                    otherY
+
+            const hit =
+              placed.some(
+                other => {
+
+                  if (
+                    other === item
+                  ) {
+                    return false;
+                  }
+
+
+                  return boxesOverlap(
+                    nextCollision,
+                    other.collision,
+                    .5
                   );
 
-
-                nearestDistance =
-                  Math.min(
-                    nearestDistance,
-                    distance
-                  );
-
-              }
-            );
-
-          }
-
-          else {
-
-            nearestDistance =
-              0;
-
-          }
+                }
+              );
 
 
-          /*
-            Slight preference for central positions,
-            but not enough to make a circle.
-          */
-
-          const centerDistance =
-            Math.hypot(
-
-              cx -
-              spreadWidth / 2,
-
-              cy -
-              spreadHeight / 2
-
-            );
+            if (
+              hit
+            ) {
+              return;
+            }
 
 
-          const score =
-            nearestDistance *
-            .80
-            +
-            centerDistance *
-            .09
-            +
-            Math.random() *
-            40;
+            item.x =
+              nextX;
 
 
-          if (
-            score <
-            bestScore
-          ) {
-
-            bestScore =
-              score;
+            item.y =
+              nextY;
 
 
-            best =
-              box;
+            item.collision =
+              nextCollision;
 
           }
-
-        }
-
-
-        return best;
+        );
 
       }
 
 
 
-      ordered.forEach(
-        group => {
+      /* ===================================================
+         CROP PAPER TO THE ACTUAL COMPOSITION
 
-          let position =
-            attemptPlacement(
-              group
-            );
+         This removes dead empty outer space.
+         =================================================== */
 
-
-          /*
-            If the sheet happened to be too tight,
-            expand both dimensions and try again.
-          */
-
-          let expansions =
-            0;
+      const minX =
+        Math.min(
+          ...placed.map(
+            item =>
+              item.collision.left
+          )
+        );
 
 
-          while (
-            !position &&
-            expansions < 8
-          ) {
-
-            spreadWidth *=
-              1.06;
-
-
-            spreadHeight *=
-              1.06;
+      const minY =
+        Math.min(
+          ...placed.map(
+            item =>
+              item.collision.top
+          )
+        );
 
 
-            expansions++;
+      const maxX =
+        Math.max(
+          ...placed.map(
+            item =>
+              item.collision.right
+          )
+        );
 
 
-            position =
-              attemptPlacement(
-                group
-              );
-
-          }
-
-
-          if (
-            !position
-          ) {
-
-            position = {
-
-              left:
-                spreadWidth / 2 -
-                group.width / 2,
-
-              top:
-                spreadHeight / 2 -
-                group.height / 2,
-
-              right:
-                spreadWidth / 2 +
-                group.width / 2,
-
-              bottom:
-                spreadHeight / 2 +
-                group.height / 2
-
-            };
-
-          }
+      const maxY =
+        Math.max(
+          ...placed.map(
+            item =>
+              item.collision.bottom
+          )
+        );
 
 
-          placed.push({
+      const outerPadding =
+        mobile
+          ? 38
+          : 52;
 
-            ...group,
-            ...position
 
-          });
+      const cropLeft =
+        minX -
+        outerPadding;
+
+
+      const cropTop =
+        minY -
+        outerPadding;
+
+
+      const finalWidth =
+        (
+          maxX -
+          minX
+        )
+        +
+        outerPadding *
+        2;
+
+
+      const finalHeight =
+        (
+          maxY -
+          minY
+        )
+        +
+        outerPadding *
+        2;
+
+
+      placed.forEach(
+        item => {
+
+          item.x -=
+            cropLeft;
+
+
+          item.y -=
+            cropTop;
 
         }
       );
 
 
       return {
-
         width:
-          spreadWidth,
+          finalWidth,
 
         height:
-          spreadHeight,
+          finalHeight,
 
-        groups:
+        items:
           placed
-
       };
 
     }
@@ -1643,19 +1986,19 @@
 
 
       wrapper.style.left =
-        `${item.left}px`;
+        `${item.x}px`;
 
 
       wrapper.style.top =
-        `${item.top}px`;
+        `${item.y}px`;
 
 
       wrapper.style.width =
-        `${item.boxWidth}px`;
+        `${item.displayWidth}px`;
 
 
       wrapper.style.height =
-        `${item.boxHeight}px`;
+        `${item.displayHeight}px`;
 
 
 
@@ -1689,16 +2032,8 @@
         false;
 
 
-      image.style.width =
-        `${item.displayWidth}px`;
-
-
-      image.style.height =
-        `${item.displayHeight}px`;
-
-
       image.style.transform =
-        `translate(-50%, -50%) rotate(${item.rotation}deg)`;
+        `rotate(${item.rotation}deg)`;
 
 
       wrapper.appendChild(
@@ -1722,6 +2057,7 @@
 
     let paperHeight =
       0;
+
 
 
     async function buildSketchbook() {
@@ -1750,10 +2086,10 @@
 
 
       /* ---------------------------------------------
-         MEDIAN SOURCE SIZE
+         MEDIAN SOURCE DIMENSION
          --------------------------------------------- */
 
-      const linearSizes =
+      const linear =
         loaded
           .map(
             item =>
@@ -1768,36 +2104,32 @@
           );
 
 
-      const middle =
+      const midpoint =
         Math.floor(
-          linearSizes.length /
+          linear.length /
           2
         );
 
 
       const referenceLinear =
-        linearSizes.length % 2
+        linear.length % 2
 
-          ? linearSizes[
-              middle
+          ? linear[
+              midpoint
             ]
 
           : (
-              linearSizes[
-                middle - 1
+              linear[
+                midpoint - 1
               ]
               +
-              linearSizes[
-                middle
+              linear[
+                midpoint
               ]
             )
             / 2;
 
 
-
-      /* ---------------------------------------------
-         PREPARE
-         --------------------------------------------- */
 
       const prepared =
         loaded.map(
@@ -1810,103 +2142,18 @@
 
 
 
-      /* ---------------------------------------------
-         GROUP BY NAME
-         --------------------------------------------- */
-
-      const categories =
-        new Map();
-
-
-      prepared.forEach(
-        item => {
-
-          if (
-            !categories.has(
-              item.category
-            )
-          ) {
-
-            categories.set(
-              item.category,
-              []
-            );
-
-          }
-
-
-          categories
-            .get(
-              item.category
-            )
-            .push(
-              item
-            );
-
-        }
-      );
-
-
-
-      /* ---------------------------------------------
-         PACK EACH CATEGORY
-         --------------------------------------------- */
-
-      const groups =
-        [];
-
-
-      categories.forEach(
-        (
-          items,
-          category
-        ) => {
-
-          groups.push({
-
-            category,
-
-            ...packCategory(
-              items
-            )
-
-          });
-
-        }
-      );
-
-
-
-      /* ---------------------------------------------
-         CREATE FULL SPREAD
-         --------------------------------------------- */
-
       const layout =
-        placeGroupsInSpread(
-          groups
+        packDrawings(
+          prepared
         );
 
 
-      const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
-
-
-      const padding =
-        mobile
-          ? 30
-          : 44;
-
-
       paperWidth =
-        layout.width +
-        padding * 2;
+        layout.width;
 
 
       paperHeight =
-        layout.height +
-        padding * 2;
+        layout.height;
 
 
       paper.style.width =
@@ -1918,71 +2165,20 @@
 
 
 
-      /* ---------------------------------------------
-         RENDER GROUPS
-         --------------------------------------------- */
-
-      layout.groups.forEach(
-        group => {
-
-          const groupElement =
-            document.createElement(
-              "div"
-            );
-
-
-          groupElement.className =
-            "drawing-group";
-
-
-          groupElement.dataset.category =
-            group.category;
-
-
-          groupElement.style.left =
-            `${
-              padding +
-              group.left
-            }px`;
-
-
-          groupElement.style.top =
-            `${
-              padding +
-              group.top
-            }px`;
-
-
-          groupElement.style.width =
-            `${group.width}px`;
-
-
-          groupElement.style.height =
-            `${group.height}px`;
-
-
-          group.items.forEach(
-            item => {
-
-              groupElement.appendChild(
-                createDrawing(
-                  item
-                )
-              );
-
-            }
-          );
-
+      layout.items.forEach(
+        item => {
 
           field.appendChild(
-            groupElement
+            createDrawing(
+              item
+            )
           );
 
         }
       );
 
 
-      fitEntireSketchbook();
+      fitAll();
 
     }
 
@@ -2001,9 +2197,6 @@
         0,
 
       zoom:
-        1,
-
-      fitZoom:
         1,
 
       minZoom:
@@ -2031,11 +2224,7 @@
 
 
 
-    /* =====================================================
-       VIEW HELPERS
-       ===================================================== */
-
-    function clampPan(
+    function constrainPan(
       x,
       y,
       zoom
@@ -2051,11 +2240,11 @@
         zoom;
 
 
-      const viewportWidth =
+      const vw =
         viewport.clientWidth;
 
 
-      const viewportHeight =
+      const vh =
         viewport.clientHeight;
 
 
@@ -2067,14 +2256,13 @@
 
 
       if (
-        width <=
-        viewportWidth
+        width <= vw
       ) {
 
         minX =
           maxX =
           (
-            viewportWidth -
+            vw -
             width
           )
           / 2;
@@ -2084,7 +2272,7 @@
       else {
 
         minX =
-          viewportWidth -
+          vw -
           width;
 
         maxX =
@@ -2095,14 +2283,13 @@
 
 
       if (
-        height <=
-        viewportHeight
+        height <= vh
       ) {
 
         minY =
           maxY =
           (
-            viewportHeight -
+            vh -
             height
           )
           / 2;
@@ -2112,7 +2299,7 @@
       else {
 
         minY =
-          viewportHeight -
+          vh -
           height;
 
         maxY =
@@ -2165,7 +2352,7 @@
 
 
       const position =
-        clampPan(
+        constrainPan(
           x,
           y,
           view.zoom
@@ -2187,29 +2374,18 @@
 
 
     /* =====================================================
-       FIT ENTIRE SKETCHBOOK
-
-       INITIAL STATE:
-       YOU CAN SEE THE WHOLE THING.
+       FIT WHOLE SPREAD
        ===================================================== */
 
-    function fitEntireSketchbook() {
-
-      const viewportWidth =
-        viewport.clientWidth;
-
-
-      const viewportHeight =
-        viewport.clientHeight;
-
+    function fitAll() {
 
       const margin =
-        18;
+        14;
 
 
       const zoomX =
         (
-          viewportWidth -
+          viewport.clientWidth -
           margin * 2
         )
         /
@@ -2218,7 +2394,7 @@
 
       const zoomY =
         (
-          viewportHeight -
+          viewport.clientHeight -
           margin * 2
         )
         /
@@ -2232,50 +2408,37 @@
         );
 
 
-      view.fitZoom =
-        zoom;
-
-
-      /*
-        Don't allow wheel/− button to go wildly smaller
-        than the full-sheet view.
-      */
-
       view.minZoom =
         zoom *
-        .82;
+        .85;
 
 
-      const scaledWidth =
+      const width =
         paperWidth *
         zoom;
 
 
-      const scaledHeight =
+      const height =
         paperHeight *
         zoom;
 
 
-      const x =
-        (
-          viewportWidth -
-          scaledWidth
-        )
-        / 2;
-
-
-      const y =
-        (
-          viewportHeight -
-          scaledHeight
-        )
-        / 2;
-
-
       setView(
-        x,
-        y,
+
+        (
+          viewport.clientWidth -
+          width
+        )
+        / 2,
+
+        (
+          viewport.clientHeight -
+          height
+        )
+        / 2,
+
         zoom
+
       );
 
     }
@@ -2283,7 +2446,7 @@
 
 
     /* =====================================================
-       ZOOM AROUND A SCREEN POINT
+       ZOOM
        ===================================================== */
 
     function zoomAt(
@@ -2318,86 +2481,63 @@
         );
 
 
-      const nextX =
+      setView(
+
         screenX -
         worldX *
-        zoom;
+        zoom,
 
-
-      const nextY =
         screenY -
         worldY *
-        zoom;
+        zoom,
 
-
-      setView(
-        nextX,
-        nextY,
         zoom
+
       );
 
     }
 
 
 
-    /* =====================================================
-       ZOOM BUTTONS
-
-       Zoom around center of viewport.
-       ===================================================== */
-
-    function zoomFromCenter(
+    function zoomCenter(
       factor
     ) {
 
-      const centerX =
-        viewport.clientWidth /
-        2;
-
-
-      const centerY =
-        viewport.clientHeight /
-        2;
-
-
       zoomAt(
-        centerX,
-        centerY,
+
+        viewport.clientWidth /
+        2,
+
+        viewport.clientHeight /
+        2,
+
         view.zoom *
         factor
+
       );
 
     }
 
 
-    zoomInButton.addEventListener(
-      "click",
-      () => {
 
-        zoomFromCenter(
+    zoomIn.addEventListener(
+      "click",
+      () =>
+        zoomCenter(
           1.22
-        );
-
-      }
+        )
     );
 
 
-    zoomOutButton.addEventListener(
+    zoomOut.addEventListener(
       "click",
-      () => {
-
-        zoomFromCenter(
+      () =>
+        zoomCenter(
           1 / 1.22
-        );
-
-      }
+        )
     );
 
 
-
-    /* =====================================================
-       MOUSE / TRACKPAD ZOOM
-       ===================================================== */
 
     viewport.addEventListener(
       "wheel",
@@ -2421,13 +2561,13 @@
 
 
         /*
-          Smaller factor makes trackpad zoom much smoother.
+          Smooth mouse / trackpad zoom.
         */
 
         const factor =
           Math.exp(
             -event.deltaY *
-            .0015
+            .00145
           );
 
 
@@ -2448,16 +2588,12 @@
 
 
     /* =====================================================
-       DRAG / PAN
+       DRAG
        ===================================================== */
 
     viewport.addEventListener(
       "pointerdown",
       event => {
-
-        /*
-          Don't initiate drag when clicking zoom buttons.
-        */
 
         if (
           event.target.closest(
@@ -2512,24 +2648,18 @@
         }
 
 
-        const dx =
-          event.clientX -
-          view.startX;
-
-
-        const dy =
-          event.clientY -
-          view.startY;
-
-
         setView(
+
           view.originX +
-          dx,
+          event.clientX -
+          view.startX,
 
           view.originY +
-          dy,
+          event.clientY -
+          view.startY,
 
           view.zoom
+
         );
 
       }
