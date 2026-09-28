@@ -11,7 +11,10 @@
 
   <title>illustration — keegan.biz</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 </head>
 
 
@@ -34,7 +37,6 @@
       <a
         class="scarf-item scarf-home"
         href="../"
-        data-live-link
         aria-label="Home"
       >
         <img
@@ -47,7 +49,6 @@
       <a
         class="scarf-item"
         href="./"
-        data-live-link
         aria-current="page"
         aria-label="Illustration"
       >
@@ -61,7 +62,6 @@
       <a
         class="scarf-item"
         href="../photography/"
-        data-live-link
         aria-label="Photography"
       >
         <img
@@ -164,9 +164,54 @@
             id="sketchbook-paper"
           >
 
+            <!--
+              LAYER 1:
+              PURE WHITE BASE
+              Comes from .sketchbook-paper background.
+            -->
+
+
+            <!--
+              LAYER 2:
+              ILLUSTRATIONS
+            -->
+
             <div
               class="sketchbook-field"
               id="sketchbook-field"
+            ></div>
+
+
+            <!--
+              LAYER 3:
+              REAL PAPER TEXTURE
+            -->
+
+            <div
+              class="paper-texture-layer"
+              aria-hidden="true"
+            ></div>
+
+
+            <!--
+              LAYER 4:
+              CREAM / WARMTH
+            -->
+
+            <div
+              class="paper-warmth-layer"
+              aria-hidden="true"
+            ></div>
+
+
+            <!--
+              LAYER 5:
+              VERY SUBTLE PHYSICAL PAPER SHADING
+            -->
+
+            <div
+              class="paper-shading-layer"
+              aria-hidden="true"
             ></div>
 
           </div>
@@ -382,6 +427,75 @@
 
 
     /* =====================================================
+       STABLE RANDOMNESS
+
+       Still looks irregular / random, but doesn't completely
+       rearrange every time the window is resized.
+       ===================================================== */
+
+    let randomState =
+      0x8f31a7c9;
+
+
+    function resetRandom() {
+
+      randomState =
+        0x8f31a7c9;
+
+    }
+
+
+    function random() {
+
+      randomState |=
+        0;
+
+
+      randomState =
+        randomState +
+        0x6D2B79F5 |
+        0;
+
+
+      let t =
+        randomState;
+
+
+      t =
+        Math.imul(
+          t ^
+          t >>> 15,
+          t |
+          1
+        );
+
+
+      t ^=
+        t +
+        Math.imul(
+          t ^
+          t >>> 7,
+          t |
+          61
+        );
+
+
+      return (
+        (
+          t ^
+          t >>> 14
+        )
+        >>>
+        0
+      )
+      /
+      4294967296;
+
+    }
+
+
+
+    /* =====================================================
        HELPERS
        ===================================================== */
 
@@ -390,6 +504,7 @@
       min,
       max
     ) {
+
       return Math.min(
         Math.max(
           value,
@@ -397,6 +512,7 @@
         ),
         max
       );
+
     }
 
 
@@ -405,14 +521,16 @@
       min,
       max
     ) {
+
       return (
         min +
-        Math.random() *
+        random() *
         (
           max -
           min
         )
       );
+
     }
 
 
@@ -420,21 +538,28 @@
     function shuffle(
       array
     ) {
+
       const copy =
         [...array];
 
 
       for (
         let i =
-          copy.length - 1;
+          copy.length -
+          1;
         i > 0;
         i--
       ) {
+
         const j =
           Math.floor(
-            Math.random() *
-            (i + 1)
+            random() *
+            (
+              i +
+              1
+            )
           );
+
 
         [
           copy[i],
@@ -443,10 +568,12 @@
           copy[j],
           copy[i]
         ];
+
       }
 
 
       return copy;
+
     }
 
 
@@ -454,6 +581,7 @@
     function categoryFromFilename(
       filename
     ) {
+
       let category =
         filename
           .split("-")[0]
@@ -461,14 +589,18 @@
 
 
       if (
-        category === "animals"
+        category ===
+        "animals"
       ) {
+
         category =
           "animal";
+
       }
 
 
       return category;
+
     }
 
 
@@ -478,12 +610,21 @@
       b,
       gap = 0
     ) {
+
       return !(
-        a.right + gap <= b.left ||
-        a.left >= b.right + gap ||
-        a.bottom + gap <= b.top ||
-        a.top >= b.bottom + gap
+        a.right + gap <=
+        b.left ||
+
+        a.left >=
+        b.right + gap ||
+
+        a.bottom + gap <=
+        b.top ||
+
+        a.top >=
+        b.bottom + gap
       );
+
     }
 
 
@@ -491,9 +632,11 @@
     function getBounds(
       boxes
     ) {
+
       if (
         !boxes.length
       ) {
+
         return {
           left: 0,
           top: 0,
@@ -502,6 +645,7 @@
           width: 0,
           height: 0
         };
+
       }
 
 
@@ -542,17 +686,22 @@
 
 
       return {
+
         left,
         top,
         right,
         bottom,
+
         width:
           right -
           left,
+
         height:
           bottom -
           top
+
       };
+
     }
 
 
@@ -560,16 +709,17 @@
     /* =====================================================
        VISIBLE ART ANALYSIS
 
-       Detects actual art inside white margins.
-       This only affects collision / packing,
-       NOT display scale.
+       ONLY used for packing.
+
+       It does NOT affect scale.
        ===================================================== */
 
     function analyzeVisibleBounds(
       image
     ) {
+
       const SAMPLE_LIMIT =
-        120;
+        140;
 
 
       const scale =
@@ -630,12 +780,14 @@
       if (
         !context
       ) {
+
         return {
           left: 0,
           top: 0,
           right: 1,
           bottom: 1
         };
+
       }
 
 
@@ -652,6 +804,7 @@
 
 
       try {
+
         pixels =
           context.getImageData(
             0,
@@ -659,24 +812,27 @@
             width,
             height
           ).data;
+
       }
 
       catch {
+
         return {
           left: 0,
           top: 0,
           right: 1,
           bottom: 1
         };
+
       }
 
 
       const WHITE_THRESHOLD =
-        247;
+        248;
 
 
       const ALPHA_THRESHOLD =
-        12;
+        10;
 
 
       let minX =
@@ -697,14 +853,18 @@
 
 
       for (
-        let y = 0;
-        y < height;
+        let y =
+          0;
+        y <
+        height;
         y++
       ) {
 
         for (
-          let x = 0;
-          x < width;
+          let x =
+            0;
+          x <
+          width;
           x++
         ) {
 
@@ -719,19 +879,30 @@
 
 
           const red =
-            pixels[index];
+            pixels[
+              index
+            ];
 
 
           const green =
-            pixels[index + 1];
+            pixels[
+              index +
+              1
+            ];
 
 
           const blue =
-            pixels[index + 2];
+            pixels[
+              index +
+              2
+            ];
 
 
           const alpha =
-            pixels[index + 3];
+            pixels[
+              index +
+              3
+            ];
 
 
           if (
@@ -793,12 +964,14 @@
         maxY <
         minY
       ) {
+
         return {
           left: 0,
           top: 0,
           right: 1,
           bottom: 1
         };
+
       }
 
 
@@ -841,34 +1014,45 @@
 
 
       return {
+
         left:
           minX /
           width,
+
         top:
           minY /
           height,
+
         right:
           (
             maxX +
             1
-          ) / width,
+          )
+          /
+          width,
+
         bottom:
           (
             maxY +
             1
-          ) / height
+          )
+          /
+          height
+
       };
+
     }
 
 
 
     /* =====================================================
-       LOAD IMAGE + GET ACTUAL FILE SIZE
+       IMAGE LOADING
        ===================================================== */
 
     function loadImageData(
       filename
     ) {
+
       return new Promise(
         resolve => {
 
@@ -880,55 +1064,11 @@
             "async";
 
 
-          const fileSizePromise =
-            fetch(
-              filename,
-              {
-                cache:
-                  "force-cache"
-              }
-            )
-              .then(
-                response => {
-
-                  if (
-                    !response.ok
-                  ) {
-                    throw new Error(
-                      `Could not fetch ${filename}`
-                    );
-                  }
-
-                  return response.blob();
-
-                }
-              )
-              .then(
-                blob =>
-                  blob.size
-              )
-              .catch(
-                error => {
-
-                  console.warn(
-                    `Could not read file size for ${filename}`,
-                    error
-                  );
-
-                  return null;
-
-                }
-              );
-
-
           image.onload =
-            async () => {
-
-              const fileBytes =
-                await fileSizePromise;
-
+            () => {
 
               resolve({
+
                 filename,
 
                 category:
@@ -942,14 +1082,11 @@
                 height:
                   image.naturalHeight,
 
-                fileBytes:
-                  fileBytes ??
-                  1,
-
                 visibleBounds:
                   analyzeVisibleBounds(
                     image
                   )
+
               });
 
             };
@@ -961,6 +1098,7 @@
               console.warn(
                 `Could not load ${filename}`
               );
+
 
               resolve(
                 null
@@ -974,83 +1112,79 @@
 
         }
       );
+
     }
 
 
 
     /* =====================================================
-       FILE-SIZE-BASED DISPLAY SIZE
+       SOURCE-DIMENSION SCALE
 
-       Display scale is driven ONLY by file size.
+       This is intentionally simple.
 
-       Width / height are used ONLY to preserve aspect ratio.
+       RELATIVE DISPLAY SIZE =
+       RELATIVE SOURCE PIXEL SIZE
+
+       Nothing about:
+       - category
+       - visible art size
+       - compressed WebP bytes
+       - detail level
+       - filename
+
+       affects display scale.
+
+       Width / height are used only to preserve aspect ratio.
        ===================================================== */
 
     function calculateDisplaySize(
       item,
-      fileSizeStats
+      dimensionStats
     ) {
 
-      const mobile =
+      /*
+        sqrt(pixel area) converts a W×H image into a useful
+        single linear dimension.
+
+        Example:
+
+        1000 × 1000 = 1000
+        2000 × 2000 = 2000
+
+        So doubling both source dimensions doubles its
+        displayed linear size.
+      */
+
+      const sourceLinear =
+        Math.sqrt(
+          item.width *
+          item.height
+        );
+
+
+      const ratio =
+        sourceLinear /
+        dimensionStats.median;
+
+
+      /*
+        One global responsive multiplier.
+
+        Relative source-size differences remain identical.
+      */
+
+      const baseLongest =
         window.matchMedia(
           "(max-width: 700px)"
-        ).matches;
+        ).matches
 
-
-      const minLongest =
-        mobile
-          ? 56
-          : 76;
-
-
-      const maxLongest =
-        mobile
-          ? 170
-          : 230;
-
-
-      const bytes =
-        Math.max(
-          item.fileBytes ||
-          1,
-          1
-        );
-
-
-      const logBytes =
-        Math.log(
-          bytes
-        );
-
-
-      const range =
-        Math.max(
-          fileSizeStats.maxLog -
-          fileSizeStats.minLog,
-          .0001
-        );
-
-
-      const normalized =
-        clamp(
-          (
-            logBytes -
-            fileSizeStats.minLog
-          )
-          /
-          range,
-          0,
-          1
-        );
+          ? 92
+          : 132;
 
 
       const longest =
-        minLongest +
-        normalized *
-        (
-          maxLongest -
-          minLongest
-        );
+        baseLongest *
+        ratio;
 
 
       let width;
@@ -1106,13 +1240,13 @@
 
     function prepareDrawing(
       item,
-      fileSizeStats
+      dimensionStats
     ) {
 
       const size =
         calculateDisplaySize(
           item,
-          fileSizeStats
+          dimensionStats
         );
 
 
@@ -1149,7 +1283,7 @@
 
         visibleWidth:
           Math.max(
-            4,
+            2,
             (
               visible.right -
               visible.left
@@ -1160,7 +1294,7 @@
 
         visibleHeight:
           Math.max(
-            4,
+            2,
             (
               visible.bottom -
               visible.top
@@ -1185,8 +1319,45 @@
       y
     ) {
 
-      const safety =
-        2.5;
+      /*
+        Slight extra room for ±5° rotation.
+      */
+
+      const angle =
+        Math.abs(
+          item.rotation
+        )
+        *
+        Math.PI /
+        180;
+
+
+      const rotationExpansionX =
+        Math.sin(
+          angle
+        )
+        *
+        item.visibleHeight *
+        .45;
+
+
+      const rotationExpansionY =
+        Math.sin(
+          angle
+        )
+        *
+        item.visibleWidth *
+        .45;
+
+
+      const safetyX =
+        2 +
+        rotationExpansionX;
+
+
+      const safetyY =
+        2 +
+        rotationExpansionY;
 
 
       return {
@@ -1194,24 +1365,24 @@
         left:
           x +
           item.visibleLeft -
-          safety,
+          safetyX,
 
         top:
           y +
           item.visibleTop -
-          safety,
+          safetyY,
 
         right:
           x +
           item.visibleLeft +
           item.visibleWidth +
-          safety,
+          safetyX,
 
         bottom:
           y +
           item.visibleTop +
           item.visibleHeight +
-          safety
+          safetyY
 
       };
 
@@ -1230,7 +1401,7 @@
     ) {
 
       const GAP =
-        3;
+        2;
 
 
       const ownBox =
@@ -1255,7 +1426,8 @@
         (
           ownBox.left +
           ownBox.right
-        ) /
+        )
+        /
         2;
 
 
@@ -1263,7 +1435,8 @@
         (
           ownBox.top +
           ownBox.bottom
-        ) /
+        )
+        /
         2;
 
 
@@ -1281,7 +1454,8 @@
         (
           target.collision.left +
           target.collision.right
-        ) /
+        )
+        /
         2;
 
 
@@ -1289,27 +1463,24 @@
         (
           target.collision.top +
           target.collision.bottom
-        ) /
+        )
+        /
         2;
 
 
       const combinedWidth =
         targetWidth /
-        2
-        +
+        2 +
         ownWidth /
-        2
-        +
+        2 +
         GAP;
 
 
       const combinedHeight =
         targetHeight /
-        2
-        +
+        2 +
         ownHeight /
-        2
-        +
+        2 +
         GAP;
 
 
@@ -1318,8 +1489,10 @@
 
 
       for (
-        let i = 0;
-        i < count;
+        let i =
+          0;
+        i <
+        count;
         i++
       ) {
 
@@ -1370,26 +1543,18 @@
           );
 
 
-        const centerX =
-          targetCenterX +
-          cosine *
-          radius;
-
-
-        const centerY =
-          targetCenterY +
-          sine *
-          radius;
-
-
         candidates.push({
 
           x:
-            centerX -
+            targetCenterX +
+            cosine *
+            radius -
             ownCenterOffsetX,
 
           y:
-            centerY -
+            targetCenterY +
+            sine *
+            radius -
             ownCenterOffsetY
 
         });
@@ -1411,26 +1576,30 @@
       drawings
     ) {
 
-      const COLLISION_GAP =
-        1;
-
-
       const TARGET_ASPECT =
         1;
 
+
+      const COLLISION_GAP =
+        .5;
+
+
+      /*
+        Big pieces establish the composition first.
+      */
 
       const ordered =
         [...drawings]
           .sort(
             (a, b) =>
               (
-                b.visibleWidth *
-                b.visibleHeight
+                b.displayWidth *
+                b.displayHeight
               )
               -
               (
-                a.visibleWidth *
-                a.visibleHeight
+                a.displayWidth *
+                a.displayHeight
               )
           );
 
@@ -1501,7 +1670,7 @@
             );
 
 
-          const others =
+          const unrelated =
             shuffle(
               placed.filter(
                 other =>
@@ -1512,10 +1681,8 @@
 
 
           const targets = [
-
             ...related,
-            ...others
-
+            ...unrelated
           ];
 
 
@@ -1534,7 +1701,7 @@
                   target,
                   sameCategory
                     ? 72
-                    : 28
+                    : 24
                 );
 
 
@@ -1568,22 +1735,15 @@
                   }
 
 
-                  const boxes = [
-
-                    ...placed.map(
-                      other =>
-                        other.collision
-                    ),
-
-                    collision
-
-                  ];
-
 
                   const bounds =
-                    getBounds(
-                      boxes
-                    );
+                    getBounds([
+                      ...placed.map(
+                        other =>
+                          other.collision
+                      ),
+                      collision
+                    ]);
 
 
                   const width =
@@ -1607,19 +1767,21 @@
                     );
 
 
-                  const squareDeviation =
+                  /*
+                    Strong square preference.
+                  */
+
+                  const squarePenalty =
+                    area *
                     Math.abs(
                       Math.log(
                         ratio /
                         TARGET_ASPECT
                       )
-                    );
+                    )
+                    *
+                    5.4;
 
-
-                  const squarePenalty =
-                    area *
-                    squareDeviation *
-                    5.5;
 
 
                   const longest =
@@ -1646,17 +1808,36 @@
 
                   const imbalancePenalty =
                     imbalance >
-                    1.20
+                    1.22
 
                       ? area *
                         (
                           imbalance -
-                          1.20
+                          1.22
                         )
                         *
-                        4
+                        4.5
 
                       : 0;
+
+
+
+                  const candidateCenterX =
+                    (
+                      collision.left +
+                      collision.right
+                    )
+                    /
+                    2;
+
+
+                  const candidateCenterY =
+                    (
+                      collision.top +
+                      collision.bottom
+                    )
+                    /
+                    2;
 
 
                   const massCenterX =
@@ -1677,33 +1858,16 @@
                     2;
 
 
-                  const candidateX =
-                    (
-                      collision.left +
-                      collision.right
-                    )
-                    /
-                    2;
-
-
-                  const candidateY =
-                    (
-                      collision.top +
-                      collision.bottom
-                    )
-                    /
-                    2;
-
-
                   const centerPenalty =
                     Math.hypot(
-                      candidateX -
+                      candidateCenterX -
                       massCenterX,
-                      candidateY -
+                      candidateCenterY -
                       massCenterY
                     )
                     *
-                    20;
+                    18;
+
 
 
                   let categoryPenalty =
@@ -1721,7 +1885,7 @@
                     related.forEach(
                       relative => {
 
-                        const x =
+                        const relativeX =
                           (
                             relative.collision.left +
                             relative.collision.right
@@ -1730,7 +1894,7 @@
                           2;
 
 
-                        const y =
+                        const relativeY =
                           (
                             relative.collision.top +
                             relative.collision.bottom
@@ -1743,10 +1907,10 @@
                           Math.min(
                             nearest,
                             Math.hypot(
-                              candidateX -
-                              x,
-                              candidateY -
-                              y
+                              candidateCenterX -
+                              relativeX,
+                              candidateCenterY -
+                              relativeY
                             )
                           );
 
@@ -1756,32 +1920,27 @@
 
                     categoryPenalty =
                       nearest *
-                      38;
+                      32;
 
                   }
 
 
+
                   const categoryReward =
                     sameCategory
-                      ? -3500
+                      ? -3100
                       : 0;
 
 
                   const score =
-                    area
-                    +
-                    squarePenalty
-                    +
-                    imbalancePenalty
-                    +
-                    centerPenalty
-                    +
-                    categoryPenalty
-                    +
-                    categoryReward
-                    +
-                    Math.random() *
-                    900;
+                    area +
+                    squarePenalty +
+                    imbalancePenalty +
+                    centerPenalty +
+                    categoryPenalty +
+                    categoryReward +
+                    random() *
+                    800;
 
 
                   if (
@@ -1816,7 +1975,7 @@
 
 
           /* =================================================
-             SMART FALLBACK
+             SAFE FALLBACK
              ================================================= */
 
           if (
@@ -1887,118 +2046,76 @@
 
 
             const GAP =
-              8;
+              6;
 
 
-            let fallbackPoints;
+            const horizontal = [
+
+              {
+                x:
+                  bounds.right +
+                  GAP +
+                  ownWidth /
+                  2,
+
+                y:
+                  centerY
+              },
+
+              {
+                x:
+                  bounds.left -
+                  GAP -
+                  ownWidth /
+                  2,
+
+                y:
+                  centerY
+              }
+
+            ];
 
 
-            if (
+            const vertical = [
+
+              {
+                x:
+                  centerX,
+
+                y:
+                  bounds.bottom +
+                  GAP +
+                  ownHeight /
+                  2
+              },
+
+              {
+                x:
+                  centerX,
+
+                y:
+                  bounds.top -
+                  GAP -
+                  ownHeight /
+                  2
+              }
+
+            ];
+
+
+            const fallbackPoints =
               bounds.height >
               bounds.width
-            ) {
 
-              fallbackPoints = [
+                ? [
+                    ...horizontal,
+                    ...vertical
+                  ]
 
-                {
-                  x:
-                    bounds.right +
-                    GAP +
-                    ownWidth /
-                    2,
-
-                  y:
-                    centerY
-                },
-
-                {
-                  x:
-                    bounds.left -
-                    GAP -
-                    ownWidth /
-                    2,
-
-                  y:
-                    centerY
-                },
-
-                {
-                  x:
-                    centerX,
-
-                  y:
-                    bounds.bottom +
-                    GAP +
-                    ownHeight /
-                    2
-                },
-
-                {
-                  x:
-                    centerX,
-
-                  y:
-                    bounds.top -
-                    GAP -
-                    ownHeight /
-                    2
-                }
-
-              ];
-
-            }
-
-            else {
-
-              fallbackPoints = [
-
-                {
-                  x:
-                    centerX,
-
-                  y:
-                    bounds.bottom +
-                    GAP +
-                    ownHeight /
-                    2
-                },
-
-                {
-                  x:
-                    centerX,
-
-                  y:
-                    bounds.top -
-                    GAP -
-                    ownHeight /
-                    2
-                },
-
-                {
-                  x:
-                    bounds.right +
-                    GAP +
-                    ownWidth /
-                    2,
-
-                  y:
-                    centerY
-                },
-
-                {
-                  x:
-                    bounds.left -
-                    GAP -
-                    ownWidth /
-                    2,
-
-                  y:
-                    centerY
-                }
-
-              ];
-
-            }
+                : [
+                    ...vertical,
+                    ...horizontal
+                  ];
 
 
             for (
@@ -2056,6 +2173,10 @@
 
 
 
+          /*
+            Absolute last resort.
+          */
+
           if (
             !winner
           ) {
@@ -2071,12 +2192,12 @@
 
             const x =
               bounds.right +
-              20;
+              12;
 
 
             const y =
               bounds.bottom +
-              20;
+              12;
 
 
             winner = {
@@ -2094,6 +2215,7 @@
             };
 
           }
+
 
 
           placed.push({
@@ -2121,8 +2243,10 @@
          ===================================================== */
 
       for (
-        let pass = 0;
-        pass < 260;
+        let pass =
+          0;
+        pass <
+        240;
         pass++
       ) {
 
@@ -2153,6 +2277,7 @@
           2;
 
 
+
         shuffle(
           placed
         ).forEach(
@@ -2176,35 +2301,12 @@
               2;
 
 
-            const dx =
-              centerX -
-              itemX;
-
-
-            const dy =
-              centerY -
-              itemY;
-
-
-            const distance =
-              Math.hypot(
-                dx,
-                dy
-              );
-
-
-            if (
-              distance <
-              .2
-            ) {
-              return;
-            }
-
-
             const baseAngle =
               Math.atan2(
-                dy,
-                dx
+                centerY -
+                itemY,
+                centerX -
+                itemX
               );
 
 
@@ -2219,28 +2321,26 @@
               .14,
 
               baseAngle +
-              .3,
+              .28,
 
               baseAngle -
-              .3,
+              .28,
 
               baseAngle +
-              .55,
+              .5,
 
               baseAngle -
-              .55
+              .5
 
             ];
 
 
             const steps = [
-
-              9,
-              6,
+              8,
+              5,
               3,
               1.5,
-              .75
-
+              .7
             ];
 
 
@@ -2362,21 +2462,13 @@
 
 
       const CONTENT_PADDING =
-        38;
-
-
-      const contentWidth =
-        finalBounds.width;
-
-
-      const contentHeight =
-        finalBounds.height;
+        34;
 
 
       const squareContentSize =
         Math.max(
-          contentWidth,
-          contentHeight
+          finalBounds.width,
+          finalBounds.height
         );
 
 
@@ -2389,7 +2481,7 @@
       const extraX =
         (
           squareContentSize -
-          contentWidth
+          finalBounds.width
         )
         /
         2;
@@ -2398,7 +2490,7 @@
       const extraY =
         (
           squareContentSize -
-          contentHeight
+          finalBounds.height
         )
         /
         2;
@@ -2543,6 +2635,9 @@
         ++buildGeneration;
 
 
+      resetRandom();
+
+
       field.innerHTML =
         "";
 
@@ -2569,51 +2664,75 @@
       if (
         !loaded.length
       ) {
+
+        console.warn(
+          "No illustration files loaded."
+        );
+
+
         return;
+
       }
 
 
 
-      /* ---------------------------------------------
-         FILE SIZE STATS
+      /* ===================================================
+         SOURCE DIMENSION STATS
 
-         Display scale is based ONLY on file bytes.
-         --------------------------------------------- */
+         Actual display scale is based directly on these.
+         =================================================== */
 
-      const fileSizes =
-        loaded.map(
-          item =>
-            Math.max(
-              item.fileBytes ||
-              1,
-              1
-            )
-        );
-
-
-      const logSizes =
-        fileSizes.map(
-          value =>
-            Math.log(
-              value
-            )
-        );
-
-
-      const fileSizeStats = {
-
-        minLog:
-          Math.min(
-            ...logSizes
-          ),
-
-        maxLog:
-          Math.max(
-            ...logSizes
+      const sourceScales =
+        loaded
+          .map(
+            item =>
+              Math.sqrt(
+                item.width *
+                item.height
+              )
           )
+          .sort(
+            (a, b) =>
+              a -
+              b
+          );
+
+
+      const midpoint =
+        Math.floor(
+          sourceScales.length /
+          2
+        );
+
+
+      const medianDimension =
+        sourceScales.length %
+        2
+
+          ? sourceScales[
+              midpoint
+            ]
+
+          : (
+              sourceScales[
+                midpoint -
+                1
+              ]
+              +
+              sourceScales[
+                midpoint
+              ]
+            )
+            /
+            2;
+
+
+      const dimensionStats = {
+
+        median:
+          medianDimension
 
       };
-
 
 
       const prepared =
@@ -2621,7 +2740,7 @@
           item =>
             prepareDrawing(
               item,
-              fileSizeStats
+              dimensionStats
             )
         );
 
@@ -2841,7 +2960,7 @@
 
 
     /* =====================================================
-       ZOOM BUTTON VISIBILITY
+       BUTTON STATE
        ===================================================== */
 
     function updateZoomButtons() {
@@ -2870,7 +2989,7 @@
 
 
     /* =====================================================
-       APPLY VIEW
+       VIEW
        ===================================================== */
 
     function applyView() {
@@ -2884,10 +3003,6 @@
     }
 
 
-
-    /* =====================================================
-       SET VIEW
-       ===================================================== */
 
     function setView(
       x,
@@ -2928,7 +3043,7 @@
     /* =====================================================
        INITIAL VIEW
 
-       Paper remains larger than viewport even at minimum.
+       Minimum still leaves paper larger than viewport.
        ===================================================== */
 
     function setInitialView() {
@@ -2941,20 +3056,12 @@
         viewport.clientHeight;
 
 
-      const coverWidth =
-        viewportWidth /
-        paperWidth;
-
-
-      const coverHeight =
-        viewportHeight /
-        paperHeight;
-
-
       const coverZoom =
         Math.max(
-          coverWidth,
-          coverHeight
+          viewportWidth /
+          paperWidth,
+          viewportHeight /
+          paperHeight
         );
 
 
@@ -2989,28 +3096,24 @@
         initialZoom;
 
 
-      const initialX =
+      setView(
+
         (
           viewportWidth -
           scaledWidth
         )
         /
-        2;
+        2,
 
-
-      const initialY =
         (
           viewportHeight -
           scaledHeight
         )
         /
-        2;
+        2,
 
-
-      setView(
-        initialX,
-        initialY,
         initialZoom
+
       );
 
     }
@@ -3018,7 +3121,7 @@
 
 
     /* =====================================================
-       ZOOM AROUND POINT
+       ZOOM
        ===================================================== */
 
     function zoomAt(
@@ -3053,31 +3156,23 @@
         );
 
 
-      const nextX =
+      setView(
+
         screenX -
         worldX *
-        zoom;
+        zoom,
 
-
-      const nextY =
         screenY -
         worldY *
-        zoom;
+        zoom,
 
-
-      setView(
-        nextX,
-        nextY,
         zoom
+
       );
 
     }
 
 
-
-    /* =====================================================
-       CENTER ZOOM
-       ===================================================== */
 
     function zoomCenter(
       factor
@@ -3099,10 +3194,6 @@
     }
 
 
-
-    /* =====================================================
-       ZOOM BUTTONS
-       ===================================================== */
 
     zoomInButton.addEventListener(
       "click",
@@ -3131,7 +3222,7 @@
 
 
     /* =====================================================
-       TRACKPAD / MOUSE ZOOM
+       WHEEL / TRACKPAD
        ===================================================== */
 
     viewport.addEventListener(
@@ -3248,24 +3339,18 @@
         }
 
 
-        const dx =
-          event.clientX -
-          view.startX;
-
-
-        const dy =
-          event.clientY -
-          view.startY;
-
-
         setView(
+
           view.originX +
-          dx,
+          event.clientX -
+          view.startX,
 
           view.originY +
-          dy,
+          event.clientY -
+          view.startY,
 
           view.zoom
+
         );
 
       }
@@ -3325,7 +3410,7 @@
         resizeTimer =
           window.setTimeout(
             buildSketchbook,
-            200
+            220
           );
 
       }
