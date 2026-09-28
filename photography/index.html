@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>photography — keegan.biz</title>
   <link rel="preload" as="image" href="assets/Fuji400-web.png">
   <link rel="stylesheet" href="style.css">
@@ -233,20 +233,6 @@
 })();
 </script>
 
-<script>
-(() => {
-  const title = document.getElementById('photo-title');
-  const colors = ['#c1272d','#006a44','#fdb913'];
-  let current = 0;
-  title.style.color = colors[current];
-  setInterval(() => {
-    let next;
-    do next = Math.floor(Math.random()*colors.length); while (next === current);
-    title.classList.add('is-fading');
-    setTimeout(() => { current = next; title.style.color = colors[current]; title.classList.remove('is-fading'); }, 200);
-  }, 2300);
-})();
-</script>
 
 <script>
 (() => {
