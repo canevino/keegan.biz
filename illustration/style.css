@@ -82,8 +82,7 @@ button {
    ========================================================= */
 
 .page-shell {
-  min-height:
-    100vh;
+  min-height: 100vh;
 }
 
 
@@ -138,11 +137,9 @@ button {
 
 
 .scarf-item img {
-  width:
-    auto;
+  width: auto;
 
-  height:
-    100%;
+  height: 100%;
 
   object-fit:
     contain;
@@ -164,7 +161,9 @@ button {
 
 .scarf-home {
   transform:
-    scale(1.045);
+    scale(
+      1.045
+    );
 }
 
 
@@ -172,17 +171,29 @@ button {
   z-index: 4;
 
   transform:
-    translateX(-22px)
-    rotate(-.5deg)
-    scale(1.035);
+    translateX(
+      -22px
+    )
+    rotate(
+      -.5deg
+    )
+    scale(
+      1.035
+    );
 }
 
 
 .scarf-home:hover {
   transform:
-    translateX(-22px)
-    rotate(-.5deg)
-    scale(1.075);
+    translateX(
+      -22px
+    )
+    rotate(
+      -.5deg
+    )
+    scale(
+      1.075
+    );
 }
 
 
@@ -192,14 +203,28 @@ button {
    ========================================================= */
 
 .illustration-page {
-  min-height:
-    100vh;
+  min-height: 100vh;
 
   padding:
-    clamp(30px, 4vw, 56px)
-    clamp(430px, 36vw, 575px)
+    clamp(
+      30px,
+      4vw,
+      56px
+    )
+
+    clamp(
+      430px,
+      36vw,
+      575px
+    )
+
     90px
-    clamp(30px, 5.5vw, 80px);
+
+    clamp(
+      30px,
+      5.5vw,
+      80px
+    );
 }
 
 
@@ -209,20 +234,16 @@ button {
    ========================================================= */
 
 .illustration-header {
-  width:
-    100%;
+  width: 100%;
 
-  margin:
-    0;
+  margin: 0;
 
-  padding:
-    0;
+  padding: 0;
 }
 
 
 .illustration-title {
-  display:
-    block;
+  display: block;
 
   width:
     max-content;
@@ -260,8 +281,7 @@ button {
    ========================================================= */
 
 .sketchbook-stage {
-  width:
-    100%;
+  width: 100%;
 
   margin-top:
     clamp(
@@ -273,11 +293,9 @@ button {
 
 
 .sketchbook-viewport {
-  position:
-    relative;
+  position: relative;
 
-  width:
-    100%;
+  width: 100%;
 
   height:
     clamp(
@@ -286,8 +304,7 @@ button {
       930px
     );
 
-  overflow:
-    hidden;
+  overflow: hidden;
 
   cursor:
     grab;
@@ -311,18 +328,14 @@ button {
 
 
 /* =========================================================
-   WHITE SKETCHBOOK SHEET
+   WHITE PAPER
    ========================================================= */
 
 .sketchbook-paper {
-  position:
-    absolute;
+  position: absolute;
 
-  top:
-    0;
-
-  left:
-    0;
+  top: 0;
+  left: 0;
 
   transform-origin:
     top left;
@@ -356,14 +369,11 @@ button {
 
 
 .sketchbook-field {
-  position:
-    relative;
+  position: relative;
 
-  width:
-    100%;
+  width: 100%;
 
-  height:
-    100%;
+  height: 100%;
 }
 
 
@@ -373,8 +383,7 @@ button {
    ========================================================= */
 
 .drawing {
-  position:
-    absolute;
+  position: absolute;
 
   pointer-events:
     none;
@@ -382,14 +391,11 @@ button {
 
 
 .drawing-art {
-  display:
-    block;
+  display: block;
 
-  width:
-    100%;
+  width: 100%;
 
-  height:
-    100%;
+  height: 100%;
 
   object-fit:
     contain;
@@ -417,55 +423,39 @@ button {
 
 /* =========================================================
    ZOOM CONTROLS
-
-   Bare characters only.
    ========================================================= */
 
 .zoom-controls {
-  position:
-    absolute;
+  position: absolute;
 
-  right:
-    12px;
+  right: 12px;
 
-  bottom:
-    9px;
+  bottom: 8px;
 
-  z-index:
-    20;
+  z-index: 20;
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  gap:
-    10px;
+  gap: 10px;
 }
 
 
 .zoom-button {
-  display:
-    block;
+  display: block;
 
-  width:
-    auto;
+  width: auto;
 
-  height:
-    auto;
+  height: auto;
 
-  margin:
-    0;
+  margin: 0;
 
-  padding:
-    0;
+  padding: 0;
 
-  border:
-    0;
+  border: 0;
 
-  border-radius:
-    0;
+  border-radius: 0;
 
   background:
     transparent;
@@ -490,8 +480,7 @@ button {
   cursor:
     pointer;
 
-  opacity:
-    1;
+  opacity: 1;
 
   transition:
     color
@@ -510,8 +499,7 @@ button {
 
 
 .zoom-button.is-hidden {
-  opacity:
-    0;
+  opacity: 0;
 
   pointer-events:
     none;
@@ -555,14 +543,10 @@ button {
 ) {
 
   .scarf-rack {
-    top:
-      10px;
+    top: 10px;
 
-    left:
-      0;
-
-    right:
-      0;
+    left: 0;
+    right: 0;
 
     flex-direction:
       row;
@@ -570,11 +554,9 @@ button {
     align-items:
       center;
 
-    width:
-      100%;
+    width: 100%;
 
-    gap:
-      6px;
+    gap: 6px;
 
     padding:
       4px
@@ -596,8 +578,7 @@ button {
 
 
   .scarf-rack::-webkit-scrollbar {
-    display:
-      none;
+    display: none;
   }
 
 
