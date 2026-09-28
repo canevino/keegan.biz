@@ -183,27 +183,27 @@
           >
 
             <!-- illustrations -->
+
             <div
               class="sketchbook-field"
               id="sketchbook-field"
             ></div>
 
 
-            <!-- real paper texture -->
+            <!-- paper -->
+
             <div
               class="paper-texture-layer"
               aria-hidden="true"
             ></div>
 
 
-            <!-- cream cast -->
             <div
               class="paper-warmth-layer"
               aria-hidden="true"
             ></div>
 
 
-            <!-- slight physical shading -->
             <div
               class="paper-shading-layer"
               aria-hidden="true"
@@ -451,10 +451,7 @@
 
 
     /* =====================================================
-       BROWSER YIELD
-
-       Allows loading text / UI to paint before another
-       expensive step begins.
+       YIELD
        ===================================================== */
 
     function yieldToBrowser() {
@@ -480,7 +477,7 @@
 
 
     /* =====================================================
-       STABLE RANDOMNESS
+       STABLE RANDOM
        ===================================================== */
 
     let randomState =
@@ -695,7 +692,8 @@
       const left =
         Math.min(
           ...boxes.map(
-            box => box.left
+            box =>
+              box.left
           )
         );
 
@@ -703,7 +701,8 @@
       const top =
         Math.min(
           ...boxes.map(
-            box => box.top
+            box =>
+              box.top
           )
         );
 
@@ -711,7 +710,8 @@
       const right =
         Math.max(
           ...boxes.map(
-            box => box.right
+            box =>
+              box.right
           )
         );
 
@@ -719,7 +719,8 @@
       const bottom =
         Math.max(
           ...boxes.map(
-            box => box.bottom
+            box =>
+              box.bottom
           )
         );
 
@@ -784,8 +785,6 @@
 
     /* =====================================================
        VISIBLE ART ANALYSIS
-
-       Deliberately much cheaper on mobile.
        ===================================================== */
 
     function analyzeVisibleBounds(
@@ -946,11 +945,6 @@
       let maxY =
         -1;
 
-
-      /*
-        On mobile sample every second pixel.
-        Plenty accurate for packing and far cheaper.
-      */
 
       const step =
         mobile
@@ -1170,9 +1164,6 @@
 
     /* =====================================================
        IMAGE LOADING
-
-       Concurrency limited to avoid mobile Safari trying
-       to decode every asset simultaneously.
        ===================================================== */
 
     function loadSingleImage(
@@ -1288,16 +1279,15 @@
         results
           .filter(Boolean)
           .forEach(
-            item =>
+            item => {
+
               loaded.push(
                 item
-              )
+              );
+
+            }
           );
 
-
-        /*
-          Let Safari release temporary decode/canvas work.
-        */
 
         await yieldToBrowser();
 
@@ -1874,6 +1864,344 @@
 
 
     /* =====================================================
+       STAGGER OUTER EDGE
+
+       Breaks the clean rectangle created by compaction.
+
+       Only drawings already near the outer boundary are
+       considered.
+
+       They move predominantly OUTWARD, at different amounts,
+       with a small tangential shift.
+
+       Every proposed move is collision checked.
+       ===================================================== */
+
+    function staggerOuterEdge(
+      placed
+    ) {
+
+      const mobile =
+        isMobileLayout();
+
+
+      const passes =
+        mobile
+          ? 1
+          : 2;
+
+
+      for (
+        let pass =
+          0;
+        pass <
+        passes;
+        pass++
+      ) {
+
+        const bounds =
+          getBounds(
+            placed.map(
+              item =>
+                item.collision
+            )
+          );
+
+
+        const edgeBandX =
+          Math.max(
+            35,
+            bounds.width *
+            .12
+          );
+
+
+        const edgeBandY =
+          Math.max(
+            35,
+            bounds.height *
+            .12
+          );
+
+
+        shuffle(
+          placed
+        ).forEach(
+          item => {
+
+            const collision =
+              item.collision;
+
+
+            const center =
+              getItemCenter(
+                item
+              );
+
+
+            const distanceLeft =
+              center.x -
+              bounds.left;
+
+
+            const distanceRight =
+              bounds.right -
+              center.x;
+
+
+            const distanceTop =
+              center.y -
+              bounds.top;
+
+
+            const distanceBottom =
+              bounds.bottom -
+              center.y;
+
+
+            const edges =
+              [];
+
+
+            if (
+              distanceLeft <
+              edgeBandX
+            ) {
+
+              edges.push(
+                "left"
+              );
+
+            }
+
+
+            if (
+              distanceRight <
+              edgeBandX
+            ) {
+
+              edges.push(
+                "right"
+              );
+
+            }
+
+
+            if (
+              distanceTop <
+              edgeBandY
+            ) {
+
+              edges.push(
+                "top"
+              );
+
+            }
+
+
+            if (
+              distanceBottom <
+              edgeBandY
+            ) {
+
+              edges.push(
+                "bottom"
+              );
+
+            }
+
+
+            if (
+              !edges.length
+            ) {
+              return;
+            }
+
+
+            /*
+              Don't move every edge item.
+              Leaving some recessed is what creates the
+              irregular silhouette.
+            */
+
+            if (
+              random() <
+              .27
+            ) {
+              return;
+            }
+
+
+            const edge =
+              edges[
+                Math.floor(
+                  random() *
+                  edges.length
+                )
+              ];
+
+
+            /*
+              Outward distances vary considerably.
+
+              Some barely shift.
+              Some visibly protrude.
+            */
+
+            const outward =
+              mobile
+
+                ? randomBetween(
+                    3,
+                    15
+                  )
+
+                : randomBetween(
+                    4,
+                    21
+                  );
+
+
+            const tangent =
+              mobile
+
+                ? randomBetween(
+                    -5,
+                    5
+                  )
+
+                : randomBetween(
+                    -7,
+                    7
+                  );
+
+
+            let nextX =
+              item.x;
+
+
+            let nextY =
+              item.y;
+
+
+            if (
+              edge ===
+              "left"
+            ) {
+
+              nextX -=
+                outward;
+
+
+              nextY +=
+                tangent;
+
+            }
+
+
+            if (
+              edge ===
+              "right"
+            ) {
+
+              nextX +=
+                outward;
+
+
+              nextY +=
+                tangent;
+
+            }
+
+
+            if (
+              edge ===
+              "top"
+            ) {
+
+              nextY -=
+                outward;
+
+
+              nextX +=
+                tangent;
+
+            }
+
+
+            if (
+              edge ===
+              "bottom"
+            ) {
+
+              nextY +=
+                outward;
+
+
+              nextX +=
+                tangent;
+
+            }
+
+
+            const nextCollision =
+              collisionBoxAt(
+                item,
+                nextX,
+                nextY
+              );
+
+
+            const overlaps =
+              placed.some(
+                other => {
+
+                  if (
+                    other ===
+                    item
+                  ) {
+                    return false;
+                  }
+
+
+                  return boxesOverlap(
+                    nextCollision,
+                    other.collision,
+                    .1
+                  );
+
+                }
+              );
+
+
+            if (
+              overlaps
+            ) {
+              return;
+            }
+
+
+            item.x =
+              nextX;
+
+
+            item.y =
+              nextY;
+
+
+            item.collision =
+              nextCollision;
+
+          }
+        );
+
+      }
+
+    }
+
+
+
+    /* =====================================================
        PACKING
        ===================================================== */
 
@@ -1892,10 +2220,6 @@
       const COLLISION_GAP =
         .5;
 
-
-      /*
-        Lower mobile workload dramatically.
-      */
 
       const MAX_TARGETS =
         mobile
@@ -2738,6 +3062,16 @@
 
 
       /* =====================================================
+         BREAK UP CLEAN EDGES
+         ===================================================== */
+
+      staggerOuterEdge(
+        placed
+      );
+
+
+
+      /* =====================================================
          FINAL SQUARE
          ===================================================== */
 
@@ -2750,10 +3084,18 @@
         );
 
 
+      /*
+        A little less border than previously.
+
+        This lets the staggered outer drawings feel closer
+        to the edge and makes the sketchbook composition less
+        like a framed poster.
+      */
+
       const CONTENT_PADDING =
         mobile
-          ? 25
-          : 34;
+          ? 17
+          : 25;
 
 
       const squareContentSize =
@@ -2876,11 +3218,6 @@
         "";
 
 
-      /*
-        Browser already decoded these during setup, but
-        lazy remains useful if it evicts anything later.
-      */
-
       image.loading =
         "lazy";
 
@@ -2959,10 +3296,6 @@
 
 
 
-      /* ===================================================
-         LOAD ONCE
-         =================================================== */
-
       if (
         !loadedImageData ||
         forceReload
@@ -2998,10 +3331,6 @@
       await yieldToBrowser();
 
 
-
-      /* ===================================================
-         DIMENSION STATS
-         =================================================== */
 
       const sourceScales =
         loadedImageData
@@ -3069,10 +3398,6 @@
 
 
 
-      /* ===================================================
-         PACK
-         =================================================== */
-
       const layout =
         packDrawings(
           prepared
@@ -3131,10 +3456,6 @@
 
 
 
-      /* ===================================================
-         VIEW
-         =================================================== */
-
       setInitialView();
 
 
@@ -3175,6 +3496,9 @@
       dragging:
         false,
 
+      pinching:
+        false,
+
       startX:
         0,
 
@@ -3192,7 +3516,7 @@
 
 
     /* =====================================================
-       PAN
+       PAN CONSTRAINTS
        ===================================================== */
 
     function constrainPan(
@@ -3306,7 +3630,7 @@
 
 
     /* =====================================================
-       ZOOM BUTTON STATE
+       ZOOM BUTTONS
        ===================================================== */
 
     function updateZoomButtons() {
@@ -3335,7 +3659,7 @@
 
 
     /* =====================================================
-       APPLY VIEW
+       VIEW
        ===================================================== */
 
     function applyView() {
@@ -3409,11 +3733,6 @@
         );
 
 
-      /*
-        On mobile keep a bit less excess outside viewport
-        so it doesn't start absurdly zoomed-in.
-      */
-
       const minimumMultiplier =
         isMobileLayout()
           ? 1.12
@@ -3482,10 +3801,7 @@
 
 
     /* =====================================================
-       RECENTER AFTER ORDINARY RESIZE
-
-       IMPORTANT:
-       Does NOT repack all illustrations.
+       RESIZE VIEW
        ===================================================== */
 
     function refreshViewAfterResize() {
@@ -3510,6 +3826,34 @@
             oldMin
 
           : 1;
+
+
+      const oldViewportWidth =
+        viewport.clientWidth;
+
+
+      const oldViewportHeight =
+        viewport.clientHeight;
+
+
+      const oldCenterWorldX =
+        (
+          oldViewportWidth /
+          2 -
+          view.x
+        )
+        /
+        view.zoom;
+
+
+      const oldCenterWorldY =
+        (
+          oldViewportHeight /
+          2 -
+          view.y
+        )
+        /
+        view.zoom;
 
 
       const coverZoom =
@@ -3545,30 +3889,6 @@
           view.minZoom,
           view.maxZoom
         );
-
-
-      /*
-        Preserve center of current paper view.
-      */
-
-      const oldCenterWorldX =
-        (
-          viewport.clientWidth /
-          2 -
-          view.x
-        )
-        /
-        view.zoom;
-
-
-      const oldCenterWorldY =
-        (
-          viewport.clientHeight /
-          2 -
-          view.y
-        )
-        /
-        view.zoom;
 
 
       setView(
@@ -3693,7 +4013,7 @@
 
 
     /* =====================================================
-       WHEEL / TRACKPAD
+       DESKTOP TRACKPAD / MOUSE WHEEL
        ===================================================== */
 
     viewport.addEventListener(
@@ -3733,8 +4053,173 @@
 
 
     /* =====================================================
-       DRAG
+       MOBILE / POINTER GESTURES
+
+       1 finger = pan
+       2 fingers = pinch zoom + pan
        ===================================================== */
+
+    const activePointers =
+      new Map();
+
+
+    let pinchStartDistance =
+      0;
+
+
+    let pinchStartZoom =
+      1;
+
+
+    let pinchWorldX =
+      0;
+
+
+    let pinchWorldY =
+      0;
+
+
+
+    function pointerLocalPosition(
+      event
+    ) {
+
+      const rect =
+        viewport.getBoundingClientRect();
+
+
+      return {
+
+        x:
+          event.clientX -
+          rect.left,
+
+        y:
+          event.clientY -
+          rect.top
+
+      };
+
+    }
+
+
+
+    function getPinchData() {
+
+      const points =
+        Array.from(
+          activePointers.values()
+        );
+
+
+      if (
+        points.length <
+        2
+      ) {
+        return null;
+      }
+
+
+      const a =
+        points[0];
+
+
+      const b =
+        points[1];
+
+
+      return {
+
+        midpointX:
+          (
+            a.x +
+            b.x
+          )
+          /
+          2,
+
+        midpointY:
+          (
+            a.y +
+            b.y
+          )
+          /
+          2,
+
+        distance:
+          Math.hypot(
+            b.x -
+            a.x,
+            b.y -
+            a.y
+          )
+
+      };
+
+    }
+
+
+
+    function startPinch() {
+
+      const pinch =
+        getPinchData();
+
+
+      if (
+        !pinch ||
+        pinch.distance <=
+        0
+      ) {
+        return;
+      }
+
+
+      view.pinching =
+        true;
+
+
+      view.dragging =
+        false;
+
+
+      pinchStartDistance =
+        pinch.distance;
+
+
+      pinchStartZoom =
+        view.zoom;
+
+
+      /*
+        World coordinate currently underneath midpoint.
+      */
+
+      pinchWorldX =
+        (
+          pinch.midpointX -
+          view.x
+        )
+        /
+        view.zoom;
+
+
+      pinchWorldY =
+        (
+          pinch.midpointY -
+          view.y
+        )
+        /
+        view.zoom;
+
+
+      viewport.classList.add(
+        "is-dragging"
+      );
+
+    }
+
+
 
     viewport.addEventListener(
       "pointerdown",
@@ -3749,28 +4234,15 @@
         }
 
 
-        view.dragging =
-          true;
+        const point =
+          pointerLocalPosition(
+            event
+          );
 
 
-        view.startX =
-          event.clientX;
-
-
-        view.startY =
-          event.clientY;
-
-
-        view.originX =
-          view.x;
-
-
-        view.originY =
-          view.y;
-
-
-        viewport.classList.add(
-          "is-dragging"
+        activePointers.set(
+          event.pointerId,
+          point
         );
 
 
@@ -3786,6 +4258,52 @@
           /* no-op */
         }
 
+
+        if (
+          activePointers.size ===
+          1
+        ) {
+
+          view.pinching =
+            false;
+
+
+          view.dragging =
+            true;
+
+
+          view.startX =
+            point.x;
+
+
+          view.startY =
+            point.y;
+
+
+          view.originX =
+            view.x;
+
+
+          view.originY =
+            view.y;
+
+
+          viewport.classList.add(
+            "is-dragging"
+          );
+
+        }
+
+
+        if (
+          activePointers.size >=
+          2
+        ) {
+
+          startPinch();
+
+        }
+
       }
     );
 
@@ -3796,24 +4314,242 @@
       event => {
 
         if (
-          !view.dragging
+          !activePointers.has(
+            event.pointerId
+          )
         ) {
           return;
         }
 
 
-        setView(
+        const point =
+          pointerLocalPosition(
+            event
+          );
 
-          view.originX +
-          event.clientX -
-          view.startX,
 
-          view.originY +
-          event.clientY -
-          view.startY,
+        activePointers.set(
+          event.pointerId,
+          point
+        );
 
-          view.zoom
 
+        /* ---------------------------------------------
+           PINCH
+           --------------------------------------------- */
+
+        if (
+          activePointers.size >=
+          2
+        ) {
+
+          if (
+            !view.pinching
+          ) {
+
+            startPinch();
+
+          }
+
+
+          const pinch =
+            getPinchData();
+
+
+          if (
+            !pinch ||
+            pinchStartDistance <=
+            0
+          ) {
+            return;
+          }
+
+
+          const ratio =
+            pinch.distance /
+            pinchStartDistance;
+
+
+          const nextZoom =
+            clamp(
+              pinchStartZoom *
+              ratio,
+              view.minZoom,
+              view.maxZoom
+            );
+
+
+          /*
+            Keep original world point under the live
+            midpoint.
+
+            Since the midpoint itself can move, this gives
+            normal two-finger zoom + pan behavior.
+          */
+
+          const nextX =
+            pinch.midpointX -
+            pinchWorldX *
+            nextZoom;
+
+
+          const nextY =
+            pinch.midpointY -
+            pinchWorldY *
+            nextZoom;
+
+
+          setView(
+            nextX,
+            nextY,
+            nextZoom
+          );
+
+
+          return;
+
+        }
+
+
+
+        /* ---------------------------------------------
+           SINGLE-FINGER PAN
+           --------------------------------------------- */
+
+        if (
+          view.dragging &&
+          activePointers.size ===
+          1
+        ) {
+
+          setView(
+
+            view.originX +
+            point.x -
+            view.startX,
+
+            view.originY +
+            point.y -
+            view.startY,
+
+            view.zoom
+
+          );
+
+        }
+
+      }
+    );
+
+
+
+    function releasePointer(
+      event
+    ) {
+
+      activePointers.delete(
+        event.pointerId
+      );
+
+
+      /*
+        Pinch ended but one finger remains.
+
+        Seamlessly turn that finger into a new pan gesture.
+      */
+
+      if (
+        activePointers.size ===
+        1
+      ) {
+
+        const remaining =
+          Array.from(
+            activePointers.values()
+          )[0];
+
+
+        view.pinching =
+          false;
+
+
+        view.dragging =
+          true;
+
+
+        view.startX =
+          remaining.x;
+
+
+        view.startY =
+          remaining.y;
+
+
+        view.originX =
+          view.x;
+
+
+        view.originY =
+          view.y;
+
+
+        return;
+
+      }
+
+
+      if (
+        activePointers.size ===
+        0
+      ) {
+
+        view.pinching =
+          false;
+
+
+        view.dragging =
+          false;
+
+
+        viewport.classList.remove(
+          "is-dragging"
+        );
+
+      }
+
+    }
+
+
+
+    viewport.addEventListener(
+      "pointerup",
+      releasePointer
+    );
+
+
+    viewport.addEventListener(
+      "pointercancel",
+      releasePointer
+    );
+
+
+    window.addEventListener(
+      "blur",
+      () => {
+
+        activePointers.clear();
+
+
+        view.pinching =
+          false;
+
+
+        view.dragging =
+          false;
+
+
+        viewport.classList.remove(
+          "is-dragging"
         );
 
       }
@@ -3821,47 +4557,8 @@
 
 
 
-    function finishDrag() {
-
-      view.dragging =
-        false;
-
-
-      viewport.classList.remove(
-        "is-dragging"
-      );
-
-    }
-
-
-    viewport.addEventListener(
-      "pointerup",
-      finishDrag
-    );
-
-
-    viewport.addEventListener(
-      "pointercancel",
-      finishDrag
-    );
-
-
-    window.addEventListener(
-      "blur",
-      finishDrag
-    );
-
-
-
     /* =====================================================
        RESIZE
-
-       CRITICAL MOBILE FIX:
-
-       Normal viewport-height changes DO NOT rebuild.
-
-       Only rebuild when crossing the desktop/mobile
-       breakpoint, because that actually changes drawing scale.
        ===================================================== */
 
     let resizeTimer =
