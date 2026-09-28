@@ -3166,6 +3166,648 @@
 
 
 
+
+    /* =====================================================
+       GUITAR TRIADS
+
+       Each illustration receives one random guitar triad
+       for the lifetime of this page load.
+
+       Reloading the page reshuffles the assignments.
+       Repeated taps on the same illustration replay the
+       same triad until the next reload.
+
+       The palette deliberately stays in familiar major /
+       minor harmony rather than leaning into the more modal
+       D-dorian sound used elsewhere on the site.
+       ===================================================== */
+
+    const GUITAR_AUDIO_ROOT =
+      "../photography/assets/audio/";
+
+
+    const guitarSamples = {
+
+      a1:
+        "guitar_a1.mp3",
+
+      b1:
+        "guitar_b1.mp3",
+
+      c1:
+        "guitar_c1.mp3",
+
+      c2:
+        "guitar_c2.mp3",
+
+      d2:
+        "guitar_d2.mp3",
+
+      e1:
+        "guitar_e1.mp3",
+
+      e2:
+        "guitar_e2.mp3",
+
+      f1:
+        "guitar_f1.mp3",
+
+      g1:
+        "guitar_g1.mp3",
+
+      g2:
+        "guitar_g2.mp3"
+
+    };
+
+
+    const guitarTriads = [
+
+      {
+        name:
+          "C major",
+
+        notes: [
+          "c1",
+          "e1",
+          "g1"
+        ]
+      },
+
+      {
+        name:
+          "C major / E",
+
+        notes: [
+          "e1",
+          "g1",
+          "c2"
+        ]
+      },
+
+      {
+        name:
+          "F major",
+
+        notes: [
+          "f1",
+          "a1",
+          "c2"
+        ]
+      },
+
+      {
+        name:
+          "G major",
+
+        notes: [
+          "g1",
+          "b1",
+          "d2"
+        ]
+      },
+
+      {
+        name:
+          "G major / B",
+
+        notes: [
+          "b1",
+          "d2",
+          "g2"
+        ]
+      },
+
+      {
+        name:
+          "A minor",
+
+        notes: [
+          "a1",
+          "c2",
+          "e2"
+        ]
+      },
+
+      {
+        name:
+          "E minor",
+
+        notes: [
+          "e1",
+          "g1",
+          "b1"
+        ]
+      },
+
+      {
+        name:
+          "E minor / G",
+
+        notes: [
+          "g1",
+          "b1",
+          "e2"
+        ]
+      }
+
+    ];
+
+
+    const triadAssignments =
+      new Map();
+
+
+    const guitarBytes =
+      new Map();
+
+
+    const guitarBytePromises =
+      new Map();
+
+
+    const decodedGuitarBuffers =
+      new Map();
+
+
+    let guitarAudioContext =
+      null;
+
+
+    let guitarMaster =
+      null;
+
+
+    let guitarPreloadStarted =
+      false;
+
+
+
+    function randomTriadIndex() {
+
+      return Math.floor(
+        Math.random() *
+        guitarTriads.length
+      );
+
+    }
+
+
+
+    function getTriadForIllustration(
+      filename
+    ) {
+
+      if (
+        !triadAssignments.has(
+          filename
+        )
+      ) {
+
+        triadAssignments.set(
+          filename,
+          randomTriadIndex()
+        );
+
+      }
+
+
+      return guitarTriads[
+        triadAssignments.get(
+          filename
+        )
+      ];
+
+    }
+
+
+
+    async function fetchGuitarBytes(
+      note
+    ) {
+
+      if (
+        guitarBytes.has(
+          note
+        )
+      ) {
+
+        return guitarBytes.get(
+          note
+        );
+
+      }
+
+
+      if (
+        guitarBytePromises.has(
+          note
+        )
+      ) {
+
+        return guitarBytePromises.get(
+          note
+        );
+
+      }
+
+
+      const filename =
+        guitarSamples[
+          note
+        ];
+
+
+      if (
+        !filename
+      ) {
+
+        throw new Error(
+          `Unknown guitar note: ${note}`
+        );
+
+      }
+
+
+      const promise =
+        fetch(
+          GUITAR_AUDIO_ROOT +
+          filename,
+          {
+            cache:
+              "force-cache"
+          }
+        )
+          .then(
+            response => {
+
+              if (
+                !response.ok
+              ) {
+
+                throw new Error(
+                  `Could not load ${filename}`
+                );
+
+              }
+
+
+              return response.arrayBuffer();
+
+            }
+          )
+          .then(
+            bytes => {
+
+              guitarBytes.set(
+                note,
+                bytes
+              );
+
+
+              guitarBytePromises.delete(
+                note
+              );
+
+
+              return bytes;
+
+            }
+          )
+          .catch(
+            error => {
+
+              guitarBytePromises.delete(
+                note
+              );
+
+
+              throw error;
+
+            }
+          );
+
+
+      guitarBytePromises.set(
+        note,
+        promise
+      );
+
+
+      return promise;
+
+    }
+
+
+
+    function beginGuitarPreload() {
+
+      if (
+        guitarPreloadStarted
+      ) {
+        return;
+      }
+
+
+      guitarPreloadStarted =
+        true;
+
+
+      const notes =
+        Array.from(
+          new Set(
+            guitarTriads.flatMap(
+              triad =>
+                triad.notes
+            )
+          )
+        );
+
+
+      notes.forEach(
+        note => {
+
+          fetchGuitarBytes(
+            note
+          ).catch(
+            () => {
+              /* optional background preload */
+            }
+          );
+
+        }
+      );
+
+    }
+
+
+
+    function scheduleGuitarPreload() {
+
+      if (
+        "requestIdleCallback" in
+        window
+      ) {
+
+        window.requestIdleCallback(
+          beginGuitarPreload,
+          {
+            timeout:
+              1800
+          }
+        );
+
+      }
+
+      else {
+
+        window.setTimeout(
+          beginGuitarPreload,
+          650
+        );
+
+      }
+
+    }
+
+
+
+    async function ensureGuitarAudio() {
+
+      if (
+        !guitarAudioContext
+      ) {
+
+        const AudioContextClass =
+          window.AudioContext ||
+          window.webkitAudioContext;
+
+
+        if (
+          !AudioContextClass
+        ) {
+
+          throw new Error(
+            "Web Audio is not supported in this browser."
+          );
+
+        }
+
+
+        guitarAudioContext =
+          new AudioContextClass();
+
+
+        const compressor =
+          guitarAudioContext
+            .createDynamicsCompressor();
+
+
+        compressor.threshold.value =
+          -14;
+
+
+        compressor.knee.value =
+          12;
+
+
+        compressor.ratio.value =
+          3;
+
+
+        compressor.attack.value =
+          .003;
+
+
+        compressor.release.value =
+          .22;
+
+
+        guitarMaster =
+          guitarAudioContext
+            .createGain();
+
+
+        guitarMaster.gain.value =
+          .82;
+
+
+        guitarMaster.connect(
+          compressor
+        );
+
+
+        compressor.connect(
+          guitarAudioContext.destination
+        );
+
+      }
+
+
+      if (
+        guitarAudioContext.state ===
+        "suspended"
+      ) {
+
+        await guitarAudioContext.resume();
+
+      }
+
+
+      return guitarAudioContext;
+
+    }
+
+
+
+    async function getDecodedGuitarBuffer(
+      note
+    ) {
+
+      if (
+        decodedGuitarBuffers.has(
+          note
+        )
+      ) {
+
+        return decodedGuitarBuffers.get(
+          note
+        );
+
+      }
+
+
+      const context =
+        await ensureGuitarAudio();
+
+
+      const bytes =
+        await fetchGuitarBytes(
+          note
+        );
+
+
+      /*
+        decodeAudioData may detach its ArrayBuffer, so give
+        each decode its own copy while retaining the fetched
+        bytes in the cache.
+      */
+
+      const buffer =
+        await context.decodeAudioData(
+          bytes.slice(
+            0
+          )
+        );
+
+
+      decodedGuitarBuffers.set(
+        note,
+        buffer
+      );
+
+
+      return buffer;
+
+    }
+
+
+
+    async function playIllustrationTriad(
+      filename
+    ) {
+
+      try {
+
+        const context =
+          await ensureGuitarAudio();
+
+
+        const triad =
+          getTriadForIllustration(
+            filename
+          );
+
+
+        const buffers =
+          await Promise.all(
+            triad.notes.map(
+              getDecodedGuitarBuffer
+            )
+          );
+
+
+        const now =
+          context.currentTime +
+          .012;
+
+
+        buffers.forEach(
+          buffer => {
+
+            const source =
+              context.createBufferSource();
+
+
+            const gain =
+              context.createGain();
+
+
+            source.buffer =
+              buffer;
+
+
+            /*
+              Three notes at full sample volume can get
+              harsh quickly. Keep each voice restrained and
+              let the compressor catch stacked transients.
+            */
+
+            gain.gain.setValueAtTime(
+              0,
+              now
+            );
+
+
+            gain.gain.linearRampToValueAtTime(
+              .27,
+              now +
+              .012
+            );
+
+
+            source.connect(
+              gain
+            );
+
+
+            gain.connect(
+              guitarMaster
+            );
+
+
+            source.start(
+              now
+            );
+
+          }
+        );
+
+      }
+
+      catch (error) {
+
+        console.warn(
+          "Could not play guitar triad:",
+          error
+        );
+
+      }
+
+    }
+
+
+
     /* =====================================================
        DRAWING DOM
        ===================================================== */
@@ -3182,6 +3824,21 @@
 
       wrapper.className =
         "drawing";
+
+
+      wrapper.dataset.filename =
+        item.filename;
+
+
+      /*
+        Assign now rather than on first tap so every image has
+        a fixed chord for this page load, even if the layout is
+        rebuilt after crossing the mobile breakpoint.
+      */
+
+      getTriadForIllustration(
+        item.filename
+      );
 
 
       wrapper.style.left =
@@ -3467,6 +4124,9 @@
       loadingIndicator.classList.add(
         "is-hidden"
       );
+
+
+      scheduleGuitarPreload();
 
     }
 
@@ -4063,6 +4723,31 @@
       new Map();
 
 
+    /*
+      A tap on an illustration should play audio, but a drag or
+      pinch starting on that same illustration should not.
+    */
+
+    let tapCandidate =
+      null;
+
+
+    let gestureMoved =
+      false;
+
+
+    let gestureWasPinch =
+      false;
+
+
+    let gestureStartX =
+      0;
+
+
+    let gestureStartY =
+      0;
+
+
     let pinchStartDistance =
       0;
 
@@ -4183,6 +4868,14 @@
         false;
 
 
+      gestureWasPinch =
+        true;
+
+
+      tapCandidate =
+        null;
+
+
       pinchStartDistance =
         pinch.distance;
 
@@ -4238,6 +4931,35 @@
           pointerLocalPosition(
             event
           );
+
+
+        if (
+          activePointers.size ===
+          0
+        ) {
+
+          tapCandidate =
+            event.target.closest(
+              ".drawing"
+            );
+
+
+          gestureMoved =
+            false;
+
+
+          gestureWasPinch =
+            false;
+
+
+          gestureStartX =
+            point.x;
+
+
+          gestureStartY =
+            point.y;
+
+        }
 
 
         activePointers.set(
@@ -4332,6 +5054,28 @@
           event.pointerId,
           point
         );
+
+
+        if (
+          activePointers.size ===
+          1 &&
+          Math.hypot(
+            point.x -
+            gestureStartX,
+            point.y -
+            gestureStartY
+          ) >
+          7
+        ) {
+
+          gestureMoved =
+            true;
+
+
+          tapCandidate =
+            null;
+
+        }
 
 
         /* ---------------------------------------------
@@ -4447,6 +5191,16 @@
       event
     ) {
 
+      const releasedTapCandidate =
+        tapCandidate;
+
+
+      const shouldPlayTap =
+        !gestureMoved &&
+        !gestureWasPinch &&
+        releasedTapCandidate;
+
+
       activePointers.delete(
         event.pointerId
       );
@@ -4515,6 +5269,21 @@
           "is-dragging"
         );
 
+
+        if (
+          shouldPlayTap
+        ) {
+
+          void playIllustrationTriad(
+            releasedTapCandidate.dataset.filename
+          );
+
+        }
+
+
+        tapCandidate =
+          null;
+
       }
 
     }
@@ -4538,6 +5307,18 @@
       () => {
 
         activePointers.clear();
+
+
+        tapCandidate =
+          null;
+
+
+        gestureMoved =
+          false;
+
+
+        gestureWasPinch =
+          false;
 
 
         view.pinching =
