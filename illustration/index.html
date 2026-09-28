@@ -6,7 +6,7 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
 
   <title>illustration — keegan.biz</title>
@@ -154,8 +154,26 @@
         aria-label="Illustration sketchbook"
       >
 
+        <!-- =================================================
+             LOADING
+             ================================================= -->
+
         <div
-          class="sketchbook-viewport"
+          class="sketchbook-loading"
+          id="sketchbook-loading"
+          role="status"
+          aria-live="polite"
+        >
+          loading...
+        </div>
+
+
+        <!-- =================================================
+             VIEWPORT
+             ================================================= -->
+
+        <div
+          class="sketchbook-viewport is-loading"
           id="sketchbook-viewport"
         >
 
@@ -171,17 +189,21 @@
             ></div>
 
 
-            <!-- paper overlays -->
+            <!-- real paper texture -->
             <div
               class="paper-texture-layer"
               aria-hidden="true"
             ></div>
 
+
+            <!-- cream cast -->
             <div
               class="paper-warmth-layer"
               aria-hidden="true"
             ></div>
 
+
+            <!-- slight physical shading -->
             <div
               class="paper-shading-layer"
               aria-hidden="true"
@@ -189,6 +211,10 @@
 
           </div>
 
+
+          <!-- =================================================
+               ZOOM
+               ================================================= -->
 
           <div
             class="zoom-controls"
@@ -375,6 +401,12 @@
       );
 
 
+    const loadingIndicator =
+      document.getElementById(
+        "sketchbook-loading"
+      );
+
+
     const zoomInButton =
       document.getElementById(
         "zoom-in"
@@ -391,10 +423,58 @@
       !viewport ||
       !paper ||
       !field ||
+      !loadingIndicator ||
       !zoomInButton ||
       !zoomOutButton
     ) {
       return;
+    }
+
+
+
+    /* =====================================================
+       DEVICE MODE
+       ===================================================== */
+
+    function isMobileLayout() {
+
+      return window.matchMedia(
+        "(max-width: 700px)"
+      ).matches;
+
+    }
+
+
+    let currentMobileMode =
+      isMobileLayout();
+
+
+
+    /* =====================================================
+       BROWSER YIELD
+
+       Allows loading text / UI to paint before another
+       expensive step begins.
+       ===================================================== */
+
+    function yieldToBrowser() {
+
+      return new Promise(
+        resolve => {
+
+          requestAnimationFrame(
+            () => {
+
+              requestAnimationFrame(
+                resolve
+              );
+
+            }
+          );
+
+        }
+      );
+
     }
 
 
@@ -582,17 +662,10 @@
     ) {
 
       return !(
-        a.right + gap <=
-        b.left ||
-
-        a.left >=
-        b.right + gap ||
-
-        a.bottom + gap <=
-        b.top ||
-
-        a.top >=
-        b.bottom + gap
+        a.right + gap <= b.left ||
+        a.left >= b.right + gap ||
+        a.bottom + gap <= b.top ||
+        a.top >= b.bottom + gap
       );
 
     }
@@ -622,8 +695,7 @@
       const left =
         Math.min(
           ...boxes.map(
-            box =>
-              box.left
+            box => box.left
           )
         );
 
@@ -631,8 +703,7 @@
       const top =
         Math.min(
           ...boxes.map(
-            box =>
-              box.top
+            box => box.top
           )
         );
 
@@ -640,8 +711,7 @@
       const right =
         Math.max(
           ...boxes.map(
-            box =>
-              box.right
+            box => box.right
           )
         );
 
@@ -649,8 +719,7 @@
       const bottom =
         Math.max(
           ...boxes.map(
-            box =>
-              box.bottom
+            box => box.bottom
           )
         );
 
@@ -705,18 +774,46 @@
 
 
     /* =====================================================
-       VISIBLE ART BOUNDS
+       VISIBLE BOUNDS CACHE
+       ===================================================== */
 
-       Packing only.
-       Does NOT affect scale.
+    const boundsCache =
+      new Map();
+
+
+
+    /* =====================================================
+       VISIBLE ART ANALYSIS
+
+       Deliberately much cheaper on mobile.
        ===================================================== */
 
     function analyzeVisibleBounds(
-      image
+      image,
+      filename
     ) {
 
+      if (
+        boundsCache.has(
+          filename
+        )
+      ) {
+
+        return boundsCache.get(
+          filename
+        );
+
+      }
+
+
+      const mobile =
+        isMobileLayout();
+
+
       const SAMPLE_LIMIT =
-        140;
+        mobile
+          ? 64
+          : 110;
 
 
       const scale =
@@ -769,6 +866,8 @@
           "2d",
           {
             willReadFrequently:
+              true,
+            alpha:
               true
           }
         );
@@ -848,13 +947,24 @@
         -1;
 
 
+      /*
+        On mobile sample every second pixel.
+        Plenty accurate for packing and far cheaper.
+      */
+
+      const step =
+        mobile
+          ? 2
+          : 1;
+
 
       for (
         let y =
           0;
         y <
         height;
-        y++
+        y +=
+        step
       ) {
 
         for (
@@ -862,7 +972,8 @@
             0;
           x <
           width;
-          x++
+          x +=
+          step
         ) {
 
           const index =
@@ -955,6 +1066,9 @@
 
 
 
+      let result;
+
+
       if (
         maxX <
         minX ||
@@ -962,7 +1076,7 @@
         minY
       ) {
 
-        return {
+        result = {
           left: 0,
           top: 0,
           right: 1,
@@ -971,82 +1085,97 @@
 
       }
 
+      else {
 
-      const margin =
-        2;
-
-
-      minX =
-        Math.max(
-          0,
-          minX -
-          margin
-        );
+        const margin =
+          2;
 
 
-      minY =
-        Math.max(
-          0,
-          minY -
-          margin
-        );
+        minX =
+          Math.max(
+            0,
+            minX -
+            margin
+          );
 
 
-      maxX =
-        Math.min(
-          width -
-          1,
-          maxX +
-          margin
-        );
+        minY =
+          Math.max(
+            0,
+            minY -
+            margin
+          );
 
 
-      maxY =
-        Math.min(
-          height -
-          1,
-          maxY +
-          margin
-        );
-
-
-      return {
-
-        left:
-          minX /
-          width,
-
-        top:
-          minY /
-          height,
-
-        right:
-          (
+        maxX =
+          Math.min(
+            width -
+            1,
             maxX +
-            1
-          )
-          /
-          width,
+            margin
+          );
 
-        bottom:
-          (
+
+        maxY =
+          Math.min(
+            height -
+            1,
             maxY +
-            1
-          )
-          /
-          height
+            margin
+          );
 
-      };
+
+        result = {
+
+          left:
+            minX /
+            width,
+
+          top:
+            minY /
+            height,
+
+          right:
+            (
+              maxX +
+              1
+            )
+            /
+            width,
+
+          bottom:
+            (
+              maxY +
+              1
+            )
+            /
+            height
+
+        };
+
+      }
+
+
+      boundsCache.set(
+        filename,
+        result
+      );
+
+
+      return result;
 
     }
 
 
 
     /* =====================================================
-       LOAD IMAGE
+       IMAGE LOADING
+
+       Concurrency limited to avoid mobile Safari trying
+       to decode every asset simultaneously.
        ===================================================== */
 
-    function loadImageData(
+    function loadSingleImage(
       filename
     ) {
 
@@ -1081,7 +1210,8 @@
 
                 visibleBounds:
                   analyzeVisibleBounds(
-                    image
+                    image,
+                    filename
                   )
 
               });
@@ -1114,16 +1244,74 @@
 
 
 
+    async function loadImagesInBatches() {
+
+      const mobile =
+        isMobileLayout();
+
+
+      const batchSize =
+        mobile
+          ? 5
+          : 12;
+
+
+      const loaded =
+        [];
+
+
+      for (
+        let i =
+          0;
+        i <
+        files.length;
+        i +=
+        batchSize
+      ) {
+
+        const batch =
+          files.slice(
+            i,
+            i +
+            batchSize
+          );
+
+
+        const results =
+          await Promise.all(
+            batch.map(
+              loadSingleImage
+            )
+          );
+
+
+        results
+          .filter(Boolean)
+          .forEach(
+            item =>
+              loaded.push(
+                item
+              )
+          );
+
+
+        /*
+          Let Safari release temporary decode/canvas work.
+        */
+
+        await yieldToBrowser();
+
+      }
+
+
+      return loaded;
+
+    }
+
+
+
     /* =====================================================
        DISPLAY SCALE
-
-       Source dimensions control size directly,
-       but with a maximum visual cap.
-
-       Example:
-       - 1000px source = baseline size
-       - 1500px source = 1.5× baseline
-       - very large files stop growing at MAX_LONGEST
        ===================================================== */
 
     function calculateDisplaySize(
@@ -1132,9 +1320,7 @@
     ) {
 
       const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
+        isMobileLayout();
 
 
       const sourceLinear =
@@ -1151,28 +1337,19 @@
 
       const BASE_LONGEST =
         mobile
-          ? 88
+          ? 76
           : 128;
 
 
-      /*
-        Hard cap prevents tomato / city etc. from swallowing
-        the entire spread.
-      */
-
       const MAX_LONGEST =
         mobile
-          ? 145
+          ? 132
           : 190;
 
 
-      /*
-        Small pieces can still remain meaningfully small.
-      */
-
       const MIN_LONGEST =
         mobile
-          ? 36
+          ? 32
           : 46;
 
 
@@ -1233,7 +1410,7 @@
 
 
     /* =====================================================
-       PREPARE DRAWING
+       PREPARE
        ===================================================== */
 
     function prepareDrawing(
@@ -1268,10 +1445,6 @@
 
         displayHeight:
           size.height,
-
-        /*
-          Used for size-similarity clustering.
-        */
 
         displayScale:
           Math.sqrt(
@@ -1318,7 +1491,7 @@
 
 
     /* =====================================================
-       COLLISION BOX
+       COLLISION
        ===================================================== */
 
     function collisionBoxAt(
@@ -1342,7 +1515,7 @@
         )
         *
         item.visibleHeight *
-        .45;
+        .40;
 
 
       const rotationExpansionY =
@@ -1351,17 +1524,7 @@
         )
         *
         item.visibleWidth *
-        .45;
-
-
-      const safetyX =
-        2 +
-        rotationExpansionX;
-
-
-      const safetyY =
-        2 +
-        rotationExpansionY;
+        .40;
 
 
       return {
@@ -1369,24 +1532,28 @@
         left:
           x +
           item.visibleLeft -
-          safetyX,
+          2 -
+          rotationExpansionX,
 
         top:
           y +
           item.visibleTop -
-          safetyY,
+          2 -
+          rotationExpansionY,
 
         right:
           x +
           item.visibleLeft +
           item.visibleWidth +
-          safetyX,
+          2 +
+          rotationExpansionX,
 
         bottom:
           y +
           item.visibleTop +
           item.visibleHeight +
-          safetyY
+          2 +
+          rotationExpansionY
 
       };
 
@@ -1396,9 +1563,6 @@
 
     /* =====================================================
        SIZE SIMILARITY
-
-       1 = almost the same displayed scale.
-       0 = very different.
        ===================================================== */
 
     function sizeSimilarity(
@@ -1420,23 +1584,20 @@
         );
 
 
-      if (
-        large <=
+      return large >
         0
-      ) {
-        return 1;
-      }
 
+        ? small /
+          large
 
-      return small /
-        large;
+        : 1;
 
     }
 
 
 
     /* =====================================================
-       CANDIDATE POSITIONS
+       CANDIDATES
        ===================================================== */
 
     function createCandidatesAround(
@@ -1541,13 +1702,6 @@
         i++
       ) {
 
-        /*
-          Fully radial candidates.
-
-          No special cardinal positions, because those
-          encourage rows / columns.
-        */
-
         const angle =
           randomBetween(
             0,
@@ -1595,15 +1749,10 @@
           );
 
 
-        /*
-          Tiny radial irregularity prevents mathematical
-          rings around larger drawings.
-        */
-
         const jitter =
           randomBetween(
-            .97,
-            1.08
+            .98,
+            1.07
           );
 
 
@@ -1635,12 +1784,7 @@
 
 
     /* =====================================================
-       LOCAL DENSITY SCORE
-
-       This is the main anti-"line of objects" fix.
-
-       A candidate is rewarded for sitting near several
-       existing pieces instead of only attaching to one.
+       DENSITY
        ===================================================== */
 
     function getDensityScore(
@@ -1694,21 +1838,14 @@
             }
           )
           .sort(
-            (a, b) =>
+            (
+              a,
+              b
+            ) =>
               a -
               b
           );
 
-
-      /*
-        Use three closest neighbours.
-
-        A chain tends to have:
-        one close neighbour + everything else far away.
-
-        A natural cluster tends to have:
-        several nearby neighbours.
-      */
 
       const nearest =
         distances.slice(
@@ -1720,21 +1857,17 @@
         );
 
 
-      const average =
-        nearest.reduce(
-          (
-            sum,
-            value
-          ) =>
-            sum +
-            value,
-          0
-        )
-        /
-        nearest.length;
-
-
-      return average;
+      return nearest.reduce(
+        (
+          sum,
+          value
+        ) =>
+          sum +
+          value,
+        0
+      )
+      /
+      nearest.length;
 
     }
 
@@ -1748,6 +1881,10 @@
       drawings
     ) {
 
+      const mobile =
+        isMobileLayout();
+
+
       const TARGET_ASPECT =
         1;
 
@@ -1757,15 +1894,29 @@
 
 
       /*
-        Large drawings still establish structure first,
-        but the ordering is softened into size bands instead
-        of one strict largest-to-smallest chain.
+        Lower mobile workload dramatically.
       */
+
+      const MAX_TARGETS =
+        mobile
+          ? 12
+          : 24;
+
+
+      const COMPACTION_PASSES =
+        mobile
+          ? 65
+          : 180;
+
+
 
       const sorted =
         [...drawings]
           .sort(
-            (a, b) =>
+            (
+              a,
+              b
+            ) =>
               b.displayScale -
               a.displayScale
           );
@@ -1776,7 +1927,9 @@
 
 
       const BAND_SIZE =
-        8;
+        mobile
+          ? 6
+          : 8;
 
 
       for (
@@ -1788,17 +1941,13 @@
         BAND_SIZE
       ) {
 
-        const band =
-          sorted.slice(
-            i,
-            i +
-            BAND_SIZE
-          );
-
-
         ordered.push(
           ...shuffle(
-            band
+            sorted.slice(
+              i,
+              i +
+              BAND_SIZE
+            )
           )
         );
 
@@ -1821,26 +1970,21 @@
             0
           ) {
 
-            const x =
-              0;
-
-
-            const y =
-              0;
-
-
             placed.push({
 
               ...item,
 
-              x,
-              y,
+              x:
+                0,
+
+              y:
+                0,
 
               collision:
                 collisionBoxAt(
                   item,
-                  x,
-                  y
+                  0,
+                  0
                 )
 
             });
@@ -1860,16 +2004,6 @@
             Infinity;
 
 
-
-          /*
-            Rank possible anchors using BOTH:
-
-            1. same subject/category
-            2. similar displayed size
-
-            Similar-sized pieces therefore tend to form
-            natural local neighbourhoods.
-          */
 
           const targets =
             [...placed]
@@ -1893,47 +2027,42 @@
                       : 0;
 
 
-                  const aSize =
+                  const aRank =
                     sizeSimilarity(
                       item,
                       a
-                    );
-
-
-                  const bSize =
-                    sizeSimilarity(
-                      item,
-                      b
-                    );
-
-
-                  const aRank =
-                    aSize *
-                    .70 +
+                    )
+                    *
+                    .72 +
                     aCategory *
-                    .30;
+                    .28;
 
 
                   const bRank =
-                    bSize *
-                    .70 +
+                    sizeSimilarity(
+                      item,
+                      b
+                    )
+                    *
+                    .72 +
                     bCategory *
-                    .30;
+                    .28;
 
 
                   return bRank -
                     aRank;
 
                 }
+              )
+              .slice(
+                0,
+                MAX_TARGETS
               );
 
 
 
           targets.forEach(
-            (
-              target,
-              targetIndex
-            ) => {
+            target => {
 
               const similarity =
                 sizeSimilarity(
@@ -1947,48 +2076,35 @@
                 item.category;
 
 
-              /*
-                Spend more candidates around promising
-                similar-size / same-category anchors.
-              */
-
               let candidateCount =
-                18;
+                mobile
+                  ? 9
+                  : 15;
 
 
               if (
                 similarity >
                 .72
               ) {
+
                 candidateCount +=
-                  22;
+                  mobile
+                    ? 6
+                    : 14;
+
               }
 
 
               if (
                 sameCategory
               ) {
+
                 candidateCount +=
-                  22;
+                  mobile
+                    ? 5
+                    : 12;
+
               }
-
-
-              /*
-                Don't burn huge amounts of work on every
-                distant / unrelated target.
-              */
-
-              if (
-                targetIndex >
-                22
-              ) {
-                candidateCount =
-                  Math.min(
-                    candidateCount,
-                    10
-                  );
-              }
-
 
 
               const candidates =
@@ -2029,7 +2145,6 @@
                   }
 
 
-
                   const bounds =
                     getBounds([
                       ...placed.map(
@@ -2061,9 +2176,6 @@
                     );
 
 
-
-                  /* square silhouette */
-
                   const squarePenalty =
                     area *
                     Math.abs(
@@ -2073,8 +2185,7 @@
                       )
                     )
                     *
-                    5.2;
-
+                    5;
 
 
                   const longest =
@@ -2109,13 +2220,10 @@
                           1.22
                         )
                         *
-                        4.2
+                        4
 
                       : 0;
 
-
-
-                  /* local density */
 
                   const densityPenalty =
                     getDensityScore(
@@ -2123,84 +2231,18 @@
                       placed
                     )
                     *
-                    48;
+                    44;
 
-
-
-                  /*
-                    Similar size reward.
-
-                    Higher similarity = stronger negative
-                    score = preferred.
-                  */
 
                   const sizeReward =
                     -similarity *
-                    4200;
+                    3800;
 
-
-
-                  /* same-subject grouping remains, but softer */
 
                   const categoryReward =
                     sameCategory
-                      ? -1900
+                      ? -1700
                       : 0;
-
-
-
-                  /*
-                    Slight preference toward the existing
-                    overall center, but not enough to make
-                    a rigid circular blob.
-                  */
-
-                  const candidateCenterX =
-                    (
-                      collision.left +
-                      collision.right
-                    )
-                    /
-                    2;
-
-
-                  const candidateCenterY =
-                    (
-                      collision.top +
-                      collision.bottom
-                    )
-                    /
-                    2;
-
-
-                  const massCenterX =
-                    (
-                      bounds.left +
-                      bounds.right
-                    )
-                    /
-                    2;
-
-
-                  const massCenterY =
-                    (
-                      bounds.top +
-                      bounds.bottom
-                    )
-                    /
-                    2;
-
-
-                  const centerPenalty =
-                    Math.hypot(
-                      candidateCenterX -
-                      massCenterX,
-                      candidateCenterY -
-                      massCenterY
-                    )
-                    *
-                    11;
-
 
 
                   const score =
@@ -2208,11 +2250,10 @@
                     squarePenalty +
                     imbalancePenalty +
                     densityPenalty +
-                    centerPenalty +
                     sizeReward +
                     categoryReward +
                     random() *
-                    1100;
+                    950;
 
 
                   if (
@@ -2263,7 +2304,7 @@
               );
 
 
-            const ownBox =
+            const own =
               collisionBoxAt(
                 item,
                 0,
@@ -2272,28 +2313,28 @@
 
 
             const ownWidth =
-              ownBox.right -
-              ownBox.left;
+              own.right -
+              own.left;
 
 
             const ownHeight =
-              ownBox.bottom -
-              ownBox.top;
+              own.bottom -
+              own.top;
 
 
-            const ownOffsetX =
+            const ownCenterX =
               (
-                ownBox.left +
-                ownBox.right
+                own.left +
+                own.right
               )
               /
               2;
 
 
-            const ownOffsetY =
+            const ownCenterY =
               (
-                ownBox.top +
-                ownBox.bottom
+                own.top +
+                own.bottom
               )
               /
               2;
@@ -2318,10 +2359,10 @@
 
 
             const GAP =
-              7;
+              6;
 
 
-            const fallbackPoints =
+            const points =
               shuffle([
 
                 {
@@ -2335,9 +2376,9 @@
                     centerY +
                     randomBetween(
                       -bounds.height *
-                      .18,
+                      .15,
                       bounds.height *
-                      .18
+                      .15
                     )
                 },
 
@@ -2352,9 +2393,9 @@
                     centerY +
                     randomBetween(
                       -bounds.height *
-                      .18,
+                      .15,
                       bounds.height *
-                      .18
+                      .15
                     )
                 },
 
@@ -2363,9 +2404,9 @@
                     centerX +
                     randomBetween(
                       -bounds.width *
-                      .18,
+                      .15,
                       bounds.width *
-                      .18
+                      .15
                     ),
 
                   y:
@@ -2380,9 +2421,9 @@
                     centerX +
                     randomBetween(
                       -bounds.width *
-                      .18,
+                      .15,
                       bounds.width *
-                      .18
+                      .15
                     ),
 
                   y:
@@ -2397,17 +2438,17 @@
 
             for (
               const point of
-              fallbackPoints
+              points
             ) {
 
               const x =
                 point.x -
-                ownOffsetX;
+                ownCenterX;
 
 
               const y =
                 point.y -
-                ownOffsetY;
+                ownCenterY;
 
 
               const collision =
@@ -2418,19 +2459,15 @@
                 );
 
 
-              const overlaps =
-                placed.some(
+              if (
+                !placed.some(
                   other =>
                     boxesOverlap(
                       collision,
                       other.collision,
                       COLLISION_GAP
                     )
-                );
-
-
-              if (
-                !overlaps
+                )
               ) {
 
                 winner = {
@@ -2463,26 +2500,23 @@
               );
 
 
-            const x =
-              bounds.right +
-              12;
-
-
-            const y =
-              bounds.bottom +
-              12;
-
-
             winner = {
 
-              x,
-              y,
+              x:
+                bounds.right +
+                10,
+
+              y:
+                bounds.bottom +
+                10,
 
               collision:
                 collisionBoxAt(
                   item,
-                  x,
-                  y
+                  bounds.right +
+                  10,
+                  bounds.bottom +
+                  10
                 )
 
             };
@@ -2513,15 +2547,13 @@
 
       /* =====================================================
          COMPACTION
-
-         Pull inward in varied directions.
          ===================================================== */
 
       for (
         let pass =
           0;
         pass <
-        230;
+        COMPACTION_PASSES;
         pass++
       ) {
 
@@ -2552,7 +2584,6 @@
           2;
 
 
-
         shuffle(
           placed
         ).forEach(
@@ -2564,132 +2595,11 @@
               );
 
 
-            /*
-              Blend global center with the average position
-              of similar-sized neighbours.
-
-              This helps preserve little scale clusters.
-            */
-
-            const similar =
-              placed
-                .filter(
-                  other =>
-                    other !== item &&
-                    sizeSimilarity(
-                      item,
-                      other
-                    ) >
-                    .72
-                )
-                .sort(
-                  (
-                    a,
-                    b
-                  ) => {
-
-                    const aCenter =
-                      getItemCenter(
-                        a
-                      );
-
-
-                    const bCenter =
-                      getItemCenter(
-                        b
-                      );
-
-
-                    return Math.hypot(
-                      itemCenter.x -
-                      aCenter.x,
-                      itemCenter.y -
-                      aCenter.y
-                    )
-                    -
-                    Math.hypot(
-                      itemCenter.x -
-                      bCenter.x,
-                      itemCenter.y -
-                      bCenter.y
-                    );
-
-                  }
-                )
-                .slice(
-                  0,
-                  3
-                );
-
-
-            let targetX =
-              centerX;
-
-
-            let targetY =
-              centerY;
-
-
-            if (
-              similar.length
-            ) {
-
-              const similarCenters =
-                similar.map(
-                  getItemCenter
-                );
-
-
-              const averageX =
-                similarCenters.reduce(
-                  (
-                    sum,
-                    center
-                  ) =>
-                    sum +
-                    center.x,
-                  0
-                )
-                /
-                similarCenters.length;
-
-
-              const averageY =
-                similarCenters.reduce(
-                  (
-                    sum,
-                    center
-                  ) =>
-                    sum +
-                    center.y,
-                  0
-                )
-                /
-                similarCenters.length;
-
-
-              targetX =
-                centerX *
-                .72 +
-                averageX *
-                .28;
-
-
-              targetY =
-                centerY *
-                .72 +
-                averageY *
-                .28;
-
-            }
-
-
-
             const baseAngle =
               Math.atan2(
-                targetY -
+                centerY -
                 itemCenter.y,
-                targetX -
+                centerX -
                 itemCenter.x
               );
 
@@ -2697,35 +2607,30 @@
             const angles = [
 
               baseAngle,
-
-              baseAngle +
-              .15,
-
-              baseAngle -
-              .15,
-
-              baseAngle +
-              .32,
-
-              baseAngle -
-              .32,
-
-              baseAngle +
-              .58,
-
-              baseAngle -
-              .58
+              baseAngle + .18,
+              baseAngle - .18,
+              baseAngle + .40,
+              baseAngle - .40
 
             ];
 
 
-            const steps = [
-              7,
-              4,
-              2,
-              1,
-              .5
-            ];
+            const steps =
+              mobile
+
+                ? [
+                    5,
+                    2,
+                    .75
+                  ]
+
+                : [
+                    7,
+                    4,
+                    2,
+                    1,
+                    .5
+                  ];
 
 
             let moved =
@@ -2833,7 +2738,7 @@
 
 
       /* =====================================================
-         FINAL SQUARE PAPER
+         FINAL SQUARE
          ===================================================== */
 
       const finalBounds =
@@ -2846,7 +2751,9 @@
 
 
       const CONTENT_PADDING =
-        34;
+        mobile
+          ? 25
+          : 34;
 
 
       const squareContentSize =
@@ -2918,7 +2825,7 @@
 
 
     /* =====================================================
-       CREATE DRAWING
+       DRAWING DOM
        ===================================================== */
 
     function createDrawingElement(
@@ -2969,6 +2876,11 @@
         "";
 
 
+      /*
+        Browser already decoded these during setup, but
+        lazy remains useful if it evicts anything later.
+      */
+
       image.loading =
         "lazy";
 
@@ -3012,8 +2924,15 @@
       0;
 
 
+    let loadedImageData =
+      null;
 
-    async function buildSketchbook() {
+
+
+    async function buildSketchbook(
+      forceReload =
+        false
+    ) {
 
       const generation =
         ++buildGeneration;
@@ -3022,19 +2941,37 @@
       resetRandom();
 
 
+      loadingIndicator.classList.remove(
+        "is-hidden"
+      );
+
+
+      viewport.classList.add(
+        "is-loading"
+      );
+
+
       field.innerHTML =
         "";
 
 
-      const loaded =
-        (
-          await Promise.all(
-            files.map(
-              loadImageData
-            )
-          )
-        )
-        .filter(Boolean);
+      await yieldToBrowser();
+
+
+
+      /* ===================================================
+         LOAD ONCE
+         =================================================== */
+
+      if (
+        !loadedImageData ||
+        forceReload
+      ) {
+
+        loadedImageData =
+          await loadImagesInBatches();
+
+      }
 
 
       if (
@@ -3046,13 +2983,11 @@
 
 
       if (
-        !loaded.length
+        !loadedImageData.length
       ) {
 
-        console.warn(
-          "No illustration files loaded."
-        );
-
+        loadingIndicator.textContent =
+          "couldn't load illustrations";
 
         return;
 
@@ -3060,12 +2995,16 @@
 
 
 
+      await yieldToBrowser();
+
+
+
       /* ===================================================
-         DIMENSION SCALE REFERENCE
+         DIMENSION STATS
          =================================================== */
 
       const sourceScales =
-        loaded
+        loadedImageData
           .map(
             item =>
               Math.sqrt(
@@ -3074,7 +3013,10 @@
               )
           )
           .sort(
-            (a, b) =>
+            (
+              a,
+              b
+            ) =>
               a -
               b
           );
@@ -3109,23 +3051,27 @@
             2;
 
 
-      const dimensionStats = {
-
-        median:
-          medianDimension
-
-      };
-
 
       const prepared =
-        loaded.map(
+        loadedImageData.map(
           item =>
             prepareDrawing(
               item,
-              dimensionStats
+              {
+                median:
+                  medianDimension
+              }
             )
         );
 
+
+      await yieldToBrowser();
+
+
+
+      /* ===================================================
+         PACK
+         =================================================== */
 
       const layout =
         packDrawings(
@@ -3139,6 +3085,7 @@
       ) {
         return;
       }
+
 
 
       paperWidth =
@@ -3155,6 +3102,7 @@
 
       paper.style.height =
         `${paperHeight}px`;
+
 
 
       const fragment =
@@ -3179,7 +3127,25 @@
       );
 
 
+      await yieldToBrowser();
+
+
+
+      /* ===================================================
+         VIEW
+         =================================================== */
+
       setInitialView();
+
+
+      viewport.classList.remove(
+        "is-loading"
+      );
+
+
+      loadingIndicator.classList.add(
+        "is-hidden"
+      );
 
     }
 
@@ -3191,28 +3157,42 @@
 
     const view = {
 
-      x: 0,
-      y: 0,
+      x:
+        0,
 
-      zoom: 1,
+      y:
+        0,
 
-      minZoom: .1,
-      maxZoom: 4,
+      zoom:
+        1,
 
-      dragging: false,
+      minZoom:
+        .1,
 
-      startX: 0,
-      startY: 0,
+      maxZoom:
+        4,
 
-      originX: 0,
-      originY: 0
+      dragging:
+        false,
+
+      startX:
+        0,
+
+      startY:
+        0,
+
+      originX:
+        0,
+
+      originY:
+        0
 
     };
 
 
 
     /* =====================================================
-       PAN CONSTRAINTS
+       PAN
        ===================================================== */
 
     function constrainPan(
@@ -3245,7 +3225,6 @@
       let maxY;
 
 
-
       if (
         scaledWidth <=
         viewportWidth
@@ -3273,7 +3252,6 @@
           0;
 
       }
-
 
 
       if (
@@ -3328,7 +3306,7 @@
 
 
     /* =====================================================
-       ZOOM BUTTONS
+       ZOOM BUTTON STATE
        ===================================================== */
 
     function updateZoomButtons() {
@@ -3357,7 +3335,7 @@
 
 
     /* =====================================================
-       VIEW
+       APPLY VIEW
        ===================================================== */
 
     function applyView() {
@@ -3431,23 +3409,40 @@
         );
 
 
+      /*
+        On mobile keep a bit less excess outside viewport
+        so it doesn't start absurdly zoomed-in.
+      */
+
+      const minimumMultiplier =
+        isMobileLayout()
+          ? 1.12
+          : 1.25;
+
+
+      const initialMultiplier =
+        isMobileLayout()
+          ? 1.20
+          : 1.38;
+
+
       view.minZoom =
         coverZoom *
-        1.25;
+        minimumMultiplier;
 
 
       view.maxZoom =
         Math.max(
           view.minZoom *
-          4.5,
-          3.2
+          4.25,
+          3
         );
 
 
       const initialZoom =
         Math.min(
           view.minZoom *
-          1.38,
+          initialMultiplier,
           view.maxZoom
         );
 
@@ -3479,6 +3474,116 @@
         2,
 
         initialZoom
+
+      );
+
+    }
+
+
+
+    /* =====================================================
+       RECENTER AFTER ORDINARY RESIZE
+
+       IMPORTANT:
+       Does NOT repack all illustrations.
+       ===================================================== */
+
+    function refreshViewAfterResize() {
+
+      if (
+        paperWidth <=
+        1
+      ) {
+        return;
+      }
+
+
+      const oldMin =
+        view.minZoom;
+
+
+      const relativeZoom =
+        oldMin >
+        0
+
+          ? view.zoom /
+            oldMin
+
+          : 1;
+
+
+      const coverZoom =
+        Math.max(
+          viewport.clientWidth /
+          paperWidth,
+          viewport.clientHeight /
+          paperHeight
+        );
+
+
+      view.minZoom =
+        coverZoom *
+        (
+          isMobileLayout()
+            ? 1.12
+            : 1.25
+        );
+
+
+      view.maxZoom =
+        Math.max(
+          view.minZoom *
+          4.25,
+          3
+        );
+
+
+      const nextZoom =
+        clamp(
+          view.minZoom *
+          relativeZoom,
+          view.minZoom,
+          view.maxZoom
+        );
+
+
+      /*
+        Preserve center of current paper view.
+      */
+
+      const oldCenterWorldX =
+        (
+          viewport.clientWidth /
+          2 -
+          view.x
+        )
+        /
+        view.zoom;
+
+
+      const oldCenterWorldY =
+        (
+          viewport.clientHeight /
+          2 -
+          view.y
+        )
+        /
+        view.zoom;
+
+
+      setView(
+
+        viewport.clientWidth /
+        2 -
+        oldCenterWorldX *
+        nextZoom,
+
+        viewport.clientHeight /
+        2 -
+        oldCenterWorldY *
+        nextZoom,
+
+        nextZoom
 
       );
 
@@ -3588,7 +3693,7 @@
 
 
     /* =====================================================
-       TRACKPAD / MOUSE
+       WHEEL / TRACKPAD
        ===================================================== */
 
     viewport.addEventListener(
@@ -3602,28 +3707,20 @@
           viewport.getBoundingClientRect();
 
 
-        const screenX =
+        zoomAt(
+
           event.clientX -
-          rect.left;
+          rect.left,
 
-
-        const screenY =
           event.clientY -
-          rect.top;
+          rect.top,
 
-
-        const factor =
+          view.zoom *
           Math.exp(
             -event.deltaY *
             .00135
-          );
+          )
 
-
-        zoomAt(
-          screenX,
-          screenY,
-          view.zoom *
-          factor
         );
 
       },
@@ -3636,7 +3733,7 @@
 
 
     /* =====================================================
-       DRAG / PAN
+       DRAG
        ===================================================== */
 
     viewport.addEventListener(
@@ -3758,6 +3855,13 @@
 
     /* =====================================================
        RESIZE
+
+       CRITICAL MOBILE FIX:
+
+       Normal viewport-height changes DO NOT rebuild.
+
+       Only rebuild when crossing the desktop/mobile
+       breakpoint, because that actually changes drawing scale.
        ===================================================== */
 
     let resizeTimer =
@@ -3775,8 +3879,35 @@
 
         resizeTimer =
           window.setTimeout(
-            buildSketchbook,
-            220
+            async () => {
+
+              const nextMobileMode =
+                isMobileLayout();
+
+
+              if (
+                nextMobileMode !==
+                currentMobileMode
+              ) {
+
+                currentMobileMode =
+                  nextMobileMode;
+
+
+                await buildSketchbook(
+                  false
+                );
+
+              }
+
+              else {
+
+                refreshViewAfterResize();
+
+              }
+
+            },
+            180
           );
 
       }
