@@ -135,7 +135,7 @@
 
 
     <!-- =====================================================
-         ILLUSTRATION
+         ILLUSTRATION PAGE
          ===================================================== -->
 
     <main class="illustration-page">
@@ -422,16 +422,13 @@
           .toLowerCase();
 
 
-      /*
-        Keep the accidentally plural filename
-        with the rest of the animals.
-      */
-
       if (
         category === "animals"
       ) {
+
         category =
           "animal";
+
       }
 
 
@@ -447,18 +444,65 @@
     ) {
 
       return !(
-        a.right + padding <=
-          b.left ||
-
-        a.left >=
-          b.right + padding ||
-
-        a.bottom + padding <=
-          b.top ||
-
-        a.top >=
-          b.bottom + padding
+        a.right + padding <= b.left ||
+        a.left >= b.right + padding ||
+        a.bottom + padding <= b.top ||
+        a.top >= b.bottom + padding
       );
+
+    }
+
+
+    function getBounds(
+      boxes
+    ) {
+
+      const left =
+        Math.min(
+          ...boxes.map(
+            box => box.left
+          )
+        );
+
+
+      const top =
+        Math.min(
+          ...boxes.map(
+            box => box.top
+          )
+        );
+
+
+      const right =
+        Math.max(
+          ...boxes.map(
+            box => box.right
+          )
+        );
+
+
+      const bottom =
+        Math.max(
+          ...boxes.map(
+            box => box.bottom
+          )
+        );
+
+
+      return {
+
+        left,
+        top,
+        right,
+        bottom,
+
+        width:
+          right - left,
+
+        height:
+          bottom - top
+
+      };
 
     }
 
@@ -500,64 +544,6 @@
         height:
           width * sin +
           height * cos
-
-      };
-
-    }
-
-
-    function boundingBox(
-      boxes
-    ) {
-
-      const left =
-        Math.min(
-          ...boxes.map(
-            box =>
-              box.left
-          )
-        );
-
-
-      const top =
-        Math.min(
-          ...boxes.map(
-            box =>
-              box.top
-          )
-        );
-
-
-      const right =
-        Math.max(
-          ...boxes.map(
-            box =>
-              box.right
-          )
-        );
-
-
-      const bottom =
-        Math.max(
-          ...boxes.map(
-            box =>
-              box.bottom
-          )
-        );
-
-
-      return {
-
-        left,
-        top,
-        right,
-        bottom,
-
-        width:
-          right - left,
-
-        height:
-          bottom - top
 
       };
 
@@ -637,80 +623,21 @@
 
 
     /* =====================================================
-       ROBUST SIZE RANGE
+       SOURCE-DIMENSION SCALING
 
-       Use percentiles instead of absolute min/max.
+       THIS IS THE MAIN SIZE SYSTEM.
 
-       This stops one giant source file from making
-       everything else microscopic.
-       ===================================================== */
+       A file that is physically larger in pixel dimensions
+       appears larger on the sketchbook.
 
-    function percentile(
-      values,
-      fraction
-    ) {
+       sqrt(width × height) gives us a linear-size value.
 
-      const sorted =
-        [...values]
-          .sort(
-            (a, b) =>
-              a - b
-          );
-
-
-      const index =
-        (
-          sorted.length - 1
-        ) *
-        fraction;
-
-
-      const lower =
-        Math.floor(index);
-
-
-      const upper =
-        Math.ceil(index);
-
-
-      if (
-        lower === upper
-      ) {
-        return sorted[lower];
-      }
-
-
-      const t =
-        index - lower;
-
-
-      return (
-        sorted[lower] *
-        (1 - t)
-      )
-      +
-      (
-        sorted[upper] *
-        t
-      );
-
-    }
-
-
-
-    /* =====================================================
-       DISPLAY SIZE
-
-       Source dimensions still matter, but subtly.
-
-       The goal is one coherent sketchbook family,
-       not dramatic differences in scale.
+       We only soften extreme differences slightly.
        ===================================================== */
 
     function calculateDisplaySize(
       item,
-      lowArea,
-      highArea
+      referenceLinear
     ) {
 
       const mobile =
@@ -719,53 +646,71 @@
         ).matches;
 
 
-      const root =
+      const sourceLinear =
         Math.sqrt(
-          item.area
+          item.width *
+          item.height
         );
 
 
-      const lowRoot =
-        Math.sqrt(
-          lowArea
-        );
-
-
-      const highRoot =
-        Math.sqrt(
-          highArea
-        );
-
-
-      let t =
-        (
-          root -
-          lowRoot
-        )
-        /
+      const ratio =
+        sourceLinear /
         Math.max(
           1,
-          highRoot -
-          lowRoot
-        );
-
-
-      t =
-        clamp(
-          t,
-          0,
-          1
+          referenceLinear
         );
 
 
       /*
-        Very compressed scale variation.
+        Average-size file lands around here.
       */
 
-      const longest =
+      const baseLongest =
         mobile
-          ? 58 + t * 74
-          : 70 + t * 105;
+          ? 86
+          : 112;
+
+
+      /*
+        Very close to proportional.
+
+        .88 is only enough compression to stop
+        extreme exports getting completely absurd.
+      */
+
+      let longest =
+        baseLongest *
+        Math.pow(
+          ratio,
+          .88
+        );
+
+
+      /*
+        Tiny handmade variation.
+      */
+
+      longest *=
+        randomBetween(
+          .98,
+          1.02
+        );
+
+
+      /*
+        Emergency limits only.
+      */
+
+      longest =
+        clamp(
+          longest,
+          mobile
+            ? 42
+            : 52,
+          mobile
+            ? 220
+            : 320
+        );
 
 
       let width;
@@ -783,8 +728,10 @@
 
         height =
           longest *
-          item.height /
-          item.width;
+          (
+            item.height /
+            item.width
+          );
 
       }
 
@@ -796,101 +743,10 @@
 
         width =
           longest *
-          item.width /
-          item.height;
-
-      }
-
-
-      /*
-        Stop ultra-tall/ultra-wide drawings dominating.
-      */
-
-      const maxHeight =
-        mobile
-          ? 150
-          : 215;
-
-
-      const maxWidth =
-        mobile
-          ? 165
-          : 235;
-
-
-      if (
-        height >
-        maxHeight
-      ) {
-
-        const scale =
-          maxHeight /
-          height;
-
-
-        width *=
-          scale;
-
-
-        height *=
-          scale;
-
-      }
-
-
-      if (
-        width >
-        maxWidth
-      ) {
-
-        const scale =
-          maxWidth /
-          width;
-
-
-        width *=
-          scale;
-
-
-        height *=
-          scale;
-
-      }
-
-
-      /*
-        And don't let tiny aspect-ratio drawings disappear.
-      */
-
-      const minLongest =
-        mobile
-          ? 52
-          : 64;
-
-
-      if (
-        Math.max(
-          width,
-          height
-        )
-        <
-        minLongest
-      ) {
-
-        const scale =
-          minLongest /
-          Math.max(
-            width,
-            height
+          (
+            item.width /
+            item.height
           );
-
-
-        width *=
-          scale;
-
-
-        height *=
-          scale;
 
       }
 
@@ -910,22 +766,20 @@
 
     function prepareDrawing(
       item,
-      lowArea,
-      highArea
+      referenceLinear
     ) {
 
       const size =
         calculateDisplaySize(
           item,
-          lowArea,
-          highArea
+          referenceLinear
         );
 
 
       const rotation =
         randomBetween(
-          -2.5,
-          2.5
+          -4.5,
+          4.5
         );
 
 
@@ -962,20 +816,18 @@
 
 
     /* =====================================================
-       CANDIDATE POSITIONS
+       CANDIDATES AROUND AN EXISTING ITEM
 
-       Instead of a spiral from one origin, each new item
-       tries to attach itself to the side/corner of an
-       EXISTING item.
-
-       That's what creates a real clump.
+       New drawings grow outward around drawings already
+       placed, rather than along rows.
        ===================================================== */
 
-    function candidatesAroundBox(
-      itemWidth,
-      itemHeight,
+    function candidatesAround(
+      width,
+      height,
       target,
-      gap
+      gap,
+      count = 28
     ) {
 
       const cx =
@@ -994,200 +846,131 @@
         / 2;
 
 
-      const jitterX =
-        () =>
+      const targetWidth =
+        target.right -
+        target.left;
+
+
+      const targetHeight =
+        target.bottom -
+        target.top;
+
+
+      const candidates =
+        [];
+
+
+      for (
+        let i = 0;
+        i < count;
+        i++
+      ) {
+
+        const angle =
           randomBetween(
-            -10,
-            10
+            0,
+            Math.PI * 2
           );
 
 
-      const jitterY =
-        () =>
+        const radiusX =
+          targetWidth / 2 +
+          width / 2 +
+          gap;
+
+
+        const radiusY =
+          targetHeight / 2 +
+          height / 2 +
+          gap;
+
+
+        /*
+          Pull candidates slightly inward.
+
+          This produces a tighter pile while collision
+          checking still prevents actual overlap.
+        */
+
+        const compression =
           randomBetween(
-            -10,
-            10
+            .82,
+            .98
           );
 
 
-      return shuffle([
+        const centerX =
+          cx +
+          Math.cos(angle) *
+          radiusX *
+          compression;
 
-        /* right */
 
-        {
+        const centerY =
+          cy +
+          Math.sin(angle) *
+          radiusY *
+          compression;
+
+
+        candidates.push({
+
           left:
-            target.right +
-            gap,
+            centerX -
+            width / 2,
 
           top:
-            cy -
-            itemHeight / 2 +
-            jitterY()
-        },
+            centerY -
+            height / 2
+
+        });
+
+      }
 
 
-        /* left */
-
-        {
-          left:
-            target.left -
-            gap -
-            itemWidth,
-
-          top:
-            cy -
-            itemHeight / 2 +
-            jitterY()
-        },
-
-
-        /* below */
-
-        {
-          left:
-            cx -
-            itemWidth / 2 +
-            jitterX(),
-
-          top:
-            target.bottom +
-            gap
-        },
-
-
-        /* above */
-
-        {
-          left:
-            cx -
-            itemWidth / 2 +
-            jitterX(),
-
-          top:
-            target.top -
-            gap -
-            itemHeight
-        },
-
-
-        /* lower-right */
-
-        {
-          left:
-            target.right +
-            gap,
-
-          top:
-            target.bottom -
-            itemHeight *
-            randomBetween(
-              .20,
-              .78
-            )
-        },
-
-
-        /* upper-right */
-
-        {
-          left:
-            target.right +
-            gap,
-
-          top:
-            target.top -
-            itemHeight *
-            randomBetween(
-              .20,
-              .78
-            )
-        },
-
-
-        /* lower-left */
-
-        {
-          left:
-            target.left -
-            gap -
-            itemWidth,
-
-          top:
-            target.bottom -
-            itemHeight *
-            randomBetween(
-              .20,
-              .78
-            )
-        },
-
-
-        /* upper-left */
-
-        {
-          left:
-            target.left -
-            gap -
-            itemWidth,
-
-          top:
-            target.top -
-            itemHeight *
-            randomBetween(
-              .20,
-              .78
-            )
-        }
-
-      ]);
+      return candidates;
 
     }
 
 
 
     /* =====================================================
-       PACK ONE CATEGORY
+       PACK A CATEGORY
+
+       Same-name drawings stay together.
+
+       Example:
+       figure-* = one cluster
+       food-* = one cluster
+       etc.
        ===================================================== */
 
     function packCategory(
       items
     ) {
 
-      const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
-
-
       const gap =
-        mobile
-          ? 1
-          : 2;
-
-
-      const targetAspect =
-        randomBetween(
-          1.05,
-          1.70
-        );
+        1;
 
 
       const ordered =
-        [...items]
-          .sort(
-            (a, b) =>
+        shuffle(
+          items
+        )
+        .sort(
+          (a, b) =>
 
-              (
-                b.boxWidth *
-                b.boxHeight
-              )
-              -
-              (
-                a.boxWidth *
-                a.boxHeight
-              )
+            (
+              b.boxWidth *
+              b.boxHeight
+            )
+            -
+            (
+              a.boxWidth *
+              a.boxHeight
+            )
 
-          );
+        );
 
 
       const placed =
@@ -1236,21 +1019,18 @@
             Infinity;
 
 
-          /*
-            Try attaching to every existing drawing.
-          */
-
           shuffle(
             placed
           ).forEach(
             target => {
 
               const candidates =
-                candidatesAroundBox(
+                candidatesAround(
                   item.boxWidth,
                   item.boxHeight,
                   target,
-                  gap
+                  gap,
+                  34
                 );
 
 
@@ -1259,7 +1039,11 @@
 
                   const box = {
 
-                    ...candidate,
+                    left:
+                      candidate.left,
+
+                    top:
+                      candidate.top,
 
                     right:
                       candidate.left +
@@ -1290,20 +1074,19 @@
                   }
 
 
-                  const testBoxes = [
-
-                    ...placed,
-
-                    box
-
-                  ];
-
-
                   const bounds =
-                    boundingBox(
-                      testBoxes
+                    getBounds(
+                      [
+                        ...placed,
+                        box
+                      ]
                     );
 
+
+                  /*
+                    Prefer tight, approximately round/irregular
+                    category clumps rather than mini rows.
+                  */
 
                   const aspect =
                     bounds.width /
@@ -1321,26 +1104,19 @@
                   const aspectPenalty =
                     Math.abs(
                       Math.log(
-                        Math.max(
-                          .01,
-                          aspect /
-                          targetAspect
-                        )
+                        aspect /
+                        1.15
                       )
                     )
                     *
-                    6500;
+                    1500;
 
-
-                  /*
-                    Prefer compactness strongly.
-                  */
 
                   const score =
                     area +
                     aspectPenalty +
                     Math.random() *
-                    1600;
+                    500;
 
 
                   if (
@@ -1364,16 +1140,12 @@
           );
 
 
-          /*
-            Emergency fallback.
-          */
-
           if (
             !winner
           ) {
 
             const bounds =
-              boundingBox(
+              getBounds(
                 placed
               );
 
@@ -1412,53 +1184,36 @@
       );
 
 
-
-      /* ---------------------------------------------
-         NORMALIZE
-         --------------------------------------------- */
-
       const bounds =
-        boundingBox(
+        getBounds(
           placed
-        );
-
-
-      const normalized =
-        placed.map(
-          item => ({
-
-            ...item,
-
-            left:
-              item.left -
-              bounds.left,
-
-            top:
-              item.top -
-              bounds.top,
-
-            right:
-              item.right -
-              bounds.left,
-
-            bottom:
-              item.bottom -
-              bounds.top
-
-          })
         );
 
 
       return {
 
-        items:
-          normalized,
-
         width:
           bounds.width,
 
         height:
-          bounds.height
+          bounds.height,
+
+        items:
+          placed.map(
+            item => ({
+
+              ...item,
+
+              left:
+                item.left -
+                bounds.left,
+
+              top:
+                item.top -
+                bounds.top
+
+            })
+          )
 
       };
 
@@ -1467,38 +1222,22 @@
 
 
     /* =====================================================
-       PACK CATEGORY CLUSTERS
+       PACK THE CATEGORY CLUSTERS
 
-       Same idea as individual artwork:
-       groups attach to groups.
-
-       No rows.
+       The result should read like one wide sketchbook spread,
+       not a grid of groups.
        ===================================================== */
 
     function packGroups(
       groups
     ) {
 
-      const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
-
-
       const gap =
-        mobile
-          ? 7
-          : 11;
+        4;
 
 
-      /*
-        Overall spread should be deliberately wide.
-      */
-
-      const TARGET_ASPECT =
-        mobile
-          ? 2.2
-          : 3.15;
+      const targetAspect =
+        3.25;
 
 
       const ordered =
@@ -1572,152 +1311,142 @@
           ).forEach(
             target => {
 
-              /*
-                More candidate variations for whole groups.
-              */
-
-              for (
-                let repeat = 0;
-                repeat < 8;
-                repeat++
-              ) {
-
-                const candidates =
-                  candidatesAroundBox(
-                    group.width,
-                    group.height,
-                    target,
-                    gap
-                  );
+              const candidates =
+                candidatesAround(
+                  group.width,
+                  group.height,
+                  target,
+                  gap,
+                  48
+                );
 
 
-                candidates.forEach(
-                  candidate => {
+              candidates.forEach(
+                candidate => {
 
-                    const box = {
+                  const box = {
 
-                      ...candidate,
+                    left:
+                      candidate.left,
 
-                      right:
-                        candidate.left +
-                        group.width,
+                    top:
+                      candidate.top,
 
-                      bottom:
-                        candidate.top +
-                        group.height
+                    right:
+                      candidate.left +
+                      group.width,
 
-                    };
+                    bottom:
+                      candidate.top +
+                      group.height
 
-
-                    const collision =
-                      placed.some(
-                        other =>
-                          boxesOverlap(
-                            box,
-                            other,
-                            gap
-                          )
-                      );
+                  };
 
 
-                    if (
-                      collision
-                    ) {
-                      return;
-                    }
+                  const collision =
+                    placed.some(
+                      other =>
+                        boxesOverlap(
+                          box,
+                          other,
+                          gap
+                        )
+                    );
 
 
-                    const test =
+                  if (
+                    collision
+                  ) {
+                    return;
+                  }
+
+
+                  const bounds =
+                    getBounds(
                       [
                         ...placed,
                         box
-                      ];
+                      ]
+                    );
 
 
-                    const bounds =
-                      boundingBox(
-                        test
-                      );
+                  const aspect =
+                    bounds.width /
+                    Math.max(
+                      1,
+                      bounds.height
+                    );
 
 
-                    const aspect =
-                      bounds.width /
-                      Math.max(
-                        1,
-                        bounds.height
-                      );
+                  const area =
+                    bounds.width *
+                    bounds.height;
 
 
-                    const area =
-                      bounds.width *
-                      bounds.height;
+                  /*
+                    Strongly favor a wide page,
+                    but still allow clusters to move
+                    above and below each other.
+                  */
 
-
-                    /*
-                      Encourage ~3:1 width,
-                      but do NOT force rows.
-                    */
-
-                    const aspectPenalty =
-                      Math.abs(
-                        Math.log(
-                          Math.max(
-                            .01,
-                            aspect /
-                            TARGET_ASPECT
-                          )
-                        )
+                  const aspectPenalty =
+                    Math.abs(
+                      Math.log(
+                        aspect /
+                        targetAspect
                       )
-                      *
-                      26000;
+                    )
+                    *
+                    13500;
 
 
-                    /*
-                      Also reward using the full vertical field.
-                    */
+                  /*
+                    Penalize overly flat layouts.
+                  */
 
-                    const tooFlatPenalty =
-                      bounds.height <
-                      bounds.width /
-                      4.25
-
-                        ? (
-                            bounds.width /
-                            4.25 -
-                            bounds.height
-                          )
-                          *
-                          750
-
-                        : 0;
+                  const desiredHeight =
+                    bounds.width /
+                    3.6;
 
 
-                    const score =
-                      area +
-                      aspectPenalty +
-                      tooFlatPenalty +
-                      Math.random() *
-                      8000;
+                  const flatPenalty =
+                    bounds.height <
+                    desiredHeight
+
+                      ? (
+                          desiredHeight -
+                          bounds.height
+                        )
+                        *
+                        650
+
+                      : 0;
 
 
-                    if (
-                      score <
-                      winnerScore
-                    ) {
+                  const score =
+                    area +
+                    aspectPenalty +
+                    flatPenalty +
+                    Math.random() *
+                    3000;
 
-                      winnerScore =
-                        score;
+
+                  if (
+                    score <
+                    winnerScore
+                  ) {
+
+                    winnerScore =
+                      score;
 
 
-                      winner =
-                        box;
-
-                    }
+                    winner =
+                      box;
 
                   }
-                );
 
-              }
+                }
+              );
 
             }
           );
@@ -1728,7 +1457,7 @@
           ) {
 
             const bounds =
-              boundingBox(
+              getBounds(
                 placed
               );
 
@@ -1768,12 +1497,18 @@
 
 
       const bounds =
-        boundingBox(
+        getBounds(
           placed
         );
 
 
       return {
+
+        width:
+          bounds.width,
+
+        height:
+          bounds.height,
 
         groups:
           placed.map(
@@ -1790,13 +1525,7 @@
                 bounds.top
 
             })
-          ),
-
-        width:
-          bounds.width,
-
-        height:
-          bounds.height
+          )
 
       };
 
@@ -1805,7 +1534,7 @@
 
 
     /* =====================================================
-       DRAWING DOM
+       CREATE DRAWING
        ===================================================== */
 
     function createDrawing(
@@ -1893,7 +1622,7 @@
 
 
     /* =====================================================
-       BUILD
+       BUILD SKETCHBOOK
        ===================================================== */
 
     let paperWidth =
@@ -1930,45 +1659,72 @@
 
 
       /* ---------------------------------------------
-         ROBUST SOURCE DIMENSION RANGE
+         REFERENCE SOURCE DIMENSION
+
+         Median linear source size.
+
+         Every drawing then scales relative to this.
          --------------------------------------------- */
 
-      const areas =
-        loaded.map(
-          item =>
-            item.area
+      const sourceLinearSizes =
+        loaded
+          .map(
+            item =>
+              Math.sqrt(
+                item.width *
+                item.height
+              )
+          )
+          .sort(
+            (a, b) =>
+              a - b
+          );
+
+
+      const middle =
+        Math.floor(
+          sourceLinearSizes.length /
+          2
         );
 
 
-      const lowArea =
-        percentile(
-          areas,
-          .10
-        );
+      const referenceLinear =
+        sourceLinearSizes.length % 2
+
+          ? sourceLinearSizes[
+              middle
+            ]
+
+          : (
+              sourceLinearSizes[
+                middle - 1
+              ]
+              +
+              sourceLinearSizes[
+                middle
+              ]
+            )
+            / 2;
 
 
-      const highArea =
-        percentile(
-          areas,
-          .90
-        );
 
-
+      /* ---------------------------------------------
+         PREPARE EACH DRAWING
+         --------------------------------------------- */
 
       const prepared =
         loaded.map(
           item =>
             prepareDrawing(
               item,
-              lowArea,
-              highArea
+              referenceLinear
             )
         );
 
 
 
       /* ---------------------------------------------
-         GROUP EXACTLY BY NAME PREFIX
+         GROUP BY FILENAME PREFIX
          --------------------------------------------- */
 
       const categories =
@@ -2006,7 +1762,7 @@
 
 
       /* ---------------------------------------------
-         PACK EACH GROUP
+         PACK EACH CATEGORY
          --------------------------------------------- */
 
       const groups =
@@ -2035,7 +1791,7 @@
 
 
       /* ---------------------------------------------
-         PACK GROUPS TOGETHER
+         PACK ALL GROUPS
          --------------------------------------------- */
 
       const layout =
@@ -2045,6 +1801,10 @@
 
 
 
+      /* ---------------------------------------------
+         PAPER
+         --------------------------------------------- */
+
       const mobile =
         window.matchMedia(
           "(max-width: 700px)"
@@ -2053,8 +1813,8 @@
 
       const padding =
         mobile
-          ? 28
-          : 40;
+          ? 26
+          : 38;
 
 
 
@@ -2070,14 +1830,17 @@
 
 
       /*
-        Preserve a convincingly wide sheet,
-        but let the content determine most dimensions.
+        Keep the final sheet wide.
+
+        If the random pack ended too square,
+        add width as breathing room rather than
+        rearranging everything into rows.
       */
 
       const minimumAspect =
         mobile
-          ? 2.15
-          : 2.85;
+          ? 2.25
+          : 3.0;
 
 
       if (
@@ -2103,7 +1866,7 @@
 
 
 
-      const xOffset =
+      const offsetX =
         (
           paperWidth -
           layout.width
@@ -2111,7 +1874,7 @@
         / 2;
 
 
-      const yOffset =
+      const offsetY =
         (
           paperHeight -
           layout.height
@@ -2123,46 +1886,67 @@
       layout.groups.forEach(
         group => {
 
-          const element =
+          const groupElement =
             document.createElement(
               "div"
             );
 
 
-          element.className =
+          groupElement.className =
             "drawing-group";
 
 
-          element.dataset.category =
+          groupElement.dataset.category =
             group.category;
 
 
-          element.style.left =
+          /*
+            Very small displacement breaks the
+            invisible category-box precision.
+          */
+
+          const nudgeX =
+            randomBetween(
+              -3,
+              3
+            );
+
+
+          const nudgeY =
+            randomBetween(
+              -3,
+              3
+            );
+
+
+          groupElement.style.left =
             `${
-              xOffset +
-              group.left
+              offsetX +
+              group.left +
+              nudgeX
             }px`;
 
 
-          element.style.top =
+          groupElement.style.top =
             `${
-              yOffset +
-              group.top
+              offsetY +
+              group.top +
+              nudgeY
             }px`;
 
 
-          element.style.width =
+          groupElement.style.width =
             `${group.width}px`;
 
 
-          element.style.height =
+          groupElement.style.height =
             `${group.height}px`;
 
 
           group.items.forEach(
             item => {
 
-              element.appendChild(
+              groupElement.appendChild(
                 createDrawing(
                   item
                 )
@@ -2173,7 +1957,7 @@
 
 
           field.appendChild(
-            element
+            groupElement
           );
 
         }
@@ -2202,10 +1986,10 @@
         1,
 
       minZoom:
-        .45,
+        .35,
 
       maxZoom:
-        2.8,
+        3,
 
       startX:
         0,
@@ -2248,7 +2032,6 @@
 
       const viewportHeight =
         viewport.clientHeight;
-
 
 
       let minX;
@@ -2381,12 +2164,10 @@
     /* =====================================================
        INITIAL VIEW
 
-       Scale by PAPER HEIGHT.
+       Paper fills viewport vertically.
 
-       So the sheet fills the viewport vertically,
-       while its much greater width extends off-screen.
-
-       This is the Photoshop-reference behavior.
+       Because paper is much wider, you only see
+       part of the sketchbook and drag left/right.
        ===================================================== */
 
     function setInitialView() {
@@ -2397,48 +2178,34 @@
         ).matches;
 
 
-      const verticalFill =
-        mobile
-          ? .96
-          : .97;
-
-
       let zoom =
         (
           viewport.clientHeight *
-          verticalFill
+          .94
         )
         /
         paperHeight;
 
 
-      /*
-        Start a little more zoomed-in than "fit".
-      */
-
       zoom *=
         mobile
-          ? 1.08
-          : 1.14;
+          ? 1.06
+          : 1.12;
 
 
       zoom =
         clamp(
           zoom,
-          .58,
-          1.55
+          .48,
+          1.75
         );
 
 
-      /*
-        Min zoom should still allow the user
-        to pull back and see most of the spread.
-      */
-
       view.minZoom =
         Math.max(
-          .38,
-          zoom * .68
+          .32,
+          zoom *
+          .58
         );
 
 
@@ -2625,8 +2392,8 @@
 
         const factor =
           event.deltaY < 0
-            ? 1.075
-            : 1 / 1.075;
+            ? 1.07
+            : 1 / 1.07;
 
 
         const nextZoom =
