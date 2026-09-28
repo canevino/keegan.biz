@@ -311,7 +311,7 @@ button {
 
 
 /* =========================================================
-   PAPER
+   WHITE SKETCHBOOK SHEET
    ========================================================= */
 
 .sketchbook-paper {
@@ -336,7 +336,7 @@ button {
       17,
       17,
       15,
-      .07
+      .065
     );
 
   box-shadow:
@@ -370,9 +370,6 @@ button {
 
 /* =========================================================
    DRAWINGS
-
-   No category containers anymore.
-   Every drawing lives directly on the page.
    ========================================================= */
 
 .drawing {
@@ -420,6 +417,8 @@ button {
 
 /* =========================================================
    ZOOM CONTROLS
+
+   Bare characters only.
    ========================================================= */
 
 .zoom-controls {
@@ -427,10 +426,10 @@ button {
     absolute;
 
   right:
-    13px;
+    12px;
 
   bottom:
-    13px;
+    9px;
 
   z-index:
     20;
@@ -438,26 +437,23 @@ button {
   display:
     flex;
 
+  align-items:
+    center;
+
   gap:
-    4px;
+    10px;
 }
 
 
 .zoom-button {
   display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
+    block;
 
   width:
-    32px;
+    auto;
 
   height:
-    32px;
+    auto;
 
   margin:
     0;
@@ -466,14 +462,13 @@ button {
     0;
 
   border:
-    1px solid
-    var(--green);
+    0;
 
   border-radius:
     0;
 
   background:
-    #ffffff;
+    transparent;
 
   color:
     var(--green);
@@ -484,7 +479,7 @@ button {
     sans-serif;
 
   font-size:
-    23px;
+    29px;
 
   font-weight:
     400;
@@ -494,21 +489,32 @@ button {
 
   cursor:
     pointer;
+
+  opacity:
+    1;
+
+  transition:
+    color
+    120ms
+    ease,
+    opacity
+    120ms
+    ease;
 }
 
 
 .zoom-button:hover {
-  background:
-    var(--green);
-
   color:
-    #ffffff;
+    var(--yellow);
 }
 
 
-.zoom-button:active {
-  transform:
-    translateY(1px);
+.zoom-button.is-hidden {
+  opacity:
+    0;
+
+  pointer-events:
+    none;
 }
 
 
@@ -675,19 +681,16 @@ button {
       9px;
 
     bottom:
+      7px;
+
+    gap:
       9px;
   }
 
 
   .zoom-button {
-    width:
-      31px;
-
-    height:
-      31px;
-
     font-size:
-      22px;
+      27px;
   }
 
 }
