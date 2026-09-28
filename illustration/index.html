@@ -164,50 +164,23 @@
             id="sketchbook-paper"
           >
 
-            <!--
-              LAYER 1:
-              PURE WHITE BASE
-              Comes from .sketchbook-paper background.
-            -->
-
-
-            <!--
-              LAYER 2:
-              ILLUSTRATIONS
-            -->
-
+            <!-- illustrations -->
             <div
               class="sketchbook-field"
               id="sketchbook-field"
             ></div>
 
 
-            <!--
-              LAYER 3:
-              REAL PAPER TEXTURE
-            -->
-
+            <!-- paper overlays -->
             <div
               class="paper-texture-layer"
               aria-hidden="true"
             ></div>
 
-
-            <!--
-              LAYER 4:
-              CREAM / WARMTH
-            -->
-
             <div
               class="paper-warmth-layer"
               aria-hidden="true"
             ></div>
-
-
-            <!--
-              LAYER 5:
-              VERY SUBTLE PHYSICAL PAPER SHADING
-            -->
 
             <div
               class="paper-shading-layer"
@@ -428,9 +401,6 @@
 
     /* =====================================================
        STABLE RANDOMNESS
-
-       Still looks irregular / random, but doesn't completely
-       rearrange every time the window is resized.
        ===================================================== */
 
     let randomState =
@@ -706,12 +676,39 @@
 
 
 
+    function getItemCenter(
+      item
+    ) {
+
+      return {
+
+        x:
+          (
+            item.collision.left +
+            item.collision.right
+          )
+          /
+          2,
+
+        y:
+          (
+            item.collision.top +
+            item.collision.bottom
+          )
+          /
+          2
+
+      };
+
+    }
+
+
+
     /* =====================================================
-       VISIBLE ART ANALYSIS
+       VISIBLE ART BOUNDS
 
-       ONLY used for packing.
-
-       It does NOT affect scale.
+       Packing only.
+       Does NOT affect scale.
        ===================================================== */
 
     function analyzeVisibleBounds(
@@ -1046,7 +1043,7 @@
 
 
     /* =====================================================
-       IMAGE LOADING
+       LOAD IMAGE
        ===================================================== */
 
     function loadImageData(
@@ -1118,23 +1115,15 @@
 
 
     /* =====================================================
-       SOURCE-DIMENSION SCALE
+       DISPLAY SCALE
 
-       This is intentionally simple.
+       Source dimensions control size directly,
+       but with a maximum visual cap.
 
-       RELATIVE DISPLAY SIZE =
-       RELATIVE SOURCE PIXEL SIZE
-
-       Nothing about:
-       - category
-       - visible art size
-       - compressed WebP bytes
-       - detail level
-       - filename
-
-       affects display scale.
-
-       Width / height are used only to preserve aspect ratio.
+       Example:
+       - 1000px source = baseline size
+       - 1500px source = 1.5× baseline
+       - very large files stop growing at MAX_LONGEST
        ===================================================== */
 
     function calculateDisplaySize(
@@ -1142,18 +1131,11 @@
       dimensionStats
     ) {
 
-      /*
-        sqrt(pixel area) converts a W×H image into a useful
-        single linear dimension.
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
 
-        Example:
-
-        1000 × 1000 = 1000
-        2000 × 2000 = 2000
-
-        So doubling both source dimensions doubles its
-        displayed linear size.
-      */
 
       const sourceLinear =
         Math.sqrt(
@@ -1167,24 +1149,40 @@
         dimensionStats.median;
 
 
-      /*
-        One global responsive multiplier.
+      const BASE_LONGEST =
+        mobile
+          ? 88
+          : 128;
 
-        Relative source-size differences remain identical.
+
+      /*
+        Hard cap prevents tomato / city etc. from swallowing
+        the entire spread.
       */
 
-      const baseLongest =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches
+      const MAX_LONGEST =
+        mobile
+          ? 145
+          : 190;
 
-          ? 92
-          : 132;
+
+      /*
+        Small pieces can still remain meaningfully small.
+      */
+
+      const MIN_LONGEST =
+        mobile
+          ? 36
+          : 46;
 
 
       const longest =
-        baseLongest *
-        ratio;
+        clamp(
+          BASE_LONGEST *
+          ratio,
+          MIN_LONGEST,
+          MAX_LONGEST
+        );
 
 
       let width;
@@ -1271,6 +1269,16 @@
         displayHeight:
           size.height,
 
+        /*
+          Used for size-similarity clustering.
+        */
+
+        displayScale:
+          Math.sqrt(
+            size.width *
+            size.height
+          ),
+
         rotation,
 
         visibleLeft:
@@ -1318,10 +1326,6 @@
       x,
       y
     ) {
-
-      /*
-        Slight extra room for ±5° rotation.
-      */
 
       const angle =
         Math.abs(
@@ -1385,6 +1389,47 @@
           safetyY
 
       };
+
+    }
+
+
+
+    /* =====================================================
+       SIZE SIMILARITY
+
+       1 = almost the same displayed scale.
+       0 = very different.
+       ===================================================== */
+
+    function sizeSimilarity(
+      a,
+      b
+    ) {
+
+      const large =
+        Math.max(
+          a.displayScale,
+          b.displayScale
+        );
+
+
+      const small =
+        Math.min(
+          a.displayScale,
+          b.displayScale
+        );
+
+
+      if (
+        large <=
+        0
+      ) {
+        return 1;
+      }
+
+
+      return small /
+        large;
 
     }
 
@@ -1496,6 +1541,13 @@
         i++
       ) {
 
+        /*
+          Fully radial candidates.
+
+          No special cardinal positions, because those
+          encourage rows / columns.
+        */
+
         const angle =
           randomBetween(
             0,
@@ -1543,18 +1595,32 @@
           );
 
 
+        /*
+          Tiny radial irregularity prevents mathematical
+          rings around larger drawings.
+        */
+
+        const jitter =
+          randomBetween(
+            .97,
+            1.08
+          );
+
+
         candidates.push({
 
           x:
             targetCenterX +
             cosine *
-            radius -
+            radius *
+            jitter -
             ownCenterOffsetX,
 
           y:
             targetCenterY +
             sine *
-            radius -
+            radius *
+            jitter -
             ownCenterOffsetY
 
         });
@@ -1563,6 +1629,112 @@
 
 
       return candidates;
+
+    }
+
+
+
+    /* =====================================================
+       LOCAL DENSITY SCORE
+
+       This is the main anti-"line of objects" fix.
+
+       A candidate is rewarded for sitting near several
+       existing pieces instead of only attaching to one.
+       ===================================================== */
+
+    function getDensityScore(
+      collision,
+      placed
+    ) {
+
+      if (
+        !placed.length
+      ) {
+        return 0;
+      }
+
+
+      const centerX =
+        (
+          collision.left +
+          collision.right
+        )
+        /
+        2;
+
+
+      const centerY =
+        (
+          collision.top +
+          collision.bottom
+        )
+        /
+        2;
+
+
+      const distances =
+        placed
+          .map(
+            item => {
+
+              const center =
+                getItemCenter(
+                  item
+                );
+
+
+              return Math.hypot(
+                centerX -
+                center.x,
+                centerY -
+                center.y
+              );
+
+            }
+          )
+          .sort(
+            (a, b) =>
+              a -
+              b
+          );
+
+
+      /*
+        Use three closest neighbours.
+
+        A chain tends to have:
+        one close neighbour + everything else far away.
+
+        A natural cluster tends to have:
+        several nearby neighbours.
+      */
+
+      const nearest =
+        distances.slice(
+          0,
+          Math.min(
+            3,
+            distances.length
+          )
+        );
+
+
+      const average =
+        nearest.reduce(
+          (
+            sum,
+            value
+          ) =>
+            sum +
+            value,
+          0
+        )
+        /
+        nearest.length;
+
+
+      return average;
 
     }
 
@@ -1585,23 +1757,52 @@
 
 
       /*
-        Big pieces establish the composition first.
+        Large drawings still establish structure first,
+        but the ordering is softened into size bands instead
+        of one strict largest-to-smallest chain.
       */
 
-      const ordered =
+      const sorted =
         [...drawings]
           .sort(
             (a, b) =>
-              (
-                b.displayWidth *
-                b.displayHeight
-              )
-              -
-              (
-                a.displayWidth *
-                a.displayHeight
-              )
+              b.displayScale -
+              a.displayScale
           );
+
+
+      const ordered =
+        [];
+
+
+      const BAND_SIZE =
+        8;
+
+
+      for (
+        let i =
+          0;
+        i <
+        sorted.length;
+        i +=
+        BAND_SIZE
+      ) {
+
+        const band =
+          sorted.slice(
+            i,
+            i +
+            BAND_SIZE
+          );
+
+
+        ordered.push(
+          ...shuffle(
+            band
+          )
+        );
+
+      }
 
 
       const placed =
@@ -1660,48 +1861,141 @@
 
 
 
-          const related =
-            shuffle(
-              placed.filter(
-                other =>
-                  other.category ===
-                  item.category
-              )
-            );
+          /*
+            Rank possible anchors using BOTH:
+
+            1. same subject/category
+            2. similar displayed size
+
+            Similar-sized pieces therefore tend to form
+            natural local neighbourhoods.
+          */
+
+          const targets =
+            [...placed]
+              .sort(
+                (
+                  a,
+                  b
+                ) => {
+
+                  const aCategory =
+                    a.category ===
+                    item.category
+                      ? 1
+                      : 0;
 
 
-          const unrelated =
-            shuffle(
-              placed.filter(
-                other =>
-                  other.category !==
-                  item.category
-              )
-            );
+                  const bCategory =
+                    b.category ===
+                    item.category
+                      ? 1
+                      : 0;
 
 
-          const targets = [
-            ...related,
-            ...unrelated
-          ];
+                  const aSize =
+                    sizeSimilarity(
+                      item,
+                      a
+                    );
+
+
+                  const bSize =
+                    sizeSimilarity(
+                      item,
+                      b
+                    );
+
+
+                  const aRank =
+                    aSize *
+                    .70 +
+                    aCategory *
+                    .30;
+
+
+                  const bRank =
+                    bSize *
+                    .70 +
+                    bCategory *
+                    .30;
+
+
+                  return bRank -
+                    aRank;
+
+                }
+              );
 
 
 
           targets.forEach(
-            target => {
+            (
+              target,
+              targetIndex
+            ) => {
+
+              const similarity =
+                sizeSimilarity(
+                  item,
+                  target
+                );
+
 
               const sameCategory =
                 target.category ===
                 item.category;
 
 
+              /*
+                Spend more candidates around promising
+                similar-size / same-category anchors.
+              */
+
+              let candidateCount =
+                18;
+
+
+              if (
+                similarity >
+                .72
+              ) {
+                candidateCount +=
+                  22;
+              }
+
+
+              if (
+                sameCategory
+              ) {
+                candidateCount +=
+                  22;
+              }
+
+
+              /*
+                Don't burn huge amounts of work on every
+                distant / unrelated target.
+              */
+
+              if (
+                targetIndex >
+                22
+              ) {
+                candidateCount =
+                  Math.min(
+                    candidateCount,
+                    10
+                  );
+              }
+
+
+
               const candidates =
                 createCandidatesAround(
                   item,
                   target,
-                  sameCategory
-                    ? 72
-                    : 24
+                  candidateCount
                 );
 
 
@@ -1767,9 +2061,8 @@
                     );
 
 
-                  /*
-                    Strong square preference.
-                  */
+
+                  /* square silhouette */
 
                   const squarePenalty =
                     area *
@@ -1780,7 +2073,7 @@
                       )
                     )
                     *
-                    5.4;
+                    5.2;
 
 
 
@@ -1816,11 +2109,51 @@
                           1.22
                         )
                         *
-                        4.5
+                        4.2
 
                       : 0;
 
 
+
+                  /* local density */
+
+                  const densityPenalty =
+                    getDensityScore(
+                      collision,
+                      placed
+                    )
+                    *
+                    48;
+
+
+
+                  /*
+                    Similar size reward.
+
+                    Higher similarity = stronger negative
+                    score = preferred.
+                  */
+
+                  const sizeReward =
+                    -similarity *
+                    4200;
+
+
+
+                  /* same-subject grouping remains, but softer */
+
+                  const categoryReward =
+                    sameCategory
+                      ? -1900
+                      : 0;
+
+
+
+                  /*
+                    Slight preference toward the existing
+                    overall center, but not enough to make
+                    a rigid circular blob.
+                  */
 
                   const candidateCenterX =
                     (
@@ -1866,81 +2199,20 @@
                       massCenterY
                     )
                     *
-                    18;
+                    11;
 
-
-
-                  let categoryPenalty =
-                    0;
-
-
-                  if (
-                    related.length
-                  ) {
-
-                    let nearest =
-                      Infinity;
-
-
-                    related.forEach(
-                      relative => {
-
-                        const relativeX =
-                          (
-                            relative.collision.left +
-                            relative.collision.right
-                          )
-                          /
-                          2;
-
-
-                        const relativeY =
-                          (
-                            relative.collision.top +
-                            relative.collision.bottom
-                          )
-                          /
-                          2;
-
-
-                        nearest =
-                          Math.min(
-                            nearest,
-                            Math.hypot(
-                              candidateCenterX -
-                              relativeX,
-                              candidateCenterY -
-                              relativeY
-                            )
-                          );
-
-                      }
-                    );
-
-
-                    categoryPenalty =
-                      nearest *
-                      32;
-
-                  }
-
-
-
-                  const categoryReward =
-                    sameCategory
-                      ? -3100
-                      : 0;
 
 
                   const score =
                     area +
                     squarePenalty +
                     imbalancePenalty +
+                    densityPenalty +
                     centerPenalty +
-                    categoryPenalty +
+                    sizeReward +
                     categoryReward +
                     random() *
-                    800;
+                    1100;
 
 
                   if (
@@ -1975,7 +2247,7 @@
 
 
           /* =================================================
-             SAFE FALLBACK
+             FALLBACK
              ================================================= */
 
           if (
@@ -2046,76 +2318,81 @@
 
 
             const GAP =
-              6;
-
-
-            const horizontal = [
-
-              {
-                x:
-                  bounds.right +
-                  GAP +
-                  ownWidth /
-                  2,
-
-                y:
-                  centerY
-              },
-
-              {
-                x:
-                  bounds.left -
-                  GAP -
-                  ownWidth /
-                  2,
-
-                y:
-                  centerY
-              }
-
-            ];
-
-
-            const vertical = [
-
-              {
-                x:
-                  centerX,
-
-                y:
-                  bounds.bottom +
-                  GAP +
-                  ownHeight /
-                  2
-              },
-
-              {
-                x:
-                  centerX,
-
-                y:
-                  bounds.top -
-                  GAP -
-                  ownHeight /
-                  2
-              }
-
-            ];
+              7;
 
 
             const fallbackPoints =
-              bounds.height >
-              bounds.width
+              shuffle([
 
-                ? [
-                    ...horizontal,
-                    ...vertical
-                  ]
+                {
+                  x:
+                    bounds.right +
+                    GAP +
+                    ownWidth /
+                    2,
 
-                : [
-                    ...vertical,
-                    ...horizontal
-                  ];
+                  y:
+                    centerY +
+                    randomBetween(
+                      -bounds.height *
+                      .18,
+                      bounds.height *
+                      .18
+                    )
+                },
+
+                {
+                  x:
+                    bounds.left -
+                    GAP -
+                    ownWidth /
+                    2,
+
+                  y:
+                    centerY +
+                    randomBetween(
+                      -bounds.height *
+                      .18,
+                      bounds.height *
+                      .18
+                    )
+                },
+
+                {
+                  x:
+                    centerX +
+                    randomBetween(
+                      -bounds.width *
+                      .18,
+                      bounds.width *
+                      .18
+                    ),
+
+                  y:
+                    bounds.bottom +
+                    GAP +
+                    ownHeight /
+                    2
+                },
+
+                {
+                  x:
+                    centerX +
+                    randomBetween(
+                      -bounds.width *
+                      .18,
+                      bounds.width *
+                      .18
+                    ),
+
+                  y:
+                    bounds.top -
+                    GAP -
+                    ownHeight /
+                    2
+                }
+
+              ]);
 
 
             for (
@@ -2172,10 +2449,6 @@
           }
 
 
-
-          /*
-            Absolute last resort.
-          */
 
           if (
             !winner
@@ -2240,13 +2513,15 @@
 
       /* =====================================================
          COMPACTION
+
+         Pull inward in varied directions.
          ===================================================== */
 
       for (
         let pass =
           0;
         pass <
-        240;
+        230;
         pass++
       ) {
 
@@ -2283,30 +2558,139 @@
         ).forEach(
           item => {
 
-            const itemX =
-              (
-                item.collision.left +
-                item.collision.right
-              )
-              /
-              2;
+            const itemCenter =
+              getItemCenter(
+                item
+              );
 
 
-            const itemY =
-              (
-                item.collision.top +
-                item.collision.bottom
-              )
-              /
-              2;
+            /*
+              Blend global center with the average position
+              of similar-sized neighbours.
+
+              This helps preserve little scale clusters.
+            */
+
+            const similar =
+              placed
+                .filter(
+                  other =>
+                    other !== item &&
+                    sizeSimilarity(
+                      item,
+                      other
+                    ) >
+                    .72
+                )
+                .sort(
+                  (
+                    a,
+                    b
+                  ) => {
+
+                    const aCenter =
+                      getItemCenter(
+                        a
+                      );
+
+
+                    const bCenter =
+                      getItemCenter(
+                        b
+                      );
+
+
+                    return Math.hypot(
+                      itemCenter.x -
+                      aCenter.x,
+                      itemCenter.y -
+                      aCenter.y
+                    )
+                    -
+                    Math.hypot(
+                      itemCenter.x -
+                      bCenter.x,
+                      itemCenter.y -
+                      bCenter.y
+                    );
+
+                  }
+                )
+                .slice(
+                  0,
+                  3
+                );
+
+
+            let targetX =
+              centerX;
+
+
+            let targetY =
+              centerY;
+
+
+            if (
+              similar.length
+            ) {
+
+              const similarCenters =
+                similar.map(
+                  getItemCenter
+                );
+
+
+              const averageX =
+                similarCenters.reduce(
+                  (
+                    sum,
+                    center
+                  ) =>
+                    sum +
+                    center.x,
+                  0
+                )
+                /
+                similarCenters.length;
+
+
+              const averageY =
+                similarCenters.reduce(
+                  (
+                    sum,
+                    center
+                  ) =>
+                    sum +
+                    center.y,
+                  0
+                )
+                /
+                similarCenters.length;
+
+
+              targetX =
+                centerX *
+                .72 +
+                averageX *
+                .28;
+
+
+              targetY =
+                centerY *
+                .72 +
+                averageY *
+                .28;
+
+            }
+
 
 
             const baseAngle =
               Math.atan2(
-                centerY -
-                itemY,
-                centerX -
-                itemX
+                targetY -
+                itemCenter.y,
+                targetX -
+                itemCenter.x
               );
 
 
@@ -2315,32 +2699,32 @@
               baseAngle,
 
               baseAngle +
-              .14,
+              .15,
 
               baseAngle -
-              .14,
+              .15,
 
               baseAngle +
-              .28,
+              .32,
 
               baseAngle -
-              .28,
+              .32,
 
               baseAngle +
-              .5,
+              .58,
 
               baseAngle -
-              .5
+              .58
 
             ];
 
 
             const steps = [
-              8,
-              5,
-              3,
-              1.5,
-              .7
+              7,
+              4,
+              2,
+              1,
+              .5
             ];
 
 
@@ -2534,7 +2918,7 @@
 
 
     /* =====================================================
-       CREATE DRAWING ELEMENT
+       CREATE DRAWING
        ===================================================== */
 
     function createDrawingElement(
@@ -2677,9 +3061,7 @@
 
 
       /* ===================================================
-         SOURCE DIMENSION STATS
-
-         Actual display scale is based directly on these.
+         DIMENSION SCALE REFERENCE
          =================================================== */
 
       const sourceScales =
@@ -2809,35 +3191,21 @@
 
     const view = {
 
-      x:
-        0,
+      x: 0,
+      y: 0,
 
-      y:
-        0,
+      zoom: 1,
 
-      zoom:
-        1,
+      minZoom: .1,
+      maxZoom: 4,
 
-      minZoom:
-        .1,
+      dragging: false,
 
-      maxZoom:
-        4,
+      startX: 0,
+      startY: 0,
 
-      dragging:
-        false,
-
-      startX:
-        0,
-
-      startY:
-        0,
-
-      originX:
-        0,
-
-      originY:
-        0
+      originX: 0,
+      originY: 0
 
     };
 
@@ -2960,7 +3328,7 @@
 
 
     /* =====================================================
-       BUTTON STATE
+       ZOOM BUTTONS
        ===================================================== */
 
     function updateZoomButtons() {
@@ -3042,8 +3410,6 @@
 
     /* =====================================================
        INITIAL VIEW
-
-       Minimum still leaves paper larger than viewport.
        ===================================================== */
 
     function setInitialView() {
@@ -3222,7 +3588,7 @@
 
 
     /* =====================================================
-       WHEEL / TRACKPAD
+       TRACKPAD / MOUSE
        ===================================================== */
 
     viewport.addEventListener(
