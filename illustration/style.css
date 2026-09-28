@@ -4,7 +4,8 @@
 
 :root {
   --site-paper: #ded8c8;
-  --sketchbook-paper: #faf7ef;
+  --sketchbook-paper: #f7f0e3;
+  --sketchbook-paper-deep: #efe6d5;
 
   --ink: #11110f;
 
@@ -40,44 +41,34 @@ html {
 
 body {
   min-height: 100vh;
-
   overflow-x: hidden;
 
-  background:
-    var(--site-paper);
-
-  color:
-    var(--ink);
+  background: var(--site-paper);
+  color: var(--ink);
 
   font-family:
     Helvetica,
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing:
-    antialiased;
+  -webkit-font-smoothing: antialiased;
 }
 
 
 img {
   display: block;
-
   max-width: 100%;
 }
 
 
 a {
-  color:
-    inherit;
-
-  text-decoration:
-    none;
+  color: inherit;
+  text-decoration: none;
 }
 
 
 button {
-  font:
-    inherit;
+  font: inherit;
 }
 
 
@@ -87,8 +78,7 @@ button {
    ========================================================= */
 
 .page-shell {
-  min-height:
-    100vh;
+  min-height: 100vh;
 }
 
 
@@ -98,38 +88,21 @@ button {
    ========================================================= */
 
 .scarf-rack {
-  position:
-    fixed;
+  position: fixed;
+  top: 14px;
+  right: 12px;
+  z-index: 50;
 
-  top:
-    14px;
-
-  right:
-    12px;
-
-  z-index:
-    50;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  align-items:
-    flex-end;
-
-  gap:
-    6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
 }
 
 
 .scarf-item {
-  position:
-    relative;
-
-  display:
-    block;
+  position: relative;
+  display: block;
 
   height:
     clamp(
@@ -138,82 +111,45 @@ button {
       108px
     );
 
-  transform-origin:
-    right center;
+  transform-origin: right center;
 
   transition:
-    transform
-    220ms
-    cubic-bezier(
-      .2,
-      .8,
-      .2,
-      1
-    );
+    transform 220ms cubic-bezier(.2, .8, .2, 1);
 }
 
 
 .scarf-item img {
-  width:
-    auto;
-
-  height:
-    100%;
-
-  object-fit:
-    contain;
+  width: auto;
+  height: 100%;
+  object-fit: contain;
 
   filter:
     drop-shadow(
-      0
-      2px
-      1px
-      rgba(
-        17,
-        17,
-        15,
-        .06
-      )
+      0 2px 1px rgba(17, 17, 15, .06)
     );
 }
 
 
 .scarf-home {
-  transform:
-    scale(
-      1.045
-    );
+  transform: scale(1.045);
 }
 
 
 .scarf-item:hover {
-  z-index:
-    4;
+  z-index: 4;
 
   transform:
-    translateX(
-      -22px
-    )
-    rotate(
-      -.5deg
-    )
-    scale(
-      1.035
-    );
+    translateX(-22px)
+    rotate(-.5deg)
+    scale(1.035);
 }
 
 
 .scarf-home:hover {
   transform:
-    translateX(
-      -22px
-    )
-    rotate(
-      -.5deg
-    )
-    scale(
-      1.075
-    );
+    translateX(-22px)
+    rotate(-.5deg)
+    scale(1.075);
 }
 
 
@@ -223,29 +159,13 @@ button {
    ========================================================= */
 
 .illustration-page {
-  min-height:
-    100vh;
+  min-height: 100vh;
 
   padding:
-    clamp(
-      30px,
-      4vw,
-      56px
-    )
-
-    clamp(
-      430px,
-      36vw,
-      575px
-    )
-
+    clamp(30px, 4vw, 56px)
+    clamp(430px, 36vw, 575px)
     90px
-
-    clamp(
-      30px,
-      5.5vw,
-      80px
-    );
+    clamp(30px, 5.5vw, 80px);
 }
 
 
@@ -255,32 +175,19 @@ button {
    ========================================================= */
 
 .illustration-header {
-  width:
-    100%;
-
-  margin:
-    0;
-
-  padding:
-    0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 
 .illustration-title {
-  display:
-    block;
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 0;
 
-  width:
-    max-content;
-
-  max-width:
-    100%;
-
-  margin:
-    0;
-
-  color:
-    var(--green);
+  color: var(--green);
 
   font-size:
     clamp(
@@ -289,14 +196,9 @@ button {
       64px
     );
 
-  font-weight:
-    700;
-
-  line-height:
-    .95;
-
-  letter-spacing:
-    -.06em;
+  font-weight: 700;
+  line-height: .95;
+  letter-spacing: -.06em;
 }
 
 
@@ -306,8 +208,7 @@ button {
    ========================================================= */
 
 .sketchbook-stage {
-  width:
-    100%;
+  width: 100%;
 
   margin-top:
     clamp(
@@ -320,19 +221,12 @@ button {
 
 
 /* =========================================================
-   FIXED SKETCHBOOK WINDOW
-
-   This rectangle remains the same physical size.
-
-   The actual paper moves and zooms underneath it.
+   FIXED VIEW WINDOW
    ========================================================= */
 
 .sketchbook-viewport {
-  position:
-    relative;
-
-  width:
-    100%;
+  position: relative;
+  width: 100%;
 
   height:
     clamp(
@@ -341,345 +235,156 @@ button {
       930px
     );
 
-  overflow:
-    hidden;
+  overflow: hidden;
 
-  background:
-    #f8f5ed;
+  background: #f5efe2;
 
   border:
-    1px solid
-    rgba(
-      37,
-      30,
-      19,
-      .055
-    );
+    1px solid rgba(37, 30, 19, .055);
 
   box-shadow:
-    0
-    18px
-    38px
-    rgba(
-      31,
-      26,
-      18,
-      .055
-    ),
-    0
-    4px
-    10px
-    rgba(
-      31,
-      26,
-      18,
-      .025
-    );
+    0 18px 38px rgba(31, 26, 18, .055),
+    0 4px 10px rgba(31, 26, 18, .025);
 
-  cursor:
-    grab;
-
-  user-select:
-    none;
-
-  touch-action:
-    none;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
 }
 
 
 .sketchbook-viewport.is-dragging {
-  cursor:
-    grabbing;
+  cursor: grabbing;
 }
 
 
-
-/* =========================================================
-   VERY SUBTLE VIEWPORT DEPTH
-   ========================================================= */
-
 .sketchbook-viewport::before {
-  content:
-    "";
+  content: "";
 
-  position:
-    absolute;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
 
-  inset:
-    0;
-
-  z-index:
-    5;
-
-  pointer-events:
-    none;
+  pointer-events: none;
 
   box-shadow:
-    inset
-    0
-    0
-    28px
-    rgba(
-      53,
-      43,
-      26,
-      .018
-    );
+    inset 0 0 24px rgba(53, 43, 26, .015);
 }
 
 
 
 /* =========================================================
    ACTUAL SKETCHBOOK PAPER
-
-   Texture moves, pans and zooms WITH the drawings.
    ========================================================= */
 
 .sketchbook-paper {
-  position:
-    absolute;
+  position: absolute;
+  top: 0;
+  left: 0;
 
-  top:
-    0;
+  transform-origin: top left;
+  will-change: transform;
 
-  left:
-    0;
-
-  transform-origin:
-    top left;
-
-  will-change:
-    transform;
-
-  background-color:
-    var(--sketchbook-paper);
-
-  background-image:
-
-    /*
-      Slight warmth.
-
-      This takes the cool gray cast off the downloaded
-      texture without turning the page beige.
-    */
-
-    linear-gradient(
-      rgba(
-        255,
-        247,
-        225,
-        .18
-      ),
-      rgba(
-        255,
-        247,
-        225,
-        .18
-      )
-    ),
-
-    url("paper_texture.webp");
-
-  background-size:
-    100%
-    100%;
-
-  background-position:
-    center;
-
-  background-repeat:
-    no-repeat;
-
-  /*
-    Actual page edge.
-    You only see this by panning far enough.
-  */
-
-  box-shadow:
-    0
-    0
-    0
-    1px
-    rgba(
-      38,
-      31,
-      20,
-      .045
-    ),
-    0
-    8px
-    20px
-    rgba(
-      38,
-      31,
-      20,
-      .035
-    );
-}
-
-
-
-/* =========================================================
-   PAPER LIGHT / SHADING
-
-   Extremely restrained.
-
-   This gives the page slight physical depth without
-   looking like a fake Photoshop vignette.
-   ========================================================= */
-
-.sketchbook-paper::before {
-  content:
-    "";
-
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  z-index:
-    1;
-
-  pointer-events:
-    none;
+  isolation: isolate;
 
   background:
-
-    radial-gradient(
-      ellipse
-      at
-      42%
-      34%,
-
-      rgba(
-        255,
-        255,
-        255,
-        .10
-      )
-      0%,
-
-      rgba(
-        255,
-        255,
-        255,
-        0
-      )
-      62%
-    ),
-
     linear-gradient(
       180deg,
+      rgba(255, 255, 255, .16) 0%,
+      rgba(255, 255, 255, .06) 16%,
+      rgba(0, 0, 0, 0) 100%
+    ),
+    linear-gradient(
+      180deg,
+      var(--sketchbook-paper) 0%,
+      var(--sketchbook-paper-deep) 100%
+    );
 
-      rgba(
-        255,
-        255,
-        255,
-        .04
-      )
-      0%,
+  box-shadow:
+    0 0 0 1px rgba(38, 31, 20, .045),
+    0 8px 20px rgba(38, 31, 20, .028);
+}
 
-      rgba(
-        255,
-        255,
-        255,
-        0
-      )
-      18%,
 
-      rgba(
-        55,
-        43,
-        25,
-        .012
-      )
-      100%
+/* subtle page light / depth under the drawings */
+
+.sketchbook-paper::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 42% 34%,
+      rgba(255, 255, 255, .12) 0%,
+      rgba(255, 255, 255, 0) 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, .04) 0%,
+      rgba(255, 255, 255, 0) 18%,
+      rgba(61, 46, 23, .010) 100%
     );
 }
 
 
 
-/* =========================================================
-   SUBTLE GUTTER / BOUND EDGE
+.sketchbook-field {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
 
-   Not a fake spiral binding.
-   Just a little depth on the left side.
-   ========================================================= */
 
-.sketchbook-paper::after {
-  content:
-    "";
+/* subtle left gutter shading */
 
-  position:
-    absolute;
+.sketchbook-field::before {
+  content: "";
 
-  top:
-    0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 36px;
 
-  bottom:
-    0;
-
-  left:
-    0;
-
-  width:
-    36px;
-
-  z-index:
-    2;
-
-  pointer-events:
-    none;
+  z-index: 1;
+  pointer-events: none;
 
   background:
     linear-gradient(
       90deg,
-
-      rgba(
-        56,
-        43,
-        25,
-        .040
-      )
-      0%,
-
-      rgba(
-        56,
-        43,
-        25,
-        .018
-      )
-      28%,
-
-      rgba(
-        56,
-        43,
-        25,
-        0
-      )
-      100%
+      rgba(56, 43, 25, .030) 0%,
+      rgba(56, 43, 25, .014) 28%,
+      rgba(56, 43, 25, 0) 100%
     );
 }
 
 
+/* texture OVERLAY layer */
 
-/* =========================================================
-   DRAWING FIELD
-   ========================================================= */
+.sketchbook-field::after {
+  content: "";
 
-.sketchbook-field {
-  position:
-    relative;
+  position: absolute;
+  inset: 0;
 
-  width:
-    100%;
+  z-index: 4;
+  pointer-events: none;
 
-  height:
-    100%;
+  background-image:
+    url("paper_texture.webp");
 
-  z-index:
-    3;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: .15;
+
+  mix-blend-mode: multiply;
 }
 
 
@@ -689,44 +394,27 @@ button {
    ========================================================= */
 
 .drawing {
-  position:
-    absolute;
-
-  pointer-events:
-    none;
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
 }
 
 
 .drawing-art {
-  display:
-    block;
+  display: block;
+  width: 100%;
+  height: 100%;
 
-  width:
-    100%;
+  object-fit: contain;
 
-  height:
-    100%;
+  mix-blend-mode: darken;
+  opacity: .99;
 
-  object-fit:
-    contain;
+  transform-origin: center center;
 
-  mix-blend-mode:
-    multiply;
-
-  opacity:
-    .99;
-
-  transform-origin:
-    center center;
-
-  user-select:
-    none;
-
-  -webkit-user-drag:
-    none;
-
-  pointer-events:
-    none;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 
@@ -736,107 +424,60 @@ button {
    ========================================================= */
 
 .zoom-controls {
-  position:
-    absolute;
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  z-index: 30;
 
-  right:
-    12px;
-
-  bottom:
-    8px;
-
-  z-index:
-    30;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 
 .zoom-button {
-  display:
-    block;
+  display: block;
+  width: auto;
+  height: auto;
 
-  width:
-    auto;
+  margin: 0;
+  padding: 0;
 
-  height:
-    auto;
+  border: 0;
+  border-radius: 0;
 
-  margin:
-    0;
+  background: transparent;
 
-  padding:
-    0;
-
-  border:
-    0;
-
-  border-radius:
-    0;
-
-  background:
-    transparent;
-
-  color:
-    var(--green);
+  color: var(--green);
 
   font-family:
     Helvetica,
     Arial,
     sans-serif;
 
-  font-size:
-    29px;
+  font-size: 29px;
+  font-weight: 400;
+  line-height: 1;
 
-  font-weight:
-    400;
-
-  line-height:
-    1;
-
-  cursor:
-    pointer;
-
-  opacity:
-    1;
+  cursor: pointer;
+  opacity: 1;
 
   transition:
-    color
-    120ms
-    ease,
-    opacity
-    120ms
-    ease,
-    transform
-    120ms
-    ease;
+    color 120ms ease,
+    opacity 120ms ease,
+    transform 120ms ease;
 }
 
 
 .zoom-button:hover {
-  color:
-    var(--yellow);
-
-  transform:
-    translateY(
-      -1px
-    );
+  color: var(--yellow);
+  transform: translateY(-1px);
 }
 
 
 .zoom-button.is-hidden {
-  opacity:
-    0;
-
-  pointer-events:
-    none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 
@@ -845,14 +486,10 @@ button {
    TABLET
    ========================================================= */
 
-@media (
-  max-width:
-  1100px
-) {
+@media (max-width: 1100px) {
 
   .illustration-page {
-    padding-right:
-      375px;
+    padding-right: 375px;
   }
 
 
@@ -873,97 +510,61 @@ button {
    MOBILE
    ========================================================= */
 
-@media (
-  max-width:
-  700px
-) {
+@media (max-width: 700px) {
 
   .scarf-rack {
-    top:
-      10px;
+    top: 10px;
+    left: 0;
+    right: 0;
 
-    left:
-      0;
+    flex-direction: row;
+    align-items: center;
 
-    right:
-      0;
-
-    flex-direction:
-      row;
-
-    align-items:
-      center;
-
-    width:
-      100%;
-
-    gap:
-      6px;
+    width: 100%;
+    gap: 6px;
 
     padding:
       4px
       14px
       12px;
 
-    overflow-x:
-      auto;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-    overflow-y:
-      hidden;
-
-    scrollbar-width:
-      none;
-
-    -webkit-overflow-scrolling:
-      touch;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
 
   .scarf-rack::-webkit-scrollbar {
-    display:
-      none;
+    display: none;
   }
 
 
   .scarf-item {
-    flex:
-      0 0 auto;
-
-    width:
-      285px;
-
-    height:
-      auto;
-
-    transform:
-      none;
+    flex: 0 0 auto;
+    width: 285px;
+    height: auto;
+    transform: none;
   }
 
 
   .scarf-item img {
-    width:
-      100%;
-
-    height:
-      auto;
+    width: 100%;
+    height: auto;
   }
 
 
   .scarf-home {
-    width:
-      315px;
-
-    transform:
-      none;
+    width: 315px;
+    transform: none;
   }
 
 
   .scarf-item:hover,
   .scarf-home:hover {
-    transform:
-      none;
+    transform: none;
   }
-
 
 
   .illustration-page {
@@ -985,8 +586,7 @@ button {
 
 
   .sketchbook-stage {
-    margin-top:
-      24px;
+    margin-top: 24px;
   }
 
 
@@ -1001,20 +601,14 @@ button {
 
 
   .zoom-controls {
-    right:
-      9px;
-
-    bottom:
-      7px;
-
-    gap:
-      9px;
+    right: 9px;
+    bottom: 7px;
+    gap: 9px;
   }
 
 
   .zoom-button {
-    font-size:
-      27px;
+    font-size: 27px;
   }
 
 }
@@ -1025,29 +619,21 @@ button {
    SMALL MOBILE
    ========================================================= */
 
-@media (
-  max-width:
-  420px
-) {
+@media (max-width: 420px) {
 
   .illustration-page {
-    padding-left:
-      14px;
-
-    padding-right:
-      14px;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
 
   .scarf-item {
-    width:
-      248px;
+    width: 248px;
   }
 
 
   .scarf-home {
-    width:
-      278px;
+    width: 278px;
   }
 
 
