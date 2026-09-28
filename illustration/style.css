@@ -41,39 +41,33 @@ body {
 
   overflow-x: hidden;
 
-  background:
-    var(--paper);
-
-  color:
-    var(--ink);
+  background: var(--paper);
+  color: var(--ink);
 
   font-family:
     Helvetica,
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing:
-    antialiased;
+  -webkit-font-smoothing: antialiased;
 }
 
 
 img {
   display: block;
-
   max-width: 100%;
 }
 
 
 a {
   color: inherit;
-
   text-decoration: none;
 }
 
 
 
 /* =========================================================
-   PAGE
+   PAGE SHELL
    ========================================================= */
 
 .page-shell {
@@ -88,25 +82,19 @@ a {
 
 .scarf-rack {
   position: fixed;
-
   top: 14px;
   right: 12px;
-
   z-index: 50;
 
   display: flex;
-
   flex-direction: column;
-
   align-items: flex-end;
-
   gap: 6px;
 }
 
 
 .scarf-item {
   position: relative;
-
   display: block;
 
   height:
@@ -116,49 +104,32 @@ a {
       108px
     );
 
-  transform-origin:
-    right center;
+  transform-origin: right center;
 
   transition:
     transform
     220ms
-    cubic-bezier(
-      .2,
-      .8,
-      .2,
-      1
-    );
+    cubic-bezier(.2, .8, .2, 1);
 }
 
 
 .scarf-item img {
   width: auto;
-
   height: 100%;
-
-  object-fit:
-    contain;
+  object-fit: contain;
 
   filter:
     drop-shadow(
       0
       2px
       1px
-      rgba(
-        17,
-        17,
-        15,
-        .06
-      )
+      rgba(17, 17, 15, .06)
     );
 }
 
 
 .scarf-home {
-  transform:
-    scale(
-      1.045
-    );
+  transform: scale(1.045);
 }
 
 
@@ -186,29 +157,13 @@ a {
    ========================================================= */
 
 .illustration-page {
-  min-height:
-    100vh;
+  min-height: 100vh;
 
   padding:
-    clamp(
-      30px,
-      4vw,
-      56px
-    )
-
-    clamp(
-      430px,
-      36vw,
-      575px
-    )
-
-    100px
-
-    clamp(
-      30px,
-      5.5vw,
-      80px
-    );
+    clamp(30px, 4vw, 56px)
+    clamp(430px, 36vw, 575px)
+    96px
+    clamp(30px, 5.5vw, 80px);
 }
 
 
@@ -218,32 +173,19 @@ a {
    ========================================================= */
 
 .illustration-header {
-  width:
-    100%;
-
-  margin:
-    0;
-
-  padding:
-    0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 
 .illustration-title {
-  display:
-    block;
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 0;
 
-  width:
-    max-content;
-
-  max-width:
-    100%;
-
-  margin:
-    0;
-
-  color:
-    var(--green);
+  color: var(--green);
 
   font-size:
     clamp(
@@ -252,193 +194,119 @@ a {
       64px
     );
 
-  font-weight:
-    700;
-
-  line-height:
-    .95;
-
-  letter-spacing:
-    -.06em;
+  font-weight: 700;
+  line-height: .95;
+  letter-spacing: -.06em;
 }
 
 
 
 /* =========================================================
-   SKETCHBOOK
+   SKETCHBOOK STAGE
    ========================================================= */
 
 .sketchbook-stage {
-  width:
-    100%;
+  width: 100%;
 
   margin-top:
     clamp(
-      30px,
-      3.5vw,
-      48px
+      28px,
+      3.3vw,
+      46px
     );
 }
 
 
 .sketchbook-viewport {
-  position:
-    relative;
+  position: relative;
 
-  width:
-    100%;
+  width: 100%;
 
   height:
     clamp(
-      620px,
-      76vh,
-      900px
+      640px,
+      77vh,
+      930px
     );
 
-  overflow:
-    hidden;
+  overflow: hidden;
 
-  cursor:
-    grab;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
 
-  user-select:
-    none;
-
-  touch-action:
-    none;
+  background: transparent;
 }
 
 
 .sketchbook-viewport.is-dragging {
-  cursor:
-    grabbing;
+  cursor: grabbing;
 }
 
 
-
-/* =========================================================
-   WHITE PAPER
-   ========================================================= */
-
 .sketchbook-paper {
-  position:
-    absolute;
+  position: absolute;
+  top: 0;
+  left: 0;
 
-  top:
-    0;
+  transform-origin: top left;
 
-  left:
-    0;
-
-  background:
-    #ffffff;
+  background: #ffffff;
 
   border:
     1px solid
-    rgba(
-      17,
-      17,
-      15,
-      .08
-    );
+    rgba(17, 17, 15, .08);
 
   box-shadow:
     0
-    9px
-    22px
-    rgba(
-      17,
-      17,
-      15,
-      .045
-    );
+    10px
+    24px
+    rgba(17, 17, 15, .045);
 
-  will-change:
-    transform;
+  will-change: transform;
 }
 
 
 .sketchbook-field {
-  position:
-    relative;
-
-  width:
-    100%;
-
-  height:
-    100%;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 
 
 /* =========================================================
-   CATEGORY GROUP
-
-   Invisible container only.
-   No cards, backgrounds or labels.
+   GROUPS
    ========================================================= */
 
 .drawing-group {
-  position:
-    absolute;
+  position: absolute;
 }
 
-
-
-/* =========================================================
-   DRAWING COLLISION BOX
-   ========================================================= */
 
 .drawing {
-  position:
-    absolute;
-
-  pointer-events:
-    none;
+  position: absolute;
+  pointer-events: none;
 }
 
 
-
-/* =========================================================
-   ACTUAL ARTWORK
-   ========================================================= */
-
 .drawing-art {
-  position:
-    absolute;
+  position: absolute;
+  left: 50%;
+  top: 50%;
 
-  left:
-    50%;
+  display: block;
+  max-width: none;
+  object-fit: contain;
 
-  top:
-    50%;
+  mix-blend-mode: multiply;
+  opacity: .99;
 
-  display:
-    block;
+  transform-origin: center center;
 
-  max-width:
-    none;
-
-  object-fit:
-    contain;
-
-  mix-blend-mode:
-    multiply;
-
-  opacity:
-    .98;
-
-  transform-origin:
-    center center;
-
-  user-select:
-    none;
-
-  -webkit-user-drag:
-    none;
-
-  pointer-events:
-    none;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 
@@ -448,22 +316,19 @@ a {
    ========================================================= */
 
 @media (
-  max-width:
-  1100px
+  max-width: 1100px
 ) {
 
   .illustration-page {
-    padding-right:
-      375px;
+    padding-right: 375px;
   }
-
 
   .sketchbook-viewport {
     height:
       clamp(
-        560px,
-        72vh,
-        820px
+        580px,
+        73vh,
+        860px
       );
   }
 
@@ -476,96 +341,62 @@ a {
    ========================================================= */
 
 @media (
-  max-width:
-  700px
+  max-width: 700px
 ) {
 
   .scarf-rack {
-    top:
-      10px;
+    top: 10px;
+    left: 0;
+    right: 0;
 
-    left:
-      0;
+    flex-direction: row;
+    align-items: center;
 
-    right:
-      0;
-
-    flex-direction:
-      row;
-
-    align-items:
-      center;
-
-    width:
-      100%;
-
-    gap:
-      6px;
+    width: 100%;
+    gap: 6px;
 
     padding:
       4px
       14px
       12px;
 
-    overflow-x:
-      auto;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-    overflow-y:
-      hidden;
-
-    scrollbar-width:
-      none;
-
-    -webkit-overflow-scrolling:
-      touch;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
 
   .scarf-rack::-webkit-scrollbar {
-    display:
-      none;
+    display: none;
   }
 
 
   .scarf-item {
-    flex:
-      0 0 auto;
-
-    width:
-      285px;
-
-    height:
-      auto;
-
-    transform:
-      none;
+    flex: 0 0 auto;
+    width: 285px;
+    height: auto;
+    transform: none;
   }
 
 
   .scarf-item img {
-    width:
-      100%;
-
-    height:
-      auto;
+    width: 100%;
+    height: auto;
   }
 
 
   .scarf-home {
-    width:
-      315px;
-
-    transform:
-      none;
+    width: 315px;
+    transform: none;
   }
 
 
   .scarf-item:hover,
   .scarf-home:hover {
-    transform:
-      none;
+    transform: none;
   }
-
 
 
   .illustration-page {
@@ -587,17 +418,16 @@ a {
 
 
   .sketchbook-stage {
-    margin-top:
-      26px;
+    margin-top: 24px;
   }
 
 
   .sketchbook-viewport {
     height:
       clamp(
-        500px,
-        66svh,
-        720px
+        520px,
+        68svh,
+        760px
       );
   }
 
@@ -610,37 +440,31 @@ a {
    ========================================================= */
 
 @media (
-  max-width:
-  420px
+  max-width: 420px
 ) {
 
   .illustration-page {
-    padding-left:
-      14px;
-
-    padding-right:
-      14px;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
 
   .scarf-item {
-    width:
-      248px;
+    width: 248px;
   }
 
 
   .scarf-home {
-    width:
-      278px;
+    width: 278px;
   }
 
 
   .sketchbook-viewport {
     height:
       clamp(
-        460px,
-        62svh,
-        660px
+        470px,
+        63svh,
+        690px
       );
   }
 
