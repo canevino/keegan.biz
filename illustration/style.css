@@ -456,6 +456,24 @@ button {
   transform-origin:
     center center;
 
+  transform:
+    rotate(
+      var(
+        --base-rotation,
+        0deg
+      )
+    );
+
+  transition:
+    transform
+    180ms
+    cubic-bezier(
+      .2,
+      .75,
+      .25,
+      1
+    );
+
   user-select:
     none;
 
@@ -464,6 +482,34 @@ button {
 
   pointer-events:
     none;
+}
+
+
+/*
+  Desktop hover only. Touch devices do not get sticky hover.
+  Each drawing has its own small rotation amount supplied by JS.
+*/
+
+@media (hover: hover) and (pointer: fine) {
+
+  .drawing:hover .drawing-art {
+    transform:
+      rotate(
+        calc(
+          var(
+            --base-rotation,
+            0deg
+          )
+          +
+          var(
+            --hover-rotation,
+            2deg
+          )
+        )
+      )
+      scale(1.012);
+  }
+
 }
 
 
