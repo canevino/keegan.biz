@@ -1422,6 +1422,18 @@
         );
 
 
+      const hoverRotation =
+        (
+          random() < .5
+            ? -1
+            : 1
+        ) *
+        randomBetween(
+          1.2,
+          3.0
+        );
+
+
       const visible =
         item.visibleBounds;
 
@@ -1443,6 +1455,8 @@
           ),
 
         rotation,
+
+        hoverRotation,
 
         visibleLeft:
           visible.left *
@@ -3168,18 +3182,18 @@
 
 
     /* =====================================================
-       GUITAR TRIADS
+       GUITAR SONORITIES
 
-       Each illustration receives one random guitar triad
-       for the lifetime of this page load.
+       Each illustration receives one fixed guitar sonority
+       for this page load. Reloading the page reshuffles them.
 
-       Reloading the page reshuffles the assignments.
-       Repeated taps on the same illustration replay the
-       same triad until the next reload.
+       These are deliberately broader than triads: some are
+       dyads, some triads, some 4-note / 5-voice shapes, and a
+       few use the recorded guitar harmonics as rare accents.
 
-       The palette deliberately stays in familiar major /
-       minor harmony rather than leaning into the more modal
-       D-dorian sound used elsewhere on the site.
+       Nearby drawings are assigned different sonority
+       families where possible, so clicking through a local
+       cluster does not keep repeating the same chord.
        ===================================================== */
 
     const GUITAR_AUDIO_ROOT =
@@ -3188,133 +3202,232 @@
 
     const guitarSamples = {
 
-      a1:
-        "guitar_a1.mp3",
+      a1: { file: "guitar_a1.mp3", harmonic: false },
+      a2: { file: "guitar_a2.mp3", harmonic: false },
 
-      b1:
-        "guitar_b1.mp3",
+      b1: { file: "guitar_b1.mp3", harmonic: false },
+      b2: { file: "guitar_b2.mp3", harmonic: false },
 
-      c1:
-        "guitar_c1.mp3",
+      c1: { file: "guitar_c1.mp3", harmonic: false },
+      c2: { file: "guitar_c2.mp3", harmonic: false },
 
-      c2:
-        "guitar_c2.mp3",
+      d1: { file: "guitar_d1.mp3", harmonic: false },
+      d2: { file: "guitar_d2.mp3", harmonic: false },
 
-      d2:
-        "guitar_d2.mp3",
+      e1: { file: "guitar_e1.mp3", harmonic: false },
+      e2: { file: "guitar_e2.mp3", harmonic: false },
 
-      e1:
-        "guitar_e1.mp3",
+      f1: { file: "guitar_f1.mp3", harmonic: false },
+      f2: { file: "guitar_f2.mp3", harmonic: false },
 
-      e2:
-        "guitar_e2.mp3",
+      g1: { file: "guitar_g1.mp3", harmonic: false },
+      g2: { file: "guitar_g2.mp3", harmonic: false },
 
-      f1:
-        "guitar_f1.mp3",
-
-      g1:
-        "guitar_g1.mp3",
-
-      g2:
-        "guitar_g2.mp3"
+      hd: { file: "guitar_hd.mp3", harmonic: true },
+      hg: { file: "guitar_hg.mp3", harmonic: true },
+      hb: { file: "guitar_hb.mp3", harmonic: true },
+      he: { file: "guitar_he.mp3", harmonic: true }
 
     };
 
 
-    const guitarTriads = [
+    const guitarSonorities = [
+
+      /* ----- C family ----- */
 
       {
-        name:
-          "C major",
-
-        notes: [
-          "c1",
-          "e1",
-          "g1"
-        ]
+        id: "c-open",
+        family: "C",
+        notes: ["c1", "g1", "e2"],
+        weight: 1.05
       },
 
       {
-        name:
-          "C major / E",
-
-        notes: [
-          "e1",
-          "g1",
-          "c2"
-        ]
+        id: "c-six",
+        family: "C",
+        notes: ["c1", "e1", "g1", "a1"],
+        weight: .85
       },
 
       {
-        name:
-          "F major",
+        id: "c-wide",
+        family: "C",
+        notes: ["c1", "g1", "c2", "e2"],
+        weight: .72
+      },
 
-        notes: [
-          "f1",
-          "a1",
-          "c2"
-        ]
+      /* ----- A minor family ----- */
+
+      {
+        id: "am",
+        family: "Am",
+        notes: ["a1", "c2", "e2"],
+        weight: 1
       },
 
       {
-        name:
-          "G major",
-
-        notes: [
-          "g1",
-          "b1",
-          "d2"
-        ]
+        id: "am-seven",
+        family: "Am",
+        notes: ["a1", "c2", "e2", "g2"],
+        weight: .82
       },
 
       {
-        name:
-          "G major / B",
+        id: "a-e",
+        family: "Am",
+        notes: ["a1", "e2"],
+        weight: .58
+      },
 
-        notes: [
-          "b1",
-          "d2",
-          "g2"
-        ]
+      /* ----- F family ----- */
+
+      {
+        id: "f-major",
+        family: "F",
+        notes: ["f1", "a1", "c2"],
+        weight: 1
       },
 
       {
-        name:
-          "A minor",
-
-        notes: [
-          "a1",
-          "c2",
-          "e2"
-        ]
+        id: "f-major-seven",
+        family: "F",
+        notes: ["f1", "a1", "c2", "e2"],
+        weight: .78
       },
 
       {
-        name:
-          "E minor",
+        id: "f-c",
+        family: "F",
+        notes: ["f1", "c2"],
+        weight: .54
+      },
 
-        notes: [
-          "e1",
-          "g1",
-          "b1"
-        ]
+      /* ----- G family ----- */
+
+      {
+        id: "g-major",
+        family: "G",
+        notes: ["g1", "b1", "d2"],
+        weight: 1.05
       },
 
       {
-        name:
-          "E minor / G",
+        id: "g-six",
+        family: "G",
+        notes: ["g1", "b1", "d2", "e2"],
+        weight: .82
+      },
 
-        notes: [
-          "g1",
-          "b1",
-          "e2"
-        ]
+      {
+        id: "g-wide",
+        family: "G",
+        notes: ["g1", "d2", "g2", "b2"],
+        weight: .66
+      },
+
+      /* ----- E minor family ----- */
+
+      {
+        id: "em-seven",
+        family: "Em",
+        notes: ["e1", "g1", "b1", "d2"],
+        weight: .95
+      },
+
+      {
+        id: "em-wide",
+        family: "Em",
+        notes: ["e1", "b1", "e2", "g2"],
+        weight: .78
+      },
+
+      {
+        id: "e-b",
+        family: "Em",
+        notes: ["e1", "b1"],
+        weight: .52
+      },
+
+      /* ----- D minor family ----- */
+
+      {
+        id: "dm",
+        family: "Dm",
+        notes: ["d1", "f1", "a1"],
+        weight: .90
+      },
+
+      {
+        id: "dm-seven",
+        family: "Dm",
+        notes: ["d1", "f1", "a1", "c2"],
+        weight: .74
+      },
+
+      /* ----- sparse / open punctuation ----- */
+
+      {
+        id: "c-g",
+        family: "open-C",
+        notes: ["c1", "g1"],
+        weight: .50
+      },
+
+      {
+        id: "g-d",
+        family: "open-G",
+        notes: ["g1", "d2"],
+        weight: .50
+      },
+
+      {
+        id: "e-g-b",
+        family: "Em",
+        notes: ["e1", "g1", "b1"],
+        weight: .70
+      },
+
+      /* ----- rare harmonic colors ----- */
+
+      {
+        id: "c-harmonic-e",
+        family: "C",
+        notes: ["c1", "g1", "he"],
+        weight: .20
+      },
+
+      {
+        id: "g-harmonic-g",
+        family: "G",
+        notes: ["g1", "b1", "d2", "hg"],
+        weight: .18
+      },
+
+      {
+        id: "em-harmonic-e",
+        family: "Em",
+        notes: ["e1", "g1", "b1", "he"],
+        weight: .17
+      },
+
+      {
+        id: "d-harmonic-d",
+        family: "Dm",
+        notes: ["d1", "f1", "a1", "hd"],
+        weight: .14
+      },
+
+      {
+        id: "g-harmonic-b",
+        family: "G",
+        notes: ["g1", "d2", "hb"],
+        weight: .13
       }
 
     ];
 
 
-    const triadAssignments =
+    const sonorityAssignments =
       new Map();
 
 
@@ -3343,40 +3456,321 @@
 
 
 
-    function randomTriadIndex() {
+    function weightedRandomSonority(
+      candidates
+    ) {
 
-      return Math.floor(
+      const pool =
+        candidates.length
+          ? candidates
+          : guitarSonorities;
+
+
+      const total =
+        pool.reduce(
+          (sum, item) =>
+            sum +
+            (item.weight || 1),
+          0
+        );
+
+
+      let pick =
         Math.random() *
-        guitarTriads.length
+        total;
+
+
+      for (
+        const item of
+        pool
+      ) {
+
+        pick -=
+          item.weight || 1;
+
+
+        if (
+          pick <= 0
+        ) {
+
+          return item;
+
+        }
+
+      }
+
+
+      return pool[
+        pool.length - 1
+      ];
+
+    }
+
+
+
+    function getLayoutCenter(
+      item
+    ) {
+
+      return {
+
+        x:
+          item.x +
+          item.displayWidth /
+          2,
+
+        y:
+          item.y +
+          item.displayHeight /
+          2
+
+      };
+
+    }
+
+
+
+    function assignSonoritiesToLayout(
+      items
+    ) {
+
+      /*
+        Only assign a filename once during this page load.
+        If a desktop/mobile breakpoint rebuild occurs, the
+        image keeps the same sound.
+      */
+
+      const centers =
+        new Map(
+          items.map(
+            item => [
+              item.filename,
+              getLayoutCenter(
+                item
+              )
+            ]
+          )
+        );
+
+
+      /*
+        Process from upper-left toward lower-right. This makes
+        the local no-repeat rule behave predictably while the
+        actual choices still reshuffle on every page reload.
+      */
+
+      const ordered =
+        [...items]
+          .sort(
+            (a, b) => {
+
+              const ac =
+                centers.get(
+                  a.filename
+                );
+
+
+              const bc =
+                centers.get(
+                  b.filename
+                );
+
+
+              return (
+                ac.y -
+                bc.y
+              ) || (
+                ac.x -
+                bc.x
+              );
+
+            }
+          );
+
+
+      ordered.forEach(
+        item => {
+
+          if (
+            sonorityAssignments.has(
+              item.filename
+            )
+          ) {
+            return;
+          }
+
+
+          const center =
+            centers.get(
+              item.filename
+            );
+
+
+          const assignedNeighbors =
+            ordered
+              .filter(
+                other =>
+                  other !== item &&
+                  sonorityAssignments.has(
+                    other.filename
+                  )
+              )
+              .map(
+                other => {
+
+                  const otherCenter =
+                    centers.get(
+                      other.filename
+                    );
+
+
+                  return {
+
+                    other,
+
+                    distance:
+                      Math.hypot(
+                        center.x -
+                        otherCenter.x,
+                        center.y -
+                        otherCenter.y
+                      ),
+
+                    sonority:
+                      sonorityAssignments.get(
+                        other.filename
+                      )
+
+                  };
+
+                }
+              )
+              .sort(
+                (a, b) =>
+                  a.distance -
+                  b.distance
+              );
+
+
+          /*
+            Strongly avoid exact repeats among the nearest
+            drawings, and preferably avoid the same harmonic
+            family too. This is more natural than tying the
+            rule to a fixed pixel radius that changes with the
+            responsive layout.
+          */
+
+          const close =
+            assignedNeighbors.slice(
+              0,
+              6
+            );
+
+
+          const forbiddenIds =
+            new Set(
+              close
+                .slice(
+                  0,
+                  4
+                )
+                .map(
+                  entry =>
+                    entry.sonority.id
+                )
+            );
+
+
+          const forbiddenFamilies =
+            new Set(
+              close
+                .slice(
+                  0,
+                  2
+                )
+                .map(
+                  entry =>
+                    entry.sonority.family
+                )
+            );
+
+
+          let candidates =
+            guitarSonorities.filter(
+              sonority =>
+                !forbiddenIds.has(
+                  sonority.id
+                ) &&
+                !forbiddenFamilies.has(
+                  sonority.family
+                )
+            );
+
+
+          if (
+            !candidates.length
+          ) {
+
+            candidates =
+              guitarSonorities.filter(
+                sonority =>
+                  !forbiddenIds.has(
+                    sonority.id
+                  )
+              );
+
+          }
+
+
+          sonorityAssignments.set(
+            item.filename,
+            weightedRandomSonority(
+              candidates
+            )
+          );
+
+        }
       );
 
     }
 
 
 
-    function getTriadForIllustration(
+    function getSonorityForIllustration(
       filename
     ) {
 
       if (
-        !triadAssignments.has(
+        sonorityAssignments.has(
           filename
         )
       ) {
 
-        triadAssignments.set(
-          filename,
-          randomTriadIndex()
+        return sonorityAssignments.get(
+          filename
         );
 
       }
 
 
-      return guitarTriads[
-        triadAssignments.get(
-          filename
-        )
-      ];
+      /*
+        Safety fallback if an image somehow becomes interactive
+        before the layout assignment pass has happened.
+      */
+
+      const sonority =
+        weightedRandomSonority(
+          guitarSonorities
+        );
+
+
+      sonorityAssignments.set(
+        filename,
+        sonority
+      );
+
+
+      return sonority;
 
     }
 
@@ -3412,14 +3806,14 @@
       }
 
 
-      const filename =
+      const sample =
         guitarSamples[
           note
         ];
 
 
       if (
-        !filename
+        !sample
       ) {
 
         throw new Error(
@@ -3432,7 +3826,7 @@
       const promise =
         fetch(
           GUITAR_AUDIO_ROOT +
-          filename,
+          sample.file,
           {
             cache:
               "force-cache"
@@ -3446,7 +3840,7 @@
               ) {
 
                 throw new Error(
-                  `Could not load ${filename}`
+                  `Could not load ${sample.file}`
                 );
 
               }
@@ -3516,9 +3910,9 @@
       const notes =
         Array.from(
           new Set(
-            guitarTriads.flatMap(
-              triad =>
-                triad.notes
+            guitarSonorities.flatMap(
+              sonority =>
+                sonority.notes
             )
           )
         );
@@ -3629,7 +4023,7 @@
 
 
         guitarMaster.gain.value =
-          .82;
+          .84;
 
 
         guitarMaster.connect(
@@ -3687,12 +4081,6 @@
         );
 
 
-      /*
-        decodeAudioData may detach its ArrayBuffer, so give
-        each decode its own copy while retaining the fetched
-        bytes in the cache.
-      */
-
       const buffer =
         await context.decodeAudioData(
           bytes.slice(
@@ -3713,7 +4101,7 @@
 
 
 
-    async function playIllustrationTriad(
+    async function playIllustrationSonority(
       filename
     ) {
 
@@ -3723,15 +4111,15 @@
           await ensureGuitarAudio();
 
 
-        const triad =
-          getTriadForIllustration(
+        const sonority =
+          getSonorityForIllustration(
             filename
           );
 
 
         const buffers =
           await Promise.all(
-            triad.notes.map(
+            sonority.notes.map(
               getDecodedGuitarBuffer
             )
           );
@@ -3742,8 +4130,38 @@
           .012;
 
 
+        const voiceCount =
+          Math.max(
+            1,
+            sonority.notes.length
+          );
+
+
+        const normalVoiceGain =
+          clamp(
+            .62 /
+            Math.sqrt(
+              voiceCount
+            ),
+            .18,
+            .34
+          );
+
+
         buffers.forEach(
-          buffer => {
+          (buffer, index) => {
+
+            const note =
+              sonority.notes[
+                index
+              ];
+
+
+            const sample =
+              guitarSamples[
+                note
+              ];
+
 
             const source =
               context.createBufferSource();
@@ -3758,20 +4176,33 @@
 
 
             /*
-              Three notes at full sample volume can get
-              harsh quickly. Keep each voice restrained and
-              let the compressor catch stacked transients.
+              A few milliseconds of spread keeps multi-note
+              acoustic shapes from sounding like one rigid
+              sampler key. Harmonics stay lighter.
             */
+
+            const startTime =
+              now +
+              index *
+              .004;
+
+
+            const targetGain =
+              sample.harmonic
+                ? normalVoiceGain *
+                  .62
+                : normalVoiceGain;
+
 
             gain.gain.setValueAtTime(
               0,
-              now
+              startTime
             );
 
 
             gain.gain.linearRampToValueAtTime(
-              .27,
-              now +
+              targetGain,
+              startTime +
               .012
             );
 
@@ -3787,7 +4218,7 @@
 
 
             source.start(
-              now
+              startTime
             );
 
           }
@@ -3798,7 +4229,7 @@
       catch (error) {
 
         console.warn(
-          "Could not play guitar triad:",
+          "Could not play guitar sonority:",
           error
         );
 
@@ -3835,11 +4266,6 @@
         a fixed chord for this page load, even if the layout is
         rebuilt after crossing the mobile breakpoint.
       */
-
-      getTriadForIllustration(
-        item.filename
-      );
-
 
       wrapper.style.left =
         `${item.x}px`;
@@ -3887,8 +4313,16 @@
         false;
 
 
-      image.style.transform =
-        `rotate(${item.rotation}deg)`;
+      image.style.setProperty(
+        "--base-rotation",
+        `${item.rotation}deg`
+      );
+
+
+      image.style.setProperty(
+        "--hover-rotation",
+        `${item.hoverRotation}deg`
+      );
 
 
       wrapper.appendChild(
@@ -4068,6 +4502,10 @@
         return;
       }
 
+
+      assignSonoritiesToLayout(
+        layout.items
+      );
 
 
       paperWidth =
@@ -5274,7 +5712,7 @@
           shouldPlayTap
         ) {
 
-          void playIllustrationTriad(
+          void playIllustrationSonority(
             releasedTapCandidate.dataset.filename
           );
 
