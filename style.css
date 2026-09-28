@@ -167,17 +167,6 @@ a {
 
   opacity:
     1;
-
-  transition:
-    opacity
-    250ms
-    ease;
-}
-
-
-.welcome-word.is-fading {
-  opacity:
-    0;
 }
 
 
