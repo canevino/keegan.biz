@@ -85,7 +85,7 @@ a {
 
 
 /* =========================================================
-   SCARF NAVIGATION — DESKTOP
+   SCARF NAVIGATION — LARGE DESKTOP
    ========================================================= */
 
 .scarf-rack {
@@ -239,9 +239,11 @@ a {
 
   font-weight: 700;
 
-  line-height: .95;
+  line-height:
+    .95;
 
-  letter-spacing: -.06em;
+  letter-spacing:
+    -.06em;
 }
 
 
@@ -255,9 +257,9 @@ a {
 
   min-height:
     clamp(
-      500px,
-      70vh,
-      840px
+      420px,
+      65vh,
+      760px
     );
 
   margin-top:
@@ -277,9 +279,11 @@ a {
       24px
     );
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  line-height: 1;
+  line-height:
+    1;
 
   letter-spacing:
     -.035em;
@@ -297,6 +301,8 @@ a {
 
 /* =========================================================
    VIDEO GRID
+
+   DESKTOP = FOUR ACROSS
    ========================================================= */
 
 .motion-grid {
@@ -304,7 +310,7 @@ a {
 
   grid-template-columns:
     repeat(
-      2,
+      4,
       minmax(
         0,
         1fr
@@ -313,9 +319,9 @@ a {
 
   gap:
     clamp(
-      12px,
-      1.4vw,
-      22px
+      10px,
+      1vw,
+      16px
     );
 
   width: 100%;
@@ -369,11 +375,13 @@ a {
 
 
 /* =========================================================
-   VIDEO
+   VIDEO ITEMS
    ========================================================= */
 
 .motion-item {
   margin: 0;
+
+  min-width: 0;
 
   width: 100%;
 
@@ -399,18 +407,16 @@ a {
   background:
     #000;
 
-  /*
-    Prevent browsers from presenting the video itself like
-    a tappable media-player UI.
-  */
-
   pointer-events:
+    none;
+
+  user-select:
     none;
 
   -webkit-user-select:
     none;
 
-  user-select:
+  -webkit-user-drag:
     none;
 }
 
@@ -418,10 +424,13 @@ a {
 
 /* =========================================================
    MEDIUM / WEIRD DESKTOPS
+
+   Still four across, but the scarves become smaller
+   so the videos retain enough width.
    ========================================================= */
 
 @media (
-  min-width: 901px
+  min-width: 1001px
 )
 and (
   max-width: 1250px
@@ -430,20 +439,21 @@ and (
   .scarf-rack {
     width:
       min(
-        31vw,
-        345px
+        28vw,
+        325px
       );
 
-    gap: 3px;
+    gap:
+      3px;
   }
 
 
   .scarf-item {
     height:
       clamp(
-        58px,
+        56px,
         calc((100vh - 65px) / 8),
-        91px
+        88px
       );
   }
 
@@ -452,9 +462,9 @@ and (
     padding:
       38px
       clamp(
-        290px,
-        33vw,
-        375px
+        260px,
+        30vw,
+        340px
       )
       72px
       clamp(
@@ -469,9 +479,15 @@ and (
     font-size:
       clamp(
         38px,
-        4.3vw,
+        4.2vw,
         54px
       );
+  }
+
+
+  .motion-grid {
+    gap:
+      9px;
   }
 
 }
@@ -480,13 +496,15 @@ and (
 
 /* =========================================================
    NARROW DESKTOP / TABLET
+
+   2 × 2 GRID
    ========================================================= */
 
 @media (
   min-width: 701px
 )
 and (
-  max-width: 900px
+  max-width: 1000px
 ) {
 
   .scarf-rack {
@@ -572,12 +590,29 @@ and (
       );
   }
 
+
+  .motion-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    gap:
+      10px;
+  }
+
 }
 
 
 
 /* =========================================================
    MOBILE
+
+   2 × 2 GRID
    ========================================================= */
 
 @media (
@@ -600,7 +635,7 @@ and (
 
 
   /* -------------------------------------------------------
-     SCARFS
+     HORIZONTAL SCARF STRIP
      ------------------------------------------------------- */
 
   .scarf-rack {
@@ -630,7 +665,8 @@ and (
 
     overflow-y: hidden;
 
-    scrollbar-width: none;
+    scrollbar-width:
+      none;
 
     -webkit-overflow-scrolling:
       touch;
@@ -716,7 +752,8 @@ and (
         58px
       );
 
-    line-height: .91;
+    line-height:
+      .91;
   }
 
 
@@ -752,7 +789,8 @@ and (
         )
       );
 
-    gap: 8px;
+    gap:
+      8px;
 
     margin-top:
       24px;
@@ -804,7 +842,8 @@ and (
 
 
   .motion-grid {
-    gap: 6px;
+    gap:
+      6px;
   }
 
 }
@@ -812,24 +851,29 @@ and (
 
 
 /* =========================================================
-   VERY SHORT DESKTOPS
+   VERY SHORT DESKTOP WINDOWS
+
+   Keep all four in one row.
    ========================================================= */
 
 @media (
-  min-width: 901px
+  min-width: 1001px
 )
 and (
   max-height: 700px
 ) {
 
   .scarf-rack {
-    gap: 1px;
+    gap:
+      1px;
   }
 
 
   .scarf-item {
     height:
-      calc((100vh - 34px) / 8);
+      calc(
+        (100vh - 34px) / 8
+      );
   }
 
 
@@ -855,6 +899,28 @@ and (
   .motion-grid {
     margin-top:
       22px;
+
+    gap:
+      8px;
+  }
+
+}
+
+
+
+/* =========================================================
+   VERY WIDE DESKTOPS
+
+   Stop the four videos from becoming needlessly enormous.
+   ========================================================= */
+
+@media (
+  min-width: 1650px
+) {
+
+  .motion-grid {
+    max-width:
+      1120px;
   }
 
 }
@@ -864,8 +930,8 @@ and (
 /* =========================================================
    REDUCED MOTION
 
-   These videos are the artwork, so don't disable them.
-   Only disable interface animation.
+   The videos ARE the artwork, so don't disable them.
+   Only remove interface animation.
    ========================================================= */
 
 @media (
@@ -874,7 +940,8 @@ and (
 ) {
 
   .scarf-item {
-    transition: none;
+    transition:
+      none;
   }
 
 }
