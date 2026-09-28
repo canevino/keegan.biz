@@ -9,6 +9,7 @@
 
   --green: #006a44;
   --yellow: #fdb913;
+  --red: #c1272d;
 
   --ink: #11110f;
 }
@@ -56,17 +57,22 @@ body {
 
   -webkit-font-smoothing:
     antialiased;
+
+  text-rendering:
+    optimizeLegibility;
 }
 
 
 img {
   display: block;
+
   max-width: 100%;
 }
 
 
 a {
   color: inherit;
+
   text-decoration: none;
 }
 
@@ -88,7 +94,7 @@ button {
 
 
 /* =========================================================
-   SCARF NAVIGATION
+   SCARF NAVIGATION — LARGE DESKTOP
    ========================================================= */
 
 .scarf-rack {
@@ -106,6 +112,12 @@ button {
   align-items: flex-end;
 
   gap: 6px;
+
+  width:
+    min(
+      32vw,
+      430px
+    );
 }
 
 
@@ -114,11 +126,13 @@ button {
 
   display: block;
 
+  width: 100%;
+
   height:
     clamp(
-      72px,
-      calc((100vh - 84px) / 8),
-      108px
+      68px,
+      calc((100vh - 82px) / 8),
+      106px
     );
 
   transform-origin:
@@ -137,10 +151,13 @@ button {
 
 
 .scarf-item img {
-  width: auto;
+  width: 100%;
   height: 100%;
 
   object-fit: contain;
+
+  object-position:
+    right center;
 
   filter:
     drop-shadow(
@@ -167,17 +184,17 @@ button {
   z-index: 4;
 
   transform:
-    translateX(-22px)
+    translateX(-18px)
     rotate(-.5deg)
-    scale(1.035);
+    scale(1.025);
 }
 
 
 .scarf-home:hover {
   transform:
-    translateX(-22px)
+    translateX(-18px)
     rotate(-.5deg)
-    scale(1.075);
+    scale(1.06);
 }
 
 
@@ -191,9 +208,9 @@ button {
 
   padding:
     clamp(30px, 4vw, 56px)
-    clamp(430px, 36vw, 575px)
+    clamp(350px, 34vw, 500px)
     90px
-    clamp(30px, 5.5vw, 80px);
+    clamp(30px, 5vw, 76px);
 }
 
 
@@ -224,8 +241,8 @@ button {
   font-size:
     clamp(
       34px,
-      4.1vw,
-      64px
+      4vw,
+      62px
     );
 
   font-weight: 700;
@@ -238,10 +255,12 @@ button {
 
 
 /* =========================================================
-   SKETCHBOOK STAGE
+   STAGE
    ========================================================= */
 
 .sketchbook-stage {
+  position: relative;
+
   width: 100%;
 
   margin-top:
@@ -255,10 +274,52 @@ button {
 
 
 /* =========================================================
-   FIXED VIEWPORT
+   LOADING
+   ========================================================= */
 
-   The green shadow is stylistic only.
-   No blur, no spread, full opacity.
+.sketchbook-loading {
+  display: block;
+
+  min-height:
+    clamp(
+      420px,
+      65vh,
+      760px
+    );
+
+  padding-top:
+    8px;
+
+  color:
+    var(--red);
+
+  font-size:
+    clamp(
+      18px,
+      1.5vw,
+      24px
+    );
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing:
+    -.035em;
+
+  text-transform:
+    lowercase;
+}
+
+
+.sketchbook-loading.is-hidden {
+  display: none;
+}
+
+
+
+/* =========================================================
+   VIEWPORT
    ========================================================= */
 
 .sketchbook-viewport {
@@ -268,17 +329,12 @@ button {
 
   height:
     clamp(
-      640px,
-      77vh,
-      930px
+      580px,
+      74vh,
+      900px
     );
 
   overflow: hidden;
-
-  /*
-    Outside actual sketchbook paper.
-    Only visible if user pans all the way to a real edge.
-  */
 
   background:
     var(--site-paper);
@@ -296,6 +352,26 @@ button {
   user-select: none;
 
   touch-action: none;
+
+  opacity: 1;
+
+  transition:
+    opacity
+    120ms
+    ease;
+}
+
+
+.sketchbook-viewport.is-loading {
+  position: absolute;
+
+  inset: 0 auto auto 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  opacity: 0;
 }
 
 
@@ -306,13 +382,7 @@ button {
 
 
 /* =========================================================
-   ACTUAL SKETCHBOOK PAPER
-
-   LAYER 1:
-   PURE WHITE.
-
-   Nothing grey.
-   Nothing cream underneath the artwork.
+   PAPER — PURE WHITE BASE
    ========================================================= */
 
 .sketchbook-paper {
@@ -321,17 +391,15 @@ button {
   top: 0;
   left: 0;
 
+  overflow: hidden;
+
+  isolation: isolate;
+
   transform-origin:
     top left;
 
   will-change:
     transform;
-
-  overflow:
-    hidden;
-
-  isolation:
-    isolate;
 
   background:
     var(--paper-white);
@@ -340,7 +408,7 @@ button {
 
 
 /* =========================================================
-   LAYER 2 — ILLUSTRATIONS
+   ARTWORK
    ========================================================= */
 
 .sketchbook-field {
@@ -371,12 +439,6 @@ button {
   object-fit:
     contain;
 
-  /*
-    No image-level blending.
-
-    The paper treatment happens ABOVE the illustration.
-  */
-
   mix-blend-mode:
     normal;
 
@@ -399,12 +461,7 @@ button {
 
 
 /* =========================================================
-   LAYER 3 — REAL PAPER TEXTURE
-
-   Above every illustration.
-
-   Fairly subtle because the source texture itself has
-   grey information in it.
+   PAPER TEXTURE
    ========================================================= */
 
 .paper-texture-layer {
@@ -429,20 +486,11 @@ button {
   background-repeat:
     no-repeat;
 
-  /*
-    Strong enough to read when zoomed in,
-    but weak enough to preserve pencil contrast.
-  */
-
   opacity:
     .18;
 
   mix-blend-mode:
     multiply;
-
-  /*
-    Brighten the original grey texture before applying it.
-  */
 
   filter:
     brightness(1.13)
@@ -453,11 +501,7 @@ button {
 
 
 /* =========================================================
-   LAYER 4 — WARM / CREAM TONE
-
-   This is deliberately ABOVE the illustration.
-
-   It is a color cast, not an opaque beige sheet.
+   WARMTH
    ========================================================= */
 
 .paper-warmth-layer {
@@ -468,13 +512,6 @@ button {
   z-index: 11;
 
   pointer-events: none;
-
-  /*
-    Warm cream with very low opacity.
-
-    Because this layer is physically above the art,
-    whites and pencil lines share the same paper color.
-  */
 
   background:
     rgba(
@@ -491,11 +528,7 @@ button {
 
 
 /* =========================================================
-   LAYER 5 — PAPER SHADING
-
-   Barely there.
-
-   No milky haze.
+   PAPER SHADING
    ========================================================= */
 
 .paper-shading-layer {
@@ -583,8 +616,6 @@ button {
 
   border: 0;
 
-  border-radius: 0;
-
   background:
     transparent;
 
@@ -599,17 +630,13 @@ button {
   font-size:
     29px;
 
-  font-weight:
-    400;
+  font-weight: 400;
 
-  line-height:
-    1;
+  line-height: 1;
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
-  opacity:
-    1;
+  opacity: 1;
 
   transition:
     color
@@ -628,36 +655,190 @@ button {
 
 
 .zoom-button.is-hidden {
-  opacity:
-    0;
+  opacity: 0;
 
-  pointer-events:
-    none;
+  pointer-events: none;
 }
 
 
 
 /* =========================================================
-   TABLET
+   MEDIUM / WEIRD DESKTOPS
    ========================================================= */
 
 @media (
-  max-width:
-  1100px
+  min-width: 901px
+)
+and (
+  max-width: 1250px
 ) {
 
+  .scarf-rack {
+    width:
+      min(
+        31vw,
+        345px
+      );
+
+    gap:
+      3px;
+  }
+
+
+  .scarf-item {
+    height:
+      clamp(
+        58px,
+        calc((100vh - 65px) / 8),
+        91px
+      );
+  }
+
+
   .illustration-page {
-    padding-right:
-      375px;
+    padding:
+      38px
+      clamp(
+        290px,
+        33vw,
+        375px
+      )
+      72px
+      clamp(
+        28px,
+        4vw,
+        54px
+      );
+  }
+
+
+  .illustration-title {
+    font-size:
+      clamp(
+        38px,
+        4.3vw,
+        54px
+      );
   }
 
 
   .sketchbook-viewport {
     height:
       clamp(
-        580px,
-        73vh,
-        860px
+        520px,
+        70vh,
+        800px
+      );
+  }
+
+}
+
+
+
+/* =========================================================
+   NARROW DESKTOP / TABLET
+
+   Scarf rack moves ABOVE sketchbook instead of crushing
+   the illustration into a tiny column.
+   ========================================================= */
+
+@media (
+  min-width: 701px
+)
+and (
+  max-width: 900px
+) {
+
+  .scarf-rack {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    z-index: 20;
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(
+          0,
+          1fr
+        )
+      );
+
+    align-items: center;
+
+    gap:
+      5px;
+
+    padding:
+      16px
+      22px
+      0;
+  }
+
+
+  .scarf-item {
+    width: 100%;
+    height: auto;
+
+    transform: none;
+  }
+
+
+  .scarf-item img {
+    width: 100%;
+    height: auto;
+
+    object-fit:
+      contain;
+
+    object-position:
+      center;
+  }
+
+
+  .scarf-home {
+    transform: none;
+  }
+
+
+  .scarf-item:hover,
+  .scarf-home:hover {
+    transform:
+      translateY(-2px);
+  }
+
+
+  .illustration-page {
+    min-height: auto;
+
+    padding:
+      30px
+      28px
+      72px;
+  }
+
+
+  .illustration-title {
+    font-size:
+      clamp(
+        40px,
+        7vw,
+        58px
+      );
+  }
+
+
+  .sketchbook-viewport {
+    height:
+      min(
+        74vh,
+        760px
       );
   }
 
@@ -670,44 +851,62 @@ button {
    ========================================================= */
 
 @media (
-  max-width:
-  700px
+  max-width: 700px
 ) {
 
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: hidden;
+  }
+
+
+  .page-shell {
+    width: 100%;
+  }
+
+
+
+  /* -------------------------------------------------------
+     HORIZONTAL SCARF STRIP
+     ------------------------------------------------------- */
+
   .scarf-rack {
-    top: 10px;
+    position: relative;
 
-    left: 0;
-    right: 0;
+    top: auto;
+    right: auto;
 
-    flex-direction:
-      row;
+    z-index: 30;
 
-    align-items:
-      center;
+    display: flex;
 
-    width:
-      100%;
+    flex-direction: row;
 
-    gap:
-      6px;
+    align-items: center;
+
+    width: 100%;
+
+    gap: 8px;
 
     padding:
-      4px
+      10px
       14px
-      12px;
+      5px;
 
-    overflow-x:
-      auto;
+    overflow-x: auto;
 
-    overflow-y:
-      hidden;
+    overflow-y: hidden;
 
-    scrollbar-width:
-      none;
+    scrollbar-width: none;
 
     -webkit-overflow-scrolling:
       touch;
+
+    overscroll-behavior-x:
+      contain;
   }
 
 
@@ -716,63 +915,80 @@ button {
   }
 
 
-  .scarf-item {
+  .scarf-item,
+  .scarf-home {
     flex:
       0
       0
       auto;
 
     width:
-      285px;
+      min(
+        68vw,
+        275px
+      );
 
     height:
       auto;
 
-    transform:
-      none;
+    transform: none;
   }
 
 
   .scarf-item img {
-    width:
-      100%;
+    width: 100%;
+    height: auto;
 
-    height:
-      auto;
+    object-fit:
+      contain;
+
+    object-position:
+      center;
   }
 
 
   .scarf-home {
     width:
-      315px;
-
-    transform:
-      none;
+      min(
+        74vw,
+        300px
+      );
   }
 
 
   .scarf-item:hover,
   .scarf-home:hover {
-    transform:
-      none;
+    transform: none;
   }
 
 
+
+  /* -------------------------------------------------------
+     PAGE
+     ------------------------------------------------------- */
+
   .illustration-page {
+    width: 100%;
+
+    min-height: auto;
+
     padding:
-      180px
-      18px
-      60px;
+      28px
+      14px
+      50px;
   }
 
 
   .illustration-title {
     font-size:
       clamp(
-        38px,
-        12vw,
+        42px,
+        13vw,
         58px
       );
+
+    line-height:
+      .91;
   }
 
 
@@ -782,12 +998,40 @@ button {
   }
 
 
+
+  /* -------------------------------------------------------
+     LOADING
+     ------------------------------------------------------- */
+
+  .sketchbook-loading {
+    min-height:
+      52svh;
+
+    padding-top:
+      4px;
+
+    font-size:
+      20px;
+  }
+
+
+
+  /* -------------------------------------------------------
+     VIEWPORT
+     ------------------------------------------------------- */
+
   .sketchbook-viewport {
+    width: 100%;
+
+    /*
+      Avoid giant compositor surfaces on mobile Safari.
+    */
+
     height:
       clamp(
-        520px,
-        68svh,
-        760px
+        430px,
+        60svh,
+        640px
       );
 
     box-shadow:
@@ -798,6 +1042,43 @@ button {
   }
 
 
+
+  /* -------------------------------------------------------
+     PAPER EFFECTS — SLIGHTLY CHEAPER MOBILE COMPOSITING
+     ------------------------------------------------------- */
+
+  .paper-texture-layer {
+    opacity:
+      .16;
+
+    filter:
+      brightness(1.14)
+      contrast(.92)
+      sepia(.06);
+  }
+
+
+  .paper-warmth-layer {
+    background:
+      rgba(
+        255,
+        236,
+        198,
+        .12
+      );
+  }
+
+
+  .paper-shading-layer {
+    box-shadow: none;
+  }
+
+
+
+  /* -------------------------------------------------------
+     ZOOM
+     ------------------------------------------------------- */
+
   .zoom-controls {
     right:
       9px;
@@ -806,13 +1087,13 @@ button {
       7px;
 
     gap:
-      9px;
+      10px;
   }
 
 
   .zoom-button {
     font-size:
-      27px;
+      28px;
   }
 
 }
@@ -824,38 +1105,113 @@ button {
    ========================================================= */
 
 @media (
-  max-width:
-  420px
+  max-width: 430px
 ) {
 
   .illustration-page {
     padding-left:
-      14px;
+      12px;
 
     padding-right:
-      14px;
-  }
-
-
-  .scarf-item {
-    width:
-      248px;
-  }
-
-
-  .scarf-home {
-    width:
-      278px;
+      12px;
   }
 
 
   .sketchbook-viewport {
     height:
       clamp(
-        470px,
-        63svh,
-        690px
+        400px,
+        57svh,
+        570px
       );
+  }
+
+
+  .scarf-item,
+  .scarf-home {
+    width:
+      245px;
+  }
+
+
+  .scarf-home {
+    width:
+      270px;
+  }
+
+}
+
+
+
+/* =========================================================
+   VERY SHORT DESKTOPS / LAPTOP WINDOWS
+   ========================================================= */
+
+@media (
+  min-width: 901px
+)
+and (
+  max-height: 700px
+) {
+
+  .scarf-rack {
+    gap: 1px;
+  }
+
+
+  .scarf-item {
+    height:
+      calc((100vh - 34px) / 8);
+  }
+
+
+  .illustration-page {
+    padding-top:
+      24px;
+
+    padding-bottom:
+      45px;
+  }
+
+
+  .illustration-title {
+    font-size:
+      clamp(
+        36px,
+        3.4vw,
+        50px
+      );
+  }
+
+
+  .sketchbook-stage {
+    margin-top:
+      22px;
+  }
+
+
+  .sketchbook-viewport {
+    height:
+      72vh;
+  }
+
+}
+
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .scarf-item,
+  .zoom-button,
+  .sketchbook-viewport {
+    transition: none;
   }
 
 }
