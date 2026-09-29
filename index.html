@@ -483,6 +483,29 @@
 
       clone.classList.add("dragging");
 
+
+      const pieceStyle =
+        window.getComputedStyle(
+          pieceElement
+        );
+
+
+      clone.style.fontSize =
+        pieceStyle.fontSize;
+
+
+      clone.style.fontFamily =
+        pieceStyle.fontFamily;
+
+
+      clone.style.fontWeight =
+        pieceStyle.fontWeight;
+
+
+      clone.style.color =
+        pieceStyle.color;
+
+
       clone.style.setProperty(
         "--drag-size",
         `${squareRect.width}px`
