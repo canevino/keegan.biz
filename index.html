@@ -186,15 +186,15 @@
     cursor: grabbing;
     transform:
       translate(-50%, -50%)
-      translateY(-9px)
-      rotate(var(--drag-rotation, -2deg))
-      scale(1.15);
+      translateY(-6px)
+      rotate(var(--drag-rotation, 0deg))
+      scale(1.09);
     filter:
       drop-shadow(
-        0
-        10px
         7px
-        rgba(17, 17, 15, .28)
+        7px
+        0
+        rgba(193, 39, 45, .62)
       );
   }
 
@@ -966,7 +966,7 @@
 
       clone.style.setProperty(
         "--drag-rotation",
-        `${Math.random() < .5 ? -2.4 : 2.4}deg`
+        `${Math.random() < .5 ? -.8 : .8}deg`
       );
 
       clone.style.setProperty(
@@ -1115,26 +1115,70 @@
 
 
     function getSquareAtPoint(x, y) {
-      if (drag?.floating) {
-        drag.floating.style.display = "none";
-      }
 
-      const element =
-        document.elementFromPoint(x, y);
+      const rect =
+        boardElement.getBoundingClientRect();
 
-      if (drag?.floating) {
-        drag.floating.style.display = "";
-      }
 
-      if (!element) {
+      if (
+        x < rect.left ||
+        x > rect.right ||
+        y < rect.top ||
+        y > rect.bottom
+      ) {
         return null;
       }
 
-      const square = element.closest(".square");
 
-      return square
-        ? square.dataset.square
-        : null;
+      const column =
+        Math.min(
+          7,
+          Math.max(
+            0,
+            Math.floor(
+              (
+                x -
+                rect.left
+              )
+              /
+              (
+                rect.width /
+                8
+              )
+            )
+          )
+        );
+
+
+      const row =
+        Math.min(
+          7,
+          Math.max(
+            0,
+            Math.floor(
+              (
+                y -
+                rect.top
+              )
+              /
+              (
+                rect.height /
+                8
+              )
+            )
+          )
+        );
+
+
+      const files =
+        getFiles();
+
+
+      const ranks =
+        getRanks();
+
+
+      return `${files[column]}${ranks[row]}`;
     }
 
 
