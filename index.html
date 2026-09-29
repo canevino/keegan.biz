@@ -58,6 +58,14 @@
     min-width: 92px;
   }
 
+  #white-clock {
+    color: #fdb913;
+  }
+
+  #black-clock {
+    color: #006a44;
+  }
+
   .home-chess .clock.is-active {
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -985,7 +993,9 @@
       drag = {
         from: fromSquare,
         original: pieceElement,
-        floating: clone
+        floating: clone,
+        x: event.clientX,
+        y: event.clientY
       };
 
 
@@ -1028,11 +1038,21 @@
         return;
       }
 
+
       event.preventDefault();
 
+
+      drag.x =
+        event.clientX;
+
+
+      drag.y =
+        event.clientY;
+
+
       moveFloatingPiece(
-        event.clientX,
-        event.clientY
+        drag.x,
+        drag.y
       );
     }
 
@@ -1052,22 +1072,44 @@
         return;
       }
 
+
       event.preventDefault();
+
+
+      const releaseX =
+        Number.isFinite(
+          event.clientX
+        )
+          ? event.clientX
+          : drag.x;
+
+
+      const releaseY =
+        Number.isFinite(
+          event.clientY
+        )
+          ? event.clientY
+          : drag.y;
+
 
       const destination =
         getSquareAtPoint(
-          event.clientX,
-          event.clientY
+          releaseX,
+          releaseY
         );
 
+
       if (destination) {
+
         attemptMove(
           drag.from,
           destination,
-          event.clientX,
-          event.clientY
+          releaseX,
+          releaseY
         );
+
       }
+
 
       finishDrag();
     }
@@ -1116,69 +1158,121 @@
 
     function getSquareAtPoint(x, y) {
 
-      const rect =
-        boardElement.getBoundingClientRect();
-
-
-      if (
-        x < rect.left ||
-        x > rect.right ||
-        y < rect.top ||
-        y > rect.bottom
-      ) {
+      if (!drag) {
         return null;
       }
 
 
-      const column =
-        Math.min(
-          7,
+      const legalMoves =
+        game.moves({
+          square: drag.from,
+          verbose: true
+        });
+
+
+      for (const move of legalMoves) {
+
+        const squareElement =
+          boardElement.querySelector(
+            `[data-square="${move.to}"]`
+          );
+
+
+        if (!squareElement) {
+          continue;
+        }
+
+
+        const rect =
+          squareElement.getBoundingClientRect();
+
+
+        if (
+          x >= rect.left &&
+          x <= rect.right &&
+          y >= rect.top &&
+          y <= rect.bottom
+        ) {
+
+          return move.to;
+
+        }
+
+      }
+
+
+      let nearest =
+        null;
+
+
+      let nearestDistance =
+        12;
+
+
+      for (const move of legalMoves) {
+
+        const squareElement =
+          boardElement.querySelector(
+            `[data-square="${move.to}"]`
+          );
+
+
+        if (!squareElement) {
+          continue;
+        }
+
+
+        const rect =
+          squareElement.getBoundingClientRect();
+
+
+        const closestX =
           Math.max(
-            0,
-            Math.floor(
-              (
-                x -
-                rect.left
-              )
-              /
-              (
-                rect.width /
-                8
-              )
+            rect.left,
+            Math.min(
+              x,
+              rect.right
             )
-          )
-        );
+          );
 
 
-      const row =
-        Math.min(
-          7,
+        const closestY =
           Math.max(
-            0,
-            Math.floor(
-              (
-                y -
-                rect.top
-              )
-              /
-              (
-                rect.height /
-                8
-              )
+            rect.top,
+            Math.min(
+              y,
+              rect.bottom
             )
-          )
-        );
+          );
 
 
-      const files =
-        getFiles();
+        const distance =
+          Math.hypot(
+            x -
+            closestX,
+            y -
+            closestY
+          );
 
 
-      const ranks =
-        getRanks();
+        if (
+          distance <
+          nearestDistance
+        ) {
+
+          nearestDistance =
+            distance;
 
 
-      return `${files[column]}${ranks[row]}`;
+          nearest =
+            move.to;
+
+        }
+
+      }
+
+
+      return nearest;
     }
 
 
