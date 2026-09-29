@@ -1,4893 +1,849 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
-  <title>keegan.biz</title>
-
-  <link rel="stylesheet" href="style.css">
-
-  <style>
-    .home-chess {
-      --board-red: var(--red, #c1272d);
-      --board-yellow: var(--yellow, #fdb913);
-      --board-green: var(--green, #006a44);
-      --board-ink: var(--ink, #11110f);
-      --board-paper: var(--paper, #ece7d7);
-      --square-a: #ece7d7;
-      --square-b: #ddd7b6;
-      width: min(100%, 700px);
-      max-width: 100%;
-      min-width: 0;
-      margin-top: clamp(42px, 5vw, 68px);
-    }
-
-    .home-chess .chess-topbar {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-      gap: 16px;
-      margin-bottom: 10px;
-    }
-
-    .home-chess .status,
-    .home-chess .clock,
-    .home-chess .time-label,
-    .home-chess .review-label {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1;
-      font-weight: 700;
-    }
-
-    .home-chess .status,
-    .home-chess .time-label,
-    .home-chess .review-label {
-      color: var(--board-red);
-    }
-
-    #white-clock {
-      color: var(--board-yellow);
-    }
-
-    #black-clock {
-      color: var(--board-green);
-    }
-
-    .home-chess .clock.is-active {
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 4px;
-    }
-
-    .home-chess button {
-      appearance: none;
-      margin: 0;
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      color: var(--board-red);
-      font: inherit;
-      font-size: 14px;
-      line-height: 1;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .home-chess button:hover {
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    .home-chess button:disabled {
-      opacity: .3;
-      cursor: default;
-      text-decoration: none;
-    }
-
-    .home-chess input {
-      width: 56px;
-      min-width: 0;
-      padding: 4px 5px;
-      border: 1px solid var(--board-red);
-      border-radius: 0;
-      background: transparent;
-      color: var(--board-ink);
-      font: inherit;
-      font-size: 14px;
-      line-height: 1;
-      font-weight: 700;
-      outline: 0;
-    }
-
-    .home-chess input:focus {
-      outline: 2px solid var(--board-red);
-      outline-offset: 2px;
-    }
-
-    .home-chess .board-area {
-      width: 100%;
-      min-width: 0;
-    }
-
-    .home-chess .board-frame {
-      position: relative;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .home-chess .board-frame::before {
-      content: "";
-      display: block;
-      width: 100%;
-      padding-top: 100%;
-    }
-
-    .home-chess .board {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-
-      display: grid;
-      grid-template-columns: repeat(8, minmax(0, 1fr));
-      grid-template-rows: repeat(8, minmax(0, 1fr));
-
-      border-top: 2px solid var(--board-red);
-      border-left: 2px solid var(--board-red);
-      background: var(--square-a);
-
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-    }
-
-    .home-chess .square {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 0;
-      min-height: 0;
-      border-right: 2px solid var(--board-red);
-      border-bottom: 2px solid var(--board-red);
-      cursor: pointer;
-      overflow: visible;
-    }
-
-    .home-chess .square.light {
-      background: var(--square-a);
-    }
-
-    .home-chess .square.dark {
-      background: var(--square-b);
-    }
-
-    .home-chess .square.legal::after {
-      content: "";
-      position: absolute;
-      z-index: 6;
-      width: 13%;
-      aspect-ratio: 1;
-      border: 2px solid var(--board-red);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .home-chess .piece {
-      position: relative;
-      z-index: 4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-
-      font-size: clamp(25px, 4vw, 56px);
-      line-height: 1;
-      font-weight: 700;
-
-      cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
-
-      transform:
-        translate(var(--rest-x, 0px), var(--rest-y, 0px))
-        rotate(var(--rest-r, 0deg));
-
-      transform-origin: center;
-    }
-
-    .home-chess .piece.white {
-      color: var(--board-yellow);
-    }
-
-    .home-chess .piece.black {
-      color: var(--board-green);
-    }
-
-    .home-chess .piece.is-selected {
-      z-index: 12;
-      opacity: 1;
-
-      transform:
-        translate(
-          var(--rest-x, 0px),
-          calc(var(--rest-y, 0px) - 3px)
-        )
-        rotate(var(--rest-r, 0deg))
-        scale(1.035);
-
-      text-shadow:
-        5px
-        5px
-        0
-        var(--board-red);
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .home-chess .piece.is-selected {
-        opacity: 0;
-        text-shadow: none;
-      }
-    }
-
-
-    .floating-piece {
-      position: fixed;
-      z-index: 999999;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      width: var(--float-size);
-      height: var(--float-size);
-
-      line-height: 1;
-      font-weight: 700;
-
-      pointer-events: none;
-      user-select: none;
-      -webkit-user-select: none;
-
-      transform:
-        translate(-50%, -50%)
-        translateY(-5px)
-        rotate(var(--float-r, 0deg))
-        scale(1.06);
-
-      text-shadow:
-        7px
-        7px
-        0
-        var(--board-red);
-    }
-
-    .home-chess .piece.just-dropped {
-      animation:
-        piece-drop
-        190ms
-        cubic-bezier(.18, .82, .23, 1);
-    }
-
-    @keyframes piece-drop {
-      0% {
-        transform:
-          translate(
-            calc(var(--rest-x, 0px) - 2px),
-            calc(var(--rest-y, 0px) - 9px)
-          )
-          rotate(calc(var(--rest-r, 0deg) + 1.5deg))
-          scale(1.08);
-      }
-
-      72% {
-        transform:
-          translate(
-            calc(var(--rest-x, 0px) + .6px),
-            calc(var(--rest-y, 0px) + 1px)
-          )
-          rotate(calc(var(--rest-r, 0deg) - .3deg))
-          scale(.99);
-      }
-
-      100% {
-        transform:
-          translate(var(--rest-x, 0px), var(--rest-y, 0px))
-          rotate(var(--rest-r, 0deg))
-          scale(1);
-      }
-    }
-
-    .home-chess .coordinate {
-      position: absolute;
-      z-index: 7;
-      color: var(--board-red);
-      font-size: 9px;
-      line-height: 1;
-      font-weight: 700;
-      pointer-events: none;
-    }
-
-    .home-chess .coordinate.file {
-      right: 3px;
-      bottom: 3px;
-    }
-
-    .home-chess .coordinate.rank {
-      top: 3px;
-      left: 3px;
-    }
-
-    .home-chess .capture-bin {
-      position: relative;
-      width: 100%;
-      height: 112px;
-      margin-top: 8px;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .home-chess .captured-piece {
-      position: absolute;
-      left: 0;
-      top: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      width: var(--piece-size, 34px);
-      height: var(--piece-size, 34px);
-
-      font-size: calc(var(--piece-size, 34px) * .9);
-      line-height: 1;
-      font-weight: 700;
-
-      transform:
-        translate3d(
-          var(--x, 0px),
-          var(--y, 0px),
-          0
-        )
-        rotate(var(--r, 0deg));
-
-      transform-origin: center;
-      will-change: transform;
-    }
-
-    .home-chess .captured-piece.white {
-      color: var(--board-yellow);
-    }
-
-    .home-chess .captured-piece.black {
-      color: var(--board-green);
-    }
-
-      72% {
-        transform:
-          translateX(calc(-50% + var(--pile-x, 0px)))
-          translateY(7px)
-          rotate(calc(var(--pile-r, 0deg) + 2deg));
-      }
-
-      87% {
-        transform:
-          translateX(calc(-50% + var(--pile-x, 0px)))
-          translateY(-2px)
-          rotate(calc(var(--pile-r, 0deg) - .7deg));
-      }
-
-      100% {
-        transform:
-          translateX(calc(-50% + var(--pile-x, 0px)))
-          translateY(0)
-          rotate(var(--pile-r, 0deg));
-      }
-    }
-
-    .home-chess .win-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 30;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .home-chess .win-overlay.is-visible {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-
-    .home-chess .win-image {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-
-    .home-chess .win-overlay::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(17, 17, 15, .12);
-      pointer-events: none;
-    }
-
-    .home-chess .win-title {
-      position: relative;
-      z-index: 2;
-
-      width: fit-content;
-      max-width: 72%;
-
-      margin: 0;
-      padding: 8px 12px 10px;
-
-      background: var(--board-paper);
-
-      text-align: center;
-
-      font-size: clamp(34px, 5vw, 64px);
-      line-height: .92;
-      letter-spacing: -.055em;
-      font-weight: 700;
-
-      color: var(--winner-color, var(--board-green));
-    }
-
-    .home-chess .result-actions {
-      display: none;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 2px;
-      margin-top: 10px;
-    }
-
-    .home-chess .result-actions.is-visible {
-      display: grid;
-    }
-
-    .home-chess .result-actions button {
-      min-height: 38px;
-      border: 1px solid var(--board-red);
-      padding: 9px 12px;
-      text-align: left;
-    }
-
-    .home-chess .result-actions button:hover {
-      background: var(--board-red);
-      color: var(--board-paper);
-      text-decoration: none;
-    }
-
-    .home-chess .review-controls {
-      display: none;
-      grid-template-columns:
-        auto
-        auto
-        minmax(0, 1fr)
-        auto
-        auto
-        auto;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .home-chess .review-controls.is-visible {
-      display: grid;
-    }
-
-    .home-chess .review-label {
-      text-align: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .home-chess .chess-bottombar {
-      display: grid;
-      grid-template-columns:
-        auto
-        minmax(0, 1fr)
-        auto;
-      grid-template-areas:
-        "reset clocks setter";
-      align-items: end;
-      gap: 14px 18px;
-      margin-top: 12px;
-    }
-
-    #reset-button {
-      grid-area: reset;
-      justify-self: start;
-    }
-
-    .home-chess .clock-group {
-      grid-area: clocks;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 18px;
-      min-width: 0;
-    }
-
-    .home-chess .time-setter {
-      grid-area: setter;
-      display: grid;
-      grid-template-columns:
-        auto
-        56px
-        auto;
-      align-items: center;
-      gap: 8px;
-      justify-self: end;
-    }
-
-    @media (max-width: 1400px) {
-      .home-chess {
-        width: min(100%, 620px);
-      }
-
-      .home-chess .capture-bin {
-        height: 104px;
-      }
-    }
-
-    @media (min-width: 701px) and (max-width: 1100px) {
-      .home-chess {
-        width: min(100%, 560px);
-      }
-
-      .home-chess .piece {
-        font-size: clamp(24px, 4.8vw, 48px);
-      }
-
-      .home-chess .capture-bin {
-        height: 96px;
-      }
-
-      .home-chess .chess-bottombar {
-        grid-template-columns: auto 1fr;
-        grid-template-areas:
-          "reset setter"
-          "clocks clocks";
-      }
-
-      .home-chess .clock-group {
-        justify-content: space-between;
-      }
-
-      .home-chess .review-controls {
-        grid-template-columns:
-          auto
-          auto
-          minmax(0, 1fr)
-          auto
-          auto;
-      }
-
-      .home-chess .review-result {
-        grid-column: 1 / -1;
-        justify-self: start;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .home-chess {
-        width: 100%;
-        margin-top: 34px;
-      }
-
-      .home-chess .chess-topbar {
-        margin-bottom: 8px;
-      }
-
-      .home-chess .status,
-      .home-chess .clock,
-      .home-chess .time-label,
-      .home-chess .review-label,
-      .home-chess button,
-      .home-chess input {
-        font-size: 12px;
-      }
-
-      .home-chess .piece {
-        font-size: clamp(23px, 8.5vw, 36px);
-      }
-
-      .home-chess .capture-bin {
-        height: 82px;
-      }
-
-      .home-chess .coordinate {
-        font-size: 7px;
-      }
-
-      .home-chess .win-title {
-        max-width: 74%;
-        padding: 7px 10px 8px;
-        font-size: clamp(30px, 10vw, 46px);
-      }
-
-      .home-chess .result-actions {
-        grid-template-columns: 1fr;
-      }
-
-      .home-chess .review-controls {
-        grid-template-columns:
-          repeat(4, auto);
-        justify-content: space-between;
-        gap: 10px 8px;
-      }
-
-      .home-chess .review-label {
-        grid-column: 1 / -1;
-        grid-row: 1;
-      }
-
-      .home-chess .review-result {
-        grid-column: 1 / -1;
-        justify-self: start;
-      }
-
-      .home-chess .chess-bottombar {
-        grid-template-columns:
-          auto
-          1fr;
-        grid-template-areas:
-          "reset clocks"
-          "setter setter";
-        align-items: center;
-        gap: 14px 12px;
-      }
-
-      .home-chess .time-setter {
-        grid-template-columns:
-          auto
-          46px
-          auto;
-        gap: 6px;
-        justify-self: start;
-      }
-
-      .home-chess .time-setter input {
-        width: 46px;
-      }
-
-      .home-chess .clock-group {
-        justify-content: flex-end;
-        gap: 14px;
-      }
-    }
-
-    @media (max-width: 420px) {
-      .home-chess .time-label {
-        display: none;
-      }
-
-      .home-chess .time-setter {
-        grid-template-columns:
-          44px
-          auto;
-      }
-
-      .home-chess .time-setter input {
-        width: 44px;
-      }
-
-      .home-chess .capture-bin {
-        height: 76px;
-      }
-    }
-  </style>
-</head>
-
-
-<body>
-
-  <div
-    class="page-shell"
-    id="page-shell"
-  >
-
-    <nav
-      class="scarf-rack"
-      aria-label="Sections"
-    >
-
-      <a
-        class="scarf-item scarf-home"
-        href="./"
-        data-live-link
-        aria-label="Home"
-      >
-        <img
-          src="assets/home/home-scarf-update.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="illustration/"
-        data-live-link
-        aria-label="Illustration"
-      >
-        <img
-          src="assets/home/scarf-illustration.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="photography/"
-        data-live-link
-        aria-label="Photography"
-      >
-        <img
-          src="assets/home/scarf-photography.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Graphic Design"
-      >
-        <img
-          src="assets/home/scarf-design.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Music"
-      >
-        <img
-          src="assets/home/scarf-music.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="motion/"
-        data-live-link
-        aria-label="Motion"
-      >
-        <img
-          src="assets/home/scarf-motion.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Miscellaneous"
-      >
-        <img
-          src="assets/home/scarf-misc.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Gastronomy"
-      >
-        <img
-          src="assets/home/scarf-gastronomy.png"
-          alt=""
-        >
-      </a>
-
-    </nav>
-
-
-    <main class="home">
-
-      <section class="hero">
-
-        <div class="welcome-slot">
-
-          <span
-            class="welcome-word"
-            id="welcome-word"
-            aria-hidden="true"
-          >
-            Welcome
-          </span>
-
-        </div>
-
-
-        <div class="site-title">
-          to keegan.biz
-        </div>
-
-
-        <section
-          class="home-chess"
-          aria-label="Chess"
-        >
-
-          <div class="chess-topbar">
-
-            <p
-              class="status"
-              id="status"
-            >
-              yellow to move
-            </p>
-
-            <button
-              id="flip-button"
-              type="button"
-            >
-              flip board
-            </button>
-
-          </div>
-
-
-          <div class="board-area">
-
-            <div class="board-frame">
-
-              <div
-                class="board"
-                id="board"
-                aria-label="Chess board"
-              ></div>
-
-
-              <div
-                class="win-overlay"
-                id="win-overlay"
-                aria-hidden="true"
-              >
-
-                <img
-                  class="win-image"
-                  id="win-image"
-                  src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG"
-                  alt=""
-                >
-
-                <p
-                  class="win-title"
-                  id="win-title"
-                >
-                  Green Won
-                </p>
-
-              </div>
-
-            </div>
-
-            <div
-              class="capture-bin"
-              id="capture-bin"
-              aria-label="Captured pieces"
-            ></div>
-
-          </div>
-
-
-          <div
-            class="result-actions"
-            id="result-actions"
-            aria-hidden="true"
-          >
-
-            <button
-              id="play-again-button"
-              type="button"
-            >
-              play again
-            </button>
-
-            <button
-              id="explore-match-button"
-              type="button"
-            >
-              explore match
-            </button>
-
-          </div>
-
-
-          <div
-            class="review-controls"
-            id="review-controls"
-            aria-hidden="true"
-          >
-
-            <button
-              id="review-start"
-              type="button"
-            >
-              start
-            </button>
-
-            <button
-              id="review-prev"
-              type="button"
-              aria-label="Previous move"
-            >
-              ←
-            </button>
-
-            <span
-              class="review-label"
-              id="review-label"
-            >
-              start
-            </span>
-
-            <button
-              id="review-next"
-              type="button"
-              aria-label="Next move"
-            >
-              →
-            </button>
-
-            <button
-              id="review-end"
-              type="button"
-            >
-              end
-            </button>
-
-            <button
-              class="review-result"
-              id="review-result"
-              type="button"
-            >
-              result
-            </button>
-
-          </div>
-
-
-          <div class="chess-bottombar">
-
-            <button
-              id="reset-button"
-              type="button"
-            >
-              reset
-            </button>
-
-
-            <div
-              class="clock-group"
-              aria-label="Chess clocks"
-            >
-
-              <span
-                class="clock"
-                id="white-clock"
-              >
-                yellow 60:00
-              </span>
-
-              <span
-                class="clock"
-                id="black-clock"
-              >
-                green 60:00
-              </span>
-
-            </div>
-
-
-            <div class="time-setter">
-
-              <label
-                class="time-label"
-                for="time-input"
-              >
-                minutes
-              </label>
-
-              <input
-                id="time-input"
-                type="number"
-                min="1"
-                step="1"
-                value="60"
-                inputmode="numeric"
-              >
-
-              <button
-                id="set-time-button"
-                type="button"
-              >
-                set
-              </button>
-
-            </div>
-
-          </div>
-
-        </section>
-
-      </section>
-
-    </main>
-
-  </div>
-
-
-  <audio
-    id="wip-audio"
-    preload="auto"
-  >
-    <source
-      src="assets/home/crickets.mp3"
-      type="audio/mpeg"
-    >
-  </audio>
-
-
-  <div
-    class="wip-overlay"
-    id="wip-overlay"
-    aria-hidden="true"
-  >
-
-    <div class="wip-inner">
-
-      <div class="wip-header">
-
-        <p class="wip-text">
-          sorry, i'm still working on this page.
-        </p>
-
-        <button
-          class="wip-close"
-          id="wip-close"
-          type="button"
-          aria-label="Close"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div
-        class="collage-stage"
-        id="collage-stage"
-        aria-hidden="true"
-      >
-
-        <img
-          class="horse horse-main"
-          id="horse-main"
-          src="assets/home/horse.gif"
-          alt=""
-        >
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <script>
-  (() => {
-
-    const clamp = (
-      value,
-      min,
-      max
-    ) =>
-      Math.min(
-        Math.max(
-          value,
-          min
-        ),
-        max
-      );
-
-
-    function smoothStep(
-      value
-    ) {
-
-      const t =
-        clamp(
-          value,
-          0,
-          1
-        );
-
-
-      return (
-        t *
-        t *
-        (
-          3 -
-          2 *
-          t
-        )
-      );
-
-    }
-
-
-    const welcomeWord =
-      document.getElementById(
-        "welcome-word"
-      );
-
-
-    if (
-      welcomeWord
-    ) {
-
-      welcomeWord.textContent =
-        "Welcome";
-
-
-      welcomeWord.style.color =
-        "#006a44";
-
-    }
-
-
-    const pageShell =
-      document.getElementById(
-        "page-shell"
-      );
-
-
-    const overlay =
-      document.getElementById(
-        "wip-overlay"
-      );
-
-
-    const audio =
-      document.getElementById(
-        "wip-audio"
-      );
-
-
-    const closeButton =
-      document.getElementById(
-        "wip-close"
-      );
-
-
-    const stage =
-      document.getElementById(
-        "collage-stage"
-      );
-
-
-    const HORSE_START =
-      12;
-
-
-    const HORSE_FULL =
-      20;
-
-
-    let overlayOpen =
-      false;
-
-
-    let raf =
-      null;
-
-
-    let openedAt =
+:root {
+  --paper: #ece7d7;
+  --ink: #11110f;
+
+  --yellow: #fdb913;
+  --green: #006a44;
+  --red: #c1272d;
+}
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+html {
+  min-height: 100%;
+}
+
+
+body {
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+  background:
+    var(--paper);
+
+  color:
+    var(--ink);
+
+  font-family:
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing:
+    antialiased;
+}
+
+
+img {
+  display: block;
+
+  max-width: 100%;
+}
+
+
+a {
+  color: inherit;
+
+  text-decoration: none;
+}
+
+
+.page-shell {
+  min-height:
+    100vh;
+}
+
+
+.page-shell.is-hidden {
+  display:
+    none;
+}
+
+
+.home {
+  min-height:
+    100vh;
+}
+
+
+.hero {
+  min-height:
+    100vh;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    center;
+
+  align-items:
+    flex-start;
+
+  padding:
+    8vh
+    clamp(430px, 36vw, 575px)
+    8vh
+    clamp(40px, 5.5vw, 88px);
+}
+
+
+.welcome-slot {
+  width:
+    min(
+      900px,
+      100%
+    );
+
+  margin-bottom:
+    22px;
+}
+
+
+.welcome-word {
+  display:
+    block;
+
+  width:
+    max-content;
+
+  max-width:
+    100%;
+
+  white-space:
+    nowrap;
+
+  font-size:
+    clamp(
+      68px,
+      6.6vw,
+      106px
+    );
+
+  font-weight:
+    700;
+
+  line-height:
+    .95;
+
+  letter-spacing:
+    -.065em;
+
+  opacity:
+    1;
+}
+
+
+.site-title {
+  color:
+    var(--ink);
+
+  font-size:
+    clamp(
+      34px,
+      3.5vw,
+      56px
+    );
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+
+  letter-spacing:
+    -.055em;
+}
+
+
+.scarf-rack {
+  position:
+    fixed;
+
+  top:
+    14px;
+
+  right:
+    12px;
+
+  z-index:
+    30;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    flex-end;
+
+  gap:
+    6px;
+}
+
+
+.scarf-item {
+  position:
+    relative;
+
+  display:
+    block;
+
+  height:
+    clamp(
+      72px,
+      calc((100vh - 84px) / 8),
+      108px
+    );
+
+  transform-origin:
+    right center;
+
+  transition:
+    transform
+    220ms
+    cubic-bezier(
+      .2,
+      .8,
+      .2,
+      1
+    );
+}
+
+
+.scarf-item img {
+  width:
+    auto;
+
+  height:
+    100%;
+
+  object-fit:
+    contain;
+
+  filter:
+    drop-shadow(
+      0
+      2px
+      1px
+      rgba(
+        17,
+        17,
+        15,
+        .06
+      )
+    );
+}
+
+
+.scarf-home {
+  transform:
+    scale(1.045);
+}
+
+
+.scarf-item:hover {
+  z-index:
+    4;
+
+  transform:
+    translateX(-22px)
+    rotate(-.5deg)
+    scale(1.035);
+}
+
+
+.scarf-home:hover {
+  transform:
+    translateX(-22px)
+    rotate(-.5deg)
+    scale(1.075);
+}
+
+
+.wip-overlay {
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    99999;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    28px;
+
+  overflow:
+    auto;
+
+  background:
+    var(--paper);
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity
+    160ms ease,
+    visibility
+    160ms ease;
+}
+
+
+.wip-overlay.is-visible {
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+  pointer-events:
+    auto;
+}
+
+
+.wip-inner {
+  width:
+    min(
+      92vw,
+      700px
+    );
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+}
+
+
+.wip-header {
+  position:
+    relative;
+
+  z-index:
+    100;
+
+  width:
+    min(
+      69vh,
+      680px,
+      88vw
+    );
+
+  display:
+    flex;
+
+  align-items:
+    stretch;
+
+  margin-bottom:
+    0;
+
+  background:
+    var(--paper);
+
+  border:
+    1px solid
+    rgba(
+      17,
+      17,
+      15,
+      .46
+    );
+}
+
+
+.wip-text {
+  flex:
+    1 1 auto;
+
+  margin:
+    0;
+
+  padding:
+    14px
+    19px
+    15px;
+
+  color:
+    var(--ink);
+
+  font-size:
+    clamp(
+      19px,
+      1.65vw,
+      26px
+    );
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+
+  letter-spacing:
+    -.045em;
+}
+
+
+.wip-close {
+  flex:
+    0 0
+    52px;
+
+  width:
+    52px;
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+  border:
+    0;
+
+  border-left:
+    1px solid
+    rgba(
+      17,
+      17,
+      15,
+      .46
+    );
+
+  background:
+    transparent;
+
+  color:
+    var(--ink);
+
+  font-family:
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  font-size:
+    34px;
+
+  line-height:
+    1;
+
+  cursor:
+    pointer;
+}
+
+
+.wip-close:hover {
+  color:
+    var(--paper);
+
+  background:
+    var(--ink);
+}
+
+
+.collage-stage {
+  --visual-reveal:
+    0;
+
+  position:
+    relative;
+
+  width:
+    min(
+      69vh,
+      680px,
+      88vw
+    );
+
+  aspect-ratio:
+    1 / 1;
+
+  overflow:
+    hidden;
+
+  border:
+    0;
+
+  box-shadow:
+    none;
+
+  background:
+    transparent;
+
+  opacity:
+    var(--visual-reveal);
+
+  transition:
+    opacity
+    90ms
+    linear;
+}
+
+
+.horse {
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  object-fit:
+    cover;
+
+  pointer-events:
+    none;
+
+  user-select:
+    none;
+}
+
+
+.horse-main {
+  opacity:
+    1;
+
+  mix-blend-mode:
+    normal;
+
+  filter:
+    none;
+
+  transform:
+    none;
+}
+
+
+/* tablet / narrow desktop */
+
+@media (
+  max-width:
+  1100px
+) {
+
+  .scarf-rack {
+    top:
+      10px;
+
+    left:
       0;
 
-
-    function horseRevealAt(
-      time
-    ) {
-
-      if (
-        time <
-        HORSE_START
-      ) {
-        return 0;
-      }
-
-
-      return smoothStep(
-        (
-          time -
-          HORSE_START
-        )
-        /
-        (
-          HORSE_FULL -
-          HORSE_START
-        )
-      );
-
-    }
-
-
-    function visualLoop(
-      now
-    ) {
-
-      if (
-        !overlayOpen
-      ) {
-        return;
-      }
-
-
-      const elapsed =
-        Math.max(
-          0,
-          (
-            now -
-            openedAt
-          )
-          /
-          1000
-        );
-
-
-      const time =
-        audio.currentTime >
-        0
-          ? audio.currentTime
-          : elapsed;
-
-
-      stage.style.setProperty(
-        "--visual-reveal",
-        horseRevealAt(
-          time
-        ).toFixed(4)
-      );
-
-
-      raf =
-        requestAnimationFrame(
-          visualLoop
-        );
-
-    }
-
-
-    async function openWip() {
-
-      if (
-        overlayOpen
-      ) {
-        return;
-      }
-
-
-      overlayOpen =
-        true;
-
-
-      openedAt =
-        performance.now();
-
-
-      stage.style.setProperty(
-        "--visual-reveal",
-        "0"
-      );
-
-
-      pageShell.classList.add(
-        "is-hidden"
-      );
-
-
-      overlay.classList.add(
-        "is-visible"
-      );
-
-
-      overlay.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-
-      audio.pause();
-
-
-      audio.currentTime =
-        0;
-
-
-      audio.volume =
-        .72;
-
-
-      try {
-
-        await audio.play();
-
-      }
-
-      catch (
-        error
-      ) {
-
-        console.log(
-          "Audio could not start:",
-          error
-        );
-
-      }
-
-
-      cancelAnimationFrame(
-        raf
-      );
-
-
-      raf =
-        requestAnimationFrame(
-          visualLoop
-        );
-
-    }
-
-
-    function closeWip() {
-
-      overlayOpen =
-        false;
-
-
-      cancelAnimationFrame(
-        raf
-      );
-
-
-      audio.pause();
-
-
-      audio.currentTime =
-        0;
-
-
-      stage.style.setProperty(
-        "--visual-reveal",
-        "0"
-      );
-
-
-      overlay.classList.remove(
-        "is-visible"
-      );
-
-
-      overlay.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-
-      window.setTimeout(
-        () => {
-
-          pageShell.classList.remove(
-            "is-hidden"
-          );
-
-        },
-        160
-      );
-
-    }
-
-
-    document.addEventListener(
-      "click",
-      event => {
-
-        const link =
-          event.target.closest(
-            "a"
-          );
-
-
-        if (
-          !link ||
-          link.hasAttribute(
-            "data-live-link"
-          )
-        ) {
-          return;
-        }
-
-
-        event.preventDefault();
-
-
-        openWip();
-
-      }
-    );
-
-
-    closeButton.addEventListener(
-      "click",
-      closeWip
-    );
-
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key ===
-          "Escape" &&
-          overlayOpen
-        ) {
-
-          closeWip();
-
-        }
-
-      }
-    );
-
-  })();
-  </script>
-
-
-  <script type="module">
-
-    import {
-      Chess
-    } from "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
-
-
-    const boardElement =
-      document.getElementById(
-        "board"
-      );
-
-
-    const statusElement =
-      document.getElementById(
-        "status"
-      );
-
-
-    const flipButton =
-      document.getElementById(
-        "flip-button"
-      );
-
-
-    const resetButton =
-      document.getElementById(
-        "reset-button"
-      );
-
-
-    const whiteClockElement =
-      document.getElementById(
-        "white-clock"
-      );
-
-
-    const blackClockElement =
-      document.getElementById(
-        "black-clock"
-      );
-
-
-    const timeInput =
-      document.getElementById(
-        "time-input"
-      );
-
-
-    const setTimeButton =
-      document.getElementById(
-        "set-time-button"
-      );
-
-
-    const captureBin =
-      document.getElementById(
-        "capture-bin"
-      );
-
-
-    const winOverlay =
-      document.getElementById(
-        "win-overlay"
-      );
-
-
-    const winImage =
-      document.getElementById(
-        "win-image"
-      );
-
-
-    const winTitle =
-      document.getElementById(
-        "win-title"
-      );
-
-
-    const resultActions =
-      document.getElementById(
-        "result-actions"
-      );
-
-
-    const playAgainButton =
-      document.getElementById(
-        "play-again-button"
-      );
-
-
-    const exploreMatchButton =
-      document.getElementById(
-        "explore-match-button"
-      );
-
-
-    const reviewControls =
-      document.getElementById(
-        "review-controls"
-      );
-
-
-    const reviewStartButton =
-      document.getElementById(
-        "review-start"
-      );
-
-
-    const reviewPrevButton =
-      document.getElementById(
-        "review-prev"
-      );
-
-
-    const reviewNextButton =
-      document.getElementById(
-        "review-next"
-      );
-
-
-    const reviewEndButton =
-      document.getElementById(
-        "review-end"
-      );
-
-
-    const reviewResultButton =
-      document.getElementById(
-        "review-result"
-      );
-
-
-    const reviewLabel =
-      document.getElementById(
-        "review-label"
-      );
-
-
-    const game =
-      new Chess();
-
-
-    let orientation =
-      "white";
-
-
-    let selected =
-      null;
-
-
-    let startingMinutes =
-      60;
-
-
-    let whiteTime =
-      startingMinutes *
-      60 *
-      1000;
-
-
-    let blackTime =
-      startingMinutes *
-      60 *
-      1000;
-
-
-    let timerStarted =
-      false;
-
-
-    let timerFinished =
-      false;
-
-
-    let activeClock =
-      "w";
-
-
-    let lastTick =
-      performance.now();
-
-
-    let matchWinner =
-      null;
-
-
-    let reviewing =
-      false;
-
-
-    let reviewIndex =
+    right:
       0;
 
+    flex-direction:
+      row;
 
-    const capturedPieces = {
-      w: [],
-      b: []
-    };
+    align-items:
+      center;
+
+    width:
+      100%;
+
+    gap:
+      6px;
+
+    padding:
+      4px
+      18px
+      12px;
+
+    overflow-x:
+      auto;
+
+    overflow-y:
+      hidden;
+
+    scrollbar-width:
+      none;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
 
 
-    let lastCaptureToken =
+  .scarf-rack::-webkit-scrollbar {
+    display:
+      none;
+  }
+
+
+  .scarf-item {
+    flex:
+      0 0 auto;
+
+    width:
+      265px;
+
+    height:
+      auto;
+
+    transform:
+      none;
+  }
+
+
+  .scarf-item img {
+    width:
+      100%;
+
+    height:
+      auto;
+  }
+
+
+  .scarf-home {
+    width:
+      292px;
+
+    transform:
+      none;
+  }
+
+
+  .scarf-item:hover,
+  .scarf-home:hover {
+    transform:
+      none;
+  }
+
+
+  .hero {
+    justify-content:
+      flex-start;
+
+    min-height:
+      100svh;
+
+    padding:
+      170px
+      clamp(34px, 6vw, 72px)
+      70px;
+  }
+
+
+  .welcome-word {
+    font-size:
+      clamp(
+        54px,
+        8vw,
+        86px
+      );
+  }
+
+
+  .site-title {
+    font-size:
+      clamp(
+        30px,
+        5vw,
+        48px
+      );
+  }
+
+}
+
+
+/* mobile */
+
+@media (
+  max-width:
+  700px
+) {
+
+  .scarf-rack {
+    padding:
+      4px
+      14px
+      12px;
+  }
+
+
+  .scarf-item {
+    width:
+      285px;
+  }
+
+
+  .scarf-home {
+    width:
+      315px;
+  }
+
+
+  .hero {
+    padding:
+      180px
+      22px
+      50px;
+  }
+
+
+  .welcome-slot {
+    width:
+      100%;
+  }
+
+
+  .welcome-word {
+    font-size:
+      clamp(
+        42px,
+        12vw,
+        68px
+      );
+  }
+
+
+  .site-title {
+    margin-top:
+      4px;
+
+    font-size:
+      clamp(
+        25px,
+        7vw,
+        38px
+      );
+  }
+
+
+  .wip-overlay {
+    padding:
+      18px
+      12px;
+  }
+
+
+  .wip-inner {
+    width:
+      94vw;
+  }
+
+
+  .wip-header,
+  .collage-stage {
+    width:
+      min(
+        82vh,
+        94vw
+      );
+  }
+
+
+  .wip-text {
+    min-width:
       0;
 
+    padding:
+      12px
+      13px;
 
-    const pieceRestingPositions =
-      new Map();
-
-
-    const matchHistory = [];
-
-
-    const pieceLetters = {
-      k: "K",
-      q: "Q",
-      r: "R",
-      b: "B",
-      n: "N",
-      p: "P"
-    };
+    font-size:
+      17px;
+  }
 
 
-    const clampChess = (
-      value,
-      min,
-      max
-    ) =>
-      Math.min(
-        Math.max(
-          value,
-          min
-        ),
-        max
+  .wip-close {
+    flex-basis:
+      47px;
+
+    width:
+      47px;
+
+    font-size:
+      31px;
+  }
+
+}
+
+
+/* small mobile */
+
+@media (
+  max-width:
+  420px
+) {
+
+  .scarf-item {
+    width:
+      248px;
+  }
+
+
+  .scarf-home {
+    width:
+      278px;
+  }
+
+
+  .hero {
+    padding-top:
+      164px;
+  }
+
+
+  .welcome-word {
+    font-size:
+      clamp(
+        36px,
+        11vw,
+        48px
       );
+  }
 
 
-    function copyCaptures() {
-
-      return {
-        w:
-          capturedPieces.w.map(
-            piece => ({
-              ...piece
-            })
-          ),
-
-        b:
-          capturedPieces.b.map(
-            piece => ({
-              ...piece
-            })
-          )
-      };
-
-    }
-
-
-    function resetHistory() {
-
-      matchHistory.length =
-        0;
-
-
-      matchHistory.push({
-        fen:
-          game.fen(),
-
-        san:
-          null,
-
-        captures:
-          copyCaptures()
-      });
-
-    }
-
-
-    function currentRenderGame() {
-
-      if (
-        !reviewing
-      ) {
-        return game;
-      }
-
-
-      return new Chess(
-        matchHistory[
-          reviewIndex
-        ].fen
+  .site-title {
+    font-size:
+      clamp(
+        22px,
+        6.5vw,
+        28px
       );
+  }
 
-    }
-
-
-    function getFiles() {
-
-      if (
-        orientation ===
-        "white"
-      ) {
-
-        return [
-          "a",
-          "b",
-          "c",
-          "d",
-          "e",
-          "f",
-          "g",
-          "h"
-        ];
-
-      }
-
-
-      return [
-        "h",
-        "g",
-        "f",
-        "e",
-        "d",
-        "c",
-        "b",
-        "a"
-      ];
-
-    }
-
-
-    function getRanks() {
-
-      if (
-        orientation ===
-        "white"
-      ) {
-
-        return [
-          8,
-          7,
-          6,
-          5,
-          4,
-          3,
-          2,
-          1
-        ];
-
-      }
-
-
-      return [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8
-      ];
-
-    }
-
-
-    function hashString(
-      value
-    ) {
-
-      let hash =
-        2166136261;
-
-
-      for (
-        let i =
-          0;
-        i <
-        value.length;
-        i++
-      ) {
-
-        hash ^=
-          value.charCodeAt(
-            i
-          );
-
-
-        hash =
-          Math.imul(
-            hash,
-            16777619
-          );
-
-      }
-
-
-      return hash >>>
-        0;
-
-    }
-
-
-    function initialPlacementFor(
-      squareName,
-      piece
-    ) {
-
-      const seed =
-        hashString(
-          `${squareName}-${piece.color}-${piece.type}`
-        );
-
-
-      return {
-
-        x:
-          (
-            (
-              seed &
-              255
-            )
-            /
-            255
-            -
-            .5
-          )
-          *
-          4.5,
-
-        y:
-          (
-            (
-              (
-                seed >>>
-                8
-              )
-              &
-              255
-            )
-            /
-            255
-            -
-            .5
-          )
-          *
-          4.5,
-
-        r:
-          (
-            (
-              (
-                seed >>>
-                16
-              )
-              &
-              255
-            )
-            /
-            255
-            -
-            .5
-          )
-          *
-          2.8
-
-      };
-
-    }
-
-
-    function restingPlacementFor(
-      squareName,
-      piece
-    ) {
-
-      if (
-        reviewing
-      ) {
-
-        return initialPlacementFor(
-          squareName,
-          piece
-        );
-
-      }
-
-
-      return (
-        pieceRestingPositions.get(
-          squareName
-        )
-        ||
-        initialPlacementFor(
-          squareName,
-          piece
-        )
-      );
-
-    }
-
-
-    function dropPlacementFor(
-      squareName,
-      clientX,
-      clientY
-    ) {
-
-      const squareElement =
-        boardElement.querySelector(
-          `[data-square="${squareName}"]`
-        );
-
-
-      if (
-        !squareElement
-      ) {
-
-        return {
-          x: 0,
-          y: 0,
-          r: 0
-        };
-
-      }
-
-
-      const rect =
-        squareElement.getBoundingClientRect();
-
-
-      const localX =
-        clampChess(
-          clientX -
-          rect.left,
-          0,
-          rect.width
-        );
-
-
-      const localY =
-        clampChess(
-          clientY -
-          rect.top,
-          0,
-          rect.height
-        );
-
-
-      const x =
-        (
-          localX /
-          rect.width
-          -
-          .5
-        )
-        *
-        rect.width
-        *
-        .72;
-
-
-      const y =
-        (
-          localY /
-          rect.height
-          -
-          .5
-        )
-        *
-        rect.height
-        *
-        .72;
-
-
-      const r =
-        clampChess(
-          (
-            x /
-            Math.max(
-              rect.width,
-              1
-            )
-          )
-          *
-          8
-          +
-          (
-            y /
-            Math.max(
-              rect.height,
-              1
-            )
-          )
-          *
-          -3,
-          -5,
-          5
-        );
-
-
-      return {
-        x,
-        y,
-        r
-      };
-
-    }
-
-
-    let captureBodies =
-      [];
-
-
-    let capturePhysicsFrame =
-      null;
-
-
-    let captureLastTime =
-      performance.now();
-
-
-    function pieceSizeForBin() {
-
-      const width =
-        captureBin.clientWidth;
-
-
-      if (
-        width <
-        420
-      ) {
-        return 24;
-      }
-
-
-      if (
-        width <
-        560
-      ) {
-        return 28;
-      }
-
-
-      return 34;
-
-    }
-
-
-    function updateCaptureBodyStyle(
-      body
-    ) {
-
-      body.element.style.setProperty(
-        "--piece-size",
-        `${body.size}px`
-      );
-
-
-      body.element.style.setProperty(
-        "--x",
-        `${body.x}px`
-      );
-
-
-      body.element.style.setProperty(
-        "--y",
-        `${body.y}px`
-      );
-
-
-      body.element.style.setProperty(
-        "--r",
-        `${body.rotation}deg`
-      );
-
-    }
-
-
-    function makeCaptureBody(
-      piece,
-      index,
-      settled =
-        false
-    ) {
-
-      const element =
-        document.createElement(
-          "div"
-        );
-
-
-      element.className =
-        `captured-piece ${
-          piece.color ===
-          "w"
-            ? "white"
-            : "black"
-        }`;
-
-
-      element.textContent =
-        pieceLetters[
-          piece.type
-        ];
-
-
-      captureBin.appendChild(
-        element
-      );
-
-
-      const size =
-        pieceSizeForBin();
-
-
-      const maxX =
-        Math.max(
-          0,
-          captureBin.clientWidth -
-          size
-        );
-
-
-      const seed =
-        hashString(
-          `${piece.color}-${piece.type}-${piece.token}-${index}`
-        );
-
-
-      const startX =
-        maxX *
-        (
-          .12 +
-          (
-            (
-              seed &
-              255
-            )
-            /
-            255
-          )
-          *
-          .76
-        );
-
-
-      const body = {
-        element,
-        size,
-        radius:
-          size *
-          .46,
-        x:
-          clampChess(
-            startX,
-            0,
-            maxX
-          ),
-        y:
-          settled
-            ? Math.max(
-                0,
-                captureBin.clientHeight -
-                size -
-                (
-                  Math.floor(
-                    index /
-                    8
-                  )
-                  *
-                  size *
-                  .68
-                )
-              )
-            : -size - 6,
-        vx:
-          settled
-            ? 0
-            : (
-                (
-                  (
-                    seed >>>
-                    8
-                  )
-                  &
-                  255
-                )
-                /
-                255
-                -
-                .5
-              )
-              *
-              110,
-        vy:
-          settled
-            ? 0
-            : 40,
-        rotation:
-          (
-            (
-              (
-                seed >>>
-                16
-              )
-              &
-              255
-            )
-            /
-            255
-            -
-            .5
-          )
-          *
-          26,
-        vr:
-          settled
-            ? 0
-            : (
-                (
-                  (
-                    seed >>>
-                    20
-                  )
-                  &
-                  255
-                )
-                /
-                255
-                -
-                .5
-              )
-              *
-              120
-      };
-
-
-      updateCaptureBodyStyle(
-        body
-      );
-
-
-      return body;
-
-    }
-
-
-    function rebuildCaptureBodies(
-      source,
-      animateNewest =
-        false
-    ) {
-
-      captureBin.innerHTML =
-        "";
-
-
-      captureBodies =
-        [];
-
-
-      const pieces = [
-        ...source.w.map(
-          piece => ({
-            ...piece,
-            color:
-              "w"
-          })
-        ),
-        ...source.b.map(
-          piece => ({
-            ...piece,
-            color:
-              "b"
-          })
-        )
-      ];
-
-
-      pieces.forEach(
-        (
-          piece,
-          index
-        ) => {
-
-          captureBodies.push(
-            makeCaptureBody(
-              piece,
-              index,
-              !animateNewest ||
-              index <
-              pieces.length -
-              1
-            )
-          );
-
-        }
-      );
-
-
-      captureLastTime =
-        performance.now();
-
-
-      startCapturePhysics();
-
-    }
-
-
-    function addCapturedBody(
-      piece
-    ) {
-
-      const body =
-        makeCaptureBody(
-          piece,
-          captureBodies.length,
-          false
-        );
-
-
-      captureBodies.push(
-        body
-      );
-
-
-      captureLastTime =
-        performance.now();
-
-
-      startCapturePhysics();
-
-    }
-
-
-    function resolveCaptureCollisions() {
-
-      for (
-        let i =
-          0;
-        i <
-        captureBodies.length;
-        i++
-      ) {
-
-        const a =
-          captureBodies[
-            i
-          ];
-
-
-        for (
-          let j =
-            i +
-            1;
-          j <
-            captureBodies.length;
-          j++
-        ) {
-
-          const b =
-            captureBodies[
-              j
-            ];
-
-
-          const ax =
-            a.x +
-            a.size /
-            2;
-
-
-          const ay =
-            a.y +
-            a.size /
-            2;
-
-
-          const bx =
-            b.x +
-            b.size /
-            2;
-
-
-          const by =
-            b.y +
-            b.size /
-            2;
-
-
-          let dx =
-            bx -
-            ax;
-
-
-          let dy =
-            by -
-            ay;
-
-
-          let distance =
-            Math.hypot(
-              dx,
-              dy
-            );
-
-
-          const minDistance =
-            a.radius +
-            b.radius;
-
-
-          if (
-            distance <=
-            0
-          ) {
-
-            distance =
-              .001;
-
-
-            dx =
-              .001;
-
-          }
-
-
-          if (
-            distance >=
-            minDistance
-          ) {
-            continue;
-          }
-
-
-          const nx =
-            dx /
-            distance;
-
-
-          const ny =
-            dy /
-            distance;
-
-
-          const overlap =
-            minDistance -
-            distance;
-
-
-          a.x -=
-            nx *
-            overlap *
-            .5;
-
-
-          a.y -=
-            ny *
-            overlap *
-            .5;
-
-
-          b.x +=
-            nx *
-            overlap *
-            .5;
-
-
-          b.y +=
-            ny *
-            overlap *
-            .5;
-
-
-          const relativeVelocity =
-            (
-              b.vx -
-              a.vx
-            )
-            *
-            nx
-            +
-            (
-              b.vy -
-              a.vy
-            )
-            *
-            ny;
-
-
-          if (
-            relativeVelocity <
-            0
-          ) {
-
-            const impulse =
-              -(
-                1 +
-                .30
-              )
-              *
-              relativeVelocity
-              /
-              2;
-
-
-            a.vx -=
-              impulse *
-              nx;
-
-
-            a.vy -=
-              impulse *
-              ny;
-
-
-            b.vx +=
-              impulse *
-              nx;
-
-
-            b.vy +=
-              impulse *
-              ny;
-
-          }
-
-        }
-
-      }
-
-    }
-
-
-    function stepCapturePhysics(
-      now
-    ) {
-
-      capturePhysicsFrame =
-        null;
-
-
-      if (
-        captureBodies.length ===
-        0
-      ) {
-        return;
-      }
-
-
-      const dt =
-        Math.min(
-          .028,
-          Math.max(
-            .001,
-            (
-              now -
-              captureLastTime
-            )
-            /
-            1000
-          )
-        );
-
-
-      captureLastTime =
-        now;
-
-
-      const gravity =
-        1150;
-
-
-      const floor =
-        captureBin.clientHeight;
-
-
-      const width =
-        captureBin.clientWidth;
-
-
-      let moving =
-        false;
-
-
-      captureBodies.forEach(
-        body => {
-
-          body.vy +=
-            gravity *
-            dt;
-
-
-          body.x +=
-            body.vx *
-            dt;
-
-
-          body.y +=
-            body.vy *
-            dt;
-
-
-          body.rotation +=
-            body.vr *
-            dt;
-
-
-          const maxX =
-            Math.max(
-              0,
-              width -
-              body.size
-            );
-
-
-          const maxY =
-            Math.max(
-              0,
-              floor -
-              body.size
-            );
-
-
-          if (
-            body.x <
-            0
-          ) {
-
-            body.x =
-              0;
-
-
-            body.vx *=
-              -.38;
-
-          }
-
-
-          if (
-            body.x >
-            maxX
-          ) {
-
-            body.x =
-              maxX;
-
-
-            body.vx *=
-              -.38;
-
-          }
-
-
-          if (
-            body.y >
-            maxY
-          ) {
-
-            body.y =
-              maxY;
-
-
-            if (
-              Math.abs(
-                body.vy
-              ) >
-              25
-            ) {
-
-              body.vy *=
-                -.34;
-
-            }
-
-            else {
-
-              body.vy =
-                0;
-
-            }
-
-
-            body.vx *=
-              .88;
-
-
-            body.vr *=
-              .82;
-
-          }
-
-
-          if (
-            Math.abs(
-              body.vx
-            ) >
-            .4
-            ||
-            Math.abs(
-              body.vy
-            ) >
-            .4
-            ||
-            Math.abs(
-              body.vr
-            ) >
-            .4
-          ) {
-
-            moving =
-              true;
-
-          }
-
-        }
-      );
-
-
-      for (
-        let pass =
-          0;
-        pass <
-        3;
-        pass++
-      ) {
-
-        resolveCaptureCollisions();
-
-      }
-
-
-      captureBodies.forEach(
-        body => {
-
-          const maxX =
-            Math.max(
-              0,
-              width -
-              body.size
-            );
-
-
-          const maxY =
-            Math.max(
-              0,
-              floor -
-              body.size
-            );
-
-
-          body.x =
-            clampChess(
-              body.x,
-              0,
-              maxX
-            );
-
-
-          body.y =
-            clampChess(
-              body.y,
-              -body.size,
-              maxY
-            );
-
-
-          updateCaptureBodyStyle(
-            body
-          );
-
-        }
-      );
-
-
-      if (
-        moving
-      ) {
-
-        capturePhysicsFrame =
-          requestAnimationFrame(
-            stepCapturePhysics
-          );
-
-      }
-
-    }
-
-
-    function startCapturePhysics() {
-
-      if (
-        capturePhysicsFrame
-      ) {
-        return;
-      }
-
-
-      captureLastTime =
-        performance.now();
-
-
-      capturePhysicsFrame =
-        requestAnimationFrame(
-          stepCapturePhysics
-        );
-
-    }
-
-
-    function clearCapturePhysics() {
-
-      if (
-        capturePhysicsFrame
-      ) {
-
-        cancelAnimationFrame(
-          capturePhysicsFrame
-        );
-
-
-        capturePhysicsFrame =
-          null;
-
-      }
-
-
-      captureBodies =
-        [];
-
-
-      captureBin.innerHTML =
-        "";
-
-    }
-
-
-    function renderCapturedPieces(
-      animateToken =
-        null,
-      source =
-        capturedPieces
-    ) {
-
-      if (
-        reviewing
-      ) {
-
-        rebuildCaptureBodies(
-          source,
-          false
-        );
-
-
-        return;
-      }
-
-
-      if (
-        animateToken
-      ) {
-
-        const newest =
-          [
-            ...source.w,
-            ...source.b
-          ].find(
-            piece =>
-              piece.token ===
-              animateToken
-          );
-
-
-        if (
-          newest
-        ) {
-
-          const color =
-            source.w.some(
-              piece =>
-                piece.token ===
-                animateToken
-            )
-              ? "w"
-              : "b";
-
-
-          addCapturedBody({
-            ...newest,
-            color
-          });
-
-        }
-
-
-        return;
-
-      }
-
-
-      rebuildCaptureBodies(
-        source,
-        false
-      );
-
-    }
-
-
-    function renderBoard() {
-
-      const renderGame =
-        currentRenderGame();
-
-
-      boardElement.innerHTML =
-        "";
-
-
-      const files =
-        getFiles();
-
-
-      const ranks =
-        getRanks();
-
-
-      for (
-        let row =
-          0;
-        row <
-        8;
-        row++
-      ) {
-
-        for (
-          let column =
-            0;
-          column <
-          8;
-          column++
-        ) {
-
-          const file =
-            files[
-              column
-            ];
-
-
-          const rank =
-            ranks[
-              row
-            ];
-
-
-          const squareName =
-            `${file}${rank}`;
-
-
-          const square =
-            document.createElement(
-              "div"
-            );
-
-
-          const fileIndex =
-            file.charCodeAt(
-              0
-            )
-            -
-            97;
-
-
-          const isDark =
-            (
-              fileIndex +
-              rank
-            )
-            %
-            2 ===
-            0;
-
-
-          square.className =
-            `square ${
-              isDark
-                ? "dark"
-                : "light"
-            }`;
-
-
-          square.dataset.square =
-            squareName;
-
-
-          const piece =
-            renderGame.get(
-              squareName
-            );
-
-
-          if (
-            piece
-          ) {
-
-            const pieceElement =
-              document.createElement(
-                "div"
-              );
-
-
-            pieceElement.className =
-              `piece ${
-                piece.color ===
-                "w"
-                  ? "white"
-                  : "black"
-              }`;
-
-
-            pieceElement.textContent =
-              pieceLetters[
-                piece.type
-              ];
-
-
-            pieceElement.dataset.square =
-              squareName;
-
-
-            const rest =
-              restingPlacementFor(
-                squareName,
-                piece
-              );
-
-
-            pieceElement.style.setProperty(
-              "--rest-x",
-              `${rest.x}px`
-            );
-
-
-            pieceElement.style.setProperty(
-              "--rest-y",
-              `${rest.y}px`
-            );
-
-
-            pieceElement.style.setProperty(
-              "--rest-r",
-              `${rest.r}deg`
-            );
-
-
-            square.appendChild(
-              pieceElement
-            );
-
-          }
-
-
-          if (
-            column ===
-            0
-          ) {
-
-            const rankCoordinate =
-              document.createElement(
-                "span"
-              );
-
-
-            rankCoordinate.className =
-              "coordinate rank";
-
-
-            rankCoordinate.textContent =
-              rank;
-
-
-            square.appendChild(
-              rankCoordinate
-            );
-
-          }
-
-
-          if (
-            row ===
-            7
-          ) {
-
-            const fileCoordinate =
-              document.createElement(
-                "span"
-              );
-
-
-            fileCoordinate.className =
-              "coordinate file";
-
-
-            fileCoordinate.textContent =
-              file;
-
-
-            square.appendChild(
-              fileCoordinate
-            );
-
-          }
-
-
-          boardElement.appendChild(
-            square
-          );
-
-        }
-
-      }
-
-
-      if (
-        reviewing
-      ) {
-
-        const snapshot =
-          matchHistory[
-            reviewIndex
-          ].captures;
-
-
-        renderCapturedPieces(
-          null,
-          snapshot
-        );
-
-
-        updateReviewControls();
-
-      }
-
-      else {
-
-        updateStatus();
-
-
-        updateClocks();
-
-      }
-
-    }
-
-
-    function clearLegalMoves() {
-
-      boardElement
-        .querySelectorAll(
-          ".square.legal"
-        )
-        .forEach(
-          square => {
-
-            square.classList.remove(
-              "legal"
-            );
-
-          }
-        );
-
-    }
-
-
-    function showLegalMoves(
-      squareName
-    ) {
-
-      clearLegalMoves();
-
-
-      game.moves({
-        square:
-          squareName,
-        verbose:
-          true
-      }).forEach(
-        move => {
-
-          const squareElement =
-            boardElement.querySelector(
-              `[data-square="${move.to}"]`
-            );
-
-
-          if (
-            squareElement
-          ) {
-
-            squareElement.classList.add(
-              "legal"
-            );
-
-          }
-
-        }
-      );
-
-    }
-
-
-    function moveFloatingPiece(
-      x,
-      y
-    ) {
-
-      if (
-        !selected?.floating
-      ) {
-        return;
-      }
-
-
-      selected.floating.style.left =
-        `${x}px`;
-
-
-      selected.floating.style.top =
-        `${y}px`;
-
-    }
-
-
-    function cancelSelection() {
-
-      clearLegalMoves();
-
-
-      if (
-        selected?.original
-      ) {
-
-        selected.original.classList.remove(
-          "is-selected"
-        );
-
-      }
-
-
-      if (
-        selected?.floating
-      ) {
-
-        selected.floating.remove();
-
-      }
-
-
-      selected =
-        null;
-
-    }
-
-
-    function selectPiece(
-      squareName,
-      pieceElement,
-      event
-    ) {
-
-      cancelSelection();
-
-
-      const finePointer =
-        window.matchMedia(
-          "(hover: hover) and (pointer: fine)"
-        ).matches;
-
-
-      let floating =
-        null;
-
-
-      if (
-        finePointer
-      ) {
-
-        const rect =
-          pieceElement
-            .closest(
-              ".square"
-            )
-            .getBoundingClientRect();
-
-
-        const computed =
-          window.getComputedStyle(
-            pieceElement
-          );
-
-
-        floating =
-          pieceElement.cloneNode(
-            true
-          );
-
-
-        floating.classList.remove(
-          "is-selected"
-        );
-
-
-        floating.classList.add(
-          "floating-piece"
-        );
-
-
-        floating.style.setProperty(
-          "--float-size",
-          `${rect.width}px`
-        );
-
-
-        floating.style.setProperty(
-          "--float-r",
-          `${
-            Math.random() <
-            .5
-              ? -.65
-              : .65
-          }deg`
-        );
-
-
-        floating.style.fontSize =
-          computed.fontSize;
-
-
-        floating.style.fontFamily =
-          computed.fontFamily;
-
-
-        floating.style.fontWeight =
-          computed.fontWeight;
-
-
-        floating.style.color =
-          computed.color;
-
-
-        document.body.appendChild(
-          floating
-        );
-
-      }
-
-
-      pieceElement.classList.add(
-        "is-selected"
-      );
-
-
-      selected = {
-
-        from:
-          squareName,
-
-        original:
-          pieceElement,
-
-        floating,
-
-        x:
-          event.clientX,
-
-        y:
-          event.clientY
-
-      };
-
-
-      showLegalMoves(
-        squareName
-      );
-
-
-      if (
-        floating
-      ) {
-
-        moveFloatingPiece(
-          selected.x,
-          selected.y
-        );
-
-      }
-
-    }
-
-
-    function boardClick(
-      event
-    ) {
-
-      if (
-        reviewing ||
-        timerFinished
-      ) {
-        return;
-      }
-
-
-      const squareElement =
-        event.target.closest(
-          ".square"
-        );
-
-
-      if (
-        !squareElement ||
-        !boardElement.contains(
-          squareElement
-        )
-      ) {
-        return;
-      }
-
-
-      const squareName =
-        squareElement.dataset.square;
-
-
-      const clickedPiece =
-        game.get(
-          squareName
-        );
-
-
-      if (
-        !selected
-      ) {
-
-        if (
-          clickedPiece &&
-          clickedPiece.color ===
-          game.turn()
-        ) {
-
-          const pieceElement =
-            squareElement.querySelector(
-              ".piece"
-            );
-
-
-          if (
-            pieceElement
-          ) {
-
-            selectPiece(
-              squareName,
-              pieceElement,
-              event
-            );
-
-          }
-
-        }
-
-
-        return;
-
-      }
-
-
-      if (
-        squareName ===
-        selected.from
-      ) {
-
-        cancelSelection();
-
-        return;
-
-      }
-
-
-      const legalMove =
-        game.moves({
-          square:
-            selected.from,
-          verbose:
-            true
-        }).find(
-          move =>
-            move.to ===
-            squareName
-        );
-
-
-      if (
-        legalMove
-      ) {
-
-        const from =
-          selected.from;
-
-
-        cancelSelection();
-
-
-        attemptMove(
-          from,
-          squareName,
-          event.clientX,
-          event.clientY
-        );
-
-
-        return;
-
-      }
-
-
-      if (
-        clickedPiece &&
-        clickedPiece.color ===
-        game.turn()
-      ) {
-
-        const pieceElement =
-          squareElement.querySelector(
-            ".piece"
-          );
-
-
-        if (
-          pieceElement
-        ) {
-
-          selectPiece(
-            squareName,
-            pieceElement,
-            event
-          );
-
-        }
-
-      }
-
-    }
-
-
-    const WIN_IMAGES = [
-      "https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG",
-      "https://upload.wikimedia.org/wikipedia/commons/8/8b/Radha-Krishna_chess.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/b/b2/The_Chess_Game.jpg",
-      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Golestan_Palace_Album_No._108-7.jpg/3840px-Golestan_Palace_Album_No._108-7.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/9/91/Chess_playing_Louvre_OA117.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/3/3c/Josef_Danhauser-Die_Schachpartie.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/1/1c/NMSLewisChessmen28.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/6/6d/KnightsTemplarPlayingChess1283.jpg"
-    ];
-
-
-    let lastWinImageIndex =
-      -1;
-
-
-    function chooseWinImage() {
-
-      if (
-        WIN_IMAGES.length ===
-        1
-      ) {
-
-        lastWinImageIndex =
-          0;
-
-
-        return WIN_IMAGES[
-          0
-        ];
-
-      }
-
-
-      let nextIndex;
-
-
-      do {
-
-        nextIndex =
-          Math.floor(
-            Math.random() *
-            WIN_IMAGES.length
-          );
-
-      }
-      while (
-        nextIndex ===
-        lastWinImageIndex
-      );
-
-
-      lastWinImageIndex =
-        nextIndex;
-
-
-      return WIN_IMAGES[
-        nextIndex
-      ];
-
-    }
-
-
-    function showWin(
-      winner
-    ) {
-
-      matchWinner =
-        winner;
-
-
-      const greenWon =
-        winner ===
-        "b";
-
-
-      winImage.src =
-        chooseWinImage();
-
-
-      winTitle.textContent =
-        greenWon
-          ? "Green Won"
-          : "Yellow Won";
-
-
-      winOverlay.style.setProperty(
-        "--winner-color",
-        greenWon
-          ? "var(--board-green)"
-          : "var(--board-yellow)"
-      );
-
-
-      winOverlay.classList.add(
-        "is-visible"
-      );
-
-
-      winOverlay.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-
-      resultActions.classList.add(
-        "is-visible"
-      );
-
-
-      resultActions.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-
-      reviewControls.classList.remove(
-        "is-visible"
-      );
-
-
-      reviewControls.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-    }
-
-
-    function hideResultUI() {
-
-      winOverlay.classList.remove(
-        "is-visible"
-      );
-
-
-      winOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-
-      resultActions.classList.remove(
-        "is-visible"
-      );
-
-
-      resultActions.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-
-      reviewControls.classList.remove(
-        "is-visible"
-      );
-
-
-      reviewControls.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-    }
-
-
-    function attemptMove(
-      from,
-      to,
-      clientX,
-      clientY
-    ) {
-
-      const movingPiece =
-        game.get(
-          from
-        );
-
-
-      const landing =
-        dropPlacementFor(
-          to,
-          clientX,
-          clientY
-        );
-
-
-      let move =
-        null;
-
-
-      try {
-
-        move =
-          game.move({
-            from,
-            to,
-            promotion:
-              "q"
-          });
-
-      }
-
-      catch (
-        error
-      ) {
-
-        move =
-          null;
-
-      }
-
-
-      if (
-        !move
-      ) {
-        return false;
-      }
-
-
-      pieceRestingPositions.delete(
-        from
-      );
-
-
-      pieceRestingPositions.delete(
-        to
-      );
-
-
-      if (
-        movingPiece
-      ) {
-
-        pieceRestingPositions.set(
-          to,
-          landing
-        );
-
-      }
-
-
-      let captureToken =
-        null;
-
-
-      if (
-        move.captured
-      ) {
-
-        captureToken =
-          ++lastCaptureToken;
-
-
-        const capturedColor =
-          move.color ===
-          "w"
-            ? "b"
-            : "w";
-
-
-        capturedPieces[
-          capturedColor
-        ].push({
-          type:
-            move.captured,
-          token:
-            captureToken,
-          color:
-            capturedColor
-        });
-
-      }
-
-
-      matchHistory.push({
-        fen:
-          game.fen(),
-
-        san:
-          move.san,
-
-        captures:
-          copyCaptures()
-      });
-
-
-      if (
-        !timerStarted
-      ) {
-
-        timerStarted =
-          true;
-
-      }
-
-
-      activeClock =
-        game.turn();
-
-
-      lastTick =
-        performance.now();
-
-
-      renderBoard();
-
-
-      renderCapturedPieces(
-        captureToken
-      );
-
-
-      const droppedPiece =
-        boardElement.querySelector(
-          `[data-square="${to}"] .piece`
-        );
-
-
-      if (
-        droppedPiece
-      ) {
-
-        droppedPiece.classList.add(
-          "just-dropped"
-        );
-
-
-        window.setTimeout(
-          () => {
-
-            droppedPiece.classList.remove(
-              "just-dropped"
-            );
-
-          },
-          240
-        );
-
-      }
-
-
-      if (
-        game.isGameOver()
-      ) {
-
-        timerStarted =
-          false;
-
-
-        timerFinished =
-          true;
-
-
-        if (
-          game.isCheckmate()
-        ) {
-
-          const winner =
-            game.turn() ===
-            "w"
-              ? "b"
-              : "w";
-
-
-          showWin(
-            winner
-          );
-
-        }
-
-      }
-
-
-      return true;
-
-    }
-
-
-    function colorName(
-      color
-    ) {
-
-      return color ===
-        "w"
-          ? "yellow"
-          : "green";
-
-    }
-
-
-    function updateStatus() {
-
-      if (
-        timerFinished &&
-        matchWinner
-      ) {
-        return;
-      }
-
-
-      let status;
-
-
-      if (
-        game.isCheckmate()
-      ) {
-
-        status =
-          `${
-            game.turn() ===
-            "w"
-              ? "green"
-              : "yellow"
-          } wins — checkmate`;
-
-      }
-
-      else if (
-        game.isStalemate()
-      ) {
-
-        status =
-          "draw — stalemate";
-
-      }
-
-      else if (
-        game.isThreefoldRepetition()
-      ) {
-
-        status =
-          "draw — repetition";
-
-      }
-
-      else if (
-        game.isInsufficientMaterial()
-      ) {
-
-        status =
-          "draw — insufficient material";
-
-      }
-
-      else if (
-        game.isDrawByFiftyMoves()
-      ) {
-
-        status =
-          "draw — fifty-move rule";
-
-      }
-
-      else if (
-        game.isDraw()
-      ) {
-
-        status =
-          "draw";
-
-      }
-
-      else {
-
-        status =
-          `${
-            colorName(
-              game.turn()
-            )
-          } to move`;
-
-
-        if (
-          game.inCheck()
-        ) {
-
-          status +=
-            " — check";
-
-        }
-
-      }
-
-
-      statusElement.textContent =
-        status;
-
-    }
-
-
-    function formatTime(
-      milliseconds
-    ) {
-
-      const safe =
-        Math.max(
-          0,
-          milliseconds
-        );
-
-
-      const totalSeconds =
-        Math.ceil(
-          safe /
-          1000
-        );
-
-
-      const minutes =
-        Math.floor(
-          totalSeconds /
-          60
-        );
-
-
-      const seconds =
-        totalSeconds %
-        60;
-
-
-      return (
-        `${minutes}:${
-          String(
-            seconds
-          ).padStart(
-            2,
-            "0"
-          )
-        }`
-      );
-
-    }
-
-
-    function updateClocks() {
-
-      whiteClockElement.textContent =
-        `yellow ${
-          formatTime(
-            whiteTime
-          )
-        }`;
-
-
-      blackClockElement.textContent =
-        `green ${
-          formatTime(
-            blackTime
-          )
-        }`;
-
-
-      whiteClockElement.classList.toggle(
-        "is-active",
-        timerStarted &&
-        !timerFinished &&
-        activeClock ===
-        "w"
-      );
-
-
-      blackClockElement.classList.toggle(
-        "is-active",
-        timerStarted &&
-        !timerFinished &&
-        activeClock ===
-        "b"
-      );
-
-    }
-
-
-    function stopOnTime(
-      loser
-    ) {
-
-      timerFinished =
-        true;
-
-
-      timerStarted =
-        false;
-
-
-      const winner =
-        loser ===
-        "w"
-          ? "b"
-          : "w";
-
-
-      statusElement.textContent =
-        `${
-          colorName(
-            winner
-          )
-        } wins — time`;
-
-
-      cancelSelection();
-
-
-      updateClocks();
-
-
-      showWin(
-        winner
-      );
-
-    }
-
-
-    function tickClock() {
-
-      const now =
-        performance.now();
-
-
-      if (
-        timerStarted &&
-        !timerFinished &&
-        !game.isGameOver() &&
-        !reviewing
-      ) {
-
-        const elapsed =
-          now -
-          lastTick;
-
-
-        if (
-          activeClock ===
-          "w"
-        ) {
-
-          whiteTime -=
-            elapsed;
-
-
-          if (
-            whiteTime <=
-            0
-          ) {
-
-            whiteTime =
-              0;
-
-
-            stopOnTime(
-              "w"
-            );
-
-          }
-
-        }
-
-        else {
-
-          blackTime -=
-            elapsed;
-
-
-          if (
-            blackTime <=
-            0
-          ) {
-
-            blackTime =
-              0;
-
-
-            stopOnTime(
-              "b"
-            );
-
-          }
-
-        }
-
-      }
-
-
-      lastTick =
-        now;
-
-
-      updateClocks();
-
-    }
-
-
-    function setClockMinutes() {
-
-      if (
-        reviewing
-      ) {
-        return;
-      }
-
-
-      const parsed =
-        Number(
-          timeInput.value
-        );
-
-
-      if (
-        !Number.isFinite(
-          parsed
-        )
-        ||
-        parsed <=
-        0
-      ) {
-
-        timeInput.value =
-          String(
-            startingMinutes
-          );
-
-
-        return;
-
-      }
-
-
-      startingMinutes =
-        parsed;
-
-
-      whiteTime =
-        parsed *
-        60 *
-        1000;
-
-
-      blackTime =
-        parsed *
-        60 *
-        1000;
-
-
-      timerStarted =
-        false;
-
-
-      timerFinished =
-        false;
-
-
-      matchWinner =
-        null;
-
-
-      activeClock =
-        game.turn();
-
-
-      lastTick =
-        performance.now();
-
-
-      cancelSelection();
-
-
-      hideResultUI();
-
-
-      updateStatus();
-
-
-      updateClocks();
-
-    }
-
-
-    function resetGame() {
-
-      cancelSelection();
-
-
-      reviewing =
-        false;
-
-
-      reviewIndex =
-        0;
-
-
-      matchWinner =
-        null;
-
-
-      game.reset();
-
-
-      clearCapturePhysics();
-
-
-      capturedPieces.w.length =
-        0;
-
-
-      capturedPieces.b.length =
-        0;
-
-
-      lastCaptureToken =
-        0;
-
-
-      pieceRestingPositions.clear();
-
-
-      whiteTime =
-        startingMinutes *
-        60 *
-        1000;
-
-
-      blackTime =
-        startingMinutes *
-        60 *
-        1000;
-
-
-      timerStarted =
-        false;
-
-
-      timerFinished =
-        false;
-
-
-      activeClock =
-        "w";
-
-
-      lastTick =
-        performance.now();
-
-
-      hideResultUI();
-
-
-      resetHistory();
-
-
-      renderBoard();
-
-
-      renderCapturedPieces();
-
-
-      updateClocks();
-
-    }
-
-
-    function startReview() {
-
-      if (
-        matchHistory.length <
-        1
-      ) {
-        return;
-      }
-
-
-      cancelSelection();
-
-
-      reviewing =
-        true;
-
-
-      reviewIndex =
-        matchHistory.length -
-        1;
-
-
-      winOverlay.classList.remove(
-        "is-visible"
-      );
-
-
-      winOverlay.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-
-      resultActions.classList.remove(
-        "is-visible"
-      );
-
-
-      resultActions.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-
-      reviewControls.classList.add(
-        "is-visible"
-      );
-
-
-      reviewControls.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-
-      renderBoard();
-
-    }
-
-
-    function updateReviewControls() {
-
-      const lastIndex =
-        matchHistory.length -
-        1;
-
-
-      reviewStartButton.disabled =
-        reviewIndex ===
-        0;
-
-
-      reviewPrevButton.disabled =
-        reviewIndex ===
-        0;
-
-
-      reviewNextButton.disabled =
-        reviewIndex ===
-        lastIndex;
-
-
-      reviewEndButton.disabled =
-        reviewIndex ===
-        lastIndex;
-
-
-      if (
-        reviewIndex ===
-        0
-      ) {
-
-        reviewLabel.textContent =
-          "start";
-
-      }
-
-      else {
-
-        const step =
-          matchHistory[
-            reviewIndex
-          ];
-
-
-        reviewLabel.textContent =
-          `move ${reviewIndex} / ${lastIndex} · ${step.san}`;
-
-      }
-
-    }
-
-
-    function goToReviewIndex(
-      index
-    ) {
-
-      reviewIndex =
-        clampChess(
-          index,
-          0,
-          matchHistory.length -
-          1
-        );
-
-
-      renderBoard();
-
-    }
-
-
-    function returnToResult() {
-
-      reviewing =
-        false;
-
-
-      renderBoard();
-
-
-      renderCapturedPieces();
-
-
-      reviewControls.classList.remove(
-        "is-visible"
-      );
-
-
-      reviewControls.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-
-      if (
-        matchWinner
-      ) {
-
-        showWin(
-          matchWinner
-        );
-
-      }
-
-    }
-
-
-    boardElement.addEventListener(
-      "click",
-      boardClick
-    );
-
-
-    window.addEventListener(
-      "pointermove",
-      event => {
-
-        if (
-          !selected ||
-          !selected.floating
-        ) {
-          return;
-        }
-
-
-        selected.x =
-          event.clientX;
-
-
-        selected.y =
-          event.clientY;
-
-
-        moveFloatingPiece(
-          selected.x,
-          selected.y
-        );
-
-      }
-    );
-
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key ===
-          "Escape"
-        ) {
-
-          if (
-            selected
-          ) {
-
-            cancelSelection();
-
-          }
-
-          else if (
-            reviewing
-          ) {
-
-            returnToResult();
-
-          }
-
-        }
-
-      }
-    );
-
-
-    flipButton.addEventListener(
-      "click",
-      () => {
-
-        cancelSelection();
-
-
-        orientation =
-          orientation ===
-          "white"
-            ? "black"
-            : "white";
-
-
-        renderBoard();
-
-
-        if (
-          !reviewing
-        ) {
-
-          renderCapturedPieces();
-
-        }
-
-      }
-    );
-
-
-    resetButton.addEventListener(
-      "click",
-      resetGame
-    );
-
-
-    playAgainButton.addEventListener(
-      "click",
-      resetGame
-    );
-
-
-    exploreMatchButton.addEventListener(
-      "click",
-      startReview
-    );
-
-
-    reviewStartButton.addEventListener(
-      "click",
-      () => {
-
-        goToReviewIndex(
-          0
-        );
-
-      }
-    );
-
-
-    reviewPrevButton.addEventListener(
-      "click",
-      () => {
-
-        goToReviewIndex(
-          reviewIndex -
-          1
-        );
-
-      }
-    );
-
-
-    reviewNextButton.addEventListener(
-      "click",
-      () => {
-
-        goToReviewIndex(
-          reviewIndex +
-          1
-        );
-
-      }
-    );
-
-
-    reviewEndButton.addEventListener(
-      "click",
-      () => {
-
-        goToReviewIndex(
-          matchHistory.length -
-          1
-        );
-
-      }
-    );
-
-
-    reviewResultButton.addEventListener(
-      "click",
-      returnToResult
-    );
-
-
-    setTimeButton.addEventListener(
-      "click",
-      setClockMinutes
-    );
-
-
-    timeInput.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key ===
-          "Enter"
-        ) {
-
-          setClockMinutes();
-
-        }
-
-      }
-    );
-
-
-    window.addEventListener(
-      "resize",
-      () => {
-
-        if (
-          captureBodies.length ===
-          0
-        ) {
-          return;
-        }
-
-
-        const source =
-          reviewing
-            ? matchHistory[
-                reviewIndex
-              ].captures
-            : capturedPieces;
-
-
-        rebuildCaptureBodies(
-          source,
-          false
-        );
-
-      }
-    );
-
-
-    window.setInterval(
-      tickClock,
-      250
-    );
-
-
-    resetHistory();
-
-
-    renderBoard();
-
-
-    renderCapturedPieces();
-
-
-    updateClocks();
-
-  </script>
-
-</body>
-</html>
+}
