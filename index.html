@@ -2554,7 +2554,16 @@
             .5
           )
           *
-          70
+          38,
+
+        supported:
+          false,
+
+        sleepFrames:
+          0,
+
+        sleeping:
+          false
       };
 
 
@@ -2640,6 +2649,20 @@
       );
 
 
+      captureBodies.forEach(
+        existing => {
+
+          existing.sleeping =
+            false;
+
+
+          existing.sleepFrames =
+            0;
+
+        }
+      );
+
+
       captureLastTime =
         performance.now();
 
@@ -2695,8 +2718,16 @@
 
 
           const correction =
-            hit.overlap *
-            .52;
+            Math.min(
+              hit.overlap *
+              .58,
+              Math.min(
+                a.size,
+                b.size
+              )
+              *
+              .12
+            );
 
 
           a.x -=
@@ -2717,6 +2748,28 @@
           b.y +=
             hit.ny *
             correction;
+
+
+          if (
+            hit.ny >
+            .42
+          ) {
+
+            a.supported =
+              true;
+
+          }
+
+
+          if (
+            hit.ny <
+            -.42
+          ) {
+
+            b.supported =
+              true;
+
+          }
 
 
           const relativeVelocity =
@@ -2743,7 +2796,7 @@
             const impulse =
               -(
                 1 +
-                .24
+                .12
               )
               *
               relativeVelocity
@@ -2803,9 +2856,9 @@
       }
 
 
-      const dt =
+      const elapsed =
         Math.min(
-          .026,
+          .032,
           Math.max(
             .001,
             (
@@ -2822,8 +2875,17 @@
         now;
 
 
+      const substeps =
+        3;
+
+
+      const dt =
+        elapsed /
+        substeps;
+
+
       const gravity =
-        1320;
+        930;
 
 
       const floor =
@@ -2834,6 +2896,205 @@
         captureBin.clientWidth;
 
 
+      for (
+        let step =
+          0;
+        step <
+        substeps;
+        step++
+      ) {
+
+        captureBodies.forEach(
+          body => {
+
+            body.supported =
+              false;
+
+
+            if (
+              body.sleeping
+            ) {
+              return;
+            }
+
+
+            body.vy +=
+              gravity *
+              dt;
+
+
+            body.vx *=
+              .991;
+
+
+            body.vy *=
+              .998;
+
+
+            body.vr *=
+              .985;
+
+
+            body.x +=
+              body.vx *
+              dt;
+
+
+            body.y +=
+              body.vy *
+              dt;
+
+
+            body.rotation +=
+              body.vr *
+              dt;
+
+
+            const maxX =
+              Math.max(
+                0,
+                width -
+                body.size
+              );
+
+
+            const maxY =
+              Math.max(
+                0,
+                floor -
+                body.size
+              );
+
+
+            if (
+              body.x <
+              0
+            ) {
+
+              body.x =
+                0;
+
+
+              body.vx *=
+                -.18;
+
+            }
+
+
+            if (
+              body.x >
+              maxX
+            ) {
+
+              body.x =
+                maxX;
+
+
+              body.vx *=
+                -.18;
+
+            }
+
+
+            if (
+              body.y >
+              maxY
+            ) {
+
+              body.y =
+                maxY;
+
+
+              body.supported =
+                true;
+
+
+              if (
+                Math.abs(
+                  body.vy
+                ) >
+                36
+              ) {
+
+                body.vy *=
+                  -.16;
+
+              }
+
+              else {
+
+                body.vy =
+                  0;
+
+              }
+
+
+              body.vx *=
+                .72;
+
+
+              body.vr *=
+                .68;
+
+            }
+
+          }
+        );
+
+
+        for (
+          let pass =
+            0;
+          pass <
+          6;
+          pass++
+        ) {
+
+          resolveCaptureCollisions();
+
+        }
+
+
+        captureBodies.forEach(
+          body => {
+
+            const maxX =
+              Math.max(
+                0,
+                width -
+                body.size
+              );
+
+
+            const maxY =
+              Math.max(
+                0,
+                floor -
+                body.size
+              );
+
+
+            body.x =
+              clampChess(
+                body.x,
+                0,
+                maxX
+              );
+
+
+            body.y =
+              clampChess(
+                body.y,
+                -body.size,
+                maxY
+              );
+
+          }
+        );
+
+      }
+
+
       let moving =
         false;
 
@@ -2841,183 +3102,80 @@
       captureBodies.forEach(
         body => {
 
-          body.vy +=
-            gravity *
-            dt;
-
-
-          body.x +=
-            body.vx *
-            dt;
-
-
-          body.y +=
-            body.vy *
-            dt;
-
-
-          body.rotation +=
-            body.vr *
-            dt;
-
-
-          const maxX =
-            Math.max(
-              0,
-              width -
-              body.size
-            );
-
-
-          const maxY =
-            Math.max(
-              0,
-              floor -
-              body.size
+          const speed =
+            Math.hypot(
+              body.vx,
+              body.vy
             );
 
 
           if (
-            body.x <
-            0
+            body.supported
+            &&
+            speed <
+            13
+            &&
+            Math.abs(
+              body.vr
+            ) <
+            12
           ) {
 
-            body.x =
+            body.sleepFrames +=
+              1;
+
+          }
+
+          else {
+
+            body.sleepFrames =
               0;
 
 
-            body.vx *=
-              -.32;
-
-          }
-
-
-          if (
-            body.x >
-            maxX
-          ) {
-
-            body.x =
-              maxX;
-
-
-            body.vx *=
-              -.32;
-
-          }
-
-
-          if (
-            body.y >
-            maxY
-          ) {
-
-            body.y =
-              maxY;
-
-
             if (
-              Math.abs(
-                body.vy
-              ) >
-              28
+              speed >
+              18
             ) {
 
-              body.vy *=
-                -.28;
+              body.sleeping =
+                false;
 
             }
-
-            else {
-
-              body.vy =
-                0;
-
-            }
-
-
-            body.vx *=
-              .84;
-
-
-            body.vr *=
-              .78;
 
           }
 
 
           if (
-            Math.abs(
-              body.vx
-            ) >
-            .3
-            ||
-            Math.abs(
-              body.vy
-            ) >
-            .3
-            ||
-            Math.abs(
-              body.vr
-            ) >
-            .3
+            body.sleepFrames >
+            16
+          ) {
+
+            body.vx =
+              0;
+
+
+            body.vy =
+              0;
+
+
+            body.vr =
+              0;
+
+
+            body.sleeping =
+              true;
+
+          }
+
+
+          if (
+            !body.sleeping
           ) {
 
             moving =
               true;
 
           }
-
-        }
-      );
-
-
-      for (
-        let pass =
-          0;
-        pass <
-        5;
-        pass++
-      ) {
-
-        resolveCaptureCollisions();
-
-      }
-
-
-      captureBodies.forEach(
-        body => {
-
-          const maxX =
-            Math.max(
-              0,
-              width -
-              body.size
-            );
-
-
-          const maxY =
-            Math.max(
-              0,
-              floor -
-              body.size
-            );
-
-
-          body.x =
-            clampChess(
-              body.x,
-              0,
-              maxX
-            );
-
-
-          body.y =
-            clampChess(
-              body.y,
-              -body.size,
-              maxY
-            );
 
 
           updateCaptureBodyStyle(
@@ -3824,68 +3982,219 @@
 
     const WIN_IMAGES = [
       "https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG",
-      "https://upload.wikimedia.org/wikipedia/commons/8/8b/Radha-Krishna_chess.jpg",
       "https://upload.wikimedia.org/wikipedia/commons/b/b2/The_Chess_Game.jpg",
-      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Golestan_Palace_Album_No._108-7.jpg/3840px-Golestan_Palace_Album_No._108-7.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/7/73/Golestan_Palace_Album_No._108-7.jpg",
       "https://upload.wikimedia.org/wikipedia/commons/9/91/Chess_playing_Louvre_OA117.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/3/3c/Josef_Danhauser-Die_Schachpartie.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/1/1c/NMSLewisChessmen28.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/6/6d/KnightsTemplarPlayingChess1283.jpg"
+      "https://upload.wikimedia.org/wikipedia/commons/1/1c/NMSLewisChessmen28.jpg"
     ];
+
+
+    const WIN_IMAGE_MIN_LONG_SIDE =
+      1800;
+
+
+    const WIN_IMAGE_MIN_SHORT_SIDE =
+      1200;
 
 
     let lastWinImageIndex =
       -1;
 
 
-    function chooseWinImage() {
+    function imageMeetsWinResolution(
+      image
+    ) {
 
-      if (
-        WIN_IMAGES.length ===
-        1
+      const longSide =
+        Math.max(
+          image.naturalWidth,
+          image.naturalHeight
+        );
+
+
+      const shortSide =
+        Math.min(
+          image.naturalWidth,
+          image.naturalHeight
+        );
+
+
+      return (
+        longSide >=
+        WIN_IMAGE_MIN_LONG_SIDE
+        &&
+        shortSide >=
+        WIN_IMAGE_MIN_SHORT_SIDE
+      );
+
+    }
+
+
+    function testWinImage(
+      src
+    ) {
+
+      return new Promise(
+        resolve => {
+
+          const image =
+            new Image();
+
+
+          image.onload =
+            () => {
+
+              resolve(
+                imageMeetsWinResolution(
+                  image
+                )
+              );
+
+            };
+
+
+          image.onerror =
+            () => {
+
+              resolve(
+                false
+              );
+
+            };
+
+
+          image.src =
+            src;
+
+        }
+      );
+
+    }
+
+
+    async function chooseWinImage() {
+
+      const indexes =
+        WIN_IMAGES.map(
+          (
+            _,
+            index
+          ) =>
+            index
+        );
+
+
+      for (
+        let i =
+          indexes.length -
+          1;
+        i >
+        0;
+        i--
       ) {
 
-        lastWinImageIndex =
-          0;
+        const j =
+          Math.floor(
+            Math.random() *
+            (
+              i +
+              1
+            )
+          );
 
 
-        return WIN_IMAGES[
-          0
+        [
+          indexes[
+            i
+          ],
+          indexes[
+            j
+          ]
+        ] = [
+          indexes[
+            j
+          ],
+          indexes[
+            i
+          ]
         ];
 
       }
 
 
-      let nextIndex;
+      if (
+        indexes.length >
+        1
+        &&
+        indexes[
+          0
+        ] ===
+        lastWinImageIndex
+      ) {
 
-
-      do {
-
-        nextIndex =
-          Math.floor(
-            Math.random() *
-            WIN_IMAGES.length
-          );
+        [
+          indexes[
+            0
+          ],
+          indexes[
+            1
+          ]
+        ] = [
+          indexes[
+            1
+          ],
+          indexes[
+            0
+          ]
+        ];
 
       }
-      while (
-        nextIndex ===
-        lastWinImageIndex
-      );
+
+
+      for (
+        const index
+        of indexes
+      ) {
+
+        const src =
+          WIN_IMAGES[
+            index
+          ];
+
+
+        const good =
+          await testWinImage(
+            src
+          );
+
+
+        if (
+          good
+        ) {
+
+          lastWinImageIndex =
+            index;
+
+
+          return src;
+
+        }
+
+      }
 
 
       lastWinImageIndex =
-        nextIndex;
+        0;
 
 
       return WIN_IMAGES[
-        nextIndex
+        0
       ];
 
     }
 
 
-    function showWin(
+    async function showWin(
       winner
     ) {
 
@@ -3899,7 +4208,7 @@
 
 
       winImage.src =
-        chooseWinImage();
+        await chooseWinImage();
 
 
       winTitle.textContent =
