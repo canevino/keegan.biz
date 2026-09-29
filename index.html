@@ -3,624 +3,831 @@
 
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>keegan.biz</title>
-
   <link rel="stylesheet" href="style.css">
+
+  <style>
+  .home-chess {
+    width: min(100%, 760px);
+    margin-top: clamp(42px, 6vw, 72px);
+  }
+
+  .home-chess .chess-topbar,
+  .home-chess .chess-bottombar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .home-chess .chess-topbar { margin-bottom: 12px; }
+  .home-chess .chess-bottombar { margin-top: 12px; }
+
+  .home-chess .status {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+    color: #c1272d;
+  }
+
+  .home-chess button {
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    color: #c1272d;
+    cursor: pointer;
+  }
+
+  .home-chess button:hover { text-decoration: underline; }
+
+  .home-chess .board {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    width: 100%;
+    aspect-ratio: 1;
+    border-top: 1px solid #c1272d;
+    border-left: 1px solid #c1272d;
+    background: transparent;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .home-chess .square {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 0;
+    border-right: 1px solid #c1272d;
+    border-bottom: 1px solid #c1272d;
+    background: transparent;
+  }
+
+  .home-chess .square.legal::after {
+    content: "";
+    position: absolute;
+    width: 14%;
+    aspect-ratio: 1;
+    border: 1px solid #c1272d;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .home-chess .piece {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: clamp(24px, 5vw, 66px);
+    line-height: 1;
+    font-weight: 700;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .home-chess .piece.white { color: #006a44; }
+  .home-chess .piece.black { color: #fdb913; }
+
+  .piece.dragging {
+    position: fixed;
+    z-index: 9999;
+    width: var(--drag-size);
+    height: var(--drag-size);
+    pointer-events: none;
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+
+  .home-chess .piece-source-hidden { visibility: hidden; }
+
+  .home-chess .coordinate {
+    position: absolute;
+    pointer-events: none;
+    color: #c1272d;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 400;
+  }
+
+  .home-chess .coordinate.file { right: 4px; bottom: 3px; }
+  .home-chess .coordinate.rank { top: 4px; left: 4px; }
+
+  @media (max-width: 700px) {
+    .home-chess {
+      width: 100%;
+      margin-top: 38px;
+    }
+
+    .home-chess .piece { font-size: 9vw; }
+  }
+  </style>
 </head>
 
-
 <body>
-
-  <!-- =====================================================
-       HOME
-       ===================================================== -->
-
-  <div
-    class="page-shell"
-    id="page-shell"
-  >
-
-    <nav
-      class="scarf-rack"
-      aria-label="Sections"
-    >
-
-      <a
-        class="scarf-item scarf-home"
-        href="./"
-        data-live-link
-        aria-label="Home"
-      >
-        <img
-          src="assets/home/home-scarf-update.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="illustration/"
-        data-live-link
-        aria-label="Illustration"
-      >
-        <img
-          src="assets/home/scarf-illustration.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="photography/"
-        data-live-link
-        aria-label="Photography"
-      >
-        <img
-          src="assets/home/scarf-photography.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Graphic Design"
-      >
-        <img
-          src="assets/home/scarf-design.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Music"
-      >
-        <img
-          src="assets/home/scarf-music.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-          href="motion/"
-          data-live-link
-        aria-label="Motion"
-      >
-        <img
-          src="assets/home/scarf-motion.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Miscellaneous"
-      >
-        <img
-          src="assets/home/scarf-misc.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Gastronomy"
-      >
-        <img
-          src="assets/home/scarf-gastronomy.png"
-          alt=""
-        >
-      </a>
-
+  <div class="page-shell" id="page-shell">
+    <nav class="scarf-rack" aria-label="Sections">
+      <a class="scarf-item scarf-home" href="./" data-live-link aria-label="Home"><img src="assets/home/home-scarf-update.png" alt=""></a>
+      <a class="scarf-item" href="illustration/" data-live-link aria-label="Illustration"><img src="assets/home/scarf-illustration.png" alt=""></a>
+      <a class="scarf-item" href="photography/" data-live-link aria-label="Photography"><img src="assets/home/scarf-photography.png" alt=""></a>
+      <a class="scarf-item" href="#" aria-label="Graphic Design"><img src="assets/home/scarf-design.png" alt=""></a>
+      <a class="scarf-item" href="#" aria-label="Music"><img src="assets/home/scarf-music.png" alt=""></a>
+      <a class="scarf-item" href="motion/" data-live-link aria-label="Motion"><img src="assets/home/scarf-motion.png" alt=""></a>
+      <a class="scarf-item" href="#" aria-label="Miscellaneous"><img src="assets/home/scarf-misc.png" alt=""></a>
+      <a class="scarf-item" href="#" aria-label="Gastronomy"><img src="assets/home/scarf-gastronomy.png" alt=""></a>
     </nav>
 
-
     <main class="home">
-
       <section class="hero">
-
         <div class="welcome-slot">
-
-          <span
-            class="welcome-word"
-            id="welcome-word"
-            aria-hidden="true"
-          >
-            Welcome
-          </span>
-
+          <span class="welcome-word" id="welcome-word" aria-hidden="true">Welcome</span>
         </div>
 
-        <div class="site-title">
-          to keegan.biz
-        </div>
+        <div class="site-title">to keegan.biz</div>
 
+        <section class="home-chess" aria-label="Chess">
+          <div class="chess-topbar">
+            <p class="status" id="status">white to move</p>
+            <button id="flip-button" type="button">flip board</button>
+          </div>
+
+          <div class="board" id="board" aria-label="Chess board"></div>
+
+          <div class="chess-bottombar">
+            <button id="reset-button" type="button">reset</button>
+          </div>
+        </section>
       </section>
-
     </main>
-
   </div>
 
-
-  <!-- =====================================================
-       AUDIO
-       ===================================================== -->
-
-  <audio
-    id="wip-audio"
-    preload="auto"
-  >
-    <source
-      src="assets/home/crickets.mp3"
-      type="audio/mpeg"
-    >
+  <audio id="wip-audio" preload="auto">
+    <source src="assets/home/crickets.mp3" type="audio/mpeg">
   </audio>
 
-
-  <!-- =====================================================
-       WIP
-       ===================================================== -->
-
-  <div
-    class="wip-overlay"
-    id="wip-overlay"
-    aria-hidden="true"
-  >
-
+  <div class="wip-overlay" id="wip-overlay" aria-hidden="true">
     <div class="wip-inner">
-
       <div class="wip-header">
-
-        <p class="wip-text">
-          sorry, i'm still working on this page.
-        </p>
-
-        <button
-          class="wip-close"
-          id="wip-close"
-          type="button"
-          aria-label="Close"
-        >
-          ×
-        </button>
-
+        <p class="wip-text">sorry, i'm still working on this page.</p>
+        <button class="wip-close" id="wip-close" type="button" aria-label="Close">×</button>
       </div>
-
-
-      <div
-        class="collage-stage"
-        id="collage-stage"
-        aria-hidden="true"
-      >
-
-        <img
-          class="horse horse-main"
-          id="horse-main"
-          src="assets/home/horse.gif"
-          alt=""
-        >
-
+      <div class="collage-stage" id="collage-stage" aria-hidden="true">
+        <img class="horse horse-main" id="horse-main" src="assets/home/horse.gif" alt="">
       </div>
-
     </div>
-
   </div>
-
 
   <script>
   (() => {
-
-    /* =====================================================
-       HELPERS
-       ===================================================== */
-
-    const clamp = (value, min, max) =>
-      Math.min(
-        Math.max(value, min),
-        max
-      );
-
-
-    function differentIndex(
-      length,
-      current
-    ) {
-
-      let next;
-
-
-      do {
-
-        next =
-          Math.floor(
-            Math.random() *
-            length
-          );
-
-      }
-      while (
-        length > 1 &&
-        next === current
-      );
-
-
-      return next;
-
-    }
-
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
     function smoothStep(value) {
-
-      const t =
-        clamp(
-          value,
-          0,
-          1
-        );
-
-
-      return (
-        t *
-        t *
-        (
-          3 -
-          (2 * t)
-        )
-      );
-
+      const t = clamp(value, 0, 1);
+      return t * t * (3 - (2 * t));
     }
 
-
-    /* =====================================================
-       WELCOME
-       ===================================================== */
-
-    const welcomeWord =
-      document.getElementById(
-        "welcome-word"
-      );
-
-
+    const welcomeWord = document.getElementById("welcome-word");
     if (welcomeWord) {
-
-      welcomeWord.textContent =
-        "Welcome";
-
-      welcomeWord.style.color =
-        "#006a44";
-
+      welcomeWord.textContent = "Welcome";
+      welcomeWord.style.color = "#006a44";
     }
 
+    const pageShell = document.getElementById("page-shell");
+    const overlay = document.getElementById("wip-overlay");
+    const audio = document.getElementById("wip-audio");
+    const closeButton = document.getElementById("wip-close");
+    const stage = document.getElementById("collage-stage");
 
-    /* =====================================================
-       WIP — CLEAN HORSE ONLY
-       ===================================================== */
+    const HORSE_START = 12;
+    const HORSE_FULL = 20;
 
-    const pageShell =
-      document.getElementById(
-        "page-shell"
-      );
-
-
-    const overlay =
-      document.getElementById(
-        "wip-overlay"
-      );
-
-
-    const audio =
-      document.getElementById(
-        "wip-audio"
-      );
-
-
-    const closeButton =
-      document.getElementById(
-        "wip-close"
-      );
-
-
-    const stage =
-      document.getElementById(
-        "collage-stage"
-      );
-
-
-    const HORSE_START =
-      12;
-
-
-    const HORSE_FULL =
-      20;
-
-
-    let overlayOpen =
-      false;
-
-
-    let raf =
-      null;
-
-
-    let openedAt =
-      0;
-
+    let overlayOpen = false;
+    let raf = null;
+    let openedAt = 0;
 
     function horseRevealAt(time) {
-
-      if (
-        time < HORSE_START
-      ) {
-
-        return 0;
-
-      }
-
-
-      return smoothStep(
-        (
-          time -
-          HORSE_START
-        )
-        /
-        (
-          HORSE_FULL -
-          HORSE_START
-        )
-      );
-
+      if (time < HORSE_START) return 0;
+      return smoothStep((time - HORSE_START) / (HORSE_FULL - HORSE_START));
     }
-
 
     function visualLoop(now) {
-
-      if (
-        !overlayOpen
-      ) {
-
-        return;
-
-      }
-
-
-      /*
-        Normally this follows the cricket/music track.
-        Elapsed time is a fallback so the horse still
-        fades in if a browser refuses audio playback.
-      */
-
-      const elapsed =
-        Math.max(
-          0,
-          (now - openedAt) / 1000
-        );
-
-
-      const time =
-        audio.currentTime > 0
-          ? audio.currentTime
-          : elapsed;
-
-
-      stage.style.setProperty(
-        "--visual-reveal",
-        horseRevealAt(
-          time
-        ).toFixed(4)
-      );
-
-
-      raf =
-        requestAnimationFrame(
-          visualLoop
-        );
-
+      if (!overlayOpen) return;
+      const elapsed = Math.max(0, (now - openedAt) / 1000);
+      const time = audio.currentTime > 0 ? audio.currentTime : elapsed;
+      stage.style.setProperty("--visual-reveal", horseRevealAt(time).toFixed(4));
+      raf = requestAnimationFrame(visualLoop);
     }
-
 
     async function openWip() {
-
-      if (
-        overlayOpen
-      ) {
-
-        return;
-
-      }
-
-
-      overlayOpen =
-        true;
-
-
-      openedAt =
-        performance.now();
-
-
-      stage.style.setProperty(
-        "--visual-reveal",
-        "0"
-      );
-
-
-      pageShell.classList.add(
-        "is-hidden"
-      );
-
-
-      overlay.classList.add(
-        "is-visible"
-      );
-
-
-      overlay.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-
-
+      if (overlayOpen) return;
+      overlayOpen = true;
+      openedAt = performance.now();
+      stage.style.setProperty("--visual-reveal", "0");
+      pageShell.classList.add("is-hidden");
+      overlay.classList.add("is-visible");
+      overlay.setAttribute("aria-hidden", "false");
       audio.pause();
-
-
-      audio.currentTime =
-        0;
-
-
-      audio.volume =
-        0.72;
-
-
-      try {
-
-        await audio.play();
-
-      }
-
-      catch (error) {
-
-        console.log(
-          "Audio could not start:",
-          error
-        );
-
-      }
-
-
-      cancelAnimationFrame(
-        raf
-      );
-
-
-      raf =
-        requestAnimationFrame(
-          visualLoop
-        );
-
+      audio.currentTime = 0;
+      audio.volume = 0.72;
+      try { await audio.play(); } catch (error) { console.log("Audio could not start:", error); }
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(visualLoop);
     }
-
 
     function closeWip() {
-
-      overlayOpen =
-        false;
-
-
-      cancelAnimationFrame(
-        raf
-      );
-
-
+      overlayOpen = false;
+      cancelAnimationFrame(raf);
       audio.pause();
-
-
-      audio.currentTime =
-        0;
-
-
-      stage.style.setProperty(
-        "--visual-reveal",
-        "0"
-      );
-
-
-      overlay.classList.remove(
-        "is-visible"
-      );
-
-
-      overlay.setAttribute(
-        "aria-hidden",
-        "true"
-      );
-
-
-      window.setTimeout(() => {
-
-        pageShell.classList.remove(
-          "is-hidden"
-        );
-
-      }, 160);
-
+      audio.currentTime = 0;
+      stage.style.setProperty("--visual-reveal", "0");
+      overlay.classList.remove("is-visible");
+      overlay.setAttribute("aria-hidden", "true");
+      window.setTimeout(() => pageShell.classList.remove("is-hidden"), 160);
     }
 
+    document.addEventListener("click", event => {
+      const link = event.target.closest("a");
+      if (!link) return;
+      if (link.hasAttribute("data-live-link")) return;
+      event.preventDefault();
+      openWip();
+    });
 
-    /* =====================================================
-       LINKS
-       ===================================================== */
+    closeButton.addEventListener("click", closeWip);
 
-    document.addEventListener(
-      "click",
-      event => {
-
-        const link =
-          event.target.closest(
-            "a"
-          );
-
-
-        if (!link) {
-          return;
-        }
-
-
-        if (
-          link.hasAttribute(
-            "data-live-link"
-          )
-        ) {
-
-          return;
-
-        }
-
-
-        event.preventDefault();
-
-
-        openWip();
-
-      }
-    );
-
-
-    closeButton.addEventListener(
-      "click",
-      closeWip
-    );
-
-
-    document.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key ===
-          "Escape" &&
-          overlayOpen
-        ) {
-
-          closeWip();
-
-        }
-
-      }
-    );
-
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && overlayOpen) closeWip();
+    });
   })();
   </script>
 
-</body>
+  <script type="module">
 
+
+    import {
+      Chess
+    } from "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
+
+
+    const boardElement = document.getElementById("board");
+    const statusElement = document.getElementById("status");
+
+    const flipButton = document.getElementById("flip-button");
+    const resetButton = document.getElementById("reset-button");
+
+
+    const game = new Chess();
+
+
+    let orientation = "white";
+
+    let drag = null;
+
+
+    const pieceLetters = {
+      k: "K",
+      q: "Q",
+      r: "R",
+      b: "B",
+      n: "N",
+      p: "P"
+    };
+
+
+    function getFiles() {
+      if (orientation === "white") {
+        return [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h"
+        ];
+      }
+
+      return [
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ];
+    }
+
+
+    function getRanks() {
+      if (orientation === "white") {
+        return [
+          8,
+          7,
+          6,
+          5,
+          4,
+          3,
+          2,
+          1
+        ];
+      }
+
+      return [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ];
+    }
+
+
+    function renderBoard() {
+      boardElement.innerHTML = "";
+
+      const files = getFiles();
+      const ranks = getRanks();
+
+
+      for (let row = 0; row < 8; row++) {
+        for (let column = 0; column < 8; column++) {
+
+          const file = files[column];
+          const rank = ranks[row];
+
+          const squareName = `${file}${rank}`;
+
+          const square = document.createElement("div");
+
+          square.className = "square";
+          square.dataset.square = squareName;
+
+
+          const piece = game.get(squareName);
+
+
+          if (piece) {
+            const pieceElement = document.createElement("div");
+
+            pieceElement.className =
+              `piece ${piece.color === "w" ? "white" : "black"}`;
+
+            pieceElement.textContent = pieceLetters[piece.type];
+
+            pieceElement.dataset.square = squareName;
+
+            pieceElement.addEventListener(
+              "pointerdown",
+              startDrag
+            );
+
+            square.appendChild(pieceElement);
+          }
+
+
+          if (column === 0) {
+            const rankCoordinate =
+              document.createElement("span");
+
+            rankCoordinate.className =
+              "coordinate rank";
+
+            rankCoordinate.textContent = rank;
+
+            square.appendChild(rankCoordinate);
+          }
+
+
+          if (row === 7) {
+            const fileCoordinate =
+              document.createElement("span");
+
+            fileCoordinate.className =
+              "coordinate file";
+
+            fileCoordinate.textContent = file;
+
+            square.appendChild(fileCoordinate);
+          }
+
+
+          boardElement.appendChild(square);
+        }
+      }
+
+
+      updateStatus();
+    }
+
+
+    function startDrag(event) {
+      if (drag) {
+        return;
+      }
+
+
+      const pieceElement = event.currentTarget;
+
+      const fromSquare =
+        pieceElement.dataset.square;
+
+      const piece =
+        game.get(fromSquare);
+
+
+      if (!piece) {
+        return;
+      }
+
+
+      if (piece.color !== game.turn()) {
+        return;
+      }
+
+
+      event.preventDefault();
+
+
+      const squareElement =
+        pieceElement.closest(".square");
+
+      const squareRect =
+        squareElement.getBoundingClientRect();
+
+
+      const clone =
+        pieceElement.cloneNode(true);
+
+
+      clone.classList.add("dragging");
+
+      clone.style.setProperty(
+        "--drag-size",
+        `${squareRect.width}px`
+      );
+
+      document.body.appendChild(clone);
+
+
+      pieceElement.classList.add(
+        "piece-source-hidden"
+      );
+
+
+      drag = {
+        from: fromSquare,
+        original: pieceElement,
+        floating: clone
+      };
+
+
+      showLegalMoves(fromSquare);
+
+
+      moveFloatingPiece(
+        event.clientX,
+        event.clientY
+      );
+
+
+      window.addEventListener(
+        "pointermove",
+        dragMove,
+        {
+          passive: false
+        }
+      );
+
+      window.addEventListener(
+        "pointerup",
+        endDrag,
+        {
+          passive: false
+        }
+      );
+
+      window.addEventListener(
+        "pointercancel",
+        cancelDrag,
+        {
+          passive: false
+        }
+      );
+    }
+
+
+    function dragMove(event) {
+      if (!drag) {
+        return;
+      }
+
+
+      event.preventDefault();
+
+
+      moveFloatingPiece(
+        event.clientX,
+        event.clientY
+      );
+    }
+
+
+    function moveFloatingPiece(x, y) {
+      if (!drag) {
+        return;
+      }
+
+
+      drag.floating.style.left =
+        `${x}px`;
+
+      drag.floating.style.top =
+        `${y}px`;
+    }
+
+
+    function endDrag(event) {
+      if (!drag) {
+        return;
+      }
+
+
+      event.preventDefault();
+
+
+      const destination =
+        getSquareAtPoint(
+          event.clientX,
+          event.clientY
+        );
+
+
+      if (destination) {
+        attemptMove(
+          drag.from,
+          destination
+        );
+      }
+
+
+      finishDrag();
+    }
+
+
+    function cancelDrag() {
+      if (!drag) {
+        return;
+      }
+
+
+      finishDrag();
+    }
+
+
+    function finishDrag() {
+      clearLegalMoves();
+
+
+      if (drag.floating) {
+        drag.floating.remove();
+      }
+
+
+      if (drag.original) {
+        drag.original.classList.remove(
+          "piece-source-hidden"
+        );
+      }
+
+
+      drag = null;
+
+
+      window.removeEventListener(
+        "pointermove",
+        dragMove
+      );
+
+      window.removeEventListener(
+        "pointerup",
+        endDrag
+      );
+
+      window.removeEventListener(
+        "pointercancel",
+        cancelDrag
+      );
+    }
+
+
+    function getSquareAtPoint(x, y) {
+      if (drag?.floating) {
+        drag.floating.style.display = "none";
+      }
+
+
+      const element =
+        document.elementFromPoint(x, y);
+
+
+      if (drag?.floating) {
+        drag.floating.style.display = "";
+      }
+
+
+      if (!element) {
+        return null;
+      }
+
+
+      const square =
+        element.closest(".square");
+
+
+      if (!square) {
+        return null;
+      }
+
+
+      return square.dataset.square;
+    }
+
+
+    function attemptMove(from, to) {
+      let move = null;
+
+
+      try {
+        move = game.move({
+          from: from,
+          to: to,
+          promotion: "q"
+        });
+      }
+
+      catch (error) {
+        move = null;
+      }
+
+
+      if (!move) {
+        return;
+      }
+
+
+      renderBoard();
+    }
+
+
+    function showLegalMoves(square) {
+      clearLegalMoves();
+
+
+      const moves =
+        game.moves({
+          square: square,
+          verbose: true
+        });
+
+
+      moves.forEach(move => {
+        const squareElement =
+          boardElement.querySelector(
+            `[data-square="${move.to}"]`
+          );
+
+
+        if (squareElement) {
+          squareElement.classList.add(
+            "legal"
+          );
+        }
+      });
+    }
+
+
+    function clearLegalMoves() {
+      boardElement
+        .querySelectorAll(".square.legal")
+        .forEach(square => {
+          square.classList.remove("legal");
+        });
+    }
+
+
+    function updateStatus() {
+      let status;
+
+
+      if (game.isCheckmate()) {
+        const winner =
+          game.turn() === "w"
+            ? "black"
+            : "white";
+
+        status = `${winner} wins — checkmate`;
+      }
+
+      else if (game.isStalemate()) {
+        status = "draw — stalemate";
+      }
+
+      else if (game.isThreefoldRepetition()) {
+        status = "draw — repetition";
+      }
+
+      else if (game.isInsufficientMaterial()) {
+        status = "draw — insufficient material";
+      }
+
+      else if (game.isDrawByFiftyMoves()) {
+        status = "draw — fifty-move rule";
+      }
+
+      else if (game.isDraw()) {
+        status = "draw";
+      }
+
+      else {
+        const turn =
+          game.turn() === "w"
+            ? "white"
+            : "black";
+
+        status = `${turn} to move`;
+
+
+        if (game.inCheck()) {
+          status += " — check";
+        }
+      }
+
+
+      statusElement.textContent = status;
+    }
+
+
+    flipButton.addEventListener(
+      "click",
+      () => {
+
+        if (drag) {
+          finishDrag();
+        }
+
+
+        orientation =
+          orientation === "white"
+            ? "black"
+            : "white";
+
+
+        renderBoard();
+      }
+    );
+
+
+    resetButton.addEventListener(
+      "click",
+      () => {
+
+        if (drag) {
+          finishDrag();
+        }
+
+
+        game.reset();
+
+        renderBoard();
+      }
+    );
+
+
+    renderBoard();
+
+  
+  </script>
+</body>
 </html>
