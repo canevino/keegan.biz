@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta
@@ -9,10 +10,7 @@
 
   <title>keegan.biz</title>
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
+  <link rel="stylesheet" href="style.css">
 
   <style>
     .home-chess {
@@ -21,439 +19,210 @@
       --board-green: var(--green, #006a44);
       --board-ink: var(--ink, #11110f);
       --board-paper: var(--paper, #ece7d7);
-
       --square-a: #ece7d7;
       --square-b: #ddd7b6;
+      --capture-width: 54px;
 
-      --capture-width: 58px;
-
-      width:
-        min(
-          100%,
-          620px
-        );
-
-      max-width:
-        100%;
-
-      min-width:
-        0;
-
-      margin-top:
-        clamp(
-          42px,
-          5vw,
-          68px
-        );
+      width: min(100%, 560px);
+      max-width: 100%;
+      min-width: 0;
+      margin-top: clamp(42px, 5vw, 68px);
     }
-
 
     .home-chess .chess-topbar {
-      display:
-        grid;
-
-      grid-template-columns:
-        1fr
-        auto;
-
-      align-items:
-        end;
-
-      gap:
-        16px;
-
-      margin-bottom:
-        10px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 10px;
     }
-
 
     .home-chess .status,
     .home-chess .clock,
-    .home-chess .time-label {
-      margin:
-        0;
-
-      font-size:
-        14px;
-
-      line-height:
-        1;
-
-      font-weight:
-        700;
+    .home-chess .time-label,
+    .home-chess .review-label {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 700;
     }
-
 
     .home-chess .status,
-    .home-chess .time-label {
-      color:
-        var(--board-red);
+    .home-chess .time-label,
+    .home-chess .review-label {
+      color: var(--board-red);
     }
-
 
     #white-clock {
-      color:
-        var(--board-yellow);
+      color: var(--board-yellow);
     }
-
 
     #black-clock {
-      color:
-        var(--board-green);
+      color: var(--board-green);
     }
-
 
     .home-chess .clock.is-active {
-      text-decoration:
-        underline;
-
-      text-decoration-thickness:
-        2px;
-
-      text-underline-offset:
-        4px;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
     }
-
 
     .home-chess button {
-      appearance:
-        none;
-
-      margin:
-        0;
-
-      padding:
-        0;
-
-      border:
-        0;
-
-      border-radius:
-        0;
-
-      background:
-        transparent;
-
-      color:
-        var(--board-red);
-
-      font:
-        inherit;
-
-      font-size:
-        14px;
-
-      line-height:
-        1;
-
-      font-weight:
-        700;
-
-      cursor:
-        pointer;
+      appearance: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--board-red);
+      font: inherit;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 700;
+      cursor: pointer;
     }
-
 
     .home-chess button:hover {
-      text-decoration:
-        underline;
-
-      text-underline-offset:
-        3px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
+    .home-chess button:disabled {
+      opacity: .3;
+      cursor: default;
+      text-decoration: none;
+    }
 
     .home-chess input {
-      width:
-        56px;
-
-      min-width:
-        0;
-
-      padding:
-        4px
-        5px;
-
-      border:
-        1px solid
-        var(--board-red);
-
-      border-radius:
-        0;
-
-      background:
-        transparent;
-
-      color:
-        var(--board-ink);
-
-      font:
-        inherit;
-
-      font-size:
-        14px;
-
-      line-height:
-        1;
-
-      font-weight:
-        700;
-
-      outline:
-        0;
+      width: 56px;
+      min-width: 0;
+      padding: 4px 5px;
+      border: 1px solid var(--board-red);
+      border-radius: 0;
+      background: transparent;
+      color: var(--board-ink);
+      font: inherit;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 700;
+      outline: 0;
     }
-
 
     .home-chess input:focus {
-      outline:
-        2px solid
-        var(--board-red);
-
-      outline-offset:
-        2px;
+      outline: 2px solid var(--board-red);
+      outline-offset: 2px;
     }
 
-
     .home-chess .board-area {
-      display:
-        grid;
-
+      display: grid;
       grid-template-columns:
         var(--capture-width)
         minmax(0, 1fr)
         var(--capture-width);
-
-      align-items:
-        stretch;
-
-      width:
-        100%;
-
-      min-width:
-        0;
+      align-items: stretch;
+      width: 100%;
+      min-width: 0;
     }
 
+    .home-chess .board-frame {
+      grid-column: 2;
+      position: relative;
+      min-width: 0;
+      aspect-ratio: 1;
+    }
 
     .home-chess .board {
-      grid-column:
-        2;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
 
-      position:
-        relative;
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      grid-template-rows: repeat(8, minmax(0, 1fr));
 
-      z-index:
-        2;
+      border-top: 2px solid var(--board-red);
+      border-left: 2px solid var(--board-red);
+      background: var(--square-a);
 
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(
-          8,
-          minmax(0, 1fr)
-        );
-
-      grid-template-rows:
-        repeat(
-          8,
-          minmax(0, 1fr)
-        );
-
-      width:
-        100%;
-
-      min-width:
-        0;
-
-      aspect-ratio:
-        1;
-
-      border-top:
-        2px solid
-        var(--board-red);
-
-      border-left:
-        2px solid
-        var(--board-red);
-
-      background:
-        var(--square-a);
-
-      user-select:
-        none;
-
-      -webkit-user-select:
-        none;
-
-      touch-action:
-        manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
     }
-
 
     .home-chess .square {
-      position:
-        relative;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      min-width:
-        0;
-
-      min-height:
-        0;
-
-      border-right:
-        2px solid
-        var(--board-red);
-
-      border-bottom:
-        2px solid
-        var(--board-red);
-
-      cursor:
-        pointer;
-
-      overflow:
-        visible;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      min-height: 0;
+      border-right: 2px solid var(--board-red);
+      border-bottom: 2px solid var(--board-red);
+      cursor: pointer;
+      overflow: visible;
     }
-
 
     .home-chess .square.light {
-      background:
-        var(--square-a);
+      background: var(--square-a);
     }
-
 
     .home-chess .square.dark {
-      background:
-        var(--square-b);
+      background: var(--square-b);
     }
-
 
     .home-chess .square.legal::after {
-      content:
-        "";
-
-      position:
-        absolute;
-
-      z-index:
-        6;
-
-      width:
-        13%;
-
-      aspect-ratio:
-        1;
-
-      border:
-        2px solid
-        var(--board-red);
-
-      border-radius:
-        50%;
-
-      pointer-events:
-        none;
+      content: "";
+      position: absolute;
+      z-index: 6;
+      width: 13%;
+      aspect-ratio: 1;
+      border: 2px solid var(--board-red);
+      border-radius: 50%;
+      pointer-events: none;
     }
-
 
     .home-chess .piece {
-      position:
-        relative;
+      position: relative;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
 
-      z-index:
-        4;
+      font-size: clamp(25px, 4vw, 56px);
+      line-height: 1;
+      font-weight: 700;
 
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      width:
-        100%;
-
-      height:
-        100%;
-
-      font-size:
-        clamp(
-          25px,
-          4.35vw,
-          58px
-        );
-
-      line-height:
-        1;
-
-      font-weight:
-        700;
-
-      cursor:
-        pointer;
-
-      user-select:
-        none;
-
-      -webkit-user-select:
-        none;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
 
       transform:
-        translate(
-          var(--rest-x, 0px),
-          var(--rest-y, 0px)
-        )
-        rotate(
-          var(--rest-r, 0deg)
-        );
+        translate(var(--rest-x, 0px), var(--rest-y, 0px))
+        rotate(var(--rest-r, 0deg));
 
-      transform-origin:
-        center;
+      transform-origin: center;
     }
-
 
     .home-chess .piece.white {
-      color:
-        var(--board-yellow);
+      color: var(--board-yellow);
     }
-
 
     .home-chess .piece.black {
-      color:
-        var(--board-green);
+      color: var(--board-green);
     }
 
-
     .home-chess .piece.is-selected {
-      z-index:
-        12;
-
-      opacity:
-        .48;
+      z-index: 12;
+      opacity: 1;
 
       transform:
         translate(
           var(--rest-x, 0px),
-          calc(
-            var(--rest-y, 0px)
-            -
-            3px
-          )
+          calc(var(--rest-y, 0px) - 3px)
         )
-        rotate(
-          var(--rest-r, 0deg)
-        )
+        rotate(var(--rest-r, 0deg))
         scale(1.035);
 
       text-shadow:
@@ -463,53 +232,28 @@
         var(--board-red);
     }
 
-
     .floating-piece {
-      position:
-        fixed;
+      position: fixed;
+      z-index: 999999;
 
-      z-index:
-        999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      display:
-        flex;
+      width: var(--float-size);
+      height: var(--float-size);
 
-      align-items:
-        center;
+      line-height: 1;
+      font-weight: 700;
 
-      justify-content:
-        center;
-
-      width:
-        var(--float-size);
-
-      height:
-        var(--float-size);
-
-      line-height:
-        1;
-
-      font-weight:
-        700;
-
-      pointer-events:
-        none;
-
-      user-select:
-        none;
-
-      -webkit-user-select:
-        none;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
 
       transform:
-        translate(
-          -50%,
-          -50%
-        )
+        translate(-50%, -50%)
         translateY(-5px)
-        rotate(
-          var(--float-r, 0deg)
-        )
+        rotate(var(--float-r, 0deg))
         scale(1.06);
 
       text-shadow:
@@ -519,575 +263,448 @@
         var(--board-red);
     }
 
-
     .home-chess .piece.just-dropped {
       animation:
         piece-drop
         190ms
-        cubic-bezier(
-          .18,
-          .82,
-          .23,
-          1
-        );
+        cubic-bezier(.18, .82, .23, 1);
     }
 
-
     @keyframes piece-drop {
-
       0% {
         transform:
           translate(
-            calc(
-              var(--rest-x, 0px)
-              -
-              2px
-            ),
-            calc(
-              var(--rest-y, 0px)
-              -
-              9px
-            )
+            calc(var(--rest-x, 0px) - 2px),
+            calc(var(--rest-y, 0px) - 9px)
           )
-          rotate(
-            calc(
-              var(--rest-r, 0deg)
-              +
-              1.5deg
-            )
-          )
+          rotate(calc(var(--rest-r, 0deg) + 1.5deg))
           scale(1.08);
       }
-
 
       72% {
         transform:
           translate(
-            calc(
-              var(--rest-x, 0px)
-              +
-              .6px
-            ),
-            calc(
-              var(--rest-y, 0px)
-              +
-              1px
-            )
+            calc(var(--rest-x, 0px) + .6px),
+            calc(var(--rest-y, 0px) + 1px)
           )
-          rotate(
-            calc(
-              var(--rest-r, 0deg)
-              -
-              .3deg
-            )
-          )
+          rotate(calc(var(--rest-r, 0deg) - .3deg))
           scale(.99);
       }
 
-
       100% {
         transform:
-          translate(
-            var(--rest-x, 0px),
-            var(--rest-y, 0px)
-          )
-          rotate(
-            var(--rest-r, 0deg)
-          )
+          translate(var(--rest-x, 0px), var(--rest-y, 0px))
+          rotate(var(--rest-r, 0deg))
           scale(1);
       }
-
     }
-
 
     .home-chess .coordinate {
-      position:
-        absolute;
-
-      z-index:
-        7;
-
-      color:
-        var(--board-red);
-
-      font-size:
-        9px;
-
-      line-height:
-        1;
-
-      font-weight:
-        700;
-
-      pointer-events:
-        none;
+      position: absolute;
+      z-index: 7;
+      color: var(--board-red);
+      font-size: 9px;
+      line-height: 1;
+      font-weight: 700;
+      pointer-events: none;
     }
-
 
     .home-chess .coordinate.file {
-      right:
-        3px;
-
-      bottom:
-        3px;
+      right: 3px;
+      bottom: 3px;
     }
-
 
     .home-chess .coordinate.rank {
-      top:
-        3px;
-
-      left:
-        3px;
+      top: 3px;
+      left: 3px;
     }
-
 
     .home-chess .capture-pile {
-      position:
-        relative;
-
-      align-self:
-        stretch;
-
-      min-width:
-        0;
-
-      overflow:
-        hidden;
-
-      pointer-events:
-        none;
+      position: relative;
+      align-self: stretch;
+      min-width: 0;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 8;
     }
-
 
     .home-chess .capture-pile-yellow {
-      grid-column:
-        1;
+      grid-column: 1;
     }
-
 
     .home-chess .capture-pile-green {
-      grid-column:
-        3;
+      grid-column: 3;
     }
-
 
     .home-chess .captured-piece {
-      position:
-        absolute;
+      position: absolute;
+      left: 50%;
+      bottom: var(--pile-y, 4px);
 
-      left:
-        50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      bottom:
-        var(--pile-y, 4px);
+      width: 30px;
+      height: 30px;
 
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      width:
-        32px;
-
-      height:
-        32px;
-
-      font-size:
-        29px;
-
-      line-height:
-        1;
-
-      font-weight:
-        700;
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 700;
 
       transform:
-        translateX(
-          calc(
-            -50%
-            +
-            var(--pile-x, 0px)
-          )
-        )
-        rotate(
-          var(--pile-r, 0deg)
-        );
+        translateX(calc(-50% + var(--pile-x, 0px)))
+        rotate(var(--pile-r, 0deg));
 
-      transform-origin:
-        center;
-
-      will-change:
-        transform;
+      transform-origin: center;
+      will-change: transform;
     }
-
 
     .home-chess .captured-piece.white {
-      color:
-        var(--board-yellow);
+      color: var(--board-yellow);
     }
-
 
     .home-chess .captured-piece.black {
-      color:
-        var(--board-green);
+      color: var(--board-green);
     }
-
 
     .home-chess .captured-piece.is-falling {
       animation:
         captured-fall
         var(--fall-time, 660ms)
-        cubic-bezier(
-          .17,
-          .72,
-          .18,
-          1
-        );
+        cubic-bezier(.17, .72, .18, 1);
     }
 
-
     @keyframes captured-fall {
-
       0% {
         transform:
-          translateX(
-            calc(
-              -50%
-              +
-              var(--pile-x, 0px)
-            )
-          )
-          translateY(
-            calc(
-              -1
-              *
-              var(--fall-distance, 460px)
-            )
-          )
-          rotate(
-            calc(
-              var(--pile-r, 0deg)
-              -
-              12deg
-            )
-          );
+          translateX(calc(-50% + var(--pile-x, 0px)))
+          translateY(calc(-1 * var(--fall-distance, 460px)))
+          rotate(calc(var(--pile-r, 0deg) - 12deg));
       }
-
 
       72% {
         transform:
-          translateX(
-            calc(
-              -50%
-              +
-              var(--pile-x, 0px)
-            )
-          )
+          translateX(calc(-50% + var(--pile-x, 0px)))
           translateY(7px)
-          rotate(
-            calc(
-              var(--pile-r, 0deg)
-              +
-              2deg
-            )
-          );
+          rotate(calc(var(--pile-r, 0deg) + 2deg));
       }
-
 
       87% {
         transform:
-          translateX(
-            calc(
-              -50%
-              +
-              var(--pile-x, 0px)
-            )
-          )
+          translateX(calc(-50% + var(--pile-x, 0px)))
           translateY(-2px)
-          rotate(
-            calc(
-              var(--pile-r, 0deg)
-              -
-              .7deg
-            )
-          );
+          rotate(calc(var(--pile-r, 0deg) - .7deg));
       }
-
 
       100% {
         transform:
-          translateX(
-            calc(
-              -50%
-              +
-              var(--pile-x, 0px)
-            )
-          )
+          translateX(calc(-50% + var(--pile-x, 0px)))
           translateY(0)
-          rotate(
-            var(--pile-r, 0deg)
-          );
+          rotate(var(--pile-r, 0deg));
       }
-
     }
 
+    .home-chess .win-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .home-chess .win-overlay.is-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .home-chess .win-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .home-chess .win-overlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(17, 17, 15, .12);
+      pointer-events: none;
+    }
+
+    .home-chess .win-title {
+      position: relative;
+      z-index: 2;
+
+      width: fit-content;
+      max-width: 88%;
+
+      margin: 0;
+      padding: 12px 18px 14px;
+
+      background: var(--board-paper);
+
+      text-align: center;
+
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: .9;
+      letter-spacing: -.065em;
+      font-weight: 700;
+
+      color: var(--winner-color, var(--board-green));
+    }
+
+    .home-chess .result-actions {
+      display: none;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px;
+      margin-top: 10px;
+    }
+
+    .home-chess .result-actions.is-visible {
+      display: grid;
+    }
+
+    .home-chess .result-actions button {
+      min-height: 38px;
+      border: 1px solid var(--board-red);
+      padding: 9px 12px;
+      text-align: left;
+    }
+
+    .home-chess .result-actions button:hover {
+      background: var(--board-red);
+      color: var(--board-paper);
+      text-decoration: none;
+    }
+
+    .home-chess .review-controls {
+      display: none;
+      grid-template-columns:
+        auto
+        auto
+        minmax(0, 1fr)
+        auto
+        auto
+        auto;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .home-chess .review-controls.is-visible {
+      display: grid;
+    }
+
+    .home-chess .review-label {
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     .home-chess .chess-bottombar {
-      display:
-        grid;
-
+      display: grid;
       grid-template-columns:
         auto
         minmax(0, 1fr)
         auto;
-
       grid-template-areas:
         "reset clocks setter";
-
-      align-items:
-        end;
-
-      gap:
-        14px
-        18px;
-
-      margin-top:
-        12px;
+      align-items: end;
+      gap: 14px 18px;
+      margin-top: 12px;
     }
-
 
     #reset-button {
-      grid-area:
-        reset;
-
-      justify-self:
-        start;
+      grid-area: reset;
+      justify-self: start;
     }
-
 
     .home-chess .clock-group {
-      grid-area:
-        clocks;
-
-      display:
-        flex;
-
-      justify-content:
-        center;
-
-      align-items:
-        center;
-
-      gap:
-        18px;
-
-      min-width:
-        0;
+      grid-area: clocks;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+      min-width: 0;
     }
 
-
     .home-chess .time-setter {
-      grid-area:
-        setter;
-
-      display:
-        grid;
-
+      grid-area: setter;
+      display: grid;
       grid-template-columns:
         auto
         56px
         auto;
-
-      align-items:
-        center;
-
-      gap:
-        8px;
-
-      justify-self:
-        end;
+      align-items: center;
+      gap: 8px;
+      justify-self: end;
     }
 
-
-    @media (
-      max-width:
-      1180px
-    ) {
-
+    @media (max-width: 1400px) {
       .home-chess {
-        --capture-width:
-          46px;
-
-        width:
-          min(
-            100%,
-            540px
-          );
+        --capture-width: 46px;
+        width: min(100%, 500px);
       }
-
 
       .home-chess .captured-piece {
-        width:
-          30px;
+        width: 28px;
+        height: 28px;
+        font-size: 25px;
+      }
+    }
 
-        height:
-          30px;
-
-        font-size:
-          27px;
+    @media (min-width: 701px) and (max-width: 1100px) {
+      .home-chess {
+        --capture-width: 38px;
+        width: min(100%, 420px);
       }
 
+      .home-chess .piece {
+        font-size: clamp(24px, 4.3vw, 42px);
+      }
+
+      .home-chess .captured-piece {
+        width: 25px;
+        height: 25px;
+        font-size: 22px;
+      }
 
       .home-chess .chess-bottombar {
-        grid-template-columns:
-          auto
-          1fr;
-
+        grid-template-columns: auto 1fr;
         grid-template-areas:
           "reset setter"
           "clocks clocks";
       }
 
-
       .home-chess .clock-group {
-        justify-content:
-          space-between;
+        justify-content: space-between;
       }
 
+      .home-chess .review-controls {
+        grid-template-columns:
+          auto
+          auto
+          minmax(0, 1fr)
+          auto
+          auto;
+      }
+
+      .home-chess .review-result {
+        grid-column: 1 / -1;
+        justify-self: start;
+      }
     }
 
-
-    @media (
-      max-width:
-      700px
-    ) {
-
+    @media (max-width: 700px) {
       .home-chess {
-        --capture-width:
-          24px;
-
-        width:
-          100%;
-
-        margin-top:
-          34px;
+        --capture-width: 26px;
+        width: 100%;
+        margin-top: 34px;
       }
-
 
       .home-chess .chess-topbar {
-        margin-bottom:
-          8px;
+        margin-bottom: 8px;
       }
-
 
       .home-chess .status,
       .home-chess .clock,
       .home-chess .time-label,
+      .home-chess .review-label,
       .home-chess button,
       .home-chess input {
-        font-size:
-          12px;
+        font-size: 12px;
       }
-
 
       .home-chess .piece {
-        font-size:
-          clamp(
-            23px,
-            8.7vw,
-            36px
-          );
+        font-size: clamp(23px, 8.5vw, 36px);
       }
-
 
       .home-chess .captured-piece {
-        width:
-          22px;
-
-        height:
-          22px;
-
-        font-size:
-          20px;
+        width: 22px;
+        height: 22px;
+        font-size: 20px;
       }
-
 
       .home-chess .coordinate {
-        font-size:
-          7px;
+        font-size: 7px;
       }
 
+      .home-chess .win-title {
+        max-width: 86%;
+        padding: 9px 12px 11px;
+        font-size: clamp(36px, 13vw, 58px);
+      }
+
+      .home-chess .result-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .home-chess .review-controls {
+        grid-template-columns:
+          repeat(4, auto);
+        justify-content: space-between;
+        gap: 10px 8px;
+      }
+
+      .home-chess .review-label {
+        grid-column: 1 / -1;
+        grid-row: 1;
+      }
+
+      .home-chess .review-result {
+        grid-column: 1 / -1;
+        justify-self: start;
+      }
 
       .home-chess .chess-bottombar {
         grid-template-columns:
           auto
           1fr;
-
         grid-template-areas:
           "reset clocks"
           "setter setter";
-
-        align-items:
-          center;
-
-        gap:
-          14px
-          12px;
+        align-items: center;
+        gap: 14px 12px;
       }
-
 
       .home-chess .time-setter {
         grid-template-columns:
           auto
           46px
           auto;
-
-        gap:
-          6px;
-
-        justify-self:
-          start;
+        gap: 6px;
+        justify-self: start;
       }
-
 
       .home-chess .time-setter input {
-        width:
-          46px;
+        width: 46px;
       }
-
 
       .home-chess .clock-group {
-        justify-content:
-          flex-end;
-
-        gap:
-          14px;
+        justify-content: flex-end;
+        gap: 14px;
       }
-
     }
 
-
-    @media (
-      max-width:
-      420px
-    ) {
-
+    @media (max-width: 420px) {
       .home-chess {
-        --capture-width:
-          20px;
+        --capture-width: 22px;
       }
-
 
       .home-chess .time-label {
-        display:
-          none;
+        display: none;
       }
-
 
       .home-chess .time-setter {
         grid-template-columns:
@@ -1095,12 +712,15 @@
           auto;
       }
 
-
       .home-chess .time-setter input {
-        width:
-          44px;
+        width: 44px;
       }
 
+      .home-chess .captured-piece {
+        width: 20px;
+        height: 20px;
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -1268,11 +888,38 @@
             ></div>
 
 
-            <div
-              class="board"
-              id="board"
-              aria-label="Chess board"
-            ></div>
+            <div class="board-frame">
+
+              <div
+                class="board"
+                id="board"
+                aria-label="Chess board"
+              ></div>
+
+
+              <div
+                class="win-overlay"
+                id="win-overlay"
+                aria-hidden="true"
+              >
+
+                <img
+                  class="win-image"
+                  id="win-image"
+                  src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG"
+                  alt=""
+                >
+
+                <p
+                  class="win-title"
+                  id="win-title"
+                >
+                  Green Won
+                </p>
+
+              </div>
+
+            </div>
 
 
             <div
@@ -1280,6 +927,83 @@
               id="capture-pile-green"
               aria-label="Captured green pieces"
             ></div>
+
+          </div>
+
+
+          <div
+            class="result-actions"
+            id="result-actions"
+            aria-hidden="true"
+          >
+
+            <button
+              id="play-again-button"
+              type="button"
+            >
+              play again
+            </button>
+
+            <button
+              id="explore-match-button"
+              type="button"
+            >
+              explore match
+            </button>
+
+          </div>
+
+
+          <div
+            class="review-controls"
+            id="review-controls"
+            aria-hidden="true"
+          >
+
+            <button
+              id="review-start"
+              type="button"
+            >
+              start
+            </button>
+
+            <button
+              id="review-prev"
+              type="button"
+              aria-label="Previous move"
+            >
+              ←
+            </button>
+
+            <span
+              class="review-label"
+              id="review-label"
+            >
+              start
+            </span>
+
+            <button
+              id="review-next"
+              type="button"
+              aria-label="Next move"
+            >
+              →
+            </button>
+
+            <button
+              id="review-end"
+              type="button"
+            >
+              end
+            </button>
+
+            <button
+              class="review-result"
+              id="review-result"
+              type="button"
+            >
+              result
+            </button>
 
           </div>
 
@@ -1849,6 +1573,84 @@
       );
 
 
+    const winOverlay =
+      document.getElementById(
+        "win-overlay"
+      );
+
+
+    const winImage =
+      document.getElementById(
+        "win-image"
+      );
+
+
+    const winTitle =
+      document.getElementById(
+        "win-title"
+      );
+
+
+    const resultActions =
+      document.getElementById(
+        "result-actions"
+      );
+
+
+    const playAgainButton =
+      document.getElementById(
+        "play-again-button"
+      );
+
+
+    const exploreMatchButton =
+      document.getElementById(
+        "explore-match-button"
+      );
+
+
+    const reviewControls =
+      document.getElementById(
+        "review-controls"
+      );
+
+
+    const reviewStartButton =
+      document.getElementById(
+        "review-start"
+      );
+
+
+    const reviewPrevButton =
+      document.getElementById(
+        "review-prev"
+      );
+
+
+    const reviewNextButton =
+      document.getElementById(
+        "review-next"
+      );
+
+
+    const reviewEndButton =
+      document.getElementById(
+        "review-end"
+      );
+
+
+    const reviewResultButton =
+      document.getElementById(
+        "review-result"
+      );
+
+
+    const reviewLabel =
+      document.getElementById(
+        "review-label"
+      );
+
+
     const game =
       new Chess();
 
@@ -1893,6 +1695,18 @@
       performance.now();
 
 
+    let matchWinner =
+      null;
+
+
+    let reviewing =
+      false;
+
+
+    let reviewIndex =
+      0;
+
+
     const capturedPieces = {
       w: [],
       b: []
@@ -1905,6 +1719,9 @@
 
     const pieceRestingPositions =
       new Map();
+
+
+    const matchHistory = [];
 
 
     const pieceLetters = {
@@ -1929,6 +1746,65 @@
         ),
         max
       );
+
+
+    function copyCaptures() {
+
+      return {
+        w:
+          capturedPieces.w.map(
+            piece => ({
+              ...piece
+            })
+          ),
+
+        b:
+          capturedPieces.b.map(
+            piece => ({
+              ...piece
+            })
+          )
+      };
+
+    }
+
+
+    function resetHistory() {
+
+      matchHistory.length =
+        0;
+
+
+      matchHistory.push({
+        fen:
+          game.fen(),
+
+        san:
+          null,
+
+        captures:
+          copyCaptures()
+      });
+
+    }
+
+
+    function currentRenderGame() {
+
+      if (
+        !reviewing
+      ) {
+        return game;
+      }
+
+
+      return new Chess(
+        matchHistory[
+          reviewIndex
+        ].fen
+      );
+
+    }
 
 
     function getFiles() {
@@ -2111,6 +1987,18 @@
       piece
     ) {
 
+      if (
+        reviewing
+      ) {
+
+        return initialPlacementFor(
+          squareName,
+          piece
+        );
+
+      }
+
+
       return (
         pieceRestingPositions.get(
           squareName
@@ -2245,6 +2133,12 @@
         );
 
 
+      const mobile =
+        window.matchMedia(
+          "(max-width: 700px)"
+        ).matches;
+
+
       const column =
         index %
         2;
@@ -2255,6 +2149,18 @@
           index /
           2
         );
+
+
+      const spread =
+        mobile
+          ? 4
+          : 8;
+
+
+      const rowHeight =
+        mobile
+          ? 14
+          : 17;
 
 
       const jitterX =
@@ -2269,7 +2175,11 @@
           .5
         )
         *
-        5;
+        (
+          mobile
+            ? 2
+            : 4
+        );
 
 
       const jitterY =
@@ -2316,8 +2226,8 @@
           (
             column ===
             0
-              ? -9
-              : 9
+              ? -spread
+              : spread
           )
           +
           jitterX,
@@ -2326,7 +2236,7 @@
           4
           +
           row *
-          18
+          rowHeight
           +
           jitterY,
 
@@ -2340,7 +2250,9 @@
 
     function renderCapturedPieces(
       animateToken =
-        null
+        null,
+      source =
+        capturedPieces
     ) {
 
       yellowCapturePile.innerHTML =
@@ -2368,7 +2280,7 @@
           ]
         ) => {
 
-          capturedPieces[
+          source[
             color
           ].forEach(
             (
@@ -2473,6 +2385,10 @@
 
     function renderBoard() {
 
+      const renderGame =
+        currentRenderGame();
+
+
       boardElement.innerHTML =
         "";
 
@@ -2554,7 +2470,7 @@
 
 
           const piece =
-            game.get(
+            renderGame.get(
               squareName
             );
 
@@ -2681,10 +2597,34 @@
       }
 
 
-      updateStatus();
+      if (
+        reviewing
+      ) {
+
+        const snapshot =
+          matchHistory[
+            reviewIndex
+          ].captures;
 
 
-      updateClocks();
+        renderCapturedPieces(
+          null,
+          snapshot
+        );
+
+
+        updateReviewControls();
+
+      }
+
+      else {
+
+        updateStatus();
+
+
+        updateClocks();
+
+      }
 
     }
 
@@ -2938,6 +2878,14 @@
       event
     ) {
 
+      if (
+        reviewing ||
+        timerFinished
+      ) {
+        return;
+      }
+
+
       const squareElement =
         event.target.closest(
           ".square"
@@ -2971,8 +2919,7 @@
         if (
           clickedPiece &&
           clickedPiece.color ===
-          game.turn() &&
-          !timerFinished
+          game.turn()
         ) {
 
           const pieceElement =
@@ -3059,7 +3006,7 @@
         const pieceElement =
           squareElement.querySelector(
             ".piece"
-        );
+          );
 
 
         if (
@@ -3075,6 +3022,172 @@
         }
 
       }
+
+    }
+
+
+    const WIN_IMAGES = [
+      "https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG",
+      "https://upload.wikimedia.org/wikipedia/commons/8/8b/Radha-Krishna_chess.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/b/b2/The_Chess_Game.jpg",
+      "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Golestan_Palace_Album_No._108-7.jpg/3840px-Golestan_Palace_Album_No._108-7.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/9/91/Chess_playing_Louvre_OA117.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/3/3c/Josef_Danhauser-Die_Schachpartie.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/1/1c/NMSLewisChessmen28.jpg",
+      "https://upload.wikimedia.org/wikipedia/commons/6/6d/KnightsTemplarPlayingChess1283.jpg"
+    ];
+
+
+    let lastWinImageIndex =
+      -1;
+
+
+    function chooseWinImage() {
+
+      if (
+        WIN_IMAGES.length ===
+        1
+      ) {
+
+        lastWinImageIndex =
+          0;
+
+
+        return WIN_IMAGES[
+          0
+        ];
+
+      }
+
+
+      let nextIndex;
+
+
+      do {
+
+        nextIndex =
+          Math.floor(
+            Math.random() *
+            WIN_IMAGES.length
+          );
+
+      }
+      while (
+        nextIndex ===
+        lastWinImageIndex
+      );
+
+
+      lastWinImageIndex =
+        nextIndex;
+
+
+      return WIN_IMAGES[
+        nextIndex
+      ];
+
+    }
+
+
+    function showWin(
+      winner
+    ) {
+
+      matchWinner =
+        winner;
+
+
+      const greenWon =
+        winner ===
+        "b";
+
+
+      winImage.src =
+        chooseWinImage();
+
+
+      winTitle.textContent =
+        greenWon
+          ? "Green Won"
+          : "Yellow Won";
+
+
+      winOverlay.style.setProperty(
+        "--winner-color",
+        greenWon
+          ? "var(--board-green)"
+          : "var(--board-yellow)"
+      );
+
+
+      winOverlay.classList.add(
+        "is-visible"
+      );
+
+
+      winOverlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      resultActions.classList.add(
+        "is-visible"
+      );
+
+
+      resultActions.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      reviewControls.classList.remove(
+        "is-visible"
+      );
+
+
+      reviewControls.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    }
+
+
+    function hideResultUI() {
+
+      winOverlay.classList.remove(
+        "is-visible"
+      );
+
+
+      winOverlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      resultActions.classList.remove(
+        "is-visible"
+      );
+
+
+      resultActions.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      reviewControls.classList.remove(
+        "is-visible"
+      );
+
+
+      reviewControls.setAttribute(
+        "aria-hidden",
+        "true"
+      );
 
     }
 
@@ -3186,6 +3299,18 @@
       }
 
 
+      matchHistory.push({
+        fen:
+          game.fen(),
+
+        san:
+          move.san,
+
+        captures:
+          copyCaptures()
+      });
+
+
       if (
         !timerStarted
       ) {
@@ -3241,6 +3366,38 @@
       }
 
 
+      if (
+        game.isGameOver()
+      ) {
+
+        timerStarted =
+          false;
+
+
+        timerFinished =
+          true;
+
+
+        if (
+          game.isCheckmate()
+        ) {
+
+          const winner =
+            game.turn() ===
+            "w"
+              ? "b"
+              : "w";
+
+
+          showWin(
+            winner
+          );
+
+        }
+
+      }
+
+
       return true;
 
     }
@@ -3261,7 +3418,8 @@
     function updateStatus() {
 
       if (
-        timerFinished
+        timerFinished &&
+        matchWinner
       ) {
         return;
       }
@@ -3451,12 +3609,18 @@
         false;
 
 
+      const winner =
+        loser ===
+        "w"
+          ? "b"
+          : "w";
+
+
       statusElement.textContent =
         `${
-          loser ===
-          "w"
-            ? "green"
-            : "yellow"
+          colorName(
+            winner
+          )
         } wins — time`;
 
 
@@ -3464,6 +3628,11 @@
 
 
       updateClocks();
+
+
+      showWin(
+        winner
+      );
 
     }
 
@@ -3477,7 +3646,8 @@
       if (
         timerStarted &&
         !timerFinished &&
-        !game.isGameOver()
+        !game.isGameOver() &&
+        !reviewing
       ) {
 
         const elapsed =
@@ -3548,6 +3718,13 @@
 
     function setClockMinutes() {
 
+      if (
+        reviewing
+      ) {
+        return;
+      }
+
+
       const parsed =
         Number(
           timeInput.value
@@ -3598,6 +3775,10 @@
         false;
 
 
+      matchWinner =
+        null;
+
+
       activeClock =
         game.turn();
 
@@ -3609,10 +3790,260 @@
       cancelSelection();
 
 
+      hideResultUI();
+
+
       updateStatus();
 
 
       updateClocks();
+
+    }
+
+
+    function resetGame() {
+
+      cancelSelection();
+
+
+      reviewing =
+        false;
+
+
+      reviewIndex =
+        0;
+
+
+      matchWinner =
+        null;
+
+
+      game.reset();
+
+
+      capturedPieces.w.length =
+        0;
+
+
+      capturedPieces.b.length =
+        0;
+
+
+      lastCaptureToken =
+        0;
+
+
+      pieceRestingPositions.clear();
+
+
+      whiteTime =
+        startingMinutes *
+        60 *
+        1000;
+
+
+      blackTime =
+        startingMinutes *
+        60 *
+        1000;
+
+
+      timerStarted =
+        false;
+
+
+      timerFinished =
+        false;
+
+
+      activeClock =
+        "w";
+
+
+      lastTick =
+        performance.now();
+
+
+      hideResultUI();
+
+
+      resetHistory();
+
+
+      renderBoard();
+
+
+      renderCapturedPieces();
+
+
+      updateClocks();
+
+    }
+
+
+    function startReview() {
+
+      if (
+        matchHistory.length <
+        1
+      ) {
+        return;
+      }
+
+
+      cancelSelection();
+
+
+      reviewing =
+        true;
+
+
+      reviewIndex =
+        matchHistory.length -
+        1;
+
+
+      winOverlay.classList.remove(
+        "is-visible"
+      );
+
+
+      winOverlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      resultActions.classList.remove(
+        "is-visible"
+      );
+
+
+      resultActions.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      reviewControls.classList.add(
+        "is-visible"
+      );
+
+
+      reviewControls.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      renderBoard();
+
+    }
+
+
+    function updateReviewControls() {
+
+      const lastIndex =
+        matchHistory.length -
+        1;
+
+
+      reviewStartButton.disabled =
+        reviewIndex ===
+        0;
+
+
+      reviewPrevButton.disabled =
+        reviewIndex ===
+        0;
+
+
+      reviewNextButton.disabled =
+        reviewIndex ===
+        lastIndex;
+
+
+      reviewEndButton.disabled =
+        reviewIndex ===
+        lastIndex;
+
+
+      if (
+        reviewIndex ===
+        0
+      ) {
+
+        reviewLabel.textContent =
+          "start";
+
+      }
+
+      else {
+
+        const step =
+          matchHistory[
+            reviewIndex
+          ];
+
+
+        reviewLabel.textContent =
+          `move ${reviewIndex} / ${lastIndex} · ${step.san}`;
+
+      }
+
+    }
+
+
+    function goToReviewIndex(
+      index
+    ) {
+
+      reviewIndex =
+        clampChess(
+          index,
+          0,
+          matchHistory.length -
+          1
+        );
+
+
+      renderBoard();
+
+    }
+
+
+    function returnToResult() {
+
+      reviewing =
+        false;
+
+
+      renderBoard();
+
+
+      renderCapturedPieces();
+
+
+      reviewControls.classList.remove(
+        "is-visible"
+      );
+
+
+      reviewControls.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      if (
+        matchWinner
+      ) {
+
+        showWin(
+          matchWinner
+        );
+
+      }
 
     }
 
@@ -3628,7 +4059,8 @@
       event => {
 
         if (
-          !selected
+          !selected ||
+          !selected.floating
         ) {
           return;
         }
@@ -3657,11 +4089,24 @@
 
         if (
           event.key ===
-          "Escape" &&
-          selected
+          "Escape"
         ) {
 
-          cancelSelection();
+          if (
+            selected
+          ) {
+
+            cancelSelection();
+
+          }
+
+          else if (
+            reviewing
+          ) {
+
+            returnToResult();
+
+          }
 
         }
 
@@ -3686,7 +4131,13 @@
         renderBoard();
 
 
-        renderCapturedPieces();
+        if (
+          !reviewing
+        ) {
+
+          renderCapturedPieces();
+
+        }
 
       }
     );
@@ -3694,63 +4145,76 @@
 
     resetButton.addEventListener(
       "click",
+      resetGame
+    );
+
+
+    playAgainButton.addEventListener(
+      "click",
+      resetGame
+    );
+
+
+    exploreMatchButton.addEventListener(
+      "click",
+      startReview
+    );
+
+
+    reviewStartButton.addEventListener(
+      "click",
       () => {
 
-        cancelSelection();
-
-
-        game.reset();
-
-
-        capturedPieces.w.length =
-          0;
-
-
-        capturedPieces.b.length =
-          0;
-
-
-        lastCaptureToken =
-          0;
-
-
-        pieceRestingPositions.clear();
-
-
-        whiteTime =
-          startingMinutes *
-          60 *
-          1000;
-
-
-        blackTime =
-          startingMinutes *
-          60 *
-          1000;
-
-
-        timerStarted =
-          false;
-
-
-        timerFinished =
-          false;
-
-
-        activeClock =
-          "w";
-
-
-        lastTick =
-          performance.now();
-
-
-        renderBoard();
-
-
-        renderCapturedPieces();
+        goToReviewIndex(
+          0
+        );
 
       }
+    );
+
+
+    reviewPrevButton.addEventListener(
+      "click",
+      () => {
+
+        goToReviewIndex(
+          reviewIndex -
+          1
+        );
+
+      }
+    );
+
+
+    reviewNextButton.addEventListener(
+      "click",
+      () => {
+
+        goToReviewIndex(
+          reviewIndex +
+          1
+        );
+
+      }
+    );
+
+
+    reviewEndButton.addEventListener(
+      "click",
+      () => {
+
+        goToReviewIndex(
+          matchHistory.length -
+          1
+        );
+
+      }
+    );
+
+
+    reviewResultButton.addEventListener(
+      "click",
+      returnToResult
     );
 
 
@@ -3781,6 +4245,9 @@
       tickClock,
       250
     );
+
+
+    resetHistory();
 
 
     renderBoard();
