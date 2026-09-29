@@ -162,7 +162,7 @@
     font-size: clamp(24px, 5vw, 66px);
     line-height: 1;
     font-weight: 700;
-    cursor: grab;
+    cursor: pointer;
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
@@ -191,7 +191,7 @@
     line-height: 1;
     font-weight: 700;
     pointer-events: none;
-    cursor: grabbing;
+    cursor: pointer;
     transform:
       translate(-50%, -50%)
       translateY(-6px)
@@ -207,7 +207,11 @@
   }
 
   .home-chess .piece-source-hidden {
-    visibility: hidden;
+    opacity: .18;
+  }
+
+  .home-chess .piece.is-selected {
+    opacity: .18;
   }
 
   .home-chess .piece.just-dropped {
@@ -892,8 +896,8 @@
             );
 
             pieceElement.addEventListener(
-              "pointerdown",
-              startDrag
+              "click",
+              pickUpPiece
             );
 
             square.appendChild(pieceElement);
@@ -936,53 +940,122 @@
     }
 
 
-    function startDrag(event) {
-      if (drag || timerFinished) {
+    function pickUpPiece(event) {
+
+      event.stopPropagation();
+
+
+      const pieceElement =
+        event.currentTarget;
+
+
+      const fromSquare =
+        pieceElement.dataset.square;
+
+
+      const piece =
+        game.get(
+          fromSquare
+        );
+
+
+      if (
+        !piece ||
+        piece.color !==
+        game.turn() ||
+        timerFinished
+      ) {
         return;
       }
 
 
-      const pieceElement = event.currentTarget;
-      const fromSquare = pieceElement.dataset.square;
-      const piece = game.get(fromSquare);
+      /*
+        Clicking the already-selected piece puts it back.
+      */
 
+      if (
+        drag &&
+        drag.from ===
+        fromSquare
+      ) {
 
-      if (!piece || piece.color !== game.turn()) {
+        cancelSelection();
+
         return;
+
       }
 
 
-      event.preventDefault();
+      if (drag) {
+
+        cancelSelection();
+
+      }
 
 
-      const squareElement = pieceElement.closest(".square");
-      const squareRect = squareElement.getBoundingClientRect();
+      const squareElement =
+        pieceElement.closest(
+          ".square"
+        );
 
-      const clone = pieceElement.cloneNode(true);
 
-      clone.classList.add("dragging");
-      clone.classList.remove("just-dropped");
+      const squareRect =
+        squareElement.getBoundingClientRect();
+
+
+      const clone =
+        pieceElement.cloneNode(
+          true
+        );
+
+
+      clone.classList.add(
+        "dragging"
+      );
+
+
+      clone.classList.remove(
+        "just-dropped"
+      );
 
 
       const pieceStyle =
-        window.getComputedStyle(pieceElement);
+        window.getComputedStyle(
+          pieceElement
+        );
 
-      clone.style.fontSize = pieceStyle.fontSize;
-      clone.style.fontFamily = pieceStyle.fontFamily;
-      clone.style.fontWeight = pieceStyle.fontWeight;
-      clone.style.color = pieceStyle.color;
+
+      clone.style.fontSize =
+        pieceStyle.fontSize;
+
+
+      clone.style.fontFamily =
+        pieceStyle.fontFamily;
+
+
+      clone.style.fontWeight =
+        pieceStyle.fontWeight;
+
+
+      clone.style.color =
+        pieceStyle.color;
+
 
       clone.style.setProperty(
         "--drag-rotation",
         `${Math.random() < .5 ? -.8 : .8}deg`
       );
 
+
       clone.style.setProperty(
         "--drag-size",
         `${squareRect.width}px`
       );
 
-      document.body.appendChild(clone);
+
+      document.body.appendChild(
+        clone
+      );
 
 
       pieceElement.classList.add(
@@ -991,55 +1064,41 @@
 
 
       drag = {
-        from: fromSquare,
-        original: pieceElement,
-        floating: clone,
-        x: event.clientX,
-        y: event.clientY
+        from:
+          fromSquare,
+
+        original:
+          pieceElement,
+
+        floating:
+          clone,
+
+        x:
+          event.clientX,
+
+        y:
+          event.clientY
       };
 
 
-      showLegalMoves(fromSquare);
+      showLegalMoves(
+        fromSquare
+      );
+
 
       moveFloatingPiece(
-        event.clientX,
-        event.clientY
+        drag.x,
+        drag.y
       );
 
-
-      window.addEventListener(
-        "pointermove",
-        dragMove,
-        {
-          passive: false
-        }
-      );
-
-      window.addEventListener(
-        "pointerup",
-        endDrag,
-        {
-          passive: false
-        }
-      );
-
-      window.addEventListener(
-        "pointercancel",
-        cancelDrag,
-        {
-          passive: false
-        }
-      );
     }
 
 
-    function dragMove(event) {
+    function followPickedPiece(event) {
+
       if (!drag) {
         return;
       }
-
-
-      event.preventDefault();
 
 
       drag.x =
@@ -1054,226 +1113,168 @@
         drag.x,
         drag.y
       );
+
     }
 
 
-    function moveFloatingPiece(x, y) {
-      if (!drag) {
-        return;
-      }
+    function moveFloatingPiece(
+      x,
+      y
+    ) {
 
-      drag.floating.style.left = `${x}px`;
-      drag.floating.style.top = `${y}px`;
-    }
-
-
-    function endDrag(event) {
       if (!drag) {
         return;
       }
 
 
-      event.preventDefault();
+      drag.floating.style.left =
+        `${x}px`;
 
 
-      const releaseX =
-        Number.isFinite(
-          event.clientX
-        )
-          ? event.clientX
-          : drag.x;
+      drag.floating.style.top =
+        `${y}px`;
 
-
-      const releaseY =
-        Number.isFinite(
-          event.clientY
-        )
-          ? event.clientY
-          : drag.y;
-
-
-      const destination =
-        getSquareAtPoint(
-          releaseX,
-          releaseY
-        );
-
-
-      if (destination) {
-
-        attemptMove(
-          drag.from,
-          destination,
-          releaseX,
-          releaseY
-        );
-
-      }
-
-
-      finishDrag();
     }
 
 
-    function cancelDrag() {
-      if (!drag) {
-        return;
-      }
+    function cancelSelection() {
 
-      finishDrag();
-    }
-
-
-    function finishDrag() {
       clearLegalMoves();
 
-      if (drag?.floating) {
+
+      if (
+        drag?.floating
+      ) {
+
         drag.floating.remove();
+
       }
 
-      if (drag?.original) {
+
+      if (
+        drag?.original
+      ) {
+
         drag.original.classList.remove(
           "piece-source-hidden"
         );
+
       }
 
-      drag = null;
 
-      window.removeEventListener(
-        "pointermove",
-        dragMove
-      );
+      drag =
+        null;
 
-      window.removeEventListener(
-        "pointerup",
-        endDrag
-      );
-
-      window.removeEventListener(
-        "pointercancel",
-        cancelDrag
-      );
     }
 
 
-    function getSquareAtPoint(x, y) {
+    function placePickedPiece(
+      event
+    ) {
 
       if (!drag) {
-        return null;
+        return;
       }
+
+
+      const squareElement =
+        event.target.closest(
+          ".square"
+        );
+
+
+      if (!squareElement) {
+        return;
+      }
+
+
+      const destination =
+        squareElement.dataset.square;
 
 
       const legalMoves =
         game.moves({
-          square: drag.from,
-          verbose: true
+          square:
+            drag.from,
+
+          verbose:
+            true
         });
 
 
-      for (const move of legalMoves) {
-
-        const squareElement =
-          boardElement.querySelector(
-            `[data-square="${move.to}"]`
-          );
-
-
-        if (!squareElement) {
-          continue;
-        }
+      const legal =
+        legalMoves.some(
+          move =>
+            move.to ===
+            destination
+        );
 
 
-        const rect =
-          squareElement.getBoundingClientRect();
+      if (!legal) {
+        return;
+      }
 
 
-        if (
-          x >= rect.left &&
-          x <= rect.right &&
-          y >= rect.top &&
-          y <= rect.bottom
-        ) {
+      const from =
+        drag.from;
 
-          return move.to;
 
-        }
+      /*
+        Remove the floating copy before the board is rendered again.
+      */
+
+      if (
+        drag.floating
+      ) {
+
+        drag.floating.remove();
 
       }
 
 
-      let nearest =
+      drag =
         null;
 
 
-      let nearestDistance =
-        12;
+      attemptMove(
+        from,
+        destination,
+        event.clientX,
+        event.clientY
+      );
+
+    }
 
 
-      for (const move of legalMoves) {
-
-        const squareElement =
-          boardElement.querySelector(
-            `[data-square="${move.to}"]`
-          );
+    window.addEventListener(
+      "pointermove",
+      followPickedPiece
+    );
 
 
-        if (!squareElement) {
-          continue;
-        }
+    boardElement.addEventListener(
+      "click",
+      placePickedPiece
+    );
 
 
-        const rect =
-          squareElement.getBoundingClientRect();
-
-
-        const closestX =
-          Math.max(
-            rect.left,
-            Math.min(
-              x,
-              rect.right
-            )
-          );
-
-
-        const closestY =
-          Math.max(
-            rect.top,
-            Math.min(
-              y,
-              rect.bottom
-            )
-          );
-
-
-        const distance =
-          Math.hypot(
-            x -
-            closestX,
-            y -
-            closestY
-          );
-
+    document.addEventListener(
+      "keydown",
+      event => {
 
         if (
-          distance <
-          nearestDistance
+          event.key ===
+          "Escape" &&
+          drag
         ) {
 
-          nearestDistance =
-            distance;
-
-
-          nearest =
-            move.to;
+          cancelSelection();
 
         }
 
       }
+    );
 
-
-      return nearest;
-    }
 
 
     function attemptMove(
@@ -1589,7 +1590,7 @@
       "click",
       () => {
         if (drag) {
-          finishDrag();
+          cancelSelection();
         }
 
         orientation =
@@ -1607,7 +1608,7 @@
       "click",
       () => {
         if (drag) {
-          finishDrag();
+          cancelSelection();
         }
 
         game.reset();
