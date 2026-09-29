@@ -2,414 +2,1109 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
   <title>keegan.biz</title>
-  <link rel="stylesheet" href="style.css">
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
   <style>
     .home-chess {
-      width: min(100%, clamp(420px, 44vw, 660px));
-      margin-top: clamp(42px, 6vw, 72px);
+      --board-red: var(--red, #c1272d);
+      --board-yellow: var(--yellow, #fdb913);
+      --board-green: var(--green, #006a44);
+      --board-ink: var(--ink, #11110f);
+      --board-paper: var(--paper, #ece7d7);
+
+      --square-a: #ece7d7;
+      --square-b: #ddd7b6;
+
+      --capture-width: 58px;
+
+      width:
+        min(
+          100%,
+          620px
+        );
+
+      max-width:
+        100%;
+
+      min-width:
+        0;
+
+      margin-top:
+        clamp(
+          42px,
+          5vw,
+          68px
+        );
     }
 
-    .home-chess .chess-topbar,
-    .home-chess .chess-bottombar,
-    .home-chess .clock-group,
-    .home-chess .time-setter {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .home-chess .chess-topbar,
-    .home-chess .chess-bottombar {
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
 
     .home-chess .chess-topbar {
-      margin-bottom: 10px;
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr
+        auto;
+
+      align-items:
+        end;
+
+      gap:
+        16px;
+
+      margin-bottom:
+        10px;
     }
 
-    .home-chess .chess-bottombar {
-      margin-top: 12px;
-      align-items: flex-end;
-    }
 
     .home-chess .status,
     .home-chess .clock,
     .home-chess .time-label {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1;
-      font-weight: 700;
-      color: var(--red, #c1272d);
+      margin:
+        0;
+
+      font-size:
+        14px;
+
+      line-height:
+        1;
+
+      font-weight:
+        700;
     }
+
+
+    .home-chess .status,
+    .home-chess .time-label {
+      color:
+        var(--board-red);
+    }
+
 
     #white-clock {
-      color: var(--yellow, #fdb913);
+      color:
+        var(--board-yellow);
     }
+
 
     #black-clock {
-      color: var(--green, #006a44);
+      color:
+        var(--board-green);
     }
+
 
     .home-chess .clock.is-active {
-      text-decoration: underline;
-      text-underline-offset: 3px;
+      text-decoration:
+        underline;
+
+      text-decoration-thickness:
+        2px;
+
+      text-underline-offset:
+        4px;
     }
 
-    .home-chess input {
-      width: 58px;
-      padding: 3px 5px;
-      border: 1px solid var(--red, #c1272d);
-      border-radius: 0;
-      background: transparent;
-      color: var(--ink, #11110f);
-      font: inherit;
-      font-size: 14px;
-      font-weight: 700;
-      outline: 0;
-    }
-
-    .home-chess input:focus {
-      outline: 1px solid var(--red, #c1272d);
-      outline-offset: 1px;
-    }
 
     .home-chess button {
-      appearance: none;
-      margin: 0;
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      color: var(--red, #c1272d);
-      font: inherit;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
+      appearance:
+        none;
+
+      margin:
+        0;
+
+      padding:
+        0;
+
+      border:
+        0;
+
+      border-radius:
+        0;
+
+      background:
+        transparent;
+
+      color:
+        var(--board-red);
+
+      font:
+        inherit;
+
+      font-size:
+        14px;
+
+      line-height:
+        1;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
     }
+
 
     .home-chess button:hover {
-      text-decoration: underline;
+      text-decoration:
+        underline;
+
+      text-underline-offset:
+        3px;
     }
+
+
+    .home-chess input {
+      width:
+        56px;
+
+      min-width:
+        0;
+
+      padding:
+        4px
+        5px;
+
+      border:
+        1px solid
+        var(--board-red);
+
+      border-radius:
+        0;
+
+      background:
+        transparent;
+
+      color:
+        var(--board-ink);
+
+      font:
+        inherit;
+
+      font-size:
+        14px;
+
+      line-height:
+        1;
+
+      font-weight:
+        700;
+
+      outline:
+        0;
+    }
+
+
+    .home-chess input:focus {
+      outline:
+        2px solid
+        var(--board-red);
+
+      outline-offset:
+        2px;
+    }
+
 
     .home-chess .board-area {
-      position: relative;
-      width: 100%;
+      display:
+        grid;
+
+      grid-template-columns:
+        var(--capture-width)
+        minmax(0, 1fr)
+        var(--capture-width);
+
+      align-items:
+        stretch;
+
+      width:
+        100%;
+
+      min-width:
+        0;
     }
+
 
     .home-chess .board {
-      position: relative;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: repeat(8, minmax(0, 1fr));
-      grid-template-rows: repeat(8, minmax(0, 1fr));
-      width: 100%;
-      aspect-ratio: 1;
-      border-top: 2px solid var(--red, #c1272d);
-      border-left: 2px solid var(--red, #c1272d);
-      background: var(--paper, #ece7d7);
-      user-select: none;
-      -webkit-user-select: none;
+      grid-column:
+        2;
+
+      position:
+        relative;
+
+      z-index:
+        2;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(
+          8,
+          minmax(0, 1fr)
+        );
+
+      grid-template-rows:
+        repeat(
+          8,
+          minmax(0, 1fr)
+        );
+
+      width:
+        100%;
+
+      min-width:
+        0;
+
+      aspect-ratio:
+        1;
+
+      border-top:
+        2px solid
+        var(--board-red);
+
+      border-left:
+        2px solid
+        var(--board-red);
+
+      background:
+        var(--square-a);
+
+      user-select:
+        none;
+
+      -webkit-user-select:
+        none;
+
+      touch-action:
+        manipulation;
     }
+
 
     .home-chess .square {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 0;
-      min-height: 0;
-      border-right: 2px solid var(--red, #c1272d);
-      border-bottom: 2px solid var(--red, #c1272d);
-      cursor: pointer;
+      position:
+        relative;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      min-width:
+        0;
+
+      min-height:
+        0;
+
+      border-right:
+        2px solid
+        var(--board-red);
+
+      border-bottom:
+        2px solid
+        var(--board-red);
+
+      cursor:
+        pointer;
+
+      overflow:
+        visible;
     }
+
 
     .home-chess .square.light {
-      background: #ece7d7;
+      background:
+        var(--square-a);
     }
+
 
     .home-chess .square.dark {
-      background: #e4dfbc;
+      background:
+        var(--square-b);
     }
+
 
     .home-chess .square.legal::after {
-      content: "";
-      position: absolute;
-      z-index: 5;
-      width: 14%;
-      aspect-ratio: 1;
-      border: 2px solid var(--red, #c1272d);
-      border-radius: 50%;
-      pointer-events: none;
+      content:
+        "";
+
+      position:
+        absolute;
+
+      z-index:
+        6;
+
+      width:
+        13%;
+
+      aspect-ratio:
+        1;
+
+      border:
+        2px solid
+        var(--board-red);
+
+      border-radius:
+        50%;
+
+      pointer-events:
+        none;
     }
+
 
     .home-chess .piece {
-      position: relative;
-      z-index: 4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      font-size: clamp(24px, 5vw, 66px);
-      line-height: 1;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
+      position:
+        relative;
+
+      z-index:
+        4;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      width:
+        100%;
+
+      height:
+        100%;
+
+      font-size:
+        clamp(
+          25px,
+          4.35vw,
+          58px
+        );
+
+      line-height:
+        1;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+
+      user-select:
+        none;
+
+      -webkit-user-select:
+        none;
+
       transform:
-        translate(var(--rest-x, 0px), var(--rest-y, 0px))
-        rotate(var(--rest-r, 0deg));
-      transform-origin: center;
+        translate(
+          var(--rest-x, 0px),
+          var(--rest-y, 0px)
+        )
+        rotate(
+          var(--rest-r, 0deg)
+        );
+
+      transform-origin:
+        center;
     }
+
 
     .home-chess .piece.white {
-      color: var(--yellow, #fdb913);
+      color:
+        var(--board-yellow);
     }
+
 
     .home-chess .piece.black {
-      color: var(--green, #006a44);
+      color:
+        var(--board-green);
     }
+
 
     .home-chess .piece.is-selected {
-      opacity: .18;
+      z-index:
+        12;
+
+      opacity:
+        .48;
+
+      transform:
+        translate(
+          var(--rest-x, 0px),
+          calc(
+            var(--rest-y, 0px)
+            -
+            3px
+          )
+        )
+        rotate(
+          var(--rest-r, 0deg)
+        )
+        scale(1.035);
+
+      text-shadow:
+        5px
+        5px
+        0
+        var(--board-red);
     }
+
 
     .floating-piece {
-      position: fixed;
-      z-index: 999999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: var(--float-size);
-      height: var(--float-size);
-      line-height: 1;
-      font-weight: 700;
-      pointer-events: none;
-      user-select: none;
-      -webkit-user-select: none;
+      position:
+        fixed;
+
+      z-index:
+        999999;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      width:
+        var(--float-size);
+
+      height:
+        var(--float-size);
+
+      line-height:
+        1;
+
+      font-weight:
+        700;
+
+      pointer-events:
+        none;
+
+      user-select:
+        none;
+
+      -webkit-user-select:
+        none;
+
       transform:
-        translate(-50%, -50%)
-        translateY(-6px)
-        rotate(var(--float-r, 0deg))
-        scale(1.09);
-      filter: drop-shadow(7px 7px 0 rgba(193, 39, 45, .62));
+        translate(
+          -50%,
+          -50%
+        )
+        translateY(-5px)
+        rotate(
+          var(--float-r, 0deg)
+        )
+        scale(1.06);
+
+      text-shadow:
+        7px
+        7px
+        0
+        var(--board-red);
     }
+
 
     .home-chess .piece.just-dropped {
-      animation: piece-drop 210ms cubic-bezier(.18, .82, .23, 1);
+      animation:
+        piece-drop
+        190ms
+        cubic-bezier(
+          .18,
+          .82,
+          .23,
+          1
+        );
     }
+
 
     @keyframes piece-drop {
+
       0% {
         transform:
           translate(
-            calc(var(--rest-x, 0px) - 2px),
-            calc(var(--rest-y, 0px) - 10px)
+            calc(
+              var(--rest-x, 0px)
+              -
+              2px
+            ),
+            calc(
+              var(--rest-y, 0px)
+              -
+              9px
+            )
           )
-          rotate(calc(var(--rest-r, 0deg) + 1.8deg))
-          scale(1.10);
-      }
-
-      68% {
-        transform:
-          translate(
-            calc(var(--rest-x, 0px) + .8px),
-            calc(var(--rest-y, 0px) + 1.2px)
+          rotate(
+            calc(
+              var(--rest-r, 0deg)
+              +
+              1.5deg
+            )
           )
-          rotate(calc(var(--rest-r, 0deg) - .35deg))
-          scale(.988);
+          scale(1.08);
       }
 
-      100% {
-        transform:
-          translate(var(--rest-x, 0px), var(--rest-y, 0px))
-          rotate(var(--rest-r, 0deg))
-          scale(1);
-      }
-    }
-
-    .home-chess .coordinate {
-      position: absolute;
-      z-index: 6;
-      color: var(--red, #c1272d);
-      font-size: 10px;
-      line-height: 1;
-      font-weight: 700;
-      pointer-events: none;
-    }
-
-    .home-chess .coordinate.file {
-      right: 4px;
-      bottom: 3px;
-    }
-
-    .home-chess .coordinate.rank {
-      top: 4px;
-      left: 4px;
-    }
-
-    .home-chess .capture-pile {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 68px;
-      pointer-events: none;
-      overflow: visible;
-    }
-
-    .home-chess .capture-pile-yellow {
-      right: calc(100% + 14px);
-    }
-
-    .home-chess .capture-pile-green {
-      left: calc(100% + 14px);
-    }
-
-    .home-chess .captured-piece {
-      position: absolute;
-      left: 50%;
-      bottom: var(--pile-y, 0px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      font-size: 42px;
-      line-height: 1;
-      font-weight: 700;
-      transform:
-        translateX(calc(-50% + var(--pile-x, 0px)))
-        rotate(var(--pile-r, 0deg));
-      transform-origin: center;
-    }
-
-    .home-chess .captured-piece.white {
-      color: var(--yellow, #fdb913);
-    }
-
-    .home-chess .captured-piece.black {
-      color: var(--green, #006a44);
-    }
-
-    .home-chess .captured-piece.is-falling {
-      animation: captured-fall var(--fall-time, 620ms) cubic-bezier(.20, .72, .24, 1);
-    }
-
-    @keyframes captured-fall {
-      0% {
-        transform:
-          translateX(calc(-50% + var(--pile-x, 0px)))
-          translateY(calc(-1 * var(--fall-distance, 260px)))
-          rotate(calc(var(--pile-r, 0deg) - 8deg))
-          scale(1.05);
-      }
 
       72% {
         transform:
-          translateX(calc(-50% + var(--pile-x, 0px)))
-          translateY(5px)
-          rotate(calc(var(--pile-r, 0deg) + 1.5deg))
-          scale(.98);
+          translate(
+            calc(
+              var(--rest-x, 0px)
+              +
+              .6px
+            ),
+            calc(
+              var(--rest-y, 0px)
+              +
+              1px
+            )
+          )
+          rotate(
+            calc(
+              var(--rest-r, 0deg)
+              -
+              .3deg
+            )
+          )
+          scale(.99);
       }
 
-      88% {
-        transform:
-          translateX(calc(-50% + var(--pile-x, 0px)))
-          translateY(-2px)
-          rotate(calc(var(--pile-r, 0deg) - .6deg))
-          scale(1.01);
-      }
 
       100% {
         transform:
-          translateX(calc(-50% + var(--pile-x, 0px)))
-          translateY(0)
-          rotate(var(--pile-r, 0deg))
+          translate(
+            var(--rest-x, 0px),
+            var(--rest-y, 0px)
+          )
+          rotate(
+            var(--rest-r, 0deg)
+          )
           scale(1);
       }
+
     }
 
-    @media (min-width: 701px) and (max-width: 1100px) {
-      .home-chess {
-        width: min(100%, 500px);
-      }
 
-      .home-chess .board-area {
-        padding-bottom: 86px;
-      }
+    .home-chess .coordinate {
+      position:
+        absolute;
 
-      .home-chess .capture-pile {
-        top: auto;
-        bottom: 0;
-        width: calc(50% - 6px);
-        height: 72px;
-      }
+      z-index:
+        7;
 
-      .home-chess .capture-pile-yellow {
-        left: 0;
-        right: auto;
-      }
+      color:
+        var(--board-red);
 
-      .home-chess .capture-pile-green {
-        right: 0;
-        left: auto;
-      }
+      font-size:
+        9px;
+
+      line-height:
+        1;
+
+      font-weight:
+        700;
+
+      pointer-events:
+        none;
     }
 
-    @media (max-width: 700px) {
+
+    .home-chess .coordinate.file {
+      right:
+        3px;
+
+      bottom:
+        3px;
+    }
+
+
+    .home-chess .coordinate.rank {
+      top:
+        3px;
+
+      left:
+        3px;
+    }
+
+
+    .home-chess .capture-pile {
+      position:
+        relative;
+
+      align-self:
+        stretch;
+
+      min-width:
+        0;
+
+      overflow:
+        hidden;
+
+      pointer-events:
+        none;
+    }
+
+
+    .home-chess .capture-pile-yellow {
+      grid-column:
+        1;
+    }
+
+
+    .home-chess .capture-pile-green {
+      grid-column:
+        3;
+    }
+
+
+    .home-chess .captured-piece {
+      position:
+        absolute;
+
+      left:
+        50%;
+
+      bottom:
+        var(--pile-y, 4px);
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      width:
+        32px;
+
+      height:
+        32px;
+
+      font-size:
+        29px;
+
+      line-height:
+        1;
+
+      font-weight:
+        700;
+
+      transform:
+        translateX(
+          calc(
+            -50%
+            +
+            var(--pile-x, 0px)
+          )
+        )
+        rotate(
+          var(--pile-r, 0deg)
+        );
+
+      transform-origin:
+        center;
+
+      will-change:
+        transform;
+    }
+
+
+    .home-chess .captured-piece.white {
+      color:
+        var(--board-yellow);
+    }
+
+
+    .home-chess .captured-piece.black {
+      color:
+        var(--board-green);
+    }
+
+
+    .home-chess .captured-piece.is-falling {
+      animation:
+        captured-fall
+        var(--fall-time, 660ms)
+        cubic-bezier(
+          .17,
+          .72,
+          .18,
+          1
+        );
+    }
+
+
+    @keyframes captured-fall {
+
+      0% {
+        transform:
+          translateX(
+            calc(
+              -50%
+              +
+              var(--pile-x, 0px)
+            )
+          )
+          translateY(
+            calc(
+              -1
+              *
+              var(--fall-distance, 460px)
+            )
+          )
+          rotate(
+            calc(
+              var(--pile-r, 0deg)
+              -
+              12deg
+            )
+          );
+      }
+
+
+      72% {
+        transform:
+          translateX(
+            calc(
+              -50%
+              +
+              var(--pile-x, 0px)
+            )
+          )
+          translateY(7px)
+          rotate(
+            calc(
+              var(--pile-r, 0deg)
+              +
+              2deg
+            )
+          );
+      }
+
+
+      87% {
+        transform:
+          translateX(
+            calc(
+              -50%
+              +
+              var(--pile-x, 0px)
+            )
+          )
+          translateY(-2px)
+          rotate(
+            calc(
+              var(--pile-r, 0deg)
+              -
+              .7deg
+            )
+          );
+      }
+
+
+      100% {
+        transform:
+          translateX(
+            calc(
+              -50%
+              +
+              var(--pile-x, 0px)
+            )
+          )
+          translateY(0)
+          rotate(
+            var(--pile-r, 0deg)
+          );
+      }
+
+    }
+
+
+    .home-chess .chess-bottombar {
+      display:
+        grid;
+
+      grid-template-columns:
+        auto
+        minmax(0, 1fr)
+        auto;
+
+      grid-template-areas:
+        "reset clocks setter";
+
+      align-items:
+        end;
+
+      gap:
+        14px
+        18px;
+
+      margin-top:
+        12px;
+    }
+
+
+    #reset-button {
+      grid-area:
+        reset;
+
+      justify-self:
+        start;
+    }
+
+
+    .home-chess .clock-group {
+      grid-area:
+        clocks;
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      align-items:
+        center;
+
+      gap:
+        18px;
+
+      min-width:
+        0;
+    }
+
+
+    .home-chess .time-setter {
+      grid-area:
+        setter;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        auto
+        56px
+        auto;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      justify-self:
+        end;
+    }
+
+
+    @media (
+      max-width:
+      1180px
+    ) {
+
       .home-chess {
-        width: 100%;
-        margin-top: 38px;
+        --capture-width:
+          46px;
+
+        width:
+          min(
+            100%,
+            540px
+          );
       }
 
-      .home-chess .piece {
-        font-size: 9vw;
-      }
-
-      .home-chess .chess-bottombar {
-        align-items: flex-start;
-      }
-
-      .home-chess .clock-group,
-      .home-chess .time-setter {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      .home-chess .board-area {
-        padding-bottom: 92px;
-      }
-
-      .home-chess .capture-pile {
-        top: auto;
-        bottom: 0;
-        width: calc(50% - 6px);
-        height: 78px;
-      }
-
-      .home-chess .capture-pile-yellow {
-        left: 0;
-        right: auto;
-      }
-
-      .home-chess .capture-pile-green {
-        right: 0;
-        left: auto;
-      }
 
       .home-chess .captured-piece {
-        bottom: 4px;
-        width: 38px;
-        height: 38px;
-        font-size: 34px;
+        width:
+          30px;
+
+        height:
+          30px;
+
+        font-size:
+          27px;
       }
+
+
+      .home-chess .chess-bottombar {
+        grid-template-columns:
+          auto
+          1fr;
+
+        grid-template-areas:
+          "reset setter"
+          "clocks clocks";
+      }
+
+
+      .home-chess .clock-group {
+        justify-content:
+          space-between;
+      }
+
+    }
+
+
+    @media (
+      max-width:
+      700px
+    ) {
+
+      .home-chess {
+        --capture-width:
+          24px;
+
+        width:
+          100%;
+
+        margin-top:
+          34px;
+      }
+
+
+      .home-chess .chess-topbar {
+        margin-bottom:
+          8px;
+      }
+
+
+      .home-chess .status,
+      .home-chess .clock,
+      .home-chess .time-label,
+      .home-chess button,
+      .home-chess input {
+        font-size:
+          12px;
+      }
+
+
+      .home-chess .piece {
+        font-size:
+          clamp(
+            23px,
+            8.7vw,
+            36px
+          );
+      }
+
+
+      .home-chess .captured-piece {
+        width:
+          22px;
+
+        height:
+          22px;
+
+        font-size:
+          20px;
+      }
+
+
+      .home-chess .coordinate {
+        font-size:
+          7px;
+      }
+
+
+      .home-chess .chess-bottombar {
+        grid-template-columns:
+          auto
+          1fr;
+
+        grid-template-areas:
+          "reset clocks"
+          "setter setter";
+
+        align-items:
+          center;
+
+        gap:
+          14px
+          12px;
+      }
+
+
+      .home-chess .time-setter {
+        grid-template-columns:
+          auto
+          46px
+          auto;
+
+        gap:
+          6px;
+
+        justify-self:
+          start;
+      }
+
+
+      .home-chess .time-setter input {
+        width:
+          46px;
+      }
+
+
+      .home-chess .clock-group {
+        justify-content:
+          flex-end;
+
+        gap:
+          14px;
+      }
+
+    }
+
+
+    @media (
+      max-width:
+      420px
+    ) {
+
+      .home-chess {
+        --capture-width:
+          20px;
+      }
+
+
+      .home-chess .time-label {
+        display:
+          none;
+      }
+
+
+      .home-chess .time-setter {
+        grid-template-columns:
+          44px
+          auto;
+      }
+
+
+      .home-chess .time-setter input {
+        width:
+          44px;
+      }
+
     }
   </style>
 </head>
+
 
 <body>
 
@@ -627,7 +1322,7 @@
                 class="time-label"
                 for="time-input"
               >
-                minutes each
+                minutes
               </label>
 
               <input
@@ -643,7 +1338,7 @@
                 id="set-time-button"
                 type="button"
               >
-                set time
+                set
               </button>
 
             </div>
@@ -719,14 +1414,23 @@
   <script>
   (() => {
 
-    const clamp = (value, min, max) =>
+    const clamp = (
+      value,
+      min,
+      max
+    ) =>
       Math.min(
-        Math.max(value, min),
+        Math.max(
+          value,
+          min
+        ),
         max
       );
 
 
-    function smoothStep(value) {
+    function smoothStep(
+      value
+    ) {
 
       const t =
         clamp(
@@ -741,7 +1445,8 @@
         t *
         (
           3 -
-          2 * t
+          2 *
+          t
         )
       );
 
@@ -754,7 +1459,9 @@
       );
 
 
-    if (welcomeWord) {
+    if (
+      welcomeWord
+    ) {
 
       welcomeWord.textContent =
         "Welcome";
@@ -816,7 +1523,9 @@
       0;
 
 
-    function horseRevealAt(time) {
+    function horseRevealAt(
+      time
+    ) {
 
       if (
         time <
@@ -841,7 +1550,9 @@
     }
 
 
-    function visualLoop(now) {
+    function visualLoop(
+      now
+    ) {
 
       if (
         !overlayOpen
@@ -941,7 +1652,9 @@
 
       }
 
-      catch (error) {
+      catch (
+        error
+      ) {
 
         console.log(
           "Audio could not start:",
@@ -1204,7 +1917,7 @@
     };
 
 
-    const clamp = (
+    const clampChess = (
       value,
       min,
       max
@@ -1220,72 +1933,85 @@
 
     function getFiles() {
 
-      return orientation ===
+      if (
+        orientation ===
         "white"
+      ) {
 
-        ? [
-            "a",
-            "b",
-            "c",
-            "d",
-            "e",
-            "f",
-            "g",
-            "h"
-          ]
+        return [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h"
+        ];
 
-        : [
-            "h",
-            "g",
-            "f",
-            "e",
-            "d",
-            "c",
-            "b",
-            "a"
-          ];
+      }
+
+
+      return [
+        "h",
+        "g",
+        "f",
+        "e",
+        "d",
+        "c",
+        "b",
+        "a"
+      ];
 
     }
 
 
     function getRanks() {
 
-      return orientation ===
+      if (
+        orientation ===
         "white"
+      ) {
 
-        ? [
-            8,
-            7,
-            6,
-            5,
-            4,
-            3,
-            2,
-            1
-          ]
+        return [
+          8,
+          7,
+          6,
+          5,
+          4,
+          3,
+          2,
+          1
+        ];
 
-        : [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8
-          ];
+      }
+
+
+      return [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ];
 
     }
 
 
-    function hashString(value) {
+    function hashString(
+      value
+    ) {
 
       let hash =
         2166136261;
 
 
       for (
-        let i = 0;
+        let i =
+          0;
         i <
         value.length;
         i++
@@ -1429,7 +2155,7 @@
 
 
       const localX =
-        clamp(
+        clampChess(
           clientX -
           rect.left,
           0,
@@ -1438,7 +2164,7 @@
 
 
       const localY =
-        clamp(
+        clampChess(
           clientY -
           rect.top,
           0,
@@ -1473,7 +2199,7 @@
 
 
       const r =
-        clamp(
+        clampChess(
           (
             x /
             Math.max(
@@ -1519,76 +2245,93 @@
         );
 
 
-      const side =
+      const column =
         index %
-        2 ===
-        0
-          ? -1
-          : 1;
+        2;
+
+
+      const row =
+        Math.floor(
+          index /
+          2
+        );
+
+
+      const jitterX =
+        (
+          (
+            seed &
+            255
+          )
+          /
+          255
+          -
+          .5
+        )
+        *
+        5;
+
+
+      const jitterY =
+        (
+          (
+            (
+              seed >>>
+              8
+            )
+            &
+            255
+          )
+          /
+          255
+          -
+          .5
+        )
+        *
+        3;
+
+
+      const rotation =
+        (
+          (
+            (
+              seed >>>
+              16
+            )
+            &
+            255
+          )
+          /
+          255
+          -
+          .5
+        )
+        *
+        18;
 
 
       return {
 
         x:
-          side
-          *
           (
-            3
-            +
-            (
-              (
-                seed &
-                255
-              )
-              /
-              255
-            )
-            *
-            14
-          ),
+            column ===
+            0
+              ? -9
+              : 9
+          )
+          +
+          jitterX,
 
         y:
-          3
+          4
           +
-          Math.floor(
-            index /
-            2
-          )
-          *
+          row *
           18
           +
-          (
-            (
-              (
-                seed >>>
-                8
-              )
-              &
-              255
-            )
-            /
-            255
-          )
-          *
-          6,
+          jitterY,
 
         r:
-          (
-            (
-              (
-                seed >>>
-                16
-              )
-              &
-              255
-            )
-            /
-            255
-            -
-            .5
-          )
-          *
-          24
+          rotation
 
       };
 
@@ -1693,13 +2436,23 @@
 
                 element.style.setProperty(
                   "--fall-time",
-                  `${520 + Math.random() * 220}ms`
+                  `${
+                    590 +
+                    Math.random() *
+                    160
+                  }ms`
                 );
 
 
                 element.style.setProperty(
                   "--fall-distance",
-                  `${190 + Math.random() * 130}px`
+                  `${
+                    Math.max(
+                      260,
+                      boardElement.clientHeight *
+                      .92
+                    )
+                  }px`
                 );
 
               }
@@ -1733,14 +2486,16 @@
 
 
       for (
-        let row = 0;
+        let row =
+          0;
         row <
         8;
         row++
       ) {
 
         for (
-          let column = 0;
+          let column =
+            0;
           column <
           8;
           column++
@@ -2052,72 +2807,88 @@
       cancelSelection();
 
 
-      const rect =
-        pieceElement
-          .closest(
-            ".square"
-          )
-          .getBoundingClientRect();
+      const finePointer =
+        window.matchMedia(
+          "(hover: hover) and (pointer: fine)"
+        ).matches;
 
 
-      const floating =
-        pieceElement.cloneNode(
-          true
-        );
+      let floating =
+        null;
 
 
-      const computed =
-        window.getComputedStyle(
+      if (
+        finePointer
+      ) {
+
+        const rect =
           pieceElement
+            .closest(
+              ".square"
+            )
+            .getBoundingClientRect();
+
+
+        const computed =
+          window.getComputedStyle(
+            pieceElement
+          );
+
+
+        floating =
+          pieceElement.cloneNode(
+            true
+          );
+
+
+        floating.classList.remove(
+          "is-selected"
         );
 
 
-      floating.classList.remove(
-        "is-selected"
-      );
+        floating.classList.add(
+          "floating-piece"
+        );
 
 
-      floating.classList.add(
-        "floating-piece"
-      );
+        floating.style.setProperty(
+          "--float-size",
+          `${rect.width}px`
+        );
 
 
-      floating.style.setProperty(
-        "--float-size",
-        `${rect.width}px`
-      );
+        floating.style.setProperty(
+          "--float-r",
+          `${
+            Math.random() <
+            .5
+              ? -.65
+              : .65
+          }deg`
+        );
 
 
-      floating.style.setProperty(
-        "--float-r",
-        `${
-          Math.random() <
-          .5
-            ? -.8
-            : .8
-        }deg`
-      );
+        floating.style.fontSize =
+          computed.fontSize;
 
 
-      floating.style.fontSize =
-        computed.fontSize;
+        floating.style.fontFamily =
+          computed.fontFamily;
 
 
-      floating.style.fontFamily =
-        computed.fontFamily;
+        floating.style.fontWeight =
+          computed.fontWeight;
 
 
-      floating.style.fontWeight =
-        computed.fontWeight;
+        floating.style.color =
+          computed.color;
 
 
-      floating.style.color =
-        computed.color;
+        document.body.appendChild(
+          floating
+        );
 
-
-      document.body.appendChild(
-        floating
-      );
+      }
 
 
       pieceElement.classList.add(
@@ -2149,10 +2920,16 @@
       );
 
 
-      moveFloatingPiece(
-        selected.x,
-        selected.y
-      );
+      if (
+        floating
+      ) {
+
+        moveFloatingPiece(
+          selected.x,
+          selected.y
+        );
+
+      }
 
     }
 
@@ -2282,7 +3059,7 @@
         const pieceElement =
           squareElement.querySelector(
             ".piece"
-          );
+        );
 
 
         if (
@@ -2339,7 +3116,9 @@
 
       }
 
-      catch (error) {
+      catch (
+        error
+      ) {
 
         move =
           null;
