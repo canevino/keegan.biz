@@ -21,9 +21,7 @@
       --board-paper: var(--paper, #ece7d7);
       --square-a: #ece7d7;
       --square-b: #ddd7b6;
-      --capture-width: 54px;
-
-      width: min(100%, 560px);
+      width: min(100%, 700px);
       max-width: 100%;
       min-width: 0;
       margin-top: clamp(42px, 5vw, 68px);
@@ -114,21 +112,21 @@
     }
 
     .home-chess .board-area {
-      display: grid;
-      grid-template-columns:
-        var(--capture-width)
-        minmax(0, 1fr)
-        var(--capture-width);
-      align-items: stretch;
       width: 100%;
       min-width: 0;
     }
 
     .home-chess .board-frame {
-      grid-column: 2;
       position: relative;
+      width: 100%;
       min-width: 0;
-      aspect-ratio: 1;
+    }
+
+    .home-chess .board-frame::before {
+      content: "";
+      display: block;
+      width: 100%;
+      padding-top: 100%;
     }
 
     .home-chess .board {
@@ -232,6 +230,14 @@
         var(--board-red);
     }
 
+    @media (hover: hover) and (pointer: fine) {
+      .home-chess .piece.is-selected {
+        opacity: 0;
+        text-shadow: none;
+      }
+    }
+
+
     .floating-piece {
       position: fixed;
       z-index: 999999;
@@ -319,42 +325,38 @@
       left: 3px;
     }
 
-    .home-chess .capture-pile {
+    .home-chess .capture-bin {
       position: relative;
-      align-self: stretch;
-      min-width: 0;
-      overflow: visible;
+      width: 100%;
+      height: 112px;
+      margin-top: 8px;
+      overflow: hidden;
       pointer-events: none;
-      z-index: 8;
-    }
-
-    .home-chess .capture-pile-yellow {
-      grid-column: 1;
-    }
-
-    .home-chess .capture-pile-green {
-      grid-column: 3;
     }
 
     .home-chess .captured-piece {
       position: absolute;
-      left: 50%;
-      bottom: var(--pile-y, 4px);
+      left: 0;
+      top: 0;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      width: 30px;
-      height: 30px;
+      width: var(--piece-size, 34px);
+      height: var(--piece-size, 34px);
 
-      font-size: 27px;
+      font-size: calc(var(--piece-size, 34px) * .9);
       line-height: 1;
       font-weight: 700;
 
       transform:
-        translateX(calc(-50% + var(--pile-x, 0px)))
-        rotate(var(--pile-r, 0deg));
+        translate3d(
+          var(--x, 0px),
+          var(--y, 0px),
+          0
+        )
+        rotate(var(--r, 0deg));
 
       transform-origin: center;
       will-change: transform;
@@ -367,21 +369,6 @@
     .home-chess .captured-piece.black {
       color: var(--board-green);
     }
-
-    .home-chess .captured-piece.is-falling {
-      animation:
-        captured-fall
-        var(--fall-time, 660ms)
-        cubic-bezier(.17, .72, .18, 1);
-    }
-
-    @keyframes captured-fall {
-      0% {
-        transform:
-          translateX(calc(-50% + var(--pile-x, 0px)))
-          translateY(calc(-1 * var(--fall-distance, 460px)))
-          rotate(calc(var(--pile-r, 0deg) - 12deg));
-      }
 
       72% {
         transform:
@@ -446,18 +433,18 @@
       z-index: 2;
 
       width: fit-content;
-      max-width: 88%;
+      max-width: 72%;
 
       margin: 0;
-      padding: 12px 18px 14px;
+      padding: 8px 12px 10px;
 
       background: var(--board-paper);
 
       text-align: center;
 
-      font-size: clamp(42px, 7vw, 86px);
-      line-height: .9;
-      letter-spacing: -.065em;
+      font-size: clamp(34px, 5vw, 64px);
+      line-height: .92;
+      letter-spacing: -.055em;
       font-weight: 700;
 
       color: var(--winner-color, var(--board-green));
@@ -553,31 +540,25 @@
 
     @media (max-width: 1400px) {
       .home-chess {
-        --capture-width: 46px;
-        width: min(100%, 500px);
+        width: min(100%, 620px);
       }
 
-      .home-chess .captured-piece {
-        width: 28px;
-        height: 28px;
-        font-size: 25px;
+      .home-chess .capture-bin {
+        height: 104px;
       }
     }
 
     @media (min-width: 701px) and (max-width: 1100px) {
       .home-chess {
-        --capture-width: 38px;
-        width: min(100%, 420px);
+        width: min(100%, 560px);
       }
 
       .home-chess .piece {
-        font-size: clamp(24px, 4.3vw, 42px);
+        font-size: clamp(24px, 4.8vw, 48px);
       }
 
-      .home-chess .captured-piece {
-        width: 25px;
-        height: 25px;
-        font-size: 22px;
+      .home-chess .capture-bin {
+        height: 96px;
       }
 
       .home-chess .chess-bottombar {
@@ -608,7 +589,6 @@
 
     @media (max-width: 700px) {
       .home-chess {
-        --capture-width: 26px;
         width: 100%;
         margin-top: 34px;
       }
@@ -630,10 +610,8 @@
         font-size: clamp(23px, 8.5vw, 36px);
       }
 
-      .home-chess .captured-piece {
-        width: 22px;
-        height: 22px;
-        font-size: 20px;
+      .home-chess .capture-bin {
+        height: 82px;
       }
 
       .home-chess .coordinate {
@@ -641,9 +619,9 @@
       }
 
       .home-chess .win-title {
-        max-width: 86%;
-        padding: 9px 12px 11px;
-        font-size: clamp(36px, 13vw, 58px);
+        max-width: 74%;
+        padding: 7px 10px 8px;
+        font-size: clamp(30px, 10vw, 46px);
       }
 
       .home-chess .result-actions {
@@ -698,10 +676,6 @@
     }
 
     @media (max-width: 420px) {
-      .home-chess {
-        --capture-width: 22px;
-      }
-
       .home-chess .time-label {
         display: none;
       }
@@ -716,10 +690,8 @@
         width: 44px;
       }
 
-      .home-chess .captured-piece {
-        width: 20px;
-        height: 20px;
-        font-size: 18px;
+      .home-chess .capture-bin {
+        height: 76px;
       }
     }
   </style>
@@ -881,13 +853,6 @@
 
           <div class="board-area">
 
-            <div
-              class="capture-pile capture-pile-yellow"
-              id="capture-pile-yellow"
-              aria-label="Captured yellow pieces"
-            ></div>
-
-
             <div class="board-frame">
 
               <div
@@ -921,11 +886,10 @@
 
             </div>
 
-
             <div
-              class="capture-pile capture-pile-green"
-              id="capture-pile-green"
-              aria-label="Captured green pieces"
+              class="capture-bin"
+              id="capture-bin"
+              aria-label="Captured pieces"
             ></div>
 
           </div>
@@ -1561,15 +1525,9 @@
       );
 
 
-    const yellowCapturePile =
+    const captureBin =
       document.getElementById(
-        "capture-pile-yellow"
-      );
-
-
-    const greenCapturePile =
-      document.getElementById(
-        "capture-pile-green"
+        "capture-bin"
       );
 
 
@@ -2121,129 +2079,830 @@
     }
 
 
-    function capturedPlacement(
-      index,
-      color,
-      type
+    let captureBodies =
+      [];
+
+
+    let capturePhysicsFrame =
+      null;
+
+
+    let captureLastTime =
+      performance.now();
+
+
+    function pieceSizeForBin() {
+
+      const width =
+        captureBin.clientWidth;
+
+
+      if (
+        width <
+        420
+      ) {
+        return 24;
+      }
+
+
+      if (
+        width <
+        560
+      ) {
+        return 28;
+      }
+
+
+      return 34;
+
+    }
+
+
+    function updateCaptureBodyStyle(
+      body
     ) {
+
+      body.element.style.setProperty(
+        "--piece-size",
+        `${body.size}px`
+      );
+
+
+      body.element.style.setProperty(
+        "--x",
+        `${body.x}px`
+      );
+
+
+      body.element.style.setProperty(
+        "--y",
+        `${body.y}px`
+      );
+
+
+      body.element.style.setProperty(
+        "--r",
+        `${body.rotation}deg`
+      );
+
+    }
+
+
+    function makeCaptureBody(
+      piece,
+      index,
+      settled =
+        false
+    ) {
+
+      const element =
+        document.createElement(
+          "div"
+        );
+
+
+      element.className =
+        `captured-piece ${
+          piece.color ===
+          "w"
+            ? "white"
+            : "black"
+        }`;
+
+
+      element.textContent =
+        pieceLetters[
+          piece.type
+        ];
+
+
+      captureBin.appendChild(
+        element
+      );
+
+
+      const size =
+        pieceSizeForBin();
+
+
+      const maxX =
+        Math.max(
+          0,
+          captureBin.clientWidth -
+          size
+        );
+
 
       const seed =
         hashString(
-          `${color}-${type}-${index}`
+          `${piece.color}-${piece.type}-${piece.token}-${index}`
         );
 
 
-      const mobile =
-        window.matchMedia(
-          "(max-width: 700px)"
-        ).matches;
-
-
-      const column =
-        index %
-        2;
-
-
-      const row =
-        Math.floor(
-          index /
-          2
-        );
-
-
-      const spread =
-        mobile
-          ? 4
-          : 8;
-
-
-      const rowHeight =
-        mobile
-          ? 14
-          : 17;
-
-
-      const jitterX =
+      const startX =
+        maxX *
         (
-          (
-            seed &
-            255
-          )
-          /
-          255
-          -
-          .5
-        )
-        *
-        (
-          mobile
-            ? 2
-            : 4
-        );
-
-
-      const jitterY =
-        (
+          .12 +
           (
             (
-              seed >>>
-              8
+              seed &
+              255
             )
-            &
+            /
             255
           )
-          /
-          255
-          -
-          .5
-        )
-        *
-        3;
+          *
+          .76
+        );
 
 
-      const rotation =
-        (
-          (
-            (
-              seed >>>
-              16
-            )
-            &
-            255
-          )
-          /
-          255
-          -
-          .5
-        )
-        *
-        18;
-
-
-      return {
-
+      const body = {
+        element,
+        size,
+        radius:
+          size *
+          .46,
         x:
-          (
-            column ===
-            0
-              ? -spread
-              : spread
-          )
-          +
-          jitterX,
-
+          clampChess(
+            startX,
+            0,
+            maxX
+          ),
         y:
-          4
-          +
-          row *
-          rowHeight
-          +
-          jitterY,
-
-        r:
-          rotation
-
+          settled
+            ? Math.max(
+                0,
+                captureBin.clientHeight -
+                size -
+                (
+                  Math.floor(
+                    index /
+                    8
+                  )
+                  *
+                  size *
+                  .68
+                )
+              )
+            : -size - 6,
+        vx:
+          settled
+            ? 0
+            : (
+                (
+                  (
+                    seed >>>
+                    8
+                  )
+                  &
+                  255
+                )
+                /
+                255
+                -
+                .5
+              )
+              *
+              110,
+        vy:
+          settled
+            ? 0
+            : 40,
+        rotation:
+          (
+            (
+              (
+                seed >>>
+                16
+              )
+              &
+              255
+            )
+            /
+            255
+            -
+            .5
+          )
+          *
+          26,
+        vr:
+          settled
+            ? 0
+            : (
+                (
+                  (
+                    seed >>>
+                    20
+                  )
+                  &
+                  255
+                )
+                /
+                255
+                -
+                .5
+              )
+              *
+              120
       };
+
+
+      updateCaptureBodyStyle(
+        body
+      );
+
+
+      return body;
+
+    }
+
+
+    function rebuildCaptureBodies(
+      source,
+      animateNewest =
+        false
+    ) {
+
+      captureBin.innerHTML =
+        "";
+
+
+      captureBodies =
+        [];
+
+
+      const pieces = [
+        ...source.w.map(
+          piece => ({
+            ...piece,
+            color:
+              "w"
+          })
+        ),
+        ...source.b.map(
+          piece => ({
+            ...piece,
+            color:
+              "b"
+          })
+        )
+      ];
+
+
+      pieces.forEach(
+        (
+          piece,
+          index
+        ) => {
+
+          captureBodies.push(
+            makeCaptureBody(
+              piece,
+              index,
+              !animateNewest ||
+              index <
+              pieces.length -
+              1
+            )
+          );
+
+        }
+      );
+
+
+      captureLastTime =
+        performance.now();
+
+
+      startCapturePhysics();
+
+    }
+
+
+    function addCapturedBody(
+      piece
+    ) {
+
+      const body =
+        makeCaptureBody(
+          piece,
+          captureBodies.length,
+          false
+        );
+
+
+      captureBodies.push(
+        body
+      );
+
+
+      captureLastTime =
+        performance.now();
+
+
+      startCapturePhysics();
+
+    }
+
+
+    function resolveCaptureCollisions() {
+
+      for (
+        let i =
+          0;
+        i <
+        captureBodies.length;
+        i++
+      ) {
+
+        const a =
+          captureBodies[
+            i
+          ];
+
+
+        for (
+          let j =
+            i +
+            1;
+          j <
+            captureBodies.length;
+          j++
+        ) {
+
+          const b =
+            captureBodies[
+              j
+            ];
+
+
+          const ax =
+            a.x +
+            a.size /
+            2;
+
+
+          const ay =
+            a.y +
+            a.size /
+            2;
+
+
+          const bx =
+            b.x +
+            b.size /
+            2;
+
+
+          const by =
+            b.y +
+            b.size /
+            2;
+
+
+          let dx =
+            bx -
+            ax;
+
+
+          let dy =
+            by -
+            ay;
+
+
+          let distance =
+            Math.hypot(
+              dx,
+              dy
+            );
+
+
+          const minDistance =
+            a.radius +
+            b.radius;
+
+
+          if (
+            distance <=
+            0
+          ) {
+
+            distance =
+              .001;
+
+
+            dx =
+              .001;
+
+          }
+
+
+          if (
+            distance >=
+            minDistance
+          ) {
+            continue;
+          }
+
+
+          const nx =
+            dx /
+            distance;
+
+
+          const ny =
+            dy /
+            distance;
+
+
+          const overlap =
+            minDistance -
+            distance;
+
+
+          a.x -=
+            nx *
+            overlap *
+            .5;
+
+
+          a.y -=
+            ny *
+            overlap *
+            .5;
+
+
+          b.x +=
+            nx *
+            overlap *
+            .5;
+
+
+          b.y +=
+            ny *
+            overlap *
+            .5;
+
+
+          const relativeVelocity =
+            (
+              b.vx -
+              a.vx
+            )
+            *
+            nx
+            +
+            (
+              b.vy -
+              a.vy
+            )
+            *
+            ny;
+
+
+          if (
+            relativeVelocity <
+            0
+          ) {
+
+            const impulse =
+              -(
+                1 +
+                .30
+              )
+              *
+              relativeVelocity
+              /
+              2;
+
+
+            a.vx -=
+              impulse *
+              nx;
+
+
+            a.vy -=
+              impulse *
+              ny;
+
+
+            b.vx +=
+              impulse *
+              nx;
+
+
+            b.vy +=
+              impulse *
+              ny;
+
+          }
+
+        }
+
+      }
+
+    }
+
+
+    function stepCapturePhysics(
+      now
+    ) {
+
+      capturePhysicsFrame =
+        null;
+
+
+      if (
+        captureBodies.length ===
+        0
+      ) {
+        return;
+      }
+
+
+      const dt =
+        Math.min(
+          .028,
+          Math.max(
+            .001,
+            (
+              now -
+              captureLastTime
+            )
+            /
+            1000
+          )
+        );
+
+
+      captureLastTime =
+        now;
+
+
+      const gravity =
+        1150;
+
+
+      const floor =
+        captureBin.clientHeight;
+
+
+      const width =
+        captureBin.clientWidth;
+
+
+      let moving =
+        false;
+
+
+      captureBodies.forEach(
+        body => {
+
+          body.vy +=
+            gravity *
+            dt;
+
+
+          body.x +=
+            body.vx *
+            dt;
+
+
+          body.y +=
+            body.vy *
+            dt;
+
+
+          body.rotation +=
+            body.vr *
+            dt;
+
+
+          const maxX =
+            Math.max(
+              0,
+              width -
+              body.size
+            );
+
+
+          const maxY =
+            Math.max(
+              0,
+              floor -
+              body.size
+            );
+
+
+          if (
+            body.x <
+            0
+          ) {
+
+            body.x =
+              0;
+
+
+            body.vx *=
+              -.38;
+
+          }
+
+
+          if (
+            body.x >
+            maxX
+          ) {
+
+            body.x =
+              maxX;
+
+
+            body.vx *=
+              -.38;
+
+          }
+
+
+          if (
+            body.y >
+            maxY
+          ) {
+
+            body.y =
+              maxY;
+
+
+            if (
+              Math.abs(
+                body.vy
+              ) >
+              25
+            ) {
+
+              body.vy *=
+                -.34;
+
+            }
+
+            else {
+
+              body.vy =
+                0;
+
+            }
+
+
+            body.vx *=
+              .88;
+
+
+            body.vr *=
+              .82;
+
+          }
+
+
+          if (
+            Math.abs(
+              body.vx
+            ) >
+            .4
+            ||
+            Math.abs(
+              body.vy
+            ) >
+            .4
+            ||
+            Math.abs(
+              body.vr
+            ) >
+            .4
+          ) {
+
+            moving =
+              true;
+
+          }
+
+        }
+      );
+
+
+      for (
+        let pass =
+          0;
+        pass <
+        3;
+        pass++
+      ) {
+
+        resolveCaptureCollisions();
+
+      }
+
+
+      captureBodies.forEach(
+        body => {
+
+          const maxX =
+            Math.max(
+              0,
+              width -
+              body.size
+            );
+
+
+          const maxY =
+            Math.max(
+              0,
+              floor -
+              body.size
+            );
+
+
+          body.x =
+            clampChess(
+              body.x,
+              0,
+              maxX
+            );
+
+
+          body.y =
+            clampChess(
+              body.y,
+              -body.size,
+              maxY
+            );
+
+
+          updateCaptureBodyStyle(
+            body
+          );
+
+        }
+      );
+
+
+      if (
+        moving
+      ) {
+
+        capturePhysicsFrame =
+          requestAnimationFrame(
+            stepCapturePhysics
+          );
+
+      }
+
+    }
+
+
+    function startCapturePhysics() {
+
+      if (
+        capturePhysicsFrame
+      ) {
+        return;
+      }
+
+
+      captureLastTime =
+        performance.now();
+
+
+      capturePhysicsFrame =
+        requestAnimationFrame(
+          stepCapturePhysics
+        );
+
+    }
+
+
+    function clearCapturePhysics() {
+
+      if (
+        capturePhysicsFrame
+      ) {
+
+        cancelAnimationFrame(
+          capturePhysicsFrame
+        );
+
+
+        capturePhysicsFrame =
+          null;
+
+      }
+
+
+      captureBodies =
+        [];
+
+
+      captureBin.innerHTML =
+        "";
 
     }
 
@@ -2255,129 +2914,65 @@
         capturedPieces
     ) {
 
-      yellowCapturePile.innerHTML =
-        "";
+      if (
+        reviewing
+      ) {
+
+        rebuildCaptureBodies(
+          source,
+          false
+        );
 
 
-      greenCapturePile.innerHTML =
-        "";
+        return;
+      }
 
 
-      [
-        [
-          "w",
-          yellowCapturePile
-        ],
-        [
-          "b",
-          greenCapturePile
-        ]
-      ].forEach(
-        (
+      if (
+        animateToken
+      ) {
+
+        const newest =
           [
-            color,
-            pile
-          ]
-        ) => {
-
-          source[
-            color
-          ].forEach(
-            (
-              piece,
-              index
-            ) => {
-
-              const element =
-                document.createElement(
-                  "div"
-                );
-
-
-              element.className =
-                `captured-piece ${
-                  color ===
-                  "w"
-                    ? "white"
-                    : "black"
-                }`;
-
-
-              element.textContent =
-                pieceLetters[
-                  piece.type
-                ];
-
-
-              const placement =
-                capturedPlacement(
-                  index,
-                  color,
-                  piece.type
-                );
-
-
-              element.style.setProperty(
-                "--pile-x",
-                `${placement.x}px`
-              );
-
-
-              element.style.setProperty(
-                "--pile-y",
-                `${placement.y}px`
-              );
-
-
-              element.style.setProperty(
-                "--pile-r",
-                `${placement.r}deg`
-              );
-
-
-              if (
-                animateToken &&
-                piece.token ===
-                animateToken
-              ) {
-
-                element.classList.add(
-                  "is-falling"
-                );
-
-
-                element.style.setProperty(
-                  "--fall-time",
-                  `${
-                    590 +
-                    Math.random() *
-                    160
-                  }ms`
-                );
-
-
-                element.style.setProperty(
-                  "--fall-distance",
-                  `${
-                    Math.max(
-                      260,
-                      boardElement.clientHeight *
-                      .92
-                    )
-                  }px`
-                );
-
-              }
-
-
-              pile.appendChild(
-                element
-              );
-
-            }
+            ...source.w,
+            ...source.b
+          ].find(
+            piece =>
+              piece.token ===
+              animateToken
           );
 
+
+        if (
+          newest
+        ) {
+
+          const color =
+            source.w.some(
+              piece =>
+                piece.token ===
+                animateToken
+            )
+              ? "w"
+              : "b";
+
+
+          addCapturedBody({
+            ...newest,
+            color
+          });
+
         }
+
+
+        return;
+
+      }
+
+
+      rebuildCaptureBodies(
+        source,
+        false
       );
 
     }
@@ -3293,7 +3888,9 @@
           type:
             move.captured,
           token:
-            captureToken
+            captureToken,
+          color:
+            capturedColor
         });
 
       }
@@ -3821,6 +4418,9 @@
       game.reset();
 
 
+      clearCapturePhysics();
+
+
       capturedPieces.w.length =
         0;
 
@@ -4236,6 +4836,35 @@
           setClockMinutes();
 
         }
+
+      }
+    );
+
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        if (
+          captureBodies.length ===
+          0
+        ) {
+          return;
+        }
+
+
+        const source =
+          reviewing
+            ? matchHistory[
+                reviewIndex
+              ].captures
+            : capturedPieces;
+
+
+        rebuildCaptureBodies(
+          source,
+          false
+        );
 
       }
     );
