@@ -180,23 +180,20 @@
     color: #006a44;
   }
 
-  .piece.dragging {
-    position: fixed;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--drag-size);
-    height: var(--drag-size);
-    line-height: 1;
-    font-weight: 700;
-    pointer-events: none;
-    cursor: pointer;
+
+  .home-chess .piece-source-hidden {
+    opacity: 1;
+  }
+
+  .home-chess .piece.is-selected {
+    z-index: 20;
     transform:
-      translate(-50%, -50%)
-      translateY(-6px)
-      rotate(var(--drag-rotation, 0deg))
-      scale(1.09);
+      translate(
+        var(--rest-x, 0px),
+        calc(var(--rest-y, 0px) - 6px)
+      )
+      rotate(var(--rest-r, 0deg))
+      scale(1.08);
     filter:
       drop-shadow(
         7px
@@ -204,14 +201,6 @@
         0
         rgba(193, 39, 45, .62)
       );
-  }
-
-  .home-chess .piece-source-hidden {
-    opacity: .18;
-  }
-
-  .home-chess .piece.is-selected {
-    opacity: .18;
   }
 
   .home-chess .piece.just-dropped {
@@ -969,10 +958,6 @@
       }
 
 
-      /*
-        Clicking the already-selected piece puts it back.
-      */
-
       if (
         drag &&
         drag.from ===
@@ -993,146 +978,23 @@
       }
 
 
-      const squareElement =
-        pieceElement.closest(
-          ".square"
-        );
-
-
-      const squareRect =
-        squareElement.getBoundingClientRect();
-
-
-      const clone =
-        pieceElement.cloneNode(
-          true
-        );
-
-
-      clone.classList.add(
-        "dragging"
-      );
-
-
-      clone.classList.remove(
-        "just-dropped"
-      );
-
-
-      const pieceStyle =
-        window.getComputedStyle(
-          pieceElement
-        );
-
-
-      clone.style.fontSize =
-        pieceStyle.fontSize;
-
-
-      clone.style.fontFamily =
-        pieceStyle.fontFamily;
-
-
-      clone.style.fontWeight =
-        pieceStyle.fontWeight;
-
-
-      clone.style.color =
-        pieceStyle.color;
-
-
-      clone.style.setProperty(
-        "--drag-rotation",
-        `${Math.random() < .5 ? -.8 : .8}deg`
-      );
-
-
-      clone.style.setProperty(
-        "--drag-size",
-        `${squareRect.width}px`
-      );
-
-
-      document.body.appendChild(
-        clone
-      );
-
-
-      pieceElement.classList.add(
-        "piece-source-hidden"
-      );
-
-
       drag = {
         from:
           fromSquare,
 
         original:
-          pieceElement,
-
-        floating:
-          clone,
-
-        x:
-          event.clientX,
-
-        y:
-          event.clientY
+          pieceElement
       };
+
+
+      pieceElement.classList.add(
+        "is-selected"
+      );
 
 
       showLegalMoves(
         fromSquare
       );
-
-
-      moveFloatingPiece(
-        drag.x,
-        drag.y
-      );
-
-    }
-
-
-    function followPickedPiece(event) {
-
-      if (!drag) {
-        return;
-      }
-
-
-      drag.x =
-        event.clientX;
-
-
-      drag.y =
-        event.clientY;
-
-
-      moveFloatingPiece(
-        drag.x,
-        drag.y
-      );
-
-    }
-
-
-    function moveFloatingPiece(
-      x,
-      y
-    ) {
-
-      if (!drag) {
-        return;
-      }
-
-
-      drag.floating.style.left =
-        `${x}px`;
-
-
-      drag.floating.style.top =
-        `${y}px`;
 
     }
 
@@ -1143,20 +1005,11 @@
 
 
       if (
-        drag?.floating
-      ) {
-
-        drag.floating.remove();
-
-      }
-
-
-      if (
         drag?.original
       ) {
 
         drag.original.classList.remove(
-          "piece-source-hidden"
+          "is-selected"
         );
 
       }
@@ -1219,37 +1072,25 @@
         drag.from;
 
 
-      /*
-        Remove the floating copy before the board is rendered again.
-      */
-
-      if (
-        drag.floating
-      ) {
-
-        drag.floating.remove();
-
-      }
+      const releaseX =
+        event.clientX;
 
 
-      drag =
-        null;
+      const releaseY =
+        event.clientY;
+
+
+      cancelSelection();
 
 
       attemptMove(
         from,
         destination,
-        event.clientX,
-        event.clientY
+        releaseX,
+        releaseY
       );
 
     }
-
-
-    window.addEventListener(
-      "pointermove",
-      followPickedPiece
-    );
 
 
     boardElement.addEventListener(
@@ -1274,7 +1115,6 @@
 
       }
     );
-
 
 
     function attemptMove(
