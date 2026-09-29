@@ -9,27 +9,75 @@
 
   <style>
   .home-chess {
-    width: min(100%, 760px);
+    width: min(100%, 660px);
     margin-top: clamp(42px, 6vw, 72px);
   }
 
   .home-chess .chess-topbar,
-  .home-chess .chess-bottombar {
+  .home-chess .chess-bottombar,
+  .home-chess .chess-clock-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: 14px;
+    flex-wrap: wrap;
   }
 
-  .home-chess .chess-topbar { margin-bottom: 12px; }
-  .home-chess .chess-bottombar { margin-top: 12px; }
+  .home-chess .chess-topbar {
+    margin-bottom: 10px;
+  }
 
-  .home-chess .status {
+  .home-chess .chess-clock-row {
+    margin-bottom: 10px;
+  }
+
+  .home-chess .chess-bottombar {
+    margin-top: 10px;
+  }
+
+  .home-chess .status,
+  .home-chess .clock,
+  .home-chess .time-label {
     margin: 0;
     font-size: 14px;
     line-height: 1;
     font-weight: 700;
     color: #c1272d;
+  }
+
+  .home-chess .clock-group,
+  .home-chess .time-setter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .home-chess .clock {
+    min-width: 92px;
+  }
+
+  .home-chess .clock.is-active {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .home-chess input {
+    width: 62px;
+    padding: 3px 5px;
+    border: 1px solid #c1272d;
+    border-radius: 0;
+    background: transparent;
+    color: #11110f;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    outline: none;
+  }
+
+  .home-chess input:focus {
+    outline: 1px solid #c1272d;
+    outline-offset: 1px;
   }
 
   .home-chess button {
@@ -46,7 +94,9 @@
     cursor: pointer;
   }
 
-  .home-chess button:hover { text-decoration: underline; }
+  .home-chess button:hover {
+    text-decoration: underline;
+  }
 
   .home-chess .board {
     position: relative;
@@ -55,9 +105,9 @@
     grid-template-rows: repeat(8, 1fr);
     width: 100%;
     aspect-ratio: 1;
-    border-top: 1px solid #c1272d;
-    border-left: 1px solid #c1272d;
-    background: transparent;
+    border-top: 2px solid #c1272d;
+    border-left: 2px solid #c1272d;
+    background: #ece7d7;
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
@@ -70,9 +120,16 @@
     justify-content: center;
     min-width: 0;
     min-height: 0;
-    border-right: 1px solid #c1272d;
-    border-bottom: 1px solid #c1272d;
-    background: transparent;
+    border-right: 2px solid #c1272d;
+    border-bottom: 2px solid #c1272d;
+  }
+
+  .home-chess .square.light {
+    background: #ece7d7;
+  }
+
+  .home-chess .square.dark {
+    background: #ded6c1;
   }
 
   .home-chess .square.legal::after {
@@ -80,7 +137,7 @@
     position: absolute;
     width: 14%;
     aspect-ratio: 1;
-    border: 1px solid #c1272d;
+    border: 2px solid #c1272d;
     border-radius: 50%;
     pointer-events: none;
   }
@@ -100,34 +157,110 @@
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
+    transform:
+      translate(var(--rest-x, 0px), var(--rest-y, 0px))
+      rotate(var(--rest-r, 0deg));
+    transform-origin: center;
   }
 
-  .home-chess .piece.white { color: #006a44; }
-  .home-chess .piece.black { color: #fdb913; }
+  .home-chess .piece.white {
+    color: #fdb913;
+  }
+
+  .home-chess .piece.black {
+    color: #006a44;
+  }
 
   .piece.dragging {
     position: fixed;
     z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: var(--drag-size);
     height: var(--drag-size);
+    line-height: 1;
+    font-weight: 700;
     pointer-events: none;
     cursor: grabbing;
-    transform: translate(-50%, -50%) scale(1.08);
+    transform:
+      translate(-50%, -50%)
+      translateY(-9px)
+      rotate(var(--drag-rotation, -2deg))
+      scale(1.15);
+    filter:
+      drop-shadow(
+        0
+        10px
+        7px
+        rgba(17, 17, 15, .28)
+      );
   }
 
-  .home-chess .piece-source-hidden { visibility: hidden; }
+  .home-chess .piece-source-hidden {
+    visibility: hidden;
+  }
+
+  .home-chess .piece.just-dropped {
+    animation:
+      piece-drop
+      210ms
+      cubic-bezier(.18, .82, .23, 1);
+  }
+
+  @keyframes piece-drop {
+    0% {
+      transform:
+        translate(
+          calc(var(--rest-x, 0px) - 3px),
+          calc(var(--rest-y, 0px) - 9px)
+        )
+        rotate(calc(var(--rest-r, 0deg) + 2deg))
+        scale(1.11);
+    }
+
+    68% {
+      transform:
+        translate(
+          calc(var(--rest-x, 0px) + 1px),
+          calc(var(--rest-y, 0px) + 1px)
+        )
+        rotate(calc(var(--rest-r, 0deg) - .4deg))
+        scale(.985);
+    }
+
+    100% {
+      transform:
+        translate(var(--rest-x, 0px), var(--rest-y, 0px))
+        rotate(var(--rest-r, 0deg))
+        scale(1);
+    }
+  }
 
   .home-chess .coordinate {
     position: absolute;
     pointer-events: none;
     color: #c1272d;
-    font-size: 9px;
+    font-size: 10px;
     line-height: 1;
-    font-weight: 400;
+    font-weight: 700;
   }
 
-  .home-chess .coordinate.file { right: 4px; bottom: 3px; }
-  .home-chess .coordinate.rank { top: 4px; left: 4px; }
+  .home-chess .coordinate.file {
+    right: 4px;
+    bottom: 3px;
+  }
+
+  .home-chess .coordinate.rank {
+    top: 4px;
+    left: 4px;
+  }
+
+  @media (min-width: 701px) and (max-width: 1100px) {
+    .home-chess {
+      width: min(100%, 500px);
+    }
+  }
 
   @media (max-width: 700px) {
     .home-chess {
@@ -135,7 +268,15 @@
       margin-top: 38px;
     }
 
-    .home-chess .piece { font-size: 9vw; }
+    .home-chess .piece {
+      font-size: 9vw;
+    }
+
+    .home-chess .clock-group,
+    .home-chess .time-setter {
+      width: 100%;
+      justify-content: space-between;
+    }
   }
   </style>
 </head>
@@ -163,8 +304,28 @@
 
         <section class="home-chess" aria-label="Chess">
           <div class="chess-topbar">
-            <p class="status" id="status">white to move</p>
+            <p class="status" id="status">yellow to move</p>
             <button id="flip-button" type="button">flip board</button>
+          </div>
+
+          <div class="chess-clock-row">
+            <div class="clock-group" aria-label="Chess clocks">
+              <span class="clock" id="white-clock">yellow 60:00</span>
+              <span class="clock" id="black-clock">green 60:00</span>
+            </div>
+
+            <div class="time-setter">
+              <label class="time-label" for="time-input">minutes each</label>
+              <input
+                id="time-input"
+                type="number"
+                min="1"
+                step="1"
+                value="60"
+                inputmode="numeric"
+              >
+              <button id="set-time-button" type="button">set time</button>
+            </div>
           </div>
 
           <div class="board" id="board" aria-label="Chess board"></div>
@@ -279,7 +440,6 @@
 
   <script type="module">
 
-
     import {
       Chess
     } from "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
@@ -291,13 +451,25 @@
     const flipButton = document.getElementById("flip-button");
     const resetButton = document.getElementById("reset-button");
 
+    const whiteClockElement = document.getElementById("white-clock");
+    const blackClockElement = document.getElementById("black-clock");
+    const timeInput = document.getElementById("time-input");
+    const setTimeButton = document.getElementById("set-time-button");
+
 
     const game = new Chess();
 
 
     let orientation = "white";
-
     let drag = null;
+
+    let startingMinutes = 60;
+    let whiteTime = startingMinutes * 60 * 1000;
+    let blackTime = startingMinutes * 60 * 1000;
+    let timerStarted = false;
+    let timerFinished = false;
+    let activeClock = "w";
+    let lastTick = performance.now();
 
 
     const pieceLetters = {
@@ -311,56 +483,45 @@
 
 
     function getFiles() {
-      if (orientation === "white") {
-        return [
-          "a",
-          "b",
-          "c",
-          "d",
-          "e",
-          "f",
-          "g",
-          "h"
-        ];
-      }
-
-      return [
-        "h",
-        "g",
-        "f",
-        "e",
-        "d",
-        "c",
-        "b",
-        "a"
-      ];
+      return orientation === "white"
+        ? ["a", "b", "c", "d", "e", "f", "g", "h"]
+        : ["h", "g", "f", "e", "d", "c", "b", "a"];
     }
 
 
     function getRanks() {
-      if (orientation === "white") {
-        return [
-          8,
-          7,
-          6,
-          5,
-          4,
-          3,
-          2,
-          1
-        ];
+      return orientation === "white"
+        ? [8, 7, 6, 5, 4, 3, 2, 1]
+        : [1, 2, 3, 4, 5, 6, 7, 8];
+    }
+
+
+    function hashString(value) {
+      let hash = 2166136261;
+
+      for (let i = 0; i < value.length; i++) {
+        hash ^= value.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
       }
 
-      return [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8
-      ];
+      return hash >>> 0;
+    }
+
+
+    function placementFor(squareName, piece) {
+      const seed = hashString(
+        `${squareName}-${piece.color}-${piece.type}`
+      );
+
+      const x = ((seed & 255) / 255 - .5) * 7;
+      const y = (((seed >>> 8) & 255) / 255 - .5) * 7;
+      const r = (((seed >>> 16) & 255) / 255 - .5) * 4.2;
+
+      return {
+        x: x.toFixed(2),
+        y: y.toFixed(2),
+        r: r.toFixed(2)
+      };
     }
 
 
@@ -376,12 +537,16 @@
 
           const file = files[column];
           const rank = ranks[row];
-
           const squareName = `${file}${rank}`;
 
           const square = document.createElement("div");
 
-          square.className = "square";
+          const fileIndex = file.charCodeAt(0) - 97;
+          const isDark = (fileIndex + rank) % 2 === 0;
+
+          square.className =
+            `square ${isDark ? "dark" : "light"}`;
+
           square.dataset.square = squareName;
 
 
@@ -395,8 +560,24 @@
               `piece ${piece.color === "w" ? "white" : "black"}`;
 
             pieceElement.textContent = pieceLetters[piece.type];
-
             pieceElement.dataset.square = squareName;
+
+            const rest = placementFor(squareName, piece);
+
+            pieceElement.style.setProperty(
+              "--rest-x",
+              `${rest.x}px`
+            );
+
+            pieceElement.style.setProperty(
+              "--rest-y",
+              `${rest.y}px`
+            );
+
+            pieceElement.style.setProperty(
+              "--rest-r",
+              `${rest.r}deg`
+            );
 
             pieceElement.addEventListener(
               "pointerdown",
@@ -439,30 +620,22 @@
 
 
       updateStatus();
+      updateClocks();
     }
 
 
     function startDrag(event) {
-      if (drag) {
+      if (drag || timerFinished) {
         return;
       }
 
 
       const pieceElement = event.currentTarget;
-
-      const fromSquare =
-        pieceElement.dataset.square;
-
-      const piece =
-        game.get(fromSquare);
+      const fromSquare = pieceElement.dataset.square;
+      const piece = game.get(fromSquare);
 
 
-      if (!piece) {
-        return;
-      }
-
-
-      if (piece.color !== game.turn()) {
+      if (!piece || piece.color !== game.turn()) {
         return;
       }
 
@@ -470,41 +643,27 @@
       event.preventDefault();
 
 
-      const squareElement =
-        pieceElement.closest(".square");
+      const squareElement = pieceElement.closest(".square");
+      const squareRect = squareElement.getBoundingClientRect();
 
-      const squareRect =
-        squareElement.getBoundingClientRect();
-
-
-      const clone =
-        pieceElement.cloneNode(true);
-
+      const clone = pieceElement.cloneNode(true);
 
       clone.classList.add("dragging");
+      clone.classList.remove("just-dropped");
 
 
       const pieceStyle =
-        window.getComputedStyle(
-          pieceElement
-        );
+        window.getComputedStyle(pieceElement);
 
+      clone.style.fontSize = pieceStyle.fontSize;
+      clone.style.fontFamily = pieceStyle.fontFamily;
+      clone.style.fontWeight = pieceStyle.fontWeight;
+      clone.style.color = pieceStyle.color;
 
-      clone.style.fontSize =
-        pieceStyle.fontSize;
-
-
-      clone.style.fontFamily =
-        pieceStyle.fontFamily;
-
-
-      clone.style.fontWeight =
-        pieceStyle.fontWeight;
-
-
-      clone.style.color =
-        pieceStyle.color;
-
+      clone.style.setProperty(
+        "--drag-rotation",
+        `${Math.random() < .5 ? -2.4 : 2.4}deg`
+      );
 
       clone.style.setProperty(
         "--drag-size",
@@ -527,7 +686,6 @@
 
 
       showLegalMoves(fromSquare);
-
 
       moveFloatingPiece(
         event.clientX,
@@ -566,9 +724,7 @@
         return;
       }
 
-
       event.preventDefault();
-
 
       moveFloatingPiece(
         event.clientX,
@@ -582,12 +738,8 @@
         return;
       }
 
-
-      drag.floating.style.left =
-        `${x}px`;
-
-      drag.floating.style.top =
-        `${y}px`;
+      drag.floating.style.left = `${x}px`;
+      drag.floating.style.top = `${y}px`;
     }
 
 
@@ -596,9 +748,7 @@
         return;
       }
 
-
       event.preventDefault();
-
 
       const destination =
         getSquareAtPoint(
@@ -606,14 +756,12 @@
           event.clientY
         );
 
-
       if (destination) {
         attemptMove(
           drag.from,
           destination
         );
       }
-
 
       finishDrag();
     }
@@ -624,7 +772,6 @@
         return;
       }
 
-
       finishDrag();
     }
 
@@ -632,21 +779,17 @@
     function finishDrag() {
       clearLegalMoves();
 
-
-      if (drag.floating) {
+      if (drag?.floating) {
         drag.floating.remove();
       }
 
-
-      if (drag.original) {
+      if (drag?.original) {
         drag.original.classList.remove(
           "piece-source-hidden"
         );
       }
 
-
       drag = null;
-
 
       window.removeEventListener(
         "pointermove",
@@ -670,42 +813,32 @@
         drag.floating.style.display = "none";
       }
 
-
       const element =
         document.elementFromPoint(x, y);
-
 
       if (drag?.floating) {
         drag.floating.style.display = "";
       }
 
-
       if (!element) {
         return null;
       }
 
+      const square = element.closest(".square");
 
-      const square =
-        element.closest(".square");
-
-
-      if (!square) {
-        return null;
-      }
-
-
-      return square.dataset.square;
+      return square
+        ? square.dataset.square
+        : null;
     }
 
 
     function attemptMove(from, to) {
       let move = null;
 
-
       try {
         move = game.move({
-          from: from,
-          to: to,
+          from,
+          to,
           promotion: "q"
         });
       }
@@ -716,31 +849,61 @@
 
 
       if (!move) {
-        return;
+        return false;
       }
 
 
+      if (!timerStarted) {
+        timerStarted = true;
+      }
+
+      activeClock = game.turn();
+      lastTick = performance.now();
+
+
       renderBoard();
+
+
+      const droppedPiece =
+        boardElement.querySelector(
+          `[data-square="${to}"] .piece`
+        );
+
+
+      if (droppedPiece) {
+        droppedPiece.classList.add(
+          "just-dropped"
+        );
+
+        window.setTimeout(
+          () => {
+            droppedPiece.classList.remove(
+              "just-dropped"
+            );
+          },
+          240
+        );
+      }
+
+
+      return true;
     }
 
 
     function showLegalMoves(square) {
       clearLegalMoves();
 
-
       const moves =
         game.moves({
-          square: square,
+          square,
           verbose: true
         });
-
 
       moves.forEach(move => {
         const squareElement =
           boardElement.querySelector(
             `[data-square="${move.to}"]`
           );
-
 
         if (squareElement) {
           squareElement.classList.add(
@@ -760,15 +923,27 @@
     }
 
 
+    function colorName(color) {
+      return color === "w"
+        ? "yellow"
+        : "green";
+    }
+
+
     function updateStatus() {
       let status;
+
+
+      if (timerFinished) {
+        return;
+      }
 
 
       if (game.isCheckmate()) {
         const winner =
           game.turn() === "w"
-            ? "black"
-            : "white";
+            ? "green"
+            : "yellow";
 
         status = `${winner} wins — checkmate`;
       }
@@ -794,13 +969,7 @@
       }
 
       else {
-        const turn =
-          game.turn() === "w"
-            ? "white"
-            : "black";
-
-        status = `${turn} to move`;
-
+        status = `${colorName(game.turn())} to move`;
 
         if (game.inCheck()) {
           status += " — check";
@@ -812,20 +981,117 @@
     }
 
 
+    function formatTime(milliseconds) {
+      const safe = Math.max(0, milliseconds);
+      const totalSeconds = Math.ceil(safe / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      return `${minutes}:${String(seconds).padStart(2, "0")}`;
+    }
+
+
+    function updateClocks() {
+      whiteClockElement.textContent =
+        `yellow ${formatTime(whiteTime)}`;
+
+      blackClockElement.textContent =
+        `green ${formatTime(blackTime)}`;
+
+      whiteClockElement.classList.toggle(
+        "is-active",
+        timerStarted && !timerFinished && activeClock === "w"
+      );
+
+      blackClockElement.classList.toggle(
+        "is-active",
+        timerStarted && !timerFinished && activeClock === "b"
+      );
+    }
+
+
+    function stopOnTime(loser) {
+      timerFinished = true;
+      timerStarted = false;
+
+      const winner =
+        loser === "w"
+          ? "green"
+          : "yellow";
+
+      statusElement.textContent =
+        `${winner} wins — time`;
+
+      updateClocks();
+    }
+
+
+    function tickClock() {
+      const now = performance.now();
+
+      if (
+        timerStarted &&
+        !timerFinished &&
+        !game.isGameOver()
+      ) {
+        const elapsed = now - lastTick;
+
+        if (activeClock === "w") {
+          whiteTime -= elapsed;
+
+          if (whiteTime <= 0) {
+            whiteTime = 0;
+            stopOnTime("w");
+          }
+        }
+
+        else {
+          blackTime -= elapsed;
+
+          if (blackTime <= 0) {
+            blackTime = 0;
+            stopOnTime("b");
+          }
+        }
+      }
+
+      lastTick = now;
+      updateClocks();
+    }
+
+
+    function setClockMinutes() {
+      const parsed = Number(timeInput.value);
+
+      if (!Number.isFinite(parsed) || parsed <= 0) {
+        timeInput.value = String(startingMinutes);
+        return;
+      }
+
+      startingMinutes = parsed;
+      whiteTime = parsed * 60 * 1000;
+      blackTime = parsed * 60 * 1000;
+      timerStarted = false;
+      timerFinished = false;
+      activeClock = game.turn();
+      lastTick = performance.now();
+
+      updateStatus();
+      updateClocks();
+    }
+
+
     flipButton.addEventListener(
       "click",
       () => {
-
         if (drag) {
           finishDrag();
         }
-
 
         orientation =
           orientation === "white"
             ? "black"
             : "white";
-
 
         renderBoard();
       }
@@ -835,22 +1101,49 @@
     resetButton.addEventListener(
       "click",
       () => {
-
         if (drag) {
           finishDrag();
         }
 
-
         game.reset();
+
+        whiteTime = startingMinutes * 60 * 1000;
+        blackTime = startingMinutes * 60 * 1000;
+        timerStarted = false;
+        timerFinished = false;
+        activeClock = "w";
+        lastTick = performance.now();
 
         renderBoard();
       }
     );
 
 
-    renderBoard();
+    setTimeButton.addEventListener(
+      "click",
+      setClockMinutes
+    );
 
-  
+
+    timeInput.addEventListener(
+      "keydown",
+      event => {
+        if (event.key === "Enter") {
+          setClockMinutes();
+        }
+      }
+    );
+
+
+    window.setInterval(
+      tickClock,
+      250
+    );
+
+
+    renderBoard();
+    updateClocks();
+
   </script>
 </body>
 </html>
