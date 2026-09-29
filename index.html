@@ -32,7 +32,8 @@
   }
 
   .home-chess .chess-bottombar {
-    margin-top: 10px;
+    margin-top: 12px;
+    align-items: flex-end;
   }
 
   .home-chess .status,
@@ -129,7 +130,7 @@
   }
 
   .home-chess .square.dark {
-    background: #ded6c1;
+    background: #e5dfbd;
   }
 
   .home-chess .square.legal::after {
@@ -212,21 +213,21 @@
     0% {
       transform:
         translate(
-          calc(var(--rest-x, 0px) - 3px),
-          calc(var(--rest-y, 0px) - 9px)
+          calc(var(--rest-x, 0px) - 2px),
+          calc(var(--rest-y, 0px) - 10px)
         )
-        rotate(calc(var(--rest-r, 0deg) + 2deg))
-        scale(1.11);
+        rotate(calc(var(--rest-r, 0deg) + 1.8deg))
+        scale(1.10);
     }
 
     68% {
       transform:
         translate(
-          calc(var(--rest-x, 0px) + 1px),
-          calc(var(--rest-y, 0px) + 1px)
+          calc(var(--rest-x, 0px) + .8px),
+          calc(var(--rest-y, 0px) + 1.2px)
         )
-        rotate(calc(var(--rest-r, 0deg) - .4deg))
-        scale(.985);
+        rotate(calc(var(--rest-r, 0deg) - .35deg))
+        scale(.988);
     }
 
     100% {
@@ -256,6 +257,97 @@
     left: 4px;
   }
 
+
+  .home-chess .board-area {
+    position: relative;
+    width: 100%;
+  }
+
+  .home-chess .capture-pile {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 68px;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .home-chess .capture-pile-yellow {
+    right: calc(100% + 14px);
+  }
+
+  .home-chess .capture-pile-green {
+    left: calc(100% + 14px);
+  }
+
+  .home-chess .captured-piece {
+    position: absolute;
+    left: 50%;
+    bottom: var(--pile-y, 0px);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    line-height: 1;
+    font-weight: 700;
+    transform:
+      translateX(calc(-50% + var(--pile-x, 0px)))
+      rotate(var(--pile-r, 0deg));
+    transform-origin: center;
+    opacity: .98;
+  }
+
+  .home-chess .captured-piece.white {
+    color: #fdb913;
+  }
+
+  .home-chess .captured-piece.black {
+    color: #006a44;
+  }
+
+  .home-chess .captured-piece.is-falling {
+    animation:
+      captured-fall
+      var(--fall-time, 620ms)
+      cubic-bezier(.20, .72, .24, 1);
+  }
+
+  @keyframes captured-fall {
+    0% {
+      transform:
+        translateX(calc(-50% + var(--pile-x, 0px)))
+        translateY(calc(-1 * var(--fall-distance, 260px)))
+        rotate(calc(var(--pile-r, 0deg) - 8deg))
+        scale(1.05);
+    }
+
+    72% {
+      transform:
+        translateX(calc(-50% + var(--pile-x, 0px)))
+        translateY(5px)
+        rotate(calc(var(--pile-r, 0deg) + 1.5deg))
+        scale(.98);
+    }
+
+    88% {
+      transform:
+        translateX(calc(-50% + var(--pile-x, 0px)))
+        translateY(-2px)
+        rotate(calc(var(--pile-r, 0deg) - .6deg))
+        scale(1.01);
+    }
+
+    100% {
+      transform:
+        translateX(calc(-50% + var(--pile-x, 0px)))
+        translateY(0)
+        rotate(var(--pile-r, 0deg))
+        scale(1);
+    }
+  }
+
   @media (min-width: 701px) and (max-width: 1100px) {
     .home-chess {
       width: min(100%, 500px);
@@ -272,10 +364,43 @@
       font-size: 9vw;
     }
 
+    .home-chess .chess-bottombar {
+      align-items: flex-start;
+    }
+
     .home-chess .clock-group,
     .home-chess .time-setter {
       width: 100%;
       justify-content: space-between;
+    }
+
+    .home-chess .board-area {
+      padding-bottom: 92px;
+    }
+
+    .home-chess .capture-pile {
+      top: auto;
+      bottom: 0;
+      width: calc(50% - 6px);
+      height: 78px;
+    }
+
+    .home-chess .capture-pile-yellow {
+      left: 0;
+      right: auto;
+    }
+
+    .home-chess .capture-pile-green {
+      right: 0;
+      left: auto;
+    }
+
+    .home-chess .captured-piece {
+      bottom: 4px;
+      left: 50%;
+      width: 38px;
+      height: 38px;
+      font-size: 34px;
     }
   }
   </style>
@@ -308,7 +433,31 @@
             <button id="flip-button" type="button">flip board</button>
           </div>
 
-          <div class="chess-clock-row">
+          <div class="board-area">
+
+            <div
+              class="capture-pile capture-pile-yellow"
+              id="capture-pile-yellow"
+              aria-label="Captured yellow pieces"
+            ></div>
+
+            <div
+              class="board"
+              id="board"
+              aria-label="Chess board"
+            ></div>
+
+            <div
+              class="capture-pile capture-pile-green"
+              id="capture-pile-green"
+              aria-label="Captured green pieces"
+            ></div>
+
+          </div>
+
+          <div class="chess-bottombar">
+            <button id="reset-button" type="button">reset</button>
+
             <div class="clock-group" aria-label="Chess clocks">
               <span class="clock" id="white-clock">yellow 60:00</span>
               <span class="clock" id="black-clock">green 60:00</span>
@@ -326,12 +475,6 @@
               >
               <button id="set-time-button" type="button">set time</button>
             </div>
-          </div>
-
-          <div class="board" id="board" aria-label="Chess board"></div>
-
-          <div class="chess-bottombar">
-            <button id="reset-button" type="button">reset</button>
           </div>
         </section>
       </section>
@@ -456,6 +599,12 @@
     const timeInput = document.getElementById("time-input");
     const setTimeButton = document.getElementById("set-time-button");
 
+    const yellowCapturePile =
+      document.getElementById("capture-pile-yellow");
+
+    const greenCapturePile =
+      document.getElementById("capture-pile-green");
+
 
     const game = new Chess();
 
@@ -470,6 +619,16 @@
     let timerFinished = false;
     let activeClock = "w";
     let lastTick = performance.now();
+
+    const capturedPieces = {
+      w: [],
+      b: []
+    };
+
+    let lastCaptureToken = 0;
+
+    const pieceRestingPositions =
+      new Map();
 
 
     const pieceLetters = {
@@ -508,19 +667,160 @@
     }
 
 
-    function placementFor(squareName, piece) {
+    function initialPlacementFor(squareName, piece) {
       const seed = hashString(
         `${squareName}-${piece.color}-${piece.type}`
       );
 
-      const x = ((seed & 255) / 255 - .5) * 7;
-      const y = (((seed >>> 8) & 255) / 255 - .5) * 7;
-      const r = (((seed >>> 16) & 255) / 255 - .5) * 4.2;
+      const x =
+        ((seed & 255) / 255 - .5) * 4.5;
+
+      const y =
+        (((seed >>> 8) & 255) / 255 - .5) * 4.5;
+
+      const r =
+        (((seed >>> 16) & 255) / 255 - .5) * 2.8;
 
       return {
-        x: x.toFixed(2),
-        y: y.toFixed(2),
-        r: r.toFixed(2)
+        x,
+        y,
+        r
+      };
+    }
+
+
+    function restingPlacementFor(squareName, piece) {
+      if (
+        pieceRestingPositions.has(
+          squareName
+        )
+      ) {
+
+        return pieceRestingPositions.get(
+          squareName
+        );
+
+      }
+
+      return initialPlacementFor(
+        squareName,
+        piece
+      );
+    }
+
+
+    function dropPlacementFor(
+      squareName,
+      clientX,
+      clientY
+    ) {
+
+      const squareElement =
+        boardElement.querySelector(
+          `[data-square="${squareName}"]`
+        );
+
+
+      if (!squareElement) {
+
+        return {
+          x: 0,
+          y: 0,
+          r: 0
+        };
+
+      }
+
+
+      const rect =
+        squareElement.getBoundingClientRect();
+
+
+      const localX =
+        clamp(
+          clientX -
+          rect.left,
+          0,
+          rect.width
+        );
+
+
+      const localY =
+        clamp(
+          clientY -
+          rect.top,
+          0,
+          rect.height
+        );
+
+
+      /*
+        Translate the piece toward the exact place
+        where the user releases it.
+
+        The range deliberately reaches beyond the
+        square center enough for letters to sit on
+        or slightly over the grid lines.
+      */
+
+      const x =
+        (
+          localX /
+          rect.width -
+          .5
+        )
+        *
+        rect.width *
+        .72;
+
+
+      const y =
+        (
+          localY /
+          rect.height -
+          .5
+        )
+        *
+        rect.height *
+        .72;
+
+
+      /*
+        Rotation comes from the landing position,
+        so the same release point produces a similar
+        physical lean rather than a random wobble.
+      */
+
+      const r =
+        clamp(
+          (
+            x /
+            Math.max(
+              rect.width,
+              1
+            )
+          )
+          *
+          8
+          +
+          (
+            y /
+            Math.max(
+              rect.height,
+              1
+            )
+          )
+          *
+          -3,
+          -5,
+          5
+        );
+
+
+      return {
+        x,
+        y,
+        r
       };
     }
 
@@ -562,7 +862,11 @@
             pieceElement.textContent = pieceLetters[piece.type];
             pieceElement.dataset.square = squareName;
 
-            const rest = placementFor(squareName, piece);
+            const rest =
+              restingPlacementFor(
+                squareName,
+                piece
+              );
 
             pieceElement.style.setProperty(
               "--rest-x",
@@ -759,7 +1063,9 @@
       if (destination) {
         attemptMove(
           drag.from,
-          destination
+          destination,
+          event.clientX,
+          event.clientY
         );
       }
 
@@ -832,8 +1138,26 @@
     }
 
 
-    function attemptMove(from, to) {
+    function attemptMove(
+      from,
+      to,
+      clientX,
+      clientY
+    ) {
+
       let move = null;
+
+
+      const movingPiece =
+        game.get(from);
+
+
+      const landing =
+        dropPlacementFor(
+          to,
+          clientX,
+          clientY
+        );
 
       try {
         move = game.move({
@@ -853,6 +1177,45 @@
       }
 
 
+      pieceRestingPositions.delete(
+        from
+      );
+
+
+      if (movingPiece) {
+
+        pieceRestingPositions.set(
+          to,
+          landing
+        );
+
+      }
+
+
+      let captureToken =
+        null;
+
+
+      if (move.captured) {
+
+        captureToken =
+          ++lastCaptureToken;
+
+
+        const capturedColor =
+          move.color === "w"
+            ? "b"
+            : "w";
+
+
+        capturedPieces[capturedColor].push({
+          type: move.captured,
+          token: captureToken
+        });
+
+      }
+
+
       if (!timerStarted) {
         timerStarted = true;
       }
@@ -862,6 +1225,9 @@
 
 
       renderBoard();
+      renderCapturedPieces(
+        captureToken
+      );
 
 
       const droppedPiece =
@@ -1094,6 +1460,7 @@
             : "white";
 
         renderBoard();
+        renderCapturedPieces();
       }
     );
 
@@ -1106,6 +1473,11 @@
         }
 
         game.reset();
+
+        capturedPieces.w = [];
+        capturedPieces.b = [];
+        lastCaptureToken = 0;
+        pieceRestingPositions.clear();
 
         whiteTime = startingMinutes * 60 * 1000;
         blackTime = startingMinutes * 60 * 1000;
@@ -1142,6 +1514,7 @@
 
 
     renderBoard();
+    renderCapturedPieces();
     updateClocks();
 
   </script>
