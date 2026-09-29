@@ -1,438 +1,568 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>keegan.biz</title>
   <link rel="stylesheet" href="style.css">
 
   <style>
-  .home-chess {
-    width: min(100%, 660px);
-    margin-top: clamp(42px, 6vw, 72px);
-  }
-
-  .home-chess .chess-topbar,
-  .home-chess .chess-bottombar,
-  .home-chess .chess-clock-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .home-chess .chess-topbar {
-    margin-bottom: 10px;
-  }
-
-  .home-chess .chess-clock-row {
-    margin-bottom: 10px;
-  }
-
-  .home-chess .chess-bottombar {
-    margin-top: 12px;
-    align-items: flex-end;
-  }
-
-  .home-chess .status,
-  .home-chess .clock,
-  .home-chess .time-label {
-    margin: 0;
-    font-size: 14px;
-    line-height: 1;
-    font-weight: 700;
-    color: #c1272d;
-  }
-
-  .home-chess .clock-group,
-  .home-chess .time-setter {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .home-chess .clock {
-    min-width: 92px;
-  }
-
-  #white-clock {
-    color: #fdb913;
-  }
-
-  #black-clock {
-    color: #006a44;
-  }
-
-  .home-chess .clock.is-active {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .home-chess input {
-    width: 62px;
-    padding: 3px 5px;
-    border: 1px solid #c1272d;
-    border-radius: 0;
-    background: transparent;
-    color: #11110f;
-    font: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    outline: none;
-  }
-
-  .home-chess input:focus {
-    outline: 1px solid #c1272d;
-    outline-offset: 1px;
-  }
-
-  .home-chess button {
-    appearance: none;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    font: inherit;
-    font-size: 14px;
-    font-weight: 700;
-    color: #c1272d;
-    cursor: pointer;
-  }
-
-  .home-chess button:hover {
-    text-decoration: underline;
-  }
-
-  .home-chess .board {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    width: 100%;
-    aspect-ratio: 1;
-    border-top: 2px solid #c1272d;
-    border-left: 2px solid #c1272d;
-    background: #ece7d7;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-
-  .home-chess .square {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-    min-height: 0;
-    border-right: 2px solid #c1272d;
-    border-bottom: 2px solid #c1272d;
-  }
-
-  .home-chess .square.light {
-    background: #ece7d7;
-  }
-
-  .home-chess .square.dark {
-    background: #e5dfbd;
-  }
-
-  .home-chess .square.legal::after {
-    content: "";
-    position: absolute;
-    width: 14%;
-    aspect-ratio: 1;
-    border: 2px solid #c1272d;
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
-  .home-chess .piece {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    font-size: clamp(24px, 5vw, 66px);
-    line-height: 1;
-    font-weight: 700;
-    cursor: pointer;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
-    transform:
-      translate(var(--rest-x, 0px), var(--rest-y, 0px))
-      rotate(var(--rest-r, 0deg));
-    transform-origin: center;
-  }
-
-  .home-chess .piece.white {
-    color: #fdb913;
-  }
-
-  .home-chess .piece.black {
-    color: #006a44;
-  }
-
-
-  .home-chess .piece-source-hidden {
-    opacity: 1;
-  }
-
-  .home-chess .piece.is-selected {
-    z-index: 20;
-    transform:
-      translate(
-        var(--rest-x, 0px),
-        calc(var(--rest-y, 0px) - 6px)
-      )
-      rotate(var(--rest-r, 0deg))
-      scale(1.08);
-    filter:
-      drop-shadow(
-        7px
-        7px
-        0
-        rgba(193, 39, 45, .62)
-      );
-  }
-
-  .home-chess .piece.just-dropped {
-    animation:
-      piece-drop
-      210ms
-      cubic-bezier(.18, .82, .23, 1);
-  }
-
-  @keyframes piece-drop {
-    0% {
-      transform:
-        translate(
-          calc(var(--rest-x, 0px) - 2px),
-          calc(var(--rest-y, 0px) - 10px)
-        )
-        rotate(calc(var(--rest-r, 0deg) + 1.8deg))
-        scale(1.10);
-    }
-
-    68% {
-      transform:
-        translate(
-          calc(var(--rest-x, 0px) + .8px),
-          calc(var(--rest-y, 0px) + 1.2px)
-        )
-        rotate(calc(var(--rest-r, 0deg) - .35deg))
-        scale(.988);
-    }
-
-    100% {
-      transform:
-        translate(var(--rest-x, 0px), var(--rest-y, 0px))
-        rotate(var(--rest-r, 0deg))
-        scale(1);
-    }
-  }
-
-  .home-chess .coordinate {
-    position: absolute;
-    pointer-events: none;
-    color: #c1272d;
-    font-size: 10px;
-    line-height: 1;
-    font-weight: 700;
-  }
-
-  .home-chess .coordinate.file {
-    right: 4px;
-    bottom: 3px;
-  }
-
-  .home-chess .coordinate.rank {
-    top: 4px;
-    left: 4px;
-  }
-
-
-  .home-chess .board-area {
-    position: relative;
-    width: 100%;
-  }
-
-  .home-chess .capture-pile {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 68px;
-    pointer-events: none;
-    overflow: visible;
-  }
-
-  .home-chess .capture-pile-yellow {
-    right: calc(100% + 14px);
-  }
-
-  .home-chess .capture-pile-green {
-    left: calc(100% + 14px);
-  }
-
-  .home-chess .captured-piece {
-    position: absolute;
-    left: 50%;
-    bottom: var(--pile-y, 0px);
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 42px;
-    line-height: 1;
-    font-weight: 700;
-    transform:
-      translateX(calc(-50% + var(--pile-x, 0px)))
-      rotate(var(--pile-r, 0deg));
-    transform-origin: center;
-    opacity: .98;
-  }
-
-  .home-chess .captured-piece.white {
-    color: #fdb913;
-  }
-
-  .home-chess .captured-piece.black {
-    color: #006a44;
-  }
-
-  .home-chess .captured-piece.is-falling {
-    animation:
-      captured-fall
-      var(--fall-time, 620ms)
-      cubic-bezier(.20, .72, .24, 1);
-  }
-
-  @keyframes captured-fall {
-    0% {
-      transform:
-        translateX(calc(-50% + var(--pile-x, 0px)))
-        translateY(calc(-1 * var(--fall-distance, 260px)))
-        rotate(calc(var(--pile-r, 0deg) - 8deg))
-        scale(1.05);
-    }
-
-    72% {
-      transform:
-        translateX(calc(-50% + var(--pile-x, 0px)))
-        translateY(5px)
-        rotate(calc(var(--pile-r, 0deg) + 1.5deg))
-        scale(.98);
-    }
-
-    88% {
-      transform:
-        translateX(calc(-50% + var(--pile-x, 0px)))
-        translateY(-2px)
-        rotate(calc(var(--pile-r, 0deg) - .6deg))
-        scale(1.01);
-    }
-
-    100% {
-      transform:
-        translateX(calc(-50% + var(--pile-x, 0px)))
-        translateY(0)
-        rotate(var(--pile-r, 0deg))
-        scale(1);
-    }
-  }
-
-  @media (min-width: 701px) and (max-width: 1100px) {
     .home-chess {
-      width: min(100%, 500px);
-    }
-  }
-
-  @media (max-width: 700px) {
-    .home-chess {
-      width: 100%;
-      margin-top: 38px;
+      width: min(100%, clamp(420px, 44vw, 660px));
+      margin-top: clamp(42px, 6vw, 72px);
     }
 
-    .home-chess .piece {
-      font-size: 9vw;
+    .home-chess .chess-topbar,
+    .home-chess .chess-bottombar,
+    .home-chess .clock-group,
+    .home-chess .time-setter {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .home-chess .chess-topbar,
+    .home-chess .chess-bottombar {
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .home-chess .chess-topbar {
+      margin-bottom: 10px;
     }
 
     .home-chess .chess-bottombar {
-      align-items: flex-start;
+      margin-top: 12px;
+      align-items: flex-end;
     }
 
-    .home-chess .clock-group,
-    .home-chess .time-setter {
-      width: 100%;
-      justify-content: space-between;
+    .home-chess .status,
+    .home-chess .clock,
+    .home-chess .time-label {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 700;
+      color: var(--red, #c1272d);
+    }
+
+    #white-clock {
+      color: var(--yellow, #fdb913);
+    }
+
+    #black-clock {
+      color: var(--green, #006a44);
+    }
+
+    .home-chess .clock.is-active {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .home-chess input {
+      width: 58px;
+      padding: 3px 5px;
+      border: 1px solid var(--red, #c1272d);
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink, #11110f);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      outline: 0;
+    }
+
+    .home-chess input:focus {
+      outline: 1px solid var(--red, #c1272d);
+      outline-offset: 1px;
+    }
+
+    .home-chess button {
+      appearance: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--red, #c1272d);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .home-chess button:hover {
+      text-decoration: underline;
     }
 
     .home-chess .board-area {
-      padding-bottom: 92px;
+      position: relative;
+      width: 100%;
+    }
+
+    .home-chess .board {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      grid-template-rows: repeat(8, minmax(0, 1fr));
+      width: 100%;
+      aspect-ratio: 1;
+      border-top: 2px solid var(--red, #c1272d);
+      border-left: 2px solid var(--red, #c1272d);
+      background: var(--paper, #ece7d7);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .home-chess .square {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      min-height: 0;
+      border-right: 2px solid var(--red, #c1272d);
+      border-bottom: 2px solid var(--red, #c1272d);
+      cursor: pointer;
+    }
+
+    .home-chess .square.light {
+      background: #ece7d7;
+    }
+
+    .home-chess .square.dark {
+      background: #e4dfbc;
+    }
+
+    .home-chess .square.legal::after {
+      content: "";
+      position: absolute;
+      z-index: 5;
+      width: 14%;
+      aspect-ratio: 1;
+      border: 2px solid var(--red, #c1272d);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .home-chess .piece {
+      position: relative;
+      z-index: 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      font-size: clamp(24px, 5vw, 66px);
+      line-height: 1;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      transform:
+        translate(var(--rest-x, 0px), var(--rest-y, 0px))
+        rotate(var(--rest-r, 0deg));
+      transform-origin: center;
+    }
+
+    .home-chess .piece.white {
+      color: var(--yellow, #fdb913);
+    }
+
+    .home-chess .piece.black {
+      color: var(--green, #006a44);
+    }
+
+    .home-chess .piece.is-selected {
+      opacity: .18;
+    }
+
+    .floating-piece {
+      position: fixed;
+      z-index: 999999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--float-size);
+      height: var(--float-size);
+      line-height: 1;
+      font-weight: 700;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+      transform:
+        translate(-50%, -50%)
+        translateY(-6px)
+        rotate(var(--float-r, 0deg))
+        scale(1.09);
+      filter: drop-shadow(7px 7px 0 rgba(193, 39, 45, .62));
+    }
+
+    .home-chess .piece.just-dropped {
+      animation: piece-drop 210ms cubic-bezier(.18, .82, .23, 1);
+    }
+
+    @keyframes piece-drop {
+      0% {
+        transform:
+          translate(
+            calc(var(--rest-x, 0px) - 2px),
+            calc(var(--rest-y, 0px) - 10px)
+          )
+          rotate(calc(var(--rest-r, 0deg) + 1.8deg))
+          scale(1.10);
+      }
+
+      68% {
+        transform:
+          translate(
+            calc(var(--rest-x, 0px) + .8px),
+            calc(var(--rest-y, 0px) + 1.2px)
+          )
+          rotate(calc(var(--rest-r, 0deg) - .35deg))
+          scale(.988);
+      }
+
+      100% {
+        transform:
+          translate(var(--rest-x, 0px), var(--rest-y, 0px))
+          rotate(var(--rest-r, 0deg))
+          scale(1);
+      }
+    }
+
+    .home-chess .coordinate {
+      position: absolute;
+      z-index: 6;
+      color: var(--red, #c1272d);
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+      pointer-events: none;
+    }
+
+    .home-chess .coordinate.file {
+      right: 4px;
+      bottom: 3px;
+    }
+
+    .home-chess .coordinate.rank {
+      top: 4px;
+      left: 4px;
     }
 
     .home-chess .capture-pile {
-      top: auto;
+      position: absolute;
+      top: 0;
       bottom: 0;
-      width: calc(50% - 6px);
-      height: 78px;
+      width: 68px;
+      pointer-events: none;
+      overflow: visible;
     }
 
     .home-chess .capture-pile-yellow {
-      left: 0;
-      right: auto;
+      right: calc(100% + 14px);
     }
 
     .home-chess .capture-pile-green {
-      right: 0;
-      left: auto;
+      left: calc(100% + 14px);
     }
 
     .home-chess .captured-piece {
-      bottom: 4px;
+      position: absolute;
       left: 50%;
-      width: 38px;
-      height: 38px;
-      font-size: 34px;
+      bottom: var(--pile-y, 0px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      font-size: 42px;
+      line-height: 1;
+      font-weight: 700;
+      transform:
+        translateX(calc(-50% + var(--pile-x, 0px)))
+        rotate(var(--pile-r, 0deg));
+      transform-origin: center;
     }
-  }
+
+    .home-chess .captured-piece.white {
+      color: var(--yellow, #fdb913);
+    }
+
+    .home-chess .captured-piece.black {
+      color: var(--green, #006a44);
+    }
+
+    .home-chess .captured-piece.is-falling {
+      animation: captured-fall var(--fall-time, 620ms) cubic-bezier(.20, .72, .24, 1);
+    }
+
+    @keyframes captured-fall {
+      0% {
+        transform:
+          translateX(calc(-50% + var(--pile-x, 0px)))
+          translateY(calc(-1 * var(--fall-distance, 260px)))
+          rotate(calc(var(--pile-r, 0deg) - 8deg))
+          scale(1.05);
+      }
+
+      72% {
+        transform:
+          translateX(calc(-50% + var(--pile-x, 0px)))
+          translateY(5px)
+          rotate(calc(var(--pile-r, 0deg) + 1.5deg))
+          scale(.98);
+      }
+
+      88% {
+        transform:
+          translateX(calc(-50% + var(--pile-x, 0px)))
+          translateY(-2px)
+          rotate(calc(var(--pile-r, 0deg) - .6deg))
+          scale(1.01);
+      }
+
+      100% {
+        transform:
+          translateX(calc(-50% + var(--pile-x, 0px)))
+          translateY(0)
+          rotate(var(--pile-r, 0deg))
+          scale(1);
+      }
+    }
+
+    @media (min-width: 701px) and (max-width: 1100px) {
+      .home-chess {
+        width: min(100%, 500px);
+      }
+
+      .home-chess .board-area {
+        padding-bottom: 86px;
+      }
+
+      .home-chess .capture-pile {
+        top: auto;
+        bottom: 0;
+        width: calc(50% - 6px);
+        height: 72px;
+      }
+
+      .home-chess .capture-pile-yellow {
+        left: 0;
+        right: auto;
+      }
+
+      .home-chess .capture-pile-green {
+        right: 0;
+        left: auto;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .home-chess {
+        width: 100%;
+        margin-top: 38px;
+      }
+
+      .home-chess .piece {
+        font-size: 9vw;
+      }
+
+      .home-chess .chess-bottombar {
+        align-items: flex-start;
+      }
+
+      .home-chess .clock-group,
+      .home-chess .time-setter {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .home-chess .board-area {
+        padding-bottom: 92px;
+      }
+
+      .home-chess .capture-pile {
+        top: auto;
+        bottom: 0;
+        width: calc(50% - 6px);
+        height: 78px;
+      }
+
+      .home-chess .capture-pile-yellow {
+        left: 0;
+        right: auto;
+      }
+
+      .home-chess .capture-pile-green {
+        right: 0;
+        left: auto;
+      }
+
+      .home-chess .captured-piece {
+        bottom: 4px;
+        width: 38px;
+        height: 38px;
+        font-size: 34px;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div class="page-shell" id="page-shell">
-    <nav class="scarf-rack" aria-label="Sections">
-      <a class="scarf-item scarf-home" href="./" data-live-link aria-label="Home"><img src="assets/home/home-scarf-update.png" alt=""></a>
-      <a class="scarf-item" href="illustration/" data-live-link aria-label="Illustration"><img src="assets/home/scarf-illustration.png" alt=""></a>
-      <a class="scarf-item" href="photography/" data-live-link aria-label="Photography"><img src="assets/home/scarf-photography.png" alt=""></a>
-      <a class="scarf-item" href="#" aria-label="Graphic Design"><img src="assets/home/scarf-design.png" alt=""></a>
-      <a class="scarf-item" href="#" aria-label="Music"><img src="assets/home/scarf-music.png" alt=""></a>
-      <a class="scarf-item" href="motion/" data-live-link aria-label="Motion"><img src="assets/home/scarf-motion.png" alt=""></a>
-      <a class="scarf-item" href="#" aria-label="Miscellaneous"><img src="assets/home/scarf-misc.png" alt=""></a>
-      <a class="scarf-item" href="#" aria-label="Gastronomy"><img src="assets/home/scarf-gastronomy.png" alt=""></a>
+
+  <div
+    class="page-shell"
+    id="page-shell"
+  >
+
+    <nav
+      class="scarf-rack"
+      aria-label="Sections"
+    >
+
+      <a
+        class="scarf-item scarf-home"
+        href="./"
+        data-live-link
+        aria-label="Home"
+      >
+        <img
+          src="assets/home/home-scarf-update.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="illustration/"
+        data-live-link
+        aria-label="Illustration"
+      >
+        <img
+          src="assets/home/scarf-illustration.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="photography/"
+        data-live-link
+        aria-label="Photography"
+      >
+        <img
+          src="assets/home/scarf-photography.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Graphic Design"
+      >
+        <img
+          src="assets/home/scarf-design.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Music"
+      >
+        <img
+          src="assets/home/scarf-music.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="motion/"
+        data-live-link
+        aria-label="Motion"
+      >
+        <img
+          src="assets/home/scarf-motion.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Miscellaneous"
+      >
+        <img
+          src="assets/home/scarf-misc.png"
+          alt=""
+        >
+      </a>
+
+      <a
+        class="scarf-item"
+        href="#"
+        aria-label="Gastronomy"
+      >
+        <img
+          src="assets/home/scarf-gastronomy.png"
+          alt=""
+        >
+      </a>
+
     </nav>
 
+
     <main class="home">
+
       <section class="hero">
+
         <div class="welcome-slot">
-          <span class="welcome-word" id="welcome-word" aria-hidden="true">Welcome</span>
+
+          <span
+            class="welcome-word"
+            id="welcome-word"
+            aria-hidden="true"
+          >
+            Welcome
+          </span>
+
         </div>
 
-        <div class="site-title">to keegan.biz</div>
 
-        <section class="home-chess" aria-label="Chess">
+        <div class="site-title">
+          to keegan.biz
+        </div>
+
+
+        <section
+          class="home-chess"
+          aria-label="Chess"
+        >
+
           <div class="chess-topbar">
-            <p class="status" id="status">yellow to move</p>
-            <button id="flip-button" type="button">flip board</button>
+
+            <p
+              class="status"
+              id="status"
+            >
+              yellow to move
+            </p>
+
+            <button
+              id="flip-button"
+              type="button"
+            >
+              flip board
+            </button>
+
           </div>
+
 
           <div class="board-area">
 
@@ -442,11 +572,13 @@
               aria-label="Captured yellow pieces"
             ></div>
 
+
             <div
               class="board"
               id="board"
               aria-label="Chess board"
             ></div>
+
 
             <div
               class="capture-pile capture-pile-green"
@@ -456,16 +588,48 @@
 
           </div>
 
-          <div class="chess-bottombar">
-            <button id="reset-button" type="button">reset</button>
 
-            <div class="clock-group" aria-label="Chess clocks">
-              <span class="clock" id="white-clock">yellow 60:00</span>
-              <span class="clock" id="black-clock">green 60:00</span>
+          <div class="chess-bottombar">
+
+            <button
+              id="reset-button"
+              type="button"
+            >
+              reset
+            </button>
+
+
+            <div
+              class="clock-group"
+              aria-label="Chess clocks"
+            >
+
+              <span
+                class="clock"
+                id="white-clock"
+              >
+                yellow 60:00
+              </span>
+
+              <span
+                class="clock"
+                id="black-clock"
+              >
+                green 60:00
+              </span>
+
             </div>
 
+
             <div class="time-setter">
-              <label class="time-label" for="time-input">minutes each</label>
+
+              <label
+                class="time-label"
+                for="time-input"
+              >
+                minutes each
+              </label>
+
               <input
                 id="time-input"
                 type="number"
@@ -474,113 +638,436 @@
                 value="60"
                 inputmode="numeric"
               >
-              <button id="set-time-button" type="button">set time</button>
+
+              <button
+                id="set-time-button"
+                type="button"
+              >
+                set time
+              </button>
+
             </div>
+
           </div>
+
         </section>
+
       </section>
+
     </main>
+
   </div>
 
-  <audio id="wip-audio" preload="auto">
-    <source src="assets/home/crickets.mp3" type="audio/mpeg">
+
+  <audio
+    id="wip-audio"
+    preload="auto"
+  >
+    <source
+      src="assets/home/crickets.mp3"
+      type="audio/mpeg"
+    >
   </audio>
 
-  <div class="wip-overlay" id="wip-overlay" aria-hidden="true">
+
+  <div
+    class="wip-overlay"
+    id="wip-overlay"
+    aria-hidden="true"
+  >
+
     <div class="wip-inner">
+
       <div class="wip-header">
-        <p class="wip-text">sorry, i'm still working on this page.</p>
-        <button class="wip-close" id="wip-close" type="button" aria-label="Close">×</button>
+
+        <p class="wip-text">
+          sorry, i'm still working on this page.
+        </p>
+
+        <button
+          class="wip-close"
+          id="wip-close"
+          type="button"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
       </div>
-      <div class="collage-stage" id="collage-stage" aria-hidden="true">
-        <img class="horse horse-main" id="horse-main" src="assets/home/horse.gif" alt="">
+
+
+      <div
+        class="collage-stage"
+        id="collage-stage"
+        aria-hidden="true"
+      >
+
+        <img
+          class="horse horse-main"
+          id="horse-main"
+          src="assets/home/horse.gif"
+          alt=""
+        >
+
       </div>
+
     </div>
+
   </div>
+
 
   <script>
   (() => {
-    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    const clamp = (value, min, max) =>
+      Math.min(
+        Math.max(value, min),
+        max
+      );
+
 
     function smoothStep(value) {
-      const t = clamp(value, 0, 1);
-      return t * t * (3 - (2 * t));
+
+      const t =
+        clamp(
+          value,
+          0,
+          1
+        );
+
+
+      return (
+        t *
+        t *
+        (
+          3 -
+          2 * t
+        )
+      );
+
     }
 
-    const welcomeWord = document.getElementById("welcome-word");
+
+    const welcomeWord =
+      document.getElementById(
+        "welcome-word"
+      );
+
+
     if (welcomeWord) {
-      welcomeWord.textContent = "Welcome";
-      welcomeWord.style.color = "#006a44";
+
+      welcomeWord.textContent =
+        "Welcome";
+
+
+      welcomeWord.style.color =
+        "#006a44";
+
     }
 
-    const pageShell = document.getElementById("page-shell");
-    const overlay = document.getElementById("wip-overlay");
-    const audio = document.getElementById("wip-audio");
-    const closeButton = document.getElementById("wip-close");
-    const stage = document.getElementById("collage-stage");
 
-    const HORSE_START = 12;
-    const HORSE_FULL = 20;
+    const pageShell =
+      document.getElementById(
+        "page-shell"
+      );
 
-    let overlayOpen = false;
-    let raf = null;
-    let openedAt = 0;
+
+    const overlay =
+      document.getElementById(
+        "wip-overlay"
+      );
+
+
+    const audio =
+      document.getElementById(
+        "wip-audio"
+      );
+
+
+    const closeButton =
+      document.getElementById(
+        "wip-close"
+      );
+
+
+    const stage =
+      document.getElementById(
+        "collage-stage"
+      );
+
+
+    const HORSE_START =
+      12;
+
+
+    const HORSE_FULL =
+      20;
+
+
+    let overlayOpen =
+      false;
+
+
+    let raf =
+      null;
+
+
+    let openedAt =
+      0;
+
 
     function horseRevealAt(time) {
-      if (time < HORSE_START) return 0;
-      return smoothStep((time - HORSE_START) / (HORSE_FULL - HORSE_START));
+
+      if (
+        time <
+        HORSE_START
+      ) {
+        return 0;
+      }
+
+
+      return smoothStep(
+        (
+          time -
+          HORSE_START
+        )
+        /
+        (
+          HORSE_FULL -
+          HORSE_START
+        )
+      );
+
     }
+
 
     function visualLoop(now) {
-      if (!overlayOpen) return;
-      const elapsed = Math.max(0, (now - openedAt) / 1000);
-      const time = audio.currentTime > 0 ? audio.currentTime : elapsed;
-      stage.style.setProperty("--visual-reveal", horseRevealAt(time).toFixed(4));
-      raf = requestAnimationFrame(visualLoop);
+
+      if (
+        !overlayOpen
+      ) {
+        return;
+      }
+
+
+      const elapsed =
+        Math.max(
+          0,
+          (
+            now -
+            openedAt
+          )
+          /
+          1000
+        );
+
+
+      const time =
+        audio.currentTime >
+        0
+          ? audio.currentTime
+          : elapsed;
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        horseRevealAt(
+          time
+        ).toFixed(4)
+      );
+
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
+
     }
+
 
     async function openWip() {
-      if (overlayOpen) return;
-      overlayOpen = true;
-      openedAt = performance.now();
-      stage.style.setProperty("--visual-reveal", "0");
-      pageShell.classList.add("is-hidden");
-      overlay.classList.add("is-visible");
-      overlay.setAttribute("aria-hidden", "false");
+
+      if (
+        overlayOpen
+      ) {
+        return;
+      }
+
+
+      overlayOpen =
+        true;
+
+
+      openedAt =
+        performance.now();
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
+
+
+      pageShell.classList.add(
+        "is-hidden"
+      );
+
+
+      overlay.classList.add(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
       audio.pause();
-      audio.currentTime = 0;
-      audio.volume = 0.72;
-      try { await audio.play(); } catch (error) { console.log("Audio could not start:", error); }
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(visualLoop);
+
+
+      audio.currentTime =
+        0;
+
+
+      audio.volume =
+        .72;
+
+
+      try {
+
+        await audio.play();
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "Audio could not start:",
+          error
+        );
+
+      }
+
+
+      cancelAnimationFrame(
+        raf
+      );
+
+
+      raf =
+        requestAnimationFrame(
+          visualLoop
+        );
+
     }
+
 
     function closeWip() {
-      overlayOpen = false;
-      cancelAnimationFrame(raf);
+
+      overlayOpen =
+        false;
+
+
+      cancelAnimationFrame(
+        raf
+      );
+
+
       audio.pause();
-      audio.currentTime = 0;
-      stage.style.setProperty("--visual-reveal", "0");
-      overlay.classList.remove("is-visible");
-      overlay.setAttribute("aria-hidden", "true");
-      window.setTimeout(() => pageShell.classList.remove("is-hidden"), 160);
+
+
+      audio.currentTime =
+        0;
+
+
+      stage.style.setProperty(
+        "--visual-reveal",
+        "0"
+      );
+
+
+      overlay.classList.remove(
+        "is-visible"
+      );
+
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      window.setTimeout(
+        () => {
+
+          pageShell.classList.remove(
+            "is-hidden"
+          );
+
+        },
+        160
+      );
+
     }
 
-    document.addEventListener("click", event => {
-      const link = event.target.closest("a");
-      if (!link) return;
-      if (link.hasAttribute("data-live-link")) return;
-      event.preventDefault();
-      openWip();
-    });
 
-    closeButton.addEventListener("click", closeWip);
+    document.addEventListener(
+      "click",
+      event => {
 
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && overlayOpen) closeWip();
-    });
+        const link =
+          event.target.closest(
+            "a"
+          );
+
+
+        if (
+          !link ||
+          link.hasAttribute(
+            "data-live-link"
+          )
+        ) {
+          return;
+        }
+
+
+        event.preventDefault();
+
+
+        openWip();
+
+      }
+    );
+
+
+    closeButton.addEventListener(
+      "click",
+      closeWip
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key ===
+          "Escape" &&
+          overlayOpen
+        ) {
+
+          closeWip();
+
+        }
+
+      }
+    );
+
   })();
   </script>
+
 
   <script type="module">
 
@@ -589,44 +1076,119 @@
     } from "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
 
 
-    const boardElement = document.getElementById("board");
-    const statusElement = document.getElementById("status");
+    const boardElement =
+      document.getElementById(
+        "board"
+      );
 
-    const flipButton = document.getElementById("flip-button");
-    const resetButton = document.getElementById("reset-button");
 
-    const whiteClockElement = document.getElementById("white-clock");
-    const blackClockElement = document.getElementById("black-clock");
-    const timeInput = document.getElementById("time-input");
-    const setTimeButton = document.getElementById("set-time-button");
+    const statusElement =
+      document.getElementById(
+        "status"
+      );
+
+
+    const flipButton =
+      document.getElementById(
+        "flip-button"
+      );
+
+
+    const resetButton =
+      document.getElementById(
+        "reset-button"
+      );
+
+
+    const whiteClockElement =
+      document.getElementById(
+        "white-clock"
+      );
+
+
+    const blackClockElement =
+      document.getElementById(
+        "black-clock"
+      );
+
+
+    const timeInput =
+      document.getElementById(
+        "time-input"
+      );
+
+
+    const setTimeButton =
+      document.getElementById(
+        "set-time-button"
+      );
+
 
     const yellowCapturePile =
-      document.getElementById("capture-pile-yellow");
+      document.getElementById(
+        "capture-pile-yellow"
+      );
+
 
     const greenCapturePile =
-      document.getElementById("capture-pile-green");
+      document.getElementById(
+        "capture-pile-green"
+      );
 
 
-    const game = new Chess();
+    const game =
+      new Chess();
 
 
-    let orientation = "white";
-    let drag = null;
+    let orientation =
+      "white";
 
-    let startingMinutes = 60;
-    let whiteTime = startingMinutes * 60 * 1000;
-    let blackTime = startingMinutes * 60 * 1000;
-    let timerStarted = false;
-    let timerFinished = false;
-    let activeClock = "w";
-    let lastTick = performance.now();
+
+    let selected =
+      null;
+
+
+    let startingMinutes =
+      60;
+
+
+    let whiteTime =
+      startingMinutes *
+      60 *
+      1000;
+
+
+    let blackTime =
+      startingMinutes *
+      60 *
+      1000;
+
+
+    let timerStarted =
+      false;
+
+
+    let timerFinished =
+      false;
+
+
+    let activeClock =
+      "w";
+
+
+    let lastTick =
+      performance.now();
+
 
     const capturedPieces = {
       w: [],
       b: []
     };
 
-    let lastCaptureToken = 0;
+
+    let lastCaptureToken =
+      0;
+
 
     const pieceRestingPositions =
       new Map();
@@ -642,71 +1204,198 @@
     };
 
 
+    const clamp = (
+      value,
+      min,
+      max
+    ) =>
+      Math.min(
+        Math.max(
+          value,
+          min
+        ),
+        max
+      );
+
+
     function getFiles() {
-      return orientation === "white"
-        ? ["a", "b", "c", "d", "e", "f", "g", "h"]
-        : ["h", "g", "f", "e", "d", "c", "b", "a"];
+
+      return orientation ===
+        "white"
+
+        ? [
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h"
+          ]
+
+        : [
+            "h",
+            "g",
+            "f",
+            "e",
+            "d",
+            "c",
+            "b",
+            "a"
+          ];
+
     }
 
 
     function getRanks() {
-      return orientation === "white"
-        ? [8, 7, 6, 5, 4, 3, 2, 1]
-        : [1, 2, 3, 4, 5, 6, 7, 8];
+
+      return orientation ===
+        "white"
+
+        ? [
+            8,
+            7,
+            6,
+            5,
+            4,
+            3,
+            2,
+            1
+          ]
+
+        : [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ];
+
     }
 
 
     function hashString(value) {
-      let hash = 2166136261;
 
-      for (let i = 0; i < value.length; i++) {
-        hash ^= value.charCodeAt(i);
-        hash = Math.imul(hash, 16777619);
-      }
-
-      return hash >>> 0;
-    }
+      let hash =
+        2166136261;
 
 
-    function initialPlacementFor(squareName, piece) {
-      const seed = hashString(
-        `${squareName}-${piece.color}-${piece.type}`
-      );
-
-      const x =
-        ((seed & 255) / 255 - .5) * 4.5;
-
-      const y =
-        (((seed >>> 8) & 255) / 255 - .5) * 4.5;
-
-      const r =
-        (((seed >>> 16) & 255) / 255 - .5) * 2.8;
-
-      return {
-        x,
-        y,
-        r
-      };
-    }
-
-
-    function restingPlacementFor(squareName, piece) {
-      if (
-        pieceRestingPositions.has(
-          squareName
-        )
+      for (
+        let i = 0;
+        i <
+        value.length;
+        i++
       ) {
 
-        return pieceRestingPositions.get(
-          squareName
-        );
+        hash ^=
+          value.charCodeAt(
+            i
+          );
+
+
+        hash =
+          Math.imul(
+            hash,
+            16777619
+          );
 
       }
 
-      return initialPlacementFor(
-        squareName,
-        piece
+
+      return hash >>>
+        0;
+
+    }
+
+
+    function initialPlacementFor(
+      squareName,
+      piece
+    ) {
+
+      const seed =
+        hashString(
+          `${squareName}-${piece.color}-${piece.type}`
+        );
+
+
+      return {
+
+        x:
+          (
+            (
+              seed &
+              255
+            )
+            /
+            255
+            -
+            .5
+          )
+          *
+          4.5,
+
+        y:
+          (
+            (
+              (
+                seed >>>
+                8
+              )
+              &
+              255
+            )
+            /
+            255
+            -
+            .5
+          )
+          *
+          4.5,
+
+        r:
+          (
+            (
+              (
+                seed >>>
+                16
+              )
+              &
+              255
+            )
+            /
+            255
+            -
+            .5
+          )
+          *
+          2.8
+
+      };
+
+    }
+
+
+    function restingPlacementFor(
+      squareName,
+      piece
+    ) {
+
+      return (
+        pieceRestingPositions.get(
+          squareName
+        )
+        ||
+        initialPlacementFor(
+          squareName,
+          piece
+        )
       );
+
     }
 
 
@@ -722,7 +1411,9 @@
         );
 
 
-      if (!squareElement) {
+      if (
+        !squareElement
+      ) {
 
         return {
           x: 0,
@@ -755,42 +1446,31 @@
         );
 
 
-      /*
-        Translate the piece toward the exact place
-        where the user releases it.
-
-        The range deliberately reaches beyond the
-        square center enough for letters to sit on
-        or slightly over the grid lines.
-      */
-
       const x =
         (
           localX /
-          rect.width -
+          rect.width
+          -
           .5
         )
         *
-        rect.width *
+        rect.width
+        *
         .72;
 
 
       const y =
         (
           localY /
-          rect.height -
+          rect.height
+          -
           .5
         )
         *
-        rect.height *
+        rect.height
+        *
         .72;
 
-
-      /*
-        Rotation comes from the landing position,
-        so the same release point produces a similar
-        physical lean rather than a random wobble.
-      */
 
       const r =
         clamp(
@@ -823,45 +1503,335 @@
         y,
         r
       };
+
+    }
+
+
+    function capturedPlacement(
+      index,
+      color,
+      type
+    ) {
+
+      const seed =
+        hashString(
+          `${color}-${type}-${index}`
+        );
+
+
+      const side =
+        index %
+        2 ===
+        0
+          ? -1
+          : 1;
+
+
+      return {
+
+        x:
+          side
+          *
+          (
+            3
+            +
+            (
+              (
+                seed &
+                255
+              )
+              /
+              255
+            )
+            *
+            14
+          ),
+
+        y:
+          3
+          +
+          Math.floor(
+            index /
+            2
+          )
+          *
+          18
+          +
+          (
+            (
+              (
+                seed >>>
+                8
+              )
+              &
+              255
+            )
+            /
+            255
+          )
+          *
+          6,
+
+        r:
+          (
+            (
+              (
+                seed >>>
+                16
+              )
+              &
+              255
+            )
+            /
+            255
+            -
+            .5
+          )
+          *
+          24
+
+      };
+
+    }
+
+
+    function renderCapturedPieces(
+      animateToken =
+        null
+    ) {
+
+      yellowCapturePile.innerHTML =
+        "";
+
+
+      greenCapturePile.innerHTML =
+        "";
+
+
+      [
+        [
+          "w",
+          yellowCapturePile
+        ],
+        [
+          "b",
+          greenCapturePile
+        ]
+      ].forEach(
+        (
+          [
+            color,
+            pile
+          ]
+        ) => {
+
+          capturedPieces[
+            color
+          ].forEach(
+            (
+              piece,
+              index
+            ) => {
+
+              const element =
+                document.createElement(
+                  "div"
+                );
+
+
+              element.className =
+                `captured-piece ${
+                  color ===
+                  "w"
+                    ? "white"
+                    : "black"
+                }`;
+
+
+              element.textContent =
+                pieceLetters[
+                  piece.type
+                ];
+
+
+              const placement =
+                capturedPlacement(
+                  index,
+                  color,
+                  piece.type
+                );
+
+
+              element.style.setProperty(
+                "--pile-x",
+                `${placement.x}px`
+              );
+
+
+              element.style.setProperty(
+                "--pile-y",
+                `${placement.y}px`
+              );
+
+
+              element.style.setProperty(
+                "--pile-r",
+                `${placement.r}deg`
+              );
+
+
+              if (
+                animateToken &&
+                piece.token ===
+                animateToken
+              ) {
+
+                element.classList.add(
+                  "is-falling"
+                );
+
+
+                element.style.setProperty(
+                  "--fall-time",
+                  `${520 + Math.random() * 220}ms`
+                );
+
+
+                element.style.setProperty(
+                  "--fall-distance",
+                  `${190 + Math.random() * 130}px`
+                );
+
+              }
+
+
+              pile.appendChild(
+                element
+              );
+
+            }
+          );
+
+        }
+      );
+
     }
 
 
     function renderBoard() {
-      boardElement.innerHTML = "";
 
-      const files = getFiles();
-      const ranks = getRanks();
+      boardElement.innerHTML =
+        "";
 
 
-      for (let row = 0; row < 8; row++) {
-        for (let column = 0; column < 8; column++) {
+      const files =
+        getFiles();
 
-          const file = files[column];
-          const rank = ranks[row];
-          const squareName = `${file}${rank}`;
 
-          const square = document.createElement("div");
+      const ranks =
+        getRanks();
 
-          const fileIndex = file.charCodeAt(0) - 97;
-          const isDark = (fileIndex + rank) % 2 === 0;
+
+      for (
+        let row = 0;
+        row <
+        8;
+        row++
+      ) {
+
+        for (
+          let column = 0;
+          column <
+          8;
+          column++
+        ) {
+
+          const file =
+            files[
+              column
+            ];
+
+
+          const rank =
+            ranks[
+              row
+            ];
+
+
+          const squareName =
+            `${file}${rank}`;
+
+
+          const square =
+            document.createElement(
+              "div"
+            );
+
+
+          const fileIndex =
+            file.charCodeAt(
+              0
+            )
+            -
+            97;
+
+
+          const isDark =
+            (
+              fileIndex +
+              rank
+            )
+            %
+            2 ===
+            0;
+
 
           square.className =
-            `square ${isDark ? "dark" : "light"}`;
+            `square ${
+              isDark
+                ? "dark"
+                : "light"
+            }`;
 
-          square.dataset.square = squareName;
+
+          square.dataset.square =
+            squareName;
 
 
-          const piece = game.get(squareName);
+          const piece =
+            game.get(
+              squareName
+            );
 
 
-          if (piece) {
-            const pieceElement = document.createElement("div");
+          if (
+            piece
+          ) {
+
+            const pieceElement =
+              document.createElement(
+                "div"
+              );
+
 
             pieceElement.className =
-              `piece ${piece.color === "w" ? "white" : "black"}`;
+              `piece ${
+                piece.color ===
+                "w"
+                  ? "white"
+                  : "black"
+              }`;
 
-            pieceElement.textContent = pieceLetters[piece.type];
-            pieceElement.dataset.square = squareName;
+
+            pieceElement.textContent =
+              pieceLetters[
+                piece.type
+              ];
+
+
+            pieceElement.dataset.square =
+              squareName;
+
 
             const rest =
               restingPlacementFor(
@@ -869,132 +1839,175 @@
                 piece
               );
 
+
             pieceElement.style.setProperty(
               "--rest-x",
               `${rest.x}px`
             );
+
 
             pieceElement.style.setProperty(
               "--rest-y",
               `${rest.y}px`
             );
 
+
             pieceElement.style.setProperty(
               "--rest-r",
               `${rest.r}deg`
             );
 
-            pieceElement.addEventListener(
-              "click",
-              pickUpPiece
+
+            square.appendChild(
+              pieceElement
             );
 
-            square.appendChild(pieceElement);
           }
 
 
-          if (column === 0) {
+          if (
+            column ===
+            0
+          ) {
+
             const rankCoordinate =
-              document.createElement("span");
+              document.createElement(
+                "span"
+              );
+
 
             rankCoordinate.className =
               "coordinate rank";
 
-            rankCoordinate.textContent = rank;
 
-            square.appendChild(rankCoordinate);
+            rankCoordinate.textContent =
+              rank;
+
+
+            square.appendChild(
+              rankCoordinate
+            );
+
           }
 
 
-          if (row === 7) {
+          if (
+            row ===
+            7
+          ) {
+
             const fileCoordinate =
-              document.createElement("span");
+              document.createElement(
+                "span"
+              );
+
 
             fileCoordinate.className =
               "coordinate file";
 
-            fileCoordinate.textContent = file;
 
-            square.appendChild(fileCoordinate);
+            fileCoordinate.textContent =
+              file;
+
+
+            square.appendChild(
+              fileCoordinate
+            );
+
           }
 
 
-          boardElement.appendChild(square);
+          boardElement.appendChild(
+            square
+          );
+
         }
+
       }
 
 
       updateStatus();
+
+
       updateClocks();
+
     }
 
 
-    function pickUpPiece(event) {
+    function clearLegalMoves() {
 
-      event.stopPropagation();
+      boardElement
+        .querySelectorAll(
+          ".square.legal"
+        )
+        .forEach(
+          square => {
 
+            square.classList.remove(
+              "legal"
+            );
 
-      const pieceElement =
-        event.currentTarget;
-
-
-      const fromSquare =
-        pieceElement.dataset.square;
-
-
-      const piece =
-        game.get(
-          fromSquare
+          }
         );
 
+    }
+
+
+    function showLegalMoves(
+      squareName
+    ) {
+
+      clearLegalMoves();
+
+
+      game.moves({
+        square:
+          squareName,
+        verbose:
+          true
+      }).forEach(
+        move => {
+
+          const squareElement =
+            boardElement.querySelector(
+              `[data-square="${move.to}"]`
+            );
+
+
+          if (
+            squareElement
+          ) {
+
+            squareElement.classList.add(
+              "legal"
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+
+    function moveFloatingPiece(
+      x,
+      y
+    ) {
 
       if (
-        !piece ||
-        piece.color !==
-        game.turn() ||
-        timerFinished
+        !selected?.floating
       ) {
         return;
       }
 
 
-      if (
-        drag &&
-        drag.from ===
-        fromSquare
-      ) {
-
-        cancelSelection();
-
-        return;
-
-      }
+      selected.floating.style.left =
+        `${x}px`;
 
 
-      if (drag) {
-
-        cancelSelection();
-
-      }
-
-
-      drag = {
-        from:
-          fromSquare,
-
-        original:
-          pieceElement
-      };
-
-
-      pieceElement.classList.add(
-        "is-selected"
-      );
-
-
-      showLegalMoves(
-        fromSquare
-      );
+      selected.floating.style.top =
+        `${y}px`;
 
     }
 
@@ -1005,30 +2018,148 @@
 
 
       if (
-        drag?.original
+        selected?.original
       ) {
 
-        drag.original.classList.remove(
+        selected.original.classList.remove(
           "is-selected"
         );
 
       }
 
 
-      drag =
+      if (
+        selected?.floating
+      ) {
+
+        selected.floating.remove();
+
+      }
+
+
+      selected =
         null;
 
     }
 
 
-    function placePickedPiece(
+    function selectPiece(
+      squareName,
+      pieceElement,
       event
     ) {
 
-      if (!drag) {
-        return;
-      }
+      cancelSelection();
 
+
+      const rect =
+        pieceElement
+          .closest(
+            ".square"
+          )
+          .getBoundingClientRect();
+
+
+      const floating =
+        pieceElement.cloneNode(
+          true
+        );
+
+
+      const computed =
+        window.getComputedStyle(
+          pieceElement
+        );
+
+
+      floating.classList.remove(
+        "is-selected"
+      );
+
+
+      floating.classList.add(
+        "floating-piece"
+      );
+
+
+      floating.style.setProperty(
+        "--float-size",
+        `${rect.width}px`
+      );
+
+
+      floating.style.setProperty(
+        "--float-r",
+        `${
+          Math.random() <
+          .5
+            ? -.8
+            : .8
+        }deg`
+      );
+
+
+      floating.style.fontSize =
+        computed.fontSize;
+
+
+      floating.style.fontFamily =
+        computed.fontFamily;
+
+
+      floating.style.fontWeight =
+        computed.fontWeight;
+
+
+      floating.style.color =
+        computed.color;
+
+
+      document.body.appendChild(
+        floating
+      );
+
+
+      pieceElement.classList.add(
+        "is-selected"
+      );
+
+
+      selected = {
+
+        from:
+          squareName,
+
+        original:
+          pieceElement,
+
+        floating,
+
+        x:
+          event.clientX,
+
+        y:
+          event.clientY
+
+      };
+
+
+      showLegalMoves(
+        squareName
+      );
+
+
+      moveFloatingPiece(
+        selected.x,
+        selected.y
+      );
+
+    }
+
+
+    function boardClick(
+      event
+    ) {
 
       const squareElement =
         event.target.closest(
@@ -1036,85 +2167,139 @@
         );
 
 
-      if (!squareElement) {
+      if (
+        !squareElement ||
+        !boardElement.contains(
+          squareElement
+        )
+      ) {
         return;
       }
 
 
-      const destination =
+      const squareName =
         squareElement.dataset.square;
 
 
-      const legalMoves =
-        game.moves({
-          square:
-            drag.from,
-
-          verbose:
-            true
-        });
-
-
-      const legal =
-        legalMoves.some(
-          move =>
-            move.to ===
-            destination
+      const clickedPiece =
+        game.get(
+          squareName
         );
 
 
-      if (!legal) {
+      if (
+        !selected
+      ) {
+
+        if (
+          clickedPiece &&
+          clickedPiece.color ===
+          game.turn() &&
+          !timerFinished
+        ) {
+
+          const pieceElement =
+            squareElement.querySelector(
+              ".piece"
+            );
+
+
+          if (
+            pieceElement
+          ) {
+
+            selectPiece(
+              squareName,
+              pieceElement,
+              event
+            );
+
+          }
+
+        }
+
+
         return;
+
       }
 
 
-      const from =
-        drag.from;
+      if (
+        squareName ===
+        selected.from
+      ) {
+
+        cancelSelection();
+
+        return;
+
+      }
 
 
-      const releaseX =
-        event.clientX;
+      const legalMove =
+        game.moves({
+          square:
+            selected.from,
+          verbose:
+            true
+        }).find(
+          move =>
+            move.to ===
+            squareName
+        );
 
 
-      const releaseY =
-        event.clientY;
+      if (
+        legalMove
+      ) {
+
+        const from =
+          selected.from;
 
 
-      cancelSelection();
+        cancelSelection();
 
 
-      attemptMove(
-        from,
-        destination,
-        releaseX,
-        releaseY
-      );
-
-    }
+        attemptMove(
+          from,
+          squareName,
+          event.clientX,
+          event.clientY
+        );
 
 
-    boardElement.addEventListener(
-      "click",
-      placePickedPiece
-    );
+        return;
+
+      }
 
 
-    document.addEventListener(
-      "keydown",
-      event => {
+      if (
+        clickedPiece &&
+        clickedPiece.color ===
+        game.turn()
+      ) {
+
+        const pieceElement =
+          squareElement.querySelector(
+            ".piece"
+          );
+
 
         if (
-          event.key ===
-          "Escape" &&
-          drag
+          pieceElement
         ) {
 
-          cancelSelection();
+          selectPiece(
+            squareName,
+            pieceElement,
+            event
+          );
 
         }
 
       }
-    );
+
+    }
 
 
     function attemptMove(
@@ -1124,11 +2309,10 @@
       clientY
     ) {
 
-      let move = null;
-
-
       const movingPiece =
-        game.get(from);
+        game.get(
+          from
+        );
 
 
       const landing =
@@ -1138,20 +2322,34 @@
           clientY
         );
 
+
+      let move =
+        null;
+
+
       try {
-        move = game.move({
-          from,
-          to,
-          promotion: "q"
-        });
+
+        move =
+          game.move({
+            from,
+            to,
+            promotion:
+              "q"
+          });
+
       }
 
       catch (error) {
-        move = null;
+
+        move =
+          null;
+
       }
 
 
-      if (!move) {
+      if (
+        !move
+      ) {
         return false;
       }
 
@@ -1161,7 +2359,14 @@
       );
 
 
-      if (movingPiece) {
+      pieceRestingPositions.delete(
+        to
+      );
+
+
+      if (
+        movingPiece
+      ) {
 
         pieceRestingPositions.set(
           to,
@@ -1175,35 +2380,54 @@
         null;
 
 
-      if (move.captured) {
+      if (
+        move.captured
+      ) {
 
         captureToken =
           ++lastCaptureToken;
 
 
         const capturedColor =
-          move.color === "w"
+          move.color ===
+          "w"
             ? "b"
             : "w";
 
 
-        capturedPieces[capturedColor].push({
-          type: move.captured,
-          token: captureToken
+        capturedPieces[
+          capturedColor
+        ].push({
+          type:
+            move.captured,
+          token:
+            captureToken
         });
 
       }
 
 
-      if (!timerStarted) {
-        timerStarted = true;
+      if (
+        !timerStarted
+      ) {
+
+        timerStarted =
+          true;
+
       }
 
-      activeClock = game.turn();
-      lastTick = performance.now();
+
+      activeClock =
+        game.turn();
+
+
+      lastTick =
+        performance.now();
 
 
       renderBoard();
+
+
       renderCapturedPieces(
         captureToken
       );
@@ -1215,231 +2439,476 @@
         );
 
 
-      if (droppedPiece) {
+      if (
+        droppedPiece
+      ) {
+
         droppedPiece.classList.add(
           "just-dropped"
         );
 
+
         window.setTimeout(
           () => {
+
             droppedPiece.classList.remove(
               "just-dropped"
             );
+
           },
           240
         );
+
       }
 
 
       return true;
+
     }
 
 
-    function showLegalMoves(square) {
-      clearLegalMoves();
+    function colorName(
+      color
+    ) {
 
-      const moves =
-        game.moves({
-          square,
-          verbose: true
-        });
+      return color ===
+        "w"
+          ? "yellow"
+          : "green";
 
-      moves.forEach(move => {
-        const squareElement =
-          boardElement.querySelector(
-            `[data-square="${move.to}"]`
-          );
-
-        if (squareElement) {
-          squareElement.classList.add(
-            "legal"
-          );
-        }
-      });
-    }
-
-
-    function clearLegalMoves() {
-      boardElement
-        .querySelectorAll(".square.legal")
-        .forEach(square => {
-          square.classList.remove("legal");
-        });
-    }
-
-
-    function colorName(color) {
-      return color === "w"
-        ? "yellow"
-        : "green";
     }
 
 
     function updateStatus() {
-      let status;
 
-
-      if (timerFinished) {
+      if (
+        timerFinished
+      ) {
         return;
       }
 
 
-      if (game.isCheckmate()) {
-        const winner =
-          game.turn() === "w"
-            ? "green"
-            : "yellow";
+      let status;
 
-        status = `${winner} wins — checkmate`;
+
+      if (
+        game.isCheckmate()
+      ) {
+
+        status =
+          `${
+            game.turn() ===
+            "w"
+              ? "green"
+              : "yellow"
+          } wins — checkmate`;
+
       }
 
-      else if (game.isStalemate()) {
-        status = "draw — stalemate";
+      else if (
+        game.isStalemate()
+      ) {
+
+        status =
+          "draw — stalemate";
+
       }
 
-      else if (game.isThreefoldRepetition()) {
-        status = "draw — repetition";
+      else if (
+        game.isThreefoldRepetition()
+      ) {
+
+        status =
+          "draw — repetition";
+
       }
 
-      else if (game.isInsufficientMaterial()) {
-        status = "draw — insufficient material";
+      else if (
+        game.isInsufficientMaterial()
+      ) {
+
+        status =
+          "draw — insufficient material";
+
       }
 
-      else if (game.isDrawByFiftyMoves()) {
-        status = "draw — fifty-move rule";
+      else if (
+        game.isDrawByFiftyMoves()
+      ) {
+
+        status =
+          "draw — fifty-move rule";
+
       }
 
-      else if (game.isDraw()) {
-        status = "draw";
+      else if (
+        game.isDraw()
+      ) {
+
+        status =
+          "draw";
+
       }
 
       else {
-        status = `${colorName(game.turn())} to move`;
 
-        if (game.inCheck()) {
-          status += " — check";
+        status =
+          `${
+            colorName(
+              game.turn()
+            )
+          } to move`;
+
+
+        if (
+          game.inCheck()
+        ) {
+
+          status +=
+            " — check";
+
         }
+
       }
 
 
-      statusElement.textContent = status;
+      statusElement.textContent =
+        status;
+
     }
 
 
-    function formatTime(milliseconds) {
-      const safe = Math.max(0, milliseconds);
-      const totalSeconds = Math.ceil(safe / 1000);
-      const minutes = Math.floor(totalSeconds / 60);
-      const seconds = totalSeconds % 60;
+    function formatTime(
+      milliseconds
+    ) {
 
-      return `${minutes}:${String(seconds).padStart(2, "0")}`;
+      const safe =
+        Math.max(
+          0,
+          milliseconds
+        );
+
+
+      const totalSeconds =
+        Math.ceil(
+          safe /
+          1000
+        );
+
+
+      const minutes =
+        Math.floor(
+          totalSeconds /
+          60
+        );
+
+
+      const seconds =
+        totalSeconds %
+        60;
+
+
+      return (
+        `${minutes}:${
+          String(
+            seconds
+          ).padStart(
+            2,
+            "0"
+          )
+        }`
+      );
+
     }
 
 
     function updateClocks() {
+
       whiteClockElement.textContent =
-        `yellow ${formatTime(whiteTime)}`;
+        `yellow ${
+          formatTime(
+            whiteTime
+          )
+        }`;
+
 
       blackClockElement.textContent =
-        `green ${formatTime(blackTime)}`;
+        `green ${
+          formatTime(
+            blackTime
+          )
+        }`;
+
 
       whiteClockElement.classList.toggle(
         "is-active",
-        timerStarted && !timerFinished && activeClock === "w"
+        timerStarted &&
+        !timerFinished &&
+        activeClock ===
+        "w"
       );
+
 
       blackClockElement.classList.toggle(
         "is-active",
-        timerStarted && !timerFinished && activeClock === "b"
+        timerStarted &&
+        !timerFinished &&
+        activeClock ===
+        "b"
       );
+
     }
 
 
-    function stopOnTime(loser) {
-      timerFinished = true;
-      timerStarted = false;
+    function stopOnTime(
+      loser
+    ) {
 
-      const winner =
-        loser === "w"
-          ? "green"
-          : "yellow";
+      timerFinished =
+        true;
+
+
+      timerStarted =
+        false;
+
 
       statusElement.textContent =
-        `${winner} wins — time`;
+        `${
+          loser ===
+          "w"
+            ? "green"
+            : "yellow"
+        } wins — time`;
+
+
+      cancelSelection();
+
 
       updateClocks();
+
     }
 
 
     function tickClock() {
-      const now = performance.now();
+
+      const now =
+        performance.now();
+
 
       if (
         timerStarted &&
         !timerFinished &&
         !game.isGameOver()
       ) {
-        const elapsed = now - lastTick;
 
-        if (activeClock === "w") {
-          whiteTime -= elapsed;
+        const elapsed =
+          now -
+          lastTick;
 
-          if (whiteTime <= 0) {
-            whiteTime = 0;
-            stopOnTime("w");
+
+        if (
+          activeClock ===
+          "w"
+        ) {
+
+          whiteTime -=
+            elapsed;
+
+
+          if (
+            whiteTime <=
+            0
+          ) {
+
+            whiteTime =
+              0;
+
+
+            stopOnTime(
+              "w"
+            );
+
           }
+
         }
 
         else {
-          blackTime -= elapsed;
 
-          if (blackTime <= 0) {
-            blackTime = 0;
-            stopOnTime("b");
+          blackTime -=
+            elapsed;
+
+
+          if (
+            blackTime <=
+            0
+          ) {
+
+            blackTime =
+              0;
+
+
+            stopOnTime(
+              "b"
+            );
+
           }
+
         }
+
       }
 
-      lastTick = now;
+
+      lastTick =
+        now;
+
+
       updateClocks();
+
     }
 
 
     function setClockMinutes() {
-      const parsed = Number(timeInput.value);
 
-      if (!Number.isFinite(parsed) || parsed <= 0) {
-        timeInput.value = String(startingMinutes);
+      const parsed =
+        Number(
+          timeInput.value
+        );
+
+
+      if (
+        !Number.isFinite(
+          parsed
+        )
+        ||
+        parsed <=
+        0
+      ) {
+
+        timeInput.value =
+          String(
+            startingMinutes
+          );
+
+
         return;
+
       }
 
-      startingMinutes = parsed;
-      whiteTime = parsed * 60 * 1000;
-      blackTime = parsed * 60 * 1000;
-      timerStarted = false;
-      timerFinished = false;
-      activeClock = game.turn();
-      lastTick = performance.now();
+
+      startingMinutes =
+        parsed;
+
+
+      whiteTime =
+        parsed *
+        60 *
+        1000;
+
+
+      blackTime =
+        parsed *
+        60 *
+        1000;
+
+
+      timerStarted =
+        false;
+
+
+      timerFinished =
+        false;
+
+
+      activeClock =
+        game.turn();
+
+
+      lastTick =
+        performance.now();
+
+
+      cancelSelection();
+
 
       updateStatus();
+
+
       updateClocks();
+
     }
+
+
+    boardElement.addEventListener(
+      "click",
+      boardClick
+    );
+
+
+    window.addEventListener(
+      "pointermove",
+      event => {
+
+        if (
+          !selected
+        ) {
+          return;
+        }
+
+
+        selected.x =
+          event.clientX;
+
+
+        selected.y =
+          event.clientY;
+
+
+        moveFloatingPiece(
+          selected.x,
+          selected.y
+        );
+
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key ===
+          "Escape" &&
+          selected
+        ) {
+
+          cancelSelection();
+
+        }
+
+      }
+    );
 
 
     flipButton.addEventListener(
       "click",
       () => {
-        if (drag) {
-          cancelSelection();
-        }
+
+        cancelSelection();
+
 
         orientation =
-          orientation === "white"
+          orientation ===
+          "white"
             ? "black"
             : "white";
 
+
         renderBoard();
+
+
         renderCapturedPieces();
+
       }
     );
 
@@ -1447,25 +2916,61 @@
     resetButton.addEventListener(
       "click",
       () => {
-        if (drag) {
-          cancelSelection();
-        }
+
+        cancelSelection();
+
 
         game.reset();
 
-        capturedPieces.w = [];
-        capturedPieces.b = [];
-        lastCaptureToken = 0;
+
+        capturedPieces.w.length =
+          0;
+
+
+        capturedPieces.b.length =
+          0;
+
+
+        lastCaptureToken =
+          0;
+
+
         pieceRestingPositions.clear();
 
-        whiteTime = startingMinutes * 60 * 1000;
-        blackTime = startingMinutes * 60 * 1000;
-        timerStarted = false;
-        timerFinished = false;
-        activeClock = "w";
-        lastTick = performance.now();
+
+        whiteTime =
+          startingMinutes *
+          60 *
+          1000;
+
+
+        blackTime =
+          startingMinutes *
+          60 *
+          1000;
+
+
+        timerStarted =
+          false;
+
+
+        timerFinished =
+          false;
+
+
+        activeClock =
+          "w";
+
+
+        lastTick =
+          performance.now();
+
 
         renderBoard();
+
+
+        renderCapturedPieces();
+
       }
     );
 
@@ -1479,9 +2984,16 @@
     timeInput.addEventListener(
       "keydown",
       event => {
-        if (event.key === "Enter") {
+
+        if (
+          event.key ===
+          "Enter"
+        ) {
+
           setClockMinutes();
+
         }
+
       }
     );
 
@@ -1493,9 +3005,14 @@
 
 
     renderBoard();
+
+
     renderCapturedPieces();
+
+
     updateClocks();
 
   </script>
+
 </body>
 </html>
