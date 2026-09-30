@@ -5258,7 +5258,7 @@
 
 
         const minimumDelay =
-          320;
+          10000;
 
 
         const elapsed =
@@ -5988,6 +5988,11 @@
         winner;
 
 
+      const isDraw =
+        winner ===
+        "draw";
+
+
       const greenWon =
         winner ===
         "b";
@@ -6020,16 +6025,20 @@
 
 
       winTitle.textContent =
-        greenWon
-          ? "Green Won"
-          : "Yellow Won";
+        isDraw
+          ? "Draw"
+          : greenWon
+            ? "Green Won"
+            : "Yellow Won";
 
 
       winOverlay.style.setProperty(
         "--winner-color",
-        greenWon
-          ? "var(--board-green)"
-          : "var(--board-yellow)"
+        isDraw
+          ? "var(--board-red)"
+          : greenWon
+            ? "var(--board-green)"
+            : "var(--board-yellow)"
       );
 
 
@@ -6318,6 +6327,14 @@
 
           showWin(
             winner
+          );
+
+        }
+
+        else {
+
+          showWin(
+            "draw"
           );
 
         }
