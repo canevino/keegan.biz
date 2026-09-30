@@ -5453,6 +5453,50 @@
     }
 
 
+    const footballTeams = [
+      {
+        key: "liverpool",
+        label: "Liverpool"
+      },
+      {
+        key: "hearts",
+        label: "Hearts"
+      },
+      {
+        key: "preston",
+        label: "Preston"
+      },
+      {
+        key: "fiorentina",
+        label: "Fiorentina"
+      },
+      {
+        key: "shakhtar",
+        label: "Shakhtar"
+      },
+      {
+        key: "lithuania",
+        label: "Lithuania"
+      },
+      {
+        key: "ukraine",
+        label: "Ukraine"
+      },
+      {
+        key: "england",
+        label: "England"
+      },
+      {
+        key: "ireland",
+        label: "Ireland"
+      }
+    ];
+
+
+    let selectedFootballTeam =
+      "liverpool";
+
+
     function baseballSectionMarkup(
       data
     ) {
@@ -5476,9 +5520,17 @@
       return `
         <section class="sports-section sports-baseball">
 
-          <p class="sports-team">
-            ${data.shortName ?? data.team ?? ""}
+          <p class="sports-kind">
+            baseball
           </p>
+
+          <button
+            class="sports-team-tab is-active"
+            type="button"
+            aria-current="true"
+          >
+            ${data.shortName ?? data.team ?? "Yankees"}
+          </button>
 
           <div class="sports-score">
             <span>${game.away ?? ""}</span>
@@ -5528,38 +5580,92 @@
     }
 
 
-    function footballSectionMarkup(
+    function footballTabsMarkup(
       data
     ) {
 
+      return `
+        <div
+          class="football-team-tabs"
+          role="tablist"
+          aria-label="Football teams"
+        >
+          ${footballTeams.map(
+            team => {
+
+              const isSelected =
+                team.key ===
+                selectedFootballTeam;
+
+
+              return `
+                <button
+                  class="sports-team-tab ${isSelected ? "is-active" : ""}"
+                  type="button"
+                  role="tab"
+                  data-football-team="${team.key}"
+                  aria-selected="${isSelected ? "true" : "false"}"
+                >
+                  ${team.label}
+                </button>
+              `;
+
+            }
+          ).join("")}
+        </div>
+      `;
+
+    }
+
+
+    function footballTeamContentMarkup(
+      data
+    ) {
+
+      const selectedData =
+        data?.[
+          selectedFootballTeam
+        ];
+
+
       if (
-        !data
+        !selectedData
         ||
-        data.active ===
+        selectedData.active ===
         false
       ) {
-        return "";
+
+        const team =
+          footballTeams.find(
+            item =>
+              item.key ===
+              selectedFootballTeam
+          );
+
+
+        return `
+          <div class="football-empty">
+            ${team?.label ?? "team"} tracking is not connected yet.
+          </div>
+        `;
+
       }
 
 
       const game =
-        data.game
+        selectedData.game
         ||
         {};
 
 
       return `
-        <section class="sports-section sports-football">
-
-          <p class="sports-team">
-            ${data.shortName ?? data.team ?? ""}
-          </p>
+        <div class="football-team-content">
 
           <div class="football-match">
 
             <div class="football-side is-home">
               <strong>${game.home ?? ""}</strong>
-              <span>${game.homeSub ?? ""}</span>
+              <span>${game.homeSub ?? game.competition ?? ""}</span>
             </div>
 
             <div class="football-score-block">
@@ -5571,17 +5677,158 @@
 
             <div class="football-side is-away">
               <strong>${game.away ?? ""}</strong>
-              <span>${game.awaySub ?? ""}</span>
+              <span>${game.awaySub ?? game.competition ?? ""}</span>
             </div>
 
           </div>
 
           ${footballEventsMarkup(game)}
 
-          ${sportsTableMarkup(data.standings)}
+          ${
+            game.competition
+              ? `<p class="sports-competition">${game.competition}</p>`
+              : ""
+          }
+
+          ${sportsTableMarkup(selectedData.standings)}
+
+        </div>
+      `;
+
+    }
+
+
+    function footballSectionMarkup(
+      data
+    ) {
+
+      return `
+        <section class="sports-section sports-football">
+
+          <p class="sports-kind">
+            football
+          </p>
+
+          ${footballTabsMarkup(data)}
+
+          <div
+            class="football-tab-panel"
+            id="football-tab-panel"
+          >
+            ${footballTeamContentMarkup(data)}
+          </div>
 
         </section>
       `;
+
+    }
+
+
+    function wireFootballTabs(
+      data
+    ) {
+
+      sportsBox
+        .querySelectorAll(
+          "[data-football-team]"
+        )
+        .forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                selectedFootballTeam =
+                  button.dataset
+                    .footballTeam;
+
+
+                sportsBox
+                  .querySelectorAll(
+                    "[data-football-team]"
+                  )
+                  .forEach(
+                    tab => {
+
+                      const active =
+                        tab.dataset
+                          .footballTeam ===
+                        selectedFootballTeam;
+
+
+                      tab.classList.toggle(
+                        "is-active",
+                        active
+                      );
+
+
+                      tab.setAttribute(
+                        "aria-selected",
+                        active
+                          ? "true"
+                          : "false"
+                      );
+
+                    }
+                  );
+
+
+                const panel =
+                  document.getElementById(
+                    "football-tab-panel"
+                  );
+
+
+                if (
+                  panel
+                ) {
+
+                  panel.innerHTML =
+                    footballTeamContentMarkup(
+                      data
+                    );
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+    }
+
+
+    function paintSports(
+      data
+    ) {
+
+      const markup =
+        [
+          footballSectionMarkup(
+            data?.football
+            ||
+            {}
+          ),
+          baseballSectionMarkup(
+            data?.baseball?.yankees
+          )
+        ]
+          .join("");
+
+
+      sportsBox.innerHTML =
+        markup
+        ||
+        '<p class="sports-empty">nothing on today</p>';
+
+
+      wireFootballTabs(
+        data?.football
+        ||
+        {}
+      );
 
     }
 
@@ -5598,22 +5845,9 @@
           await window.keeganSports.loadSportsData();
 
 
-        const markup =
-          [
-            baseballSectionMarkup(
-              data?.baseball?.yankees
-            ),
-            footballSectionMarkup(
-              data?.football?.liverpool
-            )
-          ]
-            .join("");
-
-
-        sportsBox.innerHTML =
-          markup
-          ||
-          '<p class="sports-empty">nothing on today</p>';
+        paintSports(
+          data
+        );
 
       }
 
