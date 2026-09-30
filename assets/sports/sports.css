@@ -52,10 +52,15 @@
 }
 
 .football-team-tabs {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 14px;
+}
+
+.football-team-tab-row {
   display: flex;
   flex-wrap: wrap;
   gap: 5px 12px;
-  margin: 0 0 14px;
 }
 
 .football-empty {
@@ -213,8 +218,12 @@
   }
 
   .football-team-tabs {
-    gap: 6px 10px;
+    gap: 6px;
     margin-bottom: 12px;
+  }
+
+  .football-team-tab-row {
+    gap: 6px 10px;
   }
 
   .sports-team-tab {
