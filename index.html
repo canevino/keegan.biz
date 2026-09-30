@@ -231,6 +231,66 @@
       display: block;
     }
 
+
+    .autoplay-panel {
+      display: none;
+      margin: 0 0 12px;
+      padding: 0;
+    }
+
+
+    .home-chess.is-autoplay-mode .autoplay-panel {
+      display: block;
+    }
+
+
+    .autoplay-about,
+    .autoplay-game-title,
+    .autoplay-game-detail {
+      margin: 0;
+      max-width: 620px;
+      color: var(--board-red);
+      font-size: 12px;
+      line-height: 1.18;
+    }
+
+
+    .autoplay-about {
+      margin-bottom: 12px;
+      color: var(--board-ink);
+      font-weight: 500;
+    }
+
+
+    .autoplay-game-title {
+      font-weight: 700;
+    }
+
+
+    .autoplay-game-detail {
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+
+    .autoplay-controls {
+      display: flex;
+      gap: 12px;
+      margin-top: 9px;
+    }
+
+
+    .home-chess.is-autoplay-mode .clock-group,
+    .home-chess.is-autoplay-mode .time-setter {
+      display: none;
+    }
+
+
+    .home-chess.is-autoplay-mode .chess-bottombar {
+      grid-template-columns: auto;
+      grid-template-areas: "reset";
+    }
+
     .home-chess.is-bot-mode .clock-group,
     .home-chess.is-bot-mode .time-setter {
       display: none;
@@ -994,6 +1054,13 @@
 
 
 
+      .autoplay-about,
+      .autoplay-game-title,
+      .autoplay-game-detail {
+        font-size: 11px;
+      }
+
+
       .home-chess .status,
       .home-chess .clock,
       .home-chess .time-label,
@@ -1192,6 +1259,14 @@
               computer
             </button>
 
+            <button
+              class="mode-button"
+              id="autoplay-mode-button"
+              type="button"
+            >
+              autoplay
+            </button>
+
             <div
               class="bot-difficulties"
               id="bot-difficulties"
@@ -1232,6 +1307,24 @@
           >
             medium · about 1000
           </p>
+
+          <div
+            class="autoplay-panel"
+            id="autoplay-panel"
+            aria-hidden="true"
+          >
+            <p class="autoplay-about">
+              Autoplay draws from the 125 Greatest Chess Games collection, based on <em>The Mammoth Book of The World's Greatest Chess Games</em>.
+            </p>
+
+            <p class="autoplay-game-title" id="autoplay-game-title"></p>
+            <p class="autoplay-game-detail" id="autoplay-game-detail"></p>
+
+            <div class="autoplay-controls">
+              <button id="autoplay-toggle" type="button">pause</button>
+              <button id="autoplay-new" type="button">new game</button>
+            </div>
+          </div>
 
           <div class="chess-topbar">
 
@@ -1901,6 +1994,10 @@
       Chess
     } from "https://cdn.jsdelivr.net/npm/chess.js@1.4.0/+esm";
 
+    import {
+      famousGamesWithPgn
+    } from "/assets/chess/famous-games-pgn.js";
+
 
     const chessLauncher =
       document.getElementById(
@@ -1935,6 +2032,42 @@
     const botModeButton =
       document.getElementById(
         "bot-mode-button"
+      );
+
+
+    const autoplayModeButton =
+      document.getElementById(
+        "autoplay-mode-button"
+      );
+
+
+    const autoplayPanel =
+      document.getElementById(
+        "autoplay-panel"
+      );
+
+
+    const autoplayGameTitle =
+      document.getElementById(
+        "autoplay-game-title"
+      );
+
+
+    const autoplayGameDetail =
+      document.getElementById(
+        "autoplay-game-detail"
+      );
+
+
+    const autoplayToggleButton =
+      document.getElementById(
+        "autoplay-toggle"
+      );
+
+
+    const autoplayNewButton =
+      document.getElementById(
+        "autoplay-new"
       );
 
 
@@ -2197,6 +2330,34 @@
 
     let botThinking =
       false;
+
+
+    const AUTOPLAY_MOVE_DELAY =
+      2500;
+
+
+    let autoplayGame =
+      null;
+
+
+    let autoplayMoves =
+      [];
+
+
+    let autoplayMoveIndex =
+      0;
+
+
+    let autoplayPlaying =
+      false;
+
+
+    let autoplayTimer =
+      null;
+
+
+    let autoplayResult =
+      "*";
 
 
     let stockfishWorker =
@@ -4553,21 +4714,51 @@
         "bot";
 
 
+      const isAutoplay =
+        gameMode ===
+        "autoplay";
+
+
+      const isLocal =
+        gameMode ===
+        "local";
+
+
       chessShell.classList.toggle(
         "is-bot-mode",
         isBot
       );
 
 
+      chessShell.classList.toggle(
+        "is-autoplay-mode",
+        isAutoplay
+      );
+
+
       localModeButton.classList.toggle(
         "is-active",
-        !isBot
+        isLocal
       );
 
 
       botModeButton.classList.toggle(
         "is-active",
         isBot
+      );
+
+
+      autoplayModeButton.classList.toggle(
+        "is-active",
+        isAutoplay
+      );
+
+
+      autoplayPanel.setAttribute(
+        "aria-hidden",
+        isAutoplay
+          ? "false"
+          : "true"
       );
 
 
@@ -5361,6 +5552,599 @@
     }
 
 
+    function clearAutoplayTimer() {
+
+      if (
+        autoplayTimer
+      ) {
+
+        window.clearTimeout(
+          autoplayTimer
+        );
+
+      }
+
+
+      autoplayTimer =
+        null;
+
+    }
+
+
+    function pgnTag(
+      pgn,
+      name
+    ) {
+
+      const match =
+        pgn.match(
+          new RegExp(
+            `\\[${name}\\s+"([^"]*)"\\]`
+          )
+        );
+
+
+      return match
+        ? match[1]
+        : "";
+
+    }
+
+
+    function updateAutoplayInfo() {
+
+      if (
+        !autoplayGame
+      ) {
+        return;
+      }
+
+
+      const white =
+        pgnTag(
+          autoplayGame.pgn,
+          "White"
+        )
+        ||
+        autoplayGame.white;
+
+
+      const black =
+        pgnTag(
+          autoplayGame.pgn,
+          "Black"
+        )
+        ||
+        autoplayGame.black;
+
+
+      const event =
+        pgnTag(
+          autoplayGame.pgn,
+          "Event"
+        );
+
+
+      const eco =
+        pgnTag(
+          autoplayGame.pgn,
+          "ECO"
+        );
+
+
+      const named =
+        autoplayGame.title
+          ? `“${autoplayGame.title}”`
+          : `${white} vs ${black}`;
+
+
+      autoplayGameTitle.textContent =
+        named;
+
+
+      autoplayGameDetail.textContent =
+        autoplayGame.title
+          ? `${white} vs ${black} · ${autoplayGame.year}${
+              event
+                ? ` · ${event}`
+                : ""
+            }${
+              eco
+                ? ` · ${eco}`
+                : ""
+            }`
+          : `${autoplayGame.year}${
+              event
+                ? ` · ${event}`
+                : ""
+            }${
+              eco
+                ? ` · ${eco}`
+                : ""
+            }`;
+
+
+      autoplayToggleButton.textContent =
+        autoplayPlaying
+          ? "pause"
+          : "play";
+
+    }
+
+
+    function finishAutoplayGame() {
+
+      clearAutoplayTimer();
+
+
+      autoplayPlaying =
+        false;
+
+
+      timerStarted =
+        false;
+
+
+      timerFinished =
+        true;
+
+
+      updateAutoplayInfo();
+
+
+      if (
+        matchWinner
+      ) {
+        return;
+      }
+
+
+      if (
+        autoplayResult ===
+        "1-0"
+      ) {
+
+        showWin(
+          "w"
+        );
+
+      }
+
+      else if (
+        autoplayResult ===
+        "0-1"
+      ) {
+
+        showWin(
+          "b"
+        );
+
+      }
+
+      else {
+
+        showWin(
+          "draw"
+        );
+
+      }
+
+    }
+
+
+    function scheduleAutoplayMove(
+      delay =
+        AUTOPLAY_MOVE_DELAY
+    ) {
+
+      clearAutoplayTimer();
+
+
+      if (
+        gameMode !==
+        "autoplay"
+        ||
+        !autoplayPlaying
+        ||
+        reviewing
+        ||
+        timerFinished
+      ) {
+        return;
+      }
+
+
+      autoplayTimer =
+        window.setTimeout(
+          playNextAutoplayMove,
+          delay
+        );
+
+    }
+
+
+    function playNextAutoplayMove() {
+
+      clearAutoplayTimer();
+
+
+      if (
+        gameMode !==
+        "autoplay"
+        ||
+        !autoplayPlaying
+        ||
+        reviewing
+        ||
+        timerFinished
+      ) {
+        return;
+      }
+
+
+      if (
+        autoplayMoveIndex >=
+        autoplayMoves.length
+      ) {
+
+        finishAutoplayGame();
+
+
+        return;
+      }
+
+
+      const move =
+        autoplayMoves[
+          autoplayMoveIndex
+        ];
+
+
+      const point =
+        centerOfSquare(
+          move.to
+        );
+
+
+      const moved =
+        attemptMove(
+          move.from,
+          move.to,
+          point.x,
+          point.y,
+          move.promotion || "q"
+        );
+
+
+      if (
+        !moved
+      ) {
+
+        console.error(
+          "Autoplay move failed:",
+          move
+        );
+
+
+        autoplayPlaying =
+          false;
+
+
+        updateAutoplayInfo();
+
+
+        return;
+      }
+
+
+      autoplayMoveIndex +=
+        1;
+
+
+      updateAutoplayInfo();
+
+
+      if (
+        autoplayMoveIndex >=
+        autoplayMoves.length
+      ) {
+
+        window.setTimeout(
+          () => {
+
+            if (
+              !matchWinner
+            ) {
+
+              finishAutoplayGame();
+
+            }
+
+          },
+          700
+        );
+
+
+        return;
+      }
+
+
+      scheduleAutoplayMove();
+
+    }
+
+
+    function prepareAutoplayGame(
+      selectedGame =
+        null
+    ) {
+
+      clearAutoplayTimer();
+
+
+      cancelSelection();
+
+
+      reviewing =
+        false;
+
+
+      reviewIndex =
+        0;
+
+
+      matchWinner =
+        null;
+
+
+      currentWinImage =
+        null;
+
+
+      gameMode =
+        "autoplay";
+
+
+      setBotThinking(
+        false
+      );
+
+
+      if (
+        stockfishWorker
+      ) {
+
+        stockfishWorker.postMessage(
+          "stop"
+        );
+
+      }
+
+
+      if (
+        selectedGame
+      ) {
+
+        autoplayGame =
+          selectedGame;
+
+      }
+
+      else {
+
+        const pool =
+          famousGamesWithPgn.filter(
+            item =>
+              item &&
+              typeof item.pgn ===
+              "string" &&
+              item.pgn.trim()
+          );
+
+
+        if (
+          pool.length ===
+          0
+        ) {
+
+          autoplayGameTitle.textContent =
+            "autoplay unavailable";
+
+
+          autoplayGameDetail.textContent =
+            "No famous-game PGNs were found.";
+
+
+          updateModeUI();
+
+
+          return;
+
+        }
+
+
+        let next =
+          pool[
+            Math.floor(
+              Math.random() *
+              pool.length
+            )
+          ];
+
+
+        if (
+          pool.length >
+          1 &&
+          autoplayGame &&
+          next.id ===
+          autoplayGame.id
+        ) {
+
+          next =
+            pool[
+              (
+                pool.findIndex(
+                  item =>
+                    item.id ===
+                    next.id
+                )
+                +
+                1
+              )
+              %
+              pool.length
+            ];
+
+        }
+
+
+        autoplayGame =
+          next;
+
+      }
+
+
+      const replay =
+        new Chess();
+
+
+      try {
+
+        replay.loadPgn(
+          autoplayGame.pgn
+        );
+
+      }
+
+      catch (
+        error
+      ) {
+
+        console.error(
+          "Could not load autoplay PGN:",
+          error
+        );
+
+
+        autoplayGameTitle.textContent =
+          "autoplay unavailable";
+
+
+        autoplayGameDetail.textContent =
+          "This game's PGN could not be loaded.";
+
+
+        updateModeUI();
+
+
+        return;
+
+      }
+
+
+      autoplayMoves =
+        replay.history({
+          verbose:
+            true
+        });
+
+
+      autoplayResult =
+        pgnTag(
+          autoplayGame.pgn,
+          "Result"
+        )
+        ||
+        "*";
+
+
+      autoplayMoveIndex =
+        0;
+
+
+      autoplayPlaying =
+        true;
+
+
+      game.reset();
+
+
+      clearCapturePhysics();
+
+
+      capturedPieces.w.length =
+        0;
+
+
+      capturedPieces.b.length =
+        0;
+
+
+      lastCaptureToken =
+        0;
+
+
+      pieceRestingPositions.clear();
+
+
+      timerStarted =
+        false;
+
+
+      timerFinished =
+        false;
+
+
+      humanColor =
+        null;
+
+
+      botColor =
+        null;
+
+
+      orientation =
+        "white";
+
+
+      hideResultUI();
+
+
+      resetHistory();
+
+
+      renderBoard();
+
+
+      renderCapturedPieces();
+
+
+      updateModeUI();
+
+
+      updateAutoplayInfo();
+
+
+      updateStatus();
+
+
+      updateClocks();
+
+
+      scheduleAutoplayMove(
+        1200
+      );
+
+    }
+
+
+    function startAutoplayGame() {
+
+      prepareAutoplayGame();
+
+    }
+
+
     function prepareBotGame() {
 
       cancelSelection();
@@ -5464,6 +6248,13 @@
 
     function startLocalGame() {
 
+      clearAutoplayTimer();
+
+
+      autoplayPlaying =
+        false;
+
+
       gameMode =
         "local";
 
@@ -5504,6 +6295,13 @@
       level =
         botDifficulty
     ) {
+
+      clearAutoplayTimer();
+
+
+      autoplayPlaying =
+        false;
+
 
       gameMode =
         "bot";
@@ -5631,7 +6429,9 @@
       if (
         reviewing ||
         timerFinished ||
-        botThinking
+        botThinking ||
+        gameMode ===
+        "autoplay"
       ) {
         return;
       }
@@ -6392,6 +7192,28 @@
 
       if (
         gameMode ===
+        "autoplay"
+        &&
+        !game.isGameOver()
+      ) {
+
+        status =
+          autoplayPlaying
+            ? `autoplay · move ${autoplayMoveIndex} / ${autoplayMoves.length}`
+            : `autoplay · paused · move ${autoplayMoveIndex} / ${autoplayMoves.length}`;
+
+
+        statusElement.textContent =
+          status;
+
+
+        return;
+
+      }
+
+
+      if (
+        gameMode ===
         "bot"
         &&
         !game.isGameOver()
@@ -6822,6 +7644,21 @@
       }
 
 
+      if (
+        gameMode ===
+        "autoplay"
+      ) {
+
+        prepareAutoplayGame(
+          autoplayGame
+        );
+
+
+        return;
+
+      }
+
+
       cancelSelection();
 
 
@@ -7204,6 +8041,17 @@
 
         }
 
+        else if (
+          gameMode ===
+          "autoplay"
+        ) {
+
+          prepareAutoplayGame(
+            autoplayGame
+          );
+
+        }
+
         else {
 
           resetGame();
@@ -7290,6 +8138,66 @@
         startBotGame(
           botDifficulty
         );
+
+      }
+    );
+
+
+    autoplayModeButton.addEventListener(
+      "click",
+      startAutoplayGame
+    );
+
+
+    autoplayToggleButton.addEventListener(
+      "click",
+      () => {
+
+        if (
+          gameMode !==
+          "autoplay"
+          ||
+          timerFinished
+        ) {
+          return;
+        }
+
+
+        autoplayPlaying =
+          !autoplayPlaying;
+
+
+        updateAutoplayInfo();
+
+
+        updateStatus();
+
+
+        if (
+          autoplayPlaying
+        ) {
+
+          scheduleAutoplayMove(
+            500
+          );
+
+        }
+
+        else {
+
+          clearAutoplayTimer();
+
+        }
+
+      }
+    );
+
+
+    autoplayNewButton.addEventListener(
+      "click",
+      () => {
+
+        prepareAutoplayGame();
 
       }
     );
