@@ -1751,6 +1751,127 @@
       }
     }
 
+
+    /* Chess review controls: clearer two-row system */
+    .home-chess .review-controls {
+      grid-template-columns:
+        88px
+        64px
+        minmax(0, 1fr)
+        64px
+        88px;
+      grid-template-rows:
+        38px
+        38px;
+      border: 1px solid var(--board-red);
+    }
+
+    .home-chess .review-controls > * {
+      min-width: 0;
+      min-height: 38px;
+      border: 0 !important;
+      border-right: 1px solid var(--board-red) !important;
+    }
+
+    .home-chess .review-controls > :nth-child(1) {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .home-chess .review-controls > :nth-child(2) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .home-chess .review-label {
+      grid-column: 3;
+      grid-row: 1;
+      border-right: 1px solid var(--board-red) !important;
+    }
+
+    .home-chess .review-controls > :nth-child(4) {
+      grid-column: 4;
+      grid-row: 1;
+    }
+
+    .home-chess .review-controls > :nth-child(5) {
+      grid-column: 5;
+      grid-row: 1;
+      border-right: 0 !important;
+    }
+
+    .home-chess .review-result {
+      grid-column: 1 / -1;
+      grid-row: 2;
+
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      width: 100%;
+
+      padding-left: 12px !important;
+
+      border-top: 1px solid var(--board-red) !important;
+      border-right: 0 !important;
+
+      text-align: left;
+    }
+
+    .home-chess .review-controls button,
+    .home-chess .review-label {
+      padding: 7px 10px;
+    }
+
+    .home-chess .review-controls button:hover:not(:disabled) {
+      background: var(--board-red);
+      color: var(--board-paper);
+    }
+
+    @media (max-width: 700px) {
+      .home-chess .review-controls {
+        grid-template-columns:
+          54px
+          38px
+          minmax(0, 1fr)
+          38px
+          54px;
+        grid-template-rows:
+          34px
+          34px;
+      }
+
+      .home-chess .review-controls > * {
+        min-height: 34px;
+      }
+
+      .home-chess .review-controls button,
+      .home-chess .review-label {
+        padding: 5px 4px;
+        font-size: 9px;
+      }
+
+      .home-chess .review-result {
+        padding-left: 8px !important;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .home-chess .review-controls {
+        grid-template-columns:
+          48px
+          34px
+          minmax(0, 1fr)
+          34px
+          48px;
+      }
+
+      .home-chess .review-controls button,
+      .home-chess .review-label {
+        font-size: 8px;
+      }
+    }
+
   </style>
 </head>
 
