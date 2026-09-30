@@ -41,6 +41,14 @@
       }
     }
 
+    @media (min-width: 1241px) {
+      .hero {
+        justify-content: flex-start !important;
+        padding-top: clamp(72px, 8vh, 108px) !important;
+      }
+    }
+
+
     .chess-launcher {
       display: inline-block;
 
@@ -55,7 +63,7 @@
       color: var(--board-red, #c1272d);
 
       font: inherit;
-      font-size: 18px;
+      font-size: 20px;
       line-height: 1;
       font-weight: 700;
 
@@ -96,9 +104,9 @@
     .chess-panel-title {
       margin: 0;
 
-      color: var(--board-green, #006a44);
+      color: var(--board-red, #c1272d);
 
-      font-size: clamp(44px, 5.5vw, 76px);
+      font-size: clamp(60px, 6.4vw, 96px);
       line-height: .88;
       letter-spacing: -.06em;
       font-weight: 700;
@@ -772,7 +780,9 @@
       box-shadow: 6px 6px 0 rgba(193, 39, 45, .72);
 
       transform:
-        translateY(-72px);
+        translateY(
+          var(--win-title-y, -72px)
+        );
     }
 
     .home-chess .result-actions {
@@ -942,7 +952,7 @@
       }
 
       .chess-panel-title {
-        font-size: clamp(42px, 13vw, 62px);
+        font-size: clamp(52px, 15vw, 72px);
       }
 
       .chess-close {
@@ -5928,6 +5938,12 @@
         info:
           "Lucas van Leyden, c. 1508. Netherlands.",
 
+        winTitleY:
+          -72,
+
+        winTitleYMobile:
+          -42,
+
         src:
           "https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG"
       },
@@ -5938,6 +5954,12 @@
 
         info:
           "Ludwig Deutsch, 1896.",
+
+        winTitleY:
+          -72,
+
+        winTitleYMobile:
+          -42,
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/b/b2/The_Chess_Game.jpg"
@@ -5950,6 +5972,12 @@
         info:
           "Historic photo. Golestan Palace, Iran.",
 
+        winTitleY:
+          -72,
+
+        winTitleYMobile:
+          -42,
+
         src:
           "https://upload.wikimedia.org/wikipedia/commons/7/73/Golestan_Palace_Album_No._108-7.jpg"
       },
@@ -5961,6 +5989,12 @@
         info:
           "Paris, c. 1300. Carved ivory.",
 
+        winTitleY:
+          72,
+
+        winTitleYMobile:
+          44,
+
         src:
           "https://upload.wikimedia.org/wikipedia/commons/9/91/Chess_playing_Louvre_OA117.jpg"
       },
@@ -5971,6 +6005,12 @@
 
         info:
           "12th c. Isle of Lewis, Outer Hebrides.",
+
+        winTitleY:
+          -72,
+
+        winTitleYMobile:
+          -42,
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/1/1c/NMSLewisChessmen28.jpg"
@@ -6056,6 +6096,18 @@
 
       winArtTitle.innerHTML =
         `<strong>${currentWinImage.title}</strong><br>${currentWinImage.info}`;
+
+
+      winOverlay.style.setProperty(
+        "--win-title-y",
+        `${currentWinImage.winTitleY ?? -72}px`
+      );
+
+
+      winOverlay.style.setProperty(
+        "--win-title-y-mobile",
+        `${currentWinImage.winTitleYMobile ?? -42}px`
+      );
 
 
       winTitle.textContent =
