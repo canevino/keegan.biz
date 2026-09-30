@@ -473,20 +473,20 @@
   */
   const PITCH_VISUALS={
     D:{color:'#006a44',second:'#4f8b70',hue:0,tension:.05},
-    E:{color:'#a88f14',second:'#d2b94a',hue:0,tension:.17},
-    F:{color:'#a82b31',second:'#cf5b60',hue:0,tension:.34},
-    G:{color:'#2f7449',second:'#78a06f',hue:0,tension:.18},
-    A:{color:'#b77910',second:'#d8a33c',hue:0,tension:.10},
-    B:{color:'#315f50',second:'#718d82',hue:0,tension:.36},
-    C:{color:'#9d3a32',second:'#c86a55',hue:0,tension:.27}
+    E:{color:'#fdb913',second:'#d4ae49',hue:0,tension:.17},
+    F:{color:'#c1272d',second:'#b65b5f',hue:0,tension:.34},
+    G:{color:'#006a44',second:'#6d947d',hue:0,tension:.18},
+    A:{color:'#fdb913',second:'#cca84d',hue:0,tension:.10},
+    B:{color:'#006a44',second:'#718d82',hue:0,tension:.36},
+    C:{color:'#c1272d',second:'#bd6669',hue:0,tension:.27}
   };
 
   const INSTRUMENT_VISUALS={
-    concertina:{tint:'#9a3438',hue:0},
-    guitar:{tint:'#aa791c',hue:0},
-    mandolin:{tint:'#276f47',hue:0},
-    harmonic:{tint:'#6d776d',hue:0},
-    cello:{tint:'#355e4a',hue:0}
+    concertina:{tint:'#c1272d',hue:0},
+    guitar:{tint:'#fdb913',hue:0},
+    mandolin:{tint:'#006a44',hue:0},
+    harmonic:{tint:'#444142',hue:0},
+    cello:{tint:'#006a44',hue:0}
   };
   const PITCH_LINES={D:[1,4,7,10,13],E:[2,5,8,11],F:[3,6,9,12],G:[1,5,9,13],A:[2,6,10],B:[3,7,11],C:[4,8,12]};
   const POST=['#fuji-posterize-3','#fuji-posterize-4','#fuji-posterize-6'];
@@ -545,41 +545,8 @@
   }
 
   function processFilter(v,intensity){
-    const mobile=isMobile();
-
-    /*
-      Keep the image treatment varied without the sudden posterized /
-      threshold flashes. Those high-contrast modes were the main source
-      of occasional abrupt color changes.
-    */
-    const mode=mobile
-      ?weightedValue([
-          {value:'normal',weight:56},
-          {value:'exposed',weight:30},
-          {value:'hard',weight:14}
-        ])
-      :weightedValue([
-          {value:'normal',weight:45},
-          {value:'exposed',weight:34},
-          {value:'hard',weight:18},
-          {value:'poster',weight:3}
-        ]);
-
-    const h=rand(-2,2);
-
-    if(mode==='poster'&&!mobile){
-      return `grayscale(.18) sepia(.24) url("${pick(POST)}") hue-rotate(${h}deg) saturate(${rand(.72,.88)}) brightness(${rand(.96,1.02)}) contrast(${rand(1.08,1.22)})`;
-    }
-
-    if(mode==='hard'){
-      return `grayscale(.14) sepia(.24) hue-rotate(${h}deg) saturate(${rand(.72,.90)}) brightness(${rand(.94,1.02)}) contrast(${rand(mobile?1.12:1.18,mobile?1.28:1.36)})`;
-    }
-
-    if(mode==='exposed'){
-      return `grayscale(.10) sepia(.20) hue-rotate(${h}deg) saturate(${rand(.72,.90)}) brightness(${rand(.99,1.06+intensity*.03)}) contrast(${rand(1.03,1.16)})`;
-    }
-
-    return `grayscale(.10) sepia(.20) hue-rotate(${h}deg) saturate(${rand(.70,.88)}) brightness(${rand(.92,1.01)}) contrast(${rand(1.02,1.13)})`;
+    /* Keep line-source processing nearly neutral so clicks cannot shift the whole image strongly. */
+    return `grayscale(.035) sepia(.045) saturate(${rand(.90,.98)}) brightness(${rand(.985,1.015)}) contrast(${rand(1.015,1.07)})`;
   }
 
   function configureLine(item,v,intensity,phase){
@@ -591,25 +558,25 @@
           {value:'darken',weight:28}
         ])
       : weightedValue([
-          {value:'soft-light',weight:attack?27:38},
-          {value:'overlay',weight:attack?33:28},
-          {value:'multiply',weight:30},
-          {value:'darken',weight:10}
+          {value:'soft-light',weight:54},
+          {value:'multiply',weight:32},
+          {value:'darken',weight:12},
+          {value:'overlay',weight:2}
         ]);
     item.source.style.filter=processFilter(v,intensity);
-    item.source.style.opacity=attack?rand(.48,.86):rand(.34,.67);
+    item.source.style.opacity=attack?rand(.34,.58):rand(.24,.44);
     if(item.layer.classList.contains('has-alpha')){
       item.texture.style.backgroundImage=`linear-gradient(${rand(0,360)}deg,${v.primary},${v.secondary},${v.tertiary}),url("${v.texture}")`;
       item.texture.style.backgroundSize='100% 100%,cover';
       item.texture.style.backgroundPosition='center,center';
       item.texture.style.backgroundBlendMode='normal,multiply';
       item.texture.style.mixBlendMode=weightedValue([
-        {value:'soft-light',weight:42},
-        {value:'overlay',weight:31},
-        {value:'multiply',weight:27}
+        {value:'soft-light',weight:62},
+        {value:'multiply',weight:34},
+        {value:'overlay',weight:4}
       ]);
-      item.texture.style.filter=`grayscale(${rand(.02,.10)}) contrast(${rand(1.04,isMobile()?1.22:1.34)}) saturate(${rand(.82,1.06)})`;
-      item.texture.style.opacity=attack?rand(.18,.34+intensity*.12):rand(.11,.25+intensity*.08);
+      item.texture.style.filter=`grayscale(${rand(.04,.10)}) contrast(${rand(1.02,1.12)}) saturate(${rand(.78,.92)})`;
+      item.texture.style.opacity=attack?rand(.10,.20+intensity*.05):rand(.06,.14+intensity*.04);
     }else{
       item.texture.style.backgroundImage='none';
       item.texture.style.opacity='0';
@@ -619,14 +586,14 @@
   function configureBuilding(el,v,intensity,phase){
     const attack=phase==='attack';
     el.style.mixBlendMode=weightedValue([
-      {value:'soft-light',weight:attack?36:44},
-      {value:'overlay',weight:attack?34:28},
-      {value:'multiply',weight:20},
-      {value:'lighten',weight:10}
+      {value:'soft-light',weight:62},
+      {value:'multiply',weight:31},
+      {value:'overlay',weight:5},
+      {value:'lighten',weight:2}
     ]);
-    el.style.filter=`grayscale(${rand(.16,.34)}) sepia(${rand(.20,.40)}) hue-rotate(${v.hue+rand(-5,5)}deg) saturate(${rand(.62,.92)}) brightness(${rand(attack?.96:.90,attack?1.09:1.02)}) contrast(${rand(1.03,attack?1.18:1.12)})`;
+    el.style.filter=`grayscale(${rand(.08,.15)}) sepia(${rand(.05,.10)}) saturate(${rand(.84,.95)}) brightness(${rand(.985,1.015)}) contrast(${rand(1.01,1.07)})`;
     el.style.transform=`translate3d(${rand(-.55,.55)}px,${rand(-.55,.55)}px,0)`;
-    el.dataset.targetOpacity=clamp(attack?rand(.10,.20+intensity*.11):rand(.06,.15+intensity*.07),.04,.31).toFixed(3);
+    el.dataset.targetOpacity=clamp(attack?rand(.07,.14+intensity*.06):rand(.04,.10+intensity*.04),.03,.22).toFixed(3);
   }
 
   let tintToken=0;
@@ -643,35 +610,16 @@
   }
   function attackTint(v,ringMs){
     const token=++tintToken;
-
-    /*
-      The tint now blooms instead of flashing. Keep it subtle and limit
-      blending to modes that do not suddenly blow out the photograph.
-    */
-    tint.style.transition='opacity 240ms ease-out';
-    tint.style.background=
-      `radial-gradient(circle at ${rand(24,76)}% ${rand(24,76)}%,${v.primary} 0%,transparent ${rand(48,62)}%),`+
-      `linear-gradient(${rand(0,360)}deg,${v.secondary},${v.primary})`;
-
-    tint.style.mixBlendMode=weightedValue([
-      {value:'soft-light',weight:68},
-      {value:'overlay',weight:22},
-      {value:'multiply',weight:10}
-    ]);
-
-    tint.style.opacity=(.014+v.intensity*(isMobile()?.048:.066)).toFixed(3);
-
+    const tintColor=mixHex(v.primary,'#ece7d7',.72);
+    tint.style.transition='opacity 520ms ease-out';
+    tint.style.background=`radial-gradient(circle at ${rand(30,70)}% ${rand(30,70)}%, ${tintColor} 0%, transparent ${rand(30,42)}%)`;
+    tint.style.mixBlendMode='soft-light';
+    tint.style.opacity=(.003+v.intensity*(isMobile()?.006:.010)).toFixed(3);
     setTimeout(()=>{
       if(token!==tintToken)return;
-      tint.style.transition=`opacity ${Math.max(1350,ringMs*.50)}ms ease`;
-      tint.style.opacity=(.008+v.intensity*.022).toFixed(3);
-    },clamp(ringMs*.14,340,900));
-
-    setTimeout(()=>{
-      if(token!==tintToken)return;
-      tint.style.transition=`opacity ${Math.max(1800,ringMs*.44)}ms ease`;
+      tint.style.transition=`opacity ${Math.max(1700,ringMs*.55)}ms ease`;
       tint.style.opacity='0';
-    },clamp(ringMs*.60,1900,5000));
+    },clamp(ringMs*.20,650,1300));
   }
   function driveVisuals(event,ringMs,voiceCount=1,actualVoices=[]){
     if(REDUCED.matches)return;
@@ -1064,18 +1012,9 @@
 
     mark.style.mixBlendMode=
       weightedValue([
-        {
-          value:'overlay',
-          weight:44
-        },
-        {
-          value:'soft-light',
-          weight:38
-        },
-        {
-          value:'multiply',
-          weight:18
-        }
+        { value:'soft-light', weight:58 },
+        { value:'multiply', weight:34 },
+        { value:'overlay', weight:8 }
       ]);
 
     splashLayer.appendChild(
