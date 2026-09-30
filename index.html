@@ -5618,6 +5618,155 @@
     }
 
 
+    function isSameEasternDay(
+      isoDateString,
+      date =
+        new Date()
+    ) {
+
+      if (
+        !isoDateString
+      ) {
+        return false;
+      }
+
+
+      const formatter =
+        new Intl.DateTimeFormat(
+          "en-CA",
+          {
+            timeZone:
+              "America/New_York",
+
+            year:
+              "numeric",
+
+            month:
+              "2-digit",
+
+            day:
+              "2-digit"
+          }
+        );
+
+
+      return (
+        formatter.format(
+          new Date(
+            isoDateString
+          )
+        )
+        ===
+        formatter.format(
+          date
+        )
+      );
+
+    }
+
+
+    function chooseAutomaticFootballTeam(
+      data
+    ) {
+
+      const liveOrToday =
+        footballTeams.find(
+          team => {
+
+            const teamData =
+              data?.[
+                team.key
+              ];
+
+
+            if (
+              !teamData
+              ||
+              teamData.active ===
+              false
+            ) {
+              return false;
+            }
+
+
+            const fixtures =
+              teamData.upcoming
+              ||
+              [];
+
+
+            return fixtures.some(
+              fixture =>
+                fixture.status ===
+                "live"
+                ||
+                isSameEasternDay(
+                  fixture.date
+                )
+            );
+
+          }
+        );
+
+
+      return (
+        liveOrToday?.key
+        ||
+        selectedFootballTeam
+      );
+
+    }
+
+
+    function footballUpcomingMarkup(
+      fixtures
+    ) {
+
+      if (
+        !Array.isArray(
+          fixtures
+        )
+        ||
+        fixtures.length ===
+        0
+      ) {
+
+        return `
+          <p class="football-empty">
+            no upcoming games
+          </p>
+        `;
+
+      }
+
+
+      return `
+        <div class="football-upcoming-list">
+          ${fixtures.map(
+            fixture => `
+              <div class="football-upcoming-row">
+                <div class="football-upcoming-date">
+                  ${fixture.when ?? ""}
+                </div>
+
+                <div class="football-upcoming-match">
+                  <strong>${fixture.home ?? ""}</strong>
+                  <span>vs</span>
+                  <strong>${fixture.away ?? ""}</strong>
+                </div>
+
+                <div class="football-upcoming-comp">
+                  ${fixture.competition ?? ""}
+                </div>
+              </div>
+            `
+          ).join("")}
+        </div>
+      `;
+
+    }
+
+
     function footballTeamContentMarkup(
       data
     ) {
@@ -5652,45 +5801,16 @@
       }
 
 
-      const game =
-        selectedData.game
-        ||
-        {};
-
-
       return `
         <div class="football-team-content">
 
-          <div class="football-match">
+          ${footballUpcomingMarkup(
+            selectedData.upcoming
+          )}
 
-            <div class="football-side is-home">
-              <strong>${game.home ?? ""}</strong>
-              <span>${game.homeSub ?? game.competition ?? ""}</span>
-            </div>
-
-            <div class="football-score-block">
-              <strong>
-                ${game.homeScore ?? ""}–${game.awayScore ?? ""}
-              </strong>
-              <span>${game.detail ?? ""}</span>
-            </div>
-
-            <div class="football-side is-away">
-              <strong>${game.away ?? ""}</strong>
-              <span>${game.awaySub ?? game.competition ?? ""}</span>
-            </div>
-
-          </div>
-
-          ${footballEventsMarkup(game)}
-
-          ${
-            game.competition
-              ? `<p class="sports-competition">${game.competition}</p>`
-              : ""
-          }
-
-          ${sportsTableMarkup(selectedData.standings)}
+          ${sportsTableMarkup(
+            selectedData.standings
+          )}
 
         </div>
       `;
@@ -5803,6 +5923,14 @@
     function paintSports(
       data
     ) {
+
+      selectedFootballTeam =
+        chooseAutomaticFootballTeam(
+          data?.football
+          ||
+          {}
+        );
+
 
       const markup =
         [
