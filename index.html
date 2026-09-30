@@ -142,7 +142,7 @@
       display: flex;
       align-items: baseline;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 14px;
 
       margin-bottom: 8px;
     }
@@ -281,39 +281,32 @@
     .autoplay-watch-controls {
       display: none;
       width: calc(100% - var(--capture-column, 132px) - 12px);
-      margin-top: 8px;
-      border-top: 1px solid var(--board-red);
-      border-bottom: 1px solid var(--board-red);
+      margin-top: 10px;
+      border: 1px solid var(--board-red);
     }
 
 
     .home-chess.is-autoplay-mode .autoplay-watch-controls {
       display: grid;
       grid-template-columns:
-        auto
-        auto
-        auto
-        auto
-        auto
-        1fr;
+        repeat(6, minmax(0, 1fr));
     }
 
 
     .autoplay-watch-controls button {
       min-width: 0;
-      padding: 7px 9px;
+      padding: 9px 10px;
       border: 0;
       border-right: 1px solid var(--board-red);
       background: transparent;
       color: var(--board-red);
       font-weight: 700;
-      text-align: left;
+      text-align: center;
     }
 
 
     .autoplay-watch-controls button:last-child {
       border-right: 0;
-      text-align: right;
     }
 
 
@@ -1182,18 +1175,23 @@
 
       .home-chess.is-autoplay-mode .autoplay-watch-controls {
         grid-template-columns:
-          auto
-          auto
-          auto
-          auto
-          auto
-          1fr;
+          repeat(3, minmax(0, 1fr));
       }
 
 
       .autoplay-watch-controls button {
-        padding: 7px 6px;
+        padding: 8px 6px;
         font-size: 10px;
+      }
+
+
+      .autoplay-watch-controls button:nth-child(3) {
+        border-right: 0;
+      }
+
+
+      .autoplay-watch-controls button:nth-child(-n + 3) {
+        border-bottom: 1px solid var(--board-red);
       }
 
 
@@ -1401,10 +1399,6 @@
             aria-label="Game mode"
           >
 
-            <span class="play-controls-label">
-              play
-            </span>
-
             <button
               class="mode-button is-active"
               id="local-mode-button"
@@ -1585,9 +1579,9 @@
             aria-label="Autoplay controls"
           >
             <button id="autoplay-start" type="button">start</button>
-            <button id="autoplay-prev" type="button" aria-label="Previous move">←</button>
+            <button id="autoplay-prev" type="button">previous</button>
             <button id="autoplay-toggle" type="button">pause</button>
-            <button id="autoplay-next" type="button" aria-label="Next move">→</button>
+            <button id="autoplay-next" type="button">next</button>
             <button id="autoplay-end" type="button">end</button>
             <button id="autoplay-new" type="button">new game</button>
           </div>
@@ -5924,89 +5918,68 @@
 
     function resultContext(
       white,
-      black,
-      opening,
-      event,
-      country
+      black
     ) {
 
-      const result =
-        autoplayResult;
-
-
-      const place =
-        [
-          event,
-          country
+      const meta =
+        FAMOUS_GAME_META[
+          autoplayGame.id
         ]
-          .filter(Boolean)
-          .join(
-            " in "
-          );
+        ||
+        {};
 
 
-      const where =
-        place
-          ? ` at ${place}`
-          : "";
+      const moveCount =
+        meta.moves
+        ||
+        Math.ceil(
+          autoplayMoves.length /
+          2
+        );
 
 
-      const openingPhrase =
-        opening
-          ? ` in ${opening}`
-          : "";
+      let resultText;
+
+
+      if (
+        autoplayResult ===
+        "1-0"
+      ) {
+
+        resultText =
+          `${white} defeated ${black} in ${moveCount} moves.`;
+
+      }
+
+      else if (
+        autoplayResult ===
+        "0-1"
+      ) {
+
+        resultText =
+          `${black} defeated ${white} in ${moveCount} moves.`;
+
+      }
+
+      else {
+
+        resultText =
+          `${white} and ${black} drew after ${moveCount} moves.`;
+
+      }
 
 
       if (
         autoplayGame.title
       ) {
 
-        if (
-          result ===
-          "1-0"
-        ) {
-
-          return `${white} beat ${black}${openingPhrase}${where}; the game became known as “${autoplayGame.title}.”`;
-
-        }
-
-
-        if (
-          result ===
-          "0-1"
-        ) {
-
-          return `${black} beat ${white}${openingPhrase}${where}; the game became known as “${autoplayGame.title}.”`;
-
-        }
-
-
-        return `${white} and ${black} drew${openingPhrase}${where}; the game became known as “${autoplayGame.title}.”`;
+        resultText =
+          `Known as “${autoplayGame.title},” ${resultText.charAt(0).toLowerCase()}${resultText.slice(1)}`;
 
       }
 
 
-      if (
-        result ===
-        "1-0"
-      ) {
-
-        return `${white} won with White against ${black}${openingPhrase}${where}.`;
-
-      }
-
-
-      if (
-        result ===
-        "0-1"
-      ) {
-
-        return `${black} won with Black against ${white}${openingPhrase}${where}.`;
-
-      }
-
-
-      return `${white} and ${black} drew${openingPhrase}${where}.`;
+      return resultText;
 
     }
 
@@ -6147,12 +6120,9 @@
         `${
           resultContext(
             white,
-            black,
-            opening,
-            event,
-            country
+            black
           )
-        } Autoplay draws from The Mammoth Book of The World's Greatest Chess Games.`;
+        } From The Mammoth Book of The World's Greatest Chess Games.`;
 
 
       autoplayGameTitle.textContent =
@@ -7386,10 +7356,10 @@
           "Ludwig Deutsch, 1896.",
 
         winTitleY:
-          -72,
+          -154,
 
         winTitleYMobile:
-          -42,
+          -98,
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/b/b2/The_Chess_Game.jpg"
