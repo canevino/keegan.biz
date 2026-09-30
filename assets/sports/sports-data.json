@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T18:37:13.842Z",
+  "updatedAt": "2026-09-30T19:10:02.941Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -990,6 +990,6142 @@
             "team": "Kudrivka",
             "points": 2,
             "played": 6,
+            "highlight": false
+          }
+        ]
+      }
+    },
+    "lithuania": {
+      "active": false,
+      "team": "Lithuania",
+      "shortName": "Lithuania",
+      "upcoming": [
+        {
+          "id": "4689273",
+          "date": "2025-10-09T16:00:00.000Z",
+          "when": "Thu, Oct 9 · 12:00 PM ET",
+          "status": "scheduled",
+          "home": "Finland",
+          "away": "Lithuania",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. G"
+        },
+        {
+          "id": "4689275",
+          "date": "2025-10-12T18:45:00.000Z",
+          "when": "Sun, Oct 12 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Lithuania",
+          "away": "Poland",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. G"
+        },
+        {
+          "id": "4928627",
+          "date": "2025-11-13T17:00:00.000Z",
+          "when": "Thu, Nov 13 · 12:00 PM ET",
+          "status": "scheduled",
+          "home": "Lithuania",
+          "away": "Israel",
+          "competition": "Friendlies"
+        },
+        {
+          "id": "4689280",
+          "date": "2025-11-17T19:45:00.000Z",
+          "when": "Mon, Nov 17 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Netherlands",
+          "away": "Lithuania",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. G"
+        },
+        {
+          "id": "5124808",
+          "date": "2026-03-26T15:00:00.000Z",
+          "when": "Thu, Mar 26 · 11:00 AM ET",
+          "status": "scheduled",
+          "home": "Moldova",
+          "away": "Lithuania",
+          "competition": "Friendlies"
+        }
+      ],
+      "standings": {
+        "title": "World Cup Qualification UEFA 1st Round Grp. G",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Spain",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 2,
+            "team": "Argentina",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 3,
+            "team": "France",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 4,
+            "team": "England",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 5,
+            "team": "Brazil",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 6,
+            "team": "Morocco",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 7,
+            "team": "Portugal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 8,
+            "team": "Belgium",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 9,
+            "team": "Netherlands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 10,
+            "team": "Mexico",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 11,
+            "team": "Colombia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 12,
+            "team": "Germany",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 13,
+            "team": "Croatia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 14,
+            "team": "Switzerland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 15,
+            "team": "Italy",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 16,
+            "team": "USA",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 17,
+            "team": "Japan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 18,
+            "team": "Senegal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 19,
+            "team": "Norway",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 20,
+            "team": "Uruguay",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 21,
+            "team": "Denmark",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 22,
+            "team": "Iran",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 23,
+            "team": "Austria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 24,
+            "team": "Egypt",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 25,
+            "team": "Ecuador",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 26,
+            "team": "Nigeria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 27,
+            "team": "Turkiye",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 28,
+            "team": "Australia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 29,
+            "team": "Algeria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 30,
+            "team": "Canada",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 31,
+            "team": "Ivory Coast",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 32,
+            "team": "South Korea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 33,
+            "team": "Ukraine",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 34,
+            "team": "Paraguay",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 35,
+            "team": "Russia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 36,
+            "team": "Poland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 37,
+            "team": "Sweden",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 38,
+            "team": "Wales",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 39,
+            "team": "Hungary",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 40,
+            "team": "Serbia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 41,
+            "team": "DR Congo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 42,
+            "team": "Scotland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 43,
+            "team": "Cameroon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 44,
+            "team": "Panama",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 45,
+            "team": "Slovakia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 46,
+            "team": "Greece",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 47,
+            "team": "Venezuela",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 48,
+            "team": "Czechia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 49,
+            "team": "Chile",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 50,
+            "team": "Peru",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 51,
+            "team": "Costa Rica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 52,
+            "team": "Romania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 53,
+            "team": "Mali",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 54,
+            "team": "South Africa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 55,
+            "team": "Ireland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 56,
+            "team": "Slovenia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 57,
+            "team": "Tunisia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 58,
+            "team": "Saudi Arabia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 59,
+            "team": "Qatar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 60,
+            "team": "Uzbekistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 61,
+            "team": "Bosnia and Herzegovina",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 62,
+            "team": "Burkina Faso",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 63,
+            "team": "Iraq",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 64,
+            "team": "Cape Verde",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 65,
+            "team": "Ghana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 66,
+            "team": "Honduras",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 67,
+            "team": "Albania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 68,
+            "team": "UAE",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 69,
+            "team": "North Macedonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 70,
+            "team": "Northern Ireland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 71,
+            "team": "Jamaica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 72,
+            "team": "Georgia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 73,
+            "team": "Jordan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 74,
+            "team": "Iceland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 75,
+            "team": "Finland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 76,
+            "team": "Israel",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 77,
+            "team": "Bolivia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 78,
+            "team": "Kosovo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 79,
+            "team": "Oman",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 80,
+            "team": "Montenegro",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 81,
+            "team": "Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 82,
+            "team": "Curacao",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 83,
+            "team": "Syria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 84,
+            "team": "Gabon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 85,
+            "team": "Bulgaria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 86,
+            "team": "New Zealand",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 87,
+            "team": "Angola",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 88,
+            "team": "Haiti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 89,
+            "team": "Uganda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 90,
+            "team": "Zambia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 91,
+            "team": "China",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 92,
+            "team": "Bahrain",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 93,
+            "team": "Benin",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 94,
+            "team": "Thailand",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 95,
+            "team": "Palestine",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 96,
+            "team": "Belarus",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 97,
+            "team": "Guatemala",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 98,
+            "team": "Luxembourg",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 99,
+            "team": "Vietnam",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 100,
+            "team": "El Salvador",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 101,
+            "team": "Tajikistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 102,
+            "team": "Trinidad and Tobago",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 103,
+            "team": "Mozambique",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 104,
+            "team": "Madagascar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 105,
+            "team": "Equatorial Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 106,
+            "team": "Kyrgyzstan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 107,
+            "team": "Armenia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 108,
+            "team": "Comoros",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 109,
+            "team": "Kenya",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 110,
+            "team": "Libya",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 111,
+            "team": "Kazakhstan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 112,
+            "team": "Tanzania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 113,
+            "team": "Mauritania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 114,
+            "team": "Niger",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 115,
+            "team": "Lebanon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 116,
+            "team": "Gambia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 117,
+            "team": "Sudan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 118,
+            "team": "Indonesia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 119,
+            "team": "Togo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 120,
+            "team": "North Korea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 121,
+            "team": "Namibia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 122,
+            "team": "Sierra Leone",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 123,
+            "team": "Faroe Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 124,
+            "team": "Cyprus",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 125,
+            "team": "Suriname",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 126,
+            "team": "Azerbaijan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 127,
+            "team": "Estonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 128,
+            "team": "Rwanda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 129,
+            "team": "Malawi",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 130,
+            "team": "Zimbabwe",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 131,
+            "team": "Nicaragua",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 132,
+            "team": "Guinea-Bissau",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 133,
+            "team": "Kuwait",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 134,
+            "team": "Congo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 135,
+            "team": "Philippines",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 136,
+            "team": "Malaysia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 137,
+            "team": "Latvia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 138,
+            "team": "India",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 139,
+            "team": "Central African Republic",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 140,
+            "team": "Liberia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 141,
+            "team": "Turkmenistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 142,
+            "team": "Burundi",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 143,
+            "team": "Ethiopia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 144,
+            "team": "Dominican Republic",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 145,
+            "team": "Yemen",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 146,
+            "team": "Lesotho",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 147,
+            "team": "Botswana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 148,
+            "team": "Singapore",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 149,
+            "team": "Lithuania",
+            "points": "",
+            "played": "",
+            "highlight": true
+          },
+          {
+            "rank": 150,
+            "team": "Guyana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 151,
+            "team": "New Caledonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 152,
+            "team": "St. Kitts and Nevis",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 153,
+            "team": "Solomon Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 154,
+            "team": "Puerto Rico",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 155,
+            "team": "Fiji",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 156,
+            "team": "Hong Kong",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 157,
+            "team": "Tahiti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 158,
+            "team": "Myanmar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 159,
+            "team": "Moldova",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 160,
+            "team": "Vanuatu",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 161,
+            "team": "Malta",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 162,
+            "team": "Antigua and Barbuda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 163,
+            "team": "Grenada",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 164,
+            "team": "Cuba",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 165,
+            "team": "Eswatini",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 166,
+            "team": "Saint Lucia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 167,
+            "team": "Bermuda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 168,
+            "team": "Papua New Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 169,
+            "team": "South Sudan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 170,
+            "team": "Saint Vincent and The Grenadines",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 171,
+            "team": "Afghanistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 172,
+            "team": "Andorra",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 173,
+            "team": "Maldives",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 174,
+            "team": "Chinese Taipei",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 175,
+            "team": "Cambodia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 176,
+            "team": "Montserrat",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 177,
+            "team": "Nepal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 178,
+            "team": "Mauritius",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 179,
+            "team": "Barbados",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 180,
+            "team": "Belize",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 181,
+            "team": "Bangladesh",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 182,
+            "team": "Dominica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 183,
+            "team": "Chad",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 184,
+            "team": "Eritrea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 185,
+            "team": "Laos",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 186,
+            "team": "Cook Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 187,
+            "team": "Sri Lanka",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 188,
+            "team": "Samoa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 189,
+            "team": "Aruba",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 190,
+            "team": "Mongolia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 191,
+            "team": "American Samoa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 192,
+            "team": "Bhutan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 193,
+            "team": "Macao",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 194,
+            "team": "Brunei",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 195,
+            "team": "Sao Tome and Principe",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 196,
+            "team": "Djibouti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 197,
+            "team": "Cayman Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 198,
+            "team": "Pakistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 199,
+            "team": "Somalia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 200,
+            "team": "Tonga",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 201,
+            "team": "Timor-Leste",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 202,
+            "team": "Gibraltar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 203,
+            "team": "Guam",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 204,
+            "team": "Seychelles",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 205,
+            "team": "Turks and Caicos Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 206,
+            "team": "Liechtenstein",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 207,
+            "team": "Bahamas",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 208,
+            "team": "U.S. Virgin Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 209,
+            "team": "British Virgin Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 210,
+            "team": "Anguilla",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 211,
+            "team": "San Marino",
+            "points": "",
+            "played": "",
+            "highlight": false
+          }
+        ]
+      }
+    },
+    "ukraine": {
+      "active": false,
+      "team": "Ukraine",
+      "shortName": "Ukraine",
+      "upcoming": [
+        {
+          "id": "4689331",
+          "date": "2025-10-10T18:45:00.000Z",
+          "when": "Fri, Oct 10 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Iceland",
+          "away": "Ukraine",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. D"
+        },
+        {
+          "id": "4689334",
+          "date": "2025-10-13T18:45:00.000Z",
+          "when": "Mon, Oct 13 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Ukraine",
+          "away": "Azerbaijan",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. D"
+        },
+        {
+          "id": "4689336",
+          "date": "2025-11-13T19:45:00.000Z",
+          "when": "Thu, Nov 13 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "France",
+          "away": "Ukraine",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. D"
+        },
+        {
+          "id": "4689338",
+          "date": "2025-11-16T17:00:00.000Z",
+          "when": "Sun, Nov 16 · 12:00 PM ET",
+          "status": "scheduled",
+          "home": "Ukraine",
+          "away": "Iceland",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. D"
+        },
+        {
+          "id": "5067288",
+          "date": "2026-03-26T19:45:00.000Z",
+          "when": "Thu, Mar 26 · 3:45 PM ET",
+          "status": "scheduled",
+          "home": "Ukraine",
+          "away": "Sweden",
+          "competition": "World Cup Qualification UEFA 2nd Round"
+        }
+      ],
+      "standings": {
+        "title": "World Cup Qualification UEFA 1st Round Grp. D",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Spain",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 2,
+            "team": "Argentina",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 3,
+            "team": "France",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 4,
+            "team": "England",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 5,
+            "team": "Brazil",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 6,
+            "team": "Morocco",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 7,
+            "team": "Portugal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 8,
+            "team": "Belgium",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 9,
+            "team": "Netherlands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 10,
+            "team": "Mexico",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 11,
+            "team": "Colombia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 12,
+            "team": "Germany",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 13,
+            "team": "Croatia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 14,
+            "team": "Switzerland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 15,
+            "team": "Italy",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 16,
+            "team": "USA",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 17,
+            "team": "Japan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 18,
+            "team": "Senegal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 19,
+            "team": "Norway",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 20,
+            "team": "Uruguay",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 21,
+            "team": "Denmark",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 22,
+            "team": "Iran",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 23,
+            "team": "Austria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 24,
+            "team": "Egypt",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 25,
+            "team": "Ecuador",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 26,
+            "team": "Nigeria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 27,
+            "team": "Turkiye",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 28,
+            "team": "Australia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 29,
+            "team": "Algeria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 30,
+            "team": "Canada",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 31,
+            "team": "Ivory Coast",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 32,
+            "team": "South Korea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 33,
+            "team": "Ukraine",
+            "points": "",
+            "played": "",
+            "highlight": true
+          },
+          {
+            "rank": 34,
+            "team": "Paraguay",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 35,
+            "team": "Russia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 36,
+            "team": "Poland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 37,
+            "team": "Sweden",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 38,
+            "team": "Wales",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 39,
+            "team": "Hungary",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 40,
+            "team": "Serbia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 41,
+            "team": "DR Congo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 42,
+            "team": "Scotland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 43,
+            "team": "Cameroon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 44,
+            "team": "Panama",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 45,
+            "team": "Slovakia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 46,
+            "team": "Greece",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 47,
+            "team": "Venezuela",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 48,
+            "team": "Czechia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 49,
+            "team": "Chile",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 50,
+            "team": "Peru",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 51,
+            "team": "Costa Rica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 52,
+            "team": "Romania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 53,
+            "team": "Mali",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 54,
+            "team": "South Africa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 55,
+            "team": "Ireland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 56,
+            "team": "Slovenia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 57,
+            "team": "Tunisia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 58,
+            "team": "Saudi Arabia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 59,
+            "team": "Qatar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 60,
+            "team": "Uzbekistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 61,
+            "team": "Bosnia and Herzegovina",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 62,
+            "team": "Burkina Faso",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 63,
+            "team": "Iraq",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 64,
+            "team": "Cape Verde",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 65,
+            "team": "Ghana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 66,
+            "team": "Honduras",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 67,
+            "team": "Albania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 68,
+            "team": "UAE",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 69,
+            "team": "North Macedonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 70,
+            "team": "Northern Ireland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 71,
+            "team": "Jamaica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 72,
+            "team": "Georgia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 73,
+            "team": "Jordan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 74,
+            "team": "Iceland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 75,
+            "team": "Finland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 76,
+            "team": "Israel",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 77,
+            "team": "Bolivia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 78,
+            "team": "Kosovo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 79,
+            "team": "Oman",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 80,
+            "team": "Montenegro",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 81,
+            "team": "Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 82,
+            "team": "Curacao",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 83,
+            "team": "Syria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 84,
+            "team": "Gabon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 85,
+            "team": "Bulgaria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 86,
+            "team": "New Zealand",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 87,
+            "team": "Angola",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 88,
+            "team": "Haiti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 89,
+            "team": "Uganda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 90,
+            "team": "Zambia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 91,
+            "team": "China",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 92,
+            "team": "Bahrain",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 93,
+            "team": "Benin",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 94,
+            "team": "Thailand",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 95,
+            "team": "Palestine",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 96,
+            "team": "Belarus",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 97,
+            "team": "Guatemala",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 98,
+            "team": "Luxembourg",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 99,
+            "team": "Vietnam",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 100,
+            "team": "El Salvador",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 101,
+            "team": "Tajikistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 102,
+            "team": "Trinidad and Tobago",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 103,
+            "team": "Mozambique",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 104,
+            "team": "Madagascar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 105,
+            "team": "Equatorial Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 106,
+            "team": "Kyrgyzstan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 107,
+            "team": "Armenia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 108,
+            "team": "Comoros",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 109,
+            "team": "Kenya",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 110,
+            "team": "Libya",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 111,
+            "team": "Kazakhstan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 112,
+            "team": "Tanzania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 113,
+            "team": "Mauritania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 114,
+            "team": "Niger",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 115,
+            "team": "Lebanon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 116,
+            "team": "Gambia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 117,
+            "team": "Sudan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 118,
+            "team": "Indonesia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 119,
+            "team": "Togo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 120,
+            "team": "North Korea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 121,
+            "team": "Namibia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 122,
+            "team": "Sierra Leone",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 123,
+            "team": "Faroe Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 124,
+            "team": "Cyprus",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 125,
+            "team": "Suriname",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 126,
+            "team": "Azerbaijan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 127,
+            "team": "Estonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 128,
+            "team": "Rwanda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 129,
+            "team": "Malawi",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 130,
+            "team": "Zimbabwe",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 131,
+            "team": "Nicaragua",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 132,
+            "team": "Guinea-Bissau",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 133,
+            "team": "Kuwait",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 134,
+            "team": "Congo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 135,
+            "team": "Philippines",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 136,
+            "team": "Malaysia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 137,
+            "team": "Latvia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 138,
+            "team": "India",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 139,
+            "team": "Central African Republic",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 140,
+            "team": "Liberia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 141,
+            "team": "Turkmenistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 142,
+            "team": "Burundi",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 143,
+            "team": "Ethiopia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 144,
+            "team": "Dominican Republic",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 145,
+            "team": "Yemen",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 146,
+            "team": "Lesotho",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 147,
+            "team": "Botswana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 148,
+            "team": "Singapore",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 149,
+            "team": "Lithuania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 150,
+            "team": "Guyana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 151,
+            "team": "New Caledonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 152,
+            "team": "St. Kitts and Nevis",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 153,
+            "team": "Solomon Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 154,
+            "team": "Puerto Rico",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 155,
+            "team": "Fiji",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 156,
+            "team": "Hong Kong",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 157,
+            "team": "Tahiti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 158,
+            "team": "Myanmar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 159,
+            "team": "Moldova",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 160,
+            "team": "Vanuatu",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 161,
+            "team": "Malta",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 162,
+            "team": "Antigua and Barbuda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 163,
+            "team": "Grenada",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 164,
+            "team": "Cuba",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 165,
+            "team": "Eswatini",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 166,
+            "team": "Saint Lucia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 167,
+            "team": "Bermuda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 168,
+            "team": "Papua New Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 169,
+            "team": "South Sudan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 170,
+            "team": "Saint Vincent and The Grenadines",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 171,
+            "team": "Afghanistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 172,
+            "team": "Andorra",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 173,
+            "team": "Maldives",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 174,
+            "team": "Chinese Taipei",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 175,
+            "team": "Cambodia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 176,
+            "team": "Montserrat",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 177,
+            "team": "Nepal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 178,
+            "team": "Mauritius",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 179,
+            "team": "Barbados",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 180,
+            "team": "Belize",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 181,
+            "team": "Bangladesh",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 182,
+            "team": "Dominica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 183,
+            "team": "Chad",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 184,
+            "team": "Eritrea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 185,
+            "team": "Laos",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 186,
+            "team": "Cook Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 187,
+            "team": "Sri Lanka",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 188,
+            "team": "Samoa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 189,
+            "team": "Aruba",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 190,
+            "team": "Mongolia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 191,
+            "team": "American Samoa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 192,
+            "team": "Bhutan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 193,
+            "team": "Macao",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 194,
+            "team": "Brunei",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 195,
+            "team": "Sao Tome and Principe",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 196,
+            "team": "Djibouti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 197,
+            "team": "Cayman Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 198,
+            "team": "Pakistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 199,
+            "team": "Somalia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 200,
+            "team": "Tonga",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 201,
+            "team": "Timor-Leste",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 202,
+            "team": "Gibraltar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 203,
+            "team": "Guam",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 204,
+            "team": "Seychelles",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 205,
+            "team": "Turks and Caicos Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 206,
+            "team": "Liechtenstein",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 207,
+            "team": "Bahamas",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 208,
+            "team": "U.S. Virgin Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 209,
+            "team": "British Virgin Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 210,
+            "team": "Anguilla",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 211,
+            "team": "San Marino",
+            "points": "",
+            "played": "",
+            "highlight": false
+          }
+        ]
+      }
+    },
+    "england": {
+      "active": false,
+      "team": "England",
+      "shortName": "England",
+      "upcoming": [
+        {
+          "id": "4737406",
+          "date": "2025-10-09T18:45:00.000Z",
+          "when": "Thu, Oct 9 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "England",
+          "away": "Wales",
+          "competition": "Friendlies"
+        },
+        {
+          "id": "4689413",
+          "date": "2025-10-14T18:45:00.000Z",
+          "when": "Tue, Oct 14 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Latvia",
+          "away": "England",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. K"
+        },
+        {
+          "id": "4689416",
+          "date": "2025-11-13T19:45:00.000Z",
+          "when": "Thu, Nov 13 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "England",
+          "away": "Serbia",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. K"
+        },
+        {
+          "id": "4689417",
+          "date": "2025-11-16T17:00:00.000Z",
+          "when": "Sun, Nov 16 · 12:00 PM ET",
+          "status": "scheduled",
+          "home": "Albania",
+          "away": "England",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. K"
+        },
+        {
+          "id": "5124809",
+          "date": "2026-03-27T19:45:00.000Z",
+          "when": "Fri, Mar 27 · 3:45 PM ET",
+          "status": "scheduled",
+          "home": "England",
+          "away": "Uruguay",
+          "competition": "Friendlies"
+        }
+      ],
+      "standings": {
+        "title": "Friendlies",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Spain",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 2,
+            "team": "Argentina",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 3,
+            "team": "France",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 4,
+            "team": "England",
+            "points": "",
+            "played": "",
+            "highlight": true
+          },
+          {
+            "rank": 5,
+            "team": "Brazil",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 6,
+            "team": "Morocco",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 7,
+            "team": "Portugal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 8,
+            "team": "Belgium",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 9,
+            "team": "Netherlands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 10,
+            "team": "Mexico",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 11,
+            "team": "Colombia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 12,
+            "team": "Germany",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 13,
+            "team": "Croatia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 14,
+            "team": "Switzerland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 15,
+            "team": "Italy",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 16,
+            "team": "USA",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 17,
+            "team": "Japan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 18,
+            "team": "Senegal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 19,
+            "team": "Norway",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 20,
+            "team": "Uruguay",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 21,
+            "team": "Denmark",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 22,
+            "team": "Iran",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 23,
+            "team": "Austria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 24,
+            "team": "Egypt",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 25,
+            "team": "Ecuador",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 26,
+            "team": "Nigeria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 27,
+            "team": "Turkiye",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 28,
+            "team": "Australia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 29,
+            "team": "Algeria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 30,
+            "team": "Canada",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 31,
+            "team": "Ivory Coast",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 32,
+            "team": "South Korea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 33,
+            "team": "Ukraine",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 34,
+            "team": "Paraguay",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 35,
+            "team": "Russia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 36,
+            "team": "Poland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 37,
+            "team": "Sweden",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 38,
+            "team": "Wales",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 39,
+            "team": "Hungary",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 40,
+            "team": "Serbia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 41,
+            "team": "DR Congo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 42,
+            "team": "Scotland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 43,
+            "team": "Cameroon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 44,
+            "team": "Panama",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 45,
+            "team": "Slovakia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 46,
+            "team": "Greece",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 47,
+            "team": "Venezuela",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 48,
+            "team": "Czechia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 49,
+            "team": "Chile",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 50,
+            "team": "Peru",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 51,
+            "team": "Costa Rica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 52,
+            "team": "Romania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 53,
+            "team": "Mali",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 54,
+            "team": "South Africa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 55,
+            "team": "Ireland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 56,
+            "team": "Slovenia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 57,
+            "team": "Tunisia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 58,
+            "team": "Saudi Arabia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 59,
+            "team": "Qatar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 60,
+            "team": "Uzbekistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 61,
+            "team": "Bosnia and Herzegovina",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 62,
+            "team": "Burkina Faso",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 63,
+            "team": "Iraq",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 64,
+            "team": "Cape Verde",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 65,
+            "team": "Ghana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 66,
+            "team": "Honduras",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 67,
+            "team": "Albania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 68,
+            "team": "UAE",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 69,
+            "team": "North Macedonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 70,
+            "team": "Northern Ireland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 71,
+            "team": "Jamaica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 72,
+            "team": "Georgia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 73,
+            "team": "Jordan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 74,
+            "team": "Iceland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 75,
+            "team": "Finland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 76,
+            "team": "Israel",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 77,
+            "team": "Bolivia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 78,
+            "team": "Kosovo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 79,
+            "team": "Oman",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 80,
+            "team": "Montenegro",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 81,
+            "team": "Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 82,
+            "team": "Curacao",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 83,
+            "team": "Syria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 84,
+            "team": "Gabon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 85,
+            "team": "Bulgaria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 86,
+            "team": "New Zealand",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 87,
+            "team": "Angola",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 88,
+            "team": "Haiti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 89,
+            "team": "Uganda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 90,
+            "team": "Zambia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 91,
+            "team": "China",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 92,
+            "team": "Bahrain",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 93,
+            "team": "Benin",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 94,
+            "team": "Thailand",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 95,
+            "team": "Palestine",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 96,
+            "team": "Belarus",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 97,
+            "team": "Guatemala",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 98,
+            "team": "Luxembourg",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 99,
+            "team": "Vietnam",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 100,
+            "team": "El Salvador",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 101,
+            "team": "Tajikistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 102,
+            "team": "Trinidad and Tobago",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 103,
+            "team": "Mozambique",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 104,
+            "team": "Madagascar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 105,
+            "team": "Equatorial Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 106,
+            "team": "Kyrgyzstan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 107,
+            "team": "Armenia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 108,
+            "team": "Comoros",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 109,
+            "team": "Kenya",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 110,
+            "team": "Libya",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 111,
+            "team": "Kazakhstan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 112,
+            "team": "Tanzania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 113,
+            "team": "Mauritania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 114,
+            "team": "Niger",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 115,
+            "team": "Lebanon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 116,
+            "team": "Gambia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 117,
+            "team": "Sudan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 118,
+            "team": "Indonesia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 119,
+            "team": "Togo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 120,
+            "team": "North Korea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 121,
+            "team": "Namibia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 122,
+            "team": "Sierra Leone",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 123,
+            "team": "Faroe Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 124,
+            "team": "Cyprus",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 125,
+            "team": "Suriname",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 126,
+            "team": "Azerbaijan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 127,
+            "team": "Estonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 128,
+            "team": "Rwanda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 129,
+            "team": "Malawi",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 130,
+            "team": "Zimbabwe",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 131,
+            "team": "Nicaragua",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 132,
+            "team": "Guinea-Bissau",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 133,
+            "team": "Kuwait",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 134,
+            "team": "Congo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 135,
+            "team": "Philippines",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 136,
+            "team": "Malaysia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 137,
+            "team": "Latvia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 138,
+            "team": "India",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 139,
+            "team": "Central African Republic",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 140,
+            "team": "Liberia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 141,
+            "team": "Turkmenistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 142,
+            "team": "Burundi",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 143,
+            "team": "Ethiopia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 144,
+            "team": "Dominican Republic",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 145,
+            "team": "Yemen",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 146,
+            "team": "Lesotho",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 147,
+            "team": "Botswana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 148,
+            "team": "Singapore",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 149,
+            "team": "Lithuania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 150,
+            "team": "Guyana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 151,
+            "team": "New Caledonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 152,
+            "team": "St. Kitts and Nevis",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 153,
+            "team": "Solomon Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 154,
+            "team": "Puerto Rico",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 155,
+            "team": "Fiji",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 156,
+            "team": "Hong Kong",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 157,
+            "team": "Tahiti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 158,
+            "team": "Myanmar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 159,
+            "team": "Moldova",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 160,
+            "team": "Vanuatu",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 161,
+            "team": "Malta",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 162,
+            "team": "Antigua and Barbuda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 163,
+            "team": "Grenada",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 164,
+            "team": "Cuba",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 165,
+            "team": "Eswatini",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 166,
+            "team": "Saint Lucia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 167,
+            "team": "Bermuda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 168,
+            "team": "Papua New Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 169,
+            "team": "South Sudan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 170,
+            "team": "Saint Vincent and The Grenadines",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 171,
+            "team": "Afghanistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 172,
+            "team": "Andorra",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 173,
+            "team": "Maldives",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 174,
+            "team": "Chinese Taipei",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 175,
+            "team": "Cambodia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 176,
+            "team": "Montserrat",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 177,
+            "team": "Nepal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 178,
+            "team": "Mauritius",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 179,
+            "team": "Barbados",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 180,
+            "team": "Belize",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 181,
+            "team": "Bangladesh",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 182,
+            "team": "Dominica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 183,
+            "team": "Chad",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 184,
+            "team": "Eritrea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 185,
+            "team": "Laos",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 186,
+            "team": "Cook Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 187,
+            "team": "Sri Lanka",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 188,
+            "team": "Samoa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 189,
+            "team": "Aruba",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 190,
+            "team": "Mongolia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 191,
+            "team": "American Samoa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 192,
+            "team": "Bhutan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 193,
+            "team": "Macao",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 194,
+            "team": "Brunei",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 195,
+            "team": "Sao Tome and Principe",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 196,
+            "team": "Djibouti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 197,
+            "team": "Cayman Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 198,
+            "team": "Pakistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 199,
+            "team": "Somalia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 200,
+            "team": "Tonga",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 201,
+            "team": "Timor-Leste",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 202,
+            "team": "Gibraltar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 203,
+            "team": "Guam",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 204,
+            "team": "Seychelles",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 205,
+            "team": "Turks and Caicos Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 206,
+            "team": "Liechtenstein",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 207,
+            "team": "Bahamas",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 208,
+            "team": "U.S. Virgin Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 209,
+            "team": "British Virgin Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 210,
+            "team": "Anguilla",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 211,
+            "team": "San Marino",
+            "points": "",
+            "played": "",
+            "highlight": false
+          }
+        ]
+      }
+    },
+    "ireland": {
+      "active": false,
+      "team": "Ireland",
+      "shortName": "Ireland",
+      "upcoming": [
+        {
+          "id": "4689356",
+          "date": "2025-10-11T18:45:00.000Z",
+          "when": "Sat, Oct 11 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Portugal",
+          "away": "Ireland",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. F"
+        },
+        {
+          "id": "4689357",
+          "date": "2025-10-14T18:45:00.000Z",
+          "when": "Tue, Oct 14 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Ireland",
+          "away": "Armenia",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. F"
+        },
+        {
+          "id": "4689360",
+          "date": "2025-11-13T19:45:00.000Z",
+          "when": "Thu, Nov 13 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Ireland",
+          "away": "Portugal",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. F"
+        },
+        {
+          "id": "4689361",
+          "date": "2025-11-16T14:00:00.000Z",
+          "when": "Sun, Nov 16 · 9:00 AM ET",
+          "status": "scheduled",
+          "home": "Hungary",
+          "away": "Ireland",
+          "competition": "World Cup Qualification UEFA 1st Round Grp. F"
+        },
+        {
+          "id": "5067294",
+          "date": "2026-03-26T19:45:00.000Z",
+          "when": "Thu, Mar 26 · 3:45 PM ET",
+          "status": "scheduled",
+          "home": "Czechia",
+          "away": "Ireland",
+          "competition": "World Cup Qualification UEFA 2nd Round"
+        }
+      ],
+      "standings": {
+        "title": "World Cup Qualification UEFA 1st Round Grp. F",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Spain",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 2,
+            "team": "Argentina",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 3,
+            "team": "France",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 4,
+            "team": "England",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 5,
+            "team": "Brazil",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 6,
+            "team": "Morocco",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 7,
+            "team": "Portugal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 8,
+            "team": "Belgium",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 9,
+            "team": "Netherlands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 10,
+            "team": "Mexico",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 11,
+            "team": "Colombia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 12,
+            "team": "Germany",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 13,
+            "team": "Croatia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 14,
+            "team": "Switzerland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 15,
+            "team": "Italy",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 16,
+            "team": "USA",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 17,
+            "team": "Japan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 18,
+            "team": "Senegal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 19,
+            "team": "Norway",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 20,
+            "team": "Uruguay",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 21,
+            "team": "Denmark",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 22,
+            "team": "Iran",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 23,
+            "team": "Austria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 24,
+            "team": "Egypt",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 25,
+            "team": "Ecuador",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 26,
+            "team": "Nigeria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 27,
+            "team": "Turkiye",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 28,
+            "team": "Australia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 29,
+            "team": "Algeria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 30,
+            "team": "Canada",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 31,
+            "team": "Ivory Coast",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 32,
+            "team": "South Korea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 33,
+            "team": "Ukraine",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 34,
+            "team": "Paraguay",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 35,
+            "team": "Russia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 36,
+            "team": "Poland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 37,
+            "team": "Sweden",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 38,
+            "team": "Wales",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 39,
+            "team": "Hungary",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 40,
+            "team": "Serbia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 41,
+            "team": "DR Congo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 42,
+            "team": "Scotland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 43,
+            "team": "Cameroon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 44,
+            "team": "Panama",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 45,
+            "team": "Slovakia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 46,
+            "team": "Greece",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 47,
+            "team": "Venezuela",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 48,
+            "team": "Czechia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 49,
+            "team": "Chile",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 50,
+            "team": "Peru",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 51,
+            "team": "Costa Rica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 52,
+            "team": "Romania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 53,
+            "team": "Mali",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 54,
+            "team": "South Africa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 55,
+            "team": "Ireland",
+            "points": "",
+            "played": "",
+            "highlight": true
+          },
+          {
+            "rank": 56,
+            "team": "Slovenia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 57,
+            "team": "Tunisia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 58,
+            "team": "Saudi Arabia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 59,
+            "team": "Qatar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 60,
+            "team": "Uzbekistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 61,
+            "team": "Bosnia and Herzegovina",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 62,
+            "team": "Burkina Faso",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 63,
+            "team": "Iraq",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 64,
+            "team": "Cape Verde",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 65,
+            "team": "Ghana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 66,
+            "team": "Honduras",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 67,
+            "team": "Albania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 68,
+            "team": "UAE",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 69,
+            "team": "North Macedonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 70,
+            "team": "Northern Ireland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 71,
+            "team": "Jamaica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 72,
+            "team": "Georgia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 73,
+            "team": "Jordan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 74,
+            "team": "Iceland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 75,
+            "team": "Finland",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 76,
+            "team": "Israel",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 77,
+            "team": "Bolivia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 78,
+            "team": "Kosovo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 79,
+            "team": "Oman",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 80,
+            "team": "Montenegro",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 81,
+            "team": "Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 82,
+            "team": "Curacao",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 83,
+            "team": "Syria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 84,
+            "team": "Gabon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 85,
+            "team": "Bulgaria",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 86,
+            "team": "New Zealand",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 87,
+            "team": "Angola",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 88,
+            "team": "Haiti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 89,
+            "team": "Uganda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 90,
+            "team": "Zambia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 91,
+            "team": "China",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 92,
+            "team": "Bahrain",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 93,
+            "team": "Benin",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 94,
+            "team": "Thailand",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 95,
+            "team": "Palestine",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 96,
+            "team": "Belarus",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 97,
+            "team": "Guatemala",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 98,
+            "team": "Luxembourg",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 99,
+            "team": "Vietnam",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 100,
+            "team": "El Salvador",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 101,
+            "team": "Tajikistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 102,
+            "team": "Trinidad and Tobago",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 103,
+            "team": "Mozambique",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 104,
+            "team": "Madagascar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 105,
+            "team": "Equatorial Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 106,
+            "team": "Kyrgyzstan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 107,
+            "team": "Armenia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 108,
+            "team": "Comoros",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 109,
+            "team": "Kenya",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 110,
+            "team": "Libya",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 111,
+            "team": "Kazakhstan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 112,
+            "team": "Tanzania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 113,
+            "team": "Mauritania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 114,
+            "team": "Niger",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 115,
+            "team": "Lebanon",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 116,
+            "team": "Gambia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 117,
+            "team": "Sudan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 118,
+            "team": "Indonesia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 119,
+            "team": "Togo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 120,
+            "team": "North Korea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 121,
+            "team": "Namibia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 122,
+            "team": "Sierra Leone",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 123,
+            "team": "Faroe Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 124,
+            "team": "Cyprus",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 125,
+            "team": "Suriname",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 126,
+            "team": "Azerbaijan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 127,
+            "team": "Estonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 128,
+            "team": "Rwanda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 129,
+            "team": "Malawi",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 130,
+            "team": "Zimbabwe",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 131,
+            "team": "Nicaragua",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 132,
+            "team": "Guinea-Bissau",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 133,
+            "team": "Kuwait",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 134,
+            "team": "Congo",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 135,
+            "team": "Philippines",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 136,
+            "team": "Malaysia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 137,
+            "team": "Latvia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 138,
+            "team": "India",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 139,
+            "team": "Central African Republic",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 140,
+            "team": "Liberia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 141,
+            "team": "Turkmenistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 142,
+            "team": "Burundi",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 143,
+            "team": "Ethiopia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 144,
+            "team": "Dominican Republic",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 145,
+            "team": "Yemen",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 146,
+            "team": "Lesotho",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 147,
+            "team": "Botswana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 148,
+            "team": "Singapore",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 149,
+            "team": "Lithuania",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 150,
+            "team": "Guyana",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 151,
+            "team": "New Caledonia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 152,
+            "team": "St. Kitts and Nevis",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 153,
+            "team": "Solomon Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 154,
+            "team": "Puerto Rico",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 155,
+            "team": "Fiji",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 156,
+            "team": "Hong Kong",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 157,
+            "team": "Tahiti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 158,
+            "team": "Myanmar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 159,
+            "team": "Moldova",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 160,
+            "team": "Vanuatu",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 161,
+            "team": "Malta",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 162,
+            "team": "Antigua and Barbuda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 163,
+            "team": "Grenada",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 164,
+            "team": "Cuba",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 165,
+            "team": "Eswatini",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 166,
+            "team": "Saint Lucia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 167,
+            "team": "Bermuda",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 168,
+            "team": "Papua New Guinea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 169,
+            "team": "South Sudan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 170,
+            "team": "Saint Vincent and The Grenadines",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 171,
+            "team": "Afghanistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 172,
+            "team": "Andorra",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 173,
+            "team": "Maldives",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 174,
+            "team": "Chinese Taipei",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 175,
+            "team": "Cambodia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 176,
+            "team": "Montserrat",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 177,
+            "team": "Nepal",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 178,
+            "team": "Mauritius",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 179,
+            "team": "Barbados",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 180,
+            "team": "Belize",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 181,
+            "team": "Bangladesh",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 182,
+            "team": "Dominica",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 183,
+            "team": "Chad",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 184,
+            "team": "Eritrea",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 185,
+            "team": "Laos",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 186,
+            "team": "Cook Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 187,
+            "team": "Sri Lanka",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 188,
+            "team": "Samoa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 189,
+            "team": "Aruba",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 190,
+            "team": "Mongolia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 191,
+            "team": "American Samoa",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 192,
+            "team": "Bhutan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 193,
+            "team": "Macao",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 194,
+            "team": "Brunei",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 195,
+            "team": "Sao Tome and Principe",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 196,
+            "team": "Djibouti",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 197,
+            "team": "Cayman Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 198,
+            "team": "Pakistan",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 199,
+            "team": "Somalia",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 200,
+            "team": "Tonga",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 201,
+            "team": "Timor-Leste",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 202,
+            "team": "Gibraltar",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 203,
+            "team": "Guam",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 204,
+            "team": "Seychelles",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 205,
+            "team": "Turks and Caicos Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 206,
+            "team": "Liechtenstein",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 207,
+            "team": "Bahamas",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 208,
+            "team": "U.S. Virgin Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 209,
+            "team": "British Virgin Islands",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 210,
+            "team": "Anguilla",
+            "points": "",
+            "played": "",
+            "highlight": false
+          },
+          {
+            "rank": 211,
+            "team": "San Marino",
+            "points": "",
+            "played": "",
             "highlight": false
           }
         ]
