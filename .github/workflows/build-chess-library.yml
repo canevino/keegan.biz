@@ -1,1 +1,32 @@
+name: Build chess autoplay library
 
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Download famous-game PGNs
+        run: node assets/chess/download-famous-games.mjs
+
+      - name: Commit generated library
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/chess/famous-games-pgn.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Build famous chess game library"
+          git push
