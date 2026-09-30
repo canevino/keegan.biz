@@ -299,15 +299,7 @@
 
 
     .home-chess.is-autoplay-mode .autoplay-watch-controls {
-      display: grid;
-
-      grid-template-columns:
-        auto
-        auto
-        minmax(0, 1fr)
-        auto
-        auto
-        auto;
+      display: none !important;
     }
 
 
@@ -1211,7 +1203,7 @@
     .sports-panel-title {
       margin: 0;
 
-      color: var(--red);
+      color: var(--yellow);
 
       font-size: clamp(60px, 6.4vw, 96px);
       font-weight: 700;
@@ -6967,6 +6959,9 @@
           ? "start"
           : `move ${autoplayMoveIndex} / ${autoplayMoves.length}`;
 
+
+      updateAutoplayReviewControls();
+
     }
 
 
@@ -7332,6 +7327,9 @@
 
       updateStatus();
 
+
+      updateAutoplayReviewControls();
+
     }
 
 
@@ -7594,6 +7592,17 @@
 
 
       hideResultUI();
+
+
+      reviewControls.classList.add(
+        "is-visible"
+      );
+
+
+      reviewControls.setAttribute(
+        "aria-hidden",
+        "false"
+      );
 
 
       resetHistory();
@@ -9436,6 +9445,10 @@
 
     function updateReviewControls() {
 
+      reviewResultButton.textContent =
+        "result";
+
+
       const lastIndex =
         matchHistory.length -
         1;
@@ -9483,6 +9496,91 @@
           `move ${reviewIndex} / ${lastIndex} · ${step.san}`;
 
       }
+
+    }
+
+
+    function updateAutoplayReviewControls() {
+
+      if (
+        gameMode !==
+        "autoplay"
+        ||
+        reviewing
+        ||
+        timerFinished
+      ) {
+        return;
+      }
+
+
+      reviewControls.classList.add(
+        "is-visible"
+      );
+
+
+      reviewControls.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+
+      reviewStartButton.disabled =
+        autoplayMoveIndex ===
+        0;
+
+
+      reviewPrevButton.disabled =
+        autoplayMoveIndex ===
+        0;
+
+
+      reviewNextButton.disabled =
+        autoplayMoveIndex >=
+        autoplayMoves.length;
+
+
+      reviewEndButton.disabled =
+        autoplayMoveIndex >=
+        autoplayMoves.length;
+
+
+      if (
+        autoplayMoveIndex ===
+        0
+      ) {
+
+        reviewLabel.textContent =
+          "start";
+
+      }
+
+      else {
+
+        const step =
+          matchHistory[
+            autoplayMoveIndex
+          ];
+
+
+        const san =
+          step?.san
+          ||
+          "";
+
+
+        reviewLabel.textContent =
+          san
+            ? `move ${autoplayMoveIndex} / ${autoplayMoves.length} · ${san}`
+            : `move ${autoplayMoveIndex} / ${autoplayMoves.length}`;
+
+      }
+
+
+      reviewResultButton.textContent =
+        autoplayPlaying
+          ? "pause"
+          : "play";
 
     }
 
@@ -9714,6 +9812,23 @@
       "click",
       () => {
 
+        if (
+          gameMode ===
+          "autoplay"
+          &&
+          !reviewing
+        ) {
+
+          autoplayGoTo(
+            0
+          );
+
+
+          return;
+
+        }
+
+
         goToReviewIndex(
           0
         );
@@ -9725,6 +9840,24 @@
     reviewPrevButton.addEventListener(
       "click",
       () => {
+
+        if (
+          gameMode ===
+          "autoplay"
+          &&
+          !reviewing
+        ) {
+
+          autoplayGoTo(
+            autoplayMoveIndex -
+            1
+          );
+
+
+          return;
+
+        }
+
 
         goToReviewIndex(
           reviewIndex -
@@ -9739,6 +9872,27 @@
       "click",
       () => {
 
+        if (
+          gameMode ===
+          "autoplay"
+          &&
+          !reviewing
+        ) {
+
+          autoplayGoTo(
+            autoplayMoveIndex +
+            1,
+            autoplayMoveIndex +
+            1 >=
+            autoplayMoves.length
+          );
+
+
+          return;
+
+        }
+
+
         goToReviewIndex(
           reviewIndex +
           1
@@ -9752,6 +9906,24 @@
       "click",
       () => {
 
+        if (
+          gameMode ===
+          "autoplay"
+          &&
+          !reviewing
+        ) {
+
+          autoplayGoTo(
+            autoplayMoves.length,
+            true
+          );
+
+
+          return;
+
+        }
+
+
         goToReviewIndex(
           matchHistory.length -
           1
@@ -9763,7 +9935,52 @@
 
     reviewResultButton.addEventListener(
       "click",
-      returnToResult
+      () => {
+
+        if (
+          gameMode ===
+          "autoplay"
+          &&
+          !reviewing
+          &&
+          !timerFinished
+        ) {
+
+          autoplayPlaying =
+            !autoplayPlaying;
+
+
+          updateAutoplayInfo();
+
+
+          updateStatus();
+
+
+          if (
+            autoplayPlaying
+          ) {
+
+            scheduleAutoplayMove(
+              900
+            );
+
+          }
+
+          else {
+
+            clearAutoplayTimer();
+
+          }
+
+
+          return;
+
+        }
+
+
+        returnToResult();
+
+      }
     );
 
 
