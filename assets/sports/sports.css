@@ -19,9 +19,49 @@
   padding: 14px;
 }
 
-.sports-team {
-  margin: 0 0 10px;
+.sports-kind {
+  margin: 0 0 6px;
   color: var(--sports-red);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.sports-team-tab {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--sports-red);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.sports-team-tab:hover {
+  color: var(--sports-green);
+}
+
+.sports-team-tab.is-active {
+  color: var(--sports-green);
+  text-decoration-thickness: 2px;
+}
+
+.football-team-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  margin: 0 0 14px;
+}
+
+.football-empty {
+  min-height: 82px;
+  padding: 14px 0 4px;
+  color: var(--sports-green);
   font-weight: 700;
 }
 
@@ -172,6 +212,19 @@
     padding: 10px;
   }
 
+  .football-team-tabs {
+    gap: 6px 10px;
+    margin-bottom: 12px;
+  }
+
+  .sports-team-tab {
+    font-size: 11px;
+  }
+
+  .sports-kind {
+    font-size: 11px;
+  }
+
   .football-match {
     gap: 8px;
   }
@@ -227,4 +280,14 @@
 .sports-series-record + .sports-upcoming-time,
 .sports-series + .sports-upcoming-time {
   margin-top: 4px;
+}
+
+
+.sports-baseball > .sports-team-tab {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.football-tab-panel {
+  width: 100%;
 }
