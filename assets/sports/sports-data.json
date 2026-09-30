@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T17:35:09.605Z",
+  "updatedAt": "2026-09-30T17:49:43.267Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -71,138 +71,159 @@
       "team": "Liverpool",
       "shortName": "Liverpool",
       "game": {
-        "status": "sample",
+        "id": "5795472",
+        "status": "scheduled",
+        "competition": "Premier League",
         "home": "Liverpool",
-        "homeSub": "Premier League",
-        "homeScore": 2,
-        "away": "Chelsea",
-        "awaySub": "Premier League",
-        "awayScore": 1,
-        "detail": "full time",
-        "events": [
-          {
-            "side": "home",
-            "type": "goal",
-            "player": "Salah",
-            "minute": "31′"
-          },
-          {
-            "side": "away",
-            "type": "goal",
-            "player": "Palmer",
-            "minute": "54′"
-          },
-          {
-            "side": "home",
-            "type": "goal",
-            "player": "Szoboszlai",
-            "minute": "78′"
-          }
-        ]
+        "homeScore": 0,
+        "away": "Man City",
+        "awayScore": 0,
+        "detail": "Sun, Oct 11, 11:30 AM",
+        "date": "2026-10-11T15:30:00.000Z",
+        "leagueId": 0
       },
       "standings": {
         "title": "Premier League",
         "rows": [
           {
             "rank": 1,
-            "team": "Arsenal",
-            "points": 41
+            "team": "Man City",
+            "points": 15,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 2,
-            "team": "Liverpool",
-            "points": 39,
-            "highlight": true
+            "team": "Arsenal",
+            "points": 12,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 3,
-            "team": "Manchester City",
-            "points": 37
+            "team": "Brighton",
+            "points": 10,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 4,
-            "team": "Chelsea",
-            "points": 34
+            "team": "Brentford",
+            "points": 9,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 5,
-            "team": "Tottenham",
-            "points": 31
+            "team": "Leeds",
+            "points": 9,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 6,
-            "team": "Manchester United",
-            "points": 29
+            "team": "Liverpool",
+            "points": 9,
+            "played": 5,
+            "highlight": true
           },
           {
             "rank": 7,
-            "team": "Newcastle United",
-            "points": 27
+            "team": "Everton",
+            "points": 9,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 8,
-            "team": "Aston Villa",
-            "points": 26
+            "team": "Hull",
+            "points": 8,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 9,
-            "team": "Brighton",
-            "points": 24
+            "team": "Newcastle",
+            "points": 8,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 10,
-            "team": "Crystal Palace",
-            "points": 23
+            "team": "Chelsea",
+            "points": 7,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 11,
-            "team": "Bournemouth",
-            "points": 22
+            "team": "Ipswich",
+            "points": 6,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 12,
-            "team": "Fulham",
-            "points": 21
+            "team": "Man United",
+            "points": 5,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 13,
-            "team": "Brentford",
-            "points": 20
+            "team": "Nottm Forest",
+            "points": 5,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 14,
-            "team": "Everton",
-            "points": 19
+            "team": "Sunderland",
+            "points": 4,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 15,
-            "team": "West Ham",
-            "points": 18
+            "team": "Crystal Palace",
+            "points": 4,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 16,
-            "team": "Nottingham Forest",
-            "points": 17
+            "team": "Aston Villa",
+            "points": 4,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 17,
-            "team": "Leeds United",
-            "points": 16
+            "team": "Bournemouth",
+            "points": 3,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 18,
-            "team": "Sunderland",
-            "points": 14
+            "team": "Coventry",
+            "points": 3,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 19,
-            "team": "Burnley",
-            "points": 11
+            "team": "Fulham",
+            "points": 2,
+            "played": 5,
+            "highlight": false
           },
           {
             "rank": 20,
-            "team": "Wolves",
-            "points": 9
+            "team": "Tottenham",
+            "points": 2,
+            "played": 5,
+            "highlight": false
           }
         ]
       }
