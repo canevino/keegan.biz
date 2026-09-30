@@ -6,10 +6,6 @@
   --sports-ink: #11110f;
 }
 
-.sports-panel {
-  width: min(100%, 700px);
-}
-
 .sports-box {
   border: 2px solid var(--sports-red);
   background: transparent;
@@ -48,9 +44,109 @@
   font-weight: 700;
 }
 
+.baseball-linescore-wrap {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.baseball-linescore {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.baseball-linescore th,
+.baseball-linescore td {
+  padding: 5px 6px;
+  border-top: 1px solid var(--sports-red);
+  text-align: center;
+  font-weight: 700;
+}
+
+.baseball-linescore th:first-child,
+.baseball-linescore td:first-child {
+  text-align: left;
+  white-space: nowrap;
+}
+
+.football-match {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.football-side {
+  display: grid;
+  gap: 3px;
+}
+
+.football-side strong {
+  font-size: clamp(24px, 3vw, 44px);
+  line-height: 1;
+}
+
+.football-side span {
+  font-size: 11px;
+  color: var(--sports-green);
+  font-weight: 700;
+}
+
+.football-side.is-away {
+  text-align: right;
+}
+
+.football-score-block {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.football-score-block strong {
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: 1;
+}
+
+.football-score-block span {
+  color: var(--sports-green);
+  font-weight: 700;
+}
+
+.football-events {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 24px;
+  margin-top: 16px;
+  min-height: 36px;
+}
+
+.football-event {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 5px;
+  align-items: baseline;
+  font-size: 12px;
+}
+
+.football-event.is-away {
+  grid-column: 2;
+}
+
+.football-event-mark {
+  color: var(--sports-red);
+}
+
+.sports-table-title {
+  margin: 16px 0 0;
+  color: var(--sports-red);
+  font-weight: 700;
+}
+
 .sports-table {
   width: 100%;
-  margin-top: 16px;
+  margin-top: 8px;
   border-collapse: collapse;
 }
 
@@ -64,4 +160,35 @@
 .sports-table th:last-child,
 .sports-table td:last-child {
   text-align: right;
+}
+
+.sports-table tr.is-highlighted {
+  color: var(--sports-green);
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .sports-section {
+    padding: 10px;
+  }
+
+  .football-match {
+    gap: 8px;
+  }
+
+  .football-side strong {
+    font-size: 22px;
+  }
+
+  .football-score-block strong {
+    font-size: 32px;
+  }
+
+  .football-events {
+    grid-template-columns: 1fr;
+  }
+
+  .football-event.is-away {
+    grid-column: 1;
+  }
 }

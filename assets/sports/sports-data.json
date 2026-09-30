@@ -8,10 +8,54 @@
       "game": {
         "status": "sample",
         "away": "BOS",
-        "awayScore": 2,
+        "awayFull": "Boston Red Sox",
+        "awayScore": 0,
+        "awayHits": 3,
+        "awayErrors": 0,
         "home": "NYY",
-        "homeScore": 4,
-        "detail": "bottom 7"
+        "homeFull": "New York Yankees",
+        "homeScore": 9,
+        "homeHits": 12,
+        "homeErrors": 0,
+        "detail": "final",
+        "innings": [
+          {
+            "away": 0,
+            "home": 0
+          },
+          {
+            "away": 0,
+            "home": 1
+          },
+          {
+            "away": 0,
+            "home": 0
+          },
+          {
+            "away": 0,
+            "home": 0
+          },
+          {
+            "away": 0,
+            "home": 1
+          },
+          {
+            "away": 0,
+            "home": 0
+          },
+          {
+            "away": 0,
+            "home": 2
+          },
+          {
+            "away": 0,
+            "home": 5
+          },
+          {
+            "away": 0,
+            "home": "X"
+          }
+        ]
       },
       "standings": {
         "title": "AL East",
@@ -19,17 +63,28 @@
           {
             "rank": 1,
             "team": "Yankees",
-            "record": "91–65"
+            "record": "91\u201365",
+            "highlight": true
           },
           {
             "rank": 2,
             "team": "Blue Jays",
-            "record": "88–68"
+            "record": "88\u201368"
           },
           {
             "rank": 3,
             "team": "Red Sox",
-            "record": "84–72"
+            "record": "84\u201372"
+          },
+          {
+            "rank": 4,
+            "team": "Rays",
+            "record": "79\u201377"
+          },
+          {
+            "rank": 5,
+            "team": "Orioles",
+            "record": "74\u201382"
           }
         ]
       }
@@ -39,13 +94,36 @@
     "liverpool": {
       "active": true,
       "team": "Liverpool",
+      "shortName": "Liverpool",
       "game": {
         "status": "sample",
         "home": "Liverpool",
+        "homeSub": "Premier League",
         "homeScore": 2,
         "away": "Chelsea",
+        "awaySub": "Premier League",
         "awayScore": 1,
-        "detail": "67'"
+        "detail": "full time",
+        "events": [
+          {
+            "side": "home",
+            "type": "goal",
+            "player": "Salah",
+            "minute": "31\u2032"
+          },
+          {
+            "side": "away",
+            "type": "goal",
+            "player": "Palmer",
+            "minute": "54\u2032"
+          },
+          {
+            "side": "home",
+            "type": "goal",
+            "player": "Szoboszlai",
+            "minute": "78\u2032"
+          }
+        ]
       },
       "standings": {
         "title": "Premier League",
@@ -58,12 +136,98 @@
           {
             "rank": 2,
             "team": "Liverpool",
-            "points": 39
+            "points": 39,
+            "highlight": true
           },
           {
             "rank": 3,
             "team": "Manchester City",
             "points": 37
+          },
+          {
+            "rank": 4,
+            "team": "Chelsea",
+            "points": 34
+          },
+          {
+            "rank": 5,
+            "team": "Tottenham",
+            "points": 31
+          },
+          {
+            "rank": 6,
+            "team": "Manchester United",
+            "points": 29
+          },
+          {
+            "rank": 7,
+            "team": "Newcastle United",
+            "points": 27
+          },
+          {
+            "rank": 8,
+            "team": "Aston Villa",
+            "points": 26
+          },
+          {
+            "rank": 9,
+            "team": "Brighton",
+            "points": 24
+          },
+          {
+            "rank": 10,
+            "team": "Crystal Palace",
+            "points": 23
+          },
+          {
+            "rank": 11,
+            "team": "Bournemouth",
+            "points": 22
+          },
+          {
+            "rank": 12,
+            "team": "Fulham",
+            "points": 21
+          },
+          {
+            "rank": 13,
+            "team": "Brentford",
+            "points": 20
+          },
+          {
+            "rank": 14,
+            "team": "Everton",
+            "points": 19
+          },
+          {
+            "rank": 15,
+            "team": "West Ham",
+            "points": 18
+          },
+          {
+            "rank": 16,
+            "team": "Nottingham Forest",
+            "points": 17
+          },
+          {
+            "rank": 17,
+            "team": "Leeds United",
+            "points": 16
+          },
+          {
+            "rank": 18,
+            "team": "Sunderland",
+            "points": 14
+          },
+          {
+            "rank": 19,
+            "team": "Burnley",
+            "points": 11
+          },
+          {
+            "rank": 20,
+            "team": "Wolves",
+            "points": 9
           }
         ]
       }
