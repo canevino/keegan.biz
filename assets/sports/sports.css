@@ -36,9 +36,7 @@
   font: inherit;
   font-weight: 700;
   line-height: 1.2;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -48,7 +46,9 @@
 
 .sports-team-tab.is-active {
   color: var(--sports-green);
+  text-decoration: underline;
   text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .football-team-tabs {
@@ -290,4 +290,59 @@
 
 .football-tab-panel {
   width: 100%;
+}
+
+
+.football-upcoming-list {
+  display: grid;
+  width: 100%;
+  border-top: 1px solid var(--sports-red);
+}
+
+.football-upcoming-row {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--sports-red);
+  font-size: 12px;
+}
+
+.football-upcoming-date {
+  color: var(--sports-green);
+  font-weight: 700;
+}
+
+.football-upcoming-match {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.football-upcoming-match strong {
+  font-weight: 700;
+}
+
+.football-upcoming-match span {
+  color: var(--sports-red);
+}
+
+.football-upcoming-comp {
+  color: var(--sports-red);
+  font-weight: 700;
+  text-align: right;
+}
+
+@media (max-width: 700px) {
+  .football-upcoming-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    padding: 7px 0;
+  }
+
+  .football-upcoming-comp {
+    text-align: left;
+  }
 }
