@@ -5584,183 +5584,102 @@
       data
     ) {
 
-      return `
-        <div
-          class="football-team-tabs"
-          role="tablist"
-          aria-label="Football teams"
-        >
-          ${footballTeams.map(
-            team => {
-
-              const isSelected =
-                team.key ===
-                selectedFootballTeam;
-
-
-              return `
-                <button
-                  class="sports-team-tab ${isSelected ? "is-active" : ""}"
-                  type="button"
-                  role="tab"
-                  data-football-team="${team.key}"
-                  aria-selected="${isSelected ? "true" : "false"}"
-                >
-                  ${team.label}
-                </button>
-              `;
-
-            }
-          ).join("")}
-        </div>
-      `;
-
-    }
-
-
-    function isSameEasternDay(
-      isoDateString,
-      date =
-        new Date()
-    ) {
-
-      if (
-        !isoDateString
-      ) {
-        return false;
-      }
-
-
-      const formatter =
-        new Intl.DateTimeFormat(
-          "en-CA",
-          {
-            timeZone:
-              "America/New_York",
-
-            year:
-              "numeric",
-
-            month:
-              "2-digit",
-
-            day:
-              "2-digit"
-          }
+      const clubTeams =
+        footballTeams.filter(
+          team =>
+            [
+              "liverpool",
+              "hearts",
+              "preston",
+              "fiorentina",
+              "shakhtar"
+            ].includes(
+              team.key
+            )
         );
 
 
-      return (
-        formatter.format(
-          new Date(
-            isoDateString
-          )
-        )
-        ===
-        formatter.format(
-          date
-        )
-      );
-
-    }
-
-
-    function chooseAutomaticFootballTeam(
-      data
-    ) {
-
-      const liveOrToday =
-        footballTeams.find(
-          team => {
-
-            const teamData =
-              data?.[
-                team.key
-              ];
-
-
-            if (
-              !teamData
-              ||
-              teamData.active ===
-              false
-            ) {
-              return false;
-            }
-
-
-            const fixtures =
-              teamData.upcoming
-              ||
-              [];
-
-
-            return fixtures.some(
-              fixture =>
-                fixture.status ===
-                "live"
-                ||
-                isSameEasternDay(
-                  fixture.date
-                )
-            );
-
-          }
+      const internationalTeams =
+        footballTeams.filter(
+          team =>
+            [
+              "lithuania",
+              "ukraine",
+              "england",
+              "ireland"
+            ].includes(
+              team.key
+            )
+            &&
+            data?.[
+              team.key
+            ]?.active !==
+            false
         );
 
 
-      return (
-        liveOrToday?.key
-        ||
-        selectedFootballTeam
-      );
-
-    }
-
-
-    function footballUpcomingMarkup(
-      fixtures
-    ) {
-
-      if (
-        !Array.isArray(
-          fixtures
-        )
-        ||
-        fixtures.length ===
-        0
+      function rowMarkup(
+        teams,
+        label
       ) {
+
+        if (
+          teams.length ===
+          0
+        ) {
+          return "";
+        }
+
 
         return `
-          <p class="football-empty">
-            no upcoming games
-          </p>
+          <div
+            class="football-team-tab-row"
+            role="group"
+            aria-label="${label}"
+          >
+            ${teams.map(
+              team => {
+
+                const isSelected =
+                  team.key ===
+                  selectedFootballTeam;
+
+
+                return `
+                  <button
+                    class="sports-team-tab ${isSelected ? "is-active" : ""}"
+                    type="button"
+                    role="tab"
+                    data-football-team="${team.key}"
+                    aria-selected="${isSelected ? "true" : "false"}"
+                  >
+                    ${team.label}
+                  </button>
+                `;
+
+              }
+            ).join("")}
+          </div>
         `;
 
       }
 
 
       return `
-        <div class="football-upcoming-list">
-          ${fixtures.map(
-            fixture => `
-              <div class="football-upcoming-row">
-                <div class="football-upcoming-date">
-                  ${fixture.when ?? ""}
-                </div>
+        <div
+          class="football-team-tabs"
+          role="tablist"
+          aria-label="Football teams"
+        >
+          ${rowMarkup(
+            clubTeams,
+            "Club teams"
+          )}
 
-                <div class="football-upcoming-match">
-                  <strong>${fixture.home ?? ""}</strong>
-                  <span>vs</span>
-                  <strong>${fixture.away ?? ""}</strong>
-                </div>
-
-                <div class="football-upcoming-comp">
-                  ${fixture.competition ?? ""}
-                </div>
-              </div>
-            `
-          ).join("")}
+          ${rowMarkup(
+            internationalTeams,
+            "International teams"
+          )}
         </div>
       `;
 
