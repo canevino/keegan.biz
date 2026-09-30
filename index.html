@@ -1658,7 +1658,6 @@
       }
 
 
-
     /* Homepage panels: shared chess / sports system */
     .chess-panel,
     .sports-panel-shell {
@@ -1714,11 +1713,7 @@
       text-decoration: none;
     }
 
-    /* The header supplies the spacing; content starts on the same rhythm. */
-    .home-chess {
-      margin-top: 0;
-    }
-
+    .home-chess,
     .sports-box {
       margin-top: 0;
     }
@@ -5781,6 +5776,35 @@
           )}
         </div>
       `;
+
+    }
+
+
+    function isSameEasternDay(
+      isoDateString,
+      date = new Date()
+    ) {
+
+      if (!isoDateString) {
+        return false;
+      }
+
+      const formatter =
+        new Intl.DateTimeFormat(
+          "en-CA",
+          {
+            timeZone: "America/New_York",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          }
+        );
+
+      return (
+        formatter.format(new Date(isoDateString))
+        ===
+        formatter.format(date)
+      );
 
     }
 
