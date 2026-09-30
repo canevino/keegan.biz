@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T17:49:43.267Z",
+  "updatedAt": "2026-09-30T18:37:13.842Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -70,18 +70,53 @@
       "active": true,
       "team": "Liverpool",
       "shortName": "Liverpool",
-      "game": {
-        "id": "5795472",
-        "status": "scheduled",
-        "competition": "Premier League",
-        "home": "Liverpool",
-        "homeScore": 0,
-        "away": "Man City",
-        "awayScore": 0,
-        "detail": "Sun, Oct 11, 11:30 AM",
-        "date": "2026-10-11T15:30:00.000Z",
-        "leagueId": 0
-      },
+      "upcoming": [
+        {
+          "id": "5498878",
+          "date": "2026-07-25T22:00:00.000Z",
+          "when": "Sat, Jul 25 · 6:00 PM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Sunderland",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5498879",
+          "date": "2026-07-29T23:30:00.000Z",
+          "when": "Wed, Jul 29 · 7:30 PM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Wrexham",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5498880",
+          "date": "2026-08-02T20:00:00.000Z",
+          "when": "Sun, Aug 2 · 4:00 PM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Leeds",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5765326",
+          "date": "2026-08-09T13:30:00.000Z",
+          "when": "Sun, Aug 9 · 9:30 AM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Monaco",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5973785",
+          "date": "2026-08-16T10:30:00.000Z",
+          "when": "Sun, Aug 16 · 6:30 AM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Como",
+          "competition": "Club Friendlies"
+        }
+      ],
       "standings": {
         "title": "Premier League",
         "rows": [
@@ -223,6 +258,738 @@
             "team": "Tottenham",
             "points": 2,
             "played": 5,
+            "highlight": false
+          }
+        ]
+      }
+    },
+    "hearts": {
+      "active": true,
+      "team": "Hearts",
+      "shortName": "Hearts",
+      "upcoming": [
+        {
+          "id": "5904575",
+          "date": "2026-07-10T18:45:00.000Z",
+          "when": "Fri, Jul 10 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Livingston",
+          "away": "Hearts",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5921001",
+          "date": "2026-07-14T18:30:00.000Z",
+          "when": "Tue, Jul 14 · 2:30 PM ET",
+          "status": "scheduled",
+          "home": "Arbroath",
+          "away": "Hearts",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5900422",
+          "date": "2026-07-17T18:45:00.000Z",
+          "when": "Fri, Jul 17 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Hearts",
+          "away": "Rayo Vallecano",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5787786",
+          "date": "2026-07-21T18:30:00.000Z",
+          "when": "Tue, Jul 21 · 2:30 PM ET",
+          "status": "scheduled",
+          "home": "Sturm Graz",
+          "away": "Hearts",
+          "competition": "Champions League Qualification"
+        },
+        {
+          "id": "5787788",
+          "date": "2026-07-28T18:45:00.000Z",
+          "when": "Tue, Jul 28 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Hearts",
+          "away": "Sturm Graz",
+          "competition": "Champions League Qualification"
+        }
+      ],
+      "standings": {
+        "title": "Premiership",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Celtic",
+            "points": 18,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 2,
+            "team": "Rangers",
+            "points": 16,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 3,
+            "team": "Hearts",
+            "points": 13,
+            "played": 7,
+            "highlight": true
+          },
+          {
+            "rank": 4,
+            "team": "Dundee FC",
+            "points": 10,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 5,
+            "team": "St. Mirren",
+            "points": 10,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 6,
+            "team": "St. Johnstone",
+            "points": 8,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 7,
+            "team": "Aberdeen",
+            "points": 8,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 8,
+            "team": "Motherwell",
+            "points": 8,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 9,
+            "team": "Dundee United",
+            "points": 8,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 10,
+            "team": "Hibernian",
+            "points": 7,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 11,
+            "team": "Falkirk",
+            "points": 6,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 12,
+            "team": "Kilmarnock",
+            "points": 5,
+            "played": 7,
+            "highlight": false
+          }
+        ]
+      }
+    },
+    "preston": {
+      "active": true,
+      "team": "Preston",
+      "shortName": "Preston",
+      "upcoming": [
+        {
+          "id": "5978390",
+          "date": "2026-08-01T14:00:00.000Z",
+          "when": "Sat, Aug 1 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "Stockport County",
+          "away": "Preston",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5840302",
+          "date": "2026-08-08T14:00:00.000Z",
+          "when": "Sat, Aug 8 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "Preston",
+          "away": "Huddersfield",
+          "competition": "EFL Cup"
+        },
+        {
+          "id": "5836755",
+          "date": "2026-08-15T11:30:00.000Z",
+          "when": "Sat, Aug 15 · 7:30 AM ET",
+          "status": "scheduled",
+          "home": "Bolton",
+          "away": "Preston",
+          "competition": "Championship"
+        },
+        {
+          "id": "5836771",
+          "date": "2026-08-22T14:00:00.000Z",
+          "when": "Sat, Aug 22 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "Preston",
+          "away": "Wolves",
+          "competition": "Championship"
+        },
+        {
+          "id": "6005650",
+          "date": "2026-08-26T19:00:00.000Z",
+          "when": "Wed, Aug 26 · 3:00 PM ET",
+          "status": "scheduled",
+          "home": "Preston",
+          "away": "Everton",
+          "competition": "EFL Cup"
+        }
+      ],
+      "standings": {
+        "title": "Championship",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Swansea",
+            "points": 17,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 2,
+            "team": "West Ham",
+            "points": 15,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 3,
+            "team": "Middlesbrough",
+            "points": 15,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 4,
+            "team": "Wolves",
+            "points": 14,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 5,
+            "team": "West Brom",
+            "points": 14,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 6,
+            "team": "QPR",
+            "points": 13,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 7,
+            "team": "Stoke",
+            "points": 13,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 8,
+            "team": "Bristol City",
+            "points": 13,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 9,
+            "team": "Charlton",
+            "points": 12,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 10,
+            "team": "Birmingham",
+            "points": 11,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 11,
+            "team": "Millwall",
+            "points": 11,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 12,
+            "team": "Lincoln",
+            "points": 11,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 13,
+            "team": "Southampton",
+            "points": 10,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 14,
+            "team": "Wrexham",
+            "points": 10,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 15,
+            "team": "Bolton",
+            "points": 10,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 16,
+            "team": "Blackburn",
+            "points": 9,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 17,
+            "team": "Norwich",
+            "points": 9,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 18,
+            "team": "Sheff Utd",
+            "points": 9,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 19,
+            "team": "Portsmouth",
+            "points": 8,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 20,
+            "team": "Watford",
+            "points": 8,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 21,
+            "team": "Cardiff",
+            "points": 7,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 22,
+            "team": "Derby",
+            "points": 5,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 23,
+            "team": "Preston",
+            "points": 4,
+            "played": 8,
+            "highlight": true
+          },
+          {
+            "rank": 24,
+            "team": "Burnley",
+            "points": 4,
+            "played": 8,
+            "highlight": false
+          }
+        ]
+      }
+    },
+    "fiorentina": {
+      "active": true,
+      "team": "Fiorentina",
+      "shortName": "Fiorentina",
+      "upcoming": [
+        {
+          "id": "5900854",
+          "date": "2026-07-22T17:00:00.000Z",
+          "when": "Wed, Jul 22 · 1:00 PM ET",
+          "status": "scheduled",
+          "home": "Fiorentina",
+          "away": "Gubbio",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5900855",
+          "date": "2026-07-25T14:00:00.000Z",
+          "when": "Sat, Jul 25 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "QPR",
+          "away": "Fiorentina",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5900856",
+          "date": "2026-07-29T18:30:00.000Z",
+          "when": "Wed, Jul 29 · 2:30 PM ET",
+          "status": "scheduled",
+          "home": "Watford",
+          "away": "Fiorentina",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5909892",
+          "date": "2026-08-01T16:00:00.000Z",
+          "when": "Sat, Aug 1 · 12:00 PM ET",
+          "status": "scheduled",
+          "home": "Real Madrid",
+          "away": "Fiorentina",
+          "competition": "Club Friendlies"
+        },
+        {
+          "id": "5900332",
+          "date": "2026-08-06T18:00:00.000Z",
+          "when": "Thu, Aug 6 · 2:00 PM ET",
+          "status": "scheduled",
+          "home": "Fiorentina",
+          "away": "Deportivo A Coruña",
+          "competition": "Club Friendlies"
+        }
+      ],
+      "standings": {
+        "title": "Serie A",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Roma",
+            "points": 13,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 2,
+            "team": "Inter",
+            "points": 13,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 3,
+            "team": "Lazio",
+            "points": 13,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 4,
+            "team": "Cagliari",
+            "points": 12,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 5,
+            "team": "Milan",
+            "points": 11,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 6,
+            "team": "Frosinone",
+            "points": 10,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 7,
+            "team": "Juventus",
+            "points": 10,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 8,
+            "team": "Como",
+            "points": 10,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 9,
+            "team": "Napoli",
+            "points": 7,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 10,
+            "team": "Sassuolo",
+            "points": 7,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 11,
+            "team": "Atalanta",
+            "points": 6,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 12,
+            "team": "Lecce",
+            "points": 6,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 13,
+            "team": "Udinese",
+            "points": 4,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 14,
+            "team": "Torino",
+            "points": 4,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 15,
+            "team": "Parma",
+            "points": 4,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 16,
+            "team": "Monza",
+            "points": 4,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 17,
+            "team": "Fiorentina",
+            "points": 4,
+            "played": 5,
+            "highlight": true
+          },
+          {
+            "rank": 18,
+            "team": "Bologna",
+            "points": 2,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 19,
+            "team": "Genoa",
+            "points": 1,
+            "played": 5,
+            "highlight": false
+          },
+          {
+            "rank": 20,
+            "team": "Venezia",
+            "points": 0,
+            "played": 5,
+            "highlight": false
+          }
+        ]
+      }
+    },
+    "shakhtar": {
+      "active": true,
+      "team": "Shakhtar",
+      "shortName": "Shakhtar",
+      "upcoming": [
+        {
+          "id": "5909120",
+          "date": "2026-08-03T15:00:00.000Z",
+          "when": "Mon, Aug 3 · 11:00 AM ET",
+          "status": "scheduled",
+          "home": "Shakhtar Donetsk",
+          "away": "Kudrivka",
+          "competition": "Premier League"
+        },
+        {
+          "id": "5909123",
+          "date": "2026-08-09T12:30:00.000Z",
+          "when": "Sun, Aug 9 · 8:30 AM ET",
+          "status": "scheduled",
+          "home": "Epitsentr Kamianets-Podilskyi",
+          "away": "Shakhtar Donetsk",
+          "competition": "Premier League"
+        },
+        {
+          "id": "5909131",
+          "date": "2026-08-16T12:30:00.000Z",
+          "when": "Sun, Aug 16 · 8:30 AM ET",
+          "status": "scheduled",
+          "home": "FC Kharkiv",
+          "away": "Shakhtar Donetsk",
+          "competition": "Premier League"
+        },
+        {
+          "id": "5909144",
+          "date": "2026-08-29T15:00:00.000Z",
+          "when": "Sat, Aug 29 · 11:00 AM ET",
+          "status": "scheduled",
+          "home": "Shakhtar Donetsk",
+          "away": "Polissya Zhytomyr",
+          "competition": "Premier League"
+        },
+        {
+          "id": "5909149",
+          "date": "2026-09-05T15:00:00.000Z",
+          "when": "Sat, Sep 5 · 11:00 AM ET",
+          "status": "scheduled",
+          "home": "Karpaty",
+          "away": "Shakhtar Donetsk",
+          "competition": "Premier League"
+        }
+      ],
+      "standings": {
+        "title": "Premier League",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Polissya Zhytomyr",
+            "points": 18,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 2,
+            "team": "Shakhtar Donetsk",
+            "points": 18,
+            "played": 7,
+            "highlight": true
+          },
+          {
+            "rank": 3,
+            "team": "Karpaty",
+            "points": 14,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 4,
+            "team": "Dynamo Kyiv",
+            "points": 13,
+            "played": 6,
+            "highlight": false
+          },
+          {
+            "rank": 5,
+            "team": "FC Kharkiv",
+            "points": 12,
+            "played": 6,
+            "highlight": false
+          },
+          {
+            "rank": 6,
+            "team": "Epitsentr Kamianets-Podilskyi",
+            "points": 8,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 7,
+            "team": "LNZ Cherkasy",
+            "points": 8,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 8,
+            "team": "Zorya",
+            "points": 8,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 9,
+            "team": "Liviy Bereh",
+            "points": 7,
+            "played": 6,
+            "highlight": false
+          },
+          {
+            "rank": 10,
+            "team": "Bukovyna Chernivtsi",
+            "points": 7,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 11,
+            "team": "Veres Rivne",
+            "points": 6,
+            "played": 6,
+            "highlight": false
+          },
+          {
+            "rank": 12,
+            "team": "Chornomorets Odesa",
+            "points": 5,
+            "played": 6,
+            "highlight": false
+          },
+          {
+            "rank": 13,
+            "team": "FC Kolos Kovalivka",
+            "points": 5,
+            "played": 6,
+            "highlight": false
+          },
+          {
+            "rank": 14,
+            "team": "Kryvbas",
+            "points": 5,
+            "played": 6,
+            "highlight": false
+          },
+          {
+            "rank": 15,
+            "team": "Obolon Kyiv",
+            "points": 4,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 16,
+            "team": "Kudrivka",
+            "points": 2,
+            "played": 6,
             "highlight": false
           }
         ]
