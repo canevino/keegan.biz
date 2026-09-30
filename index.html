@@ -10,13 +10,31 @@
 
   <title>keegan.biz</title>
 
+  <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="style.css">
 
   <style>
+    .home {
+      --home-left:
+        clamp(
+          40px,
+          5.5vw,
+          88px
+        );
+    }
+
+
     .chess-launcher {
+      position: absolute;
+
+      top: 50%;
+      left: var(--home-left);
+
       display: inline-block;
 
-      margin-top: 34px;
+      margin: 0;
+
+      transform: translateY(-50%);
 
       padding: 0;
 
@@ -48,7 +66,7 @@
       width: min(100%, 700px);
 
       margin:
-        26px
+        clamp(72px, 10vh, 126px)
         auto
         0;
     }
@@ -863,6 +881,18 @@
       justify-self: end;
     }
 
+    @media (max-width: 1240px) {
+      .home {
+        --home-left:
+          clamp(
+            34px,
+            6vw,
+            72px
+          );
+      }
+    }
+
+
     @media (max-width: 1400px) {
       .home-chess {
         width: min(100%, 620px);
@@ -907,8 +937,16 @@
     }
 
     @media (max-width: 700px) {
+      .home {
+        --home-left:
+          calc(
+            22px +
+            env(safe-area-inset-left)
+          );
+      }
+
       .chess-launcher {
-        margin-top: 28px;
+        margin: 0;
         font-size: 17px;
       }
 
@@ -1066,105 +1104,7 @@
     id="page-shell"
   >
 
-    <nav
-      class="scarf-rack"
-      aria-label="Sections"
-    >
-
-      <a
-        class="scarf-item scarf-home"
-        href="./"
-        data-live-link
-        aria-label="Home"
-      >
-        <img
-          src="assets/home/home-scarf-update.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="illustration/"
-        data-live-link
-        aria-label="Illustration"
-      >
-        <img
-          src="assets/home/scarf-illustration.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="photography/"
-        data-live-link
-        aria-label="Photography"
-      >
-        <img
-          src="assets/home/scarf-photography.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Graphic Design"
-      >
-        <img
-          src="assets/home/scarf-design.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Music"
-      >
-        <img
-          src="assets/home/scarf-music.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="motion/"
-        data-live-link
-        aria-label="Motion"
-      >
-        <img
-          src="assets/home/scarf-motion.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Miscellaneous"
-      >
-        <img
-          src="assets/home/scarf-misc.png"
-          alt=""
-        >
-      </a>
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Gastronomy"
-      >
-        <img
-          src="assets/home/scarf-gastronomy.png"
-          alt=""
-        >
-      </a>
-
-    </nav>
-
+    <nav data-site-nav></nav>
 
     <main class="home">
 
@@ -7473,6 +7413,8 @@
     updateClocks();
 
   </script>
+
+  <script src="/assets/site-nav.js" defer></script>
 
 </body>
 </html>
