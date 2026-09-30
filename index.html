@@ -234,11 +234,6 @@
       min-width: 0;
     }
 
-    .home-chess .board-area.is-flipped {
-      grid-template-columns:
-        var(--capture-column)
-        minmax(0, 1fr);
-    }
 
     .home-chess .board-frame {
       grid-column: 1;
@@ -247,14 +242,6 @@
       min-width: 0;
     }
 
-    .home-chess .board-area.is-flipped .board-frame {
-      grid-column: 2;
-    }
-
-    .home-chess .board-area.is-flipped .capture-bin {
-      grid-column: 1;
-      grid-row: 1;
-    }
 
 
     .home-chess .board-frame::before {
@@ -476,36 +463,43 @@
       pointer-events: none;
 
       border: 2px solid var(--board-red);
-      background: rgba(236, 231, 215, .24);
+
+      background:
+        rgba(236, 231, 215, .24);
     }
 
     .home-chess .captured-piece {
       position: absolute;
+
       left: 0;
       top: 0;
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
-      width: var(--piece-size, 38px);
-      height: var(--piece-size, 38px);
+      width: var(--piece-w, 28px);
+      height: var(--piece-h, 34px);
 
-      font-size: calc(var(--piece-size, 38px) * .92);
+      font-size: var(--piece-font, 32px);
       line-height: 1;
       font-weight: 700;
 
       transform:
         translate3d(
-          var(--x, 0px),
-          var(--y, 0px),
+          calc(var(--x, 0px) - 50%),
+          calc(var(--y, 0px) - 50%),
           0
         )
         rotate(var(--r, 0deg));
 
-      transform-origin: center;
+      transform-origin: center center;
 
       will-change: transform;
+
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .home-chess .captured-piece.white {
@@ -514,60 +508,6 @@
 
     .home-chess .captured-piece.black {
       color: var(--board-green);
-    }
-
-
-      70% {
-        transform:
-          translate3d(
-            var(--x, 0px),
-            calc(
-              var(--y, 0px)
-              +
-              7px
-            ),
-            0
-          )
-          rotate(
-            calc(
-              var(--r, 0deg)
-              +
-              4deg
-            )
-          );
-      }
-
-      84% {
-        transform:
-          translate3d(
-            var(--x, 0px),
-            calc(
-              var(--y, 0px)
-              -
-              3px
-            ),
-            0
-          )
-          rotate(
-            calc(
-              var(--r, 0deg)
-              -
-              2deg
-            )
-          );
-      }
-
-      100% {
-        transform:
-          translate3d(
-            var(--x, 0px),
-            var(--y, 0px),
-            0
-          )
-          rotate(
-            var(--r, 0deg)
-          );
-      }
     }
 
     .home-chess .win-overlay {
@@ -581,6 +521,10 @@
       overflow: hidden;
 
       pointer-events: none;
+    }
+
+    .home-chess .win-overlay[hidden] {
+      display: none !important;
     }
 
     .home-chess .win-overlay.is-visible {
@@ -613,16 +557,16 @@
 
       z-index: 3;
 
-      width: min(78%, 320px);
+      width: min(72%, 280px);
 
-      padding: 5px 7px 6px;
+      padding: 4px 6px 5px;
 
       background: var(--board-paper);
 
       color: var(--board-red);
 
-      font-size: 10px;
-      line-height: 1.25;
+      font-size: 9px;
+      line-height: 1.18;
       font-weight: 500;
 
       letter-spacing: -.015em;
@@ -1170,28 +1114,24 @@
                 class="win-overlay"
                 id="win-overlay"
                 aria-hidden="true"
+                hidden
               >
 
                 <img
                   class="win-image"
                   id="win-image"
-                  src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG"
                   alt=""
                 >
 
                 <p
                   class="win-art-title"
                   id="win-art-title"
-                >
-                  Chess Players, c. 1518
-                </p>
+                ></p>
 
                 <p
                   class="win-title"
                   id="win-title"
-                >
-                  Green Won
-                </p>
+                ></p>
 
               </div>
 
@@ -1780,6 +1720,8 @@
   })();
   </script>
 
+
+  <script src="https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js"></script>
 
   <script type="module">
 
@@ -2543,19 +2485,31 @@
       [];
 
 
-    let capturePhysicsFrame =
+    let captureEngine =
+      null;
+
+
+    let captureWorld =
+      null;
+
+
+    let captureFrame =
       null;
 
 
     let captureLastTime =
-      performance.now();
-
-
-    let capturePhysicsEndsAt =
       0;
 
 
-    function pieceSizeForBin() {
+    let captureStillSince =
+      0;
+
+
+    let captureWalls =
+      [];
+
+
+    function pieceMetricsForBin() {
 
       const width =
         captureBin.clientWidth;
@@ -2565,7 +2519,18 @@
         width <
         72
       ) {
-        return 24;
+
+        return {
+          font:
+            22,
+
+          width:
+            19,
+
+          height:
+            25
+        };
+
       }
 
 
@@ -2573,11 +2538,31 @@
         width <
         100
       ) {
-        return 29;
+
+        return {
+          font:
+            27,
+
+          width:
+            23,
+
+          height:
+            31
+        };
+
       }
 
 
-      return 35;
+      return {
+        font:
+          32,
+
+        width:
+          27,
+
+        height:
+          37
+      };
 
     }
 
@@ -2607,39 +2592,170 @@
     }
 
 
-    function updateCaptureBodyStyle(
-      body
-    ) {
+    function createCaptureEngine() {
 
-      body.element.style.setProperty(
-        "--piece-size",
-        `${body.size}px`
+      if (
+        captureEngine
+      ) {
+        return;
+      }
+
+
+      if (
+        !window.Matter
+      ) {
+
+        console.error(
+          "Matter.js failed to load."
+        );
+
+
+        return;
+      }
+
+
+      captureEngine =
+        Matter.Engine.create({
+          enableSleeping:
+            true
+        });
+
+
+      captureWorld =
+        captureEngine.world;
+
+
+      captureWorld.gravity.x =
+        0;
+
+
+      captureWorld.gravity.y =
+        1;
+
+
+      captureWorld.gravity.scale =
+        .00145;
+
+
+      rebuildCaptureWalls();
+
+    }
+
+
+    function rebuildCaptureWalls() {
+
+      if (
+        !captureEngine
+      ) {
+        return;
+      }
+
+
+      captureWalls.forEach(
+        wall => {
+
+          Matter.Composite.remove(
+            captureWorld,
+            wall
+          );
+
+        }
       );
 
 
-      body.element.style.setProperty(
-        "--x",
-        `${body.x}px`
-      );
+      captureWalls =
+        [];
 
 
-      body.element.style.setProperty(
-        "--y",
-        `${body.y}px`
-      );
+      const width =
+        captureBin.clientWidth;
 
 
-      body.element.style.setProperty(
-        "--r",
-        `${body.rotation}deg`
+      const height =
+        captureBin.clientHeight;
+
+
+      const thickness =
+        18;
+
+
+      const options = {
+        isStatic:
+          true,
+
+        restitution:
+          .28,
+
+        friction:
+          .54,
+
+        frictionStatic:
+          .9
+      };
+
+
+      const floor =
+        Matter.Bodies.rectangle(
+          width /
+          2,
+          height +
+          thickness /
+          2,
+          width +
+          thickness *
+          2,
+          thickness,
+          options
+        );
+
+
+      const left =
+        Matter.Bodies.rectangle(
+          -thickness /
+          2,
+          height /
+          2,
+          thickness,
+          height +
+          thickness *
+          2,
+          options
+        );
+
+
+      const right =
+        Matter.Bodies.rectangle(
+          width +
+          thickness /
+          2,
+          height /
+          2,
+          thickness,
+          height +
+          thickness *
+          2,
+          options
+        );
+
+
+      captureWalls = [
+        floor,
+        left,
+        right
+      ];
+
+
+      Matter.Composite.add(
+        captureWorld,
+        captureWalls
       );
 
     }
 
 
-    function createCapturedElement(
+    function makeCapturedElement(
       piece,
-      size
+      metrics
     ) {
 
       const element =
@@ -2664,8 +2780,20 @@
 
 
       element.style.setProperty(
-        "--piece-size",
-        `${size}px`
+        "--piece-w",
+        `${metrics.width}px`
+      );
+
+
+      element.style.setProperty(
+        "--piece-h",
+        `${metrics.height}px`
+      );
+
+
+      element.style.setProperty(
+        "--piece-font",
+        `${metrics.font}px`
       );
 
 
@@ -2679,41 +2807,59 @@
     }
 
 
-    function seededValue(
-      seed,
-      shift =
-        0
+    function updateCapturedElement(
+      item
     ) {
 
-      return (
-        (
-          seed >>>
-          shift
-        )
-        &
-        255
-      )
-      /
-      255;
+      item.element.style.setProperty(
+        "--x",
+        `${item.body.position.x}px`
+      );
+
+
+      item.element.style.setProperty(
+        "--y",
+        `${item.body.position.y}px`
+      );
+
+
+      item.element.style.setProperty(
+        "--r",
+        `${item.body.angle * 180 / Math.PI}deg`
+      );
 
     }
 
 
-    function createFallingBody(
-      piece,
-      index
+    function seedNumber(
+      text
     ) {
 
-      const size =
-        pieceSizeForBin();
+      return hashString(
+        text
+      )
+      /
+      4294967295;
+
+    }
 
 
-      const maxX =
-        Math.max(
-          0,
-          captureBin.clientWidth -
-          size
-        );
+    function createCapturedBody(
+      piece,
+      index,
+      dropTogether =
+        false
+    ) {
+
+      createCaptureEngine();
+
+
+      const metrics =
+        pieceMetricsForBin();
+
+
+      const width =
+        captureBin.clientWidth;
 
 
       const seed =
@@ -2722,524 +2868,330 @@
         );
 
 
-      const element =
-        createCapturedElement(
-          piece,
-          size
-        );
+      const randomA =
+        (
+          seed &
+          65535
+        )
+        /
+        65535;
 
 
-      const body = {
-        element,
-        piece,
-        size,
-        radius:
-          size *
-          .47,
-
-        x:
-          maxX *
+      const randomB =
+        (
           (
-            .08 +
-            seededValue(
-              seed,
-              0
-            )
-            *
-            .84
-          ),
-
-        y:
-          -size
-          -
-          10
-          -
-          index *
-          3,
-
-        vx:
-          (
-            seededValue(
-              seed,
-              8
-            )
-            -
-            .5
-          )
-          *
-          70,
-
-        vy:
-          35
-          +
-          seededValue(
-            seed,
+            seed >>>
             16
           )
-          *
-          25,
+          &
+          65535
+        )
+        /
+        65535;
 
-        rotation:
-          (
-            seededValue(
-              seed,
-              18
+
+      const x =
+        Math.max(
+          metrics.width /
+          2 +
+          3,
+          Math.min(
+            width -
+            metrics.width /
+            2 -
+            3,
+            width *
+            (
+              .18 +
+              randomA *
+              .64
             )
-            -
-            .5
           )
-          *
-          28,
+        );
 
-        vr:
-          (
-            seededValue(
-              seed,
-              20
-            )
+
+      const y =
+        dropTogether
+          ? -metrics.height * .75
+          : -metrics.height * .75
             -
-            .5
-          )
-          *
-          110
-      };
+            index *
+            5;
 
 
-      updateCaptureBodyStyle(
-        body
+      const body =
+        Matter.Bodies.rectangle(
+          x,
+          y,
+          metrics.width,
+          metrics.height,
+          {
+            restitution:
+              .36,
+
+            friction:
+              .48,
+
+            frictionStatic:
+              .92,
+
+            frictionAir:
+              .018,
+
+            density:
+              .0022,
+
+            chamfer: {
+              radius:
+                2
+            },
+
+            sleepThreshold:
+              32
+          }
+        );
+
+
+      Matter.Body.setAngle(
+        body,
+        (
+          randomB -
+          .5
+        )
+        *
+        .7
       );
 
 
-      return body;
-
-    }
-
-
-    function createSettledBody(
-      piece,
-      index,
-      total
-    ) {
-
-      const size =
-        pieceSizeForBin();
-
-
-      const width =
-        captureBin.clientWidth;
-
-
-      const height =
-        captureBin.clientHeight;
-
-
-      const columns =
-        Math.max(
-          1,
-          Math.floor(
-            width /
+      Matter.Body.setVelocity(
+        body,
+        {
+          x:
             (
-              size *
-              .92
+              randomA -
+              .5
             )
-          )
-        );
+            *
+            1.8,
+
+          y:
+            1.2
+            +
+            randomB *
+            1.3
+        }
+      );
 
 
-      const column =
-        index %
-        columns;
-
-
-      const row =
-        Math.floor(
-          index /
-          columns
-        );
-
-
-      const used =
-        Math.min(
-          total,
-          columns
-        );
-
-
-      const rowWidth =
-        used *
-        size *
-        .84;
-
-
-      const left =
-        Math.max(
-          0,
-          (
-            width -
-            rowWidth
-          )
-          /
-          2
-        );
-
-
-      const seed =
-        hashString(
-          `${piece.color}-${piece.type}-${piece.token}-${index}`
-        );
+      Matter.Body.setAngularVelocity(
+        body,
+        (
+          randomB -
+          .5
+        )
+        *
+        .08
+      );
 
 
       const element =
-        createCapturedElement(
+        makeCapturedElement(
           piece,
-          size
+          metrics
         );
 
 
-      const body = {
-        element,
+      const item = {
         piece,
-        size,
-        radius:
-          size *
-          .47,
-
-        x:
-          clampChess(
-            left
-            +
-            column *
-            size *
-            .84,
-            0,
-            Math.max(
-              0,
-              width -
-              size
-            )
-          ),
-
-        y:
-          clampChess(
-            height
-            -
-            size
-            -
-            row *
-            size *
-            .78,
-            0,
-            Math.max(
-              0,
-              height -
-              size
-            )
-          ),
-
-        vx:
-          0,
-
-        vy:
-          0,
-
-        rotation:
-          (
-            seededValue(
-              seed,
-              16
-            )
-            -
-            .5
-          )
-          *
-          24,
-
-        vr:
-          0
+        body,
+        element
       };
 
 
-      updateCaptureBodyStyle(
+      Matter.Composite.add(
+        captureWorld,
         body
       );
 
 
-      return body;
+      updateCapturedElement(
+        item
+      );
+
+
+      return item;
 
     }
 
 
-    function resolveCaptureCollision(
-      a,
-      b
+    function wakeCapturePile(
+      strength =
+        .34
     ) {
 
-      const ax =
-        a.x +
-        a.size /
-        2;
-
-
-      const ay =
-        a.y +
-        a.size /
-        2;
-
-
-      const bx =
-        b.x +
-        b.size /
-        2;
-
-
-      const by =
-        b.y +
-        b.size /
-        2;
-
-
-      let dx =
-        bx -
-        ax;
-
-
-      let dy =
-        by -
-        ay;
-
-
-      let distance =
-        Math.hypot(
-          dx,
-          dy
-        );
-
-
-      const minimum =
-        a.radius +
-        b.radius;
-
-
-      if (
-        distance >=
-        minimum
-      ) {
-        return;
-      }
-
-
-      if (
-        distance <
-        .001
-      ) {
-
-        distance =
-          .001;
-
-
-        dx =
-          .001;
-
-      }
-
-
-      const nx =
-        dx /
-        distance;
-
-
-      const ny =
-        dy /
-        distance;
-
-
-      const overlap =
-        minimum -
-        distance;
-
-
-      const correction =
-        overlap *
-        .52;
-
-
-      a.x -=
-        nx *
-        correction;
-
-
-      a.y -=
-        ny *
-        correction;
-
-
-      b.x +=
-        nx *
-        correction;
-
-
-      b.y +=
-        ny *
-        correction;
-
-
-      const relative =
-        (
-          b.vx -
-          a.vx
-        )
-        *
-        nx
-        +
-        (
-          b.vy -
-          a.vy
-        )
-        *
-        ny;
-
-
-      if (
-        relative <
-        0
-      ) {
-
-        const restitution =
-          .30;
-
-
-        const impulse =
-          -(
-            1 +
-            restitution
-          )
-          *
-          relative
-          /
-          2;
-
-
-        a.vx -=
-          impulse *
-          nx;
-
-
-        a.vy -=
-          impulse *
-          ny;
-
-
-        b.vx +=
-          impulse *
-          nx;
-
-
-        b.vy +=
-          impulse *
-          ny;
-
-
-        const tangentSpeed =
-          (
-            b.vx -
-            a.vx
-          )
-          *
-          (
-            -ny
-          )
-          +
-          (
-            b.vy -
-            a.vy
-          )
-          *
-          nx;
-
-
-        a.vr -=
-          tangentSpeed *
-          .42;
-
-
-        b.vr +=
-          tangentSpeed *
-          .42;
-
-      }
-
-    }
-
-
-    function freezeCaptureBodies() {
-
       captureBodies.forEach(
-        body => {
+        item => {
 
-          body.vx =
-            0;
-
-
-          body.vy =
-            0;
+          Matter.Sleeping.set(
+            item.body,
+            false
+          );
 
 
-          body.vr =
-            0;
+          Matter.Body.setVelocity(
+            item.body,
+            {
+              x:
+                item.body.velocity.x
+                +
+                (
+                  Math.random() -
+                  .5
+                )
+                *
+                strength,
 
-
-          updateCaptureBodyStyle(
-            body
+              y:
+                item.body.velocity.y
+                -
+                Math.random()
+                *
+                strength
+                *
+                .7
+            }
           );
 
         }
       );
 
-
-      if (
-        capturePhysicsFrame
-      ) {
-
-        cancelAnimationFrame(
-          capturePhysicsFrame
-        );
-
-
-        capturePhysicsFrame =
-          null;
-
-      }
-
     }
 
 
-    function capturePhysicsStep(
-      now
-    ) {
-
-      capturePhysicsFrame =
-        null;
-
+    function capturePileSettled() {
 
       if (
         captureBodies.length ===
         0
       ) {
+        return true;
+      }
+
+
+      return captureBodies.every(
+        item => {
+
+          const body =
+            item.body;
+
+
+          return (
+            body.isSleeping
+            ||
+            (
+              body.speed <
+              .055
+              &&
+              Math.abs(
+                body.angularSpeed
+              )
+              <
+              .0045
+            )
+          );
+
+        }
+      );
+
+    }
+
+
+    function stopCapturePhysics() {
+
+      if (
+        captureFrame
+      ) {
+
+        cancelAnimationFrame(
+          captureFrame
+        );
+
+
+        captureFrame =
+          null;
+
+      }
+
+
+      captureBodies.forEach(
+        item => {
+
+          Matter.Body.setVelocity(
+            item.body,
+            {
+              x:
+                0,
+
+              y:
+                0
+            }
+          );
+
+
+          Matter.Body.setAngularVelocity(
+            item.body,
+            0
+          );
+
+
+          Matter.Sleeping.set(
+            item.body,
+            true
+          );
+
+
+          updateCapturedElement(
+            item
+          );
+
+        }
+      );
+
+    }
+
+
+    function capturePhysicsLoop(
+      now
+    ) {
+
+      captureFrame =
+        null;
+
+
+      if (
+        !captureEngine
+      ) {
         return;
       }
 
 
-      const elapsed =
+      if (
+        !captureLastTime
+      ) {
+
+        captureLastTime =
+          now;
+
+      }
+
+
+      const delta =
         Math.min(
-          .03,
+          24,
           Math.max(
-            .001,
-            (
-              now -
-              captureLastTime
-            )
-            /
-            1000
+            8,
+            now -
+            captureLastTime
           )
         );
 
@@ -3248,310 +3200,68 @@
         now;
 
 
-      const substeps =
-        4;
-
-
-      const dt =
-        elapsed /
-        substeps;
-
-
-      const gravity =
-        1260;
-
-
-      const width =
-        captureBin.clientWidth;
-
-
-      const height =
-        captureBin.clientHeight;
-
-
-      for (
-        let step =
-          0;
-        step <
-        substeps;
-        step++
-      ) {
-
-        captureBodies.forEach(
-          body => {
-
-            body.vy +=
-              gravity *
-              dt;
-
-
-            body.vx *=
-              .994;
-
-
-            body.vy *=
-              .998;
-
-
-            body.vr *=
-              .992;
-
-
-            body.x +=
-              body.vx *
-              dt;
-
-
-            body.y +=
-              body.vy *
-              dt;
-
-
-            body.rotation +=
-              body.vr *
-              dt;
-
-
-            const maxX =
-              Math.max(
-                0,
-                width -
-                body.size
-              );
-
-
-            const maxY =
-              Math.max(
-                0,
-                height -
-                body.size
-              );
-
-
-            if (
-              body.x <
-              0
-            ) {
-
-              body.x =
-                0;
-
-
-              body.vx *=
-                -.28;
-
-
-              body.vr *=
-                .88;
-
-            }
-
-
-            if (
-              body.x >
-              maxX
-            ) {
-
-              body.x =
-                maxX;
-
-
-              body.vx *=
-                -.28;
-
-
-              body.vr *=
-                .88;
-
-            }
-
-
-            if (
-              body.y >
-              maxY
-            ) {
-
-              body.y =
-                maxY;
-
-
-              if (
-                Math.abs(
-                  body.vy
-                ) >
-                32
-              ) {
-
-                body.vy *=
-                  -.28;
-
-              }
-
-              else {
-
-                body.vy =
-                  0;
-
-              }
-
-
-              body.vx *=
-                .76;
-
-
-              body.vr *=
-                .78;
-
-            }
-
-          }
-        );
-
-
-        for (
-          let pass =
-            0;
-          pass <
-          6;
-          pass++
-        ) {
-
-          for (
-            let i =
-              0;
-            i <
-            captureBodies.length;
-            i++
-          ) {
-
-            for (
-              let j =
-                i +
-                1;
-              j <
-              captureBodies.length;
-              j++
-            ) {
-
-              resolveCaptureCollision(
-                captureBodies[
-                  i
-                ],
-                captureBodies[
-                  j
-                ]
-              );
-
-            }
-
-          }
-
-        }
-
-
-        captureBodies.forEach(
-          body => {
-
-            body.x =
-              clampChess(
-                body.x,
-                0,
-                Math.max(
-                  0,
-                  width -
-                  body.size
-                )
-              );
-
-
-            body.y =
-              clampChess(
-                body.y,
-                -body.size,
-                Math.max(
-                  0,
-                  height -
-                  body.size
-                )
-              );
-
-          }
-        );
-
-      }
-
-
-      let activity =
-        0;
+      Matter.Engine.update(
+        captureEngine,
+        delta
+      );
 
 
       captureBodies.forEach(
-        body => {
-
-          activity =
-            Math.max(
-              activity,
-              Math.abs(
-                body.vx
-              )
-              +
-              Math.abs(
-                body.vy
-              )
-              +
-              Math.abs(
-                body.vr
-              )
-              *
-              .18
-            );
-
-
-          updateCaptureBodyStyle(
-            body
-          );
-
-        }
+        updateCapturedElement
       );
 
 
       if (
-        now >=
-        capturePhysicsEndsAt
-        ||
-        activity <
-        7
+        capturePileSettled()
       ) {
 
-        freezeCaptureBodies();
+        if (
+          !captureStillSince
+        ) {
+
+          captureStillSince =
+            now;
+
+        }
 
 
-        return;
+        if (
+          now -
+          captureStillSince >
+          320
+        ) {
+
+          stopCapturePhysics();
+
+
+          return;
+
+        }
+
+      }
+
+      else {
+
+        captureStillSince =
+          0;
 
       }
 
 
-      capturePhysicsFrame =
+      captureFrame =
         requestAnimationFrame(
-          capturePhysicsStep
+          capturePhysicsLoop
         );
 
     }
 
 
-    function startCapturePhysics(
-      duration =
-        1650
-    ) {
+    function startCapturePhysics() {
 
       if (
-        capturePhysicsFrame
+        captureFrame
       ) {
-
-        cancelAnimationFrame(
-          capturePhysicsFrame
-        );
-
+        return;
       }
 
 
@@ -3559,15 +3269,61 @@
         performance.now();
 
 
-      capturePhysicsEndsAt =
-        captureLastTime +
-        duration;
+      captureStillSince =
+        0;
 
 
-      capturePhysicsFrame =
+      captureFrame =
         requestAnimationFrame(
-          capturePhysicsStep
+          capturePhysicsLoop
         );
+
+    }
+
+
+    function clearCapturePhysics() {
+
+      if (
+        captureFrame
+      ) {
+
+        cancelAnimationFrame(
+          captureFrame
+        );
+
+
+        captureFrame =
+          null;
+
+      }
+
+
+      captureBodies =
+        [];
+
+
+      captureBin.innerHTML =
+        "";
+
+
+      if (
+        captureEngine
+      ) {
+
+        Matter.Composite.clear(
+          captureWorld,
+          false,
+          true
+        );
+
+
+        captureWalls =
+          [];
+
+
+        rebuildCaptureWalls();
+
+      }
 
     }
 
@@ -3583,6 +3339,12 @@
       clearCapturePhysics();
 
 
+      createCaptureEngine();
+
+
+      rebuildCaptureWalls();
+
+
       const pieces =
         allCapturedPieces(
           source
@@ -3590,57 +3352,10 @@
 
 
       if (
-        dropAll
+        pieces.length ===
+        0
       ) {
-
-        pieces.forEach(
-          (
-            piece,
-            index
-          ) => {
-
-            const body =
-              createFallingBody(
-                piece,
-                simultaneous
-                  ? 0
-                  : index
-              );
-
-
-            if (
-              simultaneous
-            ) {
-
-              body.y =
-                -body.size -
-                8;
-
-
-              body.vy +=
-                index *
-                2;
-
-            }
-
-
-            captureBodies.push(
-              body
-            );
-
-          }
-        );
-
-
-        startCapturePhysics(
-          simultaneous
-            ? 1750
-            : 1550
-        );
-
-
         return;
-
       }
 
 
@@ -3651,15 +3366,20 @@
         ) => {
 
           captureBodies.push(
-            createSettledBody(
+            createCapturedBody(
               piece,
-              index,
-              pieces.length
+              simultaneous
+                ? 0
+                : index,
+              simultaneous
             )
           );
 
         }
       );
+
+
+      startCapturePhysics();
 
     }
 
@@ -3668,77 +3388,39 @@
       piece
     ) {
 
-      const body =
-        createFallingBody(
+      createCaptureEngine();
+
+
+      rebuildCaptureWalls();
+
+
+      wakeCapturePile(
+        .5
+      );
+
+
+      captureBodies.push(
+        createCapturedBody(
           piece,
-          captureBodies.length
-        );
+          captureBodies.length,
+          false
+        )
+      );
 
 
       captureBodies.forEach(
-        existing => {
+        item => {
 
-          existing.vx +=
-            (
-              Math.random() -
-              .5
-            )
-            *
-            10;
-
-
-          existing.vy -=
-            Math.random() *
-            6;
-
-
-          existing.vr +=
-            (
-              Math.random() -
-              .5
-            )
-            *
-            8;
+          Matter.Sleeping.set(
+            item.body,
+            false
+          );
 
         }
       );
 
 
-      captureBodies.push(
-        body
-      );
-
-
-      startCapturePhysics(
-        1500
-      );
-
-    }
-
-
-    function clearCapturePhysics() {
-
-      if (
-        capturePhysicsFrame
-      ) {
-
-        cancelAnimationFrame(
-          capturePhysicsFrame
-        );
-
-
-        capturePhysicsFrame =
-          null;
-
-      }
-
-
-      captureBodies =
-        [];
-
-
-      captureBin.innerHTML =
-        "";
+      startCapturePhysics();
 
     }
 
@@ -3777,7 +3459,7 @@
         rebuildCaptureBodies(
           source,
           true,
-          false
+          true
         );
 
 
@@ -3830,7 +3512,8 @@
 
       rebuildCaptureBodies(
         source,
-        false
+        true,
+        true
       );
 
     }
@@ -5246,13 +4929,6 @@
           : "black";
 
 
-      boardArea.classList.toggle(
-        "is-flipped",
-        orientation ===
-        "black"
-      );
-
-
       hideResultUI();
 
 
@@ -5523,7 +5199,7 @@
           "A Game of Chess",
 
         info:
-          "A Game of Chess, c. 1508, by Dutch artist Lucas van Leyden.",
+          "Lucas van Leyden, c. 1508. Netherlands.",
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG"
@@ -5534,7 +5210,7 @@
           "The Chess Game",
 
         info:
-          "The Chess Game, 1896, by Austrian-French painter Ludwig Deutsch.",
+          "Ludwig Deutsch, 1896. Orientalist painting.",
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/b/b2/The_Chess_Game.jpg"
@@ -5542,10 +5218,10 @@
 
       {
         title:
-          "Golestan Palace Album No. 108",
+          "Golestan Palace Album",
 
         info:
-          "A photograph from Album No. 108 in the Golestan Palace Library, Iran.",
+          "Historic photograph. Golestan Palace, Iran.",
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/7/73/Golestan_Palace_Album_No._108-7.jpg"
@@ -5553,10 +5229,10 @@
 
       {
         title:
-          "Chess Playing, Louvre OA117",
+          "Louvre Chess Mirror Case",
 
         info:
-          "A couple playing chess on a carved ivory mirror case made in Paris around 1300.",
+          "Paris, c. 1300. Carved ivory.",
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/9/91/Chess_playing_Louvre_OA117.jpg"
@@ -5567,7 +5243,7 @@
           "Lewis Chessmen",
 
         info:
-          "Lewis Chessmen, 12th-century chess pieces from the Isle of Lewis in the Outer Hebrides of Scotland.",
+          "12th century. Isle of Lewis, Outer Hebrides, Scotland.",
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/1/1c/NMSLewisChessmen28.jpg"
@@ -5669,6 +5345,10 @@
       );
 
 
+      winOverlay.hidden =
+        false;
+
+
       winOverlay.classList.add(
         "is-visible"
       );
@@ -5709,6 +5389,10 @@
       winOverlay.classList.remove(
         "is-visible"
       );
+
+
+      winOverlay.hidden =
+        true;
 
 
       winOverlay.setAttribute(
@@ -6545,6 +6229,10 @@
       );
 
 
+      winOverlay.hidden =
+        true;
+
+
       winOverlay.setAttribute(
         "aria-hidden",
         "true"
@@ -6954,11 +6642,13 @@
       () => {
 
         if (
-          captureBodies.length ===
-          0
+          !captureEngine
         ) {
           return;
         }
+
+
+        rebuildCaptureWalls();
 
 
         const source =
@@ -6971,7 +6661,8 @@
 
         rebuildCaptureBodies(
           source,
-          false
+          true,
+          true
         );
 
       }
@@ -6988,13 +6679,6 @@
 
 
     hideResultUI();
-
-
-    boardArea.classList.toggle(
-      "is-flipped",
-      orientation ===
-      "black"
-    );
 
 
     resetHistory();
