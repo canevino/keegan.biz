@@ -538,6 +538,66 @@
       color: var(--board-green);
     }
 
+    .home-chess .promotion-picker {
+      position: absolute;
+      inset: 0;
+      z-index: 40;
+
+      display: none;
+      place-items: center;
+
+      background:
+        rgba(236, 231, 215, .34);
+    }
+
+    .home-chess .promotion-picker.is-visible {
+      display: grid;
+    }
+
+    .home-chess .promotion-options {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      gap: 0;
+
+      background: var(--board-paper);
+
+      border: 2px solid var(--board-red);
+
+      box-shadow:
+        6px
+        6px
+        0
+        rgba(193, 39, 45, .62);
+    }
+
+    .home-chess .promotion-option {
+      width: 58px;
+      height: 58px;
+
+      padding: 0;
+
+      border: 0;
+      border-right: 1px solid var(--board-red);
+
+      background: transparent;
+
+      font-size: 38px;
+      line-height: 1;
+      font-weight: 700;
+
+      color: var(--promotion-color, var(--board-yellow));
+    }
+
+    .home-chess .promotion-option:last-child {
+      border-right: 0;
+    }
+
+    .home-chess .promotion-option:hover {
+      background: var(--board-red);
+      color: var(--board-paper);
+    }
+
+
     .home-chess .win-overlay {
       position: absolute;
       inset: 0;
@@ -622,6 +682,9 @@
       letter-spacing: -.055em;
       font-weight: 700;
       box-shadow: 6px 6px 0 rgba(193, 39, 45, .72);
+
+      transform:
+        translateY(-42px);
     }
 
     .home-chess .result-actions {
@@ -1136,6 +1199,23 @@
                 id="board"
                 aria-label="Chess board"
               ></div>
+
+              <div
+                class="promotion-picker"
+                id="promotion-picker"
+                aria-hidden="true"
+              >
+                <div
+                  class="promotion-options"
+                  role="dialog"
+                  aria-label="Choose promotion piece"
+                >
+                  <button class="promotion-option" data-promotion="q" type="button">Q</button>
+                  <button class="promotion-option" data-promotion="r" type="button">R</button>
+                  <button class="promotion-option" data-promotion="b" type="button">B</button>
+                  <button class="promotion-option" data-promotion="n" type="button">N</button>
+                </div>
+              </div>
 
 
               <div
@@ -1850,6 +1930,20 @@
       );
 
 
+    const promotionPicker =
+      document.getElementById(
+        "promotion-picker"
+      );
+
+
+    const promotionOptions =
+      Array.from(
+        document.querySelectorAll(
+          ".promotion-option"
+        )
+      );
+
+
     const winOverlay =
       document.getElementById(
         "win-overlay"
@@ -2458,7 +2552,7 @@
         *
         rect.width
         *
-        .72;
+        .46;
 
 
       const y =
@@ -2638,16 +2732,16 @@
 
         bodyWidth:
           Math.max(
-            12,
+            11,
             measuredWidth *
-            .88
+            .76
           ),
 
         bodyHeight:
           Math.max(
-            17,
+            16,
             measuredHeight *
-            .90
+            .84
           )
       };
 
@@ -2759,7 +2853,7 @@
 
 
       captureWorld.gravity.scale =
-        .00135;
+        .00155;
 
 
       captureRunner =
@@ -2982,10 +3076,10 @@
           true,
 
         restitution:
-          .22,
+          .08,
 
         friction:
-          .72,
+          .82,
 
         frictionStatic:
           1
@@ -2996,7 +3090,8 @@
         Matter.Bodies.rectangle(
           width /
           2,
-          height +
+          height -
+          4 +
           thickness /
           2,
           width +
@@ -3234,16 +3329,16 @@
           metrics.bodyHeight,
           {
             restitution:
-              .30,
+              .12,
 
             friction:
-              .64,
+              .76,
 
             frictionStatic:
               1,
 
             frictionAir:
-              .012,
+              .024,
 
             density:
               .0024,
@@ -3254,7 +3349,7 @@
             },
 
             sleepThreshold:
-              42
+              26
           }
         );
 
@@ -3279,13 +3374,13 @@
               .5
             )
             *
-            2.3,
+            .85,
 
           y:
-            1.1
+            .65
             +
             randomB *
-            1.5
+            .55
         }
       );
 
@@ -3297,7 +3392,7 @@
           .5
         )
         *
-        .095
+        .032
       );
 
 
@@ -5198,7 +5293,102 @@
     }
 
 
-    function boardClick(
+    let promotionResolve =
+      null;
+
+
+    function choosePromotion(
+      color
+    ) {
+
+      return new Promise(
+        resolve => {
+
+          promotionResolve =
+            resolve;
+
+
+          promotionPicker.style.setProperty(
+            "--promotion-color",
+            color ===
+            "w"
+              ? "var(--board-yellow)"
+              : "var(--board-green)"
+          );
+
+
+          promotionPicker.classList.add(
+            "is-visible"
+          );
+
+
+          promotionPicker.setAttribute(
+            "aria-hidden",
+            "false"
+          );
+
+        }
+      );
+
+    }
+
+
+    function closePromotionPicker(
+      choice =
+        null
+    ) {
+
+      promotionPicker.classList.remove(
+        "is-visible"
+      );
+
+
+      promotionPicker.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      if (
+        promotionResolve
+      ) {
+
+        const resolve =
+          promotionResolve;
+
+
+        promotionResolve =
+          null;
+
+
+        resolve(
+          choice
+        );
+
+      }
+
+    }
+
+
+    promotionOptions.forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            closePromotionPicker(
+              button.dataset.promotion
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+    async function boardClick(
       event
     ) {
 
@@ -5296,13 +5486,13 @@
       }
 
 
-      const legalMove =
+      const destinationMoves =
         game.moves({
           square:
             selected.from,
           verbose:
             true
-        }).find(
+        }).filter(
           move =>
             move.to ===
             squareName
@@ -5310,21 +5500,72 @@
 
 
       if (
-        legalMove
+        destinationMoves.length >
+        0
       ) {
 
         const from =
           selected.from;
 
 
+        const movingPiece =
+          game.get(
+            from
+          );
+
+
+        const promotionMoves =
+          destinationMoves.filter(
+            move =>
+              Boolean(
+                move.promotion
+              )
+          );
+
+
+        const releaseX =
+          event.clientX;
+
+
+        const releaseY =
+          event.clientY;
+
+
         cancelSelection();
+
+
+        let promotion =
+          "q";
+
+
+        if (
+          promotionMoves.length >
+          0
+        ) {
+
+          promotion =
+            await choosePromotion(
+              movingPiece
+                ? movingPiece.color
+                : game.turn()
+            );
+
+
+          if (
+            !promotion
+          ) {
+            return;
+          }
+
+        }
 
 
         attemptMove(
           from,
           squareName,
-          event.clientX,
-          event.clientY
+          releaseX,
+          releaseY,
+          promotion
         );
 
 
