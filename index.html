@@ -1360,13 +1360,15 @@
 
 
       .home-chess {
+        --capture-column: clamp(58px, 17vw, 70px);
+
         width: 100%;
-        margin-top: 34px;
+        margin-top: 28px;
       }
 
       .home-chess .board-area {
-        --capture-column: clamp(62px, 19vw, 82px);
-        gap: 8px;
+        --capture-column: inherit;
+        gap: 7px;
       }
 
       .home-chess .chess-topbar {
@@ -1439,10 +1441,11 @@
       }
 
       .home-chess .win-title {
-        max-width: 66%;
-        padding: 5px 8px 7px;
-        font-size: clamp(27px, 8.5vw, 40px);
-        box-shadow: 4px 4px 0 rgba(193, 39, 45, .72);
+        max-width: 52%;
+        padding: 4px 6px 5px;
+        font-size: clamp(20px, 6.2vw, 28px);
+        line-height: .92;
+        box-shadow: 3px 3px 0 rgba(193, 39, 45, .72);
 
         transform:
           translateY(
@@ -1460,7 +1463,7 @@
             calc(
               -50% +
               var(--win-title-y-mobile, -42px) +
-              52px
+              39px
             )
           );
       }
@@ -1473,24 +1476,97 @@
       }
 
       .home-chess .result-actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width:
+          calc(
+            100% -
+            var(--capture-column) -
+            7px
+          );
+
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          );
+
+        margin-top: 7px;
       }
+
+
+      .home-chess .result-actions button {
+        min-height: 36px;
+        padding: 7px 8px;
+        font-size: 10px;
+        text-align: center;
+      }
+
 
       .home-chess .review-controls {
+        width:
+          calc(
+            100% -
+            var(--capture-column) -
+            7px
+          );
+
         grid-template-columns:
-          repeat(4, auto);
-        justify-content: space-between;
-        gap: 10px 8px;
+          48px
+          34px
+          minmax(0, 1fr)
+          34px
+          48px;
+
+        grid-template-rows:
+          34px
+          34px;
+
+        gap: 0;
+
+        justify-content: stretch;
+        align-items: stretch;
+
+        margin-top: 7px;
       }
 
-      .home-chess .review-label {
-        grid-column: 1 / -1;
-        grid-row: 1;
+
+      .home-chess .review-controls > * {
+        min-width: 0;
       }
+
+
+      .home-chess .review-controls button,
+      .home-chess .review-label {
+        min-height: 34px;
+        padding: 6px 4px;
+        font-size: 9px;
+        line-height: 1;
+        text-align: center;
+      }
+
+
+      .home-chess .review-label {
+        grid-column: 3;
+        grid-row: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
 
       .home-chess .review-result {
         grid-column: 1 / -1;
-        justify-self: start;
+        grid-row: 2;
+
+        width: 100%;
+        justify-self: stretch;
+
+        border-left: 0 !important;
+        border-top: 1px solid var(--board-red);
       }
 
       .home-chess .chess-bottombar {
@@ -1524,6 +1600,27 @@
       }
     }
 
+
+      .home-chess .review-controls > :nth-child(1) {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .home-chess .review-controls > :nth-child(2) {
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      .home-chess .review-controls > :nth-child(4) {
+        grid-column: 4;
+        grid-row: 1;
+      }
+
+      .home-chess .review-controls > :nth-child(5) {
+        grid-column: 5;
+        grid-row: 1;
+      }
+
     @media (max-width: 420px) {
       .home-chess .time-label {
         display: none;
@@ -1540,6 +1637,26 @@
       }
 
     }
+
+      .home-chess .win-title {
+        max-width: 48%;
+        font-size: clamp(18px, 5.8vw, 24px);
+      }
+
+      .home-chess .review-controls {
+        grid-template-columns:
+          44px
+          32px
+          minmax(0, 1fr)
+          32px
+          44px;
+      }
+
+      .home-chess .review-controls button,
+      .home-chess .review-label {
+        font-size: 8px;
+      }
+
   </style>
 </head>
 
