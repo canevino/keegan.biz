@@ -1237,6 +1237,14 @@
     }
 
 
+    .home.chess-open .chess-launcher,
+    .home.chess-open .sports-launcher,
+    .home.sports-open .chess-launcher,
+    .home.sports-open .sports-launcher {
+      display: none;
+    }
+
+
     .sports-loading,
     .sports-empty,
     .sports-error {
@@ -5184,7 +5192,7 @@
         standings.rows
           .map(
             row => `
-              <tr>
+              <tr class="${row.highlight ? "is-highlighted" : ""}">
                 <td>${row.rank ?? ""}</td>
                 <td>${row.team ?? ""}</td>
                 <td>${row.record ?? row.points ?? ""}</td>
@@ -5195,7 +5203,9 @@
 
 
       return `
-        <p class="sports-table-title">${standings.title ?? ""}</p>
+        <p class="sports-table-title">
+          ${standings.title ?? ""}
+        </p>
 
         <table class="sports-table">
           <tbody>
@@ -5207,7 +5217,128 @@
     }
 
 
-    function sportsSectionMarkup(
+    function baseballLinescoreMarkup(
+      game
+    ) {
+
+      const innings =
+        Array.isArray(
+          game.innings
+        )
+          ? game.innings
+          : [];
+
+
+      if (
+        innings.length ===
+        0
+      ) {
+        return "";
+      }
+
+
+      const inningHeads =
+        innings
+          .map(
+            (_, index) =>
+              `<th>${index + 1}</th>`
+          )
+          .join("");
+
+
+      const awayInnings =
+        innings
+          .map(
+            inning =>
+              `<td>${inning.away ?? ""}</td>`
+          )
+          .join("");
+
+
+      const homeInnings =
+        innings
+          .map(
+            inning =>
+              `<td>${inning.home ?? ""}</td>`
+          )
+          .join("");
+
+
+      return `
+        <div class="baseball-linescore-wrap">
+          <table class="baseball-linescore">
+            <thead>
+              <tr>
+                <th>Team</th>
+                ${inningHeads}
+                <th>R</th>
+                <th>H</th>
+                <th>E</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <th>${game.awayFull ?? game.away ?? ""}</th>
+                ${awayInnings}
+                <td>${game.awayScore ?? ""}</td>
+                <td>${game.awayHits ?? ""}</td>
+                <td>${game.awayErrors ?? ""}</td>
+              </tr>
+
+              <tr>
+                <th>${game.homeFull ?? game.home ?? ""}</th>
+                ${homeInnings}
+                <td>${game.homeScore ?? ""}</td>
+                <td>${game.homeHits ?? ""}</td>
+                <td>${game.homeErrors ?? ""}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+
+    }
+
+
+    function footballEventsMarkup(
+      game
+    ) {
+
+      const events =
+        Array.isArray(
+          game.events
+        )
+          ? game.events
+          : [];
+
+
+      if (
+        events.length ===
+        0
+      ) {
+        return "";
+      }
+
+
+      return `
+        <div class="football-events">
+          ${events.map(
+            event => `
+              <div class="football-event ${event.side === "away" ? "is-away" : "is-home"}">
+                <span class="football-event-mark">${event.type === "red" ? "■" : "●"}</span>
+                <span>${event.player ?? ""}</span>
+                <strong>${event.minute ?? ""}</strong>
+              </div>
+            `
+          ).join("")}
+        </div>
+      `;
+
+    }
+
+
+    function baseballSectionMarkup(
       data
     ) {
 
@@ -5228,8 +5359,11 @@
 
 
       return `
-        <section class="sports-section">
-          <p class="sports-team">${data.shortName ?? data.team ?? ""}</p>
+        <section class="sports-section sports-baseball">
+
+          <p class="sports-team">
+            ${data.shortName ?? data.team ?? ""}
+          </p>
 
           <div class="sports-score">
             <span>${game.away ?? ""}</span>
@@ -5237,9 +5371,72 @@
             <span>${game.home ?? ""}</span>
           </div>
 
-          <p class="sports-detail">${game.detail ?? ""}</p>
+          <p class="sports-detail">
+            ${game.detail ?? ""}
+          </p>
+
+          ${baseballLinescoreMarkup(game)}
 
           ${sportsTableMarkup(data.standings)}
+
+        </section>
+      `;
+
+    }
+
+
+    function footballSectionMarkup(
+      data
+    ) {
+
+      if (
+        !data
+        ||
+        data.active ===
+        false
+      ) {
+        return "";
+      }
+
+
+      const game =
+        data.game
+        ||
+        {};
+
+
+      return `
+        <section class="sports-section sports-football">
+
+          <p class="sports-team">
+            ${data.shortName ?? data.team ?? ""}
+          </p>
+
+          <div class="football-match">
+
+            <div class="football-side is-home">
+              <strong>${game.home ?? ""}</strong>
+              <span>${game.homeSub ?? ""}</span>
+            </div>
+
+            <div class="football-score-block">
+              <strong>
+                ${game.homeScore ?? ""}–${game.awayScore ?? ""}
+              </strong>
+              <span>${game.detail ?? ""}</span>
+            </div>
+
+            <div class="football-side is-away">
+              <strong>${game.away ?? ""}</strong>
+              <span>${game.awaySub ?? ""}</span>
+            </div>
+
+          </div>
+
+          ${footballEventsMarkup(game)}
+
+          ${sportsTableMarkup(data.standings)}
+
         </section>
       `;
 
@@ -5260,10 +5457,10 @@
 
         const markup =
           [
-            sportsSectionMarkup(
+            baseballSectionMarkup(
               data?.baseball?.yankees
             ),
-            sportsSectionMarkup(
+            footballSectionMarkup(
               data?.football?.liverpool
             )
           ]
@@ -5300,6 +5497,11 @@
       closeChess();
 
 
+      home.classList.add(
+        "sports-open"
+      );
+
+
       sportsPanel.hidden =
         false;
 
@@ -5326,6 +5528,11 @@
 
     function closeSports() {
 
+      home.classList.remove(
+        "sports-open"
+      );
+
+
       sportsPanel.classList.remove(
         "is-open"
       );
@@ -5350,6 +5557,11 @@
     function openChess() {
 
       closeSports();
+
+
+      home.classList.add(
+        "chess-open"
+      );
 
 
       chessPanel.hidden =
