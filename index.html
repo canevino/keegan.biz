@@ -5686,6 +5686,35 @@
     }
 
 
+    function isSameEasternDay(
+      isoDateString,
+      date = new Date()
+    ) {
+
+      if (!isoDateString) {
+        return false;
+      }
+
+      const formatter =
+        new Intl.DateTimeFormat(
+          "en-CA",
+          {
+            timeZone: "America/New_York",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          }
+        );
+
+      return (
+        formatter.format(new Date(isoDateString))
+        ===
+        formatter.format(date)
+      );
+
+    }
+
+
     function chooseAutomaticFootballTeam(
       data
     ) {
