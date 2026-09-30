@@ -1657,6 +1657,105 @@
         font-size: 8px;
       }
 
+
+
+    /* Homepage panels: shared chess / sports system */
+    .chess-panel,
+    .sports-panel-shell {
+      width: min(100%, 700px);
+      margin: clamp(72px, 10vh, 126px) auto 0;
+    }
+
+    .chess-panel-head,
+    .sports-panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 100%;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .chess-panel-title,
+    .sports-panel-title {
+      margin: 0;
+      font-size: clamp(60px, 6.4vw, 96px);
+      line-height: .88;
+      letter-spacing: -.06em;
+      font-weight: 700;
+    }
+
+    .chess-close,
+    .sports-close {
+      flex: 0 0 52px;
+      display: grid;
+      place-items: center;
+      width: 52px;
+      height: 52px;
+      margin: -5px 0 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--red, #c1272d);
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 52px;
+      font-weight: 400;
+      line-height: 1;
+      text-decoration: none;
+      transform: none;
+      cursor: pointer;
+    }
+
+    .chess-close:hover,
+    .chess-close:focus-visible,
+    .sports-close:hover,
+    .sports-close:focus-visible {
+      transform: none;
+      text-decoration: none;
+    }
+
+    /* The header supplies the spacing; content starts on the same rhythm. */
+    .home-chess {
+      margin-top: 0;
+    }
+
+    .sports-box {
+      margin-top: 0;
+    }
+
+    @media (max-width: 700px) {
+      .chess-panel,
+      .sports-panel-shell {
+        width: 100%;
+        margin: 22px 0 0;
+      }
+
+      .chess-panel-head,
+      .sports-panel-head {
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .chess-panel-title,
+      .sports-panel-title {
+        font-size: clamp(52px, 15vw, 72px);
+        line-height: .88;
+      }
+
+      .chess-close,
+      .sports-close {
+        flex-basis: 44px;
+        width: 44px;
+        height: 44px;
+        margin-top: -3px;
+        font-size: 44px;
+      }
+
+      .home-chess {
+        margin-top: 0;
+      }
+    }
+
   </style>
 </head>
 
@@ -5682,35 +5781,6 @@
           )}
         </div>
       `;
-
-    }
-
-
-    function isSameEasternDay(
-      isoDateString,
-      date = new Date()
-    ) {
-
-      if (!isoDateString) {
-        return false;
-      }
-
-      const formatter =
-        new Intl.DateTimeFormat(
-          "en-CA",
-          {
-            timeZone: "America/New_York",
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit"
-          }
-        );
-
-      return (
-        formatter.format(new Date(isoDateString))
-        ===
-        formatter.format(date)
-      );
 
     }
 
