@@ -516,31 +516,6 @@
       color: var(--board-green);
     }
 
-    .home-chess .captured-piece.is-dropping {
-      animation:
-        captured-drop
-        var(--drop-duration, 620ms)
-        cubic-bezier(.18, .78, .22, 1)
-        var(--drop-delay, 0ms)
-        both;
-    }
-
-    @keyframes captured-drop {
-      0% {
-        transform:
-          translate3d(
-            var(--x, 0px),
-            var(--drop-start, -500px),
-            0
-          )
-          rotate(
-            calc(
-              var(--r, 0deg)
-              -
-              18deg
-            )
-          );
-      }
 
       70% {
         transform:
@@ -2568,6 +2543,18 @@
       [];
 
 
+    let capturePhysicsFrame =
+      null;
+
+
+    let captureLastTime =
+      performance.now();
+
+
+    let capturePhysicsEndsAt =
+      0;
+
+
     function pieceSizeForBin() {
 
       const width =
@@ -2620,220 +2607,39 @@
     }
 
 
-    function stablePileLayout(
-      pieces
+    function updateCaptureBodyStyle(
+      body
     ) {
 
-      const width =
-        captureBin.clientWidth;
+      body.element.style.setProperty(
+        "--piece-size",
+        `${body.size}px`
+      );
 
 
-      const height =
-        captureBin.clientHeight;
+      body.element.style.setProperty(
+        "--x",
+        `${body.x}px`
+      );
 
 
-      const size =
-        pieceSizeForBin();
+      body.element.style.setProperty(
+        "--y",
+        `${body.y}px`
+      );
 
 
-      const gap =
-        Math.max(
-          1,
-          Math.round(
-            size *
-            .05
-          )
-        );
-
-
-      const columns =
-        Math.max(
-          1,
-          Math.floor(
-            (
-              width +
-              gap
-            )
-            /
-            (
-              size +
-              gap
-            )
-          )
-        );
-
-
-      const usedWidth =
-        columns *
-        size
-        +
-        (
-          columns -
-          1
-        )
-        *
-        gap;
-
-
-      const left =
-        Math.max(
-          0,
-          (
-            width -
-            usedWidth
-          )
-          /
-          2
-        );
-
-
-      return pieces.map(
-        (
-          piece,
-          index
-        ) => {
-
-          const column =
-            index %
-            columns;
-
-
-          const row =
-            Math.floor(
-              index /
-              columns
-            );
-
-
-          const seed =
-            hashString(
-              `${piece.color}-${piece.type}-${piece.token}-${index}-${orientation}`
-            );
-
-
-          const maxY =
-            Math.max(
-              0,
-              height -
-              size
-            );
-
-
-          const jitterX =
-            (
-              (
-                seed &
-                255
-              )
-              /
-              255
-              -
-              .5
-            )
-            *
-            Math.min(
-              3,
-              gap +
-              2
-            );
-
-
-          const jitterY =
-            (
-              (
-                (
-                  seed >>>
-                  8
-                )
-                &
-                255
-              )
-              /
-              255
-              -
-              .5
-            )
-            *
-            2;
-
-
-          const x =
-            left
-            +
-            column *
-            (
-              size +
-              gap
-            )
-            +
-            jitterX;
-
-
-          const y =
-            maxY
-            -
-            row *
-            (
-              size *
-              .82
-            )
-            +
-            jitterY;
-
-
-          const rotation =
-            (
-              (
-                (
-                  seed >>>
-                  16
-                )
-                &
-                255
-              )
-              /
-              255
-              -
-              .5
-            )
-            *
-            20;
-
-
-          return {
-            piece,
-            size,
-            x:
-              clampChess(
-                x,
-                0,
-                Math.max(
-                  0,
-                  width -
-                  size
-                )
-              ),
-            y:
-              clampChess(
-                y,
-                0,
-                maxY
-              ),
-            rotation
-          };
-
-        }
+      body.element.style.setProperty(
+        "--r",
+        `${body.rotation}deg`
       );
 
     }
 
 
-    function makeCapturedPieceElement(
-      item,
-      index,
-      animate,
-      simultaneous =
-        false
+    function createCapturedElement(
+      piece,
+      size
     ) {
 
       const element =
@@ -2844,7 +2650,7 @@
 
       element.className =
         `captured-piece ${
-          item.piece.color ===
+          piece.color ===
           "w"
             ? "white"
             : "black"
@@ -2853,68 +2659,915 @@
 
       element.textContent =
         pieceLetters[
-          item.piece.type
+          piece.type
         ];
 
 
       element.style.setProperty(
         "--piece-size",
-        `${item.size}px`
+        `${size}px`
       );
 
 
-      element.style.setProperty(
-        "--x",
-        `${item.x}px`
+      captureBin.appendChild(
+        element
       );
 
 
-      element.style.setProperty(
-        "--y",
-        `${item.y}px`
+      return element;
+
+    }
+
+
+    function seededValue(
+      seed,
+      shift =
+        0
+    ) {
+
+      return (
+        (
+          seed >>>
+          shift
+        )
+        &
+        255
+      )
+      /
+      255;
+
+    }
+
+
+    function createFallingBody(
+      piece,
+      index
+    ) {
+
+      const size =
+        pieceSizeForBin();
+
+
+      const maxX =
+        Math.max(
+          0,
+          captureBin.clientWidth -
+          size
+        );
+
+
+      const seed =
+        hashString(
+          `${piece.color}-${piece.type}-${piece.token}-${index}-${orientation}`
+        );
+
+
+      const element =
+        createCapturedElement(
+          piece,
+          size
+        );
+
+
+      const body = {
+        element,
+        piece,
+        size,
+        radius:
+          size *
+          .47,
+
+        x:
+          maxX *
+          (
+            .08 +
+            seededValue(
+              seed,
+              0
+            )
+            *
+            .84
+          ),
+
+        y:
+          -size
+          -
+          10
+          -
+          index *
+          3,
+
+        vx:
+          (
+            seededValue(
+              seed,
+              8
+            )
+            -
+            .5
+          )
+          *
+          70,
+
+        vy:
+          35
+          +
+          seededValue(
+            seed,
+            16
+          )
+          *
+          25,
+
+        rotation:
+          (
+            seededValue(
+              seed,
+              18
+            )
+            -
+            .5
+          )
+          *
+          28,
+
+        vr:
+          (
+            seededValue(
+              seed,
+              20
+            )
+            -
+            .5
+          )
+          *
+          110
+      };
+
+
+      updateCaptureBodyStyle(
+        body
       );
 
 
-      element.style.setProperty(
-        "--r",
-        `${item.rotation}deg`
+      return body;
+
+    }
+
+
+    function createSettledBody(
+      piece,
+      index,
+      total
+    ) {
+
+      const size =
+        pieceSizeForBin();
+
+
+      const width =
+        captureBin.clientWidth;
+
+
+      const height =
+        captureBin.clientHeight;
+
+
+      const columns =
+        Math.max(
+          1,
+          Math.floor(
+            width /
+            (
+              size *
+              .92
+            )
+          )
+        );
+
+
+      const column =
+        index %
+        columns;
+
+
+      const row =
+        Math.floor(
+          index /
+          columns
+        );
+
+
+      const used =
+        Math.min(
+          total,
+          columns
+        );
+
+
+      const rowWidth =
+        used *
+        size *
+        .84;
+
+
+      const left =
+        Math.max(
+          0,
+          (
+            width -
+            rowWidth
+          )
+          /
+          2
+        );
+
+
+      const seed =
+        hashString(
+          `${piece.color}-${piece.type}-${piece.token}-${index}`
+        );
+
+
+      const element =
+        createCapturedElement(
+          piece,
+          size
+        );
+
+
+      const body = {
+        element,
+        piece,
+        size,
+        radius:
+          size *
+          .47,
+
+        x:
+          clampChess(
+            left
+            +
+            column *
+            size *
+            .84,
+            0,
+            Math.max(
+              0,
+              width -
+              size
+            )
+          ),
+
+        y:
+          clampChess(
+            height
+            -
+            size
+            -
+            row *
+            size *
+            .78,
+            0,
+            Math.max(
+              0,
+              height -
+              size
+            )
+          ),
+
+        vx:
+          0,
+
+        vy:
+          0,
+
+        rotation:
+          (
+            seededValue(
+              seed,
+              16
+            )
+            -
+            .5
+          )
+          *
+          24,
+
+        vr:
+          0
+      };
+
+
+      updateCaptureBodyStyle(
+        body
+      );
+
+
+      return body;
+
+    }
+
+
+    function resolveCaptureCollision(
+      a,
+      b
+    ) {
+
+      const ax =
+        a.x +
+        a.size /
+        2;
+
+
+      const ay =
+        a.y +
+        a.size /
+        2;
+
+
+      const bx =
+        b.x +
+        b.size /
+        2;
+
+
+      const by =
+        b.y +
+        b.size /
+        2;
+
+
+      let dx =
+        bx -
+        ax;
+
+
+      let dy =
+        by -
+        ay;
+
+
+      let distance =
+        Math.hypot(
+          dx,
+          dy
+        );
+
+
+      const minimum =
+        a.radius +
+        b.radius;
+
+
+      if (
+        distance >=
+        minimum
+      ) {
+        return;
+      }
+
+
+      if (
+        distance <
+        .001
+      ) {
+
+        distance =
+          .001;
+
+
+        dx =
+          .001;
+
+      }
+
+
+      const nx =
+        dx /
+        distance;
+
+
+      const ny =
+        dy /
+        distance;
+
+
+      const overlap =
+        minimum -
+        distance;
+
+
+      const correction =
+        overlap *
+        .52;
+
+
+      a.x -=
+        nx *
+        correction;
+
+
+      a.y -=
+        ny *
+        correction;
+
+
+      b.x +=
+        nx *
+        correction;
+
+
+      b.y +=
+        ny *
+        correction;
+
+
+      const relative =
+        (
+          b.vx -
+          a.vx
+        )
+        *
+        nx
+        +
+        (
+          b.vy -
+          a.vy
+        )
+        *
+        ny;
+
+
+      if (
+        relative <
+        0
+      ) {
+
+        const restitution =
+          .30;
+
+
+        const impulse =
+          -(
+            1 +
+            restitution
+          )
+          *
+          relative
+          /
+          2;
+
+
+        a.vx -=
+          impulse *
+          nx;
+
+
+        a.vy -=
+          impulse *
+          ny;
+
+
+        b.vx +=
+          impulse *
+          nx;
+
+
+        b.vy +=
+          impulse *
+          ny;
+
+
+        const tangentSpeed =
+          (
+            b.vx -
+            a.vx
+          )
+          *
+          (
+            -ny
+          )
+          +
+          (
+            b.vy -
+            a.vy
+          )
+          *
+          nx;
+
+
+        a.vr -=
+          tangentSpeed *
+          .42;
+
+
+        b.vr +=
+          tangentSpeed *
+          .42;
+
+      }
+
+    }
+
+
+    function freezeCaptureBodies() {
+
+      captureBodies.forEach(
+        body => {
+
+          body.vx =
+            0;
+
+
+          body.vy =
+            0;
+
+
+          body.vr =
+            0;
+
+
+          updateCaptureBodyStyle(
+            body
+          );
+
+        }
       );
 
 
       if (
-        animate
+        capturePhysicsFrame
       ) {
 
-        element.classList.add(
-          "is-dropping"
+        cancelAnimationFrame(
+          capturePhysicsFrame
         );
 
 
-        element.style.setProperty(
-          "--drop-delay",
-          simultaneous
-            ? "0ms"
-            : `${Math.min(index * 55, 420)}ms`
+        capturePhysicsFrame =
+          null;
+
+      }
+
+    }
+
+
+    function capturePhysicsStep(
+      now
+    ) {
+
+      capturePhysicsFrame =
+        null;
+
+
+      if (
+        captureBodies.length ===
+        0
+      ) {
+        return;
+      }
+
+
+      const elapsed =
+        Math.min(
+          .03,
+          Math.max(
+            .001,
+            (
+              now -
+              captureLastTime
+            )
+            /
+            1000
+          )
         );
 
 
-        element.style.setProperty(
-          "--drop-start",
-          `${-captureBin.clientHeight - item.size - 10}px`
+      captureLastTime =
+        now;
+
+
+      const substeps =
+        4;
+
+
+      const dt =
+        elapsed /
+        substeps;
+
+
+      const gravity =
+        1260;
+
+
+      const width =
+        captureBin.clientWidth;
+
+
+      const height =
+        captureBin.clientHeight;
+
+
+      for (
+        let step =
+          0;
+        step <
+        substeps;
+        step++
+      ) {
+
+        captureBodies.forEach(
+          body => {
+
+            body.vy +=
+              gravity *
+              dt;
+
+
+            body.vx *=
+              .994;
+
+
+            body.vy *=
+              .998;
+
+
+            body.vr *=
+              .992;
+
+
+            body.x +=
+              body.vx *
+              dt;
+
+
+            body.y +=
+              body.vy *
+              dt;
+
+
+            body.rotation +=
+              body.vr *
+              dt;
+
+
+            const maxX =
+              Math.max(
+                0,
+                width -
+                body.size
+              );
+
+
+            const maxY =
+              Math.max(
+                0,
+                height -
+                body.size
+              );
+
+
+            if (
+              body.x <
+              0
+            ) {
+
+              body.x =
+                0;
+
+
+              body.vx *=
+                -.28;
+
+
+              body.vr *=
+                .88;
+
+            }
+
+
+            if (
+              body.x >
+              maxX
+            ) {
+
+              body.x =
+                maxX;
+
+
+              body.vx *=
+                -.28;
+
+
+              body.vr *=
+                .88;
+
+            }
+
+
+            if (
+              body.y >
+              maxY
+            ) {
+
+              body.y =
+                maxY;
+
+
+              if (
+                Math.abs(
+                  body.vy
+                ) >
+                32
+              ) {
+
+                body.vy *=
+                  -.28;
+
+              }
+
+              else {
+
+                body.vy =
+                  0;
+
+              }
+
+
+              body.vx *=
+                .76;
+
+
+              body.vr *=
+                .78;
+
+            }
+
+          }
         );
 
 
-        element.style.setProperty(
-          "--drop-duration",
-          simultaneous
-            ? `${580 + (index % 4) * 22}ms`
-            : "620ms"
+        for (
+          let pass =
+            0;
+          pass <
+          6;
+          pass++
+        ) {
+
+          for (
+            let i =
+              0;
+            i <
+            captureBodies.length;
+            i++
+          ) {
+
+            for (
+              let j =
+                i +
+                1;
+              j <
+              captureBodies.length;
+              j++
+            ) {
+
+              resolveCaptureCollision(
+                captureBodies[
+                  i
+                ],
+                captureBodies[
+                  j
+                ]
+              );
+
+            }
+
+          }
+
+        }
+
+
+        captureBodies.forEach(
+          body => {
+
+            body.x =
+              clampChess(
+                body.x,
+                0,
+                Math.max(
+                  0,
+                  width -
+                  body.size
+                )
+              );
+
+
+            body.y =
+              clampChess(
+                body.y,
+                -body.size,
+                Math.max(
+                  0,
+                  height -
+                  body.size
+                )
+              );
+
+          }
         );
 
       }
 
 
-      return element;
+      let activity =
+        0;
+
+
+      captureBodies.forEach(
+        body => {
+
+          activity =
+            Math.max(
+              activity,
+              Math.abs(
+                body.vx
+              )
+              +
+              Math.abs(
+                body.vy
+              )
+              +
+              Math.abs(
+                body.vr
+              )
+              *
+              .18
+            );
+
+
+          updateCaptureBodyStyle(
+            body
+          );
+
+        }
+      );
+
+
+      if (
+        now >=
+        capturePhysicsEndsAt
+        ||
+        activity <
+        7
+      ) {
+
+        freezeCaptureBodies();
+
+
+        return;
+
+      }
+
+
+      capturePhysicsFrame =
+        requestAnimationFrame(
+          capturePhysicsStep
+        );
+
+    }
+
+
+    function startCapturePhysics(
+      duration =
+        1650
+    ) {
+
+      if (
+        capturePhysicsFrame
+      ) {
+
+        cancelAnimationFrame(
+          capturePhysicsFrame
+        );
+
+      }
+
+
+      captureLastTime =
+        performance.now();
+
+
+      capturePhysicsEndsAt =
+        captureLastTime +
+        duration;
+
+
+      capturePhysicsFrame =
+        requestAnimationFrame(
+          capturePhysicsStep
+        );
 
     }
 
@@ -2936,37 +3589,74 @@
         );
 
 
-      const layout =
-        stablePileLayout(
-          pieces
+      if (
+        dropAll
+      ) {
+
+        pieces.forEach(
+          (
+            piece,
+            index
+          ) => {
+
+            const body =
+              createFallingBody(
+                piece,
+                simultaneous
+                  ? 0
+                  : index
+              );
+
+
+            if (
+              simultaneous
+            ) {
+
+              body.y =
+                -body.size -
+                8;
+
+
+              body.vy +=
+                index *
+                2;
+
+            }
+
+
+            captureBodies.push(
+              body
+            );
+
+          }
         );
 
 
-      layout.forEach(
+        startCapturePhysics(
+          simultaneous
+            ? 1750
+            : 1550
+        );
+
+
+        return;
+
+      }
+
+
+      pieces.forEach(
         (
-          item,
+          piece,
           index
         ) => {
 
-          const element =
-            makeCapturedPieceElement(
-              item,
+          captureBodies.push(
+            createSettledBody(
+              piece,
               index,
-              dropAll,
-              simultaneous
-            );
-
-
-          captureBin.appendChild(
-            element
+              pieces.length
+            )
           );
-
-
-          captureBodies.push({
-            element,
-            piece:
-              item.piece
-          });
 
         }
       );
@@ -2978,41 +3668,70 @@
       piece
     ) {
 
-      const pieces = [
-        ...captureBodies.map(
-          body =>
-            body.piece
-        ),
-        piece
-      ];
+      const body =
+        createFallingBody(
+          piece,
+          captureBodies.length
+        );
 
 
-      const source = {
-        w:
-          pieces.filter(
-            item =>
-              item.color ===
-              "w"
-          ),
+      captureBodies.forEach(
+        existing => {
 
-        b:
-          pieces.filter(
-            item =>
-              item.color ===
-              "b"
-          )
-      };
+          existing.vx +=
+            (
+              Math.random() -
+              .5
+            )
+            *
+            10;
 
 
-      rebuildCaptureBodies(
-        source,
-        true
+          existing.vy -=
+            Math.random() *
+            6;
+
+
+          existing.vr +=
+            (
+              Math.random() -
+              .5
+            )
+            *
+            8;
+
+        }
+      );
+
+
+      captureBodies.push(
+        body
+      );
+
+
+      startCapturePhysics(
+        1500
       );
 
     }
 
 
     function clearCapturePhysics() {
+
+      if (
+        capturePhysicsFrame
+      ) {
+
+        cancelAnimationFrame(
+          capturePhysicsFrame
+        );
+
+
+        capturePhysicsFrame =
+          null;
+
+      }
+
 
       captureBodies =
         [];
@@ -3036,14 +3755,29 @@
     ) {
 
       if (
-        dropAll ||
-        reviewing
+        dropAll
       ) {
 
         rebuildCaptureBodies(
           source,
           true,
           simultaneous
+        );
+
+
+        return;
+
+      }
+
+
+      if (
+        reviewing
+      ) {
+
+        rebuildCaptureBodies(
+          source,
+          true,
+          false
         );
 
 
