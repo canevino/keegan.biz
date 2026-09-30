@@ -13,42 +13,6 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    html,
-    body,
-    .page-shell,
-    .home {
-      background: #ece7d7 !important;
-    }
-
-    .scarf-rack {
-      z-index: 1000 !important;
-    }
-
-    @media (min-width: 1241px) {
-      .scarf-item {
-        height:
-          clamp(
-            72px,
-            calc((100vh - 84px) / 8),
-            108px
-          ) !important;
-      }
-
-      .scarf-item img {
-        width: auto !important;
-        height: 100% !important;
-        object-fit: contain !important;
-      }
-    }
-
-    @media (min-width: 1241px) {
-      .hero {
-        justify-content: flex-start !important;
-        padding-top: clamp(72px, 8vh, 108px) !important;
-      }
-    }
-
-
     .chess-launcher {
       display: inline-block;
 
@@ -83,7 +47,10 @@
 
       width: min(100%, 700px);
 
-      margin-top: 26px;
+      margin:
+        26px
+        auto
+        0;
     }
 
     .chess-panel.is-open {
@@ -91,6 +58,8 @@
     }
 
     .chess-panel-head {
+      width: 100%;
+
       display: flex;
 
       align-items: flex-start;
