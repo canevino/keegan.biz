@@ -28,17 +28,17 @@
     }
 
     .home-chess .play-controls {
-      display: grid;
-      grid-template-columns: auto auto minmax(0, 1fr);
-      align-items: center;
-      gap: 0;
-      margin-bottom: 10px;
-      border: 1px solid var(--board-red);
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px;
+
+      margin-bottom: 8px;
     }
 
     .home-chess .play-controls-label {
-      padding: 7px 9px;
       color: var(--board-red);
+
       font-size: 12px;
       line-height: 1;
       font-weight: 700;
@@ -46,22 +46,40 @@
 
     .home-chess .mode-button,
     .home-chess .difficulty-button {
-      min-height: 30px;
-      padding: 7px 9px;
-      border-left: 1px solid var(--board-red);
+      min-height: 0;
+
+      padding: 0;
+
+      border: 0;
+
+      background: transparent;
+
       text-align: left;
     }
 
+    .home-chess .mode-button {
+      color: var(--board-red);
+    }
+
     .home-chess .mode-button.is-active {
-      background: var(--board-red);
-      color: var(--board-paper);
+      background: transparent;
+      color: var(--board-red);
+
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
     }
 
     .home-chess .bot-difficulties {
       display: none;
+
       grid-template-columns: repeat(3, auto);
-      justify-content: end;
-      min-width: 0;
+
+      gap: 12px;
+
+      align-items: baseline;
+
+      margin-left: 4px;
     }
 
     .home-chess.is-bot-mode .bot-difficulties {
@@ -88,8 +106,11 @@
 
     .home-chess .bot-state {
       display: none;
+
       margin: 0 0 8px;
+
       color: var(--board-red);
+
       font-size: 12px;
       line-height: 1;
       font-weight: 700;
@@ -109,10 +130,7 @@
       grid-template-areas: "reset";
     }
 
-    .home-chess.is-bot-thinking .board {
-      cursor: wait;
-    }
-
+    .home-chess.is-bot-thinking .board,
     .home-chess.is-bot-thinking .piece {
       cursor: wait;
     }
@@ -498,6 +516,85 @@
       color: var(--board-green);
     }
 
+    .home-chess .captured-piece.is-dropping {
+      animation:
+        captured-drop
+        var(--drop-duration, 620ms)
+        cubic-bezier(.18, .78, .22, 1)
+        var(--drop-delay, 0ms)
+        both;
+    }
+
+    @keyframes captured-drop {
+      0% {
+        transform:
+          translate3d(
+            var(--x, 0px),
+            var(--drop-start, -500px),
+            0
+          )
+          rotate(
+            calc(
+              var(--r, 0deg)
+              -
+              18deg
+            )
+          );
+      }
+
+      70% {
+        transform:
+          translate3d(
+            var(--x, 0px),
+            calc(
+              var(--y, 0px)
+              +
+              7px
+            ),
+            0
+          )
+          rotate(
+            calc(
+              var(--r, 0deg)
+              +
+              4deg
+            )
+          );
+      }
+
+      84% {
+        transform:
+          translate3d(
+            var(--x, 0px),
+            calc(
+              var(--y, 0px)
+              -
+              3px
+            ),
+            0
+          )
+          rotate(
+            calc(
+              var(--r, 0deg)
+              -
+              2deg
+            )
+          );
+      }
+
+      100% {
+        transform:
+          translate3d(
+            var(--x, 0px),
+            var(--y, 0px),
+            0
+          )
+          rotate(
+            var(--r, 0deg)
+          );
+      }
+    }
+
     .home-chess .win-overlay {
       position: absolute;
       inset: 0;
@@ -535,18 +632,31 @@
 
     .home-chess .win-art-title {
       position: absolute;
+
       top: 10px;
       left: 10px;
+
       z-index: 3;
-      max-width: calc(100% - 20px);
-      padding: 4px 6px;
+
+      width: min(78%, 320px);
+
+      padding: 5px 7px 6px;
+
       background: var(--board-paper);
+
       color: var(--board-red);
-      font-size: 11px;
-      line-height: 1.15;
-      font-weight: 700;
-      letter-spacing: -.02em;
+
+      font-size: 10px;
+      line-height: 1.25;
+      font-weight: 500;
+
+      letter-spacing: -.015em;
+
       text-align: left;
+    }
+
+    .home-chess .win-art-title strong {
+      font-weight: 700;
     }
 
 
@@ -735,21 +845,13 @@
       }
 
       .home-chess .play-controls {
-        grid-template-columns: auto auto;
+        gap: 10px;
       }
 
       .home-chess .bot-difficulties {
-        grid-column: 1 / -1;
-        justify-content: stretch;
-        border-top: 1px solid var(--board-red);
-      }
-
-      .home-chess .difficulty-button {
-        text-align: center;
-      }
-
-      .home-chess .bot-difficulties .difficulty-button:first-child {
-        border-left: 0;
+        width: 100%;
+        margin-left: 0;
+        gap: 14px;
       }
 
 
@@ -1015,13 +1117,13 @@
               id="bot-mode-button"
               type="button"
             >
-              bot
+              computer
             </button>
 
             <div
               class="bot-difficulties"
               id="bot-difficulties"
-              aria-label="Bot difficulty"
+              aria-label="Computer difficulty"
             >
 
               <button
@@ -2466,52 +2568,6 @@
       [];
 
 
-    let capturePhysicsFrame =
-      null;
-
-
-    let captureLastTime =
-      performance.now();
-
-
-    const GLYPH_COLLIDERS = {
-      p: [
-        [-.18, -.30], [-.18, -.10], [-.18, .10], [-.18, .30],
-        [.02, -.31], [.18, -.24], [.18, -.08], [.02, -.03]
-      ],
-
-      b: [
-        [-.18, -.31], [-.18, -.10], [-.18, .11], [-.18, .31],
-        [.02, -.31], [.18, -.23], [.17, -.08], [.02, -.02],
-        [.18, .09], [.18, .25], [.02, .32]
-      ],
-
-      r: [
-        [-.18, -.30], [-.18, -.10], [-.18, .10], [-.18, .30],
-        [.02, -.31], [.18, -.23], [.18, -.08], [.02, -.02],
-        [.04, .08], [.13, .20], [.22, .33]
-      ],
-
-      n: [
-        [-.20, -.30], [-.20, -.10], [-.20, .10], [-.20, .30],
-        [.20, -.30], [.20, -.10], [.20, .10], [.20, .30],
-        [-.08, -.18], [.02, -.02], [.11, .15]
-      ],
-
-      k: [
-        [-.18, -.30], [-.18, -.10], [-.18, .10], [-.18, .30],
-        [.03, -.06], [.15, -.19], [.24, -.30],
-        [.06, .06], [.16, .19], [.25, .31]
-      ],
-
-      q: [
-        [-.12, -.28], [.08, -.29], [.20, -.16], [.21, .05],
-        [.14, .24], [-.04, .31], [-.18, .22], [-.23, .03],
-        [-.21, -.16], [.09, .21], [.22, .34]
-      ]
-    };
-
-
     function pieceSizeForBin() {
 
       const width =
@@ -2522,7 +2578,7 @@
         width <
         72
       ) {
-        return 25;
+        return 24;
       }
 
 
@@ -2530,427 +2586,20 @@
         width <
         100
       ) {
-        return 31;
+        return 29;
       }
 
 
-      return 38;
+      return 35;
 
     }
 
 
-    function updateCaptureBodyStyle(
-      body
+    function allCapturedPieces(
+      source
     ) {
 
-      body.element.style.setProperty(
-        "--piece-size",
-        `${body.size}px`
-      );
-
-
-      body.element.style.setProperty(
-        "--x",
-        `${body.x}px`
-      );
-
-
-      body.element.style.setProperty(
-        "--y",
-        `${body.y}px`
-      );
-
-
-      body.element.style.setProperty(
-        "--r",
-        `${body.rotation}deg`
-      );
-
-    }
-
-
-    function glyphPoints(
-      body
-    ) {
-
-      const source =
-        GLYPH_COLLIDERS[
-          body.type
-        ]
-        ||
-        [[0, 0]];
-
-
-      const angle =
-        body.rotation *
-        Math.PI /
-        180;
-
-
-      const cos =
-        Math.cos(
-          angle
-        );
-
-
-      const sin =
-        Math.sin(
-          angle
-        );
-
-
-      const cx =
-        body.x +
-        body.size /
-        2;
-
-
-      const cy =
-        body.y +
-        body.size /
-        2;
-
-
-      const radius =
-        body.size *
-        .095;
-
-
-      return source.map(
-        (
-          [
-            px,
-            py
-          ]
-        ) => {
-
-          const lx =
-            px *
-            body.size;
-
-
-          const ly =
-            py *
-            body.size;
-
-
-          return {
-            x:
-              cx +
-              lx *
-              cos -
-              ly *
-              sin,
-
-            y:
-              cy +
-              lx *
-              sin +
-              ly *
-              cos,
-
-            r:
-              radius
-          };
-
-        }
-      );
-
-    }
-
-
-    function deepestGlyphCollision(
-      a,
-      b
-    ) {
-
-      const aPoints =
-        glyphPoints(
-          a
-        );
-
-
-      const bPoints =
-        glyphPoints(
-          b
-        );
-
-
-      let best =
-        null;
-
-
-      aPoints.forEach(
-        pa => {
-
-          bPoints.forEach(
-            pb => {
-
-              let dx =
-                pb.x -
-                pa.x;
-
-
-              let dy =
-                pb.y -
-                pa.y;
-
-
-              let distance =
-                Math.hypot(
-                  dx,
-                  dy
-                );
-
-
-              const minDistance =
-                pa.r +
-                pb.r;
-
-
-              if (
-                distance >=
-                minDistance
-              ) {
-                return;
-              }
-
-
-              if (
-                distance <
-                .001
-              ) {
-
-                distance =
-                  .001;
-
-
-                dx =
-                  .001;
-
-              }
-
-
-              const overlap =
-                minDistance -
-                distance;
-
-
-              if (
-                !best ||
-                overlap >
-                best.overlap
-              ) {
-
-                best = {
-                  overlap,
-
-                  nx:
-                    dx /
-                    distance,
-
-                  ny:
-                    dy /
-                    distance
-                };
-
-              }
-
-            }
-          );
-
-        }
-      );
-
-
-      return best;
-
-    }
-
-
-    function makeCaptureBody(
-      piece,
-      index,
-      dropFromTop =
-        true
-    ) {
-
-      const element =
-        document.createElement(
-          "div"
-        );
-
-
-      element.className =
-        `captured-piece ${
-          piece.color ===
-          "w"
-            ? "white"
-            : "black"
-        }`;
-
-
-      element.textContent =
-        pieceLetters[
-          piece.type
-        ];
-
-
-      captureBin.appendChild(
-        element
-      );
-
-
-      const size =
-        pieceSizeForBin();
-
-
-      const maxX =
-        Math.max(
-          0,
-          captureBin.clientWidth -
-          size
-        );
-
-
-      const seed =
-        hashString(
-          `${piece.color}-${piece.type}-${piece.token}-${index}-${orientation}`
-        );
-
-
-      const x =
-        maxX *
-        (
-          .08 +
-          (
-            (
-              seed &
-              255
-            )
-            /
-            255
-          )
-          *
-          .84
-        );
-
-
-      const body = {
-        element,
-
-        type:
-          piece.type,
-
-        color:
-          piece.color,
-
-        size,
-
-        x:
-          clampChess(
-            x,
-            0,
-            maxX
-          ),
-
-        y:
-          dropFromTop
-            ? -size - 8
-            : Math.max(
-                0,
-                captureBin.clientHeight -
-                size -
-                (
-                  index %
-                  3
-                )
-                *
-                size *
-                .12
-              ),
-
-        vx:
-          (
-            (
-              (
-                seed >>>
-                8
-              )
-              &
-              255
-            )
-            /
-            255
-            -
-            .5
-          )
-          *
-          55,
-
-        vy:
-          dropFromTop
-            ? 20
-            : 0,
-
-        rotation:
-          (
-            (
-              (
-                seed >>>
-                16
-              )
-              &
-              255
-            )
-            /
-            255
-            -
-            .5
-          )
-          *
-          18,
-
-        vr:
-          (
-            (
-              (
-                seed >>>
-                20
-              )
-              &
-              255
-            )
-            /
-            255
-            -
-            .5
-          )
-          *
-          68
-      };
-
-
-      updateCaptureBodyStyle(
-        body
-      );
-
-
-      return body;
-
-    }
-
-
-    function rebuildCaptureBodies(
-      source,
-      dropAll =
-        false
-    ) {
-
-      clearCapturePhysics();
-
-
-      const pieces = [
+      return [
         ...source.w.map(
           piece => ({
             ...piece,
@@ -2968,30 +2617,359 @@
         )
       ];
 
+    }
 
-      pieces.forEach(
+
+    function stablePileLayout(
+      pieces
+    ) {
+
+      const width =
+        captureBin.clientWidth;
+
+
+      const height =
+        captureBin.clientHeight;
+
+
+      const size =
+        pieceSizeForBin();
+
+
+      const gap =
+        Math.max(
+          1,
+          Math.round(
+            size *
+            .05
+          )
+        );
+
+
+      const columns =
+        Math.max(
+          1,
+          Math.floor(
+            (
+              width +
+              gap
+            )
+            /
+            (
+              size +
+              gap
+            )
+          )
+        );
+
+
+      const usedWidth =
+        columns *
+        size
+        +
+        (
+          columns -
+          1
+        )
+        *
+        gap;
+
+
+      const left =
+        Math.max(
+          0,
+          (
+            width -
+            usedWidth
+          )
+          /
+          2
+        );
+
+
+      return pieces.map(
         (
           piece,
           index
         ) => {
 
-          captureBodies.push(
-            makeCaptureBody(
-              piece,
-              index,
-              dropAll
+          const column =
+            index %
+            columns;
+
+
+          const row =
+            Math.floor(
+              index /
+              columns
+            );
+
+
+          const seed =
+            hashString(
+              `${piece.color}-${piece.type}-${piece.token}-${index}-${orientation}`
+            );
+
+
+          const maxY =
+            Math.max(
+              0,
+              height -
+              size
+            );
+
+
+          const jitterX =
+            (
+              (
+                seed &
+                255
+              )
+              /
+              255
+              -
+              .5
             )
-          );
+            *
+            Math.min(
+              3,
+              gap +
+              2
+            );
+
+
+          const jitterY =
+            (
+              (
+                (
+                  seed >>>
+                  8
+                )
+                &
+                255
+              )
+              /
+              255
+              -
+              .5
+            )
+            *
+            2;
+
+
+          const x =
+            left
+            +
+            column *
+            (
+              size +
+              gap
+            )
+            +
+            jitterX;
+
+
+          const y =
+            maxY
+            -
+            row *
+            (
+              size *
+              .82
+            )
+            +
+            jitterY;
+
+
+          const rotation =
+            (
+              (
+                (
+                  seed >>>
+                  16
+                )
+                &
+                255
+              )
+              /
+              255
+              -
+              .5
+            )
+            *
+            20;
+
+
+          return {
+            piece,
+            size,
+            x:
+              clampChess(
+                x,
+                0,
+                Math.max(
+                  0,
+                  width -
+                  size
+                )
+              ),
+            y:
+              clampChess(
+                y,
+                0,
+                maxY
+              ),
+            rotation
+          };
 
         }
       );
 
-
-      captureLastTime =
-        performance.now();
+    }
 
 
-      startCapturePhysics();
+    function makeCapturedPieceElement(
+      item,
+      index,
+      animate,
+      simultaneous =
+        false
+    ) {
+
+      const element =
+        document.createElement(
+          "div"
+        );
+
+
+      element.className =
+        `captured-piece ${
+          item.piece.color ===
+          "w"
+            ? "white"
+            : "black"
+        }`;
+
+
+      element.textContent =
+        pieceLetters[
+          item.piece.type
+        ];
+
+
+      element.style.setProperty(
+        "--piece-size",
+        `${item.size}px`
+      );
+
+
+      element.style.setProperty(
+        "--x",
+        `${item.x}px`
+      );
+
+
+      element.style.setProperty(
+        "--y",
+        `${item.y}px`
+      );
+
+
+      element.style.setProperty(
+        "--r",
+        `${item.rotation}deg`
+      );
+
+
+      if (
+        animate
+      ) {
+
+        element.classList.add(
+          "is-dropping"
+        );
+
+
+        element.style.setProperty(
+          "--drop-delay",
+          simultaneous
+            ? "0ms"
+            : `${Math.min(index * 55, 420)}ms`
+        );
+
+
+        element.style.setProperty(
+          "--drop-start",
+          `${-captureBin.clientHeight - item.size - 10}px`
+        );
+
+
+        element.style.setProperty(
+          "--drop-duration",
+          simultaneous
+            ? `${580 + (index % 4) * 22}ms`
+            : "620ms"
+        );
+
+      }
+
+
+      return element;
+
+    }
+
+
+    function rebuildCaptureBodies(
+      source,
+      dropAll =
+        false,
+      simultaneous =
+        false
+    ) {
+
+      clearCapturePhysics();
+
+
+      const pieces =
+        allCapturedPieces(
+          source
+        );
+
+
+      const layout =
+        stablePileLayout(
+          pieces
+        );
+
+
+      layout.forEach(
+        (
+          item,
+          index
+        ) => {
+
+          const element =
+            makeCapturedPieceElement(
+              item,
+              index,
+              dropAll,
+              simultaneous
+            );
+
+
+          captureBin.appendChild(
+            element
+          );
+
+
+          captureBodies.push({
+            element,
+            piece:
+              item.piece
+          });
+
+        }
+      );
 
     }
 
@@ -3000,463 +2978,41 @@
       piece
     ) {
 
-      const body =
-        makeCaptureBody(
-          piece,
-          captureBodies.length,
-          true
-        );
+      const pieces = [
+        ...captureBodies.map(
+          body =>
+            body.piece
+        ),
+        piece
+      ];
 
 
-      captureBodies.push(
-        body
-      );
+      const source = {
+        w:
+          pieces.filter(
+            item =>
+              item.color ===
+              "w"
+          ),
 
-
-      captureLastTime =
-        performance.now();
-
-
-      startCapturePhysics();
-
-    }
-
-
-    function resolveCaptureCollisions() {
-
-      for (
-        let i =
-          0;
-        i <
-        captureBodies.length;
-        i++
-      ) {
-
-        const a =
-          captureBodies[
-            i
-          ];
-
-
-        for (
-          let j =
-            i +
-            1;
-          j <
-            captureBodies.length;
-          j++
-        ) {
-
-          const b =
-            captureBodies[
-              j
-            ];
-
-
-          const hit =
-            deepestGlyphCollision(
-              a,
-              b
-            );
-
-
-          if (
-            !hit
-          ) {
-            continue;
-          }
-
-
-          const correction =
-            hit.overlap *
-            .52;
-
-
-          a.x -=
-            hit.nx *
-            correction;
-
-
-          a.y -=
-            hit.ny *
-            correction;
-
-
-          b.x +=
-            hit.nx *
-            correction;
-
-
-          b.y +=
-            hit.ny *
-            correction;
-
-
-          const relativeVelocity =
-            (
-              b.vx -
-              a.vx
-            )
-            *
-            hit.nx
-            +
-            (
-              b.vy -
-              a.vy
-            )
-            *
-            hit.ny;
-
-
-          if (
-            relativeVelocity <
-            0
-          ) {
-
-            const impulse =
-              -(
-                1 +
-                .24
-              )
-              *
-              relativeVelocity
-              /
-              2;
-
-
-            a.vx -=
-              impulse *
-              hit.nx;
-
-
-            a.vy -=
-              impulse *
-              hit.ny;
-
-
-            b.vx +=
-              impulse *
-              hit.nx;
-
-
-            b.vy +=
-              impulse *
-              hit.ny;
-
-          }
-
-
-          const tangentX = -hit.ny;
-          const tangentY = hit.nx;
-          const tangentSpeed =
-            (b.vx - a.vx) * tangentX +
-            (b.vy - a.vy) * tangentY;
-
-          a.vr -= tangentSpeed * .22;
-          b.vr += tangentSpeed * .22;
-
-          a.vr *= .985;
-          b.vr *= .985;
-
-        }
-
-      }
-
-    }
-
-
-    function stepCapturePhysics(
-      now
-    ) {
-
-      capturePhysicsFrame =
-        null;
-
-
-      if (
-        captureBodies.length ===
-        0
-      ) {
-        return;
-      }
-
-
-      const dt =
-        Math.min(
-          .026,
-          Math.max(
-            .001,
-            (
-              now -
-              captureLastTime
-            )
-            /
-            1000
+        b:
+          pieces.filter(
+            item =>
+              item.color ===
+              "b"
           )
-        );
+      };
 
 
-      captureLastTime =
-        now;
-
-
-      const gravity =
-        1320;
-
-
-      const floor =
-        captureBin.clientHeight;
-
-
-      const width =
-        captureBin.clientWidth;
-
-
-      let moving =
-        false;
-
-
-      captureBodies.forEach(
-        body => {
-
-          body.vy +=
-            gravity *
-            dt;
-
-
-          body.x +=
-            body.vx *
-            dt;
-
-
-          body.y +=
-            body.vy *
-            dt;
-
-
-          body.rotation +=
-            body.vr *
-            dt;
-
-
-          const maxX =
-            Math.max(
-              0,
-              width -
-              body.size
-            );
-
-
-          const maxY =
-            Math.max(
-              0,
-              floor -
-              body.size
-            );
-
-
-          if (
-            body.x <
-            0
-          ) {
-
-            body.x =
-              0;
-
-
-            body.vx *=
-              -.32;
-
-          }
-
-
-          if (
-            body.x >
-            maxX
-          ) {
-
-            body.x =
-              maxX;
-
-
-            body.vx *=
-              -.32;
-
-          }
-
-
-          if (
-            body.y >
-            maxY
-          ) {
-
-            body.y =
-              maxY;
-
-
-            if (
-              Math.abs(
-                body.vy
-              ) >
-              28
-            ) {
-
-              body.vy *=
-                -.28;
-
-            }
-
-            else {
-
-              body.vy =
-                0;
-
-            }
-
-
-            body.vx *=
-              .84;
-
-
-            body.vr *=
-              .78;
-
-          }
-
-
-          if (
-            Math.abs(
-              body.vx
-            ) >
-            .3
-            ||
-            Math.abs(
-              body.vy
-            ) >
-            .3
-            ||
-            Math.abs(
-              body.vr
-            ) >
-            .3
-          ) {
-
-            moving =
-              true;
-
-          }
-
-        }
+      rebuildCaptureBodies(
+        source,
+        true
       );
-
-
-      for (
-        let pass =
-          0;
-        pass <
-        5;
-        pass++
-      ) {
-
-        resolveCaptureCollisions();
-
-      }
-
-
-      captureBodies.forEach(
-        body => {
-
-          const maxX =
-            Math.max(
-              0,
-              width -
-              body.size
-            );
-
-
-          const maxY =
-            Math.max(
-              0,
-              floor -
-              body.size
-            );
-
-
-          body.x =
-            clampChess(
-              body.x,
-              0,
-              maxX
-            );
-
-
-          body.y =
-            clampChess(
-              body.y,
-              -body.size,
-              maxY
-            );
-
-
-          updateCaptureBodyStyle(
-            body
-          );
-
-        }
-      );
-
-
-      if (
-        moving
-      ) {
-
-        capturePhysicsFrame =
-          requestAnimationFrame(
-            stepCapturePhysics
-          );
-
-      }
-
-    }
-
-
-    function startCapturePhysics() {
-
-      if (
-        capturePhysicsFrame
-      ) {
-        return;
-      }
-
-
-      captureLastTime =
-        performance.now();
-
-
-      capturePhysicsFrame =
-        requestAnimationFrame(
-          stepCapturePhysics
-        );
 
     }
 
 
     function clearCapturePhysics() {
-
-      if (
-        capturePhysicsFrame
-      ) {
-
-        cancelAnimationFrame(
-          capturePhysicsFrame
-        );
-
-
-        capturePhysicsFrame =
-          null;
-
-      }
-
 
       captureBodies =
         [];
@@ -3469,32 +3025,80 @@
 
 
     function renderCapturedPieces(
-      animateToken = null,
-      source = capturedPieces,
-      dropAll = false
+      animateToken =
+        null,
+      source =
+        capturedPieces,
+      dropAll =
+        false,
+      simultaneous =
+        false
     ) {
-      if (dropAll) {
-        rebuildCaptureBodies(source, true);
+
+      if (
+        dropAll ||
+        reviewing
+      ) {
+
+        rebuildCaptureBodies(
+          source,
+          true,
+          simultaneous
+        );
+
+
         return;
+
       }
 
-      if (reviewing) {
-        rebuildCaptureBodies(source, true);
-        return;
-      }
 
-      if (animateToken) {
-        const newest = [...source.w, ...source.b].find(piece => piece.token === animateToken);
+      if (
+        animateToken
+      ) {
 
-        if (newest) {
-          const color = source.w.some(piece => piece.token === animateToken) ? "w" : "b";
-          addCapturedBody({ ...newest, color });
+        const newest =
+          [
+            ...source.w,
+            ...source.b
+          ].find(
+            piece =>
+              piece.token ===
+              animateToken
+          );
+
+
+        if (
+          newest
+        ) {
+
+          const color =
+            source.w.some(
+              piece =>
+                piece.token ===
+                animateToken
+            )
+              ? "w"
+              : "b";
+
+
+          addCapturedBody({
+            ...newest,
+            color
+          });
+
+
+          return;
+
         }
 
-        return;
       }
 
-      rebuildCaptureBodies(source, false);
+
+      rebuildCaptureBodies(
+        source,
+        false
+      );
+
     }
 
 
@@ -4319,7 +3923,7 @@
 
 
                   setBotState(
-                    "bot engine unavailable"
+                    "computer unavailable"
                   );
 
 
@@ -4346,7 +3950,7 @@
             ) {
 
               setBotState(
-                "bot engine unavailable"
+                "computer unavailable"
               );
 
 
@@ -4821,7 +4425,7 @@
 
 
         setBotState(
-          "bot engine unavailable"
+          "computer unavailable"
         );
 
       }
@@ -5180,11 +4784,60 @@
 
 
     const WIN_IMAGES = [
-      { title: "Chess Players, c. 1518", src: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG" },
-      { title: "The Chess Game", src: "https://upload.wikimedia.org/wikipedia/commons/b/b2/The_Chess_Game.jpg" },
-      { title: "Golestan Palace Album No. 108-7", src: "https://upload.wikimedia.org/wikipedia/commons/7/73/Golestan_Palace_Album_No._108-7.jpg" },
-      { title: "Chess Playing, Louvre OA117", src: "https://upload.wikimedia.org/wikipedia/commons/9/91/Chess_playing_Louvre_OA117.jpg" },
-      { title: "Lewis Chessmen", src: "https://upload.wikimedia.org/wikipedia/commons/1/1c/NMSLewisChessmen28.jpg" }
+      {
+        title:
+          "A Game of Chess",
+
+        info:
+          "A Game of Chess, c. 1508, by Dutch artist Lucas van Leyden.",
+
+        src:
+          "https://upload.wikimedia.org/wikipedia/commons/a/a4/Luca_di_leida%2C_partita_a_scacchi%2C_1518_ca._02.JPG"
+      },
+
+      {
+        title:
+          "The Chess Game",
+
+        info:
+          "The Chess Game, 1896, by Austrian-French painter Ludwig Deutsch.",
+
+        src:
+          "https://upload.wikimedia.org/wikipedia/commons/b/b2/The_Chess_Game.jpg"
+      },
+
+      {
+        title:
+          "Golestan Palace Album No. 108",
+
+        info:
+          "A photograph from Album No. 108 in the Golestan Palace Library, Iran.",
+
+        src:
+          "https://upload.wikimedia.org/wikipedia/commons/7/73/Golestan_Palace_Album_No._108-7.jpg"
+      },
+
+      {
+        title:
+          "Chess Playing, Louvre OA117",
+
+        info:
+          "A couple playing chess on a carved ivory mirror case made in Paris around 1300.",
+
+        src:
+          "https://upload.wikimedia.org/wikipedia/commons/9/91/Chess_playing_Louvre_OA117.jpg"
+      },
+
+      {
+        title:
+          "Lewis Chessmen",
+
+        info:
+          "Lewis Chessmen, 12th-century chess pieces from the Isle of Lewis in the Outer Hebrides of Scotland.",
+
+        src:
+          "https://upload.wikimedia.org/wikipedia/commons/1/1c/NMSLewisChessmen28.jpg"
+      }
     ];
 
 
@@ -5264,8 +4917,8 @@
       winImage.src =
         currentWinImage.src;
 
-      winArtTitle.textContent =
-        currentWinImage.title;
+      winArtTitle.innerHTML =
+        `<strong>${currentWinImage.title}</strong><br>${currentWinImage.info}`;
 
 
       winTitle.textContent =
@@ -6402,6 +6055,7 @@
           renderCapturedPieces(
             null,
             capturedPieces,
+            true,
             true
           );
         }
