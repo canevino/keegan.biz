@@ -249,21 +249,9 @@
     .autoplay-game-detail {
       margin: 0;
       max-width: 720px;
+      color: var(--board-red);
       font-size: 12px;
       line-height: 1.18;
-    }
-
-
-    .autoplay-context {
-      margin-bottom: 10px;
-      color: var(--board-green);
-      font-weight: 700;
-    }
-
-
-    .autoplay-game-title,
-    .autoplay-game-detail {
-      color: var(--board-red);
     }
 
 
@@ -273,7 +261,14 @@
 
 
     .autoplay-game-detail {
-      margin-top: 3px;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+
+    .autoplay-context {
+      margin-top: 4px;
+      margin-bottom: 10px;
       font-weight: 500;
     }
 
@@ -281,7 +276,7 @@
     .autoplay-watch-controls {
       display: none;
       width: calc(100% - var(--capture-column, 132px) - 12px);
-      margin-top: 10px;
+      margin-top: 8px;
       border: 1px solid var(--board-red);
     }
 
@@ -289,19 +284,29 @@
     .home-chess.is-autoplay-mode .autoplay-watch-controls {
       display: grid;
       grid-template-columns:
-        repeat(6, minmax(0, 1fr));
+        auto
+        auto
+        minmax(0, 1fr)
+        auto
+        auto
+        auto;
     }
 
 
     .autoplay-watch-controls button {
       min-width: 0;
-      padding: 9px 10px;
+      padding: 7px 10px;
       border: 0;
       border-right: 1px solid var(--board-red);
       background: transparent;
       color: var(--board-red);
       font-weight: 700;
       text-align: center;
+    }
+
+
+    .autoplay-watch-controls button:nth-child(3) {
+      justify-self: stretch;
     }
 
 
@@ -1175,23 +1180,28 @@
 
       .home-chess.is-autoplay-mode .autoplay-watch-controls {
         grid-template-columns:
-          repeat(3, minmax(0, 1fr));
+          auto
+          auto
+          minmax(0, 1fr)
+          auto
+          auto
+          auto;
       }
 
 
       .autoplay-watch-controls button {
-        padding: 8px 6px;
-        font-size: 10px;
+        padding: 7px 5px;
+        font-size: 9px;
       }
 
 
       .autoplay-watch-controls button:nth-child(3) {
-        border-right: 0;
+        border-right: 1px solid var(--board-red);
       }
 
 
       .autoplay-watch-controls button:nth-child(-n + 3) {
-        border-bottom: 1px solid var(--board-red);
+        border-bottom: 0;
       }
 
 
@@ -1469,10 +1479,9 @@
             id="autoplay-panel"
             aria-hidden="true"
           >
-            <p class="autoplay-context" id="autoplay-context"></p>
-
             <p class="autoplay-game-title" id="autoplay-game-title"></p>
             <p class="autoplay-game-detail" id="autoplay-game-detail"></p>
+            <p class="autoplay-context" id="autoplay-context"></p>
 
           </div>
 
