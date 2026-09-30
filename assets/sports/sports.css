@@ -192,3 +192,31 @@
     grid-column: 1;
   }
 }
+
+
+.sports-competition {
+  margin: 10px 0 0;
+  color: var(--sports-red);
+  font-weight: 700;
+}
+
+.sports-series {
+  margin: 3px 0 0;
+  color: var(--sports-green);
+  font-weight: 700;
+}
+
+
+.sports-series-record,
+.sports-upcoming-time {
+  margin: 3px 0 0;
+  font-weight: 700;
+}
+
+.sports-series-record {
+  color: var(--sports-red);
+}
+
+.sports-upcoming-time {
+  color: var(--sports-green);
+}

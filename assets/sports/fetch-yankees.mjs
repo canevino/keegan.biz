@@ -56,6 +56,166 @@ function teamCode(team) {
   );
 }
 
+function postseasonLabel(game) {
+  if (game?.seriesDescription) {
+    return game.seriesDescription;
+  }
+
+  const labels = {
+    F: "Wild Card Series",
+    D: "Division Series",
+    L: "League Championship Series",
+    W: "World Series"
+  };
+
+  return labels[game?.gameType] || "";
+}
+
+function isPostseason(game) {
+  return ["F", "D", "L", "W"].includes(
+    game?.gameType
+  );
+}
+
+function seriesText(game) {
+  const status = game?.seriesStatus;
+
+  if (!status) {
+    const gameNumber = game?.gameNumber;
+    return gameNumber
+      ? `Game ${gameNumber}`
+      : "";
+  }
+
+  if (status.result) {
+    return status.result;
+  }
+
+  if (status.shortName) {
+    return status.shortName;
+  }
+
+  if (status.seriesStatus) {
+    return status.seriesStatus;
+  }
+
+  const gameNumber =
+    status.gameNumber
+    || game?.gameNumber;
+
+  const total =
+    status.totalNumberOfGames;
+
+  if (gameNumber && total) {
+    return `Game ${gameNumber} of ${total}`;
+  }
+
+  if (gameNumber) {
+    return `Game ${gameNumber}`;
+  }
+
+  return "";
+}
+
+function formatEasternGameTime(gameDate) {
+  if (!gameDate) return "";
+
+  const date = new Date(gameDate);
+
+  const day = new Intl.DateTimeFormat(
+    "en-US",
+    {
+      timeZone: "America/New_York",
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    }
+  ).format(date);
+
+  const time = new Intl.DateTimeFormat(
+    "en-US",
+    {
+      timeZone: "America/New_York",
+      hour: "numeric",
+      minute: "2-digit"
+    }
+  ).format(date);
+
+  return `next game · ${day} · ${time} ET`;
+}
+
+function opponentId(game) {
+  const awayId = game?.teams?.away?.team?.id;
+  const homeId = game?.teams?.home?.team?.id;
+
+  return awayId === YANKEES_ID
+    ? homeId
+    : awayId;
+}
+
+function seriesRecordText(selectedGame, allGames) {
+  if (
+    !selectedGame
+    || !isPostseason(selectedGame)
+  ) {
+    return "";
+  }
+
+  const opponent = opponentId(selectedGame);
+  const type = selectedGame.gameType;
+
+  const seriesGames = allGames.filter(game =>
+    game.gameType === type
+    && opponentId(game) === opponent
+    && game.status?.abstractGameState === "Final"
+  );
+
+  let yankeesWins = 0;
+  let opponentWins = 0;
+
+  for (const game of seriesGames) {
+    const awayId = game.teams?.away?.team?.id;
+    const homeId = game.teams?.home?.team?.id;
+    const awayScore = game.teams?.away?.score ?? 0;
+    const homeScore = game.teams?.home?.score ?? 0;
+
+    const yankeesWon =
+      (
+        awayId === YANKEES_ID
+        && awayScore > homeScore
+      )
+      ||
+      (
+        homeId === YANKEES_ID
+        && homeScore > awayScore
+      );
+
+    if (yankeesWon) {
+      yankeesWins += 1;
+    } else {
+      opponentWins += 1;
+    }
+  }
+
+  const opponentName =
+    selectedGame.teams?.away?.team?.id === YANKEES_ID
+      ? selectedGame.teams?.home?.team?.name
+      : selectedGame.teams?.away?.team?.name;
+
+  if (!opponentName) {
+    return `series · Yankees ${yankeesWins}–${opponentWins}`;
+  }
+
+  const shortOpponent =
+    opponentName
+      .replace("Boston Red Sox", "Red Sox")
+      .replace("Toronto Blue Jays", "Blue Jays")
+      .replace("Tampa Bay Rays", "Rays")
+      .replace("Baltimore Orioles", "Orioles");
+
+  return `series · Yankees ${yankeesWins}–${opponentWins} ${shortOpponent}`;
+}
+
 function statusText(game) {
   const linescore = game?.linescore || {};
   const abstractState = game?.status?.abstractGameState || "";
@@ -115,7 +275,16 @@ function normalizeGame(game) {
     homeScore: home.score ?? linescore.teams?.home?.runs ?? 0,
     homeHits: linescore.teams?.home?.hits ?? "",
     homeErrors: linescore.teams?.home?.errors ?? "",
-    innings
+    innings,
+    postseason: isPostseason(game),
+    competition: postseasonLabel(game),
+    series: seriesText(game),
+    seriesRecord: "",
+    upcomingTime:
+      game.status?.abstractGameState === "Preview"
+        ? formatEasternGameTime(game.gameDate)
+        : "",
+    gameType: game.gameType || ""
   };
 }
 
@@ -143,6 +312,23 @@ function chooseGame(schedule) {
     );
 
   if (todayGame) return todayGame;
+
+  const postseasonUpcoming =
+    games
+      .filter(
+        game =>
+          isPostseason(game)
+          && new Date(game.gameDate) > now
+      )
+      .sort(
+        (a, b) =>
+          new Date(a.gameDate)
+          - new Date(b.gameDate)
+      )[0];
+
+  if (postseasonUpcoming) {
+    return postseasonUpcoming;
+  }
 
   const upcoming =
     games
@@ -191,26 +377,11 @@ function divisionRows(standings) {
 
       team:
         (team.team?.name || "")
-          .replace(
-            "New York Yankees",
-            "Yankees"
-          )
-          .replace(
-            "Toronto Blue Jays",
-            "Blue Jays"
-          )
-          .replace(
-            "Boston Red Sox",
-            "Red Sox"
-          )
-          .replace(
-            "Tampa Bay Rays",
-            "Rays"
-          )
-          .replace(
-            "Baltimore Orioles",
-            "Orioles"
-          ),
+          .replace("New York Yankees", "Yankees")
+          .replace("Toronto Blue Jays", "Blue Jays")
+          .replace("Boston Red Sox", "Red Sox")
+          .replace("Tampa Bay Rays", "Rays")
+          .replace("Baltimore Orioles", "Orioles"),
 
       record:
         `${team.wins ?? 0}–${team.losses ?? 0}`,
@@ -225,7 +396,7 @@ const startDate =
   isoDate(
     offsetDays(
       now,
-      -2
+      -10
     )
   );
 
@@ -233,7 +404,7 @@ const endDate =
   isoDate(
     offsetDays(
       now,
-      7
+      10
     )
   );
 
@@ -243,7 +414,7 @@ const scheduleUrl =
   + `&teamId=${YANKEES_ID}`
   + `&startDate=${startDate}`
   + `&endDate=${endDate}`
-  + `&hydrate=team,linescore`;
+  + `&hydrate=team,linescore,seriesStatus`;
 
 const standingsUrl =
   "https://statsapi.mlb.com/api/v1/standings"
@@ -258,11 +429,28 @@ const [schedule, standings] =
     getJson(standingsUrl)
   ]);
 
+const allScheduleGames =
+  (schedule.dates || [])
+    .flatMap(
+      day => day.games || []
+    );
+
 const selectedGame =
   chooseGame(schedule);
 
 const game =
   normalizeGame(selectedGame);
+
+if (
+  game
+  && game.postseason
+) {
+  game.seriesRecord =
+    seriesRecordText(
+      selectedGame,
+      allScheduleGames
+    );
+}
 
 const rows =
   divisionRows(standings);
@@ -316,7 +504,7 @@ await fs.writeFile(
 console.log(
   `Yankees updated: ${
     game
-      ? `${game.away} ${game.awayScore} – ${game.homeScore} ${game.home}`
+      ? `${game.competition || "Regular Season"} · ${game.away} ${game.awayScore} – ${game.homeScore} ${game.home}`
       : "no game found"
   }`
 );
