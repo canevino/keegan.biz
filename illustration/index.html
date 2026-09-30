@@ -13,6 +13,11 @@
 
   <link
     rel="stylesheet"
+    href="/assets/site.css"
+  >
+
+  <link
+    rel="stylesheet"
     href="style.css"
   >
 </head>
@@ -25,112 +30,7 @@
     id="page-shell"
   >
 
-    <!-- =====================================================
-         SCARF NAVIGATION
-         ===================================================== -->
-
-    <nav
-      class="scarf-rack"
-      aria-label="Sections"
-    >
-
-      <a
-        class="scarf-item scarf-home"
-        href="../"
-        aria-label="Home"
-      >
-        <img
-          src="../assets/home/home-scarf-update.png"
-          alt=""
-        >
-      </a>
-
-
-      <a
-        class="scarf-item"
-        href="./"
-        aria-current="page"
-        aria-label="Illustration"
-      >
-        <img
-          src="../assets/home/scarf-illustration.png"
-          alt=""
-        >
-      </a>
-
-
-      <a
-        class="scarf-item"
-        href="../photography/"
-        aria-label="Photography"
-      >
-        <img
-          src="../assets/home/scarf-photography.png"
-          alt=""
-        >
-      </a>
-
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Graphic Design"
-      >
-        <img
-          src="../assets/home/scarf-design.png"
-          alt=""
-        >
-      </a>
-
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Music"
-      >
-        <img
-          src="../assets/home/scarf-music.png"
-          alt=""
-        >
-      </a>
-
-
-<a
-  class="scarf-item"
-  href="../motion/"
-  aria-label="Motion"
->
-  <img
-    src="../assets/home/scarf-motion.png"
-    alt=""
-  >
-</a>
-
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Miscellaneous"
-      >
-        <img
-          src="../assets/home/scarf-misc.png"
-          alt=""
-        >
-      </a>
-
-
-      <a
-        class="scarf-item"
-        href="#"
-        aria-label="Gastronomy"
-      >
-        <img
-          src="../assets/home/scarf-gastronomy.png"
-          alt=""
-        >
-      </a>
-
-    </nav>
+    <nav data-site-nav></nav>
 
 
 
@@ -250,6 +150,12 @@
 
   </div>
 
+
+
+  <script
+    src="/assets/site-nav.js"
+    defer
+  ></script>
 
 
   <script>
@@ -1422,18 +1328,6 @@
         );
 
 
-      const hoverRotation =
-        (
-          random() < .5
-            ? -1
-            : 1
-        ) *
-        randomBetween(
-          1.2,
-          3.0
-        );
-
-
       const visible =
         item.visibleBounds;
 
@@ -1455,8 +1349,6 @@
           ),
 
         rotation,
-
-        hoverRotation,
 
         visibleLeft:
           visible.left *
@@ -3245,12 +3137,6 @@
       image.style.setProperty(
         "--base-rotation",
         `${item.rotation}deg`
-      );
-
-
-      image.style.setProperty(
-        "--hover-rotation",
-        `${item.hoverRotation}deg`
       );
 
 
