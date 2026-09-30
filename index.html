@@ -133,6 +133,7 @@
       --board-paper: var(--paper, #ece7d7);
       --square-a: #ece7d7;
       --square-b: #ddd7b6;
+      --capture-column: clamp(96px, 11vw, 132px);
       width: min(100%, 700px);
       max-width: 100%;
       min-width: 0;
@@ -140,86 +141,149 @@
     }
 
     .home-chess .play-controls {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 14px;
-
+      display: grid;
+      gap: 8px;
       margin-bottom: 8px;
     }
 
-    .home-chess .play-controls-label {
-      color: var(--board-red);
 
-      font-size: 12px;
-      line-height: 1;
-      font-weight: 700;
+    .home-chess .mode-switch {
+      display: inline-grid;
+      grid-template-columns:
+        repeat(
+          3,
+          auto
+        );
+
+      justify-self: start;
+
+      border:
+        1px
+        solid
+        var(--board-red);
     }
+
 
     .home-chess .mode-button,
     .home-chess .difficulty-button {
-      min-height: 0;
+      min-height: 34px;
 
-      padding: 0;
+      padding:
+        7px
+        12px;
 
       border: 0;
 
-      background: transparent;
+      background:
+        transparent;
 
-      text-align: left;
+      color:
+        var(--board-red);
+
+      text-align:
+        center;
+
+      text-decoration:
+        none;
     }
 
-    .home-chess .mode-button {
-      color: var(--board-red);
+
+    .home-chess .mode-button + .mode-button,
+    .home-chess .difficulty-button + .difficulty-button {
+      border-left:
+        1px
+        solid
+        var(--board-red);
     }
+
+
+    .home-chess .mode-button:hover,
+    .home-chess .difficulty-button:hover {
+      background:
+        rgba(
+          193,
+          39,
+          45,
+          .06
+        );
+
+      text-decoration:
+        none;
+    }
+
 
     .home-chess .mode-button.is-active {
-      background: transparent;
-      color: var(--board-red);
+      background:
+        var(--board-red);
 
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 3px;
+      color:
+        var(--board-paper);
+
+      text-decoration:
+        none;
     }
+
 
     .home-chess .bot-difficulties {
       display: none;
 
-      grid-template-columns: repeat(3, auto);
+      grid-template-columns:
+        repeat(
+          3,
+          auto
+        );
 
-      gap: 12px;
+      justify-self: start;
 
-      align-items: baseline;
-
-      margin-left: 4px;
+      border:
+        1px
+        solid
+        var(--board-red);
     }
+
 
     .home-chess.is-bot-mode .bot-difficulties {
-      display: grid;
+      display: inline-grid;
     }
+
 
     .home-chess .difficulty-button[data-level="easy"] {
-      color: var(--board-green);
+      color:
+        var(--board-green);
     }
+
 
     .home-chess .difficulty-button[data-level="medium"] {
-      color: var(--board-yellow);
+      color:
+        var(--board-yellow);
     }
+
 
     .home-chess .difficulty-button[data-level="hard"] {
-      color: var(--board-red);
+      color:
+        var(--board-red);
     }
 
+
     .home-chess .difficulty-button.is-active {
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 3px;
+      background:
+        var(--board-red);
+
+      color:
+        var(--board-paper);
+
+      text-decoration:
+        none;
     }
+
 
     .home-chess .bot-state {
       display: none;
 
-      margin: 0 0 8px;
+      margin:
+        0
+        0
+        10px;
 
       color: var(--board-red);
 
@@ -235,7 +299,12 @@
 
     .autoplay-panel {
       display: none;
-      margin: 0 0 12px;
+
+      margin:
+        0
+        0
+        10px;
+
       padding: 0;
     }
 
@@ -274,117 +343,6 @@
     }
 
 
-    .autoplay-watch-controls {
-      display: none;
-
-      grid-template-columns:
-        auto
-        auto
-        minmax(0, 1fr)
-        auto
-        auto
-        auto;
-
-      align-items: center;
-
-      gap: 0;
-
-      width:
-        calc(
-          100% -
-          var(--capture-column, 132px) -
-          12px
-        );
-
-      margin-top: 8px;
-
-      border:
-        1px
-        solid
-        var(--board-red);
-    }
-
-
-    .home-chess.is-autoplay-mode .autoplay-watch-controls {
-      display: grid;
-    }
-
-
-    .autoplay-watch-controls button {
-      min-height: 34px;
-
-      padding:
-        7px
-        9px;
-
-      border: 0;
-
-      background:
-        transparent;
-
-      color:
-        var(--board-red);
-
-      font-weight: 700;
-
-      text-align:
-        center;
-    }
-
-
-    .autoplay-watch-controls button + button,
-    .autoplay-watch-controls .autoplay-control-label + button,
-    .autoplay-watch-controls button + .autoplay-control-label {
-      border-left:
-        1px
-        solid
-        var(--board-red);
-    }
-
-
-    .autoplay-watch-controls button:hover:not(:disabled) {
-      background:
-        var(--board-red);
-
-      color:
-        var(--board-paper);
-
-      text-decoration:
-        none;
-    }
-
-
-    .autoplay-control-label {
-      display: flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      min-height: 34px;
-
-      padding:
-        7px
-        10px;
-
-      overflow: hidden;
-
-      color:
-        var(--board-red);
-
-      font-weight: 700;
-
-      text-align:
-        center;
-
-      text-overflow:
-        ellipsis;
-
-      white-space:
-        nowrap;
-    }
 
 
     .home-chess.is-autoplay-mode .clock-group,
@@ -417,10 +375,22 @@
     }
     .home-chess .chess-topbar {
       display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: end;
+
+      grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+      align-items:
+        center;
+
       gap: 16px;
-      margin-bottom: 10px;
+
+      margin:
+        0
+        0
+        8px;
+
+      padding-top: 2px;
     }
 
     .home-chess .status,
@@ -536,8 +506,6 @@
 
 
     .home-chess .board-area {
-      --capture-column: clamp(96px, 11vw, 132px);
-
       display: grid;
       grid-template-columns:
         minmax(0, 1fr)
@@ -1032,71 +1000,193 @@
       text-decoration: none;
     }
 
-    .home-chess .review-controls {
+    .home-chess .timeline-controls {
       display: none;
-      grid-template-columns: auto auto minmax(0, 1fr) auto auto auto;
-      align-items: center;
+
+      grid-template-columns:
+        auto
+        auto
+        minmax(
+          0,
+          1fr
+        )
+        auto
+        auto
+        auto;
+
+      align-items:
+        stretch;
+
       gap: 0;
+
+      width:
+        calc(
+          100% -
+          var(
+            --capture-column,
+            132px
+          ) -
+          12px
+        );
+
       margin-top: 8px;
-      border: 1px solid var(--board-red);
+
+      border:
+        1px
+        solid
+        var(--board-red);
     }
 
+
+    .home-chess .autoplay-watch-controls {
+      display: none;
+    }
+
+
+    .home-chess.is-autoplay-mode .autoplay-watch-controls,
     .home-chess .review-controls.is-visible {
       display: grid;
     }
 
-    .home-chess .review-controls button {
-      min-height: 34px;
-      padding: 7px 9px;
+
+    .home-chess .timeline-controls button,
+    .home-chess .timeline-controls .review-label,
+    .home-chess .timeline-controls .autoplay-control-label {
+      min-height: 36px;
+
+      padding:
+        8px
+        10px;
+
+      border: 0;
+
+      background:
+        transparent;
+
+      color:
+        var(--board-red);
+
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 700;
+
+      text-align:
+        center;
     }
 
-    .home-chess .review-controls button + button,
-    .home-chess .review-controls .review-label + button,
-    .home-chess .review-controls button + .review-label {
-      border-left: 1px solid var(--board-red);
-    }
 
-    .home-chess .review-controls button:hover:not(:disabled) {
-      background: var(--board-red);
-      color: var(--board-paper);
-      text-decoration: none;
-    }
-
-    .home-chess .review-label {
+    .home-chess .timeline-controls .review-label,
+    .home-chess .timeline-controls .autoplay-control-label {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 34px;
-      padding: 7px 10px;
-      text-align: center;
-      white-space: nowrap;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
       overflow: hidden;
-      text-overflow: ellipsis;
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
     }
+
+
+    .home-chess .timeline-controls > * + * {
+      border-left:
+        1px
+        solid
+        var(--board-red);
+    }
+
+
+    .home-chess .timeline-controls button:hover:not(:disabled) {
+      background:
+        var(--board-red);
+
+      color:
+        var(--board-paper);
+
+      text-decoration:
+        none;
+    }
+
 
     .home-chess .chess-bottombar {
       display: grid;
+
       grid-template-columns:
         auto
         auto
-        minmax(0, 1fr)
+        minmax(
+          0,
+          1fr
+        )
         auto;
+
       grid-template-areas:
         "reset resign clocks setter";
-      align-items: end;
-      gap: 14px 18px;
-      margin-top: 12px;
+
+      align-items:
+        center;
+
+      gap:
+        10px
+        14px;
+
+      margin-top: 10px;
+
+      padding-top: 10px;
+
+      border-top:
+        1px
+        solid
+        var(--board-red);
     }
+
+
+    .home-chess .chess-bottombar > button {
+      min-height: 34px;
+
+      padding:
+        7px
+        10px;
+
+      border:
+        1px
+        solid
+        var(--board-red);
+
+      color:
+        var(--board-red);
+
+      text-align:
+        center;
+    }
+
+
+    .home-chess .chess-bottombar > button:hover {
+      background:
+        var(--board-red);
+
+      color:
+        var(--board-paper);
+
+      text-decoration:
+        none;
+    }
+
 
     #reset-button {
       grid-area: reset;
-      justify-self: start;
     }
 
 
     #resign-button {
       grid-area: resign;
-      justify-self: start;
     }
 
 
@@ -1110,9 +1200,6 @@
 
       grid-area:
         autoplay-new;
-
-      justify-self:
-        start;
     }
 
 
@@ -1121,26 +1208,80 @@
     }
 
 
+    .home-chess.is-autoplay-mode .clock-group,
+    .home-chess.is-autoplay-mode .time-setter,
+    .home-chess.is-bot-mode .clock-group,
+    .home-chess.is-bot-mode .time-setter {
+      display: none;
+    }
+
+
+    .home-chess.is-autoplay-mode .chess-bottombar {
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      grid-template-areas:
+        "reset autoplay-new";
+    }
+
+
+    .home-chess.is-bot-mode .chess-bottombar {
+      grid-template-columns:
+        repeat(
+          2,
+          minmax(
+            0,
+            1fr
+          )
+        );
+
+      grid-template-areas:
+        "reset resign";
+    }
+
+
     .home-chess .clock-group {
       grid-area: clocks;
+
       display: flex;
-      justify-content: center;
-      align-items: center;
+
+      justify-content:
+        center;
+
+      align-items:
+        center;
+
       gap: 18px;
+
       min-width: 0;
     }
 
+
     .home-chess .time-setter {
       grid-area: setter;
+
       display: grid;
+
       grid-template-columns:
         auto
         56px
         auto;
-      align-items: center;
+
+      align-items:
+        center;
+
       gap: 8px;
-      justify-self: end;
+
+      justify-self:
+        end;
     }
+
 
     @media (max-width: 1240px) {
       .home {
@@ -1268,93 +1409,42 @@
 
     @media (max-width: 700px) {
 
-      .sports-launcher {
-        top: calc(50% + 38px);
-        font-size: 17px;
-      }
-
-
-      .sports-panel-shell {
-        width: 100%;
-        margin: clamp(58px, 8vh, 92px) 0 0;
-      }
-
-
-      .sports-panel-title {
-        font-size: clamp(52px, 15vw, 72px);
-      }
-
-    }
-
-
-    @media (max-width: 1400px) {
-      .home-chess {
-        width: min(100%, 620px);
-      }
-
-    }
-
-    @media (min-width: 701px) and (max-width: 1100px) {
-      .home-chess {
-        width: min(100%, 560px);
-      }
-
-      .home-chess .piece {
-        font-size: clamp(24px, 4.8vw, 48px);
-      }
-
-
-      .home-chess .chess-bottombar {
-        grid-template-columns: auto auto 1fr;
-        grid-template-areas:
-          "reset resign setter"
-          "clocks clocks clocks";
-      }
-
-      .home-chess .clock-group {
-        justify-content: space-between;
-      }
-
-      .home-chess .review-controls {
-        grid-template-columns:
-          auto
-          auto
-          minmax(0, 1fr)
-          auto
-          auto;
-      }
-
-      .home-chess .review-result {
-        grid-column: 1 / -1;
-        justify-self: start;
-      }
-    }
-
-    @media (max-width: 700px) {
       .home {
         --home-left:
           calc(
             22px +
-            env(safe-area-inset-left)
+            env(
+              safe-area-inset-left
+            )
           );
       }
+
 
       .chess-launcher {
         margin: 0;
         font-size: 17px;
       }
 
+
       .chess-panel {
-        margin-top: 22px;
+        margin-top: 18px;
       }
+
 
       .chess-panel-head {
-        margin-bottom: 10px;
+        margin-bottom: 4px;
       }
 
+
       .chess-panel-title {
-        font-size: clamp(52px, 15vw, 72px);
+        font-size:
+          clamp(
+            52px,
+            15vw,
+            72px
+          );
       }
+
 
       .chess-close {
         font-size: 44px;
@@ -1362,63 +1452,72 @@
 
 
       .home-chess {
+        --capture-column:
+          clamp(
+            58px,
+            17vw,
+            70px
+          );
+
         width: 100%;
-        margin-top: 34px;
+
+        margin-top: 22px;
       }
 
-      .home-chess .board-area {
-        --capture-column: clamp(62px, 19vw, 82px);
-        gap: 8px;
-      }
-
-      .home-chess .chess-topbar {
-        margin-bottom: 8px;
-      }
 
       .home-chess .play-controls {
-        gap: 10px;
-      }
+        gap: 7px;
 
-      .home-chess .bot-difficulties {
-        width: 100%;
-        margin-left: 0;
-        gap: 14px;
-      }
-
-
-
-
-      .autoplay-context,
-      .autoplay-game-title,
-      .autoplay-game-detail {
-        font-size: 11px;
-      }
-
-
-      .home-chess.is-autoplay-mode .autoplay-watch-controls {
-        grid-template-columns:
-          auto
-          auto
-          minmax(0, 1fr)
-          auto
-          auto
-          auto;
-      }
-
-
-      .autoplay-watch-controls button,
-      .autoplay-control-label {
-        padding:
-          7px
-          5px;
-
-        font-size:
+        margin-bottom:
           9px;
       }
 
 
-      .autoplay-player {
+      .home-chess .mode-switch,
+      .home-chess .bot-difficulties {
+        width: 100%;
+
+        grid-template-columns:
+          repeat(
+            3,
+            minmax(
+              0,
+              1fr
+            )
+          );
+
+        justify-self:
+          stretch;
+      }
+
+
+      .home-chess .mode-button,
+      .home-chess .difficulty-button {
+        width: 100%;
+
+        min-height:
+          38px;
+
+        padding:
+          8px
+          5px;
+
+        font-size:
+          12px;
+      }
+
+
+      .home-chess .bot-state,
+      .autoplay-context,
+      .autoplay-game-title,
+      .autoplay-game-detail {
         font-size: 11px;
+        line-height: 1.25;
+      }
+
+
+      .home-chess .chess-topbar {
+        margin-bottom: 7px;
       }
 
 
@@ -1428,11 +1527,22 @@
       .home-chess .review-label,
       .home-chess button,
       .home-chess input {
-        font-size: 12px;
+        font-size: 11px;
       }
 
+
+      .home-chess .board-area {
+        gap: 7px;
+      }
+
+
       .home-chess .piece {
-        font-size: clamp(23px, 8.5vw, 36px);
+        font-size:
+          clamp(
+            22px,
+            8.3vw,
+            36px
+          );
       }
 
 
@@ -1440,15 +1550,135 @@
         font-size: 7px;
       }
 
+
+      .autoplay-player {
+        width:
+          calc(
+            100% -
+            var(--capture-column) -
+            7px
+          );
+
+        font-size: 11px;
+      }
+
+
+      .home-chess .timeline-controls {
+        width:
+          calc(
+            100% -
+            var(--capture-column) -
+            7px
+          );
+
+        grid-template-columns:
+          auto
+          auto
+          minmax(
+            0,
+            1fr
+          )
+          auto
+          auto;
+
+        grid-template-rows:
+          auto
+          auto;
+      }
+
+
+      .home-chess .timeline-controls > :nth-child(1) {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+
+      .home-chess .timeline-controls > :nth-child(2) {
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+
+      .home-chess .timeline-controls > :nth-child(3) {
+        grid-column: 3;
+        grid-row: 1;
+      }
+
+
+      .home-chess .timeline-controls > :nth-child(4) {
+        grid-column: 4;
+        grid-row: 1;
+      }
+
+
+      .home-chess .timeline-controls > :nth-child(5) {
+        grid-column: 5;
+        grid-row: 1;
+      }
+
+
+      .home-chess .timeline-controls > :nth-child(6) {
+        grid-column:
+          1
+          /
+          -1;
+
+        grid-row: 2;
+
+        border-left: 0;
+
+        border-top:
+          1px
+          solid
+          var(--board-red);
+      }
+
+
+      .home-chess .timeline-controls button,
+      .home-chess .timeline-controls .review-label,
+      .home-chess .timeline-controls .autoplay-control-label {
+        min-height: 34px;
+
+        padding:
+          7px
+          5px;
+
+        font-size: 10px;
+      }
+
+
       .home-chess .win-title {
         max-width: 66%;
-        padding: 5px 8px 7px;
-        font-size: clamp(27px, 8.5vw, 40px);
-        box-shadow: 4px 4px 0 rgba(193, 39, 45, .72);
+
+        padding:
+          5px
+          8px
+          7px;
+
+        font-size:
+          clamp(
+            27px,
+            8.5vw,
+            40px
+          );
+
+        box-shadow:
+          4px
+          4px
+          0
+          rgba(
+            193,
+            39,
+            45,
+            .72
+          );
 
         transform:
           translateY(
-            var(--win-title-y-mobile, -42px)
+            var(
+              --win-title-y-mobile,
+              -42px
+            )
           );
       }
 
@@ -1461,87 +1691,189 @@
             -50%,
             calc(
               -50% +
-              var(--win-title-y-mobile, -42px) +
+              var(
+                --win-title-y-mobile,
+                -42px
+              ) +
               52px
             )
           );
       }
 
+
       .home-chess .win-art-title {
         top: 7px;
         left: 7px;
-        max-width: calc(100% - 14px);
+
+        max-width:
+          calc(
+            100% -
+            14px
+          );
+
         font-size: 9px;
       }
 
+
       .home-chess .result-actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .home-chess .review-controls {
         grid-template-columns:
-          repeat(4, auto);
-        justify-content: space-between;
-        gap: 10px 8px;
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
       }
 
-      .home-chess .review-label {
-        grid-column: 1 / -1;
-        grid-row: 1;
+
+      .home-chess .chess-bottombar,
+      .home-chess.is-bot-mode .chess-bottombar,
+      .home-chess.is-autoplay-mode .chess-bottombar {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(
+              0,
+              1fr
+            )
+          );
+
+        gap:
+          8px
+          10px;
       }
 
-      .home-chess .review-result {
-        grid-column: 1 / -1;
-        justify-self: start;
-      }
 
       .home-chess .chess-bottombar {
-        grid-template-columns:
-          auto
-          auto
-          1fr;
         grid-template-areas:
-          "reset resign clocks"
-          "setter setter setter";
-        align-items: center;
-        gap: 14px 12px;
+          "reset resign"
+          "clocks clocks"
+          "setter setter";
       }
+
+
+      .home-chess.is-bot-mode .chess-bottombar {
+        grid-template-areas:
+          "reset resign";
+      }
+
+
+      .home-chess.is-autoplay-mode .chess-bottombar {
+        grid-template-areas:
+          "reset autoplay-new";
+      }
+
+
+      .home-chess .chess-bottombar > button {
+        width: 100%;
+
+        min-height: 38px;
+
+        padding:
+          8px
+          8px;
+      }
+
+
+      .home-chess .clock-group {
+        justify-content:
+          space-between;
+
+        gap: 10px;
+
+        width: 100%;
+      }
+
 
       .home-chess .time-setter {
         grid-template-columns:
           auto
-          46px
+          52px
           auto;
-        gap: 6px;
-        justify-self: start;
+
+        justify-self:
+          start;
+
+        gap: 7px;
       }
+
 
       .home-chess .time-setter input {
-        width: 46px;
+        width: 52px;
       }
 
-      .home-chess .clock-group {
-        justify-content: flex-end;
-        gap: 14px;
+
+      .sports-launcher {
+        top:
+          calc(
+            50% +
+            38px
+          );
+
+        font-size: 17px;
       }
+
+
+      .sports-panel-shell {
+        width: 100%;
+
+        margin:
+          clamp(
+            58px,
+            8vh,
+            92px
+          )
+          0
+          0;
+      }
+
+
+      .sports-panel-title {
+        font-size:
+          clamp(
+            52px,
+            15vw,
+            72px
+          );
+      }
+
     }
 
+
     @media (max-width: 420px) {
+
+      .home-chess {
+        --capture-column:
+          54px;
+      }
+
+
       .home-chess .time-label {
         display: none;
       }
 
+
       .home-chess .time-setter {
         grid-template-columns:
-          44px
+          48px
           auto;
       }
 
+
       .home-chess .time-setter input {
-        width: 44px;
+        width: 48px;
+      }
+
+
+      .home-chess .timeline-controls button,
+      .home-chess .timeline-controls .review-label,
+      .home-chess .timeline-controls .autoplay-control-label {
+        font-size: 9px;
       }
 
     }
+
   </style>
 </head>
 
@@ -1621,29 +1953,37 @@
             aria-label="Game mode"
           >
 
-            <button
-              class="mode-button is-active"
-              id="local-mode-button"
-              type="button"
+            <div
+              class="mode-switch"
+              role="group"
+              aria-label="Game mode"
             >
-              local
-            </button>
 
-            <button
-              class="mode-button"
-              id="bot-mode-button"
-              type="button"
-            >
-              computer
-            </button>
+              <button
+                class="mode-button is-active"
+                id="local-mode-button"
+                type="button"
+              >
+                local
+              </button>
 
-            <button
-              class="mode-button"
-              id="autoplay-mode-button"
-              type="button"
-            >
-              autoplay
-            </button>
+              <button
+                class="mode-button"
+                id="bot-mode-button"
+                type="button"
+              >
+                computer
+              </button>
+
+              <button
+                class="mode-button"
+                id="autoplay-mode-button"
+                type="button"
+              >
+                autoplay
+              </button>
+
+            </div>
 
             <div
               class="bot-difficulties"
@@ -1795,7 +2135,7 @@
           ></p>
 
           <div
-            class="autoplay-watch-controls"
+            class="autoplay-watch-controls timeline-controls"
             id="autoplay-watch-controls"
             aria-label="Autoplay controls"
           >
@@ -1871,7 +2211,7 @@
 
 
           <div
-            class="review-controls"
+            class="review-controls timeline-controls"
             id="review-controls"
             aria-hidden="true"
           >
