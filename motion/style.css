@@ -11,6 +11,7 @@
 
 .motion-header {
   width: 100%;
+
   margin: 0;
   padding: 0;
 }
@@ -66,6 +67,7 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: -.035em;
+  text-transform: lowercase;
 }
 
 .motion-loading.is-hidden {
@@ -194,13 +196,11 @@ and (
   }
 }
 
-@media (
-  max-width: 1240px
-) {
+@media (max-width: 1240px) {
   .motion-page {
     padding-top:
       calc(
-        154px +
+        128px +
         env(safe-area-inset-top)
       );
   }
@@ -240,16 +240,14 @@ and (
   }
 }
 
-@media (
-  max-width: 700px
-) {
+@media (max-width: 700px) {
   .motion-page {
     width: 100%;
     min-height: auto;
 
     padding:
       calc(
-        150px +
+        112px +
         env(safe-area-inset-top)
       )
       14px
@@ -281,14 +279,11 @@ and (
       );
 
     gap: 8px;
-
     margin-top: 24px;
   }
 }
 
-@media (
-  max-width: 430px
-) {
+@media (max-width: 430px) {
   .motion-page {
     padding-right: 12px;
     padding-left: 12px;
@@ -325,9 +320,7 @@ and (
   }
 }
 
-@media (
-  min-width: 1650px
-) {
+@media (min-width: 1650px) {
   .motion-grid {
     max-width: 1120px;
   }
