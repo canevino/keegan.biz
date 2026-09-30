@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T16:23:54.556Z",
+  "updatedAt": "2026-09-30T16:52:34.487Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -20,7 +20,13 @@
         "homeScore": 0,
         "homeHits": "",
         "homeErrors": "",
-        "innings": []
+        "innings": [],
+        "postseason": true,
+        "competition": "AL Wild Card Series",
+        "series": "NYY leads 1-0",
+        "seriesRecord": "series · Yankees 1–0 Red Sox",
+        "upcomingTime": "next game · Wed, Sep 30 · 8:00 PM ET",
+        "gameType": "F"
       },
       "standings": {
         "title": "AL East",
