@@ -12,6 +12,7 @@
 
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/sports/sports.css">
 
   <style>
     .home {
@@ -275,14 +276,31 @@
 
     .autoplay-watch-controls {
       display: none;
-      width: calc(100% - var(--capture-column, 132px) - 12px);
+
+      width:
+        calc(
+          100% -
+          var(--capture-column, 132px) -
+          12px
+        );
+
       margin-top: 8px;
-      border: 1px solid var(--board-red);
+
+      border-top:
+        1px
+        solid
+        var(--board-red);
+
+      border-bottom:
+        1px
+        solid
+        var(--board-red);
     }
 
 
     .home-chess.is-autoplay-mode .autoplay-watch-controls {
       display: grid;
+
       grid-template-columns:
         auto
         auto
@@ -295,28 +313,83 @@
 
     .autoplay-watch-controls button {
       min-width: 0;
-      padding: 7px 10px;
+
+      padding:
+        7px
+        10px;
+
       border: 0;
-      border-right: 1px solid var(--board-red);
-      background: transparent;
-      color: var(--board-red);
+
+      border-right:
+        1px
+        solid
+        var(--board-red);
+
+      background:
+        transparent;
+
+      color:
+        var(--board-red);
+
       font-weight: 700;
-      text-align: center;
+
+      text-align:
+        center;
     }
 
 
-    .autoplay-watch-controls button:nth-child(3) {
-      justify-self: stretch;
+    .autoplay-watch-controls button:first-child {
+      border-left:
+        1px
+        solid
+        var(--board-red);
     }
 
 
-    .autoplay-watch-controls button:last-child {
-      border-right: 0;
+    .autoplay-watch-controls button:hover:not(:disabled) {
+      background:
+        var(--board-red);
+
+      color:
+        var(--board-paper);
     }
 
 
-    .autoplay-watch-controls button:hover {
-      background: rgba(193, 39, 45, .06);
+    .autoplay-control-label {
+      display: flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      min-height: 34px;
+
+      padding:
+        7px
+        10px;
+
+      border-right:
+        1px
+        solid
+        var(--board-red);
+
+      overflow: hidden;
+
+      color:
+        var(--board-red);
+
+      font-weight: 700;
+
+      text-align:
+        center;
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
     }
 
 
@@ -327,8 +400,15 @@
 
 
     .home-chess.is-autoplay-mode .chess-bottombar {
-      grid-template-columns: auto;
-      grid-template-areas: "reset";
+      grid-template-columns:
+        auto
+        auto;
+
+      grid-template-areas:
+        "reset autoplay-new";
+
+      justify-content:
+        start;
     }
 
     .home-chess.is-bot-mode .clock-group,
@@ -341,13 +421,6 @@
       grid-template-areas: "reset resign";
       justify-content: start;
     }
-
-    .home-chess.is-bot-thinking .board,
-    .home-chess.is-bot-thinking .piece {
-      cursor: wait;
-    }
-
-
     .home-chess .chess-topbar {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -1037,6 +1110,23 @@
       display: none;
     }
 
+
+    #autoplay-new {
+      display: none;
+
+      grid-area:
+        autoplay-new;
+
+      justify-self:
+        start;
+    }
+
+
+    .home-chess.is-autoplay-mode #autoplay-new {
+      display: inline-block;
+    }
+
+
     .home-chess .clock-group {
       grid-area: clocks;
       display: flex;
@@ -1067,6 +1157,131 @@
             72px
           );
       }
+    }
+
+
+
+    .sports-launcher {
+      position: absolute;
+      top: calc(50% + 46px);
+      left: var(--home-left);
+
+      display: inline-block;
+
+      margin: 0;
+      padding: 0;
+
+      border: 0;
+      background: transparent;
+
+      color: var(--red);
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+
+      text-decoration: underline;
+      text-underline-offset: 3px;
+
+      cursor: pointer;
+    }
+
+
+    .sports-panel-shell {
+      display: none;
+      width: min(100%, 700px);
+      margin: clamp(72px, 10vh, 126px) auto 0;
+    }
+
+
+    .sports-panel-shell.is-open {
+      display: block;
+    }
+
+
+    .sports-panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+
+    .sports-panel-title {
+      margin: 0;
+
+      color: var(--red);
+
+      font-size: clamp(60px, 6.4vw, 96px);
+      font-weight: 700;
+      line-height: .9;
+      letter-spacing: -.065em;
+    }
+
+
+    .sports-close {
+      margin: 0;
+      padding: 0;
+
+      border: 0;
+      background: transparent;
+
+      color: var(--red);
+
+      font-size: clamp(44px, 4.5vw, 66px);
+      font-weight: 400;
+      line-height: .75;
+
+      cursor: pointer;
+    }
+
+
+    .sports-loading,
+    .sports-empty,
+    .sports-error {
+      margin: 0;
+      padding: 14px;
+
+      color: var(--red);
+      font-weight: 700;
+    }
+
+
+    .sports-table-title {
+      margin: 16px 0 0;
+
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    .sports-table th,
+    .sports-table td {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    @media (max-width: 700px) {
+
+      .sports-launcher {
+        top: calc(50% + 38px);
+        font-size: 17px;
+      }
+
+
+      .sports-panel-shell {
+        width: 100%;
+        margin: clamp(58px, 8vh, 92px) 0 0;
+      }
+
+
+      .sports-panel-title {
+        font-size: clamp(52px, 15vw, 72px);
+      }
+
     }
 
 
@@ -1189,19 +1404,14 @@
       }
 
 
-      .autoplay-watch-controls button {
-        padding: 7px 5px;
-        font-size: 9px;
-      }
+      .autoplay-watch-controls button,
+      .autoplay-control-label {
+        padding:
+          7px
+          5px;
 
-
-      .autoplay-watch-controls button:nth-child(3) {
-        border-right: 1px solid var(--board-red);
-      }
-
-
-      .autoplay-watch-controls button:nth-child(-n + 3) {
-        border-bottom: 0;
+        font-size:
+          9px;
       }
 
 
@@ -1587,12 +1797,51 @@
             id="autoplay-watch-controls"
             aria-label="Autoplay controls"
           >
-            <button id="autoplay-start" type="button">start</button>
-            <button id="autoplay-prev" type="button">previous</button>
-            <button id="autoplay-toggle" type="button">pause</button>
-            <button id="autoplay-next" type="button">next</button>
-            <button id="autoplay-end" type="button">end</button>
-            <button id="autoplay-new" type="button">new game</button>
+
+            <button
+              id="autoplay-start"
+              type="button"
+            >
+              start
+            </button>
+
+            <button
+              id="autoplay-prev"
+              type="button"
+              aria-label="Previous move"
+            >
+              ←
+            </button>
+
+            <span
+              class="autoplay-control-label"
+              id="autoplay-control-label"
+            >
+              start
+            </span>
+
+            <button
+              id="autoplay-next"
+              type="button"
+              aria-label="Next move"
+            >
+              →
+            </button>
+
+            <button
+              id="autoplay-end"
+              type="button"
+            >
+              end
+            </button>
+
+            <button
+              id="autoplay-toggle"
+              type="button"
+            >
+              pause
+            </button>
+
           </div>
 
 
@@ -1689,6 +1938,13 @@
               resign
             </button>
 
+            <button
+              id="autoplay-new"
+              type="button"
+            >
+              new game
+            </button>
+
 
             <div
               class="clock-group"
@@ -1742,6 +1998,51 @@
           </div>
 
         </section>
+
+        </div>
+
+        <button
+          class="sports-launcher"
+          id="sports-launcher"
+          type="button"
+          aria-expanded="false"
+          aria-controls="sports-panel"
+        >
+          sports?
+        </button>
+
+        <div
+          class="sports-panel-shell"
+          id="sports-panel"
+          hidden
+        >
+
+          <div class="sports-panel-head">
+
+            <h2 class="sports-panel-title">
+              sports
+            </h2>
+
+            <button
+              class="sports-close"
+              id="sports-close"
+              type="button"
+              aria-label="Close sports"
+            >
+              ×
+            </button>
+
+          </div>
+
+          <div
+            class="sports-box"
+            id="sports-box"
+            aria-live="polite"
+          >
+            <p class="sports-loading">
+              loading…
+            </p>
+          </div>
 
         </div>
 
@@ -2211,6 +2512,30 @@
       );
 
 
+    const sportsLauncher =
+      document.getElementById(
+        "sports-launcher"
+      );
+
+
+    const sportsPanel =
+      document.getElementById(
+        "sports-panel"
+      );
+
+
+    const sportsClose =
+      document.getElementById(
+        "sports-close"
+      );
+
+
+    const sportsBox =
+      document.getElementById(
+        "sports-box"
+      );
+
+
     const chessShell =
       document.getElementById(
         "home-chess"
@@ -2292,6 +2617,12 @@
     const autoplayNextButton =
       document.getElementById(
         "autoplay-next"
+      );
+
+
+    const autoplayControlLabel =
+      document.getElementById(
+        "autoplay-control-label"
       );
 
 
@@ -4834,7 +5165,192 @@
     }
 
 
+    function sportsTableMarkup(
+      standings
+    ) {
+
+      if (
+        !standings
+        ||
+        !Array.isArray(
+          standings.rows
+        )
+      ) {
+        return "";
+      }
+
+
+      const rows =
+        standings.rows
+          .map(
+            row => `
+              <tr>
+                <td>${row.rank ?? ""}</td>
+                <td>${row.team ?? ""}</td>
+                <td>${row.record ?? row.points ?? ""}</td>
+              </tr>
+            `
+          )
+          .join("");
+
+
+      return `
+        <p class="sports-table-title">${standings.title ?? ""}</p>
+
+        <table class="sports-table">
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      `;
+
+    }
+
+
+    function sportsSectionMarkup(
+      data
+    ) {
+
+      if (
+        !data
+        ||
+        data.active ===
+        false
+      ) {
+        return "";
+      }
+
+
+      const game =
+        data.game
+        ||
+        {};
+
+
+      return `
+        <section class="sports-section">
+          <p class="sports-team">${data.shortName ?? data.team ?? ""}</p>
+
+          <div class="sports-score">
+            <span>${game.away ?? ""}</span>
+            <span>${game.awayScore ?? ""}–${game.homeScore ?? ""}</span>
+            <span>${game.home ?? ""}</span>
+          </div>
+
+          <p class="sports-detail">${game.detail ?? ""}</p>
+
+          ${sportsTableMarkup(data.standings)}
+        </section>
+      `;
+
+    }
+
+
+    async function renderSports() {
+
+      sportsBox.innerHTML =
+        '<p class="sports-loading">loading…</p>';
+
+
+      try {
+
+        const data =
+          await window.keeganSports.loadSportsData();
+
+
+        const markup =
+          [
+            sportsSectionMarkup(
+              data?.baseball?.yankees
+            ),
+            sportsSectionMarkup(
+              data?.football?.liverpool
+            )
+          ]
+            .join("");
+
+
+        sportsBox.innerHTML =
+          markup
+          ||
+          '<p class="sports-empty">nothing on today</p>';
+
+      }
+
+      catch (
+        error
+      ) {
+
+        console.error(
+          "sports data error:",
+          error
+        );
+
+
+        sportsBox.innerHTML =
+          '<p class="sports-error">sports unavailable</p>';
+
+      }
+
+    }
+
+
+    function openSports() {
+
+      closeChess();
+
+
+      sportsPanel.hidden =
+        false;
+
+
+      sportsPanel.classList.add(
+        "is-open"
+      );
+
+
+      sportsLauncher.hidden =
+        true;
+
+
+      sportsLauncher.setAttribute(
+        "aria-expanded",
+        "true"
+      );
+
+
+      renderSports();
+
+    }
+
+
+    function closeSports() {
+
+      sportsPanel.classList.remove(
+        "is-open"
+      );
+
+
+      sportsPanel.hidden =
+        true;
+
+
+      sportsLauncher.hidden =
+        false;
+
+
+      sportsLauncher.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+    }
+
+
     function openChess() {
+
+      closeSports();
+
 
       chessPanel.hidden =
         false;
@@ -4921,6 +5437,18 @@
     chessClose.addEventListener(
       "click",
       closeChess
+    );
+
+
+    sportsLauncher.addEventListener(
+      "click",
+      openSports
+    );
+
+
+    sportsClose.addEventListener(
+      "click",
+      closeSports
     );
 
 
@@ -6180,6 +6708,13 @@
         autoplayPlaying
           ? "pause"
           : "play";
+
+
+      autoplayControlLabel.textContent =
+        autoplayMoveIndex ===
+        0
+          ? "start"
+          : `move ${autoplayMoveIndex} / ${autoplayMoves.length}`;
 
     }
 
@@ -9281,6 +9816,7 @@
 
   </script>
 
+  <script src="/assets/sports/sports.js" defer></script>
   <script src="/assets/site-nav.js" defer></script>
 
 </body>
