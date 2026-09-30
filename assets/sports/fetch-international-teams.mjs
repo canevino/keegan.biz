@@ -18,6 +18,8 @@ const TEAMS = [
 ];
 
 const ACTIVE_WINDOW_DAYS = 14;
+const SCAN_DAYS = 21;
+const LIVE_GRACE_HOURS = 8;
 
 async function getJson(pathname, params = {}) {
   const query = new URLSearchParams(
@@ -59,19 +61,20 @@ async function getJson(pathname, params = {}) {
   throw lastError || new Error(`FotMob request failed: ${pathname}`);
 }
 
-function teamFixtures(teamData) {
-  const candidates = [
-    teamData?.fixtures?.allFixtures?.fixtures,
-    teamData?.fixtures?.fixtures,
-    teamData?.overview?.fixtures,
-    teamData?.matches
-  ];
+function flattenDailyMatches(payload) {
+  const leagues = Array.isArray(payload?.leagues) ? payload.leagues : [];
 
-  for (const value of candidates) {
-    if (Array.isArray(value)) return value;
-  }
-
-  return [];
+  return leagues.flatMap(league =>
+    (Array.isArray(league?.matches) ? league.matches : []).map(match => ({
+      ...match,
+      league: {
+        ...(match?.league || {}),
+        id: match?.league?.id ?? match?.leagueId ?? league?.id,
+        primaryId: match?.league?.primaryId ?? league?.primaryId ?? league?.id,
+        name: match?.league?.name ?? league?.name ?? ""
+      }
+    }))
+  );
 }
 
 function teamObject(match, side) {
@@ -135,20 +138,33 @@ function competitionId(match) {
   );
 }
 
-function formatEastern(ms) {
-  const date = new Date(ms);
-  const now = new Date();
-
-  const dayFormatter = new Intl.DateTimeFormat("en-CA", {
+function easternDayKey(date) {
+  return new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/New_York",
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
-  });
+  }).format(date);
+}
 
-  const dayKey = dayFormatter.format(date);
-  const todayKey = dayFormatter.format(now);
-  const tomorrowKey = dayFormatter.format(new Date(now.getTime() + 24 * 60 * 60 * 1000));
+function dateParamFromOffset(offsetDays) {
+  const date = new Date(Date.now() + offsetDays * 24 * 60 * 60 * 1000);
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date);
+  const map = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${map.year}${map.month}${map.day}`;
+}
+
+function formatEastern(ms) {
+  const date = new Date(ms);
+  const now = new Date();
+  const dayKey = easternDayKey(date);
+  const todayKey = easternDayKey(now);
+  const tomorrowKey = easternDayKey(new Date(now.getTime() + 24 * 60 * 60 * 1000));
 
   const dateText = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/New_York",
@@ -168,9 +184,21 @@ function formatEastern(ms) {
   return `${dateText} · ${timeText} ET`;
 }
 
+function isLiveNow(match, time) {
+  const now = Date.now();
+  return (
+    isStarted(match) &&
+    !isFinished(match) &&
+    !isCancelled(match) &&
+    Number.isFinite(time) &&
+    time >= now - LIVE_GRACE_HOURS * 60 * 60 * 1000 &&
+    time <= now + LIVE_GRACE_HOURS * 60 * 60 * 1000
+  );
+}
+
 function normalizeUpcoming(matches, teamId) {
   const now = Date.now();
-  const upperBound = now + 370 * 24 * 60 * 60 * 1000;
+  const upperBound = now + SCAN_DAYS * 24 * 60 * 60 * 1000;
 
   return matches
     .filter(match => {
@@ -178,12 +206,17 @@ function normalizeUpcoming(matches, teamId) {
       const away = teamObject(match, "away");
       const time = matchTime(match);
       const involvesTeam = Number(home.id) === teamId || Number(away.id) === teamId;
+      const live = isLiveNow(match, time);
+      const scheduledFuture =
+        !isStarted(match) &&
+        !isFinished(match) &&
+        Number.isFinite(time) &&
+        time >= now - 10 * 60 * 1000;
 
       return (
         involvesTeam &&
-        Number.isFinite(time) &&
         !isCancelled(match) &&
-        (isStarted(match) || (!isFinished(match) && time >= now - 3 * 60 * 60 * 1000)) &&
+        (live || scheduledFuture) &&
         time <= upperBound
       );
     })
@@ -193,7 +226,7 @@ function normalizeUpcoming(matches, teamId) {
       const home = teamObject(match, "home");
       const away = teamObject(match, "away");
       const time = matchTime(match);
-      const live = isStarted(match) && !isFinished(match);
+      const live = isLiveNow(match, time);
 
       return {
         id: String(match.id ?? match.matchId ?? ""),
@@ -266,31 +299,46 @@ function activeWindow(upcoming) {
   });
 }
 
-async function fetchTeam(team) {
-  const teamData = await getJson("teams", { id: team.teamId, ccode3: "USA" });
-  const upcoming = normalizeUpcoming(teamFixtures(teamData), team.teamId);
-  const standings = await fetchCompetitionTable(upcoming, team.teamId);
+async function scanUpcomingMatches(days = SCAN_DAYS) {
+  const all = [];
 
-  return {
-    active: activeWindow(upcoming),
-    team: team.name,
-    shortName: team.name,
-    upcoming: upcoming.map(({ competitionId, ...fixture }) => fixture),
-    standings
-  };
+  for (let offset = 0; offset < days; offset += 1) {
+    const date = dateParamFromOffset(offset);
+
+    try {
+      const payload = await getJson("matches", { date, ccode3: "USA" });
+      all.push(...flattenDailyMatches(payload));
+    } catch (error) {
+      console.warn(`matches ${date}: ${error.message}`);
+    }
+  }
+
+  return all;
 }
 
 const existing = JSON.parse(await fs.readFile(dataPath, "utf8"));
 existing.updatedAt = new Date().toISOString();
 existing.football ??= {};
 
+const scannedMatches = await scanUpcomingMatches(SCAN_DAYS);
+
 for (const team of TEAMS) {
   try {
-    existing.football[team.key] = await fetchTeam(team);
-    console.log(`${team.name}: updated`);
+    const upcomingWithIds = normalizeUpcoming(scannedMatches, team.teamId);
+    const standings = await fetchCompetitionTable(upcomingWithIds, team.teamId);
+
+    existing.football[team.key] = {
+      active: activeWindow(upcomingWithIds),
+      team: team.name,
+      shortName: team.name,
+      upcoming: upcomingWithIds.map(({ competitionId, ...fixture }) => fixture),
+      standings
+    };
+
+    console.log(`${team.name}: ${upcomingWithIds.length} upcoming, active=${existing.football[team.key].active}`);
   } catch (error) {
     console.error(`${team.name}: ${error.message}`);
-    existing.football[team.key] ??= {
+    existing.football[team.key] = {
       active: false,
       team: team.name,
       shortName: team.name,

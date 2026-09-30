@@ -18,6 +18,9 @@ const CLUBS = [
   { key: "shakhtar", name: "Shakhtar", teamId: 9728, leagueId: 441, leagueName: "Premier League" }
 ];
 
+const FALLBACK_SCAN_DAYS = 21;
+const LIVE_GRACE_HOURS = 8;
+
 async function getJson(pathname, params = {}) {
   const query = new URLSearchParams(
     Object.entries(params)
@@ -73,6 +76,21 @@ function teamFixtures(teamData) {
   return [];
 }
 
+function flattenDailyMatches(payload) {
+  const leagues = Array.isArray(payload?.leagues) ? payload.leagues : [];
+  return leagues.flatMap(league =>
+    (Array.isArray(league?.matches) ? league.matches : []).map(match => ({
+      ...match,
+      league: {
+        ...(match?.league || {}),
+        id: match?.league?.id ?? match?.leagueId ?? league?.id,
+        primaryId: match?.league?.primaryId ?? league?.primaryId ?? league?.id,
+        name: match?.league?.name ?? league?.name ?? ""
+      }
+    }))
+  );
+}
+
 function teamObject(match, side) {
   if (match?.[side]) return match[side];
   if (side === "home") return match?.homeTeam || match?.teams?.[0] || {};
@@ -123,34 +141,33 @@ function competitionName(match) {
   );
 }
 
-function startOfTodayEastern() {
-  const now = new Date();
-  const parts = new Intl.DateTimeFormat("en-US", {
+function easternDayKey(date) {
+  return new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/New_York",
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
-  }).formatToParts(now);
+  }).format(date);
+}
 
-  const lookup = Object.fromEntries(parts.map(part => [part.type, part.value]));
-  return Date.parse(`${lookup.year}-${lookup.month}-${lookup.day}T00:00:00-04:00`);
+function dateParamFromOffset(offsetDays) {
+  const date = new Date(Date.now() + offsetDays * 24 * 60 * 60 * 1000);
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date);
+  const map = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${map.year}${map.month}${map.day}`;
 }
 
 function formatEastern(ms) {
   const date = new Date(ms);
   const now = new Date();
-
-  const dayFormatter = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/New_York",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  });
-
-  const dayKey = dayFormatter.format(date);
-  const todayKey = dayFormatter.format(now);
-  const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-  const tomorrowKey = dayFormatter.format(tomorrow);
+  const dayKey = easternDayKey(date);
+  const todayKey = easternDayKey(now);
+  const tomorrowKey = easternDayKey(new Date(now.getTime() + 24 * 60 * 60 * 1000));
 
   const dateText = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/New_York",
@@ -170,9 +187,21 @@ function formatEastern(ms) {
   return `${dateText} · ${timeText} ET`;
 }
 
+function isLiveNow(match, time) {
+  const now = Date.now();
+  return (
+    isStarted(match) &&
+    !isFinished(match) &&
+    !isCancelled(match) &&
+    Number.isFinite(time) &&
+    time >= now - LIVE_GRACE_HOURS * 60 * 60 * 1000 &&
+    time <= now + LIVE_GRACE_HOURS * 60 * 60 * 1000
+  );
+}
+
 function normalizeUpcoming(matches, teamId) {
-  const lowerBound = startOfTodayEastern() - 3 * 60 * 60 * 1000;
-  const upperBound = Date.now() + 370 * 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  const upperBound = now + 370 * 24 * 60 * 60 * 1000;
 
   return matches
     .filter(match => {
@@ -180,12 +209,17 @@ function normalizeUpcoming(matches, teamId) {
       const away = teamObject(match, "away");
       const time = matchTime(match);
       const involvesTeam = Number(home.id) === teamId || Number(away.id) === teamId;
+      const live = isLiveNow(match, time);
+      const scheduledFuture =
+        !isStarted(match) &&
+        !isFinished(match) &&
+        Number.isFinite(time) &&
+        time >= now - 10 * 60 * 1000;
 
       return (
         involvesTeam &&
-        Number.isFinite(time) &&
         !isCancelled(match) &&
-        (isStarted(match) || (!isFinished(match) && time >= lowerBound)) &&
+        (live || scheduledFuture) &&
         time <= upperBound
       );
     })
@@ -195,7 +229,7 @@ function normalizeUpcoming(matches, teamId) {
       const home = teamObject(match, "home");
       const away = teamObject(match, "away");
       const time = matchTime(match);
-      const live = isStarted(match) && !isFinished(match);
+      const live = isLiveNow(match, time);
 
       return {
         id: String(match.id ?? match.matchId ?? ""),
@@ -228,13 +262,34 @@ function tableRows(tablePayload, teamId) {
   return [];
 }
 
-async function fetchClub(club) {
+async function scanUpcomingMatches(days = FALLBACK_SCAN_DAYS) {
+  const all = [];
+
+  for (let offset = 0; offset < days; offset += 1) {
+    const date = dateParamFromOffset(offset);
+    try {
+      const payload = await getJson("matches", { date, ccode3: "USA" });
+      all.push(...flattenDailyMatches(payload));
+    } catch (error) {
+      console.warn(`matches ${date}: ${error.message}`);
+    }
+  }
+
+  return all;
+}
+
+async function fetchClub(club, fallbackMatches = null) {
   const [teamData, tablePayload] = await Promise.all([
     getJson("teams", { id: club.teamId, ccode3: "USA" }),
     getJson("tltable", { leagueId: club.leagueId })
   ]);
 
-  const upcoming = normalizeUpcoming(teamFixtures(teamData), club.teamId);
+  let upcoming = normalizeUpcoming(teamFixtures(teamData), club.teamId);
+
+  if (!upcoming.length && Array.isArray(fallbackMatches)) {
+    upcoming = normalizeUpcoming(fallbackMatches, club.teamId);
+  }
+
   const rows = tableRows(tablePayload, club.teamId);
 
   return {
@@ -253,19 +308,48 @@ const existing = JSON.parse(await fs.readFile(dataPath, "utf8"));
 existing.updatedAt = new Date().toISOString();
 existing.football ??= {};
 
+const teamPayloads = new Map();
+let needsFallbackScan = false;
+
 for (const club of CLUBS) {
   try {
-    existing.football[club.key] = await fetchClub(club);
-    console.log(`${club.name}: updated`);
+    const teamData = await getJson("teams", { id: club.teamId, ccode3: "USA" });
+    teamPayloads.set(club.key, teamData);
+    if (!normalizeUpcoming(teamFixtures(teamData), club.teamId).length) {
+      needsFallbackScan = true;
+    }
   } catch (error) {
-    console.error(`${club.name}: ${error.message}`);
-    existing.football[club.key] ??= {
+    console.warn(`${club.name} team preview failed: ${error.message}`);
+    needsFallbackScan = true;
+  }
+}
+
+const fallbackMatches = needsFallbackScan
+  ? await scanUpcomingMatches(FALLBACK_SCAN_DAYS)
+  : [];
+
+for (const club of CLUBS) {
+  try {
+    const teamData = teamPayloads.get(club.key) || await getJson("teams", { id: club.teamId, ccode3: "USA" });
+    const tablePayload = await getJson("tltable", { leagueId: club.leagueId });
+
+    let upcoming = normalizeUpcoming(teamFixtures(teamData), club.teamId);
+    if (!upcoming.length) upcoming = normalizeUpcoming(fallbackMatches, club.teamId);
+
+    existing.football[club.key] = {
       active: true,
       team: club.name,
       shortName: club.name,
-      upcoming: [],
-      standings: { title: club.leagueName, rows: [] }
+      upcoming,
+      standings: {
+        title: club.leagueName,
+        rows: tableRows(tablePayload, club.teamId)
+      }
     };
+
+    console.log(`${club.name}: ${upcoming.length} upcoming`);
+  } catch (error) {
+    console.error(`${club.name}: ${error.message}`);
   }
 }
 
