@@ -1,0 +1,67 @@
+:root {
+  --sports-red: #c1272d;
+  --sports-green: #006a44;
+  --sports-yellow: #fdb913;
+  --sports-paper: #ece7d7;
+  --sports-ink: #11110f;
+}
+
+.sports-panel {
+  width: min(100%, 700px);
+}
+
+.sports-box {
+  border: 2px solid var(--sports-red);
+  background: transparent;
+}
+
+.sports-section + .sports-section {
+  border-top: 2px solid var(--sports-red);
+}
+
+.sports-section {
+  padding: 14px;
+}
+
+.sports-team {
+  margin: 0 0 10px;
+  color: var(--sports-red);
+  font-weight: 700;
+}
+
+.sports-score {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: baseline;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 700;
+}
+
+.sports-score > :last-child {
+  text-align: right;
+}
+
+.sports-detail {
+  margin: 4px 0 0;
+  color: var(--sports-green);
+  font-weight: 700;
+}
+
+.sports-table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+}
+
+.sports-table th,
+.sports-table td {
+  padding: 4px 0;
+  border-top: 1px solid var(--sports-red);
+  text-align: left;
+}
+
+.sports-table th:last-child,
+.sports-table td:last-child {
+  text-align: right;
+}

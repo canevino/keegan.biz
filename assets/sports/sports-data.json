@@ -1,0 +1,72 @@
+{
+  "updatedAt": null,
+  "baseball": {
+    "yankees": {
+      "active": true,
+      "team": "New York Yankees",
+      "shortName": "Yankees",
+      "game": {
+        "status": "sample",
+        "away": "BOS",
+        "awayScore": 2,
+        "home": "NYY",
+        "homeScore": 4,
+        "detail": "bottom 7"
+      },
+      "standings": {
+        "title": "AL East",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Yankees",
+            "record": "91–65"
+          },
+          {
+            "rank": 2,
+            "team": "Blue Jays",
+            "record": "88–68"
+          },
+          {
+            "rank": 3,
+            "team": "Red Sox",
+            "record": "84–72"
+          }
+        ]
+      }
+    }
+  },
+  "football": {
+    "liverpool": {
+      "active": true,
+      "team": "Liverpool",
+      "game": {
+        "status": "sample",
+        "home": "Liverpool",
+        "homeScore": 2,
+        "away": "Chelsea",
+        "awayScore": 1,
+        "detail": "67'"
+      },
+      "standings": {
+        "title": "Premier League",
+        "rows": [
+          {
+            "rank": 1,
+            "team": "Arsenal",
+            "points": 41
+          },
+          {
+            "rank": 2,
+            "team": "Liverpool",
+            "points": 39
+          },
+          {
+            "rank": 3,
+            "team": "Manchester City",
+            "points": 37
+          }
+        ]
+      }
+    }
+  }
+}
