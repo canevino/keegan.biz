@@ -220,3 +220,11 @@
 .sports-upcoming-time {
   color: var(--sports-green);
 }
+
+
+.sports-competition + .sports-series-record,
+.sports-competition + .sports-series,
+.sports-series-record + .sports-upcoming-time,
+.sports-series + .sports-upcoming-time {
+  margin-top: 4px;
+}

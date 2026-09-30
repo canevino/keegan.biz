@@ -117,31 +117,97 @@ function seriesText(game) {
   return "";
 }
 
-function formatEasternGameTime(gameDate) {
-  if (!gameDate) return "";
-
-  const date = new Date(gameDate);
-
-  const day = new Intl.DateTimeFormat(
-    "en-US",
+function easternDateKey(date) {
+  return new Intl.DateTimeFormat(
+    "en-CA",
     {
       timeZone: "America/New_York",
-      weekday: "short",
-      month: "short",
-      day: "numeric"
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
     }
   ).format(date);
+}
 
-  const time = new Intl.DateTimeFormat(
-    "en-US",
-    {
-      timeZone: "America/New_York",
-      hour: "numeric",
-      minute: "2-digit"
-    }
-  ).format(date);
+function formatUpcomingGame(game) {
+  if (!game?.gameDate) return "";
 
-  return `next game · ${day} · ${time} ET`;
+  const date =
+    new Date(game.gameDate);
+
+  const todayKey =
+    easternDateKey(now);
+
+  const tomorrow =
+    new Date(now);
+
+  tomorrow.setUTCDate(
+    tomorrow.getUTCDate() + 1
+  );
+
+  const tomorrowKey =
+    easternDateKey(tomorrow);
+
+  const gameKey =
+    easternDateKey(date);
+
+  let dateLabel;
+
+  if (gameKey === todayKey) {
+    dateLabel = "today";
+  }
+
+  else if (gameKey === tomorrowKey) {
+    dateLabel = "tomorrow";
+  }
+
+  else {
+    dateLabel =
+      new Intl.DateTimeFormat(
+        "en-US",
+        {
+          timeZone: "America/New_York",
+          weekday: "short",
+          month: "short",
+          day: "numeric"
+        }
+      ).format(date);
+  }
+
+  const time =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone: "America/New_York",
+        hour: "numeric",
+        minute: "2-digit"
+      }
+    ).format(date);
+
+  const venue =
+    game.venue?.name
+    || "";
+
+  const city =
+    game.venue?.location?.city
+    || "";
+
+  const location =
+    [venue, city]
+      .filter(Boolean)
+      .filter(
+        (value, index, array) =>
+          array.indexOf(value) === index
+      )
+      .join(", ");
+
+  return [
+    dateLabel,
+    `${time} ET`,
+    location
+  ]
+    .filter(Boolean)
+    .join(" · ");
 }
 
 function opponentId(game) {
@@ -161,23 +227,34 @@ function seriesRecordText(selectedGame, allGames) {
     return "";
   }
 
-  const opponent = opponentId(selectedGame);
-  const type = selectedGame.gameType;
+  const opponent =
+    opponentId(selectedGame);
 
-  const seriesGames = allGames.filter(game =>
-    game.gameType === type
-    && opponentId(game) === opponent
-    && game.status?.abstractGameState === "Final"
-  );
+  const type =
+    selectedGame.gameType;
+
+  const seriesGames =
+    allGames.filter(game =>
+      game.gameType === type
+      && opponentId(game) === opponent
+      && game.status?.abstractGameState === "Final"
+    );
 
   let yankeesWins = 0;
   let opponentWins = 0;
 
   for (const game of seriesGames) {
-    const awayId = game.teams?.away?.team?.id;
-    const homeId = game.teams?.home?.team?.id;
-    const awayScore = game.teams?.away?.score ?? 0;
-    const homeScore = game.teams?.home?.score ?? 0;
+    const awayId =
+      game.teams?.away?.team?.id;
+
+    const homeId =
+      game.teams?.home?.team?.id;
+
+    const awayScore =
+      game.teams?.away?.score ?? 0;
+
+    const homeScore =
+      game.teams?.home?.score ?? 0;
 
     const yankeesWon =
       (
@@ -192,7 +269,9 @@ function seriesRecordText(selectedGame, allGames) {
 
     if (yankeesWon) {
       yankeesWins += 1;
-    } else {
+    }
+
+    else {
       opponentWins += 1;
     }
   }
@@ -202,18 +281,22 @@ function seriesRecordText(selectedGame, allGames) {
       ? selectedGame.teams?.home?.team?.name
       : selectedGame.teams?.away?.team?.name;
 
-  if (!opponentName) {
-    return `series · Yankees ${yankeesWins}–${opponentWins}`;
-  }
-
   const shortOpponent =
-    opponentName
+    (opponentName || "Opponent")
       .replace("Boston Red Sox", "Red Sox")
       .replace("Toronto Blue Jays", "Blue Jays")
       .replace("Tampa Bay Rays", "Rays")
       .replace("Baltimore Orioles", "Orioles");
 
-  return `series · Yankees ${yankeesWins}–${opponentWins} ${shortOpponent}`;
+  if (yankeesWins > opponentWins) {
+    return `Yankees lead ${shortOpponent} ${yankeesWins}–${opponentWins}`;
+  }
+
+  if (opponentWins > yankeesWins) {
+    return `${shortOpponent} lead Yankees ${opponentWins}–${yankeesWins}`;
+  }
+
+  return `Yankees and ${shortOpponent} tied ${yankeesWins}–${opponentWins}`;
 }
 
 function statusText(game) {
@@ -282,7 +365,7 @@ function normalizeGame(game) {
     seriesRecord: "",
     upcomingTime:
       game.status?.abstractGameState === "Preview"
-        ? formatEasternGameTime(game.gameDate)
+        ? formatUpcomingGame(game)
         : "",
     gameType: game.gameType || ""
   };
