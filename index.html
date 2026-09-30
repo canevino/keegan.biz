@@ -2502,6 +2502,12 @@
     } from "/assets/chess/famous-games-pgn.js";
 
 
+    const home =
+      document.querySelector(
+        ".home"
+      );
+
+
     const chessLauncher =
       document.getElementById(
         "chess-launcher"
@@ -5604,6 +5610,11 @@
 
 
     function closeChess() {
+
+      home.classList.remove(
+        "chess-open"
+      );
+
 
       cancelSelection();
 
