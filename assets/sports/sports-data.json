@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T19:51:54.327Z",
+  "updatedAt": "2026-09-30T20:27:31.466Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -72,49 +72,49 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "5498878",
-          "date": "2026-07-25T22:00:00.000Z",
-          "when": "Sat, Jul 25 · 6:00 PM ET",
+          "id": "5795472",
+          "date": "2026-10-11T15:30:00.000Z",
+          "when": "Sun, Oct 11 · 11:30 AM ET",
           "status": "scheduled",
           "home": "Liverpool",
-          "away": "Sunderland",
-          "competition": "Club Friendlies"
+          "away": "Man City",
+          "competition": "Premier League"
         },
         {
-          "id": "5498879",
-          "date": "2026-07-29T23:30:00.000Z",
-          "when": "Wed, Jul 29 · 7:30 PM ET",
+          "id": "6106405",
+          "date": "2026-10-14T16:45:00.000Z",
+          "when": "Wed, Oct 14 · 12:45 PM ET",
           "status": "scheduled",
-          "home": "Liverpool",
-          "away": "Wrexham",
-          "competition": "Club Friendlies"
+          "home": "LASK",
+          "away": "Liverpool",
+          "competition": "Champions League"
         },
         {
-          "id": "5498880",
-          "date": "2026-08-02T20:00:00.000Z",
-          "when": "Sun, Aug 2 · 4:00 PM ET",
+          "id": "5795476",
+          "date": "2026-10-17T14:00:00.000Z",
+          "when": "Sat, Oct 17 · 10:00 AM ET",
           "status": "scheduled",
-          "home": "Liverpool",
-          "away": "Leeds",
-          "competition": "Club Friendlies"
+          "home": "Brentford",
+          "away": "Liverpool",
+          "competition": "Premier League"
         },
         {
-          "id": "5765326",
-          "date": "2026-08-09T13:30:00.000Z",
-          "when": "Sun, Aug 9 · 9:30 AM ET",
+          "id": "6106248",
+          "date": "2026-10-20T19:00:00.000Z",
+          "when": "Tue, Oct 20 · 3:00 PM ET",
           "status": "scheduled",
           "home": "Liverpool",
-          "away": "Monaco",
-          "competition": "Club Friendlies"
+          "away": "Villarreal",
+          "competition": "Champions League"
         },
         {
-          "id": "5973785",
-          "date": "2026-08-16T10:30:00.000Z",
-          "when": "Sun, Aug 16 · 6:30 AM ET",
+          "id": "5795492",
+          "date": "2026-10-25T14:00:00.000Z",
+          "when": "Sun, Oct 25 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Liverpool",
-          "away": "Como",
-          "competition": "Club Friendlies"
+          "away": "Brighton",
+          "competition": "Premier League"
         }
       ],
       "standings": {
@@ -269,49 +269,49 @@
       "shortName": "Hearts",
       "upcoming": [
         {
-          "id": "5904575",
-          "date": "2026-07-10T18:45:00.000Z",
-          "when": "Fri, Jul 10 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Livingston",
-          "away": "Hearts",
-          "competition": "Club Friendlies"
-        },
-        {
-          "id": "5921001",
-          "date": "2026-07-14T18:30:00.000Z",
-          "when": "Tue, Jul 14 · 2:30 PM ET",
-          "status": "scheduled",
-          "home": "Arbroath",
-          "away": "Hearts",
-          "competition": "Club Friendlies"
-        },
-        {
-          "id": "5900422",
-          "date": "2026-07-17T18:45:00.000Z",
-          "when": "Fri, Jul 17 · 2:45 PM ET",
+          "id": "5793943",
+          "date": "2026-10-10T14:00:00.000Z",
+          "when": "Sat, Oct 10 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Hearts",
-          "away": "Rayo Vallecano",
-          "competition": "Club Friendlies"
+          "away": "St. Mirren",
+          "competition": "Premiership"
         },
         {
-          "id": "5787786",
-          "date": "2026-07-21T18:30:00.000Z",
-          "when": "Tue, Jul 21 · 2:30 PM ET",
-          "status": "scheduled",
-          "home": "Sturm Graz",
-          "away": "Hearts",
-          "competition": "Champions League Qualification"
-        },
-        {
-          "id": "5787788",
-          "date": "2026-07-28T18:45:00.000Z",
-          "when": "Tue, Jul 28 · 2:45 PM ET",
+          "id": "6112497",
+          "date": "2026-10-15T19:00:00.000Z",
+          "when": "Thu, Oct 15 · 3:00 PM ET",
           "status": "scheduled",
           "home": "Hearts",
-          "away": "Sturm Graz",
-          "competition": "Champions League Qualification"
+          "away": "Nordsjælland",
+          "competition": "Conference League"
+        },
+        {
+          "id": "5793947",
+          "date": "2026-10-18T14:00:00.000Z",
+          "when": "Sun, Oct 18 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "Celtic",
+          "away": "Hearts",
+          "competition": "Premiership"
+        },
+        {
+          "id": "6112502",
+          "date": "2026-10-22T16:45:00.000Z",
+          "when": "Thu, Oct 22 · 12:45 PM ET",
+          "status": "scheduled",
+          "home": "Trabzonspor",
+          "away": "Hearts",
+          "competition": "Conference League"
+        },
+        {
+          "id": "5793955",
+          "date": "2026-10-25T14:00:00.000Z",
+          "when": "Sun, Oct 25 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "Motherwell",
+          "away": "Hearts",
+          "competition": "Premiership"
         }
       ],
       "standings": {
@@ -410,49 +410,49 @@
       "shortName": "Preston",
       "upcoming": [
         {
-          "id": "5978390",
-          "date": "2026-08-01T14:00:00.000Z",
-          "when": "Sat, Aug 1 · 10:00 AM ET",
-          "status": "scheduled",
-          "home": "Stockport County",
-          "away": "Preston",
-          "competition": "Club Friendlies"
-        },
-        {
-          "id": "5840302",
-          "date": "2026-08-08T14:00:00.000Z",
-          "when": "Sat, Aug 8 · 10:00 AM ET",
+          "id": "5836855",
+          "date": "2026-10-10T14:00:00.000Z",
+          "when": "Sat, Oct 10 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Preston",
-          "away": "Huddersfield",
-          "competition": "EFL Cup"
+          "away": "Millwall",
+          "competition": "Championship"
         },
         {
-          "id": "5836755",
-          "date": "2026-08-15T11:30:00.000Z",
-          "when": "Sat, Aug 15 · 7:30 AM ET",
+          "id": "5836862",
+          "date": "2026-10-13T19:00:00.000Z",
+          "when": "Tue, Oct 13 · 3:00 PM ET",
           "status": "scheduled",
-          "home": "Bolton",
+          "home": "Birmingham",
           "away": "Preston",
           "competition": "Championship"
         },
         {
-          "id": "5836771",
-          "date": "2026-08-22T14:00:00.000Z",
-          "when": "Sat, Aug 22 · 10:00 AM ET",
+          "id": "5836885",
+          "date": "2026-10-17T14:00:00.000Z",
+          "when": "Sat, Oct 17 · 10:00 AM ET",
           "status": "scheduled",
-          "home": "Preston",
-          "away": "Wolves",
+          "home": "Wrexham",
+          "away": "Preston",
           "competition": "Championship"
         },
         {
-          "id": "6005650",
-          "date": "2026-08-26T19:00:00.000Z",
-          "when": "Wed, Aug 26 · 3:00 PM ET",
+          "id": "5836892",
+          "date": "2026-10-24T14:00:00.000Z",
+          "when": "Sat, Oct 24 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Preston",
-          "away": "Everton",
-          "competition": "EFL Cup"
+          "away": "West Brom",
+          "competition": "Championship"
+        },
+        {
+          "id": "5836906",
+          "date": "2026-10-31T12:30:00.000Z",
+          "when": "Sat, Oct 31 · 8:30 AM ET",
+          "status": "scheduled",
+          "home": "Stoke",
+          "away": "Preston",
+          "competition": "Championship"
         }
       ],
       "standings": {
@@ -635,49 +635,49 @@
       "shortName": "Fiorentina",
       "upcoming": [
         {
-          "id": "5900854",
-          "date": "2026-07-22T17:00:00.000Z",
-          "when": "Wed, Jul 22 · 1:00 PM ET",
+          "id": "5749693",
+          "date": "2026-10-10T13:00:00.000Z",
+          "when": "Sat, Oct 10 · 9:00 AM ET",
+          "status": "scheduled",
+          "home": "Genoa",
+          "away": "Fiorentina",
+          "competition": "Serie A"
+        },
+        {
+          "id": "5749703",
+          "date": "2026-10-18T13:00:00.000Z",
+          "when": "Sun, Oct 18 · 9:00 AM ET",
           "status": "scheduled",
           "home": "Fiorentina",
-          "away": "Gubbio",
-          "competition": "Club Friendlies"
+          "away": "Como",
+          "competition": "Serie A"
         },
         {
-          "id": "5900855",
-          "date": "2026-07-25T14:00:00.000Z",
-          "when": "Sat, Jul 25 · 10:00 AM ET",
+          "id": "5749714",
+          "date": "2026-10-25T11:30:00.000Z",
+          "when": "Sun, Oct 25 · 7:30 AM ET",
           "status": "scheduled",
-          "home": "QPR",
+          "home": "Inter",
           "away": "Fiorentina",
-          "competition": "Club Friendlies"
+          "competition": "Serie A"
         },
         {
-          "id": "5900856",
-          "date": "2026-07-29T18:30:00.000Z",
-          "when": "Wed, Jul 29 · 2:30 PM ET",
-          "status": "scheduled",
-          "home": "Watford",
-          "away": "Fiorentina",
-          "competition": "Club Friendlies"
-        },
-        {
-          "id": "5909892",
-          "date": "2026-08-01T16:00:00.000Z",
-          "when": "Sat, Aug 1 · 12:00 PM ET",
-          "status": "scheduled",
-          "home": "Real Madrid",
-          "away": "Fiorentina",
-          "competition": "Club Friendlies"
-        },
-        {
-          "id": "5900332",
-          "date": "2026-08-06T18:00:00.000Z",
-          "when": "Thu, Aug 6 · 2:00 PM ET",
+          "id": "5749722",
+          "date": "2026-10-29T19:45:00.000Z",
+          "when": "Thu, Oct 29 · 3:45 PM ET",
           "status": "scheduled",
           "home": "Fiorentina",
-          "away": "Deportivo A Coruña",
-          "competition": "Club Friendlies"
+          "away": "Atalanta",
+          "competition": "Serie A"
+        },
+        {
+          "id": "5749738",
+          "date": "2026-11-02T17:30:00.000Z",
+          "when": "Mon, Nov 2 · 12:30 PM ET",
+          "status": "scheduled",
+          "home": "Sassuolo",
+          "away": "Fiorentina",
+          "competition": "Serie A"
         }
       ],
       "standings": {
@@ -832,48 +832,48 @@
       "shortName": "Shakhtar",
       "upcoming": [
         {
-          "id": "5909120",
-          "date": "2026-08-03T15:00:00.000Z",
-          "when": "Mon, Aug 3 · 11:00 AM ET",
+          "id": "5909176",
+          "date": "2026-10-09T12:30:00.000Z",
+          "when": "Fri, Oct 9 · 8:30 AM ET",
+          "status": "scheduled",
+          "home": "Veres Rivne",
+          "away": "Shakhtar Donetsk",
+          "competition": "Premier League"
+        },
+        {
+          "id": "6106337",
+          "date": "2026-10-14T19:00:00.000Z",
+          "when": "Wed, Oct 14 · 3:00 PM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
-          "away": "Kudrivka",
-          "competition": "Premier League"
+          "away": "AEK Athens",
+          "competition": "Champions League"
         },
         {
-          "id": "5909123",
-          "date": "2026-08-09T12:30:00.000Z",
-          "when": "Sun, Aug 9 · 8:30 AM ET",
-          "status": "scheduled",
-          "home": "Epitsentr Kamianets-Podilskyi",
-          "away": "Shakhtar Donetsk",
-          "competition": "Premier League"
-        },
-        {
-          "id": "5909131",
-          "date": "2026-08-16T12:30:00.000Z",
-          "when": "Sun, Aug 16 · 8:30 AM ET",
-          "status": "scheduled",
-          "home": "FC Kharkiv",
-          "away": "Shakhtar Donetsk",
-          "competition": "Premier League"
-        },
-        {
-          "id": "5909144",
-          "date": "2026-08-29T15:00:00.000Z",
-          "when": "Sat, Aug 29 · 11:00 AM ET",
+          "id": "5909184",
+          "date": "2026-10-17T15:00:00.000Z",
+          "when": "Sat, Oct 17 · 11:00 AM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
-          "away": "Polissya Zhytomyr",
+          "away": "FC Kolos Kovalivka",
           "competition": "Premier League"
         },
         {
-          "id": "5909149",
-          "date": "2026-09-05T15:00:00.000Z",
-          "when": "Sat, Sep 5 · 11:00 AM ET",
+          "id": "6106252",
+          "date": "2026-10-21T19:00:00.000Z",
+          "when": "Wed, Oct 21 · 3:00 PM ET",
           "status": "scheduled",
-          "home": "Karpaty",
+          "home": "Inter",
           "away": "Shakhtar Donetsk",
+          "competition": "Champions League"
+        },
+        {
+          "id": "5909191",
+          "date": "2026-10-24T15:00:00.000Z",
+          "when": "Sat, Oct 24 · 11:00 AM ET",
+          "status": "scheduled",
+          "home": "Shakhtar Donetsk",
+          "away": "Zorya",
           "competition": "Premier League"
         }
       ],
@@ -996,226 +996,109 @@
       }
     },
     "lithuania": {
-      "active": false,
+      "active": true,
       "team": "Lithuania",
       "shortName": "Lithuania",
       "upcoming": [
         {
-          "id": "4689273",
-          "date": "2025-10-09T16:00:00.000Z",
-          "when": "Thu, Oct 9 · 12:00 PM ET",
+          "id": "5181883",
+          "date": "2026-10-04T13:00:00.000Z",
+          "when": "Sun, Oct 4 · 9:00 AM ET",
           "status": "scheduled",
-          "home": "Finland",
+          "home": "Azerbaijan",
           "away": "Lithuania",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. G"
-        },
-        {
-          "id": "4689275",
-          "date": "2025-10-12T18:45:00.000Z",
-          "when": "Sun, Oct 12 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Lithuania",
-          "away": "Poland",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. G"
-        },
-        {
-          "id": "4928627",
-          "date": "2025-11-13T17:00:00.000Z",
-          "when": "Thu, Nov 13 · 12:00 PM ET",
-          "status": "scheduled",
-          "home": "Lithuania",
-          "away": "Israel",
-          "competition": "Friendlies"
-        },
-        {
-          "id": "4689280",
-          "date": "2025-11-17T19:45:00.000Z",
-          "when": "Mon, Nov 17 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Netherlands",
-          "away": "Lithuania",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. G"
-        },
-        {
-          "id": "5124808",
-          "date": "2026-03-26T15:00:00.000Z",
-          "when": "Thu, Mar 26 · 11:00 AM ET",
-          "status": "scheduled",
-          "home": "Moldova",
-          "away": "Lithuania",
-          "competition": "Friendlies"
+          "competition": "UEFA Nations League D Grp. 2"
         }
       ],
       "standings": {
-        "title": "World Cup Qualification UEFA 1st Round Grp. G",
+        "title": "UEFA Nations League D Grp. 2",
         "rows": []
       }
     },
     "ukraine": {
-      "active": false,
+      "active": true,
       "team": "Ukraine",
       "shortName": "Ukraine",
       "upcoming": [
         {
-          "id": "4689331",
-          "date": "2025-10-10T18:45:00.000Z",
-          "when": "Fri, Oct 10 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Iceland",
-          "away": "Ukraine",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. D"
-        },
-        {
-          "id": "4689334",
-          "date": "2025-10-13T18:45:00.000Z",
-          "when": "Mon, Oct 13 · 2:45 PM ET",
+          "id": "5181805",
+          "date": "2026-10-02T18:45:00.000Z",
+          "when": "Fri, Oct 2 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Ukraine",
-          "away": "Azerbaijan",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. D"
+          "away": "Northern Ireland",
+          "competition": "UEFA Nations League B Grp. 2"
         },
         {
-          "id": "4689336",
-          "date": "2025-11-13T19:45:00.000Z",
-          "when": "Thu, Nov 13 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "France",
-          "away": "Ukraine",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. D"
-        },
-        {
-          "id": "4689338",
-          "date": "2025-11-16T17:00:00.000Z",
-          "when": "Sun, Nov 16 · 12:00 PM ET",
+          "id": "5181807",
+          "date": "2026-10-05T18:45:00.000Z",
+          "when": "Mon, Oct 5 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Ukraine",
-          "away": "Iceland",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. D"
-        },
-        {
-          "id": "5067288",
-          "date": "2026-03-26T19:45:00.000Z",
-          "when": "Thu, Mar 26 · 3:45 PM ET",
-          "status": "scheduled",
-          "home": "Ukraine",
-          "away": "Sweden",
-          "competition": "World Cup Qualification UEFA 2nd Round"
+          "away": "Hungary",
+          "competition": "UEFA Nations League B Grp. 2"
         }
       ],
       "standings": {
-        "title": "World Cup Qualification UEFA 1st Round Grp. D",
+        "title": "UEFA Nations League B Grp. 2",
         "rows": []
       }
     },
     "england": {
-      "active": false,
+      "active": true,
       "team": "England",
       "shortName": "England",
       "upcoming": [
         {
-          "id": "4737406",
-          "date": "2025-10-09T18:45:00.000Z",
-          "when": "Thu, Oct 9 · 2:45 PM ET",
+          "id": "5181853",
+          "date": "2026-10-03T16:00:00.000Z",
+          "when": "Sat, Oct 3 · 12:00 PM ET",
           "status": "scheduled",
-          "home": "England",
-          "away": "Wales",
-          "competition": "Friendlies"
-        },
-        {
-          "id": "4689413",
-          "date": "2025-10-14T18:45:00.000Z",
-          "when": "Tue, Oct 14 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Latvia",
+          "home": "Croatia",
           "away": "England",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. K"
+          "competition": "UEFA Nations League A Grp. 3"
         },
         {
-          "id": "4689416",
-          "date": "2025-11-13T19:45:00.000Z",
-          "when": "Thu, Nov 13 · 2:45 PM ET",
+          "id": "5181856",
+          "date": "2026-10-06T18:45:00.000Z",
+          "when": "Tue, Oct 6 · 2:45 PM ET",
           "status": "scheduled",
           "home": "England",
-          "away": "Serbia",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. K"
-        },
-        {
-          "id": "4689417",
-          "date": "2025-11-16T17:00:00.000Z",
-          "when": "Sun, Nov 16 · 12:00 PM ET",
-          "status": "scheduled",
-          "home": "Albania",
-          "away": "England",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. K"
-        },
-        {
-          "id": "5124809",
-          "date": "2026-03-27T19:45:00.000Z",
-          "when": "Fri, Mar 27 · 3:45 PM ET",
-          "status": "scheduled",
-          "home": "England",
-          "away": "Uruguay",
-          "competition": "Friendlies"
+          "away": "Czechia",
+          "competition": "UEFA Nations League A Grp. 3"
         }
       ],
       "standings": {
-        "title": "Friendlies",
+        "title": "UEFA Nations League A Grp. 3",
         "rows": []
       }
     },
     "ireland": {
-      "active": false,
+      "active": true,
       "team": "Ireland",
       "shortName": "Ireland",
       "upcoming": [
         {
-          "id": "4689356",
-          "date": "2025-10-11T18:45:00.000Z",
-          "when": "Sat, Oct 11 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Portugal",
-          "away": "Ireland",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. F"
-        },
-        {
-          "id": "4689357",
-          "date": "2025-10-14T18:45:00.000Z",
-          "when": "Tue, Oct 14 · 2:45 PM ET",
+          "id": "5181817",
+          "date": "2026-10-01T18:45:00.000Z",
+          "when": "tomorrow · Thu, Oct 1 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Ireland",
-          "away": "Armenia",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. F"
+          "away": "Austria",
+          "competition": "UEFA Nations League B Grp. 3"
         },
         {
-          "id": "4689360",
-          "date": "2025-11-13T19:45:00.000Z",
-          "when": "Thu, Nov 13 · 2:45 PM ET",
+          "id": "5181819",
+          "date": "2026-10-04T18:45:00.000Z",
+          "when": "Sun, Oct 4 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Ireland",
-          "away": "Portugal",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. F"
-        },
-        {
-          "id": "4689361",
-          "date": "2025-11-16T14:00:00.000Z",
-          "when": "Sun, Nov 16 · 9:00 AM ET",
-          "status": "scheduled",
-          "home": "Hungary",
-          "away": "Ireland",
-          "competition": "World Cup Qualification UEFA 1st Round Grp. F"
-        },
-        {
-          "id": "5067294",
-          "date": "2026-03-26T19:45:00.000Z",
-          "when": "Thu, Mar 26 · 3:45 PM ET",
-          "status": "scheduled",
-          "home": "Czechia",
-          "away": "Ireland",
-          "competition": "World Cup Qualification UEFA 2nd Round"
+          "away": "Israel",
+          "competition": "UEFA Nations League B Grp. 3"
         }
       ],
       "standings": {
-        "title": "World Cup Qualification UEFA 1st Round Grp. F",
+        "title": "UEFA Nations League B Grp. 3",
         "rows": []
       }
     }
