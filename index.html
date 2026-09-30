@@ -244,26 +244,18 @@
     }
 
 
-    .autoplay-description,
-    .autoplay-about,
+    .autoplay-context,
     .autoplay-game-title,
     .autoplay-game-detail {
       margin: 0;
-      max-width: 620px;
+      max-width: 720px;
       font-size: 12px;
       line-height: 1.18;
     }
 
 
-    .autoplay-description {
-      margin-bottom: 7px;
-      color: var(--board-yellow);
-      font-weight: 700;
-    }
-
-
-    .autoplay-about {
-      margin-bottom: 12px;
+    .autoplay-context {
+      margin-bottom: 10px;
       color: var(--board-green);
       font-weight: 700;
     }
@@ -286,10 +278,47 @@
     }
 
 
-    .autoplay-controls {
-      display: flex;
-      gap: 12px;
-      margin-top: 9px;
+    .autoplay-watch-controls {
+      display: none;
+      width: calc(100% - var(--capture-column, 132px) - 12px);
+      margin-top: 8px;
+      border-top: 1px solid var(--board-red);
+      border-bottom: 1px solid var(--board-red);
+    }
+
+
+    .home-chess.is-autoplay-mode .autoplay-watch-controls {
+      display: grid;
+      grid-template-columns:
+        auto
+        auto
+        auto
+        auto
+        auto
+        1fr;
+    }
+
+
+    .autoplay-watch-controls button {
+      min-width: 0;
+      padding: 7px 9px;
+      border: 0;
+      border-right: 1px solid var(--board-red);
+      background: transparent;
+      color: var(--board-red);
+      font-weight: 700;
+      text-align: left;
+    }
+
+
+    .autoplay-watch-controls button:last-child {
+      border-right: 0;
+      text-align: right;
+    }
+
+
+    .autoplay-watch-controls button:hover {
+      background: rgba(193, 39, 45, .06);
     }
 
 
@@ -412,6 +441,7 @@
       font-size: 13px;
       line-height: 1;
       font-weight: 700;
+      text-align: center;
     }
 
 
@@ -1143,11 +1173,27 @@
 
 
 
-      .autoplay-description,
-      .autoplay-about,
+      .autoplay-context,
       .autoplay-game-title,
       .autoplay-game-detail {
         font-size: 11px;
+      }
+
+
+      .home-chess.is-autoplay-mode .autoplay-watch-controls {
+        grid-template-columns:
+          auto
+          auto
+          auto
+          auto
+          auto
+          1fr;
+      }
+
+
+      .autoplay-watch-controls button {
+        padding: 7px 6px;
+        font-size: 10px;
       }
 
 
@@ -1429,19 +1475,11 @@
             id="autoplay-panel"
             aria-hidden="true"
           >
-            <p class="autoplay-description" id="autoplay-description"></p>
-
-            <p class="autoplay-about">
-              Autoplay draws from <em>The Mammoth Book of The World's Greatest Chess Games</em>.
-            </p>
+            <p class="autoplay-context" id="autoplay-context"></p>
 
             <p class="autoplay-game-title" id="autoplay-game-title"></p>
             <p class="autoplay-game-detail" id="autoplay-game-detail"></p>
 
-            <div class="autoplay-controls">
-              <button id="autoplay-toggle" type="button">pause</button>
-              <button id="autoplay-new" type="button">new game</button>
-            </div>
           </div>
 
           <div class="chess-topbar">
@@ -1540,6 +1578,19 @@
             class="autoplay-player autoplay-player-bottom"
             id="autoplay-player-bottom"
           ></p>
+
+          <div
+            class="autoplay-watch-controls"
+            id="autoplay-watch-controls"
+            aria-label="Autoplay controls"
+          >
+            <button id="autoplay-start" type="button">start</button>
+            <button id="autoplay-prev" type="button" aria-label="Previous move">←</button>
+            <button id="autoplay-toggle" type="button">pause</button>
+            <button id="autoplay-next" type="button" aria-label="Next move">→</button>
+            <button id="autoplay-end" type="button">end</button>
+            <button id="autoplay-new" type="button">new game</button>
+          </div>
 
 
           <div
@@ -2187,9 +2238,9 @@
       );
 
 
-    const autoplayDescription =
+    const autoplayContext =
       document.getElementById(
-        "autoplay-description"
+        "autoplay-context"
       );
 
 
@@ -2217,9 +2268,33 @@
       );
 
 
+    const autoplayStartButton =
+      document.getElementById(
+        "autoplay-start"
+      );
+
+
+    const autoplayPrevButton =
+      document.getElementById(
+        "autoplay-prev"
+      );
+
+
     const autoplayToggleButton =
       document.getElementById(
         "autoplay-toggle"
+      );
+
+
+    const autoplayNextButton =
+      document.getElementById(
+        "autoplay-next"
+      );
+
+
+    const autoplayEndButton =
+      document.getElementById(
+        "autoplay-end"
       );
 
 
@@ -2503,7 +2578,7 @@
 
 
     const AUTOPLAY_MOVE_DELAY =
-      30000;
+      6000;
 
 
     const FAMOUS_GAME_META =
@@ -5623,7 +5698,7 @@
 
 
         const minimumDelay =
-          10000;
+          5000;
 
 
         const elapsed =
@@ -5765,101 +5840,177 @@
     }
 
 
-    function shortPlayerName(
-      fullName,
-      fallback
+    function countryFromSite(
+      site
     ) {
 
-      const value =
-        (
-          fullName ||
-          fallback ||
-          ""
-        ).trim();
-
-
-      if (
-        !value
-      ) {
-        return "";
-      }
-
-
-      const parts =
-        value.split(
-          /\s+/
+      const codeMatch =
+        (site || "").match(
+          /\b([A-Z]{3})$/
         );
 
 
-      return parts.length >
-        1
-          ? parts[
-              parts.length -
-              1
-            ]
-          : value;
+      const code =
+        codeMatch
+          ? codeMatch[1]
+          : "";
+
+
+      const countries = {
+        ENG: "England",
+        SCO: "Scotland",
+        IRL: "Ireland",
+        USA: "United States",
+        CAN: "Canada",
+        MEX: "Mexico",
+        CUB: "Cuba",
+        ARG: "Argentina",
+        BRA: "Brazil",
+        GER: "Germany",
+        FRG: "West Germany",
+        GDR: "East Germany",
+        AUT: "Austria",
+        SUI: "Switzerland",
+        FRA: "France",
+        ESP: "Spain",
+        ITA: "Italy",
+        NED: "Netherlands",
+        BEL: "Belgium",
+        DEN: "Denmark",
+        SWE: "Sweden",
+        NOR: "Norway",
+        FIN: "Finland",
+        ISL: "Iceland",
+        POL: "Poland",
+        HUN: "Hungary",
+        ROU: "Romania",
+        BUL: "Bulgaria",
+        GRE: "Greece",
+        TUR: "Turkey",
+        ISR: "Israel",
+        IND: "India",
+        CHN: "China",
+        JPN: "Japan",
+        PHI: "Philippines",
+        INA: "Indonesia",
+        AUS: "Australia",
+        NZL: "New Zealand",
+        RUS: "Russia",
+        RUE: "Russian Empire",
+        URS: "Soviet Union",
+        CSR: "Czechoslovakia",
+        YUG: "Yugoslavia",
+        CRO: "Croatia",
+        SRB: "Serbia",
+        SVN: "Slovenia",
+        CZE: "Czech Republic",
+        SVK: "Slovakia",
+        UKR: "Ukraine",
+        GEO: "Georgia",
+        ARM: "Armenia",
+        AZE: "Azerbaijan",
+        KAZ: "Kazakhstan"
+      };
+
+
+      return countries[code]
+        ||
+        code
+        ||
+        "";
 
     }
 
 
-    function autoplayDescriptionFor(
+    function resultContext(
       white,
       black,
-      event
+      opening,
+      event,
+      country
     ) {
 
-      const year =
-        autoplayGame.year;
+      const result =
+        autoplayResult;
 
 
-      const named =
-        autoplayGame.title
-          ? `Known as “${autoplayGame.title},” this ${year} game`
-          : `This ${year} game`;
+      const place =
+        [
+          event,
+          country
+        ]
+          .filter(Boolean)
+          .join(
+            " in "
+          );
 
 
-      const context =
-        event
-          ? `${named} was played at ${event}.`
-          : `${named} is one of the collection's celebrated historical games.`;
+      const where =
+        place
+          ? ` at ${place}`
+          : "";
 
 
-      let players;
+      const openingPhrase =
+        opening
+          ? ` in ${opening}`
+          : "";
 
 
       if (
-        /world championship/i.test(
-          event || ""
-        )
+        autoplayGame.title
       ) {
 
-        players =
-          `${shortPlayerName(white, autoplayGame.white)} and ${shortPlayerName(black, autoplayGame.black)} were two of the defining world-championship players of their era.`;
+        if (
+          result ===
+          "1-0"
+        ) {
+
+          return `${white} beat ${black}${openingPhrase}${where}; the game became known as “${autoplayGame.title}.”`;
+
+        }
+
+
+        if (
+          result ===
+          "0-1"
+        ) {
+
+          return `${black} beat ${white}${openingPhrase}${where}; the game became known as “${autoplayGame.title}.”`;
+
+        }
+
+
+        return `${white} and ${black} drew${openingPhrase}${where}; the game became known as “${autoplayGame.title}.”`;
 
       }
 
-      else if (
-        /candidates/i.test(
-          event || ""
-        )
+
+      if (
+        result ===
+        "1-0"
       ) {
 
-        players =
-          `${shortPlayerName(white, autoplayGame.white)} and ${shortPlayerName(black, autoplayGame.black)} were elite contenders competing at the highest level of their generation.`;
-
-      }
-
-      else {
-
-        players =
-          `${shortPlayerName(white, autoplayGame.white)} and ${shortPlayerName(black, autoplayGame.black)} were prominent masters of their era.`;
+        return `${white} won with White against ${black}${openingPhrase}${where}.`;
 
       }
 
 
-      return `${context} ${players}`;
+      if (
+        result ===
+        "0-1"
+      ) {
+
+        return `${black} won with Black against ${white}${openingPhrase}${where}.`;
+
+      }
+
+
+      return `${white} and ${black} drew${openingPhrase}${where}.`;
 
     }
+
+
 
 
     function updateAutoplayPlayers(
@@ -5944,6 +6095,19 @@
         );
 
 
+      const site =
+        pgnTag(
+          autoplayGame.pgn,
+          "Site"
+        );
+
+
+      const country =
+        countryFromSite(
+          site
+        );
+
+
       const pgnEco =
         pgnTag(
           autoplayGame.pgn,
@@ -5971,26 +6135,30 @@
         "";
 
 
-      autoplayDescription.textContent =
-        autoplayDescriptionFor(
-          white,
-          black,
-          event
-        );
+      const openingText =
+        eco
+          ? opening
+            ? `${eco}: ${opening}`
+            : eco
+          : opening;
+
+
+      autoplayContext.textContent =
+        `${
+          resultContext(
+            white,
+            black,
+            opening,
+            event,
+            country
+          )
+        } Autoplay draws from The Mammoth Book of The World's Greatest Chess Games.`;
 
 
       autoplayGameTitle.textContent =
         autoplayGame.title
           ? `“${autoplayGame.title}”`
           : `${white} vs ${black}`;
-
-
-      const openingText =
-        eco
-          ? opening
-            ? `${eco} · ${opening}`
-            : eco
-          : opening;
 
 
       autoplayGameDetail.textContent =
@@ -6000,6 +6168,10 @@
                 ? ` · ${event}`
                 : ""
             }${
+              country
+                ? ` · ${country}`
+                : ""
+            }${
               openingText
                 ? ` · ${openingText}`
                 : ""
@@ -6007,6 +6179,10 @@
           : `${autoplayGame.year}${
               event
                 ? ` · ${event}`
+                : ""
+            }${
+              country
+                ? ` · ${country}`
                 : ""
             }${
               openingText
@@ -6238,6 +6414,183 @@
 
 
       scheduleAutoplayMove();
+
+    }
+
+
+    function rebuildAutoplayPosition(
+      targetIndex
+    ) {
+
+      clearAutoplayTimer();
+
+
+      autoplayPlaying =
+        false;
+
+
+      timerFinished =
+        false;
+
+
+      matchWinner =
+        null;
+
+
+      hideResultUI();
+
+
+      game.reset();
+
+
+      clearCapturePhysics();
+
+
+      capturedPieces.w.length =
+        0;
+
+
+      capturedPieces.b.length =
+        0;
+
+
+      lastCaptureToken =
+        0;
+
+
+      pieceRestingPositions.clear();
+
+
+      resetHistory();
+
+
+      const limit =
+        Math.max(
+          0,
+          Math.min(
+            targetIndex,
+            autoplayMoves.length
+          )
+        );
+
+
+      for (
+        let index = 0;
+        index < limit;
+        index += 1
+      ) {
+
+        const sourceMove =
+          autoplayMoves[
+            index
+          ];
+
+
+        const move =
+          game.move({
+            from:
+              sourceMove.from,
+            to:
+              sourceMove.to,
+            promotion:
+              sourceMove.promotion
+              ||
+              "q"
+          });
+
+
+        if (
+          !move
+        ) {
+          break;
+        }
+
+
+        if (
+          move.captured
+        ) {
+
+          const capturedColor =
+            move.color ===
+            "w"
+              ? "b"
+              : "w";
+
+
+          capturedPieces[
+            capturedColor
+          ].push({
+            type:
+              move.captured,
+            token:
+              ++lastCaptureToken,
+            color:
+              capturedColor
+          });
+
+        }
+
+
+        matchHistory.push({
+          fen:
+            game.fen(),
+          san:
+            move.san,
+          captures:
+            copyCaptures()
+        });
+
+      }
+
+
+      autoplayMoveIndex =
+        limit;
+
+
+      activeClock =
+        game.turn();
+
+
+      renderBoard();
+
+
+      renderCapturedPieces(
+        null,
+        capturedPieces,
+        true,
+        true
+      );
+
+
+      updateAutoplayInfo();
+
+
+      updateStatus();
+
+    }
+
+
+    function autoplayGoTo(
+      targetIndex,
+      showResult =
+        false
+    ) {
+
+      rebuildAutoplayPosition(
+        targetIndex
+      );
+
+
+      if (
+        showResult
+        &&
+        autoplayMoveIndex >=
+        autoplayMoves.length
+      ) {
+
+        finishAutoplayGame();
+
+      }
 
     }
 
@@ -8673,6 +9026,47 @@
     );
 
 
+    autoplayStartButton.addEventListener(
+      "click",
+      () => {
+
+        if (
+          gameMode !==
+          "autoplay"
+        ) {
+          return;
+        }
+
+
+        autoplayGoTo(
+          0
+        );
+
+      }
+    );
+
+
+    autoplayPrevButton.addEventListener(
+      "click",
+      () => {
+
+        if (
+          gameMode !==
+          "autoplay"
+        ) {
+          return;
+        }
+
+
+        autoplayGoTo(
+          autoplayMoveIndex -
+          1
+        );
+
+      }
+    );
+
+
     autoplayToggleButton.addEventListener(
       "click",
       () => {
@@ -8702,7 +9096,7 @@
         ) {
 
           scheduleAutoplayMove(
-            500
+            900
           );
 
         }
@@ -8712,6 +9106,51 @@
           clearAutoplayTimer();
 
         }
+
+      }
+    );
+
+
+    autoplayNextButton.addEventListener(
+      "click",
+      () => {
+
+        if (
+          gameMode !==
+          "autoplay"
+        ) {
+          return;
+        }
+
+
+        autoplayGoTo(
+          autoplayMoveIndex +
+          1,
+          autoplayMoveIndex +
+          1 >=
+          autoplayMoves.length
+        );
+
+      }
+    );
+
+
+    autoplayEndButton.addEventListener(
+      "click",
+      () => {
+
+        if (
+          gameMode !==
+          "autoplay"
+        ) {
+          return;
+        }
+
+
+        autoplayGoTo(
+          autoplayMoves.length,
+          true
+        );
 
       }
     );
