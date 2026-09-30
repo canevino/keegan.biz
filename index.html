@@ -1872,6 +1872,206 @@
       }
     }
 
+
+    /* Chess control strip: one consistent system in local, computer, autoplay */
+    .home-chess .review-controls {
+      display: none;
+
+      grid-template-columns:
+        74px
+        50px
+        minmax(0, 1fr)
+        50px
+        74px;
+
+      grid-template-rows:
+        38px
+        38px;
+
+      width: 100%;
+
+      margin-top: 10px;
+
+      border: 1px solid var(--board-red);
+
+      background: transparent;
+    }
+
+    .home-chess .review-controls.is-visible {
+      display: grid;
+    }
+
+    .home-chess .review-controls > * {
+      min-width: 0;
+      min-height: 38px;
+
+      margin: 0 !important;
+      padding: 7px 9px !important;
+
+      border: 0 !important;
+      border-right: 1px solid var(--board-red) !important;
+
+      background: transparent;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+    }
+
+    .home-chess .review-controls > :nth-child(1) {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .home-chess .review-controls > :nth-child(2) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .home-chess .review-label {
+      grid-column: 3;
+      grid-row: 1;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .home-chess .review-controls > :nth-child(4) {
+      grid-column: 4;
+      grid-row: 1;
+    }
+
+    .home-chess .review-controls > :nth-child(5) {
+      grid-column: 5;
+      grid-row: 1;
+
+      border-right: 0 !important;
+    }
+
+    .home-chess .review-result {
+      grid-column: 1 / -1;
+      grid-row: 2;
+
+      min-height: 38px;
+
+      border-top: 1px solid var(--board-red) !important;
+      border-right: 0 !important;
+
+      justify-content: center !important;
+
+      padding: 7px 12px !important;
+
+      text-align: center !important;
+    }
+
+    .home-chess .review-controls button:hover:not(:disabled) {
+      background: var(--board-red);
+      color: var(--board-paper);
+      text-decoration: none;
+    }
+
+    .home-chess .review-controls button:disabled {
+      background: transparent;
+      color: var(--board-red);
+      opacity: .28;
+    }
+
+    /* Keep result-screen actions visually related to the same system */
+    .home-chess .result-actions {
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      width: 100%;
+
+      margin-top: 10px;
+
+      border: 1px solid var(--board-red);
+    }
+
+    .home-chess .result-actions button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 38px;
+
+      padding: 8px 12px;
+
+      text-align: center;
+    }
+
+    .home-chess .result-actions button + button {
+      border-left: 1px solid var(--board-red);
+    }
+
+    @media (max-width: 700px) {
+      .home-chess .review-controls {
+        grid-template-columns:
+          58px
+          40px
+          minmax(0, 1fr)
+          40px
+          58px;
+
+        grid-template-rows:
+          35px
+          35px;
+
+        margin-top: 8px;
+      }
+
+      .home-chess .review-controls > * {
+        min-height: 35px;
+
+        padding:
+          6px
+          5px !important;
+
+        font-size: 9px;
+      }
+
+      .home-chess .review-result {
+        min-height: 35px;
+
+        padding:
+          6px
+          8px !important;
+      }
+
+      .home-chess .result-actions {
+        margin-top: 8px;
+      }
+
+      .home-chess .result-actions button {
+        min-height: 35px;
+
+        padding:
+          7px
+          8px;
+
+        font-size: 9px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .home-chess .review-controls {
+        grid-template-columns:
+          52px
+          36px
+          minmax(0, 1fr)
+          36px
+          52px;
+      }
+
+      .home-chess .review-controls > *,
+      .home-chess .result-actions button {
+        font-size: 8px;
+      }
+    }
+
   </style>
 </head>
 
