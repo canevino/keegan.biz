@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T17:06:29.886Z",
+  "updatedAt": "2026-09-30T17:35:09.605Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -25,7 +25,7 @@
         "competition": "AL Wild Card Series",
         "series": "NYY leads 1-0",
         "seriesRecord": "Yankees lead Red Sox 1–0",
-        "upcomingTime": "today · 8:00 PM ET · Yankee Stadium",
+        "upcomingTime": "next game · today · Wed, Sep 30 · 8:00 PM ET · Yankee Stadium",
         "gameType": "F"
       },
       "standings": {
