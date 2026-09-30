@@ -5686,6 +5686,108 @@
     }
 
 
+    function chooseAutomaticFootballTeam(
+      data
+    ) {
+
+      const liveOrToday =
+        footballTeams.find(
+          team => {
+
+            const teamData =
+              data?.[
+                team.key
+              ];
+
+
+            if (
+              !teamData
+              ||
+              teamData.active ===
+              false
+            ) {
+              return false;
+            }
+
+
+            const fixtures =
+              teamData.upcoming
+              ||
+              [];
+
+
+            return fixtures.some(
+              fixture =>
+                fixture.status ===
+                "live"
+                ||
+                isSameEasternDay(
+                  fixture.date
+                )
+            );
+
+          }
+        );
+
+
+      return (
+        liveOrToday?.key
+        ||
+        selectedFootballTeam
+      );
+
+    }
+
+
+    function footballUpcomingMarkup(
+      fixtures
+    ) {
+
+      if (
+        !Array.isArray(
+          fixtures
+        )
+        ||
+        fixtures.length ===
+        0
+      ) {
+
+        return `
+          <p class="football-empty">
+            no upcoming games
+          </p>
+        `;
+
+      }
+
+
+      return `
+        <div class="football-upcoming-list">
+          ${fixtures.map(
+            fixture => `
+              <div class="football-upcoming-row">
+                <div class="football-upcoming-date">
+                  ${fixture.when ?? ""}
+                </div>
+
+                <div class="football-upcoming-match">
+                  <strong>${fixture.home ?? ""}</strong>
+                  <span>vs</span>
+                  <strong>${fixture.away ?? ""}</strong>
+                </div>
+
+                <div class="football-upcoming-comp">
+                  ${fixture.competition ?? ""}
+                </div>
+              </div>
+            `
+          ).join("")}
+        </div>
+      `;
+
+    }
+
+
     function footballTeamContentMarkup(
       data
     ) {
