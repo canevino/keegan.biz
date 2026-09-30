@@ -5377,9 +5377,13 @@
             <span>${game.home ?? ""}</span>
           </div>
 
-          <p class="sports-detail">
-            ${game.detail ?? ""}
-          </p>
+          ${
+            game.status === "live"
+              ? `<p class="sports-detail">${game.detail ?? ""}</p>`
+              : game.status === "final"
+                ? `<p class="sports-detail">final</p>`
+                : ""
+          }
 
           ${
             game.competition
@@ -5388,15 +5392,11 @@
           }
 
           ${
-            game.series
-              ? `<p class="sports-series">${game.series}</p>`
-              : ""
-          }
-
-          ${
             game.seriesRecord
               ? `<p class="sports-series-record">${game.seriesRecord}</p>`
-              : ""
+              : game.series
+                ? `<p class="sports-series">${game.series}</p>`
+                : ""
           }
 
           ${
