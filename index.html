@@ -244,21 +244,34 @@
     }
 
 
+    .autoplay-description,
     .autoplay-about,
     .autoplay-game-title,
     .autoplay-game-detail {
       margin: 0;
       max-width: 620px;
-      color: var(--board-red);
       font-size: 12px;
       line-height: 1.18;
     }
 
 
+    .autoplay-description {
+      margin-bottom: 7px;
+      color: var(--board-yellow);
+      font-weight: 700;
+    }
+
+
     .autoplay-about {
       margin-bottom: 12px;
-      color: var(--board-ink);
-      font-weight: 500;
+      color: var(--board-green);
+      font-weight: 700;
+    }
+
+
+    .autoplay-game-title,
+    .autoplay-game-detail {
+      color: var(--board-red);
     }
 
 
@@ -297,8 +310,9 @@
     }
 
     .home-chess.is-bot-mode .chess-bottombar {
-      grid-template-columns: auto;
-      grid-template-areas: "reset";
+      grid-template-columns: auto auto;
+      grid-template-areas: "reset resign";
+      justify-content: start;
     }
 
     .home-chess.is-bot-thinking .board,
@@ -390,6 +404,41 @@
       outline: 2px solid var(--board-red);
       outline-offset: 2px;
     }
+
+    .autoplay-player {
+      display: none;
+      width: calc(100% - var(--capture-column, 132px) - 12px);
+      margin: 0;
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+
+    .home-chess.is-autoplay-mode .autoplay-player {
+      display: block;
+    }
+
+
+    .autoplay-player-top {
+      margin-bottom: 7px;
+    }
+
+
+    .autoplay-player-bottom {
+      margin-top: 7px;
+    }
+
+
+    .autoplay-player.is-yellow {
+      color: var(--board-yellow);
+    }
+
+
+    .autoplay-player.is-green {
+      color: var(--board-green);
+    }
+
 
     .home-chess .board-area {
       --capture-column: clamp(96px, 11vw, 132px);
@@ -832,6 +881,34 @@
         );
     }
 
+    .home-chess .win-condition {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 3;
+      width: max-content;
+      max-width: 70%;
+      margin: 0;
+      padding: 3px 5px 4px;
+      background: var(--board-paper);
+      color: var(--board-red);
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+      text-align: center;
+
+      transform:
+        translate(
+          -50%,
+          calc(
+            -50% +
+            var(--win-title-y, -72px) +
+            64px
+          )
+        );
+    }
+
+
     .home-chess .result-actions {
       display: none;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -906,10 +983,11 @@
       display: grid;
       grid-template-columns:
         auto
+        auto
         minmax(0, 1fr)
         auto;
       grid-template-areas:
-        "reset clocks setter";
+        "reset resign clocks setter";
       align-items: end;
       gap: 14px 18px;
       margin-top: 12px;
@@ -918,6 +996,17 @@
     #reset-button {
       grid-area: reset;
       justify-self: start;
+    }
+
+
+    #resign-button {
+      grid-area: resign;
+      justify-self: start;
+    }
+
+
+    .home-chess.is-autoplay-mode #resign-button {
+      display: none;
     }
 
     .home-chess .clock-group {
@@ -971,10 +1060,10 @@
 
 
       .home-chess .chess-bottombar {
-        grid-template-columns: auto 1fr;
+        grid-template-columns: auto auto 1fr;
         grid-template-areas:
-          "reset setter"
-          "clocks clocks";
+          "reset resign setter"
+          "clocks clocks clocks";
       }
 
       .home-chess .clock-group {
@@ -1054,9 +1143,15 @@
 
 
 
+      .autoplay-description,
       .autoplay-about,
       .autoplay-game-title,
       .autoplay-game-detail {
+        font-size: 11px;
+      }
+
+
+      .autoplay-player {
         font-size: 11px;
       }
 
@@ -1084,6 +1179,26 @@
         padding: 5px 8px 7px;
         font-size: clamp(27px, 8.5vw, 40px);
         box-shadow: 4px 4px 0 rgba(193, 39, 45, .72);
+
+        transform:
+          translateY(
+            var(--win-title-y-mobile, -42px)
+          );
+      }
+
+
+      .home-chess .win-condition {
+        font-size: 9px;
+
+        transform:
+          translate(
+            -50%,
+            calc(
+              -50% +
+              var(--win-title-y-mobile, -42px) +
+              52px
+            )
+          );
       }
 
       .home-chess .win-art-title {
@@ -1117,10 +1232,11 @@
       .home-chess .chess-bottombar {
         grid-template-columns:
           auto
+          auto
           1fr;
         grid-template-areas:
-          "reset clocks"
-          "setter setter";
+          "reset resign clocks"
+          "setter setter setter";
         align-items: center;
         gap: 14px 12px;
       }
@@ -1313,8 +1429,10 @@
             id="autoplay-panel"
             aria-hidden="true"
           >
+            <p class="autoplay-description" id="autoplay-description"></p>
+
             <p class="autoplay-about">
-              Autoplay draws from the 125 Greatest Chess Games collection, based on <em>The Mammoth Book of The World's Greatest Chess Games</em>.
+              Autoplay draws from <em>The Mammoth Book of The World's Greatest Chess Games</em>.
             </p>
 
             <p class="autoplay-game-title" id="autoplay-game-title"></p>
@@ -1344,6 +1462,11 @@
 
           </div>
 
+
+          <p
+            class="autoplay-player autoplay-player-top"
+            id="autoplay-player-top"
+          ></p>
 
           <div class="board-area">
 
@@ -1396,6 +1519,11 @@
                   id="win-title"
                 ></p>
 
+                <p
+                  class="win-condition"
+                  id="win-condition"
+                ></p>
+
               </div>
 
             </div>
@@ -1407,6 +1535,11 @@
             ></div>
 
           </div>
+
+          <p
+            class="autoplay-player autoplay-player-bottom"
+            id="autoplay-player-bottom"
+          ></p>
 
 
           <div
@@ -1493,6 +1626,13 @@
               type="button"
             >
               reset
+            </button>
+
+            <button
+              id="resign-button"
+              type="button"
+            >
+              resign
             </button>
 
 
@@ -2047,6 +2187,24 @@
       );
 
 
+    const autoplayDescription =
+      document.getElementById(
+        "autoplay-description"
+      );
+
+
+    const autoplayPlayerTop =
+      document.getElementById(
+        "autoplay-player-top"
+      );
+
+
+    const autoplayPlayerBottom =
+      document.getElementById(
+        "autoplay-player-bottom"
+      );
+
+
     const autoplayGameTitle =
       document.getElementById(
         "autoplay-game-title"
@@ -2106,6 +2264,12 @@
     const resetButton =
       document.getElementById(
         "reset-button"
+      );
+
+
+    const resignButton =
+      document.getElementById(
+        "resign-button"
       );
 
 
@@ -2180,6 +2344,12 @@
     const winTitle =
       document.getElementById(
         "win-title"
+      );
+
+
+    const winCondition =
+      document.getElementById(
+        "win-condition"
       );
 
 
@@ -2333,7 +2503,11 @@
 
 
     const AUTOPLAY_MOVE_DELAY =
-      2500;
+      30000;
+
+
+    const FAMOUS_GAME_META =
+      {"1001165":{"eco":"B32","opening":"Sicilian","moves":37,"result":"0-1"},"1018910":{"eco":"C33","opening":"King's Gambit Accepted","moves":23,"result":"1-0"},"1018961":{"eco":"C52","opening":"Evans Gambit","moves":20,"result":"1-0"},"1001854":{"eco":"A13","opening":"English","moves":33,"result":"1-0"},"1036342":{"eco":"C65","opening":"Ruy Lopez, Berlin Defense","moves":28,"result":"1-0"},"1132699":{"eco":"C54","opening":"Giuoco Piano","moves":25,"result":"1-0"},"1109097":{"eco":"D50","opening":"Queen's Gambit Declined","moves":30,"result":"0-1"},"1132744":{"eco":"D35","opening":"Queen's Gambit Declined","moves":31,"result":"1-0"},"1109111":{"eco":"C11","opening":"French","moves":50,"result":"1-0"},"1036787":{"eco":"B72","opening":"Sicilian, Dragon","moves":35,"result":"1-0"},"1119679":{"eco":"D32","opening":"Queen's Gambit Declined, Tarrasch","moves":25,"result":"0-1"},"1119726":{"eco":"D30","opening":"Queen's Gambit Declined","moves":40,"result":"1-0"},"1261680":{"eco":"D63","opening":"Queen's Gambit Declined, Orthodox Defense","moves":29,"result":"0-1"},"1102384":{"eco":"D30","opening":"Queen's Gambit Declined","moves":32,"result":"0-1"},"1095025":{"eco":"C89","opening":"Ruy Lopez, Marshall","moves":36,"result":"1-0"},"1143989":{"eco":"C41","opening":"Philidor Defense","moves":23,"result":"1-0"},"1241504":{"eco":"D61","opening":"Queen's Gambit Declined, Orthodox, Rubinstein Attack","moves":68,"result":"0-1"},"1003826":{"eco":"A84","opening":"Dutch","moves":35,"result":"0-1"},"1102400":{"eco":"E18","opening":"Queen's Indian, Old Main line, 7.Nc3","moves":25,"result":"0-1"},"1012180":{"eco":"D64","opening":"Queen's Gambit Declined, Orthodox, Rubinstein Attack","moves":34,"result":"0-1"},"1102104":{"eco":"A85","opening":"Dutch, with c4 & Nc3","moves":52,"result":"1-0"},"1030774":{"eco":"A13","opening":"English","moves":25,"result":"1-0"},"1012326":{"eco":"A00","opening":"Uncommon Opening","moves":40,"result":"0-1"},"1007571":{"eco":"E16","opening":"Queen's Indian","moves":29,"result":"0-1"},"1007465":{"eco":"E47","opening":"Nimzo-Indian, 4.e3 O-O 5.Bd3","moves":40,"result":"0-1"},"1007840":{"eco":"D37","opening":"Queen's Gambit Declined","moves":26,"result":"1-0"},"1012731":{"eco":"D63","opening":"Queen's Gambit Declined, Orthodox Defense","moves":28,"result":"1-0"},"1031806":{"eco":"B74","opening":"Sicilian, Dragon, Classical","moves":29,"result":"0-1"},"1031957":{"eco":"E40","opening":"Nimzo-Indian, 4.e3","moves":41,"result":"1-0"},"1042533":{"eco":"E19","opening":"Queen's Indian, Old Main line, 9.Qxc3","moves":34,"result":"0-1"},"1042835":{"eco":"E26","opening":"Nimzo-Indian, Samisch","moves":26,"result":"0-1"},"1042813":{"eco":"E60","opening":"King's Indian Defense","moves":37,"result":"1-0"},"1084375":{"eco":"A55","opening":"Old Indian, Main line","moves":51,"result":"0-1"},"1072466":{"eco":"A17","opening":"English","moves":28,"result":"0-1"},"1032320":{"eco":"E68","opening":"King's Indian, Fianchetto, Classical Variation, 8.e4","moves":33,"result":"0-1"},"1136833":{"eco":"B64","opening":"Sicilian, Richter-Rauzer Attack","moves":23,"result":"1-0"},"1033895":{"eco":"E41","opening":"Nimzo-Indian","moves":39,"result":"1-0"},"1008361":{"eco":"D92","opening":"Grunfeld, 5.Bf4","moves":41,"result":"0-1"},"1139363":{"eco":"B63","opening":"Sicilian, Richter-Rauzer Attack","moves":37,"result":"1-0"},"1111459":{"eco":"A53","opening":"Old Indian","moves":33,"result":"0-1"},"1044505":{"eco":"E93","opening":"King's Indian, Petrosian System","moves":34,"result":"1-0"},"1034110":{"eco":"C36","opening":"King's Gambit Accepted, Abbazia Defense","moves":23,"result":"1-0"},"1032537":{"eco":"E69","opening":"King's Indian, Fianchetto, Classical Main line","moves":47,"result":"0-1"},"1132189":{"eco":"E92","opening":"King's Indian","moves":43,"result":"0-1"},"1008399":{"eco":"C18","opening":"French, Winawer","moves":21,"result":"1/2-1/2"},"1261681":{"eco":"B89","opening":"Sicilian","moves":37,"result":"0-1"},"1261710":{"eco":"C64","opening":"Ruy Lopez, Classical","moves":32,"result":"0-1"},"1139582":{"eco":"E12","opening":"Queen's Indian","moves":49,"result":"1-0"},"1081478":{"eco":"A62","opening":"Benoni, Fianchetto Variation","moves":54,"result":"1-0"},"1008419":{"eco":"E60","opening":"King's Indian Defense","moves":21,"result":"0-1"},"1125953":{"eco":"A36","opening":"English","moves":72,"result":"0-1"},"1034337":{"eco":"B99","opening":"Sicilian, Najdorf, 7...Be7 Main line","moves":34,"result":"1-0"},"1049156":{"eco":"D87","opening":"Grunfeld, Exchange","moves":31,"result":"1-0"},"1139729":{"eco":"B82","opening":"Sicilian, Scheveningen","moves":37,"result":"1-0"},"1224863":{"eco":"C57","opening":"Two Knights","moves":42,"result":"0-1"},"1106725":{"eco":"E63","opening":"King's Indian, Fianchetto, Panno Variation","moves":30,"result":"1-0"},"1032787":{"eco":"A22","opening":"English","moves":26,"result":"1-0"},"1111871":{"eco":"D41","opening":"Queen's Gambit Declined, Semi-Tarrasch","moves":37,"result":"1-0"},"1128831":{"eco":"A01","opening":"Nimzovich-Larsen Attack","moves":17,"result":"0-1"},"1044324":{"eco":"A07","opening":"King's Indian Attack","moves":36,"result":"1-0"},"1044346":{"eco":"C19","opening":"French, Winawer, Advance","moves":41,"result":"1-0"},"1044351":{"eco":"B42","opening":"Sicilian, Kan","moves":34,"result":"1-0"},"1091272":{"eco":"B99","opening":"Sicilian, Najdorf, 7...Be7 Main line","moves":27,"result":"1-0"},"1044366":{"eco":"D59","opening":"Queen's Gambit Declined, Tartakower","moves":41,"result":"1-0"},"1128896":{"eco":"E30","opening":"Nimzo-Indian, Leningrad","moves":38,"result":"0-1"},"1023029":{"eco":"E84","opening":"King's Indian, Samisch, Panno Main line","moves":32,"result":"0-1"},"1067858":{"eco":"B77","opening":"Sicilian, Dragon, Yugoslav Attack","moves":27,"result":"1-0"},"1262429":{"eco":"C78","opening":"Ruy Lopez","moves":30,"result":"0-1"},"1019762":{"eco":"B47","opening":"Sicilian, Taimanov (Bastrikov) Variation","moves":34,"result":"1-0"},"1145474":{"eco":"C05","opening":"French, Tarrasch","moves":28,"result":"0-1"},"1069599":{"eco":"E80","opening":"King's Indian, Samisch Variation","moves":38,"result":"0-1"},"1067966":{"eco":"B81","opening":"Sicilian, Scheveningen, Keres Attack","moves":50,"result":"1-0"},"1068106":{"eco":"A28","opening":"English","moves":31,"result":"0-1"},"1041460":{"eco":"D44","opening":"Queen's Gambit Declined Semi-Slav","moves":40,"result":"1-0"},"1476277":{"eco":"B29","opening":"Sicilian, Nimzovich-Rubinstein","moves":36,"result":"1-0"},"1070074":{"eco":"E12","opening":"Queen's Indian","moves":35,"result":"1-0"},"1067121":{"eco":"D34","opening":"Queen's Gambit Declined, Tarrasch","moves":70,"result":"1-0"},"1103322":{"eco":"E81","opening":"King's Indian, Samisch","moves":27,"result":"0-1"},"1067175":{"eco":"B44","opening":"Sicilian","moves":40,"result":"0-1"},"1067209":{"eco":"C92","opening":"Ruy Lopez, Closed","moves":41,"result":"1-0"},"1097836":{"eco":"E12","opening":"Queen's Indian","moves":29,"result":"1-0"},"1140914":{"eco":"C97","opening":"Ruy Lopez, Closed, Chigorin","moves":43,"result":"1-0"},"1070485":{"eco":"E99","opening":"King's Indian, Orthodox, Taimanov","moves":28,"result":"0-1"},"1328973":{"eco":"C95","opening":"Ruy Lopez, Closed, Breyer","moves":38,"result":"0-1"},"1060180":{"eco":"E67","opening":"King's Indian, Fianchetto","moves":39,"result":"0-1"},"1124533":{"eco":"B04","opening":"Alekhine's Defense, Modern","moves":34,"result":"1-0"},"1129672":{"eco":"C95","opening":"Ruy Lopez, Closed, Breyer","moves":50,"result":"1-0"},"1018413":{"eco":"D20","opening":"Queen's Gambit Accepted","moves":40,"result":"0-1"},"1066698":{"eco":"D44","opening":"Queen's Gambit Declined Semi-Slav","moves":31,"result":"0-1"},"1069169":{"eco":"A32","opening":"English, Symmetrical Variation","moves":39,"result":"1-0"},"1111195":{"eco":"B45","opening":"Sicilian, Taimanov","moves":29,"result":"0-1"},"1262430":{"eco":"D45","opening":"Queen's Gambit Declined Semi-Slav","moves":35,"result":"0-1"},"1018625":{"eco":"C80","opening":"Ruy Lopez, Open","moves":38,"result":"1-0"},"1086001":{"eco":"B57","opening":"Sicilian","moves":40,"result":"0-1"},"1060750":{"eco":"D44","opening":"Queen's Gambit Declined Semi-Slav","moves":35,"result":"1-0"},"1070874":{"eco":"B22","opening":"Sicilian, Alapin","moves":37,"result":"1-0"},"1060694":{"eco":"B62","opening":"Sicilian, Richter-Rauzer","moves":32,"result":"0-1"},"1143855":{"eco":"D44","opening":"Queen's Gambit Declined Semi-Slav","moves":29,"result":"1/2-1/2"},"1261682":{"eco":"D21","opening":"Queen's Gambit Accepted","moves":36,"result":"1-0"},"1018785":{"eco":"B01","opening":"Scandinavian","moves":25,"result":"1-0"},"1270312":{"eco":"E37","opening":"Nimzo-Indian, Classical","moves":26,"result":"1-0"},"1268704":{"eco":"D85","opening":"Grunfeld","moves":39,"result":"1-0"},"1361793":{"eco":"D44","opening":"Queen's Gambit Declined Semi-Slav","moves":36,"result":"1-0"},"1333500":{"eco":"B32","opening":"Sicilian","moves":28,"result":"0-1"},"1011478":{"eco":"B07","opening":"Pirc","moves":44,"result":"1-0"},"1010744":{"eco":"B12","opening":"Caro-Kann Defense","moves":43,"result":"0-1"},"1406152":{"eco":"A04","opening":"Reti Opening","moves":25,"result":"0-1"},"1321967":{"eco":"C78","opening":"Ruy Lopez","moves":34,"result":"1-0"},"1218523":{"eco":"D44","opening":"Queen's Gambit Declined Semi-Slav","moves":31,"result":"0-1"},"1361795":{"eco":"E98","opening":"King's Indian, Orthodox, Taimanov, 9.Ne1","moves":34,"result":"0-1"},"1173387":{"eco":"D27","opening":"Queen's Gambit Accepted, Classical","moves":39,"result":"1-0"},"1278763":{"eco":"B25","opening":"Sicilian, Closed","moves":24,"result":"1-0"},"1261813":{"eco":"C11","opening":"French","moves":24,"result":"1-0"},"1266094":{"eco":"B17","opening":"Caro-Kann, Steinitz Variation","moves":36,"result":"1-0"},"1333287":{"eco":"D47","opening":"Queen's Gambit Declined Semi-Slav","moves":36,"result":"0-1"},"1338705":{"eco":"E15","opening":"Queen's Indian","moves":52,"result":"1-0"},"1361575":{"eco":"C92","opening":"Ruy Lopez, Closed","moves":32,"result":"1-0"},"1387655":{"eco":"E15","opening":"Queen's Indian","moves":44,"result":"1-0"},"1452484":{"eco":"C96","opening":"Ruy Lopez, Closed","moves":38,"result":"1-0"},"1466029":{"eco":"E17","opening":"Queen's Indian","moves":30,"result":"1-0"},"1482320":{"eco":"D44","opening":"Queen's Gambit Declined Semi-Slav","moves":45,"result":"1-0"},"1487929":{"eco":"B87","opening":"Sicilian, Fischer-Sozin with ...a6 and ...b5","moves":49,"result":"1-0"},"1510272":{"eco":"D49","opening":"Queen's Gambit Declined Semi-Slav, Meran","moves":41,"result":"0-1"},"1565704":{"eco":"A29","opening":"English, Four Knights, Kingside Fianchetto","moves":43,"result":"1-0"},"1581335":{"eco":"E04","opening":"Catalan, Open, 5.Nf3","moves":32,"result":"1-0"}};
 
 
     let autoplayGame =
@@ -5591,6 +5765,151 @@
     }
 
 
+    function shortPlayerName(
+      fullName,
+      fallback
+    ) {
+
+      const value =
+        (
+          fullName ||
+          fallback ||
+          ""
+        ).trim();
+
+
+      if (
+        !value
+      ) {
+        return "";
+      }
+
+
+      const parts =
+        value.split(
+          /\s+/
+        );
+
+
+      return parts.length >
+        1
+          ? parts[
+              parts.length -
+              1
+            ]
+          : value;
+
+    }
+
+
+    function autoplayDescriptionFor(
+      white,
+      black,
+      event
+    ) {
+
+      const year =
+        autoplayGame.year;
+
+
+      const named =
+        autoplayGame.title
+          ? `Known as “${autoplayGame.title},” this ${year} game`
+          : `This ${year} game`;
+
+
+      const context =
+        event
+          ? `${named} was played at ${event}.`
+          : `${named} is one of the collection's celebrated historical games.`;
+
+
+      let players;
+
+
+      if (
+        /world championship/i.test(
+          event || ""
+        )
+      ) {
+
+        players =
+          `${shortPlayerName(white, autoplayGame.white)} and ${shortPlayerName(black, autoplayGame.black)} were two of the defining world-championship players of their era.`;
+
+      }
+
+      else if (
+        /candidates/i.test(
+          event || ""
+        )
+      ) {
+
+        players =
+          `${shortPlayerName(white, autoplayGame.white)} and ${shortPlayerName(black, autoplayGame.black)} were elite contenders competing at the highest level of their generation.`;
+
+      }
+
+      else {
+
+        players =
+          `${shortPlayerName(white, autoplayGame.white)} and ${shortPlayerName(black, autoplayGame.black)} were prominent masters of their era.`;
+
+      }
+
+
+      return `${context} ${players}`;
+
+    }
+
+
+    function updateAutoplayPlayers(
+      white,
+      black
+    ) {
+
+      const topIsWhite =
+        orientation ===
+        "black";
+
+
+      autoplayPlayerTop.textContent =
+        topIsWhite
+          ? white
+          : black;
+
+
+      autoplayPlayerBottom.textContent =
+        topIsWhite
+          ? black
+          : white;
+
+
+      autoplayPlayerTop.classList.toggle(
+        "is-yellow",
+        topIsWhite
+      );
+
+
+      autoplayPlayerTop.classList.toggle(
+        "is-green",
+        !topIsWhite
+      );
+
+
+      autoplayPlayerBottom.classList.toggle(
+        "is-yellow",
+        !topIsWhite
+      );
+
+
+      autoplayPlayerBottom.classList.toggle(
+        "is-green",
+        topIsWhite
+      );
+
+    }
+
+
     function updateAutoplayInfo() {
 
       if (
@@ -5625,21 +5944,53 @@
         );
 
 
-      const eco =
+      const pgnEco =
         pgnTag(
           autoplayGame.pgn,
           "ECO"
         );
 
 
-      const named =
+      const meta =
+        FAMOUS_GAME_META[
+          autoplayGame.id
+        ]
+        ||
+        {};
+
+
+      const eco =
+        meta.eco
+        ||
+        pgnEco;
+
+
+      const opening =
+        meta.opening
+        ||
+        "";
+
+
+      autoplayDescription.textContent =
+        autoplayDescriptionFor(
+          white,
+          black,
+          event
+        );
+
+
+      autoplayGameTitle.textContent =
         autoplayGame.title
           ? `“${autoplayGame.title}”`
           : `${white} vs ${black}`;
 
 
-      autoplayGameTitle.textContent =
-        named;
+      const openingText =
+        eco
+          ? opening
+            ? `${eco} · ${opening}`
+            : eco
+          : opening;
 
 
       autoplayGameDetail.textContent =
@@ -5649,8 +6000,8 @@
                 ? ` · ${event}`
                 : ""
             }${
-              eco
-                ? ` · ${eco}`
+              openingText
+                ? ` · ${openingText}`
                 : ""
             }`
           : `${autoplayGame.year}${
@@ -5658,10 +6009,16 @@
                 ? ` · ${event}`
                 : ""
             }${
-              eco
-                ? ` · ${eco}`
+              openingText
+                ? ` · ${openingText}`
                 : ""
             }`;
+
+
+      updateAutoplayPlayers(
+        white,
+        black
+      );
 
 
       autoplayToggleButton.textContent =
@@ -5699,13 +6056,20 @@
       }
 
 
+      const endedInMate =
+        game.isCheckmate();
+
+
       if (
         autoplayResult ===
         "1-0"
       ) {
 
         showWin(
-          "w"
+          "w",
+          endedInMate
+            ? "by checkmate"
+            : "by resignation"
         );
 
       }
@@ -5716,7 +6080,10 @@
       ) {
 
         showWin(
-          "b"
+          "b",
+          endedInMate
+            ? "by checkmate"
+            : "by resignation"
         );
 
       }
@@ -5724,6 +6091,7 @@
       else {
 
         showWin(
+          "draw",
           "draw"
         );
 
@@ -6132,7 +6500,7 @@
 
 
       scheduleAutoplayMove(
-        1200
+        AUTOPLAY_MOVE_DELAY
       );
 
     }
@@ -6699,10 +7067,10 @@
           "Paris, c. 1300. Carved ivory.",
 
         winTitleY:
-          72,
+          122,
 
         winTitleYMobile:
-          44,
+          82,
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/9/91/Chess_playing_Louvre_OA117.jpg"
@@ -6781,7 +7149,9 @@
 
 
     async function showWin(
-      winner
+      winner,
+      condition =
+        ""
     ) {
 
       matchWinner =
@@ -6830,6 +7200,10 @@
           : greenWon
             ? "Green Won"
             : "Yellow Won";
+
+
+      winCondition.textContent =
+        condition;
 
 
       winOverlay.style.setProperty(
@@ -6882,6 +7256,10 @@
 
 
     function hideResultUI() {
+
+      winCondition.textContent =
+        "";
+
 
       winOverlay.classList.remove(
         "is-visible"
@@ -7126,15 +7504,70 @@
 
 
           showWin(
-            winner
+            winner,
+            "by checkmate"
           );
 
         }
 
         else {
 
+          let drawCondition =
+            "draw";
+
+
+          if (
+            typeof game.isStalemate ===
+            "function"
+            &&
+            game.isStalemate()
+          ) {
+
+            drawCondition =
+              "by stalemate";
+
+          }
+
+          else if (
+            typeof game.isThreefoldRepetition ===
+            "function"
+            &&
+            game.isThreefoldRepetition()
+          ) {
+
+            drawCondition =
+              "by repetition";
+
+          }
+
+          else if (
+            typeof game.isInsufficientMaterial ===
+            "function"
+            &&
+            game.isInsufficientMaterial()
+          ) {
+
+            drawCondition =
+              "by insufficient material";
+
+          }
+
+          else if (
+            typeof game.isDrawByFiftyMoves ===
+            "function"
+            &&
+            game.isDrawByFiftyMoves()
+          ) {
+
+            drawCondition =
+              "by fifty-move rule";
+
+          }
+
+
           showWin(
-            "draw"
+            "draw",
+            drawCondition
           );
 
         }
@@ -7457,7 +7890,8 @@
 
 
       showWin(
-        winner
+        winner,
+        "on time"
       );
 
     }
@@ -7625,6 +8059,80 @@
 
 
       updateClocks();
+
+    }
+
+
+    function resignGame() {
+
+      if (
+        timerFinished
+        ||
+        reviewing
+        ||
+        gameMode ===
+        "autoplay"
+      ) {
+        return;
+      }
+
+
+      clearAutoplayTimer();
+
+
+      setBotThinking(
+        false
+      );
+
+
+      if (
+        stockfishWorker
+      ) {
+
+        stockfishWorker.postMessage(
+          "stop"
+        );
+
+      }
+
+
+      timerStarted =
+        false;
+
+
+      timerFinished =
+        true;
+
+
+      cancelSelection();
+
+
+      const loser =
+        gameMode ===
+        "bot"
+          ? humanColor
+          : game.turn();
+
+
+      const winner =
+        loser ===
+        "w"
+          ? "b"
+          : "w";
+
+
+      statusElement.textContent =
+        `${
+          colorName(
+            winner
+          )
+        } wins — resignation`;
+
+
+      showWin(
+        winner,
+        "by resignation"
+      );
 
     }
 
@@ -8018,6 +8526,16 @@
           );
         }
 
+
+        if (
+          gameMode ===
+          "autoplay"
+        ) {
+
+          updateAutoplayInfo();
+
+        }
+
       }
     );
 
@@ -8025,6 +8543,12 @@
     resetButton.addEventListener(
       "click",
       resetGame
+    );
+
+
+    resignButton.addEventListener(
+      "click",
+      resignGame
     );
 
 
