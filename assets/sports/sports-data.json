@@ -1,90 +1,59 @@
 {
-  "updatedAt": null,
+  "updatedAt": "2026-09-30T16:23:54.556Z",
   "baseball": {
     "yankees": {
       "active": true,
       "team": "New York Yankees",
       "shortName": "Yankees",
       "game": {
-        "status": "sample",
+        "gamePk": 849848,
+        "status": "preview",
+        "detail": "scheduled",
+        "date": "2026-10-01T00:00:00Z",
         "away": "BOS",
         "awayFull": "Boston Red Sox",
         "awayScore": 0,
-        "awayHits": 3,
-        "awayErrors": 0,
+        "awayHits": "",
+        "awayErrors": "",
         "home": "NYY",
         "homeFull": "New York Yankees",
-        "homeScore": 9,
-        "homeHits": 12,
-        "homeErrors": 0,
-        "detail": "final",
-        "innings": [
-          {
-            "away": 0,
-            "home": 0
-          },
-          {
-            "away": 0,
-            "home": 1
-          },
-          {
-            "away": 0,
-            "home": 0
-          },
-          {
-            "away": 0,
-            "home": 0
-          },
-          {
-            "away": 0,
-            "home": 1
-          },
-          {
-            "away": 0,
-            "home": 0
-          },
-          {
-            "away": 0,
-            "home": 2
-          },
-          {
-            "away": 0,
-            "home": 5
-          },
-          {
-            "away": 0,
-            "home": "X"
-          }
-        ]
+        "homeScore": 0,
+        "homeHits": "",
+        "homeErrors": "",
+        "innings": []
       },
       "standings": {
         "title": "AL East",
         "rows": [
           {
             "rank": 1,
-            "team": "Yankees",
-            "record": "91\u201365",
-            "highlight": true
+            "team": "Rays",
+            "record": "98–64",
+            "highlight": false
           },
           {
             "rank": 2,
-            "team": "Blue Jays",
-            "record": "88\u201368"
+            "team": "Yankees",
+            "record": "93–68",
+            "highlight": true
           },
           {
             "rank": 3,
             "team": "Red Sox",
-            "record": "84\u201372"
+            "record": "87–75",
+            "highlight": false
           },
           {
             "rank": 4,
-            "team": "Rays",
-            "record": "79\u201377"
+            "team": "Orioles",
+            "record": "79–82",
+            "highlight": false
           },
           {
             "rank": 5,
-            "team": "Orioles",
-            "record": "74\u201382"
+            "team": "Blue Jays",
+            "record": "79–83",
+            "highlight": false
           }
         ]
       }
@@ -109,19 +78,19 @@
             "side": "home",
             "type": "goal",
             "player": "Salah",
-            "minute": "31\u2032"
+            "minute": "31′"
           },
           {
             "side": "away",
             "type": "goal",
             "player": "Palmer",
-            "minute": "54\u2032"
+            "minute": "54′"
           },
           {
             "side": "home",
             "type": "goal",
             "player": "Szoboszlai",
-            "minute": "78\u2032"
+            "minute": "78′"
           }
         ]
       },
