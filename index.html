@@ -277,6 +277,18 @@
     .autoplay-watch-controls {
       display: none;
 
+      grid-template-columns:
+        auto
+        auto
+        minmax(0, 1fr)
+        auto
+        auto
+        auto;
+
+      align-items: center;
+
+      gap: 0;
+
       width:
         calc(
           100% -
@@ -286,12 +298,7 @@
 
       margin-top: 8px;
 
-      border-top:
-        1px
-        solid
-        var(--board-red);
-
-      border-bottom:
+      border:
         1px
         solid
         var(--board-red);
@@ -300,30 +307,17 @@
 
     .home-chess.is-autoplay-mode .autoplay-watch-controls {
       display: grid;
-
-      grid-template-columns:
-        auto
-        auto
-        minmax(0, 1fr)
-        auto
-        auto
-        auto;
     }
 
 
     .autoplay-watch-controls button {
-      min-width: 0;
+      min-height: 34px;
 
       padding:
         7px
-        10px;
+        9px;
 
       border: 0;
-
-      border-right:
-        1px
-        solid
-        var(--board-red);
 
       background:
         transparent;
@@ -338,7 +332,9 @@
     }
 
 
-    .autoplay-watch-controls button:first-child {
+    .autoplay-watch-controls button + button,
+    .autoplay-watch-controls .autoplay-control-label + button,
+    .autoplay-watch-controls button + .autoplay-control-label {
       border-left:
         1px
         solid
@@ -352,6 +348,9 @@
 
       color:
         var(--board-paper);
+
+      text-decoration:
+        none;
     }
 
 
@@ -369,11 +368,6 @@
       padding:
         7px
         10px;
-
-      border-right:
-        1px
-        solid
-        var(--board-red);
 
       overflow: hidden;
 
@@ -6934,10 +6928,7 @@
 
 
       autoplayControlLabel.textContent =
-        autoplayMoveIndex ===
-        0
-          ? "start"
-          : `move ${autoplayMoveIndex} / ${autoplayMoves.length}`;
+        `move ${autoplayMoveIndex} / ${autoplayMoves.length}`;
 
     }
 
