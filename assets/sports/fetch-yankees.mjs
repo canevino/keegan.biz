@@ -151,27 +151,28 @@ function formatUpcomingGame(game) {
   const gameKey =
     easternDateKey(date);
 
-  let dateLabel;
+  const fullDate =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone: "America/New_York",
+        weekday: "short",
+        month: "short",
+        day: "numeric"
+      }
+    ).format(date);
+
+  let dateLabel =
+    fullDate;
 
   if (gameKey === todayKey) {
-    dateLabel = "today";
+    dateLabel =
+      `today · ${fullDate}`;
   }
 
   else if (gameKey === tomorrowKey) {
-    dateLabel = "tomorrow";
-  }
-
-  else {
     dateLabel =
-      new Intl.DateTimeFormat(
-        "en-US",
-        {
-          timeZone: "America/New_York",
-          weekday: "short",
-          month: "short",
-          day: "numeric"
-        }
-      ).format(date);
+      `tomorrow · ${fullDate}`;
   }
 
   const time =
@@ -202,6 +203,7 @@ function formatUpcomingGame(game) {
       .join(", ");
 
   return [
+    "next game",
     dateLabel,
     `${time} ET`,
     location
