@@ -6440,13 +6440,10 @@
           {
             timeZone:
               "America/New_York",
-
             year:
               "numeric",
-
             month:
               "2-digit",
-
             day:
               "2-digit"
           }
@@ -6454,7 +6451,6 @@
           .formatToParts(
             date
           );
-
 
       const values =
         Object.fromEntries(
@@ -6472,9 +6468,28 @@
             )
         );
 
-
       return (
         `${values.year}-${values.month}-${values.day}`
+      );
+
+    }
+
+
+    function easternDateOffset(
+      amount
+    ) {
+
+      const date =
+        new Date();
+
+      date.setUTCDate(
+        date.getUTCDate()
+        +
+        amount
+      );
+
+      return easternDateISO(
+        date
       );
 
     }
@@ -6491,7 +6506,6 @@
         139: "TB",
         110: "BAL"
       };
-
 
       return (
         codes[
@@ -6521,14 +6535,12 @@
         ||
         "";
 
-
       if (
         state ===
         "Final"
       ) {
         return "final";
       }
-
 
       if (
         state !==
@@ -6545,12 +6557,10 @@
 
       }
 
-
       const linescore =
         game?.linescore
         ||
         {};
-
 
       const half =
         linescore.inningState
@@ -6558,7 +6568,6 @@
         linescore.halfInning
         ||
         "";
-
 
       const inning =
         linescore
@@ -6571,7 +6580,6 @@
               )
             : ""
         );
-
 
       return [
         half,
@@ -6586,8 +6594,463 @@
     }
 
 
+    function postseasonLabelFromGame(
+      game
+    ) {
+
+      if (
+        game?.seriesDescription
+      ) {
+        return game.seriesDescription;
+      }
+
+      const labels = {
+        F: "AL Wild Card Series",
+        D: "AL Division Series",
+        L: "AL Championship Series",
+        W: "World Series"
+      };
+
+      return (
+        labels[
+          game?.gameType
+        ]
+        ||
+        ""
+      );
+
+    }
+
+
+    function gameOpponentId(
+      game
+    ) {
+
+      const awayId =
+        game?.teams
+          ?.away
+          ?.team
+          ?.id;
+
+      const homeId =
+        game?.teams
+          ?.home
+          ?.team
+          ?.id;
+
+      return (
+        awayId ===
+        147
+          ? homeId
+          : awayId
+      );
+
+    }
+
+
+    function seriesRecordForGame(
+      selectedGame,
+      allGames
+    ) {
+
+      if (
+        !selectedGame
+        ||
+        ![
+          "F",
+          "D",
+          "L",
+          "W"
+        ]
+          .includes(
+            selectedGame.gameType
+          )
+      ) {
+        return "";
+      }
+
+      const opponentId =
+        gameOpponentId(
+          selectedGame
+        );
+
+      const relevant =
+        allGames
+          .filter(
+            game =>
+              game.gameType ===
+                selectedGame.gameType
+              &&
+              gameOpponentId(
+                game
+              ) ===
+                opponentId
+              &&
+              game.status
+                ?.abstractGameState ===
+                "Final"
+          );
+
+      let yankeesWins = 0;
+      let opponentWins = 0;
+
+      for (
+        const game
+        of relevant
+      ) {
+
+        const away =
+          game.teams
+            ?.away;
+
+        const home =
+          game.teams
+            ?.home;
+
+        const yankeesWon =
+          (
+            away?.team?.id ===
+              147
+            &&
+            (
+              away.score
+              ??
+              0
+            )
+            >
+            (
+              home?.score
+              ??
+              0
+            )
+          )
+          ||
+          (
+            home?.team?.id ===
+              147
+            &&
+            (
+              home.score
+              ??
+              0
+            )
+            >
+            (
+              away?.score
+              ??
+              0
+            )
+          );
+
+        if (
+          yankeesWon
+        ) {
+          yankeesWins += 1;
+        }
+
+        else {
+          opponentWins += 1;
+        }
+
+      }
+
+      if (
+        yankeesWins === 0
+        &&
+        opponentWins === 0
+      ) {
+        return "";
+      }
+
+      const opponentName =
+        selectedGame.teams
+          ?.away
+          ?.team
+          ?.id ===
+        147
+          ? selectedGame.teams
+              ?.home
+              ?.team
+              ?.name
+          : selectedGame.teams
+              ?.away
+              ?.team
+              ?.name;
+
+      const shortOpponent =
+        (
+          opponentName
+          ||
+          "Opponent"
+        )
+          .replace(
+            "Boston Red Sox",
+            "Red Sox"
+          )
+          .replace(
+            "Tampa Bay Rays",
+            "Rays"
+          )
+          .replace(
+            "Toronto Blue Jays",
+            "Blue Jays"
+          )
+          .replace(
+            "Baltimore Orioles",
+            "Orioles"
+          );
+
+      if (
+        yankeesWins >
+        opponentWins
+      ) {
+
+        return (
+          `Yankees lead ${shortOpponent} `
+          +
+          `${yankeesWins}–${opponentWins}`
+        );
+
+      }
+
+      if (
+        opponentWins >
+        yankeesWins
+      ) {
+
+        return (
+          `${shortOpponent} lead Yankees `
+          +
+          `${opponentWins}–${yankeesWins}`
+        );
+
+      }
+
+      return (
+        `Yankees and ${shortOpponent} tied `
+        +
+        `${yankeesWins}–${opponentWins}`
+      );
+
+    }
+
+
+    function formatLiveUpcomingGame(
+      game
+    ) {
+
+      if (
+        !game?.gameDate
+      ) {
+        return "";
+      }
+
+      const date =
+        new Date(
+          game.gameDate
+        );
+
+      const gameKey =
+        easternDateISO(
+          date
+        );
+
+      const todayKey =
+        easternDateISO();
+
+      const tomorrowKey =
+        easternDateOffset(
+          1
+        );
+
+      const fullDate =
+        new Intl.DateTimeFormat(
+          "en-US",
+          {
+            timeZone:
+              "America/New_York",
+            weekday:
+              "short",
+            month:
+              "short",
+            day:
+              "numeric"
+          }
+        )
+          .format(
+            date
+          );
+
+      let dateLabel =
+        fullDate;
+
+      if (
+        gameKey ===
+        todayKey
+      ) {
+
+        dateLabel =
+          `today · ${fullDate}`;
+
+      }
+
+      else if (
+        gameKey ===
+        tomorrowKey
+      ) {
+
+        dateLabel =
+          `tomorrow · ${fullDate}`;
+
+      }
+
+      const time =
+        new Intl.DateTimeFormat(
+          "en-US",
+          {
+            timeZone:
+              "America/New_York",
+            hour:
+              "numeric",
+            minute:
+              "2-digit"
+          }
+        )
+          .format(
+            date
+          );
+
+      const venue =
+        game.venue?.name
+        ||
+        "";
+
+      return [
+        "next game",
+        dateLabel,
+        `${time} ET`,
+        venue
+      ]
+        .filter(
+          Boolean
+        )
+        .join(" · ");
+
+    }
+
+
+    function chooseCurrentYankeesGame(
+      games
+    ) {
+
+      if (
+        !games.length
+      ) {
+        return null;
+      }
+
+      const live =
+        games.find(
+          game =>
+            game.status
+              ?.abstractGameState ===
+            "Live"
+        );
+
+      if (
+        live
+      ) {
+        return live;
+      }
+
+      const today =
+        easternDateISO();
+
+      const todayGame =
+        games.find(
+          game =>
+            (
+              game.officialDate
+              ||
+              easternDateISO(
+                new Date(
+                  game.gameDate
+                )
+              )
+            ) ===
+            today
+        );
+
+      if (
+        todayGame
+      ) {
+        return todayGame;
+      }
+
+      const upcoming =
+        games
+          .filter(
+            game =>
+              new Date(
+                game.gameDate
+              ) >
+              new Date()
+              &&
+              game.status
+                ?.abstractGameState !==
+                "Final"
+          )
+          .sort(
+            (
+              a,
+              b
+            ) =>
+              new Date(
+                a.gameDate
+              )
+              -
+              new Date(
+                b.gameDate
+              )
+          )[0];
+
+      if (
+        upcoming
+      ) {
+        return upcoming;
+      }
+
+      return (
+        games
+          .filter(
+            game =>
+              game.status
+                ?.abstractGameState ===
+                "Final"
+          )
+          .sort(
+            (
+              a,
+              b
+            ) =>
+              new Date(
+                b.gameDate
+              )
+              -
+              new Date(
+                a.gameDate
+              )
+          )[0]
+        ||
+        null
+      );
+
+    }
+
+
     function normalizeLiveYankeesGame(
       game,
+      allGames,
       existingGame = {}
     ) {
 
@@ -6595,24 +7058,20 @@
         return null;
       }
 
-
       const away =
         game.teams?.away
         ||
         {};
-
 
       const home =
         game.teams?.home
         ||
         {};
 
-
       const linescore =
         game.linescore
         ||
         {};
-
 
       const innings =
         (
@@ -6627,7 +7086,6 @@
                   ?.runs
                 ??
                 "",
-
               home:
                 inning.home
                   ?.runs
@@ -6635,7 +7093,6 @@
                 ""
             })
           );
-
 
       const status =
         (
@@ -6645,7 +7102,6 @@
           ""
         )
           .toLowerCase();
-
 
       return {
         ...existingGame,
@@ -6741,14 +7197,58 @@
 
         innings,
 
+        postseason:
+          [
+            "F",
+            "D",
+            "L",
+            "W"
+          ]
+            .includes(
+              game.gameType
+            ),
+
+        competition:
+          postseasonLabelFromGame(
+            game
+          )
+          ||
+          existingGame.competition
+          ||
+          "",
+
+        series:
+          game.seriesStatus
+            ?.result
+          ||
+          game.seriesStatus
+            ?.shortName
+          ||
+          game.seriesStatus
+            ?.seriesStatus
+          ||
+          "",
+
+        seriesRecord:
+          seriesRecordForGame(
+            game,
+            allGames
+          ),
+
         upcomingTime:
           status ===
           "preview"
-            ? existingGame
-                .upcomingTime
-              ||
-              ""
-            : ""
+            ? formatLiveUpcomingGame(
+                game
+              )
+            : "",
+
+        gameType:
+          game.gameType
+          ||
+          existingGame.gameType
+          ||
+          ""
       };
 
     }
@@ -6761,11 +7261,9 @@
           ?.baseball
           ?.yankees;
 
-
       if (!yankees) {
         return;
       }
-
 
       const existing =
         sportsBox
@@ -6773,12 +7271,10 @@
             ".sports-baseball"
           );
 
-
       const markup =
         baseballSectionMarkup(
           yankees
         );
-
 
       if (
         existing
@@ -6818,7 +7314,6 @@
           yankeesLiveTimer
         );
 
-
         yankeesLiveTimer =
           null;
 
@@ -6832,7 +7327,6 @@
     ) {
 
       stopYankeesLiveRefresh();
-
 
       yankeesLiveTimer =
         window.setTimeout(
@@ -6848,7 +7342,6 @@
       yankeesLiveTimer =
         null;
 
-
       if (
         sportsPanel.hidden
         ||
@@ -6857,12 +7350,17 @@
         return;
       }
 
-
       try {
 
-        const date =
-          easternDateISO();
+        const startDate =
+          easternDateOffset(
+            -3
+          );
 
+        const endDate =
+          easternDateOffset(
+            14
+          );
 
         const url =
           "https://statsapi.mlb.com/api/v1/schedule"
@@ -6871,12 +7369,11 @@
           +
           "&teamId=147"
           +
-          `&startDate=${date}`
+          `&startDate=${startDate}`
           +
-          `&endDate=${date}`
+          `&endDate=${endDate}`
           +
-          "&hydrate=team,linescore,seriesStatus";
-
+          "&hydrate=team,linescore,seriesStatus,venue";
 
         const response =
           await fetch(
@@ -6886,7 +7383,6 @@
                 "no-store"
             }
           );
-
 
         if (
           !response.ok
@@ -6898,10 +7394,8 @@
 
         }
 
-
         const schedule =
           await response.json();
-
 
         const games =
           (
@@ -6916,19 +7410,10 @@
                 []
             );
 
-
         const game =
-          games.find(
-            item =>
-              item.status
-                ?.abstractGameState ===
-              "Live"
-          )
-          ||
-          games[0]
-          ||
-          null;
-
+          chooseCurrentYankeesGame(
+            games
+          );
 
         if (
           !game
@@ -6936,11 +7421,9 @@
           return;
         }
 
-
         currentSportsData
           .baseball
           ??= {};
-
 
         currentSportsData
           .baseball
@@ -6948,49 +7431,40 @@
           ??= {
             active:
               true,
-
             team:
               "New York Yankees",
-
             shortName:
               "Yankees",
-
             game:
               {},
-
             standings:
               null
           };
-
 
         const yankees =
           currentSportsData
             .baseball
             .yankees;
 
-
         yankees.active =
           true;
-
 
         yankees.game =
           normalizeLiveYankeesGame(
             game,
+            games,
             yankees.game
             ||
             {}
           );
 
-
         replaceYankeesSection();
-
 
         const state =
           game.status
             ?.abstractGameState
           ||
           "";
-
 
         if (
           state ===
@@ -7024,7 +7498,6 @@
           "Yankees live refresh failed:",
           error
         );
-
 
         if (
           !sportsPanel.hidden
