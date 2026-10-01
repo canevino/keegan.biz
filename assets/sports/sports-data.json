@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-01T17:02:43.729Z",
+  "updatedAt": "2026-10-01T22:47:09.309Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -1078,15 +1078,6 @@
       "team": "Ireland",
       "shortName": "Ireland",
       "upcoming": [
-        {
-          "id": "5181817",
-          "date": "2026-10-01T18:45:00.000Z",
-          "when": "today · Thu, Oct 1 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Ireland",
-          "away": "Austria",
-          "competition": "UEFA Nations League B Grp. 3"
-        },
         {
           "id": "5181819",
           "date": "2026-10-04T18:45:00.000Z",
