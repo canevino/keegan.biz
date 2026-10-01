@@ -6426,6 +6426,621 @@
     }
 
 
+    let currentSportsData = null;
+    let yankeesLiveTimer = null;
+
+
+    function easternDateISO(
+      date = new Date()
+    ) {
+
+      const parts =
+        new Intl.DateTimeFormat(
+          "en-US",
+          {
+            timeZone:
+              "America/New_York",
+
+            year:
+              "numeric",
+
+            month:
+              "2-digit",
+
+            day:
+              "2-digit"
+          }
+        )
+          .formatToParts(
+            date
+          );
+
+
+      const values =
+        Object.fromEntries(
+          parts
+            .filter(
+              part =>
+                part.type !==
+                "literal"
+            )
+            .map(
+              part => [
+                part.type,
+                part.value
+              ]
+            )
+        );
+
+
+      return (
+        `${values.year}-${values.month}-${values.day}`
+      );
+
+    }
+
+
+    function yankeesTeamCode(
+      team
+    ) {
+
+      const codes = {
+        147: "NYY",
+        111: "BOS",
+        141: "TOR",
+        139: "TB",
+        110: "BAL"
+      };
+
+
+      return (
+        codes[
+          team?.id
+        ]
+        ||
+        team?.abbreviation
+        ||
+        team?.teamCode
+          ?.toUpperCase()
+        ||
+        team?.name
+        ||
+        ""
+      );
+
+    }
+
+
+    function yankeesLiveDetail(
+      game
+    ) {
+
+      const state =
+        game?.status
+          ?.abstractGameState
+        ||
+        "";
+
+
+      if (
+        state ===
+        "Final"
+      ) {
+        return "final";
+      }
+
+
+      if (
+        state !==
+        "Live"
+      ) {
+
+        return (
+          game?.status
+            ?.detailedState
+          ||
+          ""
+        )
+          .toLowerCase();
+
+      }
+
+
+      const linescore =
+        game?.linescore
+        ||
+        {};
+
+
+      const half =
+        linescore.inningState
+        ||
+        linescore.halfInning
+        ||
+        "";
+
+
+      const inning =
+        linescore
+          .currentInningOrdinal
+        ||
+        (
+          linescore.currentInning
+            ? String(
+                linescore.currentInning
+              )
+            : ""
+        );
+
+
+      return [
+        half,
+        inning
+      ]
+        .filter(
+          Boolean
+        )
+        .join(" ")
+        .toLowerCase();
+
+    }
+
+
+    function normalizeLiveYankeesGame(
+      game,
+      existingGame = {}
+    ) {
+
+      if (!game) {
+        return null;
+      }
+
+
+      const away =
+        game.teams?.away
+        ||
+        {};
+
+
+      const home =
+        game.teams?.home
+        ||
+        {};
+
+
+      const linescore =
+        game.linescore
+        ||
+        {};
+
+
+      const innings =
+        (
+          linescore.innings
+          ||
+          []
+        )
+          .map(
+            inning => ({
+              away:
+                inning.away
+                  ?.runs
+                ??
+                "",
+
+              home:
+                inning.home
+                  ?.runs
+                ??
+                ""
+            })
+          );
+
+
+      const status =
+        (
+          game.status
+            ?.abstractGameState
+          ||
+          ""
+        )
+          .toLowerCase();
+
+
+      return {
+        ...existingGame,
+
+        gamePk:
+          game.gamePk
+          ??
+          existingGame.gamePk,
+
+        status,
+
+        detail:
+          yankeesLiveDetail(
+            game
+          ),
+
+        date:
+          game.gameDate
+          ||
+          existingGame.date
+          ||
+          "",
+
+        away:
+          yankeesTeamCode(
+            away.team
+          ),
+
+        awayFull:
+          away.team?.name
+          ||
+          existingGame.awayFull
+          ||
+          "",
+
+        awayScore:
+          away.score
+          ??
+          linescore.teams
+            ?.away
+            ?.runs
+          ??
+          0,
+
+        awayHits:
+          linescore.teams
+            ?.away
+            ?.hits
+          ??
+          "",
+
+        awayErrors:
+          linescore.teams
+            ?.away
+            ?.errors
+          ??
+          "",
+
+        home:
+          yankeesTeamCode(
+            home.team
+          ),
+
+        homeFull:
+          home.team?.name
+          ||
+          existingGame.homeFull
+          ||
+          "",
+
+        homeScore:
+          home.score
+          ??
+          linescore.teams
+            ?.home
+            ?.runs
+          ??
+          0,
+
+        homeHits:
+          linescore.teams
+            ?.home
+            ?.hits
+          ??
+          "",
+
+        homeErrors:
+          linescore.teams
+            ?.home
+            ?.errors
+          ??
+          "",
+
+        innings,
+
+        upcomingTime:
+          status ===
+          "preview"
+            ? existingGame
+                .upcomingTime
+              ||
+              ""
+            : ""
+      };
+
+    }
+
+
+    function replaceYankeesSection() {
+
+      const yankees =
+        currentSportsData
+          ?.baseball
+          ?.yankees;
+
+
+      if (!yankees) {
+        return;
+      }
+
+
+      const existing =
+        sportsBox
+          .querySelector(
+            ".sports-baseball"
+          );
+
+
+      const markup =
+        baseballSectionMarkup(
+          yankees
+        );
+
+
+      if (
+        existing
+        &&
+        markup
+      ) {
+
+        existing.outerHTML =
+          markup;
+
+      }
+
+      else if (
+        !existing
+        &&
+        markup
+      ) {
+
+        sportsBox
+          .insertAdjacentHTML(
+            "beforeend",
+            markup
+          );
+
+      }
+
+    }
+
+
+    function stopYankeesLiveRefresh() {
+
+      if (
+        yankeesLiveTimer
+      ) {
+
+        window.clearTimeout(
+          yankeesLiveTimer
+        );
+
+
+        yankeesLiveTimer =
+          null;
+
+      }
+
+    }
+
+
+    function scheduleYankeesLiveRefresh(
+      delay = 0
+    ) {
+
+      stopYankeesLiveRefresh();
+
+
+      yankeesLiveTimer =
+        window.setTimeout(
+          refreshYankeesLive,
+          delay
+        );
+
+    }
+
+
+    async function refreshYankeesLive() {
+
+      yankeesLiveTimer =
+        null;
+
+
+      if (
+        sportsPanel.hidden
+        ||
+        !currentSportsData
+      ) {
+        return;
+      }
+
+
+      try {
+
+        const date =
+          easternDateISO();
+
+
+        const url =
+          "https://statsapi.mlb.com/api/v1/schedule"
+          +
+          "?sportId=1"
+          +
+          "&teamId=147"
+          +
+          `&startDate=${date}`
+          +
+          `&endDate=${date}`
+          +
+          "&hydrate=team,linescore,seriesStatus";
+
+
+        const response =
+          await fetch(
+            url,
+            {
+              cache:
+                "no-store"
+            }
+          );
+
+
+        if (
+          !response.ok
+        ) {
+
+          throw new Error(
+            `MLB live data failed: ${response.status}`
+          );
+
+        }
+
+
+        const schedule =
+          await response.json();
+
+
+        const games =
+          (
+            schedule.dates
+            ||
+            []
+          )
+            .flatMap(
+              day =>
+                day.games
+                ||
+                []
+            );
+
+
+        const game =
+          games.find(
+            item =>
+              item.status
+                ?.abstractGameState ===
+              "Live"
+          )
+          ||
+          games[0]
+          ||
+          null;
+
+
+        if (
+          !game
+        ) {
+          return;
+        }
+
+
+        currentSportsData
+          .baseball
+          ??= {};
+
+
+        currentSportsData
+          .baseball
+          .yankees
+          ??= {
+            active:
+              true,
+
+            team:
+              "New York Yankees",
+
+            shortName:
+              "Yankees",
+
+            game:
+              {},
+
+            standings:
+              null
+          };
+
+
+        const yankees =
+          currentSportsData
+            .baseball
+            .yankees;
+
+
+        yankees.active =
+          true;
+
+
+        yankees.game =
+          normalizeLiveYankeesGame(
+            game,
+            yankees.game
+            ||
+            {}
+          );
+
+
+        replaceYankeesSection();
+
+
+        const state =
+          game.status
+            ?.abstractGameState
+          ||
+          "";
+
+
+        if (
+          state ===
+          "Live"
+        ) {
+
+          scheduleYankeesLiveRefresh(
+            30000
+          );
+
+        }
+
+        else if (
+          state ===
+          "Preview"
+        ) {
+
+          scheduleYankeesLiveRefresh(
+            60000
+          );
+
+        }
+
+      }
+
+      catch (
+        error
+      ) {
+
+        console.warn(
+          "Yankees live refresh failed:",
+          error
+        );
+
+
+        if (
+          !sportsPanel.hidden
+        ) {
+
+          scheduleYankeesLiveRefresh(
+            60000
+          );
+
+        }
+
+      }
+
+    }
+
+
     async function renderSports() {
 
       sportsBox.innerHTML =
@@ -6438,8 +7053,17 @@
           await window.keeganSports.loadSportsData();
 
 
+        currentSportsData =
+          data;
+
+
         paintSports(
           data
+        );
+
+
+        scheduleYankeesLiveRefresh(
+          0
         );
 
       }
@@ -6497,6 +7121,9 @@
 
 
     function closeSports() {
+
+      stopYankeesLiveRefresh();
+
 
       home.classList.remove(
         "sports-open"
