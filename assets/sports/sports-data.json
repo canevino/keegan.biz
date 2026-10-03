@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-03T14:44:27.661Z",
+  "updatedAt": "2026-10-03T16:31:38.188Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -1043,8 +1043,8 @@
         {
           "id": "5181853",
           "date": "2026-10-03T16:00:00.000Z",
-          "when": "today · Sat, Oct 3 · 12:00 PM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Croatia",
           "away": "England",
           "competition": "UEFA Nations League A Grp. 3"
