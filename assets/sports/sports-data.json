@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-03T11:49:55.329Z",
+  "updatedAt": "2026-10-03T14:44:27.661Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -25,7 +25,7 @@
         "competition": "AL Division Series",
         "series": "ALDS",
         "seriesRecord": "Yankees and Rays tied 0–0",
-        "upcomingTime": "next game · tomorrow · Sat, Oct 3 · 6:30 PM ET · Tropicana Field",
+        "upcomingTime": "next game · today · Sat, Oct 3 · 6:30 PM ET · Tropicana Field",
         "gameType": "D"
       },
       "standings": {
