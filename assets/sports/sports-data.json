@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-03T05:28:36.560Z",
+  "updatedAt": "2026-10-03T11:49:55.329Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -917,44 +917,44 @@
           },
           {
             "rank": 6,
+            "team": "Veres Rivne",
+            "points": 9,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 7,
             "team": "Epitsentr Kamianets-Podilskyi",
             "points": 8,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 7,
+            "rank": 8,
             "team": "LNZ Cherkasy",
             "points": 8,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 8,
+            "rank": 9,
             "team": "Zorya",
             "points": 8,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 9,
+            "rank": 10,
             "team": "Liviy Bereh",
             "points": 7,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 10,
+            "rank": 11,
             "team": "Bukovyna Chernivtsi",
             "points": 7,
             "played": 7,
-            "highlight": false
-          },
-          {
-            "rank": 11,
-            "team": "Veres Rivne",
-            "points": 6,
-            "played": 6,
             "highlight": false
           },
           {
@@ -989,7 +989,7 @@
             "rank": 16,
             "team": "Kudrivka",
             "points": 2,
-            "played": 6,
+            "played": 7,
             "highlight": false
           }
         ]
