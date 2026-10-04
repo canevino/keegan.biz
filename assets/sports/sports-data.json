@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-10-04T12:33:39.145Z",
+  "updatedAt": "2026-10-04T15:24:09.555Z",
   "baseball": {
     "yankees": {
       "active": true,
       "team": "New York Yankees",
       "shortName": "Yankees",
       "game": {
-        "gamePk": 849835,
+        "gamePk": 849839,
         "status": "preview",
         "detail": "scheduled",
-        "date": "2026-10-03T22:30:00Z",
+        "date": "2026-10-06T00:00:00Z",
         "away": "NYY",
         "awayFull": "New York Yankees",
         "awayScore": 0,
@@ -23,9 +23,9 @@
         "innings": [],
         "postseason": true,
         "competition": "AL Division Series",
-        "series": "ALDS",
-        "seriesRecord": "Yankees and Rays tied 0–0",
-        "upcomingTime": "next game · today · Sat, Oct 3 · 6:30 PM ET · Tropicana Field",
+        "series": "TB leads 1-0",
+        "seriesRecord": "Rays lead Yankees 1–0",
+        "upcomingTime": "next game · tomorrow · Mon, Oct 5 · 8:00 PM ET · Tropicana Field",
         "gameType": "D"
       },
       "standings": {
