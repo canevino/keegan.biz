@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-04T15:24:09.555Z",
+  "updatedAt": "2026-10-04T21:39:15.396Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -996,22 +996,12 @@
       }
     },
     "lithuania": {
-      "active": true,
+      "active": false,
       "team": "Lithuania",
       "shortName": "Lithuania",
-      "upcoming": [
-        {
-          "id": "5181883",
-          "date": "2026-10-04T13:00:00.000Z",
-          "when": "today · Sun, Oct 4 · 9:00 AM ET",
-          "status": "scheduled",
-          "home": "Azerbaijan",
-          "away": "Lithuania",
-          "competition": "UEFA Nations League D Grp. 2"
-        }
-      ],
+      "upcoming": [],
       "standings": {
-        "title": "UEFA Nations League D Grp. 2",
+        "title": "",
         "rows": []
       }
     },
@@ -1056,22 +1046,12 @@
       }
     },
     "ireland": {
-      "active": true,
+      "active": false,
       "team": "Ireland",
       "shortName": "Ireland",
-      "upcoming": [
-        {
-          "id": "5181819",
-          "date": "2026-10-04T18:45:00.000Z",
-          "when": "today · Sun, Oct 4 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Ireland",
-          "away": "Israel",
-          "competition": "UEFA Nations League B Grp. 3"
-        }
-      ],
+      "upcoming": [],
       "standings": {
-        "title": "UEFA Nations League B Grp. 3",
+        "title": "",
         "rows": []
       }
     }
