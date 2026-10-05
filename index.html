@@ -2072,6 +2072,120 @@
       }
     }
 
+
+    /* How it works */
+    .how-link {
+      display: inline-block;
+      margin: 18px 0 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--red, #c1272d);
+      font: inherit;
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+
+    .how-link:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    .how-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(17, 17, 15, .18);
+    }
+
+    .how-overlay.is-visible {
+      display: flex;
+    }
+
+    .how-card {
+      position: relative;
+      width: min(92vw, 520px);
+      padding: 22px 24px 24px;
+      border: 2px solid var(--red, #c1272d);
+      background: var(--paper, #ece7d7);
+      box-shadow: 8px 8px 0 rgba(193, 39, 45, .72);
+    }
+
+    .how-card h3 {
+      margin: 0 42px 14px 0;
+      color: var(--red, #c1272d);
+      font-size: 26px;
+      line-height: .95;
+      letter-spacing: -.04em;
+    }
+
+    .how-card p {
+      margin: 0 0 10px;
+      color: var(--ink, #11110f);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .how-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .how-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--red, #c1272d);
+      font: inherit;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .how-close:hover,
+    .how-close:focus-visible {
+      transform: none;
+      text-decoration: none;
+    }
+
+    @media (max-width: 700px) {
+      .how-link {
+        margin-top: 14px;
+        font-size: 9px;
+      }
+
+      .how-overlay {
+        align-items: flex-end;
+        padding: 16px;
+      }
+
+      .how-card {
+        width: 100%;
+        padding: 18px 18px 20px;
+        box-shadow: 5px 5px 0 rgba(193, 39, 45, .72);
+      }
+
+      .how-card h3 {
+        font-size: 23px;
+      }
+
+      .how-card p {
+        font-size: 12px;
+      }
+    }
+
   </style>
 </head>
 
@@ -2531,6 +2645,14 @@
 
         </section>
 
+          <button
+            class="how-link"
+            type="button"
+            data-how="chess"
+          >
+            how it works
+          </button>
+
         </div>
 
         <button
@@ -2576,12 +2698,46 @@
             </p>
           </div>
 
+          <button
+            class="how-link"
+            type="button"
+            data-how="sports"
+          >
+            how it works
+          </button>
+
         </div>
 
       </section>
 
     </main>
 
+  </div>
+
+
+  <div
+    class="how-overlay"
+    id="how-overlay"
+    aria-hidden="true"
+  >
+    <div
+      class="how-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="how-title"
+    >
+      <button
+        class="how-close"
+        id="how-close"
+        type="button"
+        aria-label="Close how it works"
+      >
+        ×
+      </button>
+
+      <h3 id="how-title">how it works</h3>
+      <div id="how-copy"></div>
+    </div>
   </div>
 
 
@@ -2640,6 +2796,140 @@
     </div>
 
   </div>
+
+
+  <script>
+  (() => {
+
+    const overlay =
+      document.getElementById(
+        "how-overlay"
+      );
+
+    const copy =
+      document.getElementById(
+        "how-copy"
+      );
+
+    const close =
+      document.getElementById(
+        "how-close"
+      );
+
+    const content = {
+      chess: [
+        "The board and legal moves are handled with chess.js, while computer games run through Stockfish in your browser.",
+        "Captured pieces use Matter.js physics, which is why they fall and pile up beside the board.",
+        "Autoplay replays selected games from The Mammoth Book of The World’s Greatest Chess Games using a local game library."
+      ],
+      sports: [
+        "Football schedules, results and tables come from FotMob match data and are refreshed automatically in the background.",
+        "Yankees scores and postseason information come from MLB’s public StatsAPI. During a live game, the page checks MLB directly while the Sports panel is open.",
+        "The site keeps a lightweight saved copy of the data too, so normal browsing does not need to constantly call the feeds."
+      ]
+    };
+
+    function openHow(
+      kind
+    ) {
+
+      const paragraphs =
+        content[kind]
+        ||
+        [];
+
+      copy.innerHTML =
+        paragraphs
+          .map(
+            paragraph =>
+              `<p>${paragraph}</p>`
+          )
+          .join(
+            ""
+          );
+
+      overlay.classList.add(
+        "is-visible"
+      );
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      close.focus();
+
+    }
+
+    function closeHow() {
+
+      overlay.classList.remove(
+        "is-visible"
+      );
+
+      overlay.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+    }
+
+    document.querySelectorAll(
+      ".how-link"
+    )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () =>
+              openHow(
+                button.dataset.how
+              )
+          );
+
+        }
+      );
+
+    close.addEventListener(
+      "click",
+      closeHow
+    );
+
+    overlay.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          overlay
+        ) {
+          closeHow();
+        }
+
+      }
+    );
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key ===
+            "Escape"
+          &&
+          overlay.classList.contains(
+            "is-visible"
+          )
+        ) {
+          closeHow();
+        }
+
+      }
+    );
+
+  })();
+  </script>
 
 
   <script>
