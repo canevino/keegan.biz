@@ -20,67 +20,71 @@
       display: block;
     }
 
+    .fuji-action-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      width: 100%;
+    }
+
     .fuji-below-ui .fuji-controls {
       position: static !important;
       inset: auto !important;
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      width: 100%;
+      display: contents !important;
+      width: auto;
       margin: 0;
       padding: 0;
       opacity: 1 !important;
       visibility: visible !important;
       pointer-events: auto !important;
       transform: none !important;
-      border: 1px solid var(--red, #c1272d);
-      background: transparent;
-    }
-
-    .fuji-below-ui .fuji-control {
-      min-height: 36px;
-      margin: 0;
-      padding: 8px 10px;
       border: 0;
       background: transparent;
-      color: var(--red, #c1272d);
-      font: inherit;
-      font-size: 12px;
-      line-height: 1;
-      font-weight: 700;
-      text-align: center;
-      cursor: pointer;
     }
 
-    .fuji-below-ui .fuji-control + .fuji-control {
-      border-left: 1px solid var(--red, #c1272d);
-    }
-
-    .fuji-below-ui .fuji-control:hover,
-    .fuji-below-ui .fuji-control:focus-visible {
-      background: var(--red, #c1272d);
-      color: var(--paper, #ece7d7);
-      text-decoration: none;
-    }
-
+    .fuji-below-ui .fuji-control,
     .photo-how-link {
       display: inline-block;
-      margin: 12px 0 0;
+      margin: 0;
       padding: 0;
       border: 0;
       background: transparent;
       color: var(--red, #c1272d);
       font: inherit;
       font-size: 10px;
-      line-height: 1;
+      line-height: 1.2;
       font-weight: 700;
+      text-align: left;
+      cursor: pointer;
       text-decoration: underline;
       text-decoration-thickness: 1px;
       text-underline-offset: 3px;
-      cursor: pointer;
     }
 
-    .photo-how-link:hover {
+    .fuji-below-ui .fuji-control:hover,
+    .fuji-below-ui .fuji-control:focus-visible,
+    .photo-how-link:hover,
+    .photo-how-link:focus-visible {
+      color: var(--red, #c1272d);
+      background: transparent;
       text-decoration-thickness: 2px;
+    }
+
+    @media (max-width: 700px) {
+      .fuji-below-ui {
+        margin-top: 8px;
+      }
+
+      .fuji-action-row {
+        gap: 7px 14px;
+      }
+
+      .fuji-below-ui .fuji-control,
+      .photo-how-link {
+        font-size: 9px;
+      }
     }
 
     .photo-how-overlay {
@@ -238,12 +242,13 @@
       </figure>
 
       <div class="fuji-below-ui" id="fuji-below-ui" aria-hidden="true">
-        <div class="fuji-controls" id="fuji-controls" aria-hidden="true">
-          <button class="fuji-control" id="fuji-auto-song" type="button">randomly generate a song</button>
-          <button class="fuji-control" id="fuji-sound-toggle" type="button">click to turn off</button>
+        <div class="fuji-action-row">
+          <div class="fuji-controls" id="fuji-controls" aria-hidden="true">
+            <button class="fuji-control" id="fuji-auto-song" type="button">randomly generate a song</button>
+            <button class="fuji-control" id="fuji-sound-toggle" type="button">click to turn off</button>
+          </div>
+          <button class="photo-how-link" id="photo-how-link" type="button">how it works</button>
         </div>
-
-        <button class="photo-how-link" id="photo-how-link" type="button">how it works</button>
       </div>
 
         <div
@@ -261,9 +266,9 @@
   <div class="photo-how-card" role="dialog" aria-modal="true" aria-labelledby="photo-how-title">
     <button class="photo-how-close" id="photo-how-close" type="button" aria-label="Close how it works">×</button>
     <h3 id="photo-how-title">how it works</h3>
-    <p>The starting image is a photograph from Connemara, looking across Lough Much toward the peaks of Garraun and Benchoona. I painted an imagined architectural intervention over it in Photoshop, then separated the building and its perspective lines into layers the browser can bring in and out.</p>
-    <p>The sound is generative rather than a fixed song. It uses my own recordings of cello, guitar, mandolin and C/G Anglo concertina: a sustained D cello drone holds the ground while the system plans phrases inside a D Dorian pitch world, remembers motifs, and varies what happens from one click to the next.</p>
-    <p>The music and image use the same event. Notes favor particular perspective lines and brand-color treatments; denser combinations reveal more of the painted structure and larger print-like marks. When you click, you choose the timing. “Randomly generate a song” lets the system choose the timing too.</p>
+    <p>The starting image is a photograph from rural Ireland, looking toward the peaks of Garraun and Benchoona. I painted an imagined architectural intervention over it in Photoshop, then separated the building and its perspective lines into layers the browser can bring in and out.</p>
+    <p>The sound is generative rather than a fixed song. It uses my own recordings of cello, guitar, mandolin and C/G Anglo concertina: a sustained D cello drone holds while the system plans phrases inside a D Dorian pitch atmosphere, remembers motifs, and varies what happens from one click to the next.</p>
+    <p>The music and image use the same event. Notes favor particular perspective lines and site-color treatments; denser combinations reveal more of the painted structure and larger print-like marks. When you click, you choose the timing. “Randomly generate a song” lets the system choose the timing.</p>
   </div>
 </div>
 
