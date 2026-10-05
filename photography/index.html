@@ -7,6 +7,184 @@
   <link rel="preload" as="image" href="assets/Fuji400-web.png">
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Photography interaction controls */
+    .fuji-below-ui {
+      display: none;
+      width: 100%;
+      margin: 10px 0 0;
+    }
+
+    .fuji-below-ui.is-visible {
+      display: block;
+    }
+
+    .fuji-below-ui .fuji-controls {
+      position: static !important;
+      inset: auto !important;
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: none !important;
+      border: 1px solid var(--red, #c1272d);
+      background: transparent;
+    }
+
+    .fuji-below-ui .fuji-control {
+      min-height: 36px;
+      margin: 0;
+      padding: 8px 10px;
+      border: 0;
+      background: transparent;
+      color: var(--red, #c1272d);
+      font: inherit;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .fuji-below-ui .fuji-control + .fuji-control {
+      border-left: 1px solid var(--red, #c1272d);
+    }
+
+    .fuji-below-ui .fuji-control:hover,
+    .fuji-below-ui .fuji-control:focus-visible {
+      background: var(--red, #c1272d);
+      color: var(--paper, #ece7d7);
+      text-decoration: none;
+    }
+
+    .photo-how-link {
+      display: inline-block;
+      margin: 12px 0 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--red, #c1272d);
+      font: inherit;
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+
+    .photo-how-link:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    .photo-how-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(17, 17, 15, .18);
+    }
+
+    .photo-how-overlay.is-visible {
+      display: flex;
+    }
+
+    .photo-how-card {
+      position: relative;
+      width: min(92vw, 560px);
+      padding: 22px 24px 24px;
+      border: 2px solid var(--red, #c1272d);
+      background: var(--paper, #ece7d7);
+      box-shadow: 8px 8px 0 rgba(193, 39, 45, .72);
+    }
+
+    .photo-how-card h3 {
+      margin: 0 42px 14px 0;
+      color: var(--red, #c1272d);
+      font-size: 26px;
+      line-height: .95;
+      letter-spacing: -.04em;
+    }
+
+    .photo-how-card p {
+      margin: 0 0 10px;
+      color: var(--ink, #11110f);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .photo-how-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .photo-how-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--red, #c1272d);
+      font: inherit;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .photo-how-close:hover,
+    .photo-how-close:focus-visible {
+      transform: none;
+      text-decoration: none;
+    }
+
+    @media (max-width: 700px) {
+      .fuji-below-ui {
+        margin-top: 7px;
+      }
+
+      .fuji-below-ui .fuji-control {
+        min-height: 34px;
+        padding: 7px 6px;
+        font-size: 10px;
+      }
+
+      .photo-how-link {
+        margin-top: 10px;
+        font-size: 9px;
+      }
+
+      .photo-how-overlay {
+        align-items: flex-end;
+        padding: 16px;
+      }
+
+      .photo-how-card {
+        width: 100%;
+        padding: 18px 18px 20px;
+        box-shadow: 5px 5px 0 rgba(193, 39, 45, .72);
+      }
+
+      .photo-how-card h3 {
+        font-size: 23px;
+      }
+
+      .photo-how-card p {
+        font-size: 12px;
+      }
+    }
+  </style>
+
 </head>
 <body>
 
@@ -47,11 +225,6 @@
         <div class="fuji-splash-layer" id="fuji-splash-layer" aria-hidden="true"></div>
         <div class="fuji-click-prompt" id="fuji-click-prompt" aria-live="polite" aria-hidden="true"></div>
 
-        <div class="fuji-controls" id="fuji-controls" aria-hidden="true">
-          <button class="fuji-control" id="fuji-auto-song" type="button">randomly generate a song</button>
-          <button class="fuji-control" id="fuji-sound-toggle" type="button">click to turn off</button>
-        </div>
-
         <svg class="fuji-filter-defs" width="0" height="0" aria-hidden="true">
           <defs>
             <filter id="fuji-posterize-3" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="discrete" tableValues="0 .5 1"/><feFuncG type="discrete" tableValues="0 .5 1"/><feFuncB type="discrete" tableValues="0 .5 1"/><feFuncA type="identity"/></feComponentTransfer></filter>
@@ -64,6 +237,15 @@
         </svg>
       </figure>
 
+      <div class="fuji-below-ui" id="fuji-below-ui" aria-hidden="true">
+        <div class="fuji-controls" id="fuji-controls" aria-hidden="true">
+          <button class="fuji-control" id="fuji-auto-song" type="button">randomly generate a song</button>
+          <button class="fuji-control" id="fuji-sound-toggle" type="button">click to turn off</button>
+        </div>
+
+        <button class="photo-how-link" id="photo-how-link" type="button">how it works</button>
+      </div>
+
         <div
           class="film-gallery"
           id="film-gallery"
@@ -72,6 +254,17 @@
 
     </section>
   </main>
+</div>
+
+
+<div class="photo-how-overlay" id="photo-how-overlay" aria-hidden="true">
+  <div class="photo-how-card" role="dialog" aria-modal="true" aria-labelledby="photo-how-title">
+    <button class="photo-how-close" id="photo-how-close" type="button" aria-label="Close how it works">×</button>
+    <h3 id="photo-how-title">how it works</h3>
+    <p>The starting image is a photograph from Connemara, looking across Lough Much toward the peaks of Garraun and Benchoona. I painted an imagined architectural intervention over it in Photoshop, then separated the building and its perspective lines into layers the browser can bring in and out.</p>
+    <p>The sound is generative rather than a fixed song. It uses my own recordings of cello, guitar, mandolin and C/G Anglo concertina: a sustained D cello drone holds the ground while the system plans phrases inside a D Dorian pitch world, remembers motifs, and varies what happens from one click to the next.</p>
+    <p>The music and image use the same event. Notes favor particular perspective lines and brand-color treatments; denser combinations reveal more of the painted structure and larger print-like marks. When you click, you choose the timing. “Randomly generate a song” lets the system choose the timing too.</p>
+  </div>
 </div>
 
 <audio id="fuji-drone" src="assets/audio/cello_drone_d.mp3" preload="metadata" loop playsinline hidden></audio>
@@ -247,6 +440,7 @@
   const tint = document.getElementById('fuji-photo-tint');
   const prompt = document.getElementById('fuji-click-prompt');
   const controls = document.getElementById('fuji-controls');
+  const belowUI = document.getElementById('fuji-below-ui');
   const autoButton = document.getElementById('fuji-auto-song');
   const soundButton = document.getElementById('fuji-sound-toggle');
   const splashLayer = document.getElementById('fuji-splash-layer');
@@ -441,7 +635,7 @@
   const clearTutorialTimers=()=>{ tutorial.timers.forEach(clearTimeout); tutorial.timers=[]; };
   function hidePrompt(){ prompt.classList.remove('is-visible'); prompt.setAttribute('aria-hidden','true'); }
   function showPrompt(text){ prompt.textContent=text; prompt.classList.add('is-visible'); prompt.setAttribute('aria-hidden','false'); }
-  function showControls(){ controls.classList.add('is-visible'); controls.setAttribute('aria-hidden','false'); }
+  function showControls(){ controls.classList.add('is-visible'); controls.setAttribute('aria-hidden','false'); belowUI?.classList.add('is-visible'); belowUI?.setAttribute('aria-hidden','false'); }
   function later(fn,ms){ const id=setTimeout(fn,ms); tutorial.timers.push(id); return id; }
   function advanceTutorial(){
     hidePrompt(); clearTutorialTimers();
@@ -2570,21 +2764,14 @@
         : 240
     );
 
-    tutorial.timers.push(
-      setTimeout(
-        ()=>{
-          if(
-            tutorial.step===0&&
-            !audioState.droneStarted
-          ){
-            showPrompt(
-              WORDS.here()
-            );
-          }
-        },
-        3200
-      )
-    );
+    if(
+      tutorial.step===0&&
+      !audioState.droneStarted
+    ){
+      showPrompt(
+        WORDS.here()
+      );
+    }
   });
 
   /*
@@ -2962,6 +3149,37 @@
 })();
 </script>
 
+
+
+<script>
+(() => {
+  const trigger = document.getElementById('photo-how-link');
+  const overlay = document.getElementById('photo-how-overlay');
+  const close = document.getElementById('photo-how-close');
+
+  if (!trigger || !overlay || !close) return;
+
+  function openHow(){
+    overlay.classList.add('is-visible');
+    overlay.setAttribute('aria-hidden','false');
+    close.focus();
+  }
+
+  function closeHow(){
+    overlay.classList.remove('is-visible');
+    overlay.setAttribute('aria-hidden','true');
+  }
+
+  trigger.addEventListener('click', openHow);
+  close.addEventListener('click', closeHow);
+  overlay.addEventListener('click', event => {
+    if (event.target === overlay) closeHow();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && overlay.classList.contains('is-visible')) closeHow();
+  });
+})();
+</script>
 
 <script src="/assets/site-nav.js" defer></script>
 </body>
