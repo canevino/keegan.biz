@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-05T14:58:59.762Z",
+  "updatedAt": "2026-10-05T19:18:19.761Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -25,7 +25,7 @@
         "competition": "AL Division Series",
         "series": "TB leads 1-0",
         "seriesRecord": "Rays lead Yankees 1–0",
-        "upcomingTime": "next game · tomorrow · Mon, Oct 5 · 8:00 PM ET · Tropicana Field",
+        "upcomingTime": "next game · today · Mon, Oct 5 · 8:00 PM ET · Tropicana Field",
         "gameType": "D"
       },
       "standings": {
