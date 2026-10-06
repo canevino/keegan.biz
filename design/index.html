@@ -61,7 +61,7 @@
 
         <header class="work-group-header">
           <p class="group-eyebrow">selected work</p>
-          <h2 id="triennial-heading">Triennial 2025: The Exchange</h2>
+          <h2 id="triennial-heading">Boston Public Art Triennial</h2>
         </header>
 
 
@@ -71,7 +71,7 @@
             <div class="project-number" aria-hidden="true">01</div>
 
             <div class="project-info">
-              <h3 class="project-title" id="more-title">More ____</h3>
+              <h3 class="project-title" id="more-title">Triennial 2025: The Exchange</h3>
               <p class="project-client">Boston Public Art Triennial</p>
               <p class="project-blurb">
                 Campaign design for the Triennial’s citywide exhibition,
@@ -178,33 +178,32 @@
                 <div class="making-public-extension">
                   <header class="making-public-heading">
                     <span>03</span>
-                    <h5>Making Public</h5>
+                    <div>
+                      <h5>Making Public</h5>
+                      <p>print + digital collateral</p>
+                    </div>
                   </header>
 
                   <figure class="mp-banner-single">
                     <img src="assets/making public banner 1.png" alt="Making Public horizontal event banner" loading="lazy">
+                    <figcaption>event banner</figcaption>
                   </figure>
 
-                  <div class="making-public-assets">
-                    <div class="mp-flip-card" data-mp-flip>
+                  <div class="making-public-primary-assets">
+                    <div class="mp-flip-card mp-program-card" data-mp-flip>
                       <div class="mp-flip-toolbar">
-                        <span class="mp-flip-label">flyer</span>
+                        <span class="mp-flip-label">program handout</span>
                         <button class="mp-flip-button" type="button" aria-pressed="false">flip</button>
                       </div>
-                      <div class="mp-flip-scene" tabindex="0" role="button" aria-label="Making Public flyer. Hover or tap to flip.">
+                      <div class="mp-flip-scene" tabindex="0" role="button" aria-label="Making Public program handout. Hover or tap to flip.">
                         <div class="mp-flip-paper">
-                          <img class="mp-flip-face mp-flip-front" src="assets/making public flyer 1.png" alt="Making Public flyer, image-led side" loading="lazy">
-                          <img class="mp-flip-face mp-flip-back" src="assets/making public flyer 2.png" alt="Making Public flyer, cream side" loading="lazy">
+                          <img class="mp-flip-face mp-flip-front" src="assets/making public program front.png" alt="Making Public program handout front" loading="lazy">
+                          <img class="mp-flip-face mp-flip-back" src="assets/making public flyer back.png" alt="Making Public program handout reverse" loading="lazy">
                         </div>
                       </div>
                     </div>
 
-                    <figure class="mp-program">
-                      <img src="assets/making public program front.png" alt="Making Public program handout" loading="lazy">
-                      <figcaption>program handout</figcaption>
-                    </figure>
-
-                    <div class="mp-flip-card" data-mp-flip>
+                    <div class="mp-flip-card mp-social-card" data-mp-flip>
                       <div class="mp-flip-toolbar">
                         <span class="mp-flip-label">social</span>
                         <button class="mp-flip-button" type="button" aria-pressed="false">flip</button>
@@ -219,7 +218,7 @@
                   </div>
 
                   <div class="making-public-copy-middle">
-                    <p>Print and digital collateral for Making Public, a convening at Roxbury Community College in October 2025. The image came out of a youth workshop that Ñ Press ran with NUBE East Boston, part of Gabriel Sosa's Triennial project with the community print studio. From there it ran across posters, on-site wayfinding, a program handout, a QR flyer, and a newsletter ad for Boston Art Review, each one carrying a different amount of information.</p>
+                    <p>Print and digital collateral for <em>Making Public</em>, a convening at Roxbury Community College in October 2025. The image came out of a youth workshop that Ñ Press ran with NUBE East Boston, part of Gabriel Sosa's Triennial project with the community print studio. From there it ran across posters, on-site wayfinding, a program handout, a QR flyer, and a newsletter ad for Boston Art Review, each one carrying a different amount of information.</p>
                   </div>
 
                   <figure class="mp-event-final">
@@ -277,25 +276,31 @@
                 <div class="ba-folder-layout">
                   <div class="ba-folder-demo">
                     <div class="ba-folder-toolbar">
-                      <div class="ba-folder-state" aria-live="polite">outside / open</div>
-                      <button class="ba-folder-side" type="button" aria-pressed="false">view inside</button>
+                      <button class="ba-folder-side" type="button" aria-pressed="false">flip</button>
                     </div>
 
-                    <div class="ba-folder-stage" data-ba-folder tabindex="0" role="button" aria-pressed="false" aria-label="Interactive Better Angels takeaway folder. Tap to close or open.">
-                      <img class="ba-folder-flat" src="assets/better angels takeaway outside.png" alt="Better Angels takeaway folder shown flat, outside">
-
-                      <div class="ba-folder-panels" aria-hidden="true">
-                        <div class="ba-folder-panel ba-folder-left"><img src="assets/better angels takeaway outside.png" alt=""></div>
-                        <div class="ba-folder-panel ba-folder-center"><img src="assets/better angels takeaway outside.png" alt=""></div>
-                        <div class="ba-folder-panel ba-folder-right"><img src="assets/better angels takeaway outside.png" alt=""></div>
-                        <div class="ba-folder-panel ba-folder-bottom"><img src="assets/better angels takeaway outside.png" alt=""></div>
+                    <div class="ba-folder-stage" data-ba-folder tabindex="0" role="button" aria-pressed="false" aria-label="Interactive Better Angels takeaway folder. Tap to fold or unfold; use flip to turn the paper over.">
+                      <div class="ba-folder-panel ba-folder-left ba-folder-side-panel">
+                        <span class="ba-folder-face ba-folder-face-front"><img src="assets/better angels takeaway outside.png" alt=""></span>
+                        <span class="ba-folder-face ba-folder-face-back"><img src="assets/better angels takeaway inside.png" alt=""></span>
                       </div>
 
-                      <div class="ba-folder-closed" aria-hidden="true">
-                        <div class="ba-folder-closed-face ba-folder-closed-front"><img src="assets/better angels takeaway inside.png" alt=""></div>
+                      <div class="ba-folder-panel ba-folder-center">
+                        <span class="ba-folder-face ba-folder-face-front"><img src="assets/better angels takeaway outside.png" alt=""></span>
+                        <span class="ba-folder-face ba-folder-face-back"><img src="assets/better angels takeaway inside.png" alt=""></span>
+                      </div>
+
+                      <div class="ba-folder-panel ba-folder-right ba-folder-side-panel">
+                        <span class="ba-folder-face ba-folder-face-front"><img src="assets/better angels takeaway outside.png" alt=""></span>
+                        <span class="ba-folder-face ba-folder-face-back"><img src="assets/better angels takeaway inside.png" alt=""></span>
+                      </div>
+
+                      <div class="ba-folder-panel ba-folder-bottom ba-folder-bottom-panel">
+                        <span class="ba-folder-face ba-folder-face-front"><img src="assets/better angels takeaway outside.png" alt=""></span>
+                        <span class="ba-folder-face ba-folder-face-back"><img src="assets/better angels takeaway inside.png" alt=""></span>
                       </div>
                     </div>
-                    <p class="ba-folder-hint">tap the paper to fold / unfold · bottom leaf first</p>
+                    <p class="ba-folder-hint">tap the paper to fold / unfold</p>
                   </div>
 
                   <figure class="ba-folder-reference">
@@ -468,7 +473,7 @@
 
               <header class="pw-intro">
                 <p>
-                  Three posters for the Paul Winter Consort, where I also worked on producing the concerts. Each one started with finding an image that had a real connection to the music rather than something that just looked right.
+                  Three posters for concerts I also helped produce for the Paul Winter Consort. Each is built around source material specific to the program: the Hubble Ultra Deep Field for Charles Ives, a NOAA view of the vernal equinox, and an archival photograph from Crestone, Colorado. The image source sets the structure of each poster, while the typography shifts with the subject.
                 </p>
               </header>
 
@@ -520,7 +525,7 @@
                   <div class="pw-poster-copy">
                     <h4>This Glorious Earth</h4>
                     <p>
-                      An Earth Day concert at the Cathedral of St. John the Divine. The photograph comes from the Paul Winter Consort's archive of Crestone, Colorado, the landscape behind the Consort's 2007 album of the same name, recorded at 11,800 feet in the Sangre de Cristo Mountains. An archival image from the place the music came from felt better than a stock landscape. The type is the same heavy condensed style as <em>Adventures in the Universe</em>, so the two read as a series, but set smaller here to let the photograph carry the poster.
+                      An Earth Day concert at the Cathedral of St. John the Divine. The photograph comes from the Paul Winter Consort's archive of Crestone, Colorado, the landscape behind the Consort's 2007 album of the same name, recorded at 11,800 feet in the Sangre de Cristo Mountains. Using an image from the Consort’s own archive ties the poster directly to the landscape behind the recording. The type is the same heavy condensed style as <em>Adventures in the Universe</em>, so the two read as a series, but set smaller here to let the photograph carry the poster.
                     </p>
                   </div>
                 </article>

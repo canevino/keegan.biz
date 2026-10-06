@@ -75,95 +75,69 @@
 
   if (folder) {
     const project = folder.closest(".project");
-    const sideButton = project?.querySelector(".ba-folder-side");
-    const stateLabel = project?.querySelector(".ba-folder-state");
-    const flat = folder.querySelector(".ba-folder-flat");
-    const panelImages = folder.querySelectorAll(".ba-folder-panel img");
-    const closedImage = folder.querySelector(".ba-folder-closed-face img");
+    const flipButton = project?.querySelector(".ba-folder-side");
+    const frontImages = folder.querySelectorAll(".ba-folder-face-front img");
+    const backImages = folder.querySelectorAll(".ba-folder-face-back img");
 
-    let inside = false;
-    let closed = false;
+    let flipped = false;
+    let folded = false;
     let animating = false;
     let timer = null;
 
-    const source = () => inside
-      ? "assets/better angels takeaway inside.png"
-      : "assets/better angels takeaway outside.png";
+    const outsideSrc = "assets/better angels takeaway outside.png";
+    const insideSrc = "assets/better angels takeaway inside.png";
 
-    function syncArtwork() {
-      const src = source();
+    function syncFaces() {
+      const frontSrc = flipped ? insideSrc : outsideSrc;
+      const backSrc = flipped ? outsideSrc : insideSrc;
 
-      if (flat) {
-        flat.src = src;
-        flat.alt = `Better Angels takeaway folder shown flat, ${inside ? "inside" : "outside"}`;
-      }
+      frontImages.forEach(image => { image.src = frontSrc; });
+      backImages.forEach(image => { image.src = backSrc; });
 
-      panelImages.forEach(image => {
-        image.src = src;
-      });
-
-      if (closedImage) {
-        closedImage.src = src;
-      }
-
-      sideButton?.setAttribute("aria-pressed", String(inside));
-      if (sideButton) {
-        sideButton.textContent = inside ? "view outside" : "view inside";
-        sideButton.disabled = animating;
-      }
-
-      folder.setAttribute("aria-pressed", String(closed));
-      if (stateLabel) {
-        stateLabel.textContent = closed
-          ? `${inside ? "inside" : "outside"} / folded`
-          : `${inside ? "inside" : "outside"} / open`;
-      }
+      folder.classList.toggle("is-flipped", flipped);
+      folder.setAttribute("aria-pressed", String(folded));
+      flipButton?.setAttribute("aria-pressed", String(flipped));
+      if (flipButton) flipButton.disabled = animating;
     }
 
-    function finishClose() {
-      folder.classList.remove("is-closing");
-      folder.classList.add("is-closed");
-      closed = true;
+    function finishFold() {
+      folded = true;
       animating = false;
-      // The membership/instruction side faces forward by default when closed.
-      inside = true;
-      syncArtwork();
+      folder.classList.remove("is-folding");
+      folder.classList.add("is-folded");
+      syncFaces();
     }
 
-    function closeFolder() {
-      if (closed || animating) return;
+    function foldFolder() {
+      if (folded || animating) return;
       animating = true;
-      folder.classList.remove("is-opening", "is-opening-active");
-      folder.classList.add("is-closing");
-      syncArtwork();
+      folder.classList.remove("is-unfolding", "is-folded");
+      folder.classList.add("is-folding");
+      syncFaces();
       clearTimeout(timer);
-      timer = window.setTimeout(finishClose, reducedMotion.matches ? 40 : 1850);
+      timer = window.setTimeout(finishFold, reducedMotion.matches ? 40 : 1750);
     }
 
-    function finishOpen() {
-      folder.classList.remove("is-opening", "is-opening-active");
-      closed = false;
+    function finishUnfold() {
+      folded = false;
       animating = false;
-      syncArtwork();
+      folder.classList.remove("is-unfolding", "is-folded", "is-folding");
+      syncFaces();
     }
 
-    function openFolder() {
-      if (!closed || animating) return;
+    function unfoldFolder() {
+      if (!folded || animating) return;
       animating = true;
-      folder.classList.remove("is-closed");
-      folder.classList.add("is-opening");
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => {
-          folder.classList.add("is-opening-active");
-        });
-      });
+      folder.classList.remove("is-folding");
+      folder.classList.add("is-unfolding");
+      syncFaces();
       clearTimeout(timer);
-      timer = window.setTimeout(finishOpen, reducedMotion.matches ? 40 : 1650);
+      timer = window.setTimeout(finishUnfold, reducedMotion.matches ? 40 : 1750);
     }
 
     function toggleFolder() {
-      if (closed) openFolder();
-      else closeFolder();
+      if (folded) unfoldFolder();
+      else foldFolder();
     }
 
     folder.addEventListener("click", toggleFolder);
@@ -174,14 +148,14 @@
       }
     });
 
-    sideButton?.addEventListener("click", event => {
+    flipButton?.addEventListener("click", event => {
       event.stopPropagation();
       if (animating) return;
-      inside = !inside;
-      syncArtwork();
+      flipped = !flipped;
+      syncFaces();
     });
 
-    syncArtwork();
+    syncFaces();
   }
 
   document.querySelectorAll("[data-mp-flip]").forEach(card => {
