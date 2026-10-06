@@ -612,3 +612,26 @@
 
   .fuji-splash{display:none}
 }
+
+
+/* Photography below-image controls */
+.fuji-action-row .fuji-control,
+.fuji-action-row .photo-how-link,
+#fuji-auto-song,
+#fuji-sound-toggle,
+#photo-how-link {
+  color: var(--red) !important;
+  -webkit-text-fill-color: var(--red) !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  text-align: left !important;
+}
+
+.fuji-action-row .fuji-control:hover,
+.fuji-action-row .fuji-control:focus-visible,
+.fuji-action-row .photo-how-link:hover,
+.fuji-action-row .photo-how-link:focus-visible {
+  color: var(--red) !important;
+  -webkit-text-fill-color: var(--red) !important;
+  mix-blend-mode: normal !important;
+}
