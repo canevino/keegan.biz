@@ -146,4 +146,60 @@
 
     refreshFoldout();
   }
+
+  document.querySelectorAll("[data-flyer]").forEach(flyer => {
+    const flipButton = flyer.querySelector(".flyer-flip");
+    const foldButton = flyer.querySelector(".flyer-fold");
+    const stateLabel = flyer.querySelector(".flyer-state");
+    const scene = flyer.querySelector(".flyer-scene");
+
+    let flipped = false;
+    let folded = false;
+
+    const refreshFlyer = () => {
+      flyer.classList.toggle("is-flipped", flipped);
+      flyer.classList.toggle("is-folded", folded);
+
+      if (flipButton) {
+        flipButton.textContent = flipped ? "front" : "flip";
+        flipButton.setAttribute("aria-pressed", String(flipped));
+      }
+
+      if (foldButton) {
+        foldButton.textContent = folded ? "unfold" : "fold";
+        foldButton.setAttribute("aria-pressed", String(folded));
+      }
+
+      if (stateLabel) {
+        stateLabel.textContent = `${flipped ? "reverse" : "front"} / ${folded ? "folded" : "flat"}`;
+      }
+    };
+
+    const toggleFlip = () => {
+      flipped = !flipped;
+      refreshFlyer();
+    };
+
+    if (flipButton) flipButton.addEventListener("click", toggleFlip);
+
+    if (foldButton) {
+      foldButton.addEventListener("click", () => {
+        folded = !folded;
+        refreshFlyer();
+      });
+    }
+
+    if (scene) {
+      scene.addEventListener("click", toggleFlip);
+      scene.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          toggleFlip();
+        }
+      });
+    }
+
+    refreshFlyer();
+  });
+
 })();

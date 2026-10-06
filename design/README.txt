@@ -1,10 +1,9 @@
-DESIGN UPDATE — BETTER ANGELS FULL CASE STUDY
+BETTER ANGELS — REFINED
 
-Fixes:
-- Rebuilt design.js cleanly; project dropdowns now work again.
-- Better Angels key image changed to the close-up folded takeaway documentation photo.
-- More ____ key image crop tightened toward the installed poster.
-- Better Angels expanded case study now includes takeaway, flyer, script + whistle, signage, T-shirt, and activation documentation.
-- The takeaway remains interactive with side switching and two-step folding.
-
-Files expected in /design/assets/ retain their current filenames.
+Changes:
+- flyer is interactive: flip front/reverse, fold/unfold
+- Better Angels collaboration/role language updated
+- signage files display at natural proportions with no artificial backgrounds
+- low-resolution documentation is capped to smaller display sizes
+- More ____ key image crop is bottom-aligned
+- takeaway filenames remain unchanged and will work when you replace them with transparent-background versions

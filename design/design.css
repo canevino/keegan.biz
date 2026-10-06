@@ -3260,3 +3260,249 @@
     max-height: 520px;
   }
 }
+
+
+/* 2026-10 Better Angels interaction + image refinements */
+
+/* More ____ key image: use the real photograph, cropped from the bottom edge. */
+#more .project-key-image img {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  transform: none;
+  object-fit: cover;
+  object-position: 22% 100%;
+}
+
+/* Keep low-resolution documentation at a restrained display size. */
+.project-story-better-angels .case-section {
+  width: min(900px, calc(100vw - (var(--design-gutter) * 2)));
+}
+
+/* Interactive flyer */
+.flyer-demo {
+  width: min(430px, 100%);
+  margin: 0 auto;
+}
+
+.flyer-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 12px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--design-rule);
+}
+
+.flyer-state {
+  color: rgba(17,17,15,.58);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.flyer-controls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.flyer-controls button {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--design-red);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.flyer-controls button:hover { color: var(--design-ink); }
+
+.flyer-scene {
+  position: relative;
+  width: min(360px, 84vw);
+  margin: 0 auto;
+  aspect-ratio: 600 / 776;
+  perspective: 1300px;
+  cursor: pointer;
+}
+
+.flyer-paper {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 480ms cubic-bezier(.2,.72,.2,1);
+}
+
+.flyer-demo.is-flipped .flyer-paper {
+  transform: rotateY(180deg);
+}
+
+.flyer-panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  transform-style: preserve-3d;
+  transition: transform 460ms cubic-bezier(.2,.72,.2,1), filter 260ms ease;
+}
+
+.flyer-panel-top {
+  top: 0;
+  transform-origin: 50% 100%;
+}
+
+.flyer-panel-bottom {
+  top: 50%;
+  transform-origin: 50% 0;
+}
+
+.flyer-demo.is-folded .flyer-panel-bottom {
+  transform: rotateX(-158deg);
+  filter: brightness(.93);
+}
+
+.flyer-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: transparent;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flyer-face-back {
+  transform: rotateY(180deg);
+}
+
+.flyer-face img {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  max-width: none;
+  height: 200%;
+  object-fit: fill;
+}
+
+.flyer-panel-top .flyer-face img { top: 0; }
+.flyer-panel-bottom .flyer-face img { top: -100%; }
+
+.flyer-panel-top::after,
+.flyer-panel-bottom::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: .22;
+}
+
+.flyer-panel-top::after {
+  bottom: 0;
+  border-bottom: 1px dashed var(--design-red);
+}
+
+.flyer-panel-bottom::before {
+  top: 0;
+  border-top: 1px dashed var(--design-red);
+}
+
+.flyer-demo.is-folded .flyer-panel-top::after,
+.flyer-demo.is-folded .flyer-panel-bottom::before { opacity: 0; }
+
+.flyer-hint {
+  margin: 10px 0 0;
+  color: rgba(17,17,15,.5);
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+/* Signage: no artificial cream cards behind the files, no forced equal-height canvases. */
+.ba-signage-flats {
+  width: min(820px, 100%);
+  margin: 0 auto 34px;
+  align-items: end;
+}
+
+.ba-signage-flats figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  background: transparent;
+}
+
+.ba-signage-flats img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 245px;
+  margin: 0 auto;
+  object-fit: contain;
+  background: transparent !important;
+}
+
+.ba-signage-flats figcaption {
+  align-self: stretch;
+  margin-top: 7px;
+}
+
+.ba-signage-docs {
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
+.ba-signage-doc-wide {
+  grid-column: 1 / -1;
+  width: min(600px, 100%);
+  justify-self: center;
+}
+
+.ba-signage-docs img {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+/* Whistle + activation documentation: respect source resolution. */
+.ba-script-layout,
+.ba-activation-grid {
+  width: min(780px, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ba-whistle-docs img,
+.ba-activation-grid img {
+  height: auto;
+  min-height: 0;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+.ba-activation-large img {
+  min-height: 0;
+}
+
+@media (max-width: 800px) {
+  .ba-signage-flats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .ba-signage-flats img { max-height: 300px; }
+}
+
+@media (max-width: 560px) {
+  .flyer-demo { width: min(350px, 100%); }
+  .flyer-toolbar { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .ba-signage-flats { grid-template-columns: 1fr; }
+  .ba-signage-flats img { max-height: 420px; }
+}
