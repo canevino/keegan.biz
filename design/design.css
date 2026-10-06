@@ -3063,3 +3063,200 @@
   }
 
 }
+
+
+/* Final Triennial interaction fixes */
+
+#more .project-key-image {
+  overflow: hidden;
+}
+
+#more .project-key-image img {
+  width: 112%;
+  max-width: none;
+  height: 112%;
+  object-fit: cover;
+  object-position: 18% 58%;
+  transform: translate(-2%, -3%);
+}
+
+#better-angels .project-key-image img {
+  object-fit: cover;
+  object-position: 50% 54%;
+}
+
+.project-content[hidden] {
+  display: none !important;
+}
+
+.project.is-open > .project-content {
+  display: block;
+}
+
+/* Better Angels full case study */
+
+.project-story-better-angels .case-section {
+  width: min(980px, calc(100vw - (var(--design-gutter) * 2)));
+}
+
+.takeaway-flat-pair-compact {
+  width: min(620px, 100%);
+  margin-top: 42px;
+}
+
+.ba-flat-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 38px);
+  width: min(700px, 100%);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.ba-flat-pair figure,
+.ba-script-layout figure,
+.ba-signage-flats figure,
+.ba-signage-docs figure,
+.ba-activation-grid figure,
+.ba-whistle-docs figure {
+  margin: 0;
+}
+
+.ba-flat-pair img,
+.ba-script-layout img,
+.ba-signage-flats img,
+.ba-signage-docs img,
+.ba-activation-grid img,
+.ba-whistle-docs img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ba-flat-pair figcaption,
+.ba-script-layout figcaption,
+.ba-signage-flats figcaption {
+  margin-top: 8px;
+  color: rgba(17,17,15,.56);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.ba-script-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, .68fr) minmax(0, 1.32fr);
+  gap: clamp(24px, 4vw, 54px);
+  align-items: start;
+}
+
+.ba-script-flat {
+  width: min(100%, 420px);
+  justify-self: center;
+}
+
+.ba-whistle-docs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ba-whistle-docs figure:first-child {
+  grid-column: 1 / -1;
+}
+
+.ba-whistle-docs img {
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.ba-signage-flats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  align-items: start;
+  margin-bottom: 36px;
+}
+
+.ba-signage-flats img {
+  width: 100%;
+  height: 350px;
+  object-fit: contain;
+  background: rgba(255,255,255,.12);
+}
+
+.ba-signage-docs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ba-signage-docs img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.ba-signage-doc-wide {
+  grid-column: 1 / -1;
+}
+
+.ba-activation-grid {
+  display: grid;
+  grid-template-columns: 1.25fr .75fr;
+  gap: 10px;
+}
+
+.ba-activation-grid img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.ba-activation-large {
+  grid-row: span 2;
+}
+
+.ba-activation-large img {
+  aspect-ratio: auto;
+  min-height: 100%;
+}
+
+@media (max-width: 800px) {
+  .ba-script-layout,
+  .ba-activation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ba-activation-large {
+    grid-row: auto;
+  }
+
+  .ba-signage-flats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ba-signage-flats img {
+    height: 300px;
+  }
+}
+
+@media (max-width: 560px) {
+  .ba-flat-pair,
+  .ba-whistle-docs,
+  .ba-signage-docs,
+  .ba-signage-flats {
+    grid-template-columns: 1fr;
+  }
+
+  .ba-whistle-docs figure:first-child,
+  .ba-signage-doc-wide {
+    grid-column: 1;
+  }
+
+  .ba-signage-flats img {
+    height: auto;
+    max-height: 520px;
+  }
+}
