@@ -29,46 +29,46 @@
       width: 100%;
     }
 
-    .fuji-below-ui .fuji-controls {
-      position: static !important;
-      inset: auto !important;
-      display: contents !important;
-      width: auto;
-      margin: 0;
-      padding: 0;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-      transform: none !important;
-      border: 0;
-      background: transparent;
+    .photo-action-controls {
+      display: contents;
     }
 
-    .fuji-below-ui .fuji-control,
-    .photo-how-link {
+    .photo-action-link {
       display: inline-block;
       margin: 0;
       padding: 0;
       border: 0;
       background: transparent;
-      color: var(--red, #c1272d);
-      font: inherit;
+      color: #c1272d !important;
+      -webkit-text-fill-color: #c1272d !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
+      text-shadow: none !important;
+      font-family: Helvetica, Arial, sans-serif;
       font-size: 10px;
-      line-height: 1.2;
       font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: 0;
       text-align: left;
       cursor: pointer;
       text-decoration: underline;
       text-decoration-thickness: 1px;
       text-underline-offset: 3px;
+      -webkit-appearance: none;
+      appearance: none;
     }
 
-    .fuji-below-ui .fuji-control:hover,
-    .fuji-below-ui .fuji-control:focus-visible,
-    .photo-how-link:hover,
-    .photo-how-link:focus-visible {
-      color: var(--red, #c1272d);
-      background: transparent;
+    .photo-action-link:hover,
+    .photo-action-link:focus-visible,
+    .photo-action-link:active {
+      color: #c1272d !important;
+      -webkit-text-fill-color: #c1272d !important;
+      opacity: 1 !important;
+      filter: none !important;
+      mix-blend-mode: normal !important;
+      background: transparent !important;
       text-decoration-thickness: 2px;
     }
 
@@ -81,8 +81,7 @@
         gap: 7px 14px;
       }
 
-      .fuji-below-ui .fuji-control,
-      .photo-how-link {
+      .photo-action-link {
         font-size: 9px;
       }
     }
@@ -188,25 +187,6 @@
       }
     }
 
-    /* Below-photo text links */
-    .fuji-action-row .fuji-control,
-    .fuji-action-row .photo-how-link,
-    #fuji-auto-song,
-    #fuji-sound-toggle,
-    #photo-how-link {
-      color: var(--red, #c1272d) !important;
-      -webkit-text-fill-color: var(--red, #c1272d) !important;
-      opacity: 1 !important;
-    }
-
-    .fuji-action-row .fuji-control:hover,
-    .fuji-action-row .fuji-control:focus-visible,
-    .fuji-action-row .photo-how-link:hover,
-    .fuji-action-row .photo-how-link:focus-visible {
-      color: var(--red, #c1272d) !important;
-      -webkit-text-fill-color: var(--red, #c1272d) !important;
-    }
-
   </style>
 
 </head>
@@ -263,11 +243,11 @@
 
       <div class="fuji-below-ui" id="fuji-below-ui" aria-hidden="true">
         <div class="fuji-action-row">
-          <div class="fuji-controls" id="fuji-controls" aria-hidden="true">
-            <button class="fuji-control" id="fuji-auto-song" type="button">randomly generate a song</button>
-            <button class="fuji-control" id="fuji-sound-toggle" type="button">click to turn off</button>
+          <div class="photo-action-controls" id="fuji-controls" aria-hidden="true">
+            <button class="photo-action-link" id="fuji-auto-song" type="button">randomly generate a song</button>
+            <button class="photo-action-link" id="fuji-sound-toggle" type="button">click to turn off</button>
           </div>
-          <button class="photo-how-link" id="photo-how-link" type="button">how it works</button>
+          <button class="photo-action-link" id="photo-how-link" type="button">how it works</button>
         </div>
       </div>
 
@@ -2771,8 +2751,8 @@
   async function startAuto(){ audioState.auto=true; audioState.muted=false; updateMaster(); updateSoundButton(); updateAutoButton(); const result=await musicalAction('auto',randomPoint()); scheduleAuto(result); }
   function stopAuto(){ audioState.auto=false; clearTimeout(audioState.autoTimer); updateAutoButton(); }
 
-  artwork.addEventListener('click',async event=>{ if(event.target.closest('.fuji-controls'))return; hidePrompt(); await musicalAction('manual',pointFromEvent(event)); });
-  artwork.addEventListener('keydown',async event=>{ if(event.key!=='Enter'&&event.key!==' ')return; if(event.target.closest('.fuji-controls'))return; event.preventDefault(); hidePrompt(); await musicalAction('manual',{x:.5,y:.52}); });
+  artwork.addEventListener('click',async event=>{ if(event.target.closest('.photo-action-controls'))return; hidePrompt(); await musicalAction('manual',pointFromEvent(event)); });
+  artwork.addEventListener('keydown',async event=>{ if(event.key!=='Enter'&&event.key!==' ')return; if(event.target.closest('.photo-action-controls'))return; event.preventDefault(); hidePrompt(); await musicalAction('manual',{x:.5,y:.52}); });
   soundButton.addEventListener('click',event=>{ event.preventDefault(); event.stopPropagation(); audioState.muted=!audioState.muted; if(audioState.muted&&audioState.auto)stopAuto(); updateMaster(); updateSoundButton(); });
   autoButton.addEventListener('click',async event=>{ event.preventDefault(); event.stopPropagation(); if(audioState.auto)stopAuto(); else await startAuto(); });
 
