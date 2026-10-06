@@ -3506,3 +3506,461 @@
   .ba-signage-flats { grid-template-columns: 1fr; }
   .ba-signage-flats img { max-height: 420px; }
 }
+
+
+/* 2026-10-06 cohesive Triennial refinement */
+
+/* Summary thumbnails */
+#more .project-key-image img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  transform: none;
+  object-fit: cover;
+  object-position: 18% 56%;
+}
+
+#making-public .project-key-image img {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* More ____ anchor: smaller poster with editorial context */
+.more-anchor-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, .62fr) minmax(280px, .9fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  width: min(900px, calc(100vw - (var(--design-gutter) * 2)));
+  margin: 0 auto clamp(54px, 7vw, 88px);
+}
+
+.more-anchor-copy h4 {
+  margin: 10px 0 14px;
+  font-size: clamp(24px, 2.25vw, 34px);
+  font-weight: 700;
+  line-height: .95;
+  letter-spacing: -.045em;
+}
+
+.more-anchor-copy p:not(.case-kicker) {
+  max-width: 34ch;
+  margin: 0;
+  font-size: clamp(13px, .92vw, 15px);
+  line-height: 1.42;
+}
+
+.more-anchor {
+  width: min(400px, 100%);
+  margin: 0;
+  justify-self: end;
+}
+
+.more-anchor img {
+  width: 100%;
+  height: auto;
+}
+
+.more-applications-section .media-switcher-grid-applications {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.media-switcher-bus {
+  grid-column: 1 / -1;
+  width: min(720px, 100%);
+  justify-self: center;
+  margin-top: 8px;
+}
+
+.media-switcher-stage {
+  background: transparent;
+}
+
+.media-switcher-stage img {
+  padding: 0;
+}
+
+/* Better Angels folder: one closing action, direct manipulation, no guides */
+.foldout-stage {
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.foldout-stage:focus-visible {
+  outline: 2px solid var(--design-red);
+  outline-offset: 6px;
+}
+
+.fold-crease,
+.foldout-stage .fold-crease {
+  display: none !important;
+}
+
+.fold-panel {
+  opacity: 0;
+  overflow: visible;
+  box-shadow: none;
+  transform-style: preserve-3d;
+  transition:
+    transform 620ms cubic-bezier(.22,.72,.18,1),
+    opacity 80ms linear,
+    filter 260ms ease;
+}
+
+.fold-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.fold-face-inside {
+  transform: rotateY(180deg);
+}
+
+.fold-panel-bottom .fold-face-inside {
+  transform: rotateX(180deg);
+}
+
+.fold-face img {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+}
+
+.fold-panel-left .fold-face img { left: 0; top: 0; width: 381.818%; }
+.fold-panel-center .fold-face img { left: -55%; top: 0; width: 210%; }
+.fold-panel-right .fold-face img { left: -281.818%; top: 0; width: 381.818%; }
+.fold-panel-bottom .fold-face img { left: -55%; top: -155.556%; width: 210%; }
+
+.foldout-stage.is-folded .foldout-flat-reference {
+  opacity: 0;
+}
+
+.foldout-stage.is-folded .fold-panel {
+  opacity: 1;
+}
+
+.foldout-stage.is-folded .fold-panel-left {
+  transform: rotateY(-179.5deg) translateZ(2px);
+  filter: drop-shadow(5px 7px 8px rgba(17,17,15,.12));
+  transition-delay: 0ms;
+}
+
+.foldout-stage.is-folded .fold-panel-right {
+  transform: rotateY(179.5deg) translateZ(3px);
+  filter: drop-shadow(-5px 7px 8px rgba(17,17,15,.11));
+  transition-delay: 70ms;
+}
+
+.foldout-stage.is-folded .fold-panel-bottom {
+  transform: rotateX(-179.5deg) translateZ(5px);
+  filter: drop-shadow(0 8px 9px rgba(17,17,15,.15));
+  transition-delay: 190ms;
+}
+
+.foldout-stage.is-folded .fold-panel-center {
+  transform: translateZ(0);
+  transition-delay: 0ms;
+}
+
+.foldout-stage.is-folded::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 28%;
+  right: 28%;
+  bottom: 23%;
+  height: 10%;
+  border-radius: 50%;
+  background: rgba(17,17,15,.22);
+  filter: blur(18px);
+  transform: translateY(26px) scaleX(1.05);
+}
+
+.foldout-controls button:disabled {
+  opacity: .32;
+  cursor: default;
+  text-decoration: none;
+}
+
+.foldout-hint {
+  text-align: center;
+}
+
+/* Better Angels flyer: hover/click flip only */
+.flyer-demo {
+  width: min(380px, 100%);
+}
+
+.flyer-toolbar {
+  border-bottom: 0;
+  margin-bottom: 10px;
+  padding-bottom: 0;
+}
+
+.flyer-controls,
+.flyer-fold,
+.flyer-hint {
+  display: none !important;
+}
+
+.flyer-flip {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--design-red);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.flyer-scene {
+  width: min(320px, 78vw);
+  aspect-ratio: 600 / 776;
+}
+
+.flyer-paper {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 520ms cubic-bezier(.2,.72,.2,1);
+}
+
+.flyer-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: transparent;
+}
+
+.flyer-face-back {
+  transform: rotateY(180deg);
+}
+
+.flyer-face img {
+  position: static;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.flyer-demo.is-flipped .flyer-paper {
+  transform: rotateY(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .flyer-demo:not(.is-flipped) .flyer-scene:hover .flyer-paper {
+    transform: rotateY(180deg);
+  }
+}
+
+/* Better Angels signage: tighter, transparent, source-respecting */
+.ba-signage-flats {
+  display: grid;
+  grid-template-columns: .8fr .8fr 1fr 1fr;
+  gap: clamp(12px, 1.8vw, 22px);
+  width: min(760px, 100%);
+  margin: 0 auto 28px;
+  align-items: end;
+}
+
+.ba-signage-flats figure {
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+}
+
+.ba-signage-flats img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  background: transparent !important;
+}
+
+.ba-signage-flats figcaption {
+  margin-top: 6px;
+  font-size: 8px;
+}
+
+.ba-signage-docs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: min(680px, 100%);
+  margin: 0 auto;
+}
+
+.ba-signage-doc-wide {
+  grid-column: 1 / -1;
+  width: min(520px, 100%);
+  justify-self: center;
+}
+
+.ba-signage-docs img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Making Public */
+#making-public .project-key-image {
+  background: transparent;
+}
+
+.project-story-making-public .case-section {
+  width: min(920px, calc(100vw - (var(--design-gutter) * 2)));
+}
+
+.mp-opening-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(240px, .8fr);
+  gap: clamp(24px, 4vw, 52px);
+  align-items: center;
+}
+
+.mp-event-photo,
+.mp-banner,
+.mp-poster-pair figure,
+.mp-info-pair figure,
+.mp-social-pair figure {
+  margin: 0;
+}
+
+.mp-event-photo img,
+.mp-banner img,
+.mp-poster-pair img,
+.mp-info-pair img,
+.mp-social-pair img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mp-event-photo {
+  width: min(560px, 100%);
+}
+
+.mp-opening-side {
+  display: grid;
+  gap: 18px;
+  align-content: center;
+}
+
+.mp-opening-side p {
+  max-width: 34ch;
+  margin: 0;
+  font-size: clamp(13px, .9vw, 15px);
+  line-height: 1.4;
+}
+
+.mp-poster-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2.5vw, 30px);
+  width: min(720px, 100%);
+  margin: 0 auto;
+}
+
+.mp-info-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 36px);
+  width: min(620px, 100%);
+  margin: 0 auto;
+}
+
+.mp-social-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 36px);
+  width: min(520px, 100%);
+  margin: 0 auto;
+}
+
+.mp-info-pair figcaption {
+  margin-top: 7px;
+  color: rgba(17,17,15,.56);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .more-anchor-layout,
+  .mp-opening-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .more-anchor {
+    justify-self: center;
+    width: min(360px, 82vw);
+  }
+
+  .more-anchor-copy {
+    width: min(520px, 100%);
+  }
+
+  .ba-signage-flats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(560px, 100%);
+  }
+
+  .mp-event-photo,
+  .mp-opening-side {
+    width: min(620px, 100%);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .media-switcher-grid-applications,
+  .mp-poster-pair,
+  .mp-info-pair,
+  .mp-social-pair,
+  .ba-signage-docs {
+    grid-template-columns: 1fr;
+  }
+
+  .media-switcher-bus,
+  .ba-signage-doc-wide {
+    grid-column: 1;
+  }
+
+  .ba-signage-flats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .foldout-layout {
+    gap: 26px;
+  }
+
+  .foldout-reference {
+    width: min(340px, 88vw);
+  }
+
+  .flyer-scene {
+    width: min(300px, 82vw);
+  }
+
+  .project-story-making-public .case-section,
+  .project-story-better-angels .case-section,
+  .project-story-more .case-section {
+    width: calc(100vw - 32px);
+  }
+}

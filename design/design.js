@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const projects = document.querySelectorAll(".project");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function setProjectState(project, open) {
     const content = project.querySelector(".project-content");
@@ -23,45 +23,38 @@
     }
   }
 
-  projects.forEach(project => {
+  document.querySelectorAll(".project").forEach(project => {
     const plus = project.querySelector(".project-plus");
     const explore = project.querySelector(".project-explore");
     const close = project.querySelector(".project-close");
 
-    if (plus) {
-      plus.addEventListener("click", () => {
-        setProjectState(project, !project.classList.contains("is-open"));
-      });
-    }
+    plus?.addEventListener("click", () => {
+      setProjectState(project, !project.classList.contains("is-open"));
+    });
 
-    if (explore) {
-      explore.addEventListener("click", () => setProjectState(project, true));
-    }
+    explore?.addEventListener("click", () => setProjectState(project, true));
 
-    if (close) {
-      close.addEventListener("click", () => {
-        setProjectState(project, false);
-        const summary = project.querySelector(".project-summary");
-        if (summary) {
-          summary.scrollIntoView({
-            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
-            block: "start"
-          });
-        }
+    close?.addEventListener("click", () => {
+      setProjectState(project, false);
+      project.querySelector(".project-summary")?.scrollIntoView({
+        behavior: reducedMotion.matches ? "auto" : "smooth",
+        block: "start"
       });
-    }
+    });
   });
 
   document.querySelectorAll("[data-media-switcher]").forEach(switcher => {
     const toggle = switcher.querySelector(".media-switcher-toggle");
     const stage = switcher.querySelector(".media-switcher-stage");
 
-    const toggleMedia = () => {
-      const secondary = switcher.classList.toggle("is-secondary");
-      if (toggle) toggle.setAttribute("aria-pressed", String(secondary));
+    const setSecondary = secondary => {
+      switcher.classList.toggle("is-secondary", secondary);
+      toggle?.setAttribute("aria-pressed", String(secondary));
     };
 
-    if (toggle) toggle.addEventListener("click", toggleMedia);
+    const toggleMedia = () => setSecondary(!switcher.classList.contains("is-secondary"));
+
+    toggle?.addEventListener("click", toggleMedia);
 
     if (stage) {
       stage.tabIndex = 0;
@@ -85,121 +78,92 @@
     const sideButton = project?.querySelector(".foldout-side");
     const stateLabel = project?.querySelector(".foldout-state");
     const flatReference = foldout.querySelector(".foldout-flat-reference");
-    const panelImages = foldout.querySelectorAll(".fold-panel img");
 
-    let step = 0;
+    let folded = false;
     let inside = false;
 
-    const refreshFoldout = () => {
-      const image = inside
+    const refresh = () => {
+      const flatImage = inside
         ? "assets/better angels takeaway inside.png"
         : "assets/better angels takeaway outside.png";
 
-      panelImages.forEach(img => { img.src = image; });
-
       if (flatReference) {
-        flatReference.src = image;
+        flatReference.src = flatImage;
         flatReference.alt = `Better Angels takeaway folder shown flat, ${inside ? "inside" : "outside"}`;
       }
 
-      foldout.dataset.step = String(step);
+      foldout.classList.toggle("is-folded", folded);
+      foldout.classList.toggle("show-inside", inside && !folded);
+      foldout.setAttribute("aria-pressed", String(folded));
+
+      if (foldButton) {
+        foldButton.textContent = folded ? "open folder" : "close folder";
+        foldButton.setAttribute("aria-pressed", String(folded));
+      }
 
       if (sideButton) {
         sideButton.textContent = inside ? "view outside" : "view inside";
         sideButton.setAttribute("aria-pressed", String(inside));
-      }
-
-      if (foldButton) {
-        foldButton.textContent = step === 0 ? "fold sides" : step === 1 ? "fold lower panel" : "unfold";
-        foldButton.setAttribute("aria-pressed", String(step > 0));
+        sideButton.disabled = folded;
       }
 
       if (stateLabel) {
-        const state = step === 0 ? "flat" : step === 1 ? "sides folded" : "folded";
-        stateLabel.textContent = `${state} / ${inside ? "inside" : "outside"}`;
+        stateLabel.textContent = folded ? "closed" : `flat / ${inside ? "inside" : "outside"}`;
       }
     };
 
-    if (sideButton) {
-      sideButton.addEventListener("click", () => {
-        inside = !inside;
-        refreshFoldout();
-      });
-    }
+    const toggleFold = () => {
+      if (!folded && inside) inside = false;
+      folded = !folded;
+      refresh();
+    };
 
-    if (foldButton) {
-      foldButton.addEventListener("click", () => {
-        step = step === 0 ? 1 : step === 1 ? 2 : 0;
-        refreshFoldout();
-      });
-    }
+    foldButton?.addEventListener("click", toggleFold);
 
-    foldout.tabIndex = 0;
-    foldout.setAttribute("aria-label", "Interactive Better Angels takeaway folder");
+    sideButton?.addEventListener("click", () => {
+      if (folded) return;
+      inside = !inside;
+      refresh();
+    });
+
+    foldout.addEventListener("click", toggleFold);
     foldout.addEventListener("keydown", event => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        step = step === 0 ? 1 : step === 1 ? 2 : 0;
-        refreshFoldout();
+        toggleFold();
       }
     });
 
-    refreshFoldout();
+    refresh();
   }
 
   document.querySelectorAll("[data-flyer]").forEach(flyer => {
-    const flipButton = flyer.querySelector(".flyer-flip");
-    const foldButton = flyer.querySelector(".flyer-fold");
-    const stateLabel = flyer.querySelector(".flyer-state");
+    const button = flyer.querySelector(".flyer-flip");
+    const state = flyer.querySelector(".flyer-state");
     const scene = flyer.querySelector(".flyer-scene");
-
     let flipped = false;
-    let folded = false;
 
-    const refreshFlyer = () => {
+    const refresh = () => {
       flyer.classList.toggle("is-flipped", flipped);
-      flyer.classList.toggle("is-folded", folded);
-
-      if (flipButton) {
-        flipButton.textContent = flipped ? "front" : "flip";
-        flipButton.setAttribute("aria-pressed", String(flipped));
-      }
-
-      if (foldButton) {
-        foldButton.textContent = folded ? "unfold" : "fold";
-        foldButton.setAttribute("aria-pressed", String(folded));
-      }
-
-      if (stateLabel) {
-        stateLabel.textContent = `${flipped ? "reverse" : "front"} / ${folded ? "folded" : "flat"}`;
-      }
+      button?.setAttribute("aria-pressed", String(flipped));
+      if (button) button.textContent = flipped ? "front" : "flip";
+      if (state) state.textContent = flipped ? "reverse" : "front";
     };
 
-    const toggleFlip = () => {
+    const toggle = () => {
       flipped = !flipped;
-      refreshFlyer();
+      refresh();
     };
 
-    if (flipButton) flipButton.addEventListener("click", toggleFlip);
+    button?.addEventListener("click", toggle);
+    scene?.addEventListener("click", toggle);
+    scene?.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggle();
+      }
+    });
 
-    if (foldButton) {
-      foldButton.addEventListener("click", () => {
-        folded = !folded;
-        refreshFlyer();
-      });
-    }
-
-    if (scene) {
-      scene.addEventListener("click", toggleFlip);
-      scene.addEventListener("keydown", event => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          toggleFlip();
-        }
-      });
-    }
-
-    refreshFlyer();
+    refresh();
   });
-
 })();
