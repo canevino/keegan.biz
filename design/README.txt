@@ -1,13 +1,24 @@
-DESIGN PAGE V5
+DESIGN PAGE — FINAL BASE PASS
 
-Changes:
-- every project now says "explore", not "explore project"
-- "explore" is always on its own line, flush left
-- the top explore link only opens the project
-- a separate underlined "close" control now appears at the bottom of every expanded project
-- the plus still opens/closes each project
-- Oxford commas added throughout visible portfolio copy
-- all decorative/SVG-style side design removed completely
-- the intro is now a simpler two-column layout
-- Better Angels remains italic
-- Miscellaneous and Gastronomy remain hidden on this page
+Replace:
+- /design/index.html
+- /design/design.css
+- /design/design.js
+
+Direction:
+- strict editorial grid
+- restrained Swiss/Bauhaus structure
+- red as primary accent
+- green/yellow limited to a small registration-style color key
+- one-line navigation
+- smaller scarf
+- smaller right-aligned key images
+- consistent title/body weight hierarchy
+- concise project summaries
+- accessible inline project expansion
+- underlined explore control
+- bottom close control
+- Better Angels italicized
+- Miscellaneous and Gastronomy hidden only on this page
+
+Images remain expected in /design/assets/ using the existing filenames.

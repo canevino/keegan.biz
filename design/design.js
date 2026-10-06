@@ -2,9 +2,7 @@
   "use strict";
 
   const projects =
-    document.querySelectorAll(
-      ".project"
-    );
+    document.querySelectorAll(".project");
 
   if (!projects.length) {
     return;
@@ -13,33 +11,24 @@
 
   function setProjectState(project, open) {
     const content =
-      project.querySelector(
-        ".project-content"
-      );
+      project.querySelector(".project-content");
 
     const plus =
-      project.querySelector(
-        ".project-plus"
-      );
+      project.querySelector(".project-plus");
 
     const explore =
-      project.querySelector(
-        ".project-explore"
-      );
+      project.querySelector(".project-explore");
 
     if (!content) {
       return;
     }
 
-
-    content.hidden =
-      !open;
+    content.hidden = !open;
 
     project.classList.toggle(
       "is-open",
       open
     );
-
 
     if (plus) {
       plus.setAttribute(
@@ -53,48 +42,36 @@
           : "+";
     }
 
-
     if (explore) {
       explore.setAttribute(
         "aria-expanded",
         String(open)
       );
-
-      explore.textContent =
-        "explore";
     }
   }
 
 
   projects.forEach(project => {
     const plus =
-      project.querySelector(
-        ".project-plus"
-      );
+      project.querySelector(".project-plus");
 
     const explore =
-      project.querySelector(
-        ".project-explore"
-      );
+      project.querySelector(".project-explore");
 
     const close =
-      project.querySelector(
-        ".project-close"
-      );
+      project.querySelector(".project-close");
 
 
     if (plus) {
       plus.addEventListener(
         "click",
         () => {
-          const isOpen =
-            project.classList.contains(
-              "is-open"
-            );
+          const open =
+            project.classList.contains("is-open");
 
           setProjectState(
             project,
-            !isOpen
+            !open
           );
         }
       );
@@ -124,13 +101,16 @@
           );
 
           const summary =
-            project.querySelector(
-              ".project-summary"
-            );
+            project.querySelector(".project-summary");
 
           if (summary) {
             summary.scrollIntoView({
-              behavior: "smooth",
+              behavior:
+                window.matchMedia(
+                  "(prefers-reduced-motion: reduce)"
+                ).matches
+                  ? "auto"
+                  : "smooth",
               block: "start"
             });
           }

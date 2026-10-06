@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
@@ -17,30 +18,37 @@
   <script src="design.js" defer></script>
 </head>
 
+
 <body class="design-page">
 
   <div class="page-shell">
 
     <nav data-site-nav></nav>
 
+
     <main class="design-main">
 
       <section class="design-intro">
 
-        <div class="design-intro-mark">
-          <span>design</span>
-        </div>
+        <h1 class="design-title">
+          design
+        </h1>
 
         <div class="design-intro-copy">
-          <div class="design-intro-meta">
-            <span>graphic design</span>
-          </div>
-
           <p>
             identities, campaigns, print,
             environmental graphics, and other
             graphic work.
           </p>
+
+          <div
+            class="design-color-key"
+            aria-hidden="true"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
 
       </section>
@@ -48,13 +56,15 @@
 
       <section
         class="work-group"
-        aria-labelledby="triennial-title"
+        aria-labelledby="triennial-heading"
       >
 
         <header class="work-group-header">
-<h2 id="triennial-title">
+
+          <h2 id="triennial-heading">
             Boston Public Art Triennial
           </h2>
+
         </header>
 
 
@@ -65,12 +75,20 @@
 
           <div class="project-summary">
 
-            <div class="project-number">
+            <div
+              class="project-number"
+              aria-hidden="true"
+            >
               01
             </div>
 
+
             <div class="project-info">
-              <h3 class="project-title">
+
+              <h3
+                class="project-title"
+                id="more-title"
+              >
                 More ____
               </h3>
 
@@ -79,18 +97,22 @@
               </p>
 
               <p class="project-blurb">
-                A citywide campaign system adapted across print,
-                environmental graphics, wayfinding, and digital formats.
-                <button
-                  class="project-explore"
-                  type="button"
-                  aria-controls="more-content"
-                  aria-expanded="false"
-                >
-                  explore
-                </button>
+                Campaign design for the Triennial’s citywide exhibition,
+                adapting the existing identity across print, advertising,
+                wayfinding, and environmental applications.
               </p>
+
+              <button
+                class="project-explore"
+                type="button"
+                aria-controls="more-content"
+                aria-expanded="false"
+              >
+                explore
+              </button>
+
             </div>
+
 
             <figure class="project-key-image">
               <img
@@ -99,6 +121,7 @@
                 loading="lazy"
               >
             </figure>
+
 
             <button
               class="project-plus"
@@ -116,6 +139,8 @@
           <div
             class="project-content"
             id="more-content"
+            role="region"
+            aria-labelledby="more-title"
             hidden
           >
 
@@ -126,33 +151,22 @@
                   A citywide campaign built from the Boston Public Art
                   Triennial’s established identity. I adapted the “More ____”
                   system across bus wraps, digital kiosks, A-frames, window
-                  posters, maps and other public-facing formats.
+                  posters, maps, and other public-facing formats.
                 </p>
 
                 <p>
-                  Some pieces reused existing layouts while others were new
-                  compositions within the system. The goal was consistency
-                  without flattening every format into the same solution.
+                  Some pieces reused existing layouts, while others were new
+                  compositions within the system. The aim was consistency
+                  without forcing every format into the same solution.
                 </p>
               </div>
 
-              <div class="story-grid story-grid-2">
-                <figure>
-                  <img
-                    src="assets/more-01.webp"
-                    alt=""
-                    loading="lazy"
-                  >
-                </figure>
 
-                <figure>
-                  <img
-                    src="assets/more-02.webp"
-                    alt=""
-                    loading="lazy"
-                  >
-                </figure>
+              <div class="story-grid story-grid-2">
+                <figure><img src="assets/more-01.webp" alt="" loading="lazy"></figure>
+                <figure><img src="assets/more-02.webp" alt="" loading="lazy"></figure>
               </div>
+
 
               <div class="story-grid story-grid-4">
                 <figure><img src="assets/more-03.webp" alt="" loading="lazy"></figure>
@@ -161,28 +175,26 @@
                 <figure><img src="assets/more-06.webp" alt="" loading="lazy"></figure>
               </div>
 
+
               <div class="story-grid story-grid-banner">
-                <figure>
-                  <img
-                    src="assets/more-07.webp"
-                    alt=""
-                    loading="lazy"
-                  >
-                </figure>
+                <figure><img src="assets/more-07.webp" alt="" loading="lazy"></figure>
               </div>
+
 
               <div class="story-copy">
                 <p>
                   Beyond the core campaign, I also adapted the brand for
-                  individual events and exhibitions including Art + Stroll and
-                  Public Processes.
+                  individual events and exhibitions, including Art + Stroll
+                  and Public Processes.
                 </p>
               </div>
+
 
               <div class="story-grid story-grid-2">
                 <figure><img src="assets/more-08.webp" alt="" loading="lazy"></figure>
                 <figure><img src="assets/more-09.webp" alt="" loading="lazy"></figure>
               </div>
+
 
               <footer class="project-credit">
                 <p>
@@ -191,6 +203,7 @@
                   Produced in-house at the Boston Public Art Triennial.
                 </p>
               </footer>
+
 
               <button
                 class="project-close"
@@ -214,12 +227,20 @@
 
           <div class="project-summary">
 
-            <div class="project-number">
+            <div
+              class="project-number"
+              aria-hidden="true"
+            >
               02
             </div>
 
+
             <div class="project-info">
-              <h3 class="project-title">
+
+              <h3
+                class="project-title"
+                id="better-angels-title"
+              >
                 <em>Better Angels</em>
               </h3>
 
@@ -228,18 +249,22 @@
               </p>
 
               <p class="project-blurb">
-                Identity, collateral, and signage for a participatory
-                installation, in collaboration with Heather Kapplow.
-                <button
-                  class="project-explore"
-                  type="button"
-                  aria-controls="better-angels-content"
-                  aria-expanded="false"
-                >
-                  explore
-                </button>
+                Identity, collateral, and signage for Heather Kapplow’s
+                participatory installation, developed in collaboration
+                with the artist.
               </p>
+
+              <button
+                class="project-explore"
+                type="button"
+                aria-controls="better-angels-content"
+                aria-expanded="false"
+              >
+                explore
+              </button>
+
             </div>
+
 
             <figure class="project-key-image">
               <img
@@ -248,6 +273,7 @@
                 loading="lazy"
               >
             </figure>
+
 
             <button
               class="project-plus"
@@ -265,6 +291,8 @@
           <div
             class="project-content"
             id="better-angels-content"
+            role="region"
+            aria-labelledby="better-angels-title"
             hidden
           >
 
@@ -279,16 +307,19 @@
                 </p>
 
                 <p>
-                  The identity ran across event flyers, rack cards, interpretive
-                  and directional signage, a T-shirt and a preview render.
+                  The identity ran across event flyers, rack cards,
+                  interpretive and directional signage, a T-shirt, and a
+                  preview render.
                 </p>
               </div>
+
 
               <div class="story-grid story-grid-3">
                 <figure><img src="assets/better-angels-01.webp" alt="" loading="lazy"></figure>
                 <figure><img src="assets/better-angels-02.webp" alt="" loading="lazy"></figure>
                 <figure><img src="assets/better-angels-03.webp" alt="" loading="lazy"></figure>
               </div>
+
 
               <div class="story-copy">
                 <p>
@@ -299,18 +330,21 @@
                 </p>
               </div>
 
+
               <div class="story-grid story-grid-2">
                 <figure><img src="assets/better-angels-04.webp" alt="" loading="lazy"></figure>
                 <figure><img src="assets/better-angels-05.webp" alt="" loading="lazy"></figure>
               </div>
 
+
               <footer class="project-credit">
                 <p>
-                  Identity, collateral and map illustration: Keegan Andrulis.
+                  Identity, collateral, and map illustration: Keegan Andrulis.
                   Installation by Heather Kapplow.
                   Commissioned by the Boston Public Art Triennial.
                 </p>
               </footer>
+
 
               <button
                 class="project-close"
@@ -334,12 +368,20 @@
 
           <div class="project-summary">
 
-            <div class="project-number">
+            <div
+              class="project-number"
+              aria-hidden="true"
+            >
               03
             </div>
 
+
             <div class="project-info">
-              <h3 class="project-title">
+
+              <h3
+                class="project-title"
+                id="making-public-title"
+              >
                 Making Public
               </h3>
 
@@ -348,19 +390,22 @@
               </p>
 
               <p class="project-blurb">
-                Event identity and collateral for a citywide convening,
-                extending one source image across posters, wayfinding,
-                programs, and digital formats.
-                <button
-                  class="project-explore"
-                  type="button"
-                  aria-controls="making-public-content"
-                  aria-expanded="false"
-                >
-                  explore
-                </button>
+                Event identity for the Triennial’s convening, carrying one
+                workshop image across posters, wayfinding, programs, and
+                digital communications.
               </p>
+
+              <button
+                class="project-explore"
+                type="button"
+                aria-controls="making-public-content"
+                aria-expanded="false"
+              >
+                explore
+              </button>
+
             </div>
+
 
             <figure class="project-key-image">
               <img
@@ -369,6 +414,7 @@
                 loading="lazy"
               >
             </figure>
+
 
             <button
               class="project-plus"
@@ -386,6 +432,8 @@
           <div
             class="project-content"
             id="making-public-content"
+            role="region"
+            aria-labelledby="making-public-title"
             hidden
           >
 
@@ -393,16 +441,19 @@
 
               <div class="story-copy story-copy-narrow">
                 <p>
-                  Print and digital collateral for Making Public, the Triennial
-                  2025 convening at Roxbury Community College. The image came
-                  from a youth workshop that Ñ Press ran with NUBE East Boston.
+                  Print and digital collateral for Making Public, the
+                  Triennial 2025 convening at Roxbury Community College.
+                  The image came from a youth workshop that Ñ Press ran with
+                  NUBE East Boston.
                 </p>
 
                 <p>
-                  From there it expanded across posters, on-site wayfinding, a
-                  program handout, a QR flyer and newsletter and social formats.
+                  From there, it expanded across posters, on-site wayfinding,
+                  a program handout, a QR flyer, and newsletter and social
+                  formats.
                 </p>
               </div>
+
 
               <div class="story-grid story-grid-4">
                 <figure><img src="assets/making-public-01.webp" alt="" loading="lazy"></figure>
@@ -411,9 +462,11 @@
                 <figure><img src="assets/making-public-04.webp" alt="" loading="lazy"></figure>
               </div>
 
+
               <div class="story-grid story-grid-banner">
                 <figure><img src="assets/making-public-05.webp" alt="" loading="lazy"></figure>
               </div>
+
 
               <div class="story-grid story-grid-3">
                 <figure><img src="assets/making-public-06.webp" alt="" loading="lazy"></figure>
@@ -421,21 +474,20 @@
                 <figure><img src="assets/making-public-08.webp" alt="" loading="lazy"></figure>
               </div>
 
+
               <figure class="story-feature">
-                <img
-                  src="assets/making-public-09.webp"
-                  alt=""
-                  loading="lazy"
-                >
+                <img src="assets/making-public-09.webp" alt="" loading="lazy">
               </figure>
+
 
               <footer class="project-credit">
                 <p>
                   Design: Keegan Andrulis.
-                  Source image created at a youth workshop with Ñ Press and
-                  NUBE East Boston.
+                  Source image created at a youth workshop with Ñ Press
+                  and NUBE East Boston.
                 </p>
               </footer>
+
 
               <button
                 class="project-close"
@@ -456,13 +508,15 @@
 
       <section
         class="work-group"
-        aria-labelledby="other-work-title"
+        aria-labelledby="other-work-heading"
       >
 
         <header class="work-group-header">
-<h2 id="other-work-title">
+
+          <h2 id="other-work-heading">
             Other work
           </h2>
+
         </header>
 
 
@@ -473,12 +527,17 @@
 
           <div class="project-summary">
 
-            <div class="project-number">
+            <div class="project-number" aria-hidden="true">
               04
             </div>
 
+
             <div class="project-info">
-              <h3 class="project-title">
+
+              <h3
+                class="project-title"
+                id="paul-winter-title"
+              >
                 Paul Winter Consort
               </h3>
 
@@ -487,18 +546,22 @@
               </p>
 
               <p class="project-blurb">
-                A poster series built around archival, scientific, and
-                landscape imagery connected directly to the music.
-                <button
-                  class="project-explore"
-                  type="button"
-                  aria-controls="paul-winter-content"
-                  aria-expanded="false"
-                >
-                  explore
-                </button>
+                Concert posters built around archival, scientific, and
+                landscape images chosen for their relationship to each
+                program.
               </p>
+
+              <button
+                class="project-explore"
+                type="button"
+                aria-controls="paul-winter-content"
+                aria-expanded="false"
+              >
+                explore
+              </button>
+
             </div>
+
 
             <figure class="project-key-image">
               <img
@@ -507,6 +570,7 @@
                 loading="lazy"
               >
             </figure>
+
 
             <button
               class="project-plus"
@@ -524,6 +588,8 @@
           <div
             class="project-content"
             id="paul-winter-content"
+            role="region"
+            aria-labelledby="paul-winter-title"
             hidden
           >
 
@@ -537,17 +603,20 @@
                 </p>
               </div>
 
+
               <div class="story-grid story-grid-3 story-grid-posters">
                 <figure><img src="assets/paul-winter-01.webp" alt="" loading="lazy"></figure>
                 <figure><img src="assets/paul-winter-02.webp" alt="" loading="lazy"></figure>
                 <figure><img src="assets/paul-winter-03.webp" alt="" loading="lazy"></figure>
               </div>
 
+
               <footer class="project-credit">
                 <p>
                   Design: Keegan Andrulis, for the Paul Winter Consort.
                 </p>
               </footer>
+
 
               <button
                 class="project-close"
@@ -571,32 +640,41 @@
 
           <div class="project-summary">
 
-            <div class="project-number">
+            <div class="project-number" aria-hidden="true">
               05
             </div>
 
+
             <div class="project-info">
-              <h3 class="project-title">
+
+              <h3
+                class="project-title"
+                id="prx-title"
+              >
                 Radiotopia + PRX
               </h3>
 
               <p class="project-client">
-                identity · promotion
+                identity + promotion
               </p>
 
               <p class="project-blurb">
-                Selected identity and promotional work across newsletters,
-                podcast campaigns, and network marketing.
-                <button
-                  class="project-explore"
-                  type="button"
-                  aria-controls="prx-content"
-                  aria-expanded="false"
-                >
-                  explore
-                </button>
+                Selected identity and campaign work for PRX and Radiotopia,
+                spanning newsletters, podcast promotion, and network
+                marketing.
               </p>
+
+              <button
+                class="project-explore"
+                type="button"
+                aria-controls="prx-content"
+                aria-expanded="false"
+              >
+                explore
+              </button>
+
             </div>
+
 
             <figure class="project-key-image">
               <img
@@ -605,6 +683,7 @@
                 loading="lazy"
               >
             </figure>
+
 
             <button
               class="project-plus"
@@ -622,6 +701,8 @@
           <div
             class="project-content"
             id="prx-content"
+            role="region"
+            aria-labelledby="prx-title"
             hidden
           >
 
@@ -629,20 +710,21 @@
 
               <div class="story-copy story-copy-narrow">
                 <p>
-                  Selected identity and promotional work produced for PRX and
-                  Radiotopia across newsletters, podcast campaigns and network
-                  promotion.
+                  Selected identity and promotional work produced for PRX
+                  and Radiotopia across newsletters, podcast campaigns,
+                  and network promotion.
                 </p>
               </div>
 
+
               <div class="story-split">
                 <div>
-                  <h3>Ear Hustle</h3>
+                  <h4>Ear Hustle</h4>
 
                   <p>
                     A pitch for Apple Podcasts around the show’s 2024 election
-                    episode, using an existing Damien Linnane illustration and a
-                    custom stars-and-stripes wordmark.
+                    episode, using an existing Damien Linnane illustration and
+                    a custom stars-and-stripes wordmark.
                   </p>
                 </div>
 
@@ -651,30 +733,36 @@
                 </figure>
               </div>
 
+
               <div class="story-split story-split-reverse">
+
                 <figure>
                   <img src="assets/prx-02.webp" alt="" loading="lazy">
                 </figure>
 
                 <div>
-                  <h3>In the Queue</h3>
+                  <h4>In the Queue</h4>
 
                   <p>
                     A refreshed name and logo for PRX’s monthly newsletter,
                     previously Storytime.
                   </p>
                 </div>
+
               </div>
+
 
               <figure class="story-feature">
                 <img src="assets/prx-03.webp" alt="" loading="lazy">
               </figure>
+
 
               <footer class="project-credit">
                 <p>
                   Design and marketing work produced for PRX and Radiotopia.
                 </p>
               </footer>
+
 
               <button
                 class="project-close"
@@ -698,12 +786,17 @@
 
           <div class="project-summary">
 
-            <div class="project-number">
+            <div class="project-number" aria-hidden="true">
               06
             </div>
 
+
             <div class="project-info">
-              <h3 class="project-title">
+
+              <h3
+                class="project-title"
+                id="college-title"
+              >
                 College work
               </h3>
 
@@ -712,18 +805,21 @@
               </p>
 
               <p class="project-blurb">
-                Identity, campaign, and packaging work spanning Trinity FM,
-                a student election campaign and a wine-label system.
-                <button
-                  class="project-explore"
-                  type="button"
-                  aria-controls="college-content"
-                  aria-expanded="false"
-                >
-                  explore
-                </button>
+                Early identity, campaign, and packaging work, including
+                Trinity FM, a student election campaign, and Cane Vino.
               </p>
+
+              <button
+                class="project-explore"
+                type="button"
+                aria-controls="college-content"
+                aria-expanded="false"
+              >
+                explore
+              </button>
+
             </div>
+
 
             <figure class="project-key-image">
               <img
@@ -732,6 +828,7 @@
                 loading="lazy"
               >
             </figure>
+
 
             <button
               class="project-plus"
@@ -749,6 +846,8 @@
           <div
             class="project-content"
             id="college-content"
+            role="region"
+            aria-labelledby="college-title"
             hidden
           >
 
@@ -757,12 +856,12 @@
               <section class="college-section">
 
                 <div class="story-copy">
-                  <h3>Trinity FM</h3>
+                  <h4>Trinity FM</h4>
 
                   <p>
                     Design work for Trinity’s student-run radio station,
-                    including a new logo, broadcast graphics and social media
-                    assets.
+                    including a new logo, broadcast graphics, and social
+                    media assets.
                   </p>
                 </div>
 
@@ -777,7 +876,7 @@
               <section class="college-section">
 
                 <div class="story-copy">
-                  <h3>Fullam campaign</h3>
+                  <h4>Fullam campaign</h4>
 
                   <p>
                     A social-first campaign for Gabi Fullam’s Trinity College
@@ -797,12 +896,12 @@
               <section class="college-section">
 
                 <div class="story-copy">
-                  <h3>Cane Vino</h3>
+                  <h4>Cane Vino</h4>
 
                   <p>
                     A wine-label series developed for a marketing and branding
-                    elective, with each varietal receiving a distinct
-                    illustration and palette inside one shared system.
+                    elective. Each varietal received a distinct illustration
+                    and palette inside one shared system.
                   </p>
                 </div>
 
@@ -815,12 +914,14 @@
 
               </section>
 
+
               <footer class="project-credit">
                 <p>
                   Design and illustration: Keegan Andrulis.
                   Trinity College Dublin.
                 </p>
               </footer>
+
 
               <button
                 class="project-close"
