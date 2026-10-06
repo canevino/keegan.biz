@@ -1,12 +1,16 @@
-DESIGN V4
+DESIGN PAGE — V5
 
-Key changes:
-- Triennial section renamed “Triennial 2025: The Exchange”.
-- Making Public is no longer a separate project; it is the final subsection of More ____.
-- More opening copy and More Connection explanation are merged into one paragraph.
-- More Belonging thumbnail crop is taller and positioned lower to include the installed poster.
-- Public Processes copy updated.
-- Making Public is organized as one system: event context, poster pair, information-heavy print pair, then social pair.
-- Better Angels contains only Better Angels material.
-- Takeaway interaction rebuilt so the paper itself folds in one direction to a fully closed state and reopens on tap/click.
-- Responsive overrides added for tablet/mobile.
+Replace:
+- /design/index.html
+- /design/design.css
+- /design/design.js
+
+What changed:
+- Extensions is now one coherent section inside More ____.
+- Art + Stroll, Public Processes, and Making Public are all treated as extensions.
+- Making Public uses one controlled visual system: event context first, poster pair, information-heavy pair, then digital/social pair.
+- Better Angels takeaway uses a new isolated folding interaction with unique class names, so older fold CSS cannot interfere with it.
+- The folder itself is the control: click/tap to close, click/tap to reopen. The inside/outside control only works while open.
+- Project key images use a longer horizontal crop for more useful context.
+- Better Angels script, signage, and activation image groups are constrained to more deliberate widths.
+- Mobile layouts collapse cleanly without oversized imagery.

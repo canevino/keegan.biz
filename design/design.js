@@ -7,13 +7,17 @@
     const content = project.querySelector(".project-content");
     const plus = project.querySelector(".project-plus");
     const explore = project.querySelector(".project-explore");
+
     if (!content) return;
+
     content.hidden = !open;
     project.classList.toggle("is-open", open);
+
     if (plus) {
       plus.setAttribute("aria-expanded", String(open));
       plus.textContent = open ? "—" : "+";
     }
+
     explore?.setAttribute("aria-expanded", String(open));
   }
 
@@ -21,86 +25,165 @@
     const plus = project.querySelector(".project-plus");
     const explore = project.querySelector(".project-explore");
     const close = project.querySelector(".project-close");
-    plus?.addEventListener("click", () => setProjectState(project, !project.classList.contains("is-open")));
-    explore?.addEventListener("click", () => setProjectState(project, true));
+
+    plus?.addEventListener("click", () => {
+      setProjectState(project, !project.classList.contains("is-open"));
+    });
+
+    explore?.addEventListener("click", () => {
+      setProjectState(project, true);
+    });
+
     close?.addEventListener("click", () => {
       setProjectState(project, false);
-      project.querySelector(".project-summary")?.scrollIntoView({behavior: reducedMotion.matches ? "auto" : "smooth", block:"start"});
+      project.querySelector(".project-summary")?.scrollIntoView({
+        behavior: reducedMotion.matches ? "auto" : "smooth",
+        block: "start"
+      });
     });
   });
 
   document.querySelectorAll("[data-media-switcher]").forEach(switcher => {
     const toggle = switcher.querySelector(".media-switcher-toggle");
     const stage = switcher.querySelector(".media-switcher-stage");
+
     const flip = () => {
       const secondary = switcher.classList.toggle("is-secondary");
       toggle?.setAttribute("aria-pressed", String(secondary));
     };
-    toggle?.addEventListener("click", e => { e.stopPropagation(); flip(); });
+
+    toggle?.addEventListener("click", event => {
+      event.stopPropagation();
+      flip();
+    });
+
     if (stage) {
       stage.tabIndex = 0;
-      stage.setAttribute("role","button");
-      stage.setAttribute("aria-label","Switch between artwork and installed view");
+      stage.setAttribute("role", "button");
+      stage.setAttribute("aria-label", "Switch between artwork and installed view");
       stage.addEventListener("click", flip);
-      stage.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+      stage.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          flip();
+        }
+      });
     }
   });
 
-  const foldout = document.querySelector("[data-foldout]");
-  if (foldout) {
-    const project = foldout.closest(".project");
-    const sideButton = project?.querySelector(".foldout-side");
-    const stateLabel = project?.querySelector(".foldout-state");
-    const flat = foldout.querySelector(".foldout-flat-reference");
-    let folded = false;
+  const folder = document.querySelector("[data-ba-folder]");
+
+  if (folder) {
+    const project = folder.closest(".project");
+    const sideButton = project?.querySelector(".ba-folder-side");
+    const stateLabel = project?.querySelector(".ba-folder-state");
+    const flat = folder.querySelector(".ba-folder-flat");
+    const panelImages = folder.querySelectorAll(".ba-folder-panel img");
+    const closedImage = folder.querySelector(".ba-folder-closed-face img");
+
     let inside = false;
+    let closed = false;
+    let animating = false;
     let timer = null;
 
-    const update = () => {
-      const src = inside ? "assets/better angels takeaway inside.png" : "assets/better angels takeaway outside.png";
+    const source = () => inside
+      ? "assets/better angels takeaway inside.png"
+      : "assets/better angels takeaway outside.png";
+
+    function syncArtwork() {
+      const src = source();
+
       if (flat) {
         flat.src = src;
         flat.alt = `Better Angels takeaway folder shown flat, ${inside ? "inside" : "outside"}`;
       }
-      foldout.classList.toggle("show-inside", inside);
-      foldout.setAttribute("aria-pressed", String(folded));
-      if (stateLabel) stateLabel.textContent = folded ? "closed" : `${inside ? "inside" : "outside"} / open`;
+
+      panelImages.forEach(image => {
+        image.src = src;
+      });
+
+      if (closedImage) {
+        closedImage.src = "assets/better angels takeaway outside.png";
+      }
+
+      sideButton?.setAttribute("aria-pressed", String(inside));
       if (sideButton) {
         sideButton.textContent = inside ? "view outside" : "view inside";
-        sideButton.setAttribute("aria-pressed", String(inside));
-        sideButton.disabled = folded || foldout.classList.contains("is-folding");
+        sideButton.disabled = closed || animating;
       }
-    };
 
-    const closeFolder = () => {
-      if (folded || foldout.classList.contains("is-folding")) return;
+      folder.setAttribute("aria-pressed", String(closed));
+      if (stateLabel) {
+        stateLabel.textContent = closed ? "closed" : `${inside ? "inside" : "outside"} / open`;
+      }
+    }
+
+    function finishClose() {
+      folder.classList.remove("is-closing");
+      folder.classList.add("is-closed");
+      closed = true;
+      animating = false;
+      syncArtwork();
+    }
+
+    function closeFolder() {
+      if (closed || animating) return;
+
       inside = false;
-      update();
-      foldout.classList.add("is-folding");
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        foldout.classList.remove("is-folding");
-        foldout.classList.add("is-folded");
-        folded = true;
-        update();
-      }, 760);
-    };
+      animating = true;
+      syncArtwork();
+      folder.classList.remove("is-opening", "is-opening-active");
+      folder.classList.add("is-closing");
 
-    const openFolder = () => {
-      if (!folded || foldout.classList.contains("is-folding")) return;
-      foldout.classList.remove("is-folded");
-      foldout.classList.add("is-folding");
-      folded = false;
-      update();
       clearTimeout(timer);
-      timer = setTimeout(() => { foldout.classList.remove("is-folding"); update(); }, 620);
-    };
+      timer = window.setTimeout(finishClose, reducedMotion.matches ? 40 : 720);
+    }
 
-    const toggleFolder = () => folded ? openFolder() : closeFolder();
-    foldout.addEventListener("click", toggleFolder);
-    foldout.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleFolder(); } });
-    sideButton?.addEventListener("click", e => { e.stopPropagation(); if (!folded && !foldout.classList.contains("is-folding")) { inside = !inside; update(); } });
-    update();
+    function finishOpen() {
+      folder.classList.remove("is-opening", "is-opening-active");
+      closed = false;
+      animating = false;
+      syncArtwork();
+    }
+
+    function openFolder() {
+      if (!closed || animating) return;
+
+      animating = true;
+      folder.classList.remove("is-closed");
+      folder.classList.add("is-opening");
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          folder.classList.add("is-opening-active");
+        });
+      });
+
+      clearTimeout(timer);
+      timer = window.setTimeout(finishOpen, reducedMotion.matches ? 40 : 620);
+    }
+
+    function toggleFolder() {
+      if (closed) openFolder();
+      else closeFolder();
+    }
+
+    folder.addEventListener("click", toggleFolder);
+    folder.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleFolder();
+      }
+    });
+
+    sideButton?.addEventListener("click", event => {
+      event.stopPropagation();
+      if (closed || animating) return;
+      inside = !inside;
+      syncArtwork();
+    });
+
+    syncArtwork();
   }
 
   document.querySelectorAll("[data-flyer]").forEach(flyer => {
@@ -108,16 +191,32 @@
     const state = flyer.querySelector(".flyer-state");
     const scene = flyer.querySelector(".flyer-scene");
     let flipped = false;
+
     const update = () => {
       flyer.classList.toggle("is-flipped", flipped);
       button?.setAttribute("aria-pressed", String(flipped));
       if (button) button.textContent = flipped ? "front" : "flip";
       if (state) state.textContent = flipped ? "reverse" : "front";
     };
-    const flip = () => { flipped = !flipped; update(); };
-    button?.addEventListener("click", flip);
+
+    const flip = () => {
+      flipped = !flipped;
+      update();
+    };
+
+    button?.addEventListener("click", event => {
+      event.stopPropagation();
+      flip();
+    });
+
     scene?.addEventListener("click", flip);
-    scene?.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+    scene?.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        flip();
+      }
+    });
+
     update();
   });
 })();
