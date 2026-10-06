@@ -5791,3 +5791,264 @@
     transition-delay: 0ms !important;
   }
 }
+
+/* =========================================================
+   v9 — PRX / Radiotopia + Trinity College Dublin
+   ========================================================= */
+
+.project-story-prx,
+.project-story-college {
+  --portfolio-max: min(1120px, calc(100vw - (var(--case-pad) * 2)));
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.project-story-prx > .portfolio-lead,
+.project-story-prx > .portfolio-case,
+.project-story-prx > .project-credit,
+.project-story-prx > .project-close,
+.project-story-college > .portfolio-lead,
+.project-story-college > .portfolio-case,
+.project-story-college > .project-credit,
+.project-story-college > .project-close {
+  width: var(--portfolio-max) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.portfolio-lead {
+  margin-top: clamp(42px, 5vw, 68px) !important;
+  margin-bottom: clamp(64px, 7vw, 96px) !important;
+}
+
+.portfolio-lead p {
+  width: min(66ch, 100%);
+  margin: 0;
+  font-size: clamp(14px, .95vw, 16px);
+  line-height: 1.48;
+}
+
+.portfolio-case {
+  margin-bottom: clamp(76px, 9vw, 124px) !important;
+  padding-top: 18px;
+  border-top: 1px solid var(--design-rule);
+}
+
+.portfolio-case-heading {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 640px) 1fr;
+  gap: 18px;
+  align-items: start;
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+.portfolio-case-heading > span {
+  color: var(--design-red);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  padding-top: 5px;
+}
+
+.portfolio-case-heading h4 {
+  margin: 0 0 12px;
+  font-size: clamp(24px, 2.5vw, 38px);
+  font-weight: 700;
+  line-height: .94;
+  letter-spacing: -.045em;
+}
+
+.portfolio-case-heading p {
+  margin: 0;
+  font-size: clamp(14px, .95vw, 16px);
+  line-height: 1.48;
+}
+
+/* summary key images */
+.prx-key-image img {
+  object-fit: contain !important;
+  background: #f4f0e6;
+}
+
+.college-key-image img {
+  object-fit: cover !important;
+}
+
+/* PRX */
+.prx-ear-hero {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #f4f0e6;
+}
+
+.prx-ear-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.prx-queue-mark {
+  width: min(760px, 78%);
+  margin: 0 auto;
+}
+
+.prx-queue-mark img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.prx-radiotopia-case {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+  column-gap: clamp(44px, 7vw, 92px);
+  align-items: start;
+}
+
+.prx-radiotopia-case .portfolio-case-heading {
+  grid-column: 1;
+  grid-template-columns: 34px minmax(0, 1fr);
+  margin-bottom: 0;
+}
+
+.prx-radiotopia-art {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  justify-self: end;
+  width: min(360px, 100%);
+}
+
+.prx-radiotopia-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Trinity */
+.college-square-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 24px);
+}
+
+.college-square-grid figure,
+.wine-grid figure {
+  margin: 0;
+}
+
+.college-square-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.college-square-grid-tfm .college-logo-feature {
+  position: relative;
+}
+
+.college-square-grid figure {
+  transition: transform 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .college-square-grid figure:hover {
+    transform: translateY(-4px);
+  }
+}
+
+.wine-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 32px);
+}
+
+.wine-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.wine-grid figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+  color: rgba(17,17,15,.62);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.project-story-prx > .project-credit,
+.project-story-college > .project-credit {
+  margin-top: 0 !important;
+  margin-bottom: clamp(34px, 4vw, 52px) !important;
+}
+
+@media (max-width: 820px) {
+  .portfolio-case-heading {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .prx-radiotopia-case {
+    grid-template-columns: 1fr;
+    row-gap: 30px;
+  }
+
+  .prx-radiotopia-case .portfolio-case-heading,
+  .prx-radiotopia-art {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .prx-radiotopia-art {
+    width: min(320px, 72vw);
+    justify-self: center;
+  }
+
+  .prx-queue-mark {
+    width: min(680px, 100%);
+  }
+}
+
+@media (max-width: 680px) {
+  .project-story-prx > .portfolio-lead,
+  .project-story-prx > .portfolio-case,
+  .project-story-prx > .project-credit,
+  .project-story-prx > .project-close,
+  .project-story-college > .portfolio-lead,
+  .project-story-college > .portfolio-case,
+  .project-story-college > .project-credit,
+  .project-story-college > .project-close {
+    width: calc(100% - 36px) !important;
+  }
+
+  .portfolio-lead {
+    margin-top: 34px !important;
+    margin-bottom: 58px !important;
+  }
+
+  .portfolio-case {
+    margin-bottom: 68px !important;
+  }
+
+  .college-square-grid,
+  .wine-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .college-square-grid figure,
+  .wine-grid figure {
+    width: min(420px, 100%);
+    justify-self: center;
+  }
+
+  .prx-ear-hero {
+    width: 100%;
+  }
+}
