@@ -187,6 +187,26 @@
         font-size: 12px;
       }
     }
+
+    /* Below-photo text links */
+    .fuji-action-row .fuji-control,
+    .fuji-action-row .photo-how-link,
+    #fuji-auto-song,
+    #fuji-sound-toggle,
+    #photo-how-link {
+      color: var(--red, #c1272d) !important;
+      -webkit-text-fill-color: var(--red, #c1272d) !important;
+      opacity: 1 !important;
+    }
+
+    .fuji-action-row .fuji-control:hover,
+    .fuji-action-row .fuji-control:focus-visible,
+    .fuji-action-row .photo-how-link:hover,
+    .fuji-action-row .photo-how-link:focus-visible {
+      color: var(--red, #c1272d) !important;
+      -webkit-text-fill-color: var(--red, #c1272d) !important;
+    }
+
   </style>
 
 </head>
@@ -266,9 +286,9 @@
   <div class="photo-how-card" role="dialog" aria-modal="true" aria-labelledby="photo-how-title">
     <button class="photo-how-close" id="photo-how-close" type="button" aria-label="Close how it works">×</button>
     <h3 id="photo-how-title">how it works</h3>
-    <p>The starting image is a photograph from rural Ireland, looking toward the peaks of Garraun and Benchoona. I painted an imagined architectural intervention over it in Photoshop, then separated the building and its perspective lines into layers the browser can bring in and out.</p>
-    <p>The sound is generative rather than a fixed song. It uses my own recordings of cello, guitar, mandolin and C/G Anglo concertina: a sustained D cello drone holds while the system plans phrases inside a D Dorian pitch atmosphere, remembers motifs, and varies what happens from one click to the next.</p>
-    <p>The music and image use the same event. Notes favor particular perspective lines and site-color treatments; denser combinations reveal more of the painted structure and larger print-like marks. When you click, you choose the timing. “Randomly generate a song” lets the system choose the timing.</p>
+    <p>The starting image is a photograph I took in rural Ireland, looking toward Garraun and Benchoona. I painted the building in Photoshop, then split it and its perspective lines into separate layers so the browser can bring them in and out.</p>
+    <p>The sound is built from my own recordings of cello, guitar, mandolin and C/G Anglo concertina. A low D cello drone runs underneath. Each click triggers a short phrase in D Dorian; the system keeps track of motifs and changes the voicing, density and instrument combinations so it does not repeat in exactly the same way.</p>
+    <p>The visual and sound systems are linked. Different notes favor different perspective lines and color treatments, and denser musical events reveal more of the painted structure and larger marks. Clicking sets the timing yourself; “randomly generate a song” hands that timing over to the system.</p>
   </div>
 </div>
 
