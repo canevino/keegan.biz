@@ -106,6 +106,7 @@
   document.querySelectorAll("[data-folder]").forEach((specimen) => {
     const flip = specimen.querySelector(".folder-flip");
     const fold = specimen.querySelector(".folder-fold");
+    const stage = specimen.querySelector(".folder-stage");
     let folded = false;
     let flipped = false;
 
@@ -116,16 +117,31 @@
       flip?.setAttribute("aria-pressed", String(flipped));
       if (fold) fold.textContent = folded ? "unfold" : "fold";
       if (flip) flip.textContent = "flip";
+      stage?.setAttribute("aria-pressed", String(folded));
     };
 
-    fold?.addEventListener("click", () => {
+    const toggleFold = () => {
       folded = !folded;
+      sync();
+    };
+
+    fold?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleFold();
+    });
+
+    flip?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      flipped = !flipped;
       sync();
     });
 
-    flip?.addEventListener("click", () => {
-      flipped = !flipped;
-      sync();
+    stage?.addEventListener("click", toggleFold);
+    stage?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleFold();
+      }
     });
 
     sync();

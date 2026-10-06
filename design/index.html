@@ -6,12 +6,24 @@
   <title>design — keegan.biz</title>
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="design.css">
-  <script src="/assets/site-nav.js" defer></script>
   <script src="design.js" defer></script>
 </head>
 <body class="design-page">
   <div class="page-shell">
-    <nav data-site-nav></nav>
+    <header class="design-site-header">
+      <a class="design-home-scarf" href="/" aria-label="keegan.biz home">
+        <img src="/assets/home/home-scarf-update.png" alt="keegan.biz">
+      </a>
+      <nav class="design-text-nav" aria-label="Portfolio sections">
+        <a href="/illustration/">illustration</a>
+        <a href="/photography/">photography</a>
+        <a class="is-current" href="/design/" aria-current="page">graphic design</a>
+        <a href="/music/">music</a>
+        <a href="/motion/">motion</a>
+        <a href="/misc/">misc</a>
+        <a href="/gastronomy/">gastronomy</a>
+      </nav>
+    </header>
 
     <main class="design-main">
       <section class="portfolio-masthead" aria-labelledby="design-title">
@@ -27,8 +39,12 @@
       </section>
 
       <div class="selected-heading" aria-label="Selected work">
-        <span>selected work</span>
+        <div class="selected-heading__label">
+          <span>selected work</span>
+          <span class="selected-heading__year">2023—26</span>
+        </div>
         <strong>Boston Public Art Triennial</strong>
+        <img class="selected-heading__knot" src="/assets/home/knot_long.svg" alt="" aria-hidden="true">
       </div>
 
       <section class="work-stack" aria-label="Project list">
@@ -201,15 +217,23 @@
                   </article>
 
                   <div class="stacked-socials">
-                    <figure>
-                      <img src="/design/assets/making public social 1.png" alt="Making Public social graphic with program information">
-                      <figcaption>social 01</figcaption>
-                    </figure>
-                    <figure>
-                      <img src="/design/assets/making public social 2.png" alt="Making Public social graphic with event information">
-                      <figcaption>social 02</figcaption>
-                    </figure>
-                    <figure>
+                    <article class="flip-card flip-card--social" data-flip-card>
+                      <div class="flip-card__meta">
+                        <span>social</span>
+                        <button type="button" class="flip-card__button" aria-pressed="false">flip</button>
+                      </div>
+                      <div class="flip-card__scene" tabindex="0" role="button" aria-label="Flip between the two Making Public social graphics">
+                        <div class="flip-card__inner">
+                          <figure class="flip-card__face flip-card__face--front">
+                            <img src="/design/assets/making public social 1.png" alt="Making Public social graphic with program information">
+                          </figure>
+                          <figure class="flip-card__face flip-card__face--back">
+                            <img src="/design/assets/making public social 2.png" alt="Making Public social graphic with event information">
+                          </figure>
+                        </div>
+                      </div>
+                    </article>
+                    <figure class="mp-event-photo">
                       <img src="/design/assets/making public event photo.jpg" alt="Making Public event photograph">
                       <figcaption>event photo</figcaption>
                     </figure>
@@ -232,8 +256,7 @@
               <p class="project-client">Boston Public Art Triennial / Heather Kapplow</p>
               <h2 class="project-title"><em>Better Angels</em></h2>
               <p class="project-blurb">
-                A participatory installation translated into a coherent visual system across print, signage, staff material,
-                and visitor takeaways. The design had to feel slightly absurd and welcoming at once—practical, but still theatrical.
+                Identity, collateral, and signage for Heather Kapplow’s participatory installation, developed in collaboration with the artist.
               </p>
               <button class="project-toggle" type="button" aria-expanded="false" aria-controls="project-angels-content">
                 <span class="when-closed">explore</span>
@@ -274,7 +297,7 @@
                     </div>
                   </div>
 
-                  <div class="folder-stage" aria-label="Interactive Better Angels die-cut folder. Use flip to change sides and fold to animate the object.">
+                  <div class="folder-stage" tabindex="0" role="button" aria-pressed="false" aria-label="Interactive Better Angels die-cut folder. Tap or click the paper to fold or unfold it; use flip to change sides.">
                     <div class="paper-folder" data-side="outside">
                       <div class="folder-panel folder-panel--center">
                         <div class="folder-panel__face folder-panel__face--front folder-art folder-art--outside"></div>
@@ -464,8 +487,7 @@
               <p class="project-client">PRX / Radiotopia</p>
               <h2 class="project-title">Ear Hustle, In the Queue, and Radiotopia</h2>
               <p class="project-blurb">
-                Design work from my time at PRX: editorial hero art for <em>Ear Hustle</em>, a refreshed name and logo for the monthly newsletter <em>In the Queue</em>,
-                and a social media graphic promoting Radiotopia’s ad‑free Apple Podcasts subscriptions.
+                Editorial and campaign design from PRX: Apple Podcasts feature art for <em>Ear Hustle</em>, a refreshed identity for <em>In the Queue</em>, and subscription campaign graphics for Radiotopia.
               </p>
               <button class="project-toggle" type="button" aria-expanded="false" aria-controls="project-prx-content">
                 <span class="when-closed">explore</span>
