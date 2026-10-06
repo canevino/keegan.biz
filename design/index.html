@@ -1,758 +1,660 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>design — keegan.biz</title>
-
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="design.css">
-
   <script src="/assets/site-nav.js" defer></script>
   <script src="design.js" defer></script>
 </head>
-
-
 <body class="design-page">
-
   <div class="page-shell">
-
     <nav data-site-nav></nav>
 
-
     <main class="design-main">
-
-      <section class="design-intro">
-
-        <h1 class="design-title">
-          design
-        </h1>
-
-        <div class="design-intro-copy">
-          <p>
-            identities, campaigns, print,
-            environmental graphics, and other
-            graphic work.
-          </p>
-
-          <div
-            class="design-color-key"
-            aria-hidden="true"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
+      <section class="portfolio-masthead" aria-labelledby="design-title">
+        <div class="portfolio-masthead__rail">
+          <p class="masthead-small">selected<br>work</p>
+          <div class="masthead-meta">
+            <span>design portfolio</span>
+            <span>2023—2026</span>
+            <span>Boston / Dublin</span>
           </div>
         </div>
 
+        <div class="portfolio-masthead__main">
+          <div class="portfolio-masthead__ornament" aria-hidden="true">
+            <img src="/assets/home/knot_long.svg" alt="">
+          </div>
+          <p class="masthead-kicker">01 · campaigns / identity / exhibition graphics</p>
+          <h1 id="design-title">Boston Public Art<br>Triennial</h1>
+          <p class="masthead-deck">Campaigns, identity, collateral, and exhibition graphics.</p>
+          <div class="masthead-proof" aria-hidden="true">KA · selected work · revised 10/26</div>
+        </div>
       </section>
 
+      <section class="system-note" aria-label="Portfolio system">
+        <div class="system-note__copy">
+          <p class="system-note__eyebrow">system</p>
+          <p>
+            Clear editorial hierarchy, warm paper, controlled grime, and recurring knotwork. Final work leads; supporting material follows in a consistent rail / title / deck / image / detail structure.
+          </p>
+        </div>
+        <div class="system-note__ornaments" aria-hidden="true">
+          <img src="/assets/home/knot_smooth_svg1.svg" alt="">
+          <img src="/assets/home/pinch_knot_smooth_svg1.png" alt="">
+          <img src="/assets/home/knot_smooth_svg2.svg" alt="">
+        </div>
+      </section>
 
-      <section
-        class="work-group triennial-group"
-        aria-labelledby="triennial-heading"
-      >
+      <section class="work-stack" aria-label="Project list">
 
-        <header class="work-group-header">
-          <p class="group-eyebrow">selected work</p>
-          <h2 id="triennial-heading">Boston Public Art Triennial</h2>
-        </header>
-
-
-        <article class="project" id="more">
-
+        <article class="project project--triennial" id="project-triennial" data-project>
           <div class="project-summary">
-            <div class="project-number" aria-hidden="true">01</div>
-
-            <div class="project-info">
-              <h3 class="project-title" id="more-title">Triennial 2025: The Exchange</h3>
-              <p class="project-client">Boston Public Art Triennial</p>
-              <p class="project-blurb">
-                Campaign design for the Triennial’s citywide exhibition,
-                adapting the existing identity across print, advertising,
-                wayfinding, and environmental applications.
-              </p>
-              <button class="project-explore" type="button" aria-controls="more-content" aria-expanded="false">explore</button>
+            <div class="project-summary__rail">
+              <span class="project-number">01</span>
+              <span class="project-discipline">campaign · print · wayfinding</span>
             </div>
 
-            <figure class="project-key-image project-key-image-more">
-              <img src="assets/more belonging.png" alt="More Belonging campaign poster installed in downtown Boston" loading="lazy">
-            </figure>
+            <div class="project-summary__copy">
+              <p class="project-client">Boston Public Art Triennial</p>
+              <h2 class="project-title">The Exchange + project extensions</h2>
+              <p class="project-blurb">
+                Campaign design for the Triennial’s citywide exhibition, adapting the existing identity across print, advertising,
+                event collateral, and environmental applications. Within the same visual language, I also built smaller collateral systems and event graphics.
+              </p>
+              <button class="project-toggle" type="button" aria-expanded="false" aria-controls="project-triennial-content">
+                <span class="when-closed">explore</span>
+                <span class="when-open">close</span>
+              </button>
+            </div>
 
-            <button class="project-plus" type="button" aria-controls="more-content" aria-expanded="false" aria-label="Explore More project">+</button>
+            <figure class="project-key project-key--triennial">
+              <div class="project-key__collage collage-triennial">
+                <img class="collage-main" src="/design/assets/more connection.png" alt="More Connection campaign poster">
+                <img class="collage-secondary collage-secondary--left" src="/design/assets/making public banner 1.png" alt="Making Public banner">
+                <img class="collage-secondary collage-secondary--right" src="/design/assets/public processes.png" alt="Public Processes poster">
+              </div>
+              <figcaption>Campaign system across posters, event collateral, and exhibition extensions</figcaption>
+            </figure>
           </div>
 
-
-          <div class="project-content" id="more-content" role="region" aria-labelledby="more-title" hidden>
-            <div class="project-story project-story-more">
-
-              <section class="case-lead case-lead-more">
-                <div class="case-lead-copy">
+          <div class="project-content" id="project-triennial-content" hidden>
+            <section class="case-section case-section--lead">
+              <div class="case-section__header">
+                <span class="case-section__number">01</span>
+                <div>
+                  <h3>The Exchange</h3>
                   <p>
-                    Working from the Triennial’s established identity, I adapted the <em>More ____</em> campaign across street posters, A-frames, buses, digital kiosks, event graphics, and exhibition collateral. Some pieces were direct adaptations; others were new compositions built inside the same system. Type, color, and image treatment stay consistent while hierarchy changes with scale, distance, and the amount of information each format has to carry. <strong>More Connection</strong> carries the campaign at its most information-dense: artwork, wayfinding, map, funder credits, and the exhibition message all have to remain legible at once. It became a useful reference point for how far the system could stretch without losing its identity.
+                    The <em>More ____</em> campaign had to stay recognizable across posters, buses, kiosks, A‑frames,
+                    and smaller supporting material. The identity is fixed; the hierarchy shifts depending on distance,
+                    context, and the amount of information each format has to carry.
                   </p>
                 </div>
+              </div>
 
-                <figure class="more-anchor">
-                  <img src="assets/more connection.png" alt="More Connection campaign poster with Swoon artwork, map, wayfinding, and Triennial information" loading="lazy">
-                  <figcaption><span>More Connection</span><span>campaign poster</span></figcaption>
+              <div class="feature-slab feature-slab--triennial">
+                <figure class="feature-slab__hero">
+                  <img src="/design/assets/more connection.png" alt="More Connection campaign poster with Swoon artwork">
+                  <figcaption><strong>More Connection</strong><span>Information-dense anchor poster</span></figcaption>
                 </figure>
-              </section>
-
-
-              <section class="case-section more-applications-section">
-                <header class="case-section-heading">
-                  <span>01</span>
-                  <div>
-                    <h4>Across formats</h4>
-                    <p class="case-section-deck">Artwork is shown first. Hover on desktop, or tap on any device, to see each piece in use.</p>
-                  </div>
-                </header>
-
-                <div class="media-switcher-grid media-switcher-grid-applications">
-                  <article class="media-switcher" data-media-switcher>
-                    <header class="media-switcher-head">
-                      <div><h5>More Connection / Lyrik</h5><p>A-frame + open hours</p></div>
-                      <button class="media-switcher-toggle" type="button" aria-pressed="false"><span class="when-primary">in use</span><span class="when-secondary">artwork</span></button>
-                    </header>
-                    <div class="media-switcher-stage media-switcher-stage-portrait">
-                      <img class="media-primary" src="assets/more connection lyric.png" alt="More Connection Lyrik artwork" loading="lazy">
-                      <img class="media-secondary" src="assets/more connection lyric photo.png" alt="More Connection Lyrik A-frame installed outdoors" loading="lazy">
-                    </div>
-                  </article>
-
-                  <article class="media-switcher" data-media-switcher>
-                    <header class="media-switcher-head">
-                      <div><h5>More Depth</h5><p>digital kiosk + campaign graphic</p></div>
-                      <button class="media-switcher-toggle" type="button" aria-pressed="false"><span class="when-primary">in use</span><span class="when-secondary">artwork</span></button>
-                    </header>
-                    <div class="media-switcher-stage media-switcher-stage-portrait">
-                      <img class="media-primary" src="assets/more depth.png" alt="More Depth campaign artwork" loading="lazy">
-                      <img class="media-secondary" src="assets/more depth image.png" alt="More Depth campaign displayed on a digital kiosk" loading="lazy">
-                    </div>
-                  </article>
-
-                  <article class="media-switcher media-switcher-bus" data-media-switcher>
-                    <header class="media-switcher-head">
-                      <div><h5>More fun is here</h5><p>campaign banner + MBTA bus application</p></div>
-                      <button class="media-switcher-toggle" type="button" aria-pressed="false"><span class="when-primary">in use</span><span class="when-secondary">artwork</span></button>
-                    </header>
-                    <div class="media-switcher-stage media-switcher-stage-wide">
-                      <img class="media-primary" src="assets/more fun bus.png" alt="More fun is here campaign banner artwork" loading="lazy">
-                      <img class="media-secondary" src="assets/more fun bus image.png" alt="More fun is here campaign installed on an MBTA bus" loading="lazy">
-                    </div>
-                  </article>
+                <div class="feature-slab__copy">
+                  <p>
+                    <strong>More Connection</strong> became a useful stress test for the system: artwork,
+                    wayfinding, map, funder credits, dates, and exhibition message all remain legible without losing the campaign feel.
+                  </p>
+                  <img class="ornament-inline" src="/assets/home/knot_smooth_svg2.svg" alt="">
                 </div>
-              </section>
+              </div>
+            </section>
 
-              <section class="case-section extensions-section">
-                <header class="case-section-heading">
-                  <span>02</span>
-                  <div>
-                    <h4>Extensions</h4>
-                    <p class="case-section-deck">The campaign system also stretched into smaller event identities and exhibition-specific collateral, each with its own image logic while staying inside the Triennial’s larger visual language.</p>
-                  </div>
-                </header>
-
-                <div class="extensions-feature-grid">
-                  <figure class="extension-feature extension-feature-stroll">
-                    <img src="assets/art and stroll gif.gif" alt="Art + Stroll Downtown Crossing event graphic" loading="lazy">
-                    <figcaption><strong>Art + Stroll</strong><span>event graphic</span></figcaption>
-                  </figure>
-
-                  <div class="extension-feature extension-feature-processes">
-                    <div class="public-processes-pair">
-                      <figure><img src="assets/public processes v2.png" alt="Public Processes poster featuring an architectural line drawing" loading="lazy"></figure>
-                      <figure><img src="assets/public processes.png" alt="Public Processes poster featuring a fabricated architectural model" loading="lazy"></figure>
-                    </div>
-                    <p><strong>Public Processes</strong><br>Two treatments for the Boston Cyberarts exhibition, held together by the same typographic structure.</p>
-                  </div>
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">02</span>
+                <div>
+                  <h3>Across formats</h3>
+                  <p>Artwork is shown first; tap or click each panel to switch into the installed view.</p>
                 </div>
+              </div>
 
-                <div class="making-public-extension">
-                  <header class="making-public-heading">
-                    <span>03</span>
+              <div class="switcher-grid switcher-grid--three">
+                <article class="image-switcher" data-switcher>
+                  <div class="image-switcher__meta">
                     <div>
-                      <h5>Making Public</h5>
-                      <p>print + digital collateral</p>
+                      <h4>More Connection / Lyrik</h4>
+                      <p>A‑frame + open hours</p>
                     </div>
-                  </header>
+                    <button type="button" class="image-switcher__button" aria-pressed="false">in use</button>
+                  </div>
+                  <div class="image-switcher__stage image-switcher__stage--portrait" tabindex="0" role="button" aria-label="Switch between artwork and installed view">
+                    <img class="state-primary" src="/design/assets/more connection lyric.png" alt="More Connection Lyrik artwork">
+                    <img class="state-secondary" src="/design/assets/more connection lyric photo.png" alt="More Connection Lyrik A-frame installed outdoors">
+                  </div>
+                </article>
 
-                  <figure class="mp-banner-single">
-                    <img src="assets/making public banner 1.png" alt="Making Public horizontal event banner" loading="lazy">
+                <article class="image-switcher" data-switcher>
+                  <div class="image-switcher__meta">
+                    <div>
+                      <h4>More Depth</h4>
+                      <p>Digital kiosk + campaign graphic</p>
+                    </div>
+                    <button type="button" class="image-switcher__button" aria-pressed="false">in use</button>
+                  </div>
+                  <div class="image-switcher__stage image-switcher__stage--portrait" tabindex="0" role="button" aria-label="Switch between artwork and installed view">
+                    <img class="state-primary" src="/design/assets/more depth.png" alt="More Depth campaign artwork">
+                    <img class="state-secondary" src="/design/assets/more depth image.png" alt="More Depth campaign displayed on a digital kiosk">
+                  </div>
+                </article>
+
+                <article class="image-switcher" data-switcher>
+                  <div class="image-switcher__meta">
+                    <div>
+                      <h4>More fun is here</h4>
+                      <p>Banner + MBTA bus application</p>
+                    </div>
+                    <button type="button" class="image-switcher__button" aria-pressed="false">in use</button>
+                  </div>
+                  <div class="image-switcher__stage image-switcher__stage--wide" tabindex="0" role="button" aria-label="Switch between artwork and installed view">
+                    <img class="state-primary" src="/design/assets/more fun bus.png" alt="More fun is here campaign banner artwork">
+                    <img class="state-secondary" src="/design/assets/more fun bus image.png" alt="More fun is here campaign installed on a bus">
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">03</span>
+                <div>
+                  <h3>Extensions</h3>
+                  <p>
+                    Smaller event identities and exhibition-specific pieces keep the larger Triennial structure while letting the image logic change.
+                  </p>
+                </div>
+              </div>
+
+              <div class="extension-layout">
+                <figure class="extension-card extension-card--gif">
+                  <img src="/design/assets/art and stroll gif.gif" alt="Art + Stroll animated event graphic">
+                  <figcaption><strong>Art + Stroll</strong><span>Event graphic</span></figcaption>
+                </figure>
+
+                <div class="extension-card extension-card--double">
+                  <div class="double-artworks">
+                    <figure><img src="/design/assets/public processes v2.png" alt="Public Processes poster with architectural line drawing"></figure>
+                    <figure><img src="/design/assets/public processes.png" alt="Public Processes poster with architectural model"></figure>
+                  </div>
+                  <p><strong>Public Processes</strong><br>Two treatments for the Boston Cyberarts exhibition, held together by the same typographic structure.</p>
+                </div>
+              </div>
+
+              <div class="making-public-panel">
+                <div class="making-public-panel__intro">
+                  <h4>Making Public</h4>
+                  <p>Banner, program, flyer, social graphics, and event photography organized as one compact event system.</p>
+                </div>
+
+                <div class="making-public-grid">
+                  <figure class="mp-banner">
+                    <img src="/design/assets/making public banner 1.png" alt="Making Public event banner">
                     <figcaption>event banner</figcaption>
                   </figure>
 
-                  <div class="making-public-primary-assets">
-                    <div class="mp-flip-card mp-program-card" data-mp-flip>
-                      <div class="mp-flip-toolbar">
-                        <span class="mp-flip-label">program handout</span>
-                        <button class="mp-flip-button" type="button" aria-pressed="false">flip</button>
-                      </div>
-                      <div class="mp-flip-scene" tabindex="0" role="button" aria-label="Making Public program handout. Hover or tap to flip.">
-                        <div class="mp-flip-paper">
-                          <img class="mp-flip-face mp-flip-front" src="assets/making public program front.png" alt="Making Public program handout front" loading="lazy">
-                          <img class="mp-flip-face mp-flip-back" src="assets/making public flyer back.png" alt="Making Public program handout reverse" loading="lazy">
-                        </div>
+                  <article class="flip-card" data-flip-card>
+                    <div class="flip-card__meta">
+                      <span>program handout</span>
+                      <button type="button" class="flip-card__button" aria-pressed="false">flip</button>
+                    </div>
+                    <div class="flip-card__scene" tabindex="0" role="button" aria-label="Flip the Making Public program handout">
+                      <div class="flip-card__inner">
+                        <figure class="flip-card__face flip-card__face--front">
+                          <img src="/design/assets/making public program front.png" alt="Making Public program handout front">
+                        </figure>
+                        <figure class="flip-card__face flip-card__face--back">
+                          <img src="/design/assets/making public flyer back.png" alt="Making Public flyer reverse with directions and event details">
+                        </figure>
                       </div>
                     </div>
+                  </article>
 
-                    <div class="mp-flip-card mp-social-card" data-mp-flip>
-                      <div class="mp-flip-toolbar">
-                        <span class="mp-flip-label">social</span>
-                        <button class="mp-flip-button" type="button" aria-pressed="false">flip</button>
-                      </div>
-                      <div class="mp-flip-scene" tabindex="0" role="button" aria-label="Making Public social graphic. Hover or tap to flip.">
-                        <div class="mp-flip-paper mp-flip-paper-social">
-                          <img class="mp-flip-face mp-flip-front" src="assets/making public social 1.png" alt="Making Public social graphic, cream version" loading="lazy">
-                          <img class="mp-flip-face mp-flip-back" src="assets/making public social 2.png" alt="Making Public social graphic, image-led version" loading="lazy">
-                        </div>
-                      </div>
-                    </div>
+                  <div class="stacked-socials">
+                    <figure>
+                      <img src="/design/assets/making public social 1.png" alt="Making Public social graphic with program information">
+                      <figcaption>social 01</figcaption>
+                    </figure>
+                    <figure>
+                      <img src="/design/assets/making public social 2.png" alt="Making Public social graphic with event information">
+                      <figcaption>social 02</figcaption>
+                    </figure>
+                    <figure>
+                      <img src="/design/assets/making public event photo.jpg" alt="Making Public event photograph">
+                      <figcaption>event photo</figcaption>
+                    </figure>
                   </div>
-
-                  <div class="making-public-copy-middle">
-                    <p>Print and digital collateral for <em>Making Public</em>, a convening at Roxbury Community College in October 2025. The image came out of a youth workshop that Ñ Press ran with NUBE East Boston, part of Gabriel Sosa's Triennial project with the community print studio. From there it ran across posters, on-site wayfinding, a program handout, a QR flyer, and a newsletter ad for Boston Art Review, each one carrying a different amount of information.</p>
-                  </div>
-
-                  <figure class="mp-event-final">
-                    <img src="assets/making public event photo.jpg" alt="Making Public attendee receiving printed event materials" loading="lazy">
-                    <figcaption>Making Public / Roxbury Community College</figcaption>
-                  </figure>
                 </div>
-              </section>
-
-
-              <footer class="project-credit">
-                <p>Design and production: Keegan Andrulis. Brand guidelines by Siena Scarff Design. Produced in-house at the Boston Public Art Triennial.</p>
-              </footer>
-
-              <button class="project-close" type="button" aria-controls="more-content">close</button>
-            </div>
+              </div>
+            </section>
           </div>
         </article>
+        <div class="knot-divider knot-divider--a" aria-hidden="true"><img src="/assets/home/knot_smooth_svg3.svg" alt=""><img src="/assets/home/pinch_knot_smooth_svg2.png" alt=""></div>
 
-
-        <article class="project" id="better-angels">
+        <article class="project project--angels" id="project-angels" data-project>
           <div class="project-summary">
-            <div class="project-number" aria-hidden="true">02</div>
-
-            <div class="project-info">
-              <h3 class="project-title" id="better-angels-title"><em>Better Angels</em></h3>
-              <p class="project-client">Boston Public Art Triennial</p>
-              <p class="project-blurb">Identity, collateral, and signage for Heather Kapplow’s participatory installation, developed in collaboration with the artist.</p>
-              <button class="project-explore" type="button" aria-controls="better-angels-content" aria-expanded="false">explore</button>
+            <div class="project-summary__rail">
+              <span class="project-number">02</span>
+              <span class="project-discipline">installation · print · signage</span>
             </div>
 
-            <figure class="project-key-image project-key-image-better-angels">
-              <img src="assets/better angels fold out in use.jpg" alt="Better Angels folded takeaway being handled during the installation" loading="lazy">
-            </figure>
-
-            <button class="project-plus" type="button" aria-controls="better-angels-content" aria-expanded="false" aria-label="Explore Better Angels project">+</button>
-          </div>
-
-
-          <div class="project-content" id="better-angels-content" role="region" aria-labelledby="better-angels-title" hidden>
-            <div class="project-story project-story-better-angels">
-
-              <section class="case-lead ba-lead">
-                <div class="case-lead-copy">
-                  <p><em>Better Angels</em> was a participatory installation by Heather Kapplow. I led the graphic design, working with Heather, the Triennial’s curatorial staff, and production staff to translate the installation into a coherent visual system across print, signage, staff materials, and visitor takeaways. I also assisted with fabrication and production of the visual elements.</p>
-                </div>
-              </section>
-
-              <section class="case-section ba-folder-section">
-                <header class="case-section-heading">
-                  <span>01</span>
-                  <div><h4>The takeaway</h4><p class="case-section-deck">One die-cut sheet becomes a small folder. Tap or click the paper to fold it closed; tap again to open it and view the other side.</p></div>
-                </header>
-
-                <div class="ba-folder-layout">
-                  <div class="ba-folder-demo">
-                    <div class="ba-folder-toolbar">
-                      <button class="ba-folder-side" type="button" aria-pressed="false">flip</button>
-                    </div>
-
-                    <div class="ba-folder-stage" data-ba-folder tabindex="0" role="button" aria-pressed="false" aria-label="Interactive Better Angels takeaway folder. Tap to fold or unfold; use flip to turn the paper over.">
-                      <div class="ba-folder-panel ba-folder-left ba-folder-side-panel">
-                        <span class="ba-folder-face ba-folder-face-front"><img src="assets/better angels takeaway outside.png" alt=""></span>
-                        <span class="ba-folder-face ba-folder-face-back"><img src="assets/better angels takeaway inside.png" alt=""></span>
-                      </div>
-
-                      <div class="ba-folder-panel ba-folder-center">
-                        <span class="ba-folder-face ba-folder-face-front"><img src="assets/better angels takeaway outside.png" alt=""></span>
-                        <span class="ba-folder-face ba-folder-face-back"><img src="assets/better angels takeaway inside.png" alt=""></span>
-                      </div>
-
-                      <div class="ba-folder-panel ba-folder-right ba-folder-side-panel">
-                        <span class="ba-folder-face ba-folder-face-front"><img src="assets/better angels takeaway outside.png" alt=""></span>
-                        <span class="ba-folder-face ba-folder-face-back"><img src="assets/better angels takeaway inside.png" alt=""></span>
-                      </div>
-
-                      <div class="ba-folder-panel ba-folder-bottom ba-folder-bottom-panel">
-                        <span class="ba-folder-face ba-folder-face-front"><img src="assets/better angels takeaway outside.png" alt=""></span>
-                        <span class="ba-folder-face ba-folder-face-back"><img src="assets/better angels takeaway inside.png" alt=""></span>
-                      </div>
-                    </div>
-                    <p class="ba-folder-hint">tap the paper to fold / unfold</p>
-                  </div>
-
-                  <figure class="ba-folder-reference">
-                    <img src="assets/better angels fold out in use.jpg" alt="A visitor holding the Better Angels folded takeaway during the installation" loading="lazy">
-                    <figcaption><span>in use</span><span>Waterfront Park</span></figcaption>
-                  </figure>
-                </div>
-              </section>
-
-
-              <section class="case-section ba-flyer-section">
-                <header class="case-section-heading">
-                  <span>02</span>
-                  <div><h4>Flyer</h4><p class="case-section-deck">The front acts as the invitation; the reverse carries directions, context, and the site map. Hover on desktop, or use the flip control on any device.</p></div>
-                </header>
-
-                <div class="flyer-demo" data-flyer>
-                  <div class="flyer-toolbar"><div class="flyer-state" aria-live="polite">front</div><button class="flyer-flip" type="button" aria-pressed="false">flip</button></div>
-                  <div class="flyer-scene" tabindex="0" role="button" aria-label="Better Angels flyer. Tap to flip.">
-                    <div class="flyer-paper">
-                      <div class="flyer-face flyer-face-front"><img src="assets/better angels flyer front.png" alt="Better Angels flyer front"></div>
-                      <div class="flyer-face flyer-face-back"><img src="assets/better angels flyer revers.png" alt="Better Angels flyer reverse"></div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-
-              <section class="case-section ba-script-section">
-                <header class="case-section-heading">
-                  <span>03</span>
-                  <div><h4>Script + whistle</h4><p class="case-section-deck">The staff script and Heaven Membership Card turn the identity into part of the encounter. Visitors complete the card, then use it as a paper whistle to call the angels.</p></div>
-                </header>
-
-                <div class="ba-script-layout">
-                  <figure class="ba-script-flat"><img src="assets/better angels script and whistle file.png" alt="Better Angels script and Heaven Membership Card production artwork" loading="lazy"><figcaption>script + membership card / production artwork</figcaption></figure>
-                  <div class="ba-whistle-docs">
-                    <figure><img src="assets/better angels whistle.jpg" alt="Visitor holding the Heaven Membership Card" loading="lazy"></figure>
-                    <figure><img src="assets/better angels whistle 2.jpg" alt="Close view of a folded Heaven Membership Card" loading="lazy"></figure>
-                    <figure><img src="assets/better angels whistle 3.jpg" alt="Visitor using the Heaven Membership Card as a whistle" loading="lazy"></figure>
-                  </div>
-                </div>
-              </section>
-
-
-              <section class="case-section ba-signage-section">
-                <header class="case-section-heading">
-                  <span>04</span>
-                  <div><h4>Signage</h4><p class="case-section-deck">Interpretive, artist, welcome, and fundraising signs use one visual family while changing density and scale for different jobs.</p></div>
-                </header>
-
-                <div class="ba-signage-flats">
-                  <figure class="ba-sign-tall"><img src="assets/better angels signage 1.png" alt="Better Angels interpretive sign" loading="lazy"><figcaption>interpretive</figcaption></figure>
-                  <figure class="ba-sign-tall"><img src="assets/better angels signage 2.png" alt="Better Angels artist and Triennial information sign" loading="lazy"><figcaption>artist + Triennial</figcaption></figure>
-                  <figure class="ba-sign-mid"><img src="assets/better angels signage 3.png" alt="Better Angels welcome and participation guidelines sign" loading="lazy"><figcaption>welcome</figcaption></figure>
-                  <figure class="ba-sign-mid"><img src="assets/better angels signage 4.png" alt="Better Angels fundraising sign" loading="lazy"><figcaption>fundraising</figcaption></figure>
-                </div>
-
-                <div class="ba-signage-docs">
-                  <figure class="ba-signage-doc-wide"><img src="assets/better angels signage.jpg" alt="Better Angels signage installed at the entrance to the activation" loading="lazy"></figure>
-                  <figure><img src="assets/better angels signage 2.jpg" alt="Participant writing on Better Angels response boards" loading="lazy"></figure>
-                  <figure><img src="assets/better angels signage 3.jpg" alt="Better Angels participation board installed outdoors" loading="lazy"></figure>
-                </div>
-              </section>
-
-
-              <section class="case-section ba-activation-section">
-                <header class="case-section-heading">
-                  <span>05</span>
-                  <div><h4>Staff + activation</h4><p class="case-section-deck">The visual system continued into staff clothing and the live exchange with visitors, where the printed pieces were handled rather than simply viewed.</p></div>
-                </header>
-
-                <div class="ba-activation-grid">
-                  <figure><img src="assets/better angels t shirt and activation.jpg" alt="Better Angels staff member wearing the project T-shirt during the activation" loading="lazy"></figure>
-                  <figure><img src="assets/better angels t shirt and script.jpg" alt="Better Angels staff member using the printed script during the activation" loading="lazy"></figure>
-                  <figure><img src="assets/better angels takeaway.jpg" alt="Visitors holding Better Angels takeaways in front of the inflatable installation" loading="lazy"></figure>
-                </div>
-              </section>
-
-              <footer class="project-credit"><p>Graphic design: Keegan Andrulis, in collaboration with Heather Kapplow and the Boston Public Art Triennial curatorial and production teams. Installation by Heather Kapplow. Commissioned by the Boston Public Art Triennial.</p></footer>
-              <button class="project-close" type="button" aria-controls="better-angels-content">close</button>
-            </div>
-          </div>
-        </article>
-
-      </section>
-
-
-      <section
-        class="work-group"
-        aria-labelledby="other-work-heading"
-      >
-
-        <header class="work-group-header">
-
-          <h2 id="other-work-heading">
-            Other work
-          </h2>
-
-        </header>
-
-
-        <article
-          class="project"
-          id="paul-winter"
-        >
-
-          <div class="project-summary">
-
-            <div class="project-number" aria-hidden="true">
-              03
-            </div>
-
-            <div class="project-info">
-
-              <h3
-                class="project-title"
-                id="paul-winter-title"
-              >
-                Paul Winter Consort
-              </h3>
-
-              <p class="project-client">
-                poster series + concert production
-              </p>
-
+            <div class="project-summary__copy">
+              <p class="project-client">Boston Public Art Triennial / Heather Kapplow</p>
+              <h2 class="project-title"><em>Better Angels</em></h2>
               <p class="project-blurb">
-                Three concert posters built around images with a direct
-                relationship to the music, place, and program.
+                A participatory installation translated into a coherent visual system across print, signage, staff material,
+                and visitor takeaways. The design had to feel slightly absurd and welcoming at once—practical, but still theatrical.
               </p>
-
-              <button
-                class="project-explore"
-                type="button"
-                aria-controls="paul-winter-content"
-                aria-expanded="false"
-              >
-                explore
+              <button class="project-toggle" type="button" aria-expanded="false" aria-controls="project-angels-content">
+                <span class="when-closed">explore</span>
+                <span class="when-open">close</span>
               </button>
-
             </div>
 
-            <figure class="project-key-image pw-key-strip" aria-label="Three Paul Winter Consort concert posters">
-              <img src="assets/adventures in the universe.png" alt="" loading="lazy">
-              <img src="assets/spring equinox.png" alt="" loading="lazy">
-              <img src="assets/this glorious earth.png" alt="" loading="lazy">
+            <figure class="project-key project-key--angels">
+              <div class="project-key__collage collage-angels">
+                <img class="collage-main" src="/design/assets/better angels fold out in use.jpg" alt="Better Angels takeaway in use">
+                <img class="collage-secondary collage-secondary--left" src="/design/assets/better angels takeaway inside.png" alt="Better Angels takeaway inside">
+                <img class="collage-secondary collage-secondary--right" src="/design/assets/better angels signage 1.png" alt="Better Angels signage">
+              </div>
+              <figcaption>Takeaway, signage, and activation materials for the installation</figcaption>
             </figure>
-
-            <button
-              class="project-plus"
-              type="button"
-              aria-controls="paul-winter-content"
-              aria-expanded="false"
-              aria-label="Explore Paul Winter Consort project"
-            >
-              +
-            </button>
-
           </div>
 
-          <div
-            class="project-content"
-            id="paul-winter-content"
-            role="region"
-            aria-labelledby="paul-winter-title"
-            hidden
-          >
-
-            <div class="project-story project-story-paul-winter">
-
-              <header class="pw-intro">
-                <p>
-                  Three posters for concerts I also helped produce for the Paul Winter Consort. Each is built around source material specific to the program: the Hubble Ultra Deep Field for Charles Ives, a NOAA view of the vernal equinox, and an archival photograph from Crestone, Colorado. The image source sets the structure of each poster, while the typography shifts with the subject.
-                </p>
-              </header>
-
-              <div class="pw-poster-grid">
-
-                <article class="pw-poster-card">
-                  <figure>
-                    <img
-                      src="assets/adventures in the universe.png"
-                      alt="Adventures in the Universe concert poster for the Paul Winter Consort"
-                      loading="lazy"
-                    >
-                  </figure>
-
-                  <div class="pw-poster-copy">
-                    <h4>Adventures in the Universe</h4>
-                    <p>
-                      A concert at Yale's Woolsey Hall built around Charles Ives, marking his 150th birthday and drawing on his unfinished <em>Universe Symphony</em>. The image is NASA's Hubble Ultra Deep Field. Ives's best-known piece, <em>The Unanswered Question</em>, sets a lone trumpet asking against a quiet string background that never answers, and the Deep Field does something similar as a picture: a small patch of seemingly empty sky that holds thousands of galaxies. The type is heavy and condensed, stacked to fill the width of the sheet against all that empty space.
-                    </p>
-                  </div>
-                </article>
-
-                <article class="pw-poster-card">
-                  <figure>
-                    <img
-                      src="assets/spring equinox.png"
-                      alt="Spring Equinox Celebration concert poster for the Paul Winter Consort"
-                      loading="lazy"
-                    >
-                  </figure>
-
-                  <div class="pw-poster-copy">
-                    <h4>Spring Equinox Celebration</h4>
-                    <p>
-                      The image is a NOAA satellite capture of the earth at the vernal equinox, when daylight and darkness are nearly equal at every latitude. I treated the image and set the type curving around the globe, using a serif that points back to the late 60s and 70s, when the Consort formed and made the albums it's still known for.
-                    </p>
-                  </div>
-                </article>
-
-                <article class="pw-poster-card">
-                  <figure>
-                    <img
-                      src="assets/this glorious earth.png"
-                      alt="This Glorious Earth concert poster for the Paul Winter Consort"
-                      loading="lazy"
-                    >
-                  </figure>
-
-                  <div class="pw-poster-copy">
-                    <h4>This Glorious Earth</h4>
-                    <p>
-                      An Earth Day concert at the Cathedral of St. John the Divine. The photograph comes from the Paul Winter Consort's archive of Crestone, Colorado, the landscape behind the Consort's 2007 album of the same name, recorded at 11,800 feet in the Sangre de Cristo Mountains. Using an image from the Consort’s own archive ties the poster directly to the landscape behind the recording. The type is the same heavy condensed style as <em>Adventures in the Universe</em>, so the two read as a series, but set smaller here to let the photograph carry the poster.
-                    </p>
-                  </div>
-                </article>
-
+          <div class="project-content" id="project-angels-content" hidden>
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">01</span>
+                <div>
+                  <h3>Takeaway system</h3>
+                  <p>
+                    The die-cut sheet becomes a small visitor takeaway. Rather than treating the parts separately,
+                    the inside, outside, flyer, and in-use documentation are grouped together as one section.
+                  </p>
+                </div>
               </div>
 
-              <footer class="project-credit pw-credit">
-                <p>
-                  Design: Keegan Andrulis, for the Paul Winter Consort, 2023–2024.<br>
-                  <em>Adventures in the Universe</em>: NASA/ESA Hubble Ultra Deep Field.<br>
-                  <em>Spring Equinox Celebration</em>: NOAA GOES-East.<br>
-                  <em>This Glorious Earth</em>: archival photograph, Paul Winter Consort.
-                </p>
-              </footer>
+              <div class="angels-takeaway-grid">
+                <article class="folder-specimen" data-folder>
+                  <div class="folder-specimen__meta">
+                    <span>paper object / outside first</span>
+                    <div class="folder-controls">
+                      <button type="button" class="folder-flip" aria-pressed="false">flip</button>
+                      <button type="button" class="folder-fold" aria-pressed="false">fold</button>
+                    </div>
+                  </div>
 
-              <button
-                class="project-close"
-                type="button"
-                aria-controls="paul-winter-content"
-              >
-                close
+                  <div class="folder-stage" aria-label="Interactive Better Angels die-cut folder. Use flip to change sides and fold to animate the object.">
+                    <div class="paper-folder" data-side="outside">
+                      <div class="folder-panel folder-panel--center">
+                        <div class="folder-panel__face folder-panel__face--front folder-art folder-art--outside"></div>
+                        <div class="folder-panel__face folder-panel__face--back folder-art folder-art--inside"></div>
+                      </div>
+                      <div class="folder-panel folder-panel--tongue">
+                        <div class="folder-panel__face folder-panel__face--front folder-art folder-art--outside"></div>
+                        <div class="folder-panel__face folder-panel__face--back folder-art folder-art--inside"></div>
+                      </div>
+                      <div class="folder-panel folder-panel--left">
+                        <div class="folder-panel__face folder-panel__face--front folder-art folder-art--outside"></div>
+                        <div class="folder-panel__face folder-panel__face--back folder-art folder-art--inside"></div>
+                      </div>
+                      <div class="folder-panel folder-panel--right">
+                        <div class="folder-panel__face folder-panel__face--front folder-art folder-art--outside"></div>
+                        <div class="folder-panel__face folder-panel__face--back folder-art folder-art--inside"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="folder-note">bottom tongue first · side leaves second · slow paper fold</p>
+                </article>
+
+                <div class="angels-takeaway-side">
+                  <figure class="angels-use-photo">
+                    <img src="/design/assets/better angels fold out in use.jpg" alt="Better Angels takeaway being held in use at the installation">
+                    <figcaption><strong>In use</strong><span>Waterfront Park</span></figcaption>
+                  </figure>
+
+                  <article class="flip-card" data-flip-card>
+                    <div class="flip-card__meta">
+                      <span>flyer</span>
+                      <button type="button" class="flip-card__button" aria-pressed="false">flip</button>
+                    </div>
+                    <div class="flip-card__scene" tabindex="0" role="button" aria-label="Flip the Better Angels flyer">
+                      <div class="flip-card__inner">
+                        <figure class="flip-card__face flip-card__face--front">
+                          <img src="/design/assets/better angels flyer front.png" alt="Better Angels flyer front">
+                        </figure>
+                        <figure class="flip-card__face flip-card__face--back">
+                          <img src="/design/assets/better angels flyer revers.png" alt="Better Angels flyer reverse">
+                        </figure>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </section>
+
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">02</span>
+                <div>
+                  <h3>Script + whistle</h3>
+                  <p>
+                    The staff script and Heaven Membership Card pull the identity into the live encounter.
+                    The card becomes a paper whistle: part prop, part instruction, part souvenir.
+                  </p>
+                </div>
+              </div>
+
+              <div class="angels-script-layout">
+                <figure class="angels-script-feature">
+                  <img src="/design/assets/better angels script and whistle file.png" alt="Better Angels script and whistle file">
+                  <figcaption><strong>Script + whistle file</strong><span>Instructional print object</span></figcaption>
+                </figure>
+
+                <div class="angels-script-gallery">
+                  <figure><img src="/design/assets/better angels whistle.jpg" alt="Better Angels paper whistle in use"></figure>
+                  <figure><img src="/design/assets/better angels whistle 2.jpg" alt="Better Angels visitor using the whistle"></figure>
+                  <figure><img src="/design/assets/better angels whistle 3.jpg" alt="Better Angels whistle photographed close-up"></figure>
+                  <figure><img src="/design/assets/better angels t shirt and script.jpg" alt="Better Angels staff shirt and script"></figure>
+                </div>
+              </div>
+            </section>
+
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">03</span>
+                <div>
+                  <h3>Signage + activation</h3>
+                  <p>
+                    Interpretive, artist, welcome, and fundraising signs use one visual family while changing scale and density for different jobs.
+                    The material continues into staff clothing and the live exchange with visitors.
+                  </p>
+                </div>
+              </div>
+
+              <div class="angels-signage-layout">
+                <div class="angels-signage-grid">
+                  <figure><img src="/design/assets/better angels signage.jpg" alt="Better Angels interpretive signage"></figure>
+                  <figure><img src="/design/assets/better angels signage 1.png" alt="Better Angels signage specimen"></figure>
+                  <figure><img src="/design/assets/better angels signage 2.jpg" alt="Better Angels signage installed"></figure>
+                  <figure><img src="/design/assets/better angels signage 3.jpg" alt="Better Angels signage detail"></figure>
+                </div>
+
+                <div class="angels-activation-stack">
+                  <figure><img src="/design/assets/better angels signage 4.png" alt="Better Angels welcome signage specimen"></figure>
+                  <figure><img src="/design/assets/better angels t shirt and activation.jpg" alt="Better Angels t-shirt and installation activation"></figure>
+                </div>
+              </div>
+            </section>
+          </div>
+        </article>
+        <div class="knot-divider knot-divider--b" aria-hidden="true"><img src="/assets/home/knot_smooth_svg4.svg" alt=""><img src="/assets/home/pinch_knot_smooth_svg3.png" alt=""></div>
+
+        <article class="project project--winter" id="project-winter" data-project>
+          <div class="project-summary">
+            <div class="project-summary__rail">
+              <span class="project-number">03</span>
+              <span class="project-discipline">poster suite · music promotion</span>
+            </div>
+
+            <div class="project-summary__copy">
+              <p class="project-client">Paul Winter Consort</p>
+              <h2 class="project-title">Concert posters</h2>
+              <p class="project-blurb">
+                Three posters made alongside the concerts themselves. Each begins from an image source already tied to the program—astronomical imagery,
+                earth observation, or the Consort’s own archive—so the image carries part of the meaning before the type even enters.
+              </p>
+              <button class="project-toggle" type="button" aria-expanded="false" aria-controls="project-winter-content">
+                <span class="when-closed">explore</span>
+                <span class="when-open">close</span>
               </button>
-
             </div>
 
-          </div>
-
-        </article>
-
-        <article class="project" id="prx">
-
-          <div class="project-summary">
-            <div class="project-number" aria-hidden="true">04</div>
-
-            <div class="project-info">
-              <h3 class="project-title" id="prx-title">PRX + Radiotopia</h3>
-              <p class="project-client">identity + promotion</p>
-              <p class="project-blurb">
-                Brand and promotional design across podcast marketing,
-                editorial identity, and network campaigns.
-              </p>
-              <button class="project-explore" type="button" aria-controls="prx-content" aria-expanded="false">explore</button>
-            </div>
-
-            <figure class="project-key-image prx-key-image">
-              <img src="assets/ear hustle.png" alt="Ear Hustle election episode hero art" loading="lazy">
+            <figure class="project-key project-key--winter">
+              <div class="poster-triptych">
+                <img src="/design/assets/adventures in the universe.png" alt="Adventures in the Universe poster">
+                <img src="/design/assets/spring equinox.png" alt="Spring Equinox Celebration poster">
+                <img src="/design/assets/this glorious earth.png" alt="This Glorious Earth poster">
+              </div>
+              <figcaption>Poster series for three concerts</figcaption>
             </figure>
-
-            <button class="project-plus" type="button" aria-controls="prx-content" aria-expanded="false" aria-label="Explore PRX and Radiotopia project">+</button>
           </div>
 
-          <div class="project-content" id="prx-content" role="region" aria-labelledby="prx-title" hidden>
-            <div class="project-story project-story-prx">
+          <div class="project-content" id="project-winter-content" hidden>
+            <section class="case-section case-section--dark">
+              <div class="case-section__header">
+                <span class="case-section__number">01</span>
+                <div>
+                  <h3>Poster suite</h3>
+                  <p>
+                    The three posters are presented as a series first, then as individual readings.
+                    The treatment stays spare so the posters can keep their authority.
+                  </p>
+                </div>
+              </div>
 
-              <section class="portfolio-lead">
-                <p>
-                  Design work produced at PRX in 2024, spanning editorial identity,
-                  podcast promotion, and network marketing. The projects move between
-                  individual shows and the larger Radiotopia brand, with each format
-                  built around a different communication job rather than one repeated template.
-                </p>
-              </section>
-
-              <section class="portfolio-case prx-ear-hustle">
-                <header class="portfolio-case-heading">
-                  <span>01</span>
-                  <div>
-                    <h4>Ear Hustle</h4>
-                    <p>
-                      Ear Hustle is a Radiotopia show made inside San Quentin, and a Pulitzer finalist. I wrote the pitch to Apple Podcasts for a feature on the show’s 2024 election episode, where the inside team runs a presidential poll at San Quentin. Apple selected it, but the feature needed custom hero art on a short turnaround. I built it from an existing pencil illustration by Damien Linnane, pairing the portrait with a custom stars-and-stripes wordmark for the election theme.
-                    </p>
-                  </div>
-                </header>
-
-                <figure class="prx-ear-hero">
-                  <img src="assets/ear hustle.png" alt="Ear Hustle election episode hero artwork with pencil portrait and stars-and-stripes wordmark" loading="lazy">
+              <div class="winter-gallery">
+                <figure class="winter-poster-card">
+                  <img src="/design/assets/adventures in the universe.png" alt="Adventures in the Universe poster">
+                  <figcaption>
+                    <h4>Adventures in the Universe</h4>
+                    <p>A concert at Yale’s Woolsey Hall built around Charles Ives, marking his 150th birthday and drawing on his unfinished <em>Universe Symphony</em>. The Hubble Ultra Deep Field creates a quiet, small patch of sky filled with depth.</p>
+                  </figcaption>
                 </figure>
-              </section>
 
-              <section class="portfolio-case">
-                <header class="portfolio-case-heading">
-                  <span>02</span>
-                  <div>
+                <figure class="winter-poster-card">
+                  <img src="/design/assets/spring equinox.png" alt="Spring Equinox Celebration poster">
+                  <figcaption>
+                    <h4>Spring Equinox Celebration</h4>
+                    <p>A NOAA satellite image of the Earth at the vernal equinox. I treated the image and type with a looser, late-60s / 70s-inflected serif to connect the concert to the period when the Consort formed.</p>
+                  </figcaption>
+                </figure>
+
+                <figure class="winter-poster-card">
+                  <img src="/design/assets/this glorious earth.png" alt="This Glorious Earth poster">
+                  <figcaption>
+                    <h4>This Glorious Earth</h4>
+                    <p>An Earth Day concert at the Cathedral of St. John the Divine. The landscape image comes from the Consort’s archive of Crestone, Colorado, tying the poster directly to the concert’s 2007 album of the same name.</p>
+                  </figcaption>
+                </figure>
+              </div>
+            </section>
+          </div>
+        </article>
+        <div class="knot-divider knot-divider--c" aria-hidden="true"><img src="/assets/home/knot_smooth_svg5.svg" alt=""><img src="/assets/home/pinch_knot_smooth_svg4.png" alt=""></div>
+
+        <article class="project project--prx" id="project-prx" data-project>
+          <div class="project-summary">
+            <div class="project-summary__rail">
+              <span class="project-number">04</span>
+              <span class="project-discipline">media identity · campaign graphics</span>
+            </div>
+
+            <div class="project-summary__copy">
+              <p class="project-client">PRX / Radiotopia</p>
+              <h2 class="project-title">Ear Hustle, In the Queue, and Radiotopia</h2>
+              <p class="project-blurb">
+                Design work from my time at PRX: editorial hero art for <em>Ear Hustle</em>, a refreshed name and logo for the monthly newsletter <em>In the Queue</em>,
+                and a social media graphic promoting Radiotopia’s ad‑free Apple Podcasts subscriptions.
+              </p>
+              <button class="project-toggle" type="button" aria-expanded="false" aria-controls="project-prx-content">
+                <span class="when-closed">explore</span>
+                <span class="when-open">close</span>
+              </button>
+            </div>
+
+            <figure class="project-key project-key--prx">
+              <img src="/design/assets/ear hustle.png" alt="Ear Hustle election episode hero art">
+              <figcaption><strong>Ear Hustle hero art</strong><span>Design by Keegan Andrulis · illustration by Damien Linnane</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="project-content" id="project-prx-content" hidden>
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">01</span>
+                <div>
+                  <h3>Ear Hustle</h3>
+                  <p>
+                    <em>Ear Hustle</em> is a Radiotopia show made inside San Quentin and a Pulitzer finalist.
+                    I wrote the pitch to Apple Podcasts for a feature on the show’s 2024 election episode, where the inside team runs a presidential poll at San Quentin.
+                    Apple selected it, and I built the hero art on a short turnaround from Damien Linnane’s existing pencil illustration, paired with a stars-and-stripes wordmark for the election theme.
+                  </p>
+                </div>
+              </div>
+
+              <figure class="prx-hero-figure">
+                <img src="/design/assets/ear hustle.png" alt="Ear Hustle hero art showing an illustrated figure writing beside a custom stars-and-stripes wordmark">
+                <figcaption>Design by Keegan Andrulis, illustration by Damien Linnane · produced at PRX, 2024</figcaption>
+              </figure>
+            </section>
+
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">02</span>
+                <div>
+                  <h3>Newsletter + social campaign</h3>
+                  <p>
+                    These two pieces sit best as a pair: one identity mark, one multi-show social graphic.
+                    The layout gives the logo room to breathe while treating the subscription graphic as the denser campaign object.
+                  </p>
+                </div>
+              </div>
+
+              <div class="prx-pairing">
+                <figure class="prx-card prx-card--logo">
+                  <img class="logo-lift" src="/design/assets/in the queue.png" alt="In the Queue logo from PRX">
+                  <figcaption>
                     <h4>In the Queue</h4>
-                    <p>
-                      In the Queue is the refreshed name and logo for PRX’s monthly newsletter, previously Storytime. The mark builds a play button out of stacked list lines, tying the listening and lineup ideas together in one form.
-                    </p>
-                  </div>
-                </header>
-
-                <figure class="prx-queue-mark">
-                  <img src="assets/in the queue.png" alt="In the Queue newsletter logo for PRX" loading="lazy">
+                    <p>The refreshed name and logo for PRX’s monthly newsletter, previously Storytime. The mark builds a play button from stacked list lines, tying the listening and lineup ideas together in one form.</p>
+                  </figcaption>
                 </figure>
-              </section>
 
-              <section class="portfolio-case prx-radiotopia-case">
-                <header class="portfolio-case-heading">
-                  <span>03</span>
-                  <div>
+                <figure class="prx-card prx-card--campaign">
+                  <img src="/design/assets/radiotopia apple.png" alt="Radiotopia Apple Podcasts social media graphic">
+                  <figcaption>
                     <h4>Radiotopia</h4>
-                    <p>
-                      A social media graphic promoting Radiotopia, bringing four shows together to promote ad-free subscriptions on Apple Podcasts.
-                    </p>
-                  </div>
-                </header>
-
-                <figure class="prx-radiotopia-art">
-                  <img src="assets/radiotopia apple.png" alt="Radiotopia social graphic promoting ad-free subscriptions on Apple Podcasts" loading="lazy">
+                    <p>A social media graphic bringing four shows together to promote ad‑free subscriptions on Apple Podcasts.</p>
+                  </figcaption>
                 </figure>
-              </section>
-
-              <footer class="project-credit">
-                <p>
-                  Ear Hustle hero art: design by Keegan Andrulis, illustration by Damien Linnane.<br>
-                  In the Queue logo and Radiotopia graphic: design by Keegan Andrulis.<br>
-                  Produced at PRX, 2024.
-                </p>
-              </footer>
-
-              <button class="project-close" type="button" aria-controls="prx-content">close</button>
-            </div>
+              </div>
+            </section>
           </div>
         </article>
+        <div class="knot-divider knot-divider--d" aria-hidden="true"><img src="/assets/home/knot_large.svg" alt=""><img src="/assets/home/pinch_knot_smooth_svg5.png" alt=""></div>
 
-
-        <article class="project" id="college">
-
+        <article class="project project--college" id="project-college" data-project>
           <div class="project-summary">
-            <div class="project-number" aria-hidden="true">05</div>
-
-            <div class="project-info">
-              <h3 class="project-title" id="college-title">Trinity College Dublin</h3>
-              <p class="project-client">student media + campaigns + packaging</p>
-              <p class="project-blurb">
-                Design work across a radio station, a student campaign,
-                and a packaging series.
-              </p>
-              <button class="project-explore" type="button" aria-controls="college-content" aria-expanded="false">explore</button>
+            <div class="project-summary__rail">
+              <span class="project-number">05</span>
+              <span class="project-discipline">student media · campaigns · packaging</span>
             </div>
 
-            <figure class="project-key-image college-key-image">
-              <img src="assets/tfm logo.png" alt="Trinity FM logo" loading="lazy">
-            </figure>
+            <div class="project-summary__copy">
+              <p class="project-client">Trinity College Dublin</p>
+              <h2 class="project-title">Trinity FM, Fullam Campaign, and Cane Vino</h2>
+              <p class="project-blurb">
+                Design work from Trinity College Dublin across a radio station, a student campaign, and a packaging series.
+                This section is more playful, but still held inside the same editorial system.
+              </p>
+              <button class="project-toggle" type="button" aria-expanded="false" aria-controls="project-college-content">
+                <span class="when-closed">explore</span>
+                <span class="when-open">close</span>
+              </button>
+            </div>
 
-            <button class="project-plus" type="button" aria-controls="college-content" aria-expanded="false" aria-label="Explore Trinity College Dublin work">+</button>
+            <figure class="project-key project-key--college">
+              <div class="college-summary-grid">
+                <img class="college-summary-grid__large" src="/design/assets/tfm arts block bash.png" alt="TFM Arts Block Bash poster">
+                <img src="/design/assets/fullam campaign2.png" alt="Fullam campaign poster">
+                <img src="/design/assets/wine label pinot noir.png" alt="Cane Vino Pinot Noir bottle label">
+              </div>
+              <figcaption>Student media, social-first campaigning, and illustrated packaging</figcaption>
+            </figure>
           </div>
 
-          <div class="project-content" id="college-content" role="region" aria-labelledby="college-title" hidden>
-            <div class="project-story project-story-college">
-
-              <section class="portfolio-lead">
-                <p>
-                  Design work from my time at Trinity College Dublin, across a radio station,
-                  a student campaign, and a packaging series.
-                </p>
-              </section>
-
-              <section class="portfolio-case college-tfm">
-                <header class="portfolio-case-heading">
-                  <span>01</span>
-                  <div>
-                    <h4>Trinity FM</h4>
-                    <p>
-                      I was the designer for TFM, Trinity’s student-run radio station, and ran its social media. I designed a new logo when I started, built around a wave motif that reads as both a sound wave and a broadcast signal, and carried it across seasonal color variants. Working social-media-first, I made a run of event and social graphics with a loose, DIY aesthetic that fit a student station, including custom backgrounds for events from the station annual meetings to live music nights like the Arts Block Bash.
-                    </p>
-                  </div>
-                </header>
-
-                <div class="college-square-grid college-square-grid-tfm">
-                  <figure class="college-logo-feature"><img src="assets/tfm logo.png" alt="Trinity FM logo with radiating wave motif" loading="lazy"></figure>
-                  <figure><img src="assets/tfm agm.png" alt="Trinity FM AGM social graphic" loading="lazy"></figure>
-                  <figure><img src="assets/tfm arts block bash.png" alt="Trinity FM Arts Block Bash event graphic" loading="lazy"></figure>
+          <div class="project-content" id="project-college-content" hidden>
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">01</span>
+                <div>
+                  <h3>Trinity FM</h3>
+                  <p>
+                    I was the designer for TFM, Trinity’s student-run radio station, and ran its social media.
+                    I designed a new logo built around a wave motif that reads as both a sound wave and a broadcast signal,
+                    then carried it across seasonal color variants and event graphics.
+                  </p>
                 </div>
-              </section>
+              </div>
 
-              <section class="portfolio-case college-fullam">
-                <header class="portfolio-case-heading">
-                  <span>02</span>
-                  <div>
-                    <h4>Fullam Campaign</h4>
-                    <p>
-                      A social-first campaign for Gabi Fullam’s run for Trinity College Dublin Students’ Union president, a race she won on the first count. The campaign centered on racial justice, accessibility, and supporting the most vulnerable students, and the design had to carry that message fast through an Instagram feed. I made the social assets, profile filters, video, and a consistent #ImForFullam lockup, held together by a steady green, purple, and white palette across portrait posters, manifesto cards, and motion.
-                    </p>
-                  </div>
-                </header>
+              <div class="college-showcase college-showcase--tfm">
+                <figure class="tfm-logo-block">
+                  <img src="/design/assets/tfm logo.png" alt="TFM logo with a wave motif">
+                  <figcaption><strong>TFM logo</strong><span>Sound wave + broadcast signal</span></figcaption>
+                </figure>
+                <figure class="tfm-poster-block">
+                  <img src="/design/assets/tfm agm.png" alt="TFM AGM poster">
+                  <figcaption><strong>AGM</strong><span>Social-first event graphic</span></figcaption>
+                </figure>
+                <figure class="tfm-poster-block">
+                  <img src="/design/assets/tfm arts block bash.png" alt="TFM Arts Block Bash poster">
+                  <figcaption><strong>Arts Block Bash</strong><span>Live music night poster</span></figcaption>
+                </figure>
+              </div>
+            </section>
 
-                <div class="college-square-grid">
-                  <figure><img src="assets/fullam campaign.png" alt="I'm For Fullam campaign portrait graphic" loading="lazy"></figure>
-                  <figure><img src="assets/fullam campaign2.png" alt="Vote for Fullam campaign graphic" loading="lazy"></figure>
-                  <figure><img src="assets/fullam campaign3.png" alt="Fullam campaign manifesto graphic" loading="lazy"></figure>
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">02</span>
+                <div>
+                  <h3>Fullam Campaign</h3>
+                  <p>
+                    A social-first campaign for Gabi Fullam’s run for Trinity College Dublin Students’ Union president, a race she won on the first count.
+                    The design centered on racial justice, accessibility, and supporting the most vulnerable students, using a steady green, purple, and white palette across portrait posters, manifesto cards, and motion.
+                  </p>
                 </div>
-              </section>
+              </div>
 
-              <section class="portfolio-case college-wine">
-                <header class="portfolio-case-heading">
-                  <span>03</span>
-                  <div>
-                    <h4>Cane Vino</h4>
-                    <p>
-                      A wine label series made for a marketing and branding elective, built entirely from my own illustrations. Each varietal gets its own label, with the artwork, palette, and cap chosen to match the character of the wine. The two reds share a deep red cap: the Cabernet Sauvignon carries a loose line drawing, and the Pinot Noir pairs a line-and-watercolor pinecone with custom floral lettering. The Gewürztraminer gets a colorful abstract drawing of a house on a green-topped bottle, and the Grenache Rosé an abstract illustration under a clean white topper. One label system holds the range together while every bottle reads as its own thing.
-                    </p>
-                  </div>
-                </header>
+              <div class="college-showcase college-showcase--fullam">
+                <figure><img src="/design/assets/fullam campaign.png" alt="Fullam campaign social graphic reading #ImForFullam"></figure>
+                <figure><img src="/design/assets/fullam campaign2.png" alt="Fullam campaign poster reading a vote for Fullam is a vote for Justice"></figure>
+                <figure><img src="/design/assets/fullam campaign3.png" alt="Fullam campaign manifesto card"></figure>
+              </div>
+            </section>
 
-                <div class="wine-grid">
-                  <figure><img src="assets/wine label cab.png" alt="Cane Vino Cabernet Sauvignon bottle and label" loading="lazy"><figcaption>Cabernet Sauvignon</figcaption></figure>
-                  <figure><img src="assets/wine label pinot noir.png" alt="Cane Vino Pinot Noir bottle and label" loading="lazy"><figcaption>Pinot Noir</figcaption></figure>
-                  <figure><img src="assets/wine label gewurztraminer.png" alt="Cane Vino Gewürztraminer bottle and label" loading="lazy"><figcaption>Gewürztraminer</figcaption></figure>
-                  <figure><img src="assets/wine label grenache.png" alt="Cane Vino Grenache Rosé bottle and label" loading="lazy"><figcaption>Grenache Rosé</figcaption></figure>
+            <section class="case-section">
+              <div class="case-section__header">
+                <span class="case-section__number">03</span>
+                <div>
+                  <h3>Cane Vino</h3>
+                  <p>
+                    A wine label series made for a marketing and branding elective, built entirely from my own illustrations.
+                    Each varietal gets its own label while the overall system holds together through typography, bottle treatment, and controlled spacing.
+                  </p>
                 </div>
-              </section>
+              </div>
 
-              <footer class="project-credit">
-                <p>Design and illustration: Keegan Andrulis. Trinity College Dublin.</p>
-              </footer>
-
-              <button class="project-close" type="button" aria-controls="college-content">close</button>
-            </div>
+              <div class="wine-grid">
+                <figure><img src="/design/assets/wine label cab.png" alt="Cane Vino Cabernet Sauvignon bottle"><figcaption>Cabernet Sauvignon</figcaption></figure>
+                <figure><img src="/design/assets/wine label pinot noir.png" alt="Cane Vino Pinot Noir bottle"><figcaption>Pinot Noir</figcaption></figure>
+                <figure><img src="/design/assets/wine label gewurztraminer.png" alt="Cane Vino Gewürztraminer bottle"><figcaption>Gewürztraminer</figcaption></figure>
+                <figure><img src="/design/assets/wine label grenache.png" alt="Cane Vino Grenache Rosé bottle"><figcaption>Grenache Rosé</figcaption></figure>
+              </div>
+            </section>
           </div>
         </article>
 
       </section>
-
     </main>
-
   </div>
-
 </body>
-
 </html>
