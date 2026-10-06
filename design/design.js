@@ -1,24 +1,84 @@
 (() => {
   "use strict";
 
-  const toggles =
+  const controls =
     document.querySelectorAll(
-      ".project-toggle"
+      ".project-plus, .project-explore"
     );
 
-  if (!toggles.length) {
+  if (!controls.length) {
     return;
   }
 
 
-  toggles.forEach(toggle => {
+  function setProjectState(project, open) {
 
-    toggle.addEventListener(
+    const content =
+      project.querySelector(
+        ".project-content"
+      );
+
+    const plus =
+      project.querySelector(
+        ".project-plus"
+      );
+
+    const explore =
+      project.querySelector(
+        ".project-explore"
+      );
+
+    if (!content) {
+      return;
+    }
+
+
+    content.hidden =
+      !open;
+
+
+    project.classList.toggle(
+      "is-open",
+      open
+    );
+
+
+    if (plus) {
+      plus.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+
+      plus.textContent =
+        open
+          ? "—"
+          : "+";
+    }
+
+
+    if (explore) {
+      explore.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+
+      explore.textContent =
+        open
+          ? "close project"
+          : "explore project";
+    }
+
+  }
+
+
+  controls.forEach(control => {
+
+    control.addEventListener(
       "click",
       () => {
 
         const project =
-          toggle.closest(
+          control.closest(
             ".project"
           );
 
@@ -27,56 +87,16 @@
         }
 
 
-        const contentId =
-          toggle.getAttribute(
-            "aria-controls"
-          );
-
-        const content =
-          contentId
-            ? document.getElementById(
-                contentId
-              )
-            : null;
-
-        const symbol =
-          toggle.querySelector(
-            ".project-symbol"
-          );
-
-        if (!content) {
-          return;
-        }
-
-
         const isOpen =
-          toggle.getAttribute(
-            "aria-expanded"
-          ) === "true";
+          project.classList.contains(
+            "is-open"
+          );
 
 
-        toggle.setAttribute(
-          "aria-expanded",
-          String(!isOpen)
-        );
-
-
-        content.hidden =
-          isOpen;
-
-
-        project.classList.toggle(
-          "is-open",
+        setProjectState(
+          project,
           !isOpen
         );
-
-
-        if (symbol) {
-          symbol.textContent =
-            isOpen
-              ? "+"
-              : "—";
-        }
 
       }
     );
