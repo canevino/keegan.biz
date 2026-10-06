@@ -74,67 +74,91 @@
 
   if (foldout) {
     const project = foldout.closest(".project");
-    const foldButton = project?.querySelector(".foldout-fold");
     const sideButton = project?.querySelector(".foldout-side");
     const stateLabel = project?.querySelector(".foldout-state");
     const flatReference = foldout.querySelector(".foldout-flat-reference");
 
     let folded = false;
     let inside = false;
+    let foldingTimer = null;
 
-    const refresh = () => {
-      const flatImage = inside
+    const refreshSide = () => {
+      const image = inside
         ? "assets/better angels takeaway inside.png"
         : "assets/better angels takeaway outside.png";
 
       if (flatReference) {
-        flatReference.src = flatImage;
+        flatReference.src = image;
         flatReference.alt = `Better Angels takeaway folder shown flat, ${inside ? "inside" : "outside"}`;
       }
 
-      foldout.classList.toggle("is-folded", folded);
-      foldout.classList.toggle("show-inside", inside && !folded);
-      foldout.setAttribute("aria-pressed", String(folded));
-
-      if (foldButton) {
-        foldButton.textContent = folded ? "open folder" : "close folder";
-        foldButton.setAttribute("aria-pressed", String(folded));
-      }
+      foldout.classList.toggle("show-inside", inside);
 
       if (sideButton) {
         sideButton.textContent = inside ? "view outside" : "view inside";
         sideButton.setAttribute("aria-pressed", String(inside));
-        sideButton.disabled = folded;
+        sideButton.disabled = folded || foldout.classList.contains("is-folding");
       }
+    };
 
+    const refreshState = () => {
+      foldout.setAttribute("aria-pressed", String(folded));
       if (stateLabel) {
-        stateLabel.textContent = folded ? "closed" : `flat / ${inside ? "inside" : "outside"}`;
+        stateLabel.textContent = folded
+          ? "closed"
+          : `${inside ? "inside" : "outside"} / open`;
       }
+      if (sideButton) sideButton.disabled = folded || foldout.classList.contains("is-folding");
     };
 
-    const toggleFold = () => {
-      if (!folded && inside) inside = false;
-      folded = !folded;
-      refresh();
+    const closeFolder = () => {
+      if (folded || foldout.classList.contains("is-folding")) return;
+      inside = false;
+      refreshSide();
+      foldout.classList.add("is-folding");
+      refreshState();
+      window.clearTimeout(foldingTimer);
+      foldingTimer = window.setTimeout(() => {
+        foldout.classList.remove("is-folding");
+        foldout.classList.add("is-folded");
+        folded = true;
+        refreshState();
+      }, 820);
     };
 
-    foldButton?.addEventListener("click", toggleFold);
+    const openFolder = () => {
+      if (!folded) return;
+      foldout.classList.remove("is-folded");
+      foldout.classList.add("is-folding");
+      folded = false;
+      refreshState();
+      window.clearTimeout(foldingTimer);
+      foldingTimer = window.setTimeout(() => {
+        foldout.classList.remove("is-folding");
+        refreshState();
+      }, 700);
+    };
 
-    sideButton?.addEventListener("click", () => {
-      if (folded) return;
+    const toggleFolder = () => folded ? openFolder() : closeFolder();
+
+    sideButton?.addEventListener("click", event => {
+      event.stopPropagation();
+      if (folded || foldout.classList.contains("is-folding")) return;
       inside = !inside;
-      refresh();
+      refreshSide();
+      refreshState();
     });
 
-    foldout.addEventListener("click", toggleFold);
+    foldout.addEventListener("click", toggleFolder);
     foldout.addEventListener("keydown", event => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        toggleFold();
+        toggleFolder();
       }
     });
 
-    refresh();
+    refreshSide();
+    refreshState();
   }
 
   document.querySelectorAll("[data-flyer]").forEach(flyer => {
