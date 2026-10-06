@@ -64,8 +64,8 @@
 
       explore.textContent =
         open
-          ? "close project"
-          : "explore project";
+          ? "close"
+          : "explore";
     }
 
   }
