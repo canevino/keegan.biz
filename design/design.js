@@ -1,18 +1,17 @@
 (() => {
   "use strict";
 
-  const controls =
+  const projects =
     document.querySelectorAll(
-      ".project-plus, .project-explore"
+      ".project"
     );
 
-  if (!controls.length) {
+  if (!projects.length) {
     return;
   }
 
 
   function setProjectState(project, open) {
-
     const content =
       project.querySelector(
         ".project-content"
@@ -35,7 +34,6 @@
 
     content.hidden =
       !open;
-
 
     project.classList.toggle(
       "is-open",
@@ -63,44 +61,82 @@
       );
 
       explore.textContent =
-        open
-          ? "close"
-          : "explore";
+        "explore";
     }
-
   }
 
 
-  controls.forEach(control => {
+  projects.forEach(project => {
+    const plus =
+      project.querySelector(
+        ".project-plus"
+      );
 
-    control.addEventListener(
-      "click",
-      () => {
+    const explore =
+      project.querySelector(
+        ".project-explore"
+      );
 
-        const project =
-          control.closest(
-            ".project"
+    const close =
+      project.querySelector(
+        ".project-close"
+      );
+
+
+    if (plus) {
+      plus.addEventListener(
+        "click",
+        () => {
+          const isOpen =
+            project.classList.contains(
+              "is-open"
+            );
+
+          setProjectState(
+            project,
+            !isOpen
           );
-
-        if (!project) {
-          return;
         }
+      );
+    }
 
 
-        const isOpen =
-          project.classList.contains(
-            "is-open"
+    if (explore) {
+      explore.addEventListener(
+        "click",
+        () => {
+          setProjectState(
+            project,
+            true
+          );
+        }
+      );
+    }
+
+
+    if (close) {
+      close.addEventListener(
+        "click",
+        () => {
+          setProjectState(
+            project,
+            false
           );
 
+          const summary =
+            project.querySelector(
+              ".project-summary"
+            );
 
-        setProjectState(
-          project,
-          !isOpen
-        );
-
-      }
-    );
-
+          if (summary) {
+            summary.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+          }
+        }
+      );
+    }
   });
 
 })();

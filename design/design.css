@@ -187,8 +187,7 @@
 
   grid-template-columns:
     minmax(0, 1.55fr)
-    minmax(250px, .9fr)
-    52px;
+    minmax(250px, .9fr);
 
   min-height: 250px;
 
@@ -295,114 +294,6 @@
   line-height: 1.05;
 
   letter-spacing: -.03em;
-}
-
-
-/* ornament */
-
-.design-ornament {
-  position: relative;
-
-  overflow: hidden;
-
-  border-left:
-    1px solid
-    var(--design-rule);
-
-  background:
-    var(--design-paper);
-}
-
-
-.ornament-placeholder {
-  position: absolute;
-
-  inset: 0;
-}
-
-
-.ornament-placeholder::before {
-  content: "";
-
-  position: absolute;
-
-  top: -8%;
-
-  left: 47%;
-
-  width: 1px;
-
-  height: 116%;
-
-  background:
-    var(--design-ink);
-
-  transform:
-    rotate(4deg);
-}
-
-
-.ornament-seed {
-  position: absolute;
-
-  left: 50%;
-
-  top: 57%;
-
-  width: 9px;
-
-  height: 9px;
-
-  border-radius: 50%;
-
-  background:
-    var(--design-red);
-
-  transform:
-    translate(
-      -50%,
-      -50%
-    );
-}
-
-
-.ornament-leaf {
-  position: absolute;
-
-  width: 20px;
-
-  height: 9px;
-
-  border:
-    1.5px solid
-    var(--design-green);
-
-  border-radius:
-    100% 0
-    100% 0;
-}
-
-
-.ornament-leaf-a {
-  top: 31%;
-
-  left: 10px;
-
-  transform:
-    rotate(-28deg);
-}
-
-
-.ornament-leaf-b {
-  right: 9px;
-
-  bottom: 24%;
-
-  border-color:
-    var(--design-yellow);
-
-  transform:
-    rotate(150deg);
 }
 
 
@@ -578,13 +469,14 @@
 .project-explore {
   appearance: none;
 
-  display: inline;
+  display: block;
+
+  width: fit-content;
 
   margin:
+    7px
     0
-    0
-    0
-    4px;
+    0;
 
   padding: 0;
 
@@ -951,6 +843,52 @@
 }
 
 
+
+
+.project-close {
+  appearance: none;
+
+  display: block;
+
+  width: fit-content;
+
+  margin:
+    44px
+    0
+    0
+    auto;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color:
+    var(--design-red);
+
+  font: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+
+  cursor: pointer;
+}
+
+
+.project-close:hover {
+  color:
+    var(--design-ink);
+}
+
+
 /* tablet */
 
 @media (max-width: 900px) {
@@ -970,16 +908,13 @@
 
   .design-intro {
     grid-template-columns:
-      minmax(0, 1fr)
-      42px;
+      minmax(0, 1fr);
 
     min-height: 0;
   }
 
 
   .design-intro-mark {
-    grid-column: 1;
-
     min-height: 210px;
 
     border-right: 0;
@@ -987,19 +922,9 @@
 
 
   .design-intro-copy {
-    grid-column: 1;
-
     border-top:
       1px solid
       var(--design-rule);
-  }
-
-
-  .design-ornament {
-    grid-column: 2;
-
-    grid-row:
-      1 / span 2;
   }
 
 
@@ -1097,8 +1022,7 @@
 
   .design-intro {
     grid-template-columns:
-      minmax(0, 1fr)
-      34px;
+      minmax(0, 1fr);
   }
 
 
