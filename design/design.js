@@ -119,4 +119,83 @@
     }
   });
 
+
+
+  const mediaSwitchers =
+    document.querySelectorAll(
+      "[data-media-switcher]"
+    );
+
+  mediaSwitchers.forEach(switcher => {
+    const toggle =
+      switcher.querySelector(
+        ".media-switcher-toggle"
+      );
+
+    const stage =
+      switcher.querySelector(
+        ".media-switcher-stage"
+      );
+
+
+    function toggleMedia() {
+      const secondary =
+        switcher.classList.toggle(
+          "is-secondary"
+        );
+
+      if (toggle) {
+        toggle.setAttribute(
+          "aria-pressed",
+          String(secondary)
+        );
+      }
+    }
+
+
+    if (toggle) {
+      toggle.addEventListener(
+        "click",
+        toggleMedia
+      );
+    }
+
+
+    if (stage) {
+      stage.setAttribute(
+        "tabindex",
+        "0"
+      );
+
+      stage.setAttribute(
+        "role",
+        "button"
+      );
+
+      stage.setAttribute(
+        "aria-label",
+        "Switch between installed view and artwork"
+      );
+
+      stage.addEventListener(
+        "click",
+        toggleMedia
+      );
+
+      stage.addEventListener(
+        "keydown",
+        event => {
+          if (
+            event.key === "Enter" ||
+            event.key === " "
+          ) {
+            event.preventDefault();
+            toggleMedia();
+          }
+        }
+      );
+    }
+  });
+
+
 })();
