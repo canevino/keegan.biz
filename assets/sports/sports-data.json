@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-06T00:10:03.399Z",
+  "updatedAt": "2026-10-06T06:33:11.899Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -1023,7 +1023,7 @@
         {
           "id": "5181856",
           "date": "2026-10-06T18:45:00.000Z",
-          "when": "tomorrow · Tue, Oct 6 · 2:45 PM ET",
+          "when": "today · Tue, Oct 6 · 2:45 PM ET",
           "status": "scheduled",
           "home": "England",
           "away": "Czechia",
