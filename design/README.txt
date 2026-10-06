@@ -1,16 +1,15 @@
-DESIGN PAGE — V5
+v7 changes
 
-Replace:
-- /design/index.html
-- /design/design.css
-- /design/design.js
-
-What changed:
-- Extensions is now one coherent section inside More ____.
-- Art + Stroll, Public Processes, and Making Public are all treated as extensions.
-- Making Public uses one controlled visual system: event context first, poster pair, information-heavy pair, then digital/social pair.
-- Better Angels takeaway uses a new isolated folding interaction with unique class names, so older fold CSS cannot interfere with it.
-- The folder itself is the control: click/tap to close, click/tap to reopen. The inside/outside control only works while open.
-- Project key images use a longer horizontal crop for more useful context.
-- Better Angels script, signage, and activation image groups are constrained to more deliberate widths.
-- Mobile layouts collapse cleanly without oversized imagery.
+- Making Public is numbered 03 within Extensions.
+- Removed the separate poster presentation.
+- Flyer pair flips on hover and by click/button.
+- Social pair flips on hover and by click/button.
+- Program remains a static information-dense asset.
+- Copy moved into the middle of the Making Public sequence.
+- Event documentation photo is the final asset.
+- Better Angels takeaway folds more slowly: bottom tongue first, then left/right leaves.
+- Folded state defaults to the membership/instruction side forward.
+- The side control remains available while folded, so both folded faces can be viewed.
+- Final folded object has no translated/rotated float and uses a restrained shadow.
+- Script artwork is smaller; the three right-side photos are larger and equal-size crops.
+- Mobile layouts added for the new interactions.

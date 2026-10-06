@@ -103,18 +103,20 @@
       });
 
       if (closedImage) {
-        closedImage.src = "assets/better angels takeaway outside.png";
+        closedImage.src = src;
       }
 
       sideButton?.setAttribute("aria-pressed", String(inside));
       if (sideButton) {
         sideButton.textContent = inside ? "view outside" : "view inside";
-        sideButton.disabled = closed || animating;
+        sideButton.disabled = animating;
       }
 
       folder.setAttribute("aria-pressed", String(closed));
       if (stateLabel) {
-        stateLabel.textContent = closed ? "closed" : `${inside ? "inside" : "outside"} / open`;
+        stateLabel.textContent = closed
+          ? `${inside ? "inside" : "outside"} / folded`
+          : `${inside ? "inside" : "outside"} / open`;
       }
     }
 
@@ -123,20 +125,19 @@
       folder.classList.add("is-closed");
       closed = true;
       animating = false;
+      // The membership/instruction side faces forward by default when closed.
+      inside = true;
       syncArtwork();
     }
 
     function closeFolder() {
       if (closed || animating) return;
-
-      inside = false;
       animating = true;
-      syncArtwork();
       folder.classList.remove("is-opening", "is-opening-active");
       folder.classList.add("is-closing");
-
+      syncArtwork();
       clearTimeout(timer);
-      timer = window.setTimeout(finishClose, reducedMotion.matches ? 40 : 720);
+      timer = window.setTimeout(finishClose, reducedMotion.matches ? 40 : 1850);
     }
 
     function finishOpen() {
@@ -148,19 +149,16 @@
 
     function openFolder() {
       if (!closed || animating) return;
-
       animating = true;
       folder.classList.remove("is-closed");
       folder.classList.add("is-opening");
-
       window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
           folder.classList.add("is-opening-active");
         });
       });
-
       clearTimeout(timer);
-      timer = window.setTimeout(finishOpen, reducedMotion.matches ? 40 : 620);
+      timer = window.setTimeout(finishOpen, reducedMotion.matches ? 40 : 1650);
     }
 
     function toggleFolder() {
@@ -178,13 +176,45 @@
 
     sideButton?.addEventListener("click", event => {
       event.stopPropagation();
-      if (closed || animating) return;
+      if (animating) return;
       inside = !inside;
       syncArtwork();
     });
 
     syncArtwork();
   }
+
+  document.querySelectorAll("[data-mp-flip]").forEach(card => {
+    const button = card.querySelector(".mp-flip-button");
+    const scene = card.querySelector(".mp-flip-scene");
+    let flipped = false;
+
+    const update = () => {
+      card.classList.toggle("is-flipped", flipped);
+      button?.setAttribute("aria-pressed", String(flipped));
+      if (button) button.textContent = flipped ? "front" : "flip";
+    };
+
+    const flip = () => {
+      flipped = !flipped;
+      update();
+    };
+
+    button?.addEventListener("click", event => {
+      event.stopPropagation();
+      flip();
+    });
+
+    scene?.addEventListener("click", flip);
+    scene?.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        flip();
+      }
+    });
+
+    update();
+  });
 
   document.querySelectorAll("[data-flyer]").forEach(flyer => {
     const button = flyer.querySelector(".flyer-flip");
