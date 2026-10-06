@@ -147,3 +147,86 @@
     sync();
   });
 })();
+
+(() => {
+  "use strict";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  /* Keep the rotated long-knot spine exactly as tall as the page, including
+     when accordion projects open or close. */
+  function syncPageKnotLength() {
+    const height = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight,
+      window.innerHeight
+    );
+    document.documentElement.style.setProperty("--page-knot-length", `${height}px`);
+  }
+
+  syncPageKnotLength();
+  window.addEventListener("load", syncPageKnotLength, { once: true });
+  window.addEventListener("resize", syncPageKnotLength);
+
+  if ("ResizeObserver" in window) {
+    const resizeObserver = new ResizeObserver(syncPageKnotLength);
+    resizeObserver.observe(document.body);
+  }
+
+  /* Smooth knots cycle slowly and irregularly. Two copies are updated at the
+     same time: a sharp ink layer and a blurred bleed layer. */
+  const knotSources = [
+    "/assets/home/knot_smooth_svg1.svg",
+    "/assets/home/knot_smooth_svg2.svg",
+    "/assets/home/knot_smooth_svg3.svg",
+    "/assets/home/knot_smooth_svg4.svg",
+    "/assets/home/knot_smooth_svg5.svg"
+  ];
+
+  const knotColorClasses = [
+    "knot-flash--red",
+    "knot-flash--moss",
+    "knot-flash--violet"
+  ];
+
+  document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
+    const images = slot.querySelectorAll("img");
+    let currentIndex = slotIndex % knotSources.length;
+    let colorIndex = slotIndex % knotColorClasses.length;
+
+    const setKnot = (index) => {
+      images.forEach((image) => {
+        image.src = knotSources[index];
+      });
+    };
+
+    const scheduleNext = () => {
+      if (reducedMotion.matches) return;
+
+      const delay = 4600 + Math.random() * 5200;
+
+      window.setTimeout(() => {
+        slot.classList.add("is-switching");
+
+        window.setTimeout(() => {
+          let nextIndex = Math.floor(Math.random() * knotSources.length);
+          if (nextIndex === currentIndex) {
+            nextIndex = (nextIndex + 1) % knotSources.length;
+          }
+
+          currentIndex = nextIndex;
+          colorIndex = (colorIndex + 1 + Math.floor(Math.random() * 2)) % knotColorClasses.length;
+
+          knotColorClasses.forEach((className) => slot.classList.remove(className));
+          slot.classList.add(knotColorClasses[colorIndex]);
+          setKnot(currentIndex);
+          slot.classList.remove("is-switching");
+          scheduleNext();
+        }, 230);
+      }, delay);
+    };
+
+    setKnot(currentIndex);
+    scheduleNext();
+  });
+})();

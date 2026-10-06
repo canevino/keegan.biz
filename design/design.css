@@ -523,3 +523,538 @@ button { font:inherit; }
 
 .folder-stage { cursor: pointer; }
 .folder-fold { display: none; }
+
+/* =====================================================
+   v15 — controlled art-direction pass
+   ===================================================== */
+
+:root {
+  --section: clamp(66px, 7vw, 104px);
+  --gap: clamp(22px, 2.8vw, 40px);
+  --header-ink-texture: url('/assets/home/Texturelabs_InkPaint_332S.jpg');
+  --header-grit-texture: url('/assets/home/Texturelabs_Grunge_173S.jpg');
+}
+
+.page-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.design-site-header,
+.design-main {
+  position: relative;
+  z-index: 2;
+}
+
+/* One long knot acts as the page spine. JS measures the full page and
+   stretches the horizontal SVG before rotating it 90 degrees. */
+.page-knot-spine {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 4px;
+  width: 62px;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: .14;
+  mix-blend-mode: multiply;
+}
+
+.page-knot-spine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    url('/assets/home/Texturelabs_Grunge_334S.jpg') center / 420px auto repeat-y,
+    linear-gradient(180deg, rgba(201,36,36,.36), rgba(49,91,73,.28) 48%, rgba(64,52,94,.30));
+  background-blend-mode: multiply, color;
+  opacity: .30;
+  mix-blend-mode: multiply;
+}
+
+.page-knot-spine__art {
+  position: absolute;
+  top: 0;
+  left: 62px;
+  width: var(--page-knot-length, 6000px);
+  height: 62px;
+  max-width: none;
+  object-fit: fill;
+  transform-origin: 0 0;
+  transform: rotate(90deg) scaleY(1.18) skewX(-.6deg);
+  filter: sepia(.45) saturate(1.35) hue-rotate(320deg) contrast(1.22) brightness(.78) blur(.12px);
+}
+
+/* Smooth knots are short accents only. They cycle in JS and use a blurred
+   duplicate as an ink-bleed layer. */
+.knot-flash {
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
+  transition: opacity .36s ease, transform .36s ease;
+}
+
+.knot-flash.is-switching {
+  opacity: .08;
+  transform: translateY(1px) scale(.992);
+}
+
+.knot-flash__ink,
+.knot-flash__bleed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.knot-flash__ink {
+  opacity: .78;
+  mix-blend-mode: multiply;
+  filter: contrast(1.35) saturate(.8) blur(.08px);
+}
+
+.knot-flash__bleed {
+  opacity: .30;
+  transform: translate(.8px, .6px) scale(1.012);
+  mix-blend-mode: multiply;
+  filter: blur(1.35px) contrast(1.45) saturate(.85);
+}
+
+.knot-flash--red .knot-flash__ink,
+.knot-flash--red .knot-flash__bleed {
+  filter: brightness(.66) sepia(.65) saturate(3.1) hue-rotate(332deg) contrast(1.24) blur(.12px);
+}
+
+.knot-flash--moss .knot-flash__ink,
+.knot-flash--moss .knot-flash__bleed {
+  filter: brightness(.58) sepia(.55) saturate(1.7) hue-rotate(92deg) contrast(1.30) blur(.12px);
+}
+
+.knot-flash--violet .knot-flash__ink,
+.knot-flash--violet .knot-flash__bleed {
+  filter: brightness(.58) sepia(.42) saturate(1.75) hue-rotate(218deg) contrast(1.24) blur(.12px);
+}
+
+/* Header system: quieter field, bigger typography, roughness inside type. */
+.portfolio-masthead {
+  grid-template-columns: minmax(0, 1.8fr) minmax(270px, .72fr);
+  min-height: 230px;
+}
+
+.portfolio-masthead__main {
+  padding: 46px 0 30px;
+}
+
+.portfolio-masthead__rail {
+  padding-top: 42px;
+  padding-bottom: 28px;
+  gap: 32px;
+}
+
+.portfolio-masthead h1 {
+  font-size: clamp(86px, 10.4vw, 150px);
+  letter-spacing: -.078em;
+  text-shadow:
+    .015em .012em 0 rgba(91,20,18,.16),
+    -.008em .018em 0 rgba(17,16,14,.05);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .portfolio-masthead h1 {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-color: var(--red);
+    background-image:
+      linear-gradient(180deg, rgba(201,36,36,.98), rgba(158,25,25,.96)),
+      var(--header-grit-texture);
+    background-size: 100% 100%, 520px auto;
+    background-blend-mode: multiply;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}
+
+.masthead-deck {
+  max-width: 28ch;
+  font-size: clamp(17px, 1.25vw, 20px);
+  line-height: 1.12;
+}
+
+.portfolio-masthead__ornament {
+  width: min(240px, 100%);
+  height: 42px;
+  margin-left: auto;
+}
+
+/* Rebuild the selected-work opener as a compact editorial masthead. */
+.selected-heading {
+  grid-template-columns: 132px minmax(0, 1fr) minmax(150px, 230px);
+  gap: clamp(24px, 3.2vw, 48px);
+  align-items: end;
+  padding: clamp(42px, 5vw, 72px) 0 32px;
+}
+
+.selected-heading__label {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 7px;
+  padding-bottom: 5px;
+}
+
+.selected-heading__meta {
+  max-width: 14ch;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.selected-heading__main {
+  min-width: 0;
+}
+
+.selected-heading__main strong {
+  display: block;
+  max-width: 13ch;
+  font-size: clamp(48px, 5.6vw, 82px);
+  line-height: .86;
+  letter-spacing: -.058em;
+  text-shadow: .012em .016em 0 rgba(17,16,14,.11);
+}
+
+.selected-heading__main > span {
+  display: block;
+  max-width: 47ch;
+  margin-top: 15px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.38;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .selected-heading__main strong,
+  .project-title {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-color: var(--ink);
+    background-image:
+      linear-gradient(180deg, rgba(17,16,14,.98), rgba(31,28,24,.96)),
+      var(--header-ink-texture);
+    background-size: 100% 100%, 620px auto;
+    background-blend-mode: multiply;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}
+
+.selected-heading__ornament {
+  width: 100%;
+  height: 58px;
+  margin-bottom: 5px;
+}
+
+/* Project rhythm: denser content clusters separated by clearer quiet zones. */
+.project-summary {
+  grid-template-columns: 72px minmax(320px, .92fr) minmax(390px, 1.08fr);
+  gap: var(--gap);
+  padding: clamp(48px, 5vw, 72px) 0 clamp(52px, 5.4vw, 78px);
+}
+
+.project-title {
+  max-width: 12.5ch;
+  font-size: clamp(44px, 4.55vw, 70px);
+  line-height: .88;
+  letter-spacing: -.058em;
+  text-shadow: .008em .014em 0 rgba(17,16,14,.12);
+}
+
+.project-blurb {
+  max-width: 45ch;
+  margin-top: 24px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.project-toggle {
+  margin-top: 19px;
+}
+
+.project-key figcaption,
+figure > figcaption {
+  margin-top: 9px;
+  line-height: 1.35;
+}
+
+.project-content {
+  padding-bottom: clamp(68px, 7vw, 104px);
+}
+
+.case-section {
+  padding: clamp(54px, 5.8vw, 86px) 0;
+}
+
+.case-section__header {
+  grid-template-columns: 72px minmax(0, 670px);
+  gap: var(--gap);
+  margin-bottom: clamp(34px, 4vw, 54px);
+}
+
+.case-section__header h3 {
+  font-size: clamp(34px, 3.35vw, 50px);
+  line-height: .92;
+  letter-spacing: -.048em;
+  text-shadow: .006em .012em 0 rgba(17,16,14,.08);
+}
+
+.case-section__header p {
+  max-width: 62ch;
+  font-size: 15px;
+  line-height: 1.52;
+}
+
+/* Keep the surface hierarchy restrained: base paper globally, local grit only
+   on plates and the dark poster wall. */
+.feature-slab::before,
+.making-public-panel::before,
+.angels-takeaway-grid::before,
+.prx-pairing::before {
+  inset: -18px;
+  background:
+    linear-gradient(rgba(244,239,229,.56), rgba(244,239,229,.56)),
+    url('/assets/home/Texturelabs_Paper_280S.jpg') center / 760px auto;
+  background-blend-mode: normal, multiply;
+  opacity: .92;
+}
+
+.making-public-panel {
+  margin-top: 56px;
+  padding: clamp(22px, 2.4vw, 32px);
+}
+
+/* Key-image frames remain consistent; variation comes from the work, not
+   arbitrary container sizes. */
+.project-key__collage {
+  height: clamp(260px, 24vw, 340px);
+}
+
+.project-key > img {
+  aspect-ratio: 16 / 9;
+}
+
+.poster-triptych {
+  padding: 20px;
+  gap: 16px;
+}
+
+.college-summary-grid {
+  gap: 12px;
+  padding: 12px;
+}
+
+/* More breathing room inside Better Angels without changing interaction logic. */
+.angels-takeaway-grid,
+.angels-script-layout,
+.angels-signage-layout {
+  gap: clamp(28px, 3.4vw, 48px);
+}
+
+.folder-stage {
+  min-height: 560px;
+  perspective-origin: 50% 40%;
+}
+
+.paper-folder {
+  filter: drop-shadow(0 22px 20px rgba(28,22,16,.14));
+}
+
+.folder-panel {
+  transition-duration: 1.35s;
+  transition-timing-function: cubic-bezier(.18,.58,.16,1);
+}
+
+.folder-panel--left,
+.folder-panel--right {
+  transition-delay: .82s;
+}
+
+.folder-panel--tongue {
+  transition-delay: 0s;
+}
+
+/* Paul Winter: poster wall with more air and more deliberate caption rhythm. */
+.case-section--dark {
+  padding-top: clamp(66px, 6.4vw, 96px);
+  padding-bottom: clamp(72px, 7vw, 104px);
+}
+
+.winter-gallery {
+  gap: clamp(24px, 3vw, 42px);
+}
+
+.winter-poster-card:nth-child(2) {
+  margin-top: 34px;
+}
+
+.winter-poster-card h4 {
+  margin-top: 20px;
+  font-size: 22px;
+}
+
+.winter-poster-card p {
+  max-width: 38ch;
+  line-height: 1.56;
+}
+
+/* PRX: stronger modular contrast between identity specimen and campaign piece. */
+.prx-pairing {
+  grid-template-columns: minmax(280px, .78fr) minmax(0, 1.22fr);
+  gap: clamp(34px, 4vw, 60px);
+  align-items: center;
+}
+
+.prx-card--logo {
+  padding: clamp(26px, 3vw, 44px);
+}
+
+.prx-card--logo > img {
+  max-width: 420px;
+  mix-blend-mode: multiply;
+}
+
+.prx-card--campaign > img {
+  box-shadow: var(--shadow-paper);
+}
+
+/* Trinity stays playful, but all supporting modules share the same gap. */
+.college-showcase,
+.wine-grid {
+  gap: 20px;
+}
+
+/* Remove legacy ornament dividers entirely; only the long spine and smooth
+   flash knots are used in v15. */
+.knot-divider,
+.selected-heading__knot {
+  display: none !important;
+}
+
+@media (max-width: 980px) {
+  .selected-heading {
+    grid-template-columns: 110px minmax(0,1fr);
+  }
+
+  .selected-heading__ornament {
+    grid-column: 2;
+    width: min(240px, 45vw);
+    justify-self: end;
+    margin-top: 12px;
+  }
+
+  .project-summary {
+    grid-template-columns: 58px minmax(0,1fr);
+  }
+
+  .project-key {
+    grid-column: 2;
+  }
+
+  .case-section__header {
+    grid-template-columns: 58px minmax(0,1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .page-knot-spine {
+    right: 0;
+    width: 34px;
+    opacity: .075;
+  }
+
+  .page-knot-spine__art {
+    left: 34px;
+    height: 34px;
+    transform: rotate(90deg) scaleY(1.08);
+  }
+
+  .portfolio-masthead__rail {
+    padding-top: 22px;
+  }
+
+  .portfolio-masthead__ornament {
+    width: 180px;
+    height: 34px;
+    margin-left: 0;
+  }
+
+  .selected-heading {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-top: 34px;
+  }
+
+  .selected-heading__label {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 14px;
+  }
+
+  .selected-heading__meta {
+    max-width: none;
+    margin-top: 0;
+  }
+
+  .selected-heading__main strong {
+    font-size: clamp(42px, 13vw, 62px);
+  }
+
+  .selected-heading__ornament {
+    grid-column: 1;
+    justify-self: start;
+    width: min(220px, 72vw);
+    height: 44px;
+    margin-top: 0;
+  }
+
+  .project-summary {
+    padding-top: 36px;
+    padding-bottom: 42px;
+  }
+
+  .case-section {
+    padding-top: 44px;
+    padding-bottom: 48px;
+  }
+
+  .case-section__header {
+    margin-bottom: 28px;
+  }
+
+  .folder-stage {
+    min-height: 420px;
+  }
+
+  .winter-poster-card:nth-child(2) {
+    margin-top: 0;
+  }
+}
+
+/* v15 small specificity fixes */
+.page-knot-spine::after { opacity: .12; }
+.ornament-inline.knot-flash { filter: none; opacity: 1; object-fit: initial; }
+.knot-flash--red .knot-flash__bleed {
+  filter: brightness(.66) sepia(.65) saturate(3.1) hue-rotate(332deg) contrast(1.34) blur(1.2px);
+}
+.knot-flash--moss .knot-flash__bleed {
+  filter: brightness(.58) sepia(.55) saturate(1.7) hue-rotate(92deg) contrast(1.38) blur(1.2px);
+}
+.knot-flash--violet .knot-flash__bleed {
+  filter: brightness(.58) sepia(.42) saturate(1.75) hue-rotate(218deg) contrast(1.34) blur(1.2px);
+}
