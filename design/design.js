@@ -29,7 +29,7 @@
 
   projects.forEach((project, index) => {
     const toggle = project.querySelector(".project-toggle");
-    const initiallyOpen = index === 0;
+    const initiallyOpen = false;
     setProjectState(project, initiallyOpen);
 
     toggle?.addEventListener("click", () => {
