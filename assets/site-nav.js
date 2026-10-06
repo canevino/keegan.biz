@@ -38,11 +38,11 @@
       live: true
     },
     {
-      label: "Graphic Design",
-      href: "#",
-      image: "/assets/home/scarf-design.png",
-      live: false
-    },
+  label: "Graphic Design",
+  href: "/design/",
+  image: "/assets/home/scarf-design.png",
+  live: true
+},
     {
       label: "Music",
       href: "#",
