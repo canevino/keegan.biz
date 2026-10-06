@@ -1,12 +1,12 @@
-DESIGN V3
+DESIGN V4
 
-Changes:
-- consistent editorial text/grid logic across expanded case studies
-- A-frame label changed to “A-frame + open hours”
-- Better Angels takeaway is direct manipulation: tap the paper itself to fold completely; tap closed folder to reopen
-- no fold guide lines; single physical fold direction; stronger final shadow
-- Making Public removed as a top-level project and folded into More ____ as final subsection
-- More applications remain one section; bus sits with Lyrik and More Depth
-- More Connection anchor is smaller with text aligned to the same underlying grid
-- More thumbnail crop raised slightly
-- mobile layouts rebuilt around the same grid
+Key changes:
+- Triennial section renamed “Triennial 2025: The Exchange”.
+- Making Public is no longer a separate project; it is the final subsection of More ____.
+- More opening copy and More Connection explanation are merged into one paragraph.
+- More Belonging thumbnail crop is taller and positioned lower to include the installed poster.
+- Public Processes copy updated.
+- Making Public is organized as one system: event context, poster pair, information-heavy print pair, then social pair.
+- Better Angels contains only Better Angels material.
+- Takeaway interaction rebuilt so the paper itself folds in one direction to a fully closed state and reopens on tap/click.
+- Responsive overrides added for tablet/mobile.

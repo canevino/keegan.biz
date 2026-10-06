@@ -3965,3 +3965,161 @@
   }
 }
 \n\n/* 2026-10-06 v3 — cohesive editorial structure */\n\n/* One underlying text/grid logic across expanded case studies */\n.project-story-more,\n.project-story-better-angels {\n  --case-width: min(980px, calc(100vw - (var(--design-gutter) * 2)));\n}\n\n.case-intro,\n.case-section,\n.more-anchor-layout {\n  width: var(--case-width, min(980px, calc(100vw - (var(--design-gutter) * 2))));\n}\n\n.case-intro {\n  display: grid;\n  grid-template-columns: 110px minmax(0, 620px) 1fr;\n  column-gap: clamp(24px, 4vw, 56px);\n  align-items: start;\n  margin: 0 auto clamp(48px, 6vw, 72px);\n}\n\n.case-kicker {\n  grid-column: 1;\n  margin-top: 3px;\n}\n\n.case-intro-copy {\n  grid-column: 2;\n  display: block;\n}\n\n.case-intro-copy p {\n  max-width: 58ch;\n  margin: 0;\n  font-size: clamp(14px, .95vw, 16px);\n  line-height: 1.45;\n}\n\n.more-anchor-layout {\n  display: grid;\n  grid-template-columns: 110px minmax(210px, 300px) minmax(260px, 360px) 1fr;\n  column-gap: clamp(24px, 4vw, 56px);\n  align-items: center;\n  margin: 0 auto clamp(54px, 7vw, 84px);\n}\n\n.more-anchor-copy { grid-column: 2; }\n.more-anchor { grid-column: 3; justify-self: start; width: min(330px, 100%); }\n.more-anchor-copy .case-kicker { margin-bottom: 10px; }\n.more-anchor-copy h4 { margin: 0 0 12px; font-size: clamp(22px, 2vw, 30px); }\n.more-anchor-copy p:not(.case-kicker) { max-width: 31ch; font-size: 13px; line-height: 1.45; }\n\n.case-section {\n  margin: 0 auto clamp(58px, 7vw, 86px);\n  padding-top: 14px;\n}\n\n.case-section-heading {\n  display: grid;\n  grid-template-columns: 34px minmax(0, 650px) 1fr;\n  gap: 0 18px;\n  align-items: start;\n  margin-bottom: clamp(22px, 3vw, 34px);\n}\n.case-section-heading > span { grid-column: 1; margin-top: 5px; }\n.case-section-heading > div,\n.case-section-heading > h4 { grid-column: 2; }\n.case-section-heading h4 { font-size: clamp(21px, 2vw, 29px); }\n.case-section-deck { max-width: 58ch; }\n\n/* More applications: one section, three equal modules */\n.more-applications-section .media-switcher-grid-applications {\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: clamp(14px, 2vw, 24px);\n}\n.media-switcher-bus { grid-column: auto; width: auto; margin-top: 0; }\n.media-switcher-stage-portrait,\n.media-switcher-stage-wide { aspect-ratio: 4 / 5; }\n.media-switcher-bus .media-switcher-stage img { object-fit: contain; }\n\n/* Better Angels takeaway: object is the control, single physical direction */\n.foldout-toolbar {\n  border-bottom: 0;\n  padding-bottom: 0;\n  margin-bottom: 12px;\n}\n.foldout-controls, .foldout-fold { display: none !important; }\n.foldout-toolbar .foldout-side {\n  appearance: none; border: 0; padding: 0; margin-left: auto; background: transparent;\n  color: var(--design-red); font: inherit; font-size: 10px; font-weight: 700;\n  text-decoration: underline; text-underline-offset: 3px; cursor: pointer;\n}\n.foldout-layout {\n  grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);\n  gap: clamp(30px, 5vw, 62px);\n}\n.foldout-stage {\n  width: min(100%, 500px);\n  cursor: pointer;\n  perspective: 1500px;\n  transform-style: preserve-3d;\n}\n.foldout-stage:hover:not(.is-folded) { transform: translateY(-2px); }\n.foldout-flat-reference { transition: opacity 90ms linear; }\n.fold-panel {\n  opacity: 0;\n  overflow: visible;\n  box-shadow: none;\n  transform-style: preserve-3d;\n  transition: transform 520ms cubic-bezier(.2,.72,.18,1), opacity 60ms linear;\n}\n.foldout-stage.is-folding .fold-panel,\n.foldout-stage.is-folded .fold-panel { opacity: 1; }\n.foldout-stage.is-folding .foldout-flat-reference,\n.foldout-stage.is-folded .foldout-flat-reference { opacity: 0; }\n\n/* sides close inward first */\n.foldout-stage.is-folding .fold-panel-left,\n.foldout-stage.is-folded .fold-panel-left {\n  transform: rotateY(-180deg) translateZ(1px);\n  transition-delay: 0ms;\n}\n.foldout-stage.is-folding .fold-panel-right,\n.foldout-stage.is-folded .fold-panel-right {\n  transform: rotateY(180deg) translateZ(2px);\n  transition-delay: 70ms;\n}\n/* lower panel closes last */\n.foldout-stage.is-folding .fold-panel-bottom,\n.foldout-stage.is-folded .fold-panel-bottom {\n  transform: rotateX(-180deg) translateZ(4px);\n  transition-delay: 260ms;\n}\n.foldout-stage.is-folding .fold-panel-center,\n.foldout-stage.is-folded .fold-panel-center { transform: translateZ(0); }\n\n/* clean final closed object replaces the construction after the fold completes */\n.foldout-closed-card {\n  position: absolute;\n  left: 26.1905%;\n  top: 0;\n  z-index: 10;\n  width: 47.619%;\n  height: 60.8696%;\n  overflow: hidden;\n  opacity: 0;\n  transform: translateY(8px) rotateX(3deg) rotateZ(-.4deg) scale(.985);\n  transform-origin: 50% 50%;\n  pointer-events: none;\n  transition: opacity 120ms ease 720ms, transform 220ms ease 720ms;\n  box-shadow: 0 22px 28px rgba(17,17,15,.18), 0 6px 9px rgba(17,17,15,.1);\n  background: transparent;\n}\n.foldout-closed-face { position: absolute; inset: 0; overflow: hidden; }\n.foldout-closed-face img { position: absolute; max-width: none; width: 210%; height: auto; left: -55%; top: 0; }\n.foldout-closed-inside { display: none; }\n.foldout-stage.show-inside .foldout-closed-outside { display: none; }\n.foldout-stage.show-inside .foldout-closed-inside { display: block; }\n.foldout-stage.is-folded .foldout-closed-card { opacity: 1; transform: translateY(0) rotateX(3deg) rotateZ(-.4deg) scale(.985); }\n.foldout-stage.is-folded .fold-panel { opacity: 0; transition: opacity 80ms linear 700ms; }\n.foldout-stage.is-folded::after {\n  left: 31%; right: 31%; bottom: 26%; height: 7%;\n  background: rgba(17,17,15,.20); filter: blur(16px); transform: translateY(24px);\n}\n.foldout-hint { margin-top: 8px; text-align: center; font-size: 9px; }\n\n/* Making Public is part of More ____ now */\n.more-making-public-section { margin-bottom: 48px; }\n.making-public-system {\n  display: grid;\n  grid-template-columns: repeat(12, minmax(0,1fr));\n  gap: 12px;\n  align-items: start;\n}\n.making-public-system figure { margin: 0; }\n.making-public-system img { display: block; width: 100%; height: auto; }\n.mp-feature-photo { grid-column: 1 / span 7; }\n.mp-feature-banner { grid-column: 8 / -1; align-self: center; }\n.mp-system-grid { display: grid; gap: 10px; }\n.mp-system-posters { grid-column: 1 / span 8; grid-template-columns: repeat(4, minmax(0,1fr)); margin-top: 12px; }\n.mp-system-social { grid-column: 9 / -1; grid-template-columns: repeat(2, minmax(0,1fr)); margin-top: 12px; }\n\n/* Keep the compact signage family coherent */\n.ba-signage-flats {\n  grid-template-columns: repeat(4, minmax(0,1fr));\n  width: min(700px, 100%);\n  gap: 12px;\n  align-items: end;\n}\n.ba-signage-docs { width: min(620px, 100%); gap: 10px; }\n.ba-signage-doc-wide { width: min(500px, 100%); }\n\n/* Better More thumbnail crop: poster visible, but not bottom-heavy */\n#more .project-key-image img { object-position: 18% 48%; }\n\n@media (max-width: 900px) {\n  .case-intro { grid-template-columns: 80px minmax(0,1fr); }\n  .case-intro-copy { grid-column: 2; }\n  .more-anchor-layout { grid-template-columns: 80px minmax(180px, .8fr) minmax(240px, 1fr); }\n  .more-anchor-copy { grid-column: 2; }\n  .more-anchor { grid-column: 3; }\n  .more-applications-section .media-switcher-grid-applications { grid-template-columns: repeat(2, minmax(0,1fr)); }\n  .media-switcher-bus { grid-column: 1 / -1; width: min(480px, 100%); justify-self: center; }\n  .foldout-layout { grid-template-columns: 1fr; }\n  .foldout-reference { width: min(360px, 100%); margin: 0 auto; }\n  .mp-feature-photo { grid-column: 1 / -1; }\n  .mp-feature-banner { grid-column: 1 / -1; width: min(560px,100%); }\n  .mp-system-posters { grid-column: 1 / -1; grid-template-columns: repeat(2,minmax(0,1fr)); }\n  .mp-system-social { grid-column: 1 / -1; grid-template-columns: repeat(2,minmax(0,1fr)); width: min(460px,100%); }\n}\n\n@media (max-width: 620px) {\n  .case-intro { grid-template-columns: 1fr; row-gap: 10px; }\n  .case-kicker, .case-intro-copy { grid-column: 1; }\n  .more-anchor-layout { grid-template-columns: 1fr; row-gap: 22px; }\n  .more-anchor-copy, .more-anchor { grid-column: 1; }\n  .more-anchor { justify-self: center; width: min(290px, 82vw); }\n  .case-section-heading { grid-template-columns: 28px minmax(0,1fr); }\n  .case-section-heading > div, .case-section-heading > h4 { grid-column: 2; }\n  .more-applications-section .media-switcher-grid-applications { grid-template-columns: 1fr; }\n  .media-switcher-bus { grid-column: 1; width: 100%; }\n  .media-switcher-stage-portrait, .media-switcher-stage-wide { aspect-ratio: 4 / 5; }\n  .foldout-stage { width: min(100%, 420px); }\n  .making-public-system { grid-template-columns: 1fr; }\n  .mp-feature-photo, .mp-feature-banner, .mp-system-posters, .mp-system-social { grid-column: 1; }\n  .mp-system-posters { grid-template-columns: repeat(2,minmax(0,1fr)); }\n  .mp-system-social { grid-template-columns: repeat(2,minmax(0,1fr)); }\n  .ba-signage-flats { grid-template-columns: repeat(2,minmax(0,1fr)); }\n}\n
+
+/* v4 — Triennial case-study system */
+.group-eyebrow { margin: 0 0 7px; color: var(--design-red); font-size: 9px; font-weight: 700; }
+.triennial-group .work-group-header { padding-top: 18px; padding-bottom: 18px; }
+.triennial-group .work-group-header h2 { max-width: none; font-size: clamp(30px, 3vw, 46px); }
+
+.triennial-group .project-summary { grid-template-columns: 32px minmax(280px, 1fr) minmax(320px, 390px) 28px; min-height: 250px; align-items: center; }
+.triennial-group .project-info { align-self: center; }
+.triennial-group .project-key-image { width: min(100%, 390px); aspect-ratio: 3 / 2; justify-self: end; }
+.triennial-group .project-key-image img { object-fit: cover; }
+.triennial-group .project-key-image-more img { object-position: 50% 71%; }
+.triennial-group .project-key-image-better-angels img { object-position: 50% 50%; }
+.triennial-group .project-title { font-size: clamp(29px, 3vw, 46px); }
+.triennial-group .project-blurb { margin-top: 20px; max-width: 42ch; }
+
+.triennial-group .project-story { padding: clamp(36px, 5vw, 64px) var(--design-gutter) 40px; }
+.triennial-group .case-lead,
+.triennial-group .case-section,
+.triennial-group .project-credit { width: min(960px, calc(100vw - (var(--design-gutter) * 2))); margin-left: auto; margin-right: auto; }
+
+.case-lead { margin-bottom: clamp(58px, 8vw, 96px); }
+.case-lead-more { display: grid; grid-template-columns: minmax(0, .88fr) minmax(280px, .72fr); gap: clamp(44px, 7vw, 92px); align-items: center; }
+.case-lead-copy { max-width: 48ch; }
+.case-lead-copy p { margin: 0; font-size: clamp(14px, .95vw, 16px); line-height: 1.45; }
+.case-lead-copy strong { font-weight: 700; }
+
+.more-anchor { width: min(100%, 360px); margin: 0; justify-self: end; }
+.more-anchor img { width: 100%; height: auto; }
+.more-anchor figcaption,
+.extension-art-stroll figcaption,
+.foldout-reference figcaption,
+.ba-script-flat figcaption,
+.ba-signage-flats figcaption,
+.mp-system figcaption { display: flex; justify-content: space-between; gap: 12px; margin-top: 7px; color: rgba(17,17,15,.58); font-size: 9px; font-weight: 700; line-height: 1.15; }
+
+.triennial-group .case-section { margin-bottom: clamp(62px, 8vw, 96px); padding-top: 15px; border-top: 1px solid var(--design-rule); }
+.triennial-group .case-section-heading { grid-template-columns: 34px minmax(0,1fr); margin-bottom: 28px; }
+.triennial-group .case-section-heading h4 { font-size: clamp(22px, 2.1vw, 31px); }
+.triennial-group .case-section-deck { max-width: 58ch; margin-top: 6px; }
+
+.media-switcher-grid-applications { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 30px; }
+.media-switcher-grid-applications .media-switcher-bus { grid-column: 1 / -1; width: min(100%, 700px); justify-self: center; }
+.media-switcher-stage { background: transparent; border-color: var(--design-rule); }
+.media-switcher-stage img { padding: 8px; }
+.media-switcher-stage-portrait { aspect-ratio: 4 / 4.8; }
+.media-switcher-stage-wide { aspect-ratio: 16 / 6.7; }
+
+.extension-layout { grid-template-columns: minmax(260px,.72fr) minmax(0,1.28fr); gap: clamp(36px,5vw,64px); }
+.extension-art-stroll { max-width: 360px; }
+.public-processes-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.extension-public-processes p { margin-top: 12px; max-width: 48ch; }
+
+.making-public-copy { max-width: 72ch !important; }
+.mp-system { display: grid; grid-template-columns: repeat(12,minmax(0,1fr)); gap: 14px; align-items: start; }
+.mp-system figure { margin: 0; }
+.mp-system img { display: block; width: 100%; height: auto; }
+.mp-event-photo { grid-column: 1 / 9; }
+.mp-banner { grid-column: 9 / -1; align-self: center; }
+.mp-pair { display: grid; gap: 12px; align-items: start; }
+.mp-pair-posters { grid-column: 1 / 8; grid-template-columns: repeat(2,minmax(0,1fr)); margin-top: 18px; }
+.mp-pair-information { grid-column: 8 / -1; grid-template-columns: repeat(2,minmax(0,1fr)); margin-top: 18px; }
+.mp-pair-social { grid-column: 3 / 11; grid-template-columns: repeat(2,minmax(0,1fr)); margin-top: 22px; }
+
+/* Better Angels — one readable flow */
+.ba-lead { display: block; }
+.ba-lead .case-lead-copy { max-width: 64ch; }
+
+.foldout-layout { grid-template-columns: minmax(0,1fr) 260px; gap: 44px; align-items: start; }
+.foldout-demo { min-width: 0; }
+.foldout-toolbar { margin-bottom: 10px; }
+.foldout-stage { --outside: url("assets/better angels takeaway outside.png"); --inside: url("assets/better angels takeaway inside.png"); position: relative; width: min(100%, 520px); aspect-ratio: 378 / 414; margin: 0 auto; cursor: pointer; perspective: 1400px; transform-style: preserve-3d; }
+.foldout-flat-reference { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; object-fit: contain; transition: opacity 130ms ease; pointer-events: none; }
+.foldout-stage.show-inside .foldout-flat-reference { content: var(--inside); }
+.foldout-stage.is-folding .foldout-flat-reference,
+.foldout-stage.is-folded .foldout-flat-reference { opacity: 0; }
+
+.fold-panel { position: absolute; z-index: 8; opacity: 0; background-image: var(--outside); background-repeat: no-repeat; transform-style: preserve-3d; transition: transform 480ms cubic-bezier(.2,.75,.18,1), opacity 80ms linear, filter 260ms ease; backface-visibility: visible; }
+.foldout-stage.is-folding .fold-panel,
+.foldout-stage.is-folded .fold-panel { opacity: 1; }
+.fold-panel-left { left:0; top:0; width:26.1905%; height:60.8696%; background-size:381.818% auto; background-position:0 0; transform-origin:100% 50%; }
+.fold-panel-center { left:26.1905%; top:0; width:47.619%; height:60.8696%; background-size:210% auto; background-position:55% 0; transform-origin:50% 100%; }
+.fold-panel-right { left:73.8095%; top:0; width:26.1905%; height:60.8696%; background-size:381.818% auto; background-position:100% 0; transform-origin:0 50%; }
+.fold-panel-bottom { left:26.1905%; top:60.8696%; width:47.619%; height:39.1304%; background-size:210% auto; background-position:55% 100%; transform-origin:50% 0; }
+.foldout-stage.show-inside .fold-panel { background-image: var(--inside); }
+
+.foldout-stage.is-folding .fold-panel-left,
+.foldout-stage.is-folded .fold-panel-left { transform: rotateY(176deg) translateZ(2px); filter: brightness(.94); }
+.foldout-stage.is-folding .fold-panel-right,
+.foldout-stage.is-folded .fold-panel-right { transform: rotateY(-176deg) translateZ(2px); filter: brightness(.92); }
+.foldout-stage.is-folding .fold-panel-center,
+.foldout-stage.is-folded .fold-panel-center { transform: translateZ(3px); }
+.foldout-stage.is-folding .fold-panel-bottom,
+.foldout-stage.is-folded .fold-panel-bottom { transition-delay: 220ms; transform: rotateX(-176deg) translateZ(5px); filter: brightness(.9); }
+
+.foldout-closed-card { position:absolute; z-index:20; left:26.1905%; top:18%; width:47.619%; aspect-ratio:180/162; opacity:0; pointer-events:none; background-image:var(--outside); background-size:210% auto; background-position:55% 100%; box-shadow:0 24px 30px rgba(17,17,15,.22), 0 8px 10px rgba(17,17,15,.12); transform:translateY(18px) scale(.92); transition:opacity 150ms ease 590ms, transform 220ms ease 590ms; }
+.foldout-stage.is-folded .fold-panel { opacity:0; transition-delay:0ms; }
+.foldout-stage.is-folded .foldout-closed-card { opacity:1; transform:translateY(0) scale(1); }
+.foldout-stage.show-inside .foldout-closed-card { background-image:var(--inside); }
+.foldout-stage.is-folded::after { content:""; position:absolute; z-index:1; left:31%; right:31%; top:61%; height:8%; border-radius:50%; background:rgba(17,17,15,.18); filter:blur(14px); opacity:.9; }
+.foldout-hint { text-align:center; }
+.foldout-reference { margin: 0; }
+.foldout-reference img { width: 100%; height: auto; }
+
+.flyer-demo { width:min(100%,420px); margin:0 auto; }
+.flyer-scene { aspect-ratio: 612/792; }
+.flyer-paper { width:100%; height:100%; }
+
+.ba-script-layout { grid-template-columns: minmax(0,1.2fr) minmax(240px,.8fr); gap: 30px; }
+.ba-whistle-docs { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.ba-whistle-docs figure:last-child { grid-column:1 / -1; width:70%; justify-self:center; }
+
+.ba-signage-flats { display:grid; grid-template-columns: .92fr .92fr 1fr 1fr; gap:16px; align-items:end; width:min(100%,820px); margin:0 auto 32px; }
+.ba-signage-flats figure { margin:0; background:transparent; }
+.ba-signage-flats img { width:100%; height:auto; max-height:330px; object-fit:contain; object-position:center bottom; }
+.ba-signage-docs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; width:min(100%,760px); margin:0 auto; }
+.ba-signage-doc-wide { grid-column:1 / -1; }
+.ba-signage-docs img { width:100%; height:auto; }
+
+.ba-activation-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; width:min(100%,840px); margin:0 auto; }
+.ba-activation-grid figure { margin:0; }
+.ba-activation-grid img { width:100%; height:100%; aspect-ratio:4/3; object-fit:cover; }
+
+@media (max-width: 900px) {
+  .triennial-group .project-summary { grid-template-columns:28px minmax(0,1fr) 28px; }
+  .triennial-group .project-key-image { grid-column:2; grid-row:2; width:min(100%,380px); margin-top:22px; }
+  .case-lead-more { grid-template-columns:1fr; gap:30px; }
+  .more-anchor { justify-self:center; width:min(360px,82vw); }
+  .foldout-layout { grid-template-columns:1fr; }
+  .foldout-reference { width:min(360px,100%); margin:0 auto; }
+  .extension-layout { grid-template-columns:1fr; }
+  .extension-art-stroll { margin:0 auto; }
+  .mp-event-photo { grid-column:1 / -1; }
+  .mp-banner { grid-column:1 / -1; width:min(520px,100%); justify-self:center; }
+  .mp-pair-posters, .mp-pair-information, .mp-pair-social { grid-column:1 / -1; }
+  .ba-signage-flats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .ba-activation-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+@media (max-width: 620px) {
+  .triennial-group .project-summary { grid-template-columns:22px minmax(0,1fr) 24px; padding-left:16px; padding-right:16px; }
+  .triennial-group .project-key-image { width:100%; aspect-ratio:3/2; }
+  .triennial-group .project-story { padding-left:16px; padding-right:16px; }
+  .triennial-group .case-lead, .triennial-group .case-section, .triennial-group .project-credit { width:100%; }
+  .media-switcher-grid-applications { grid-template-columns:1fr; }
+  .media-switcher-grid-applications .media-switcher-bus { grid-column:1; }
+  .public-processes-pair { grid-template-columns:1fr 1fr; }
+  .mp-system { display:block; }
+  .mp-system > * { margin-bottom:18px; }
+  .mp-pair { grid-template-columns:1fr 1fr; }
+  .mp-pair-social { grid-template-columns:1fr; width:min(320px,100%); margin-left:auto; margin-right:auto; }
+  .foldout-stage { width:min(100%,390px); }
+  .ba-script-layout { grid-template-columns:1fr; }
+  .ba-signage-flats { grid-template-columns:1fr 1fr; gap:10px; }
+  .ba-signage-flats img { max-height:250px; }
+  .ba-signage-docs { grid-template-columns:1fr; }
+  .ba-signage-doc-wide { grid-column:1; }
+  .ba-activation-grid { grid-template-columns:1fr; width:min(420px,100%); }
+}
