@@ -6065,3 +6065,93 @@ figure > figcaption {
   object-fit:contain !important;
   object-position:center !important;
 }
+
+/* =========================================================
+   v36 - natural ink texture + reliable knot + bus stage fix
+   ========================================================= */
+
+/* Pull the texture back from visible speckles. The SVG filter now carries a
+   low-opacity paper tooth and edge displacement rather than punched holes. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.case-section--making-public .case-section__header h3 {
+  filter: url(#ink-display-v35) !important;
+  text-shadow: none !important;
+}
+
+/* Knot remains tactile at rest, but registration is quieter. The same knot
+   filter is applied to every source layer so swaps do not lose the surface. */
+.portfolio-masthead__ornament .knot-flash__ink,
+.portfolio-masthead__ornament .knot-flash__bleed,
+.portfolio-masthead__ornament .knot-flash__register {
+  filter: url(#ink-knot-v35) !important;
+}
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity: .22 !important;
+  transform: translate(1.1px,.55px) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity: .15 !important;
+  transform: translate(-.95px,-.45px) !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed { opacity:.62 !important; }
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register { opacity:.50 !important; }
+
+/* Reassert color mappings after the shared v36 filter. */
+.knot-flash--black .knot-flash__ink { filter:url(#ink-knot-v35) brightness(0) contrast(1.6) !important; }
+.knot-flash--red .knot-flash__ink { filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important; }
+.knot-flash--green .knot-flash__ink { filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important; }
+.knot-flash--yellow .knot-flash__ink { filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(104%) !important; }
+.knot-flash--black .knot-flash__bleed,
+.knot-flash--red .knot-flash__register,
+.knot-flash--yellow .knot-flash__bleed { filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important; }
+.knot-flash--black .knot-flash__register,
+.knot-flash--green .knot-flash__bleed,
+.knot-flash--red .knot-flash__bleed { filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important; }
+.knot-flash--green .knot-flash__register,
+.knot-flash--yellow .knot-flash__register { filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(104%) !important; }
+
+/* Bus artwork: stop using translated absolute sizing. The primary file sits
+   inside the whole stage with deliberate padding, so global hover transforms
+   cannot throw it out of frame. */
+.switcher-grid--three .image-switcher:nth-child(3) .image-switcher__stage--wide {
+  overflow: hidden !important;
+}
+.switcher-grid--three .image-switcher:nth-child(3) .image-switcher__stage--wide .state-primary {
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  padding:8% 12% !important;
+  box-sizing:border-box !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  transform:none !important;
+}
+.switcher-grid--three .image-switcher:nth-child(3) .image-switcher__stage--wide .state-secondary {
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  padding:0 !important;
+  box-sizing:border-box !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  transform:none !important;
+}
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher:nth-child(3) .image-switcher__stage--wide:hover .state-primary,
+  .switcher-grid--three .image-switcher:nth-child(3) .image-switcher__stage--wide:hover .state-secondary,
+  .switcher-grid--three .image-switcher:nth-child(3).is-secondary .image-switcher__stage--wide:hover .state-primary,
+  .switcher-grid--three .image-switcher:nth-child(3).is-secondary .image-switcher__stage--wide:hover .state-secondary {
+    transform:none !important;
+  }
+}
