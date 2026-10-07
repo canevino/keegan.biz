@@ -8589,3 +8589,91 @@ body.design-page::before {
   .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-primary { opacity:0 !important; }
   .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-secondary { opacity:1 !important; }
 }
+
+/* =====================================================
+   v53 — local ink-run + continuous paper + hover flips
+   Preserve approved v52 knot treatment and layout.
+   ===================================================== */
+
+/* Continuous paper stock: two large textures over the entire page. No sheet
+   tiles, no hard joins. The stock sits above type, rules, knots and images. */
+.paper-overprint {
+  position:absolute !important;
+  inset:0 !important;
+  z-index:40 !important;
+  pointer-events:none !important;
+  overflow:hidden !important;
+  background:none !important;
+  mix-blend-mode:normal !important;
+  opacity:1 !important;
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 110px), transparent 100%) !important;
+  mask-image:linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 110px), transparent 100%) !important;
+}
+.paper-overprint::before,
+.paper-overprint::after {
+  content:"";
+  position:absolute;
+  inset:-120px -4vw;
+  pointer-events:none;
+  background-repeat:repeat-y;
+  background-position:center top;
+}
+.paper-overprint::before {
+  background-image:url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg');
+  background-size:max(1500px,108vw) auto;
+  mix-blend-mode:multiply;
+  opacity:.115;
+  filter:grayscale(.18) brightness(1.22) contrast(1.06);
+}
+.paper-overprint::after {
+  background-image:url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg');
+  background-size:max(1820px,124vw) auto;
+  background-position:center 340px;
+  mix-blend-mode:soft-light;
+  opacity:.24;
+  filter:grayscale(.10) brightness(1.10) contrast(1.16);
+}
+.paper-overprint__sheet { display:none !important; }
+
+/* More yellow contamination on red/green display ink without turning it into
+   a generic glow. Keep the approved base bleed filters underneath. */
+.portfolio-masthead h1 {
+  text-shadow:
+    1.55px .44px .72px rgba(253,185,19,.58),
+    .55px 1.15px .74px rgba(253,185,19,.26),
+    -.46px -.22px .50px rgba(0,106,68,.11),
+    0 .68px .44px rgba(193,39,45,.08) !important;
+}
+.project-family-heading h2,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4 {
+  text-shadow:
+    1.34px .38px .64px rgba(253,185,19,.46),
+    .40px .92px .54px rgba(253,185,19,.20),
+    -.34px -.14px .40px rgba(0,106,68,.08) !important;
+}
+
+/* Hovered patch of “design”: use the same blur→threshold→roughen logic as the
+   approved ink system, then feather it back into the untouched default bleed. */
+.design-hover-smudge {
+  opacity:0 !important;
+  transform:none !important;
+  color:var(--red) !important;
+  filter:url(#ink-run-v53) !important;
+  text-shadow:
+    2.2px .65px 1.0px rgba(253,185,19,.66),
+    -.9px .30px .82px rgba(0,106,68,.16),
+    0 2.1px 1.1px rgba(193,39,45,.22) !important;
+  -webkit-mask-image:radial-gradient(ellipse 94px 78% at var(--smudge-x,50%) var(--smudge-y,50%), #000 0 26%, rgba(0,0,0,.98) 40%, rgba(0,0,0,.78) 57%, rgba(0,0,0,.35) 74%, transparent 100%) !important;
+  mask-image:radial-gradient(ellipse 94px 78% at var(--smudge-x,50%) var(--smudge-y,50%), #000 0 26%, rgba(0,0,0,.98) 40%, rgba(0,0,0,.78) 57%, rgba(0,0,0,.35) 74%, transparent 100%) !important;
+  transition:opacity .06s linear !important;
+}
+.portfolio-masthead__main.is-smudging .design-hover-smudge { opacity:1 !important; }
+
+/* Across formats: desktop previews are explicitly hover driven. Click/tap and
+   keyboard still use the existing .is-secondary state for touch/accessibility. */
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher__stage:hover .state-primary { opacity:0 !important; }
+  .switcher-grid--three .image-switcher__stage:hover .state-secondary { opacity:1 !important; }
+}

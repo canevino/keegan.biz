@@ -475,3 +475,67 @@
   window.addEventListener("load", syncBox, { once:true });
   syncBox();
 })();
+
+/* v53: one continuous paper overlay. Remove v51/v52 generated sheet tiles. */
+(() => {
+  "use strict";
+  const shell = document.querySelector(".page-shell");
+  if (!shell) return;
+
+  document.querySelectorAll(".paper-overprint").forEach((node) => node.remove());
+  const layer = document.createElement("div");
+  layer.className = "paper-overprint";
+  layer.setAttribute("aria-hidden", "true");
+  shell.appendChild(layer);
+
+  const sync = () => {
+    const height = Math.max(shell.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
+    layer.style.height = `${height}px`;
+  };
+  sync();
+  window.addEventListener("load", sync, { once:true });
+  window.addEventListener("resize", sync);
+  if ("ResizeObserver" in window) new ResizeObserver(sync).observe(shell);
+})();
+
+/* v53: Across formats asset pairs are explicit and hover-driven on desktop. */
+(() => {
+  "use strict";
+
+  const pairs = [
+    ["/design/assets/more connection lyric.png", "/design/assets/more connection lyric photo.png"],
+    ["/design/assets/more depth.png", "/design/assets/more depth image.png"],
+    ["/design/assets/more fun bus.png", "/design/assets/more fun bus image.png"]
+  ];
+
+  const desktopHover = window.matchMedia("(hover:hover) and (pointer:fine)");
+  document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher, index) => {
+    const primary = switcher.querySelector(".state-primary");
+    const secondary = switcher.querySelector(".state-secondary");
+    const button = switcher.querySelector(".image-switcher__button");
+    const pair = pairs[index];
+    if (pair) {
+      if (primary) primary.src = pair[0];
+      if (secondary) secondary.src = pair[1];
+    }
+
+    const stage = switcher.querySelector(".image-switcher__stage");
+    if (!stage) return;
+
+    const showInstalled = () => {
+      if (!desktopHover.matches) return;
+      primary?.style.setProperty("opacity", "0", "important");
+      secondary?.style.setProperty("opacity", "1", "important");
+      button?.setAttribute("aria-pressed", "true");
+    };
+    const showArtwork = () => {
+      if (!desktopHover.matches) return;
+      primary?.style.removeProperty("opacity");
+      secondary?.style.removeProperty("opacity");
+      button?.setAttribute("aria-pressed", String(switcher.classList.contains("is-secondary")));
+    };
+
+    stage.addEventListener("pointerenter", showInstalled);
+    stage.addEventListener("pointerleave", showArtwork);
+  });
+})();

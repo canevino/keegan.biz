@@ -202,6 +202,20 @@
   <feMerge><feMergeNode in="bleedTone"/><feMergeNode in="texturedCore"/></feMerge>
 </filter>
 
+<filter id="ink-run-v53" x="-32%" y="-58%" width="164%" height="216%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="3.25" result="runBlur"/>
+  <feComponentTransfer in="runBlur" result="runThreshold">
+    <feFuncA type="discrete" tableValues="0 0 1 1 1 1 1 1 1 1"/>
+  </feComponentTransfer>
+  <feMorphology in="runThreshold" operator="dilate" radius="1.15 0.58" result="runSpread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.010 0.065" numOctaves="3" seed="153" result="runFibres"/>
+  <feDisplacementMap in="runSpread" in2="runFibres" scale="4.4" xChannelSelector="R" yChannelSelector="G" result="runRough"/>
+  <feGaussianBlur in="SourceGraphic" stdDeviation="5.1" result="runHalo"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.008 0.040" numOctaves="2" seed="79" result="haloNoise"/>
+  <feDisplacementMap in="runHalo" in2="haloNoise" scale="5.6" xChannelSelector="R" yChannelSelector="G" result="haloRough"/>
+  <feComponentTransfer in="haloRough" result="haloFade"><feFuncA type="linear" slope="0.34"/></feComponentTransfer>
+  <feMerge><feMergeNode in="haloFade"/><feMergeNode in="runRough"/></feMerge>
+</filter>
 </defs>
 </svg>
 <div class="page-shell">
