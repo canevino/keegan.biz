@@ -199,7 +199,11 @@
     let timer = 0;
     let hovering = false;
 
-    const setKnot = (index) => images.forEach((image) => { image.src = knotSources[index]; });
+    const setKnot = (index) => {
+      const source = knotSources[index];
+      images.forEach((image) => { image.src = source; });
+      slot.style.setProperty("--knot-mask", `url("${source}")`);
+    };
 
     const chooseNext = () => {
       let next = Math.floor(Math.random() * knotSources.length);

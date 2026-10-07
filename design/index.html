@@ -12,40 +12,40 @@
 <body class="design-page">
 <svg aria-hidden="true" class="print-filter-defs" focusable="false" height="0" width="0">
 <defs>
-<filter color-interpolation-filters="sRGB" height="170%" id="ink-display-v33" width="140%" x="-20%" y="-35%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="0.58" result="softColor"/>
-  <feComponentTransfer in="softColor" result="thresholded">
+<filter color-interpolation-filters="sRGB" height="176%" id="ink-display-v34" width="146%" x="-23%" y="-38%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="0.48" result="soft"/>
+  <feComponentTransfer in="soft" result="thresholded">
     <feFuncA type="discrete" tableValues="0 0 0 1 1 1"/>
   </feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.24" result="spread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.035 0.31" numOctaves="2" seed="37" result="edgeNoise"/>
-  <feDisplacementMap in="spread" in2="edgeNoise" scale="1.15" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.72 0.66" numOctaves="1" seed="11" result="grain"/>
+  <feMorphology in="thresholded" operator="dilate" radius="0.34" result="spread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.055 0.29" numOctaves="3" seed="73" result="edgeNoise"/>
+  <feDisplacementMap in="spread" in2="edgeNoise" scale="1.7" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.82 0.71" numOctaves="2" seed="19" result="grain"/>
   <feColorMatrix in="grain" type="luminanceToAlpha" result="grainAlpha"/>
-  <feComponentTransfer in="grainAlpha" result="grainLight"><feFuncA type="linear" slope="0.11"/></feComponentTransfer>
-  <feComposite in="rough" in2="grainLight" operator="out" result="textured"/>
+  <feComponentTransfer in="grainAlpha" result="grainCut"><feFuncA type="linear" slope="0.19" intercept="0.01"/></feComponentTransfer>
+  <feComposite in="rough" in2="grainCut" operator="out" result="textured"/>
   <feMerge><feMergeNode in="textured"/></feMerge>
 </filter>
-<filter color-interpolation-filters="sRGB" height="140%" id="ink-small-v33" width="124%" x="-12%" y="-20%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="0.22" result="softColor"/>
-  <feComponentTransfer in="softColor" result="thresholded"><feFuncA type="discrete" tableValues="0 0 0.92 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.08 0.38" numOctaves="1" seed="23" result="noise"/>
-  <feDisplacementMap in="thresholded" in2="noise" scale="0.42" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" seed="5" result="grain"/>
+<filter color-interpolation-filters="sRGB" height="144%" id="ink-small-v34" width="128%" x="-14%" y="-22%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="0.18" result="soft"/>
+  <feComponentTransfer in="soft" result="thresholded"><feFuncA type="discrete" tableValues="0 0 0.92 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.11 0.42" numOctaves="2" seed="29" result="noise"/>
+  <feDisplacementMap in="thresholded" in2="noise" scale="0.62" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="1" seed="7" result="grain"/>
   <feColorMatrix in="grain" type="luminanceToAlpha" result="grainAlpha"/>
-  <feComponentTransfer in="grainAlpha" result="grainLight"><feFuncA type="linear" slope="0.045"/></feComponentTransfer>
-  <feComposite in="rough" in2="grainLight" operator="out"/>
+  <feComponentTransfer in="grainAlpha" result="grainCut"><feFuncA type="linear" slope="0.075"/></feComponentTransfer>
+  <feComposite in="rough" in2="grainCut" operator="out"/>
 </filter>
-<filter color-interpolation-filters="sRGB" height="190%" id="ink-knot-v33" width="154%" x="-27%" y="-45%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="0.62" result="softColor"/>
-  <feComponentTransfer in="softColor" result="thresholded"><feFuncA type="discrete" tableValues="0 0 0 1 1 1"/></feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.30" result="spread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.028 0.34" numOctaves="3" seed="47" result="edgeNoise"/>
-  <feDisplacementMap in="spread" in2="edgeNoise" scale="2.35" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.64 0.58" numOctaves="2" seed="13" result="grain"/>
+<filter color-interpolation-filters="sRGB" height="196%" id="ink-knot-v34" width="160%" x="-30%" y="-48%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="0.50" result="soft"/>
+  <feComponentTransfer in="soft" result="thresholded"><feFuncA type="discrete" tableValues="0 0 0 1 1 1"/></feComponentTransfer>
+  <feMorphology in="thresholded" operator="dilate" radius="0.38" result="spread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.045 0.31" numOctaves="4" seed="83" result="edgeNoise"/>
+  <feDisplacementMap in="spread" in2="edgeNoise" scale="3.1" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.78 0.67" numOctaves="3" seed="31" result="grain"/>
   <feColorMatrix in="grain" type="luminanceToAlpha" result="grainAlpha"/>
-  <feComponentTransfer in="grainAlpha" result="grainLight"><feFuncA type="linear" slope="0.14"/></feComponentTransfer>
-  <feComposite in="rough" in2="grainLight" operator="out" result="textured"/>
+  <feComponentTransfer in="grainAlpha" result="grainCut"><feFuncA type="linear" slope="0.24" intercept="0.015"/></feComponentTransfer>
+  <feComposite in="rough" in2="grainCut" operator="out" result="textured"/>
   <feMerge><feMergeNode in="textured"/></feMerge>
 </filter>
 </defs>
