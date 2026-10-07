@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-06T18:29:36.906Z",
+  "updatedAt": "2026-10-07T06:11:37.648Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -1016,22 +1016,12 @@
       }
     },
     "england": {
-      "active": true,
+      "active": false,
       "team": "England",
       "shortName": "England",
-      "upcoming": [
-        {
-          "id": "5181856",
-          "date": "2026-10-06T18:45:00.000Z",
-          "when": "today · Tue, Oct 6 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "England",
-          "away": "Czechia",
-          "competition": "UEFA Nations League A Grp. 3"
-        }
-      ],
+      "upcoming": [],
       "standings": {
-        "title": "UEFA Nations League A Grp. 3",
+        "title": "",
         "rows": []
       }
     },
