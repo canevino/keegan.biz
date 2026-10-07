@@ -218,7 +218,7 @@
     const scheduleIdle = () => {
       clearTimer();
       if (reducedMotion.matches || hovering) return;
-      timer = window.setTimeout(idleBurst, 26000 + Math.random() * 9000);
+      timer = window.setTimeout(idleBurst, 30000 + Math.random() * 15000);
     };
 
     const idleBurst = () => {

@@ -2062,3 +2062,272 @@ body.design-page::before {
   .angels-signage-system { grid-template-columns:1fr; }
   .angels-signage-pair { grid-template-columns:1fr 1fr; }
 }
+
+/* =====================================================
+   v21 — reduction / stronger print / art-direction pass
+   ===================================================== */
+
+:root {
+  --paper:#ece7d7;
+  --ink:#11110f;
+  --yellow:#fdb913;
+  --green:#006a44;
+  --red:#c1272d;
+}
+
+/* Keep the material quiet. The page is paper, not a dirty monitor. */
+body.design-page::before {
+  background-image:url('/assets/home/Texturelabs_Paper_226S grey paper pul overlay.jpg');
+  background-size:1050px auto;
+  background-blend-mode:multiply;
+  opacity:.022;
+}
+
+/* Stronger physical ink: solid ink first, bleed/grain added by the SVG filter. */
+.portfolio-masthead h1,
+.selected-heading__main strong,
+.project-title,
+.case-section__header h3 {
+  overflow:visible !important;
+  color:var(--ink) !important;
+  -webkit-text-fill-color:currentColor !important;
+  background:none !important;
+  filter:url(#ink-bleed-text) !important;
+}
+.selected-heading__main strong { color:var(--green) !important; }
+.portfolio-masthead h1 {
+  line-height:.94 !important;
+  padding:0 0 .16em !important;
+  margin:0 !important;
+}
+
+/* Very light texture overlay on headline zones; never replaces the ink fill. */
+.portfolio-masthead__main,
+.selected-heading__main,
+.project-summary__copy,
+.case-section__header > div {
+  position:relative;
+  isolation:isolate;
+}
+.portfolio-masthead__main::after,
+.selected-heading__main::after,
+.project-summary__copy::after,
+.case-section__header > div::after {
+  content:"";
+  position:absolute;
+  inset:-4px -8px;
+  z-index:1;
+  pointer-events:none;
+  background:url('/assets/home/Texturelabs_InkPaint_352S grey Fine oil paint overlay.jpg') center/420px auto;
+  mix-blend-mode:multiply;
+  opacity:.045;
+}
+.portfolio-masthead__main > *,
+.selected-heading__main > *,
+.project-summary__copy > *,
+.case-section__header > div > * { position:relative; z-index:2; }
+
+/* Reduce ornament: two smooth knots plus the long edge mark = three total. */
+.portfolio-masthead__ornament,
+.selected-heading__ornament {
+  width:clamp(150px,13vw,210px) !important;
+  height:clamp(32px,3vw,44px) !important;
+  overflow:visible !important;
+}
+.knot-flash::after { display:none !important; }
+.knot-flash__ink { opacity:1 !important; }
+.knot-flash__bleed {
+  opacity:.5 !important;
+  transform:translate(2.2px,1.25px) !important;
+}
+.knot-flash__ink,
+.knot-flash__bleed { filter:url(#ink-bleed-small) !important; }
+.knot-flash--red .knot-flash__ink,
+.knot-flash--red .knot-flash__bleed { filter:url(#ink-bleed-small) brightness(.58) sepia(1) saturate(7) hue-rotate(334deg) contrast(1.45) !important; }
+.knot-flash--green .knot-flash__ink,
+.knot-flash--green .knot-flash__bleed { filter:url(#ink-bleed-small) brightness(.42) sepia(1) saturate(5.2) hue-rotate(94deg) contrast(1.55) !important; }
+.page-knot-spine { width:42px !important; opacity:.08 !important; }
+.page-knot-spine__art {
+  left:42px !important;
+  height:42px !important;
+  transform:rotate(90deg) !important;
+  filter:url(#ink-bleed-small) brightness(.58) sepia(1) saturate(7) hue-rotate(334deg) contrast(1.45) !important;
+}
+
+/* Less metadata. Let client + title + work carry the page. */
+.selected-heading__label { align-self:end; }
+.project-summary__rail { padding-top:8px; }
+.project-summary { align-items:start; }
+.project-summary__copy { padding-top:0; }
+.project-toggle { margin-top:18px; }
+
+/* No framed UI around portfolio images. */
+.project-key__collage,
+.project-key__pair,
+.image-switcher__stage,
+.poster-triptych,
+.college-summary-grid,
+.prx-key-grid,
+.feature-slab::before,
+.making-public-panel,
+.making-public-panel::before,
+.angels-takeaway-grid::before,
+.prx-pairing::before {
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+/* Collapsed project images: only strong assets, aligned to one baseline. */
+.project-key__pair {
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-end;
+  gap:12px;
+  width:100%;
+  height:clamp(260px,23vw,330px);
+}
+.project-key__pair img {
+  display:block;
+  height:100%;
+  width:auto;
+  max-width:calc(50% - 6px);
+  object-fit:contain;
+  object-position:top center;
+}
+.key-pair--angels img {
+  width:calc(50% - 6px);
+  max-width:none;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Across Formats: images only, no card feeling. */
+.image-switcher__stage { background:transparent !important; }
+.image-switcher__meta { margin-bottom:8px; }
+.image-switcher__meta h4 { font-size:16px; }
+
+/* Extensions: two objects, exact same displayed height, proportions decide width. */
+.extension-layout {
+  grid-template-columns:minmax(260px,.72fr) minmax(0,1fr) !important;
+  gap:36px !important;
+  align-items:start !important;
+}
+.extension-card { position:relative; }
+.extension-card--gif > img,
+.extension-card--public-processes .flip-card__scene {
+  display:block;
+  width:100%;
+  height:clamp(470px,42vw,610px) !important;
+}
+.extension-card--gif > img { object-fit:cover !important; object-position:center top !important; }
+.extension-card--public-processes .flip-card__inner { width:100%; height:100%; aspect-ratio:auto !important; }
+.extension-card--public-processes .flip-card__face img { width:100%; height:100%; object-fit:cover !important; object-position:center !important; }
+
+/* Flip is a tiny control over the work, not another text row. */
+.flip-card { position:relative; }
+.flip-card__button--overlay {
+  position:absolute;
+  top:8px;
+  right:8px;
+  z-index:8;
+  margin:0 !important;
+  padding:4px 5px !important;
+  background:var(--paper) !important;
+  color:var(--red) !important;
+  line-height:1;
+}
+
+/* Making Public: one banner + three equal-height supporting pieces. */
+.making-public-panel { margin-top:58px !important; padding:0 !important; }
+.making-public-panel > h4 {
+  margin:0 0 16px;
+  font-size:clamp(30px,3vw,44px);
+  line-height:.95;
+  letter-spacing:-.04em;
+}
+.mp-banner { margin:0 0 18px !important; }
+.mp-banner img { width:100% !important; max-height:none !important; height:auto !important; object-fit:contain !important; }
+.making-public-grid {
+  display:grid !important;
+  grid-template-columns:1fr 1fr 1.12fr !important;
+  gap:16px !important;
+  align-items:start !important;
+}
+.making-public-card { min-width:0; height:430px; margin:0; }
+.making-public-card .flip-card__scene,
+.making-public-card .flip-card__inner,
+.making-public-card .flip-card__face { height:100%; }
+.making-public-card .flip-card__inner { aspect-ratio:auto !important; }
+.making-public-card .flip-card__face img {
+  width:100%; height:100%; object-fit:contain !important; object-position:center top !important;
+}
+.mp-event-photo img {
+  width:100%; height:430px !important; object-fit:cover !important; object-position:55% center !important;
+}
+
+/* Better Angels signage: one lead installation, then clear artwork/installation pairs. */
+.angels-signage-layout { display:block !important; }
+.angels-signage-lead { width:min(100%,760px); margin:0 0 34px var(--module-offset); }
+.angels-signage-lead img { width:100%; height:auto !important; object-fit:contain !important; }
+.angels-signage-system {
+  width:calc(100% - var(--module-offset));
+  margin-left:var(--module-offset);
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:32px 24px !important;
+  align-items:start !important;
+}
+.angels-signage-system > figure,
+.angels-signage-pair { margin:0; }
+.angels-signage-pair {
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:10px !important;
+  align-items:start !important;
+}
+.angels-signage-system img,
+.angels-signage-pair img,
+.angels-activation-photo img {
+  display:block;
+  width:100%;
+  height:auto !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  object-position:top center !important;
+}
+
+/* Poster suite: crop to the designed frame; do not shrink into black mats. */
+.poster-triptych { padding:0 !important; gap:16px !important; background:transparent !important; }
+.poster-triptych img,
+.winter-poster-card img {
+  width:100% !important;
+  aspect-ratio:2 / 3 !important;
+  object-fit:cover !important;
+  object-position:center 50% !important;
+}
+
+@media (max-width:900px) {
+  .project-key__pair { height:auto; }
+  .project-key__pair img { height:auto; max-width:48%; }
+  .extension-layout { grid-template-columns:1fr !important; }
+  .extension-card--gif > img,
+  .extension-card--public-processes .flip-card__scene { height:auto !important; }
+  .extension-card--public-processes .flip-card__inner { aspect-ratio:1 / 1 !important; height:auto; }
+  .making-public-grid { grid-template-columns:1fr 1fr !important; }
+  .making-public-card { height:auto; }
+  .making-public-card .flip-card__inner { aspect-ratio:3 / 4 !important; height:auto; }
+  .mp-event-photo img { height:auto !important; object-fit:contain !important; }
+  .angels-signage-lead,
+  .angels-signage-system { width:100%; margin-left:0; }
+}
+
+@media (max-width:680px) {
+  .portfolio-masthead__ornament,
+  .selected-heading__ornament { width:130px !important; height:30px !important; }
+  .project-key__pair { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .project-key__pair img { width:100%; max-width:none; height:auto; object-fit:contain; }
+  .making-public-grid,
+  .angels-signage-system { grid-template-columns:1fr !important; }
+  .angels-signage-pair { grid-template-columns:1fr 1fr !important; }
+}
