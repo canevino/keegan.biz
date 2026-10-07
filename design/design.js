@@ -190,6 +190,14 @@
     "knot-flash--yellow"
   ];
 
+  // Preload every source before glitch swaps. This keeps the existing filtered
+  // image layers intact instead of letting a newly requested SVG flash clean.
+  knotSources.forEach((source) => {
+    const preload = new Image();
+    preload.decoding = "async";
+    preload.src = source;
+  });
+
   document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
     const images = slot.querySelectorAll("img");
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
