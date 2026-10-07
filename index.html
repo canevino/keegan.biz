@@ -6238,10 +6238,19 @@
           </button>
 
           <div class="sports-score">
-            <span>${game.away ?? ""}</span>
-            <span>${game.awayScore ?? ""}–${game.homeScore ?? ""}</span>
-            <span>${game.home ?? ""}</span>
-          </div>
+  <span>${game.away ?? ""}</span>
+
+  <span>
+    ${
+      game.status === "live" ||
+      game.status === "final"
+        ? `${game.awayScore ?? ""}–${game.homeScore ?? ""}`
+        : "vs"
+    }
+  </span>
+
+  <span>${game.home ?? ""}</span>
+</div>
 
           ${
             game.status === "live"
@@ -6257,13 +6266,13 @@
               : ""
           }
 
-          ${
-            game.seriesRecord
-              ? `<p class="sports-series-record">${game.seriesRecord}</p>`
-              : game.series
-                ? `<p class="sports-series">${game.series}</p>`
-                : ""
-          }
+       ${
+  game.series
+    ? `<p class="sports-series-record">${game.series}</p>`
+    : game.seriesRecord
+      ? `<p class="sports-series-record">${game.seriesRecord}</p>`
+      : ""
+}
 
           ${
             game.upcomingTime
@@ -7644,7 +7653,7 @@
 
         const startDate =
           easternDateOffset(
-            -3
+            -14
           );
 
         const endDate =
