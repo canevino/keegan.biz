@@ -184,6 +184,7 @@
   ];
 
   const knotColorClasses = [
+    "knot-flash--black",
     "knot-flash--red",
     "knot-flash--green",
     "knot-flash--yellow"
