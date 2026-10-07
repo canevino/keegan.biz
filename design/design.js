@@ -392,3 +392,86 @@
     observer.observe(shell);
   }
 })();
+
+/* v52: deterministic Across formats states + guaranteed knot texture mask. */
+(() => {
+  "use strict";
+
+  document.querySelectorAll("[data-knot-flash]").forEach((slot) => {
+    const first = slot.querySelector("img");
+    const syncMask = () => {
+      const src = first?.getAttribute("src");
+      if (src) slot.style.setProperty("--knot-mask-image", `url("${src}")`);
+    };
+    syncMask();
+    if (first) {
+      new MutationObserver(syncMask).observe(first, { attributes:true, attributeFilter:["src"] });
+    }
+  });
+
+  document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher) => {
+    const primary = switcher.querySelector(".state-primary");
+    const secondary = switcher.querySelector(".state-secondary");
+    const button = switcher.querySelector(".image-switcher__button");
+
+    const sync = () => {
+      const secondaryOn = switcher.classList.contains("is-secondary");
+      primary?.setAttribute("aria-hidden", String(secondaryOn));
+      secondary?.setAttribute("aria-hidden", String(!secondaryOn));
+      if (button) {
+        button.setAttribute("aria-pressed", String(secondaryOn));
+        button.textContent = secondaryOn ? "artwork" : "in use";
+      }
+    };
+
+    sync();
+    new MutationObserver(sync).observe(switcher, { attributes:true, attributeFilter:["class"] });
+  });
+})();
+
+/* v52: local pointer-driven ink run on the word “design”. */
+(() => {
+  "use strict";
+
+  const title = document.querySelector(".portfolio-masthead h1");
+  const holder = title?.parentElement;
+  if (!title || !holder) return;
+
+  const smudge = document.createElement("span");
+  smudge.className = "design-hover-smudge";
+  smudge.setAttribute("aria-hidden", "true");
+  smudge.textContent = title.getAttribute("data-ink") || "design";
+  holder.appendChild(smudge);
+
+  const syncBox = () => {
+    const titleBox = title.getBoundingClientRect();
+    const holderBox = holder.getBoundingClientRect();
+    smudge.style.left = `${titleBox.left - holderBox.left}px`;
+    smudge.style.top = `${titleBox.top - holderBox.top}px`;
+    smudge.style.width = `${titleBox.width}px`;
+    smudge.style.height = `${titleBox.height}px`;
+    smudge.style.fontSize = getComputedStyle(title).fontSize;
+    smudge.style.lineHeight = getComputedStyle(title).lineHeight;
+    smudge.style.letterSpacing = getComputedStyle(title).letterSpacing;
+    smudge.style.fontWeight = getComputedStyle(title).fontWeight;
+  };
+
+  const move = (event) => {
+    const rect = title.getBoundingClientRect();
+    const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
+    const y = Math.max(0, Math.min(rect.height, event.clientY - rect.top));
+    holder.style.setProperty("--smudge-x", `${x}px`);
+    holder.style.setProperty("--smudge-y", `${y}px`);
+  };
+
+  title.addEventListener("pointerenter", (event) => {
+    syncBox();
+    move(event);
+    holder.classList.add("is-smudging");
+  });
+  title.addEventListener("pointermove", move);
+  title.addEventListener("pointerleave", () => holder.classList.remove("is-smudging"));
+  window.addEventListener("resize", syncBox);
+  window.addEventListener("load", syncBox, { once:true });
+  syncBox();
+})();

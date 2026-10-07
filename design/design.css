@@ -8477,3 +8477,115 @@ body.design-page::before {
   margin:auto !important;
   object-fit:cover !important;
 }
+
+/* =====================================================
+   v52 — interaction + print consistency pass
+   Preserve v51 layout, bus sizing, knot cycling and paper assets.
+   ===================================================== */
+
+/* Local ink run on the masthead word only. The base word is untouched;
+   this duplicate is revealed just around the pointer. */
+.portfolio-masthead__main { position:relative; }
+.portfolio-masthead h1 { position:relative; z-index:1; }
+.design-hover-smudge {
+  position:absolute;
+  z-index:2;
+  pointer-events:none;
+  margin:0;
+  color:var(--red);
+  font:inherit;
+  font-size:inherit;
+  font-weight:inherit;
+  line-height:inherit;
+  letter-spacing:inherit;
+  text-transform:inherit;
+  white-space:nowrap;
+  opacity:0;
+  transform:translateY(1.5px) scale(1.012,1.045);
+  transform-origin:center;
+  filter:blur(4.6px) url(#ink-threshold-v46);
+  text-shadow:
+    0 5px 3px rgba(193,39,45,.48),
+    1.2px 1.0px 0 rgba(253,185,19,.34),
+    -1px .6px 0 rgba(0,106,68,.18);
+  -webkit-mask-image:radial-gradient(circle 105px at var(--smudge-x,50%) var(--smudge-y,50%), #000 0 35%, rgba(0,0,0,.94) 52%, rgba(0,0,0,.35) 76%, transparent 100%);
+  mask-image:radial-gradient(circle 105px at var(--smudge-x,50%) var(--smudge-y,50%), #000 0 35%, rgba(0,0,0,.94) 52%, rgba(0,0,0,.35) 76%, transparent 100%);
+  transition:opacity .08s linear;
+}
+.portfolio-masthead h1.is-smudging + .design-hover-smudge,
+.portfolio-masthead__main.is-smudging .design-hover-smudge { opacity:.96; }
+
+/* Stronger yellow plate contamination at display sizes. Keep the actual ink
+   colour intact; this only pushes a warm misregistered edge into joins. */
+.portfolio-masthead h1 {
+  text-shadow:
+    1.35px .42px .65px rgba(253,185,19,.48),
+    -.55px -.20px .55px rgba(0,106,68,.12),
+    0 .82px .55px rgba(193,39,45,.14) !important;
+}
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4 {
+  text-shadow:
+    1.08px .38px .58px rgba(253,185,19,.38),
+    -.42px -.16px .46px rgba(0,106,68,.10),
+    0 .62px .45px rgba(193,39,45,.08) !important;
+}
+
+/* Guarantee material texture on every knot, independent of SVG source and
+   independent of the colour filter on the three image plates. */
+.knot-flash::after {
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:6 !important;
+  pointer-events:none !important;
+  background-image:
+    url('/assets/home/Texturelabs_InkPaint_323S grey pastel blended overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg') !important;
+  background-size:520px auto, 740px auto !important;
+  background-position:37% 41%, 61% 23% !important;
+  background-repeat:repeat !important;
+  mix-blend-mode:screen !important;
+  opacity:.15 !important;
+  filter:grayscale(1) contrast(1.28) brightness(.72) !important;
+  -webkit-mask-image:var(--knot-mask-image) !important;
+  mask-image:var(--knot-mask-image) !important;
+  -webkit-mask-size:contain !important;
+  mask-size:contain !important;
+  -webkit-mask-repeat:no-repeat !important;
+  mask-repeat:no-repeat !important;
+  -webkit-mask-position:center !important;
+  mask-position:center !important;
+}
+.knot-flash.is-hover-glitch::after,
+.knot-flash.is-fluttering::after { opacity:.23 !important; }
+
+/* Paper remains above type/art, but lighter in tone and more visible as fibre.
+   More contrast + higher brightness exposes tooth without grey veiling. */
+.paper-overprint__sheet {
+  opacity:.155 !important;
+  mix-blend-mode:multiply !important;
+  filter:grayscale(1) brightness(1.72) contrast(1.18) !important;
+}
+.paper-overprint__sheet:nth-child(3n + 2) {
+  opacity:.14 !important;
+  filter:grayscale(1) brightness(1.82) contrast(1.16) !important;
+}
+.paper-overprint__sheet:nth-child(3n + 3) {
+  opacity:.13 !important;
+  filter:grayscale(1) brightness(1.90) contrast(1.14) !important;
+}
+
+/* Across formats is click/tap/keyboard deterministic. Older hover-preview
+   rules made a click appear to do nothing while the pointer remained over the
+   image. Keep the correct image pairs and let .is-secondary be the sole state. */
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher:not(.is-secondary) .image-switcher__stage:hover .state-primary { opacity:1 !important; }
+  .switcher-grid--three .image-switcher:not(.is-secondary) .image-switcher__stage:hover .state-secondary { opacity:0 !important; }
+  .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-primary { opacity:0 !important; }
+  .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-secondary { opacity:1 !important; }
+}
