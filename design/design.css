@@ -5960,3 +5960,108 @@ figure > figcaption {
   }
   .case-section--making-public .making-public-card .flip-card__inner { aspect-ratio:3/4 !important; }
 }
+
+/* =========================================================
+   v35 - reliable tactile ink + bus artwork correction
+   ========================================================= */
+
+/* The texture now comes from the same alpha/edge treatment as the knot.
+   No raster-noise overlay, no drop-shadow simulation. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.case-section--making-public .case-section__header h3 {
+  filter: url(#ink-display-v35) !important;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+}
+
+/* Remove the mask texture overlay introduced in v34. It depended on the
+   current SVG as a CSS mask and could fail during source swaps. The actual
+   SVG layers are now textured directly by the v35 filter, so every variant
+   receives the same treatment. */
+.portfolio-masthead__ornament::after {
+  display: none !important;
+}
+.portfolio-masthead__ornament .knot-flash__ink,
+.portfolio-masthead__ornament .knot-flash__bleed,
+.portfolio-masthead__ornament .knot-flash__register {
+  filter: url(#ink-knot-v35) !important;
+}
+
+/* Re-apply colors after the shared filter so texture survives in every state. */
+.knot-flash--black .knot-flash__ink {
+  filter:url(#ink-knot-v35) brightness(0) contrast(1.6) !important;
+}
+.knot-flash--red .knot-flash__ink {
+  filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--green .knot-flash__ink {
+  filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important;
+}
+.knot-flash--yellow .knot-flash__ink {
+  filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(104%) !important;
+}
+.knot-flash--black .knot-flash__bleed,
+.knot-flash--red .knot-flash__register,
+.knot-flash--yellow .knot-flash__bleed {
+  filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important;
+}
+.knot-flash--black .knot-flash__register,
+.knot-flash--green .knot-flash__bleed,
+.knot-flash--red .knot-flash__bleed {
+  filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--green .knot-flash__register,
+.knot-flash--yellow .knot-flash__register {
+  filter:url(#ink-knot-v35) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(104%) !important;
+}
+
+/* Always show some registration, even at rest. */
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity: .42 !important;
+  transform: translate(1.6px,.85px) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity: .32 !important;
+  transform: translate(-1.35px,-.75px) !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed { opacity:.78 !important; }
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register { opacity:.68 !important; }
+
+/* Bus-wrap artwork: undo conflicting inset + translate rules. Keep the flat
+   artwork smaller and centered; keep the installed photograph centered at
+   its natural aspect ratio with no crop. */
+.switcher-grid--three .image-switcher:nth-child(3) .image-switcher__stage--wide .state-primary {
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+  inset:auto !important;
+  transform:translate(-50%,-50%) !important;
+  width:auto !important;
+  height:auto !important;
+  max-width:62% !important;
+  max-height:70% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+.switcher-grid--three .image-switcher:nth-child(3) .image-switcher__stage--wide .state-secondary {
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+  inset:auto !important;
+  transform:translate(-50%,-50%) !important;
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
