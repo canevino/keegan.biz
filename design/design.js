@@ -190,13 +190,26 @@
     "knot-flash--yellow"
   ];
 
-  const knotCache = knotSources.map((source) => new Promise((resolve) => {
+  const knotCache = knotSources.map(async (source) => {
     const preload = new Image();
-    preload.onload = () => resolve(source);
-    preload.onerror = () => resolve(source);
+    preload.decoding = "async";
     preload.src = source;
-    if (preload.complete) resolve(source);
-  }));
+
+    try {
+      await preload.decode();
+    } catch (error) {
+      await new Promise((resolve) => {
+        if (preload.complete) {
+          resolve();
+          return;
+        }
+        preload.addEventListener("load", resolve, { once: true });
+        preload.addEventListener("error", resolve, { once: true });
+      });
+    }
+
+    return { source, image: preload };
+  });
 
   Promise.all(knotCache).then(() => {
     document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
@@ -211,8 +224,10 @@
       const setKnot = (index) => {
         const source = knotSources[index];
         images.forEach((image) => {
+          image.decoding = "sync";
           if (image.getAttribute("src") !== source) image.setAttribute("src", source);
         });
+        void slot.offsetWidth;
       };
 
       const setColor = (index) => {

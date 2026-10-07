@@ -6922,3 +6922,101 @@ body.design-page::before {
   .image-switcher--bus .image-switcher__stage--wide { aspect-ratio:2.15 / 1 !important; }
   .image-switcher--bus .image-switcher__stage--wide .state-primary { width:82% !important; height:74% !important; }
 }
+
+/* =========================================================
+   v42 - full-page paper field + organic bleed + stable knot states
+   ========================================================= */
+
+/* Fill the whole document with paper rather than a centered repeat-y strip.
+   These textures are the page surface itself, so all portfolio imagery sits
+   naturally above them and they move with normal scrolling. */
+body.design-page {
+  background-color: var(--paper) !important;
+  background-image:
+    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg') !important;
+  background-size: 760px auto, 980px auto, 1260px auto !important;
+  background-position: 0 0, 180px 110px, -120px 260px !important;
+  background-repeat: repeat, repeat, repeat !important;
+  background-attachment: scroll, scroll, scroll !important;
+  background-blend-mode: multiply, soft-light, multiply !important;
+}
+body.design-page::before {
+  display:none !important;
+  content:none !important;
+}
+.page-shell,
+.design-site-header,
+.design-main,
+.portfolio-masthead,
+.project-family-heading,
+.work-stack,
+.project,
+.project-summary,
+.project-content,
+.case-section {
+  background:transparent !important;
+}
+
+/* Less machine-perfect halo. The filter now supplies the irregular edge;
+   these tiny registration offsets only give large type a physical print feel. */
+.portfolio-masthead h1 {
+  letter-spacing:-.073em !important;
+  text-shadow:
+    -.55px .18px .22px rgba(0,106,68,.13),
+     .62px -.12px .22px rgba(253,185,19,.12) !important;
+}
+.project-family-heading h2,
+.project-title {
+  letter-spacing:-.050em !important;
+  text-shadow:
+    -.36px .12px .16px rgba(193,39,45,.10),
+     .40px -.08px .16px rgba(0,106,68,.09) !important;
+}
+.case-section__header h3,
+.making-public-intro h4 {
+  letter-spacing:-.037em !important;
+}
+
+/* Keep the successful three-layer knot. Do not flatten texture when the color
+   changes: the tonal variation from the SVG filter must survive every state. */
+.portfolio-masthead__ornament .knot-flash__ink,
+.portfolio-masthead__ornament .knot-flash__bleed,
+.portfolio-masthead__ornament .knot-flash__register {
+  filter:url(#ink-knot-v41) !important;
+}
+.knot-flash--black .knot-flash__ink {
+  filter:url(#ink-knot-v41) brightness(.78) contrast(1.46) !important;
+}
+.knot-flash--red .knot-flash__ink {
+  filter:url(#ink-knot-v41) invert(18%) sepia(86%) saturate(3270%) hue-rotate(347deg) brightness(87%) contrast(96%) !important;
+}
+.knot-flash--green .knot-flash__ink {
+  filter:url(#ink-knot-v41) invert(29%) sepia(38%) saturate(1690%) hue-rotate(108deg) brightness(76%) contrast(106%) !important;
+}
+.knot-flash--yellow .knot-flash__ink {
+  filter:url(#ink-knot-v41) invert(76%) sepia(92%) saturate(1850%) hue-rotate(350deg) brightness(96%) contrast(99%) !important;
+}
+.knot-flash--black .knot-flash__bleed,
+.knot-flash--yellow .knot-flash__bleed,
+.knot-flash--red .knot-flash__register {
+  filter:url(#ink-knot-v41) invert(29%) sepia(38%) saturate(1690%) hue-rotate(108deg) brightness(76%) contrast(106%) !important;
+}
+.knot-flash--black .knot-flash__register,
+.knot-flash--green .knot-flash__bleed,
+.knot-flash--red .knot-flash__bleed {
+  filter:url(#ink-knot-v41) invert(18%) sepia(86%) saturate(3270%) hue-rotate(347deg) brightness(87%) contrast(96%) !important;
+}
+.knot-flash--green .knot-flash__register,
+.knot-flash--yellow .knot-flash__register {
+  filter:url(#ink-knot-v41) invert(76%) sepia(92%) saturate(1850%) hue-rotate(350deg) brightness(96%) contrast(99%) !important;
+}
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity:.27 !important;
+  transform:translate(1.7px,.85px) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity:.17 !important;
+  transform:translate(-1px,1.2px) !important;
+}
