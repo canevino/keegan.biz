@@ -8798,3 +8798,64 @@ body.design-page::before {
     z-index: 1 !important;
   }
 }
+
+/* =====================================================
+   PAPER BALANCE LOCK — reduced texture on imagery only
+   Preserve approved bleed, knot, hover, layout and type behavior.
+   ===================================================== */
+
+/* Keep the existing page texture strength over type, rules and knots, but stop
+   stretching the 600x800 paper scans across the full document. Each layer now
+   keeps its native 3:4 proportion and repeats only vertically at a large scale. */
+.paper-overprint::before {
+  background-repeat: repeat-y !important;
+  background-size: max(1800px, 112vw) auto !important;
+  background-position: center top !important;
+}
+.paper-overprint::after {
+  background-repeat: repeat-y !important;
+  background-size: max(2100px, 128vw) auto !important;
+  background-position: 46% 640px !important;
+}
+
+/* Photography/artwork gets a much quieter paper pass than the surrounding page.
+   This is intentionally local to media surfaces; typography, knots, rules and
+   the page stock retain the approved texture unchanged. */
+.project-key,
+.feature-slab__hero,
+.image-switcher__stage,
+.extension-stage,
+.mp-banner,
+.making-public-card .flip-card__scene,
+.mp-event-photo {
+  position: relative !important;
+  isolation: isolate !important;
+}
+
+.project-key::after,
+.feature-slab__hero::after,
+.image-switcher__stage::after,
+.extension-stage::after,
+.mp-banner::after,
+.making-public-card .flip-card__scene::after,
+.mp-event-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  background-image: url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg');
+  background-repeat: repeat;
+  background-size: 900px 1200px;
+  background-position: center center;
+  mix-blend-mode: soft-light;
+  opacity: .045;
+  filter: grayscale(.05) brightness(1.24) contrast(1.04);
+}
+
+/* Ensure the local paper layer never interferes with hover/flip interaction. */
+.image-switcher__stage::after,
+.extension-stage::after,
+.making-public-card .flip-card__scene::after {
+  pointer-events: none !important;
+}
