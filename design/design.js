@@ -173,8 +173,9 @@
     resizeObserver.observe(document.body);
   }
 
-  /* Smooth knots behave like an unstable printed registration: a short burst
-     of rapid swaps/distortion, then a longer quiet hold. */
+  /* Smooth knots behave like a misregistered screen print: the drawing stays
+     fixed in place, but the ink layer swaps abruptly. Idle glitches are rare;
+     hover keeps the print unstable until the pointer leaves. */
   const knotSources = [
     "/assets/home/knot_smooth_svg1.svg",
     "/assets/home/knot_smooth_svg2.svg",
@@ -185,15 +186,17 @@
 
   const knotColorClasses = [
     "knot-flash--red",
-    "knot-flash--moss",
-    "knot-flash--violet"
+    "knot-flash--green",
+    "knot-flash--yellow"
   ];
 
   document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
     const images = slot.querySelectorAll("img");
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
     let currentIndex = slotIndex % knotSources.length;
     let colorIndex = slotIndex % knotColorClasses.length;
-    let timer;
+    let timer = 0;
+    let hovering = false;
 
     const setKnot = (index) => images.forEach((image) => { image.src = knotSources[index]; });
 
@@ -207,35 +210,70 @@
       setKnot(currentIndex);
     };
 
-    const burst = () => {
-      if (reducedMotion.matches) return;
+    const clearTimer = () => {
+      window.clearTimeout(timer);
+      timer = 0;
+    };
+
+    const scheduleIdle = () => {
+      clearTimer();
+      if (reducedMotion.matches || hovering) return;
+      timer = window.setTimeout(idleBurst, 26000 + Math.random() * 9000);
+    };
+
+    const idleBurst = () => {
+      if (reducedMotion.matches || hovering) return;
       slot.classList.add("is-fluttering");
-      const swaps = 4 + Math.floor(Math.random() * 5);
+      const swaps = 3 + Math.floor(Math.random() * 3);
       let count = 0;
 
-      const flutter = () => {
+      const step = () => {
         chooseNext();
         count += 1;
         if (count < swaps) {
-          timer = window.setTimeout(flutter, 38 + Math.random() * 58);
+          timer = window.setTimeout(step, 55 + Math.random() * 55);
         } else {
           slot.classList.remove("is-fluttering");
-          slot.classList.add("is-settling");
-          window.setTimeout(() => slot.classList.remove("is-settling"), 140);
-          timer = window.setTimeout(burst, 3200 + Math.random() * 6200);
+          scheduleIdle();
         }
       };
 
-      flutter();
+      step();
+    };
+
+    const hoverLoop = () => {
+      if (!hovering || reducedMotion.matches) return;
+      chooseNext();
+      timer = window.setTimeout(hoverLoop, 55 + Math.random() * 70);
+    };
+
+    const startHover = () => {
+      if (!canHover.matches || reducedMotion.matches) return;
+      hovering = true;
+      clearTimer();
+      slot.classList.remove("is-fluttering");
+      slot.classList.add("is-hover-glitch");
+      hoverLoop();
+    };
+
+    const stopHover = () => {
+      if (!hovering) return;
+      hovering = false;
+      clearTimer();
+      slot.classList.remove("is-hover-glitch");
+      scheduleIdle();
     };
 
     setKnot(currentIndex);
-    if (!reducedMotion.matches) timer = window.setTimeout(burst, 700 + slotIndex * 240 + Math.random() * 800);
+    scheduleIdle();
+    slot.addEventListener("mouseenter", startHover);
+    slot.addEventListener("mouseleave", stopHover);
 
     reducedMotion.addEventListener?.("change", () => {
-      window.clearTimeout(timer);
-      slot.classList.remove("is-fluttering", "is-settling");
-      if (!reducedMotion.matches) timer = window.setTimeout(burst, 650);
+      clearTimer();
+      hovering = false;
+      slot.classList.remove("is-fluttering", "is-hover-glitch");
+      if (!reducedMotion.matches) scheduleIdle();
     });
   });
 })();

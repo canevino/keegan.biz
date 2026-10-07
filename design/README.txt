@@ -1,67 +1,42 @@
-keegan.biz /design — v18 system cleanup + Triennial art-direction pass
-Date: 2026-10-06
-Base: v17 reconciled baseline
+keegan.biz /design — v19 print-system + alignment pass
+Date: 6 October 2026
+Base: v18
 
 UPLOAD / REPLACE
 - index.html
 - design.css
 - design.js
 
-PURPOSE OF THIS PASS
-v18 does not attempt to solve every project at once. It fixes the global visual-system problems visible in the first browser review, then tightens the Triennial case study so we have a cleaner standard to use when art-directing Better Angels, Paul Winter, PRX/Radiotopia, and Trinity FM.
+WHAT CHANGED
+- Reset /design to the site palette: #ece7d7 paper, #11110f ink, #fdb913 yellow, #006a44 green, #c1272d red.
+- Removed the full-screen dirty-film overlay. Paper texture is now one consistent low-opacity multiply layer.
+- Added hard 1-bit / halftone rail marks and stronger screenprint tooth inside display type.
+- Fixed the design-title descender clipping.
+- Knot SVGs stay registered in place. Idle glitches happen roughly every 26–35 seconds; hover glitches continuously until the pointer leaves.
+- Knot glitch colors are limited to red / green / yellow. Bleed is a separate misregistered ink layer, not a drop shadow.
+- Expanded case-study content now follows one shared left alignment after the number rail.
+- Triennial Across Formats is now two portrait modules plus one full-width wide module.
+- Triennial key image, Better Angels key image, and PRX key image were rebuilt as deliberate contact sheets.
+- Public Processes remains one flip object. Making Public social remains one flip object.
+- Making Public was reorganized around one banner + three equal supporting modules.
+- Added all currently supplied Better Angels signage artwork / installation files to the signage section.
+- Paul Winter posters now fill/crop their frames instead of shrinking inside padded black cards.
+- PRX and TFM hierarchy received a first cleanup pass.
+- Copy was shortened throughout the main project and case-study introductions.
 
-CHECK IN THIS VERSION
-1. DISPLAY TYPE
-- No browser-style drop shadows behind large type.
-- Printed texture remains inside the letters, but dimensional shadow is removed.
-- Project title is always “Triennial 2025: The Exchange.”
+CHECK THIS VERSION
+1. Does the paper feel like one material instead of a dirty screen?
+2. Does the large “design” g render fully?
+3. Hover each small knot: it should glitch continuously without moving/stretching. Then leave it alone and confirm glitches are rare.
+4. Check that the red / green / yellow knot treatment feels like the rest of keegan.biz.
+5. Check the Triennial alignment line from section title to all artwork below it.
+6. Check Across Formats: first two portrait systems, then the wide bus system.
+7. Check Extensions + Making Public for hierarchy and reduced visual noise.
+8. Check Better Angels signage: all supplied signage variants should now be visible.
+9. Check Paul Winter posters: they should fill their frames and read as a suite, not small posters floating in black.
+10. Check PRX and TFM only for hierarchy; both still need a deeper pass.
 
-2. KNOTS
-- Smooth SVG knots no longer stretch, skew, rotate, or distort in place.
-- Glitch behavior now comes from rapid swaps between the five drawings plus restrained color/ink flicker.
-- Long knot spine is quieter, narrower, registered to the edge, and no longer aggressively skewed/stretched/overprinted.
-- Check whether the long spine feels intentional rather than broken. If not, it will be reduced further or rebuilt as a repeated print element.
-
-3. TEXTURE SYSTEM
-- Grey Texturelabs material is treated as a low-opacity multiply overlay on the paper, not as opaque grey UI panels.
-- Local plates should feel related to the same physical stock.
-- No decorative drop shadows on portfolio assets.
-- Ink-bleed texture around type/ornament edges is NOT finished; it is explicitly queued as a dedicated pass rather than simulated with shadows.
-
-4. ALIGNMENT / CROPPING
-- Shared modules are top-aligned.
-- Wide Triennial installed imagery now uses a landscape stage instead of being forced into the portrait ratio.
-- Artwork uses top registration and contain where cropping would damage the source shape.
-- This is the beginning of the crop audit, not the final project-by-project crop pass.
-
-5. TRIENNIAL EXTENSIONS
-- Public Processes is one interactive object: one poster shown at a time, flipping on hover/click/keyboard.
-- Making Public social graphics are again one flip pair rather than two unrelated static squares.
-- Making Public event photography remains visible separately.
-- Triennial summary collage has been rebalanced into a top-registered specimen board with one dominant campaign object.
-
-STATIC QA
-- 5 project accordions
-- 3 Triennial artwork/installed-view switchers
-- 4 flip cards total (Making Public program, Making Public social, Public Processes, Better Angels flyer)
-- 1 Better Angels folder
-- 3 knot-flash ornaments
-- 1 long knot spine
-- 0 duplicate HTML ids
-- design.js syntax clean
-- reduced-motion logic retained
-
-INTENTIONALLY NOT SOLVED IN v18
-These are now explicit checklist items rather than being half-fixed in the same pass:
-- true ink-bleed / misregistration texture treatment
-- complete key-image re-selection and crop audit for every project
-- complete Better Angels fold-object rebuild
-- Better Angels signage inventory/layout including both artwork/specimen and installed views
-- Better Angels cohesion pass across takeaway, whistle/script, signage, and activation
-- Paul Winter poster-suite art direction
-- PRX / Radiotopia hierarchy and cleanup
-- Trinity FM hierarchy and art direction
-- final mobile/tablet pass
-
-WORKING RULE
-Use v18 as the visual-system checkpoint. Review the items above first. Once the global texture/knot/alignment behavior feels right, continue project-by-project rather than applying another whole-page redesign.
+NEXT
+- Rebuild the Better Angels folding object and art-direct the entire Better Angels case as one sequence.
+- Then do a dedicated Paul Winter / PRX / TFM pass.
+- Final pass: crop focal points, ink bleed / halftone tuning, mobile/tablet QA, hover/click regression.

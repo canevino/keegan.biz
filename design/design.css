@@ -1,11 +1,13 @@
 :root {
-  --paper: #e9e3d5;
-  --paper-light: #f4efe5;
-  --ink: #11100e;
+  --paper: #ece7d7;
+  --paper-light: #f5f0e3;
+  --ink: #11110f;
   --muted: #5e5a53;
-  --red: #c92424;
-  --moss: #315b49;
-  --violet: #40345e;
+  --red: #c1272d;
+  --green: #006a44;
+  --moss: #006a44;
+  --yellow: #fdb913;
+  --violet: #fdb913;
   --rule: rgba(17,16,14,.17);
   --rule-strong: rgba(17,16,14,.32);
   --gutter: clamp(20px, 3.4vw, 54px);
@@ -1387,4 +1389,372 @@ figure > figcaption {
   .collage-triennial { grid-template-columns:1fr; grid-template-rows:auto; height:auto; }
   .project-key__collage.collage-triennial .collage-main { grid-row:auto; }
   .project-key__collage.collage-triennial .collage-secondary { min-height:130px; }
+}
+
+
+/* =====================================================
+   v19 — print system / alignment / crop pass
+   ===================================================== */
+
+:root {
+  --paper: #ece7d7;
+  --paper-light: #f5f0e3;
+  --ink: #11110f;
+  --red: #c1272d;
+  --green: #006a44;
+  --yellow: #fdb913;
+  --rail: 66px;
+  --module-offset: calc(var(--rail) + var(--gap));
+}
+
+/* One paper field. Texture is material, not a grey card. */
+body.design-page {
+  background: var(--paper);
+}
+body.design-page::before {
+  background-image:
+    url('/assets/home/Texturelabs_Paper_226S grey paper pul overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg');
+  background-size: 980px auto, 760px auto;
+  background-blend-mode: multiply, multiply;
+  opacity: .055;
+}
+body.design-page::after { display:none !important; }
+
+/* Display type: flat ink with print tooth. No dimensional shadow. */
+.portfolio-masthead__main,
+.portfolio-masthead h1 { overflow: visible; }
+.portfolio-masthead h1 {
+  line-height: .82;
+  padding-bottom: .11em;
+  margin-bottom: -.11em;
+}
+@supports ((-webkit-background-clip:text) or (background-clip:text)) {
+  .portfolio-masthead h1,
+  .selected-heading__main strong,
+  .project-title,
+  .case-section__header h3 {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-color: var(--ink);
+    background-image:
+      url('/assets/home/Texturelabs_InkPaint_324S grey brush strokes overlay.jpg'),
+      url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg');
+    background-size: 430px auto, 290px auto;
+    background-blend-mode: screen, multiply;
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: contrast(1.16);
+  }
+  .portfolio-masthead h1 {
+    background-color: var(--red);
+    background-blend-mode: multiply, multiply;
+  }
+}
+
+/* Small screenprint marks: hard one-bit dots, always tied to the section rail. */
+.case-section__number {
+  position: relative;
+  display: block;
+  padding-bottom: 25px;
+}
+.case-section__number::after {
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:34px;
+  height:13px;
+  background-color: currentColor;
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--paper) 0 1px, transparent 1.15px),
+    radial-gradient(circle at 3px 3px, var(--paper) 0 .75px, transparent .9px);
+  background-size:4px 4px, 6px 6px;
+  mix-blend-mode:multiply;
+  opacity:.78;
+}
+.case-section:nth-of-type(3n+2) .case-section__number { color:var(--green); }
+.case-section:nth-of-type(3n) .case-section__number { color:var(--yellow); }
+
+/* Knot colors use only the site palette. */
+.knot-flash--red .knot-flash__ink,
+.knot-flash--red .knot-flash__bleed { filter: brightness(.7) sepia(.8) saturate(4) hue-rotate(326deg) contrast(1.55); }
+.knot-flash--green .knot-flash__ink,
+.knot-flash--green .knot-flash__bleed { filter: brightness(.55) sepia(.8) saturate(2.7) hue-rotate(92deg) contrast(1.6); }
+.knot-flash--yellow .knot-flash__ink,
+.knot-flash--yellow .knot-flash__bleed { filter: brightness(.9) sepia(1) saturate(5) hue-rotate(350deg) contrast(1.4); }
+.knot-flash {
+  isolation:isolate;
+  background:transparent;
+}
+.knot-flash::after {
+  content:"";
+  position:absolute;
+  inset:-2px;
+  pointer-events:none;
+  opacity:.18;
+  background-image:radial-gradient(circle, currentColor 0 1px, transparent 1.1px);
+  background-size:4px 4px;
+  mix-blend-mode:multiply;
+  mask-image:linear-gradient(90deg,transparent 0,black 18%,black 78%,transparent 100%);
+}
+.knot-flash__ink { opacity:.92; filter:contrast(1.9); }
+.knot-flash__bleed {
+  opacity:.34;
+  transform:translate(1px,.65px) !important;
+  filter:blur(.65px) contrast(1.6);
+}
+.knot-flash.is-fluttering,
+.knot-flash.is-hover-glitch { opacity:1; filter:none; }
+.knot-flash.is-fluttering .knot-flash__bleed,
+.knot-flash.is-hover-glitch .knot-flash__bleed { opacity:.48; }
+
+/* Long knot: registration strip, not a distorted illustration. */
+.page-knot-spine { width:38px; opacity:.085; right:0; }
+.page-knot-spine__art {
+  left:38px;
+  height:38px;
+  transform:rotate(90deg) !important;
+  filter:contrast(1.35) brightness(.66) sepia(.45) saturate(2.1) hue-rotate(325deg);
+}
+.page-knot-spine::after {
+  opacity:.15;
+  background:
+    url('/assets/home/Texturelabs_InkPaint_323S grey pastel blended overlay.jpg') center / 360px auto repeat-y;
+  mix-blend-mode:multiply;
+}
+
+/* Expanded work follows one margin line: rail, then content. */
+.case-section__header { grid-template-columns:var(--rail) minmax(0,700px); }
+.case-section > .feature-slab,
+.case-section > .switcher-grid,
+.case-section > .extension-layout,
+.case-section > .making-public-panel,
+.case-section > .angels-takeaway-grid,
+.case-section > .angels-script-layout,
+.case-section > .angels-signage-layout,
+.case-section > .winter-gallery,
+.case-section > .prx-hero-figure,
+.case-section > .prx-pairing,
+.case-section > .college-showcase,
+.case-section > .wine-grid {
+  width:calc(100% - var(--module-offset));
+  margin-left:var(--module-offset);
+  margin-right:0;
+}
+
+/* Local texture is a repeatable overlay, never a grey fill. */
+.feature-slab::before,
+.making-public-panel::before,
+.angels-takeaway-grid::before,
+.prx-pairing::before {
+  inset:-12px;
+  border:0;
+  background:
+    url('/assets/home/Texturelabs_Paper_210S wheatpaste grey overlay.jpg') center / 760px auto;
+  mix-blend-mode:multiply;
+  opacity:.075;
+}
+
+/* Project keys: deliberate contact sheets rather than floating thumbnails. */
+.project-key__collage,
+.poster-triptych,
+.college-summary-grid,
+.prx-key-grid {
+  border:1px solid var(--rule);
+  background:transparent;
+}
+.collage-triennial {
+  grid-template-columns:minmax(0,1.2fr) minmax(170px,.8fr);
+  grid-template-rows:64px 1fr;
+  gap:10px;
+  padding:10px;
+  height:clamp(290px,27vw,370px);
+}
+.project-key__collage.collage-triennial .collage-main {
+  grid-row:1 / -1;
+  object-fit:contain;
+  object-position:left top;
+}
+.project-key__collage.collage-triennial .collage-secondary--left {
+  object-fit:cover;
+  object-position:center;
+}
+.project-key__collage.collage-triennial .collage-secondary--right {
+  object-fit:cover;
+  object-position:center top;
+}
+
+.collage-angels {
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(150px,.65fr);
+  grid-template-rows:1fr 1fr;
+  gap:10px;
+  padding:10px;
+  height:clamp(270px,25vw,350px);
+}
+.collage-angels .collage-main,
+.collage-angels .collage-secondary {
+  display:block !important;
+  position:static !important;
+  width:100% !important;
+  height:100% !important;
+  max-height:none !important;
+  margin:0 !important;
+  object-fit:cover !important;
+  object-position:center top !important;
+  background:transparent !important;
+}
+.collage-angels .collage-main { grid-row:1 / -1; object-position:center 56% !important; }
+.collage-angels .collage-secondary { object-fit:contain !important; }
+
+.prx-key-grid {
+  display:grid;
+  grid-template-columns:1.35fr .65fr;
+  grid-template-rows:1fr 1fr;
+  gap:10px;
+  padding:10px;
+  min-height:270px;
+}
+.prx-key-grid img { width:100%; height:100%; object-fit:cover; object-position:center top; min-height:0; }
+.prx-key-grid__hero { grid-row:1 / -1; }
+.prx-key-grid img:nth-child(2) { object-fit:contain; padding:14px; mix-blend-mode:multiply; }
+
+/* Across formats: two portrait systems, then the wide bus system. */
+.switcher-grid--three {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:34px 22px;
+}
+.switcher-grid--three .image-switcher:nth-child(3) { grid-column:1 / -1; }
+.image-switcher__stage--portrait { aspect-ratio:4 / 5; }
+.image-switcher__stage--wide { aspect-ratio:3.2 / 1; }
+.image-switcher__stage--wide .state-primary { object-fit:contain; }
+.image-switcher__stage--wide .state-secondary { object-fit:cover; object-position:center 56%; }
+.image-switcher__stage { border-color:var(--rule); }
+
+/* Extensions: one tall event piece and one single interactive poster object. */
+.extension-layout { grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr); gap:48px; }
+.extension-card--gif img { width:100%; height:auto; max-height:none; object-fit:cover; }
+.flip-card--landscape .flip-card__inner { aspect-ratio:1 / 1; }
+.flip-card--landscape .flip-card__face img { object-fit:cover; object-position:center top; }
+
+/* Making Public: banner establishes the system; three equal modules follow. */
+.making-public-panel {
+  margin-top:56px;
+  padding:22px 0 0;
+  border:0;
+  border-top:1px solid var(--rule-strong);
+}
+.making-public-panel__intro {
+  grid-template-columns:190px minmax(0,520px);
+  margin-bottom:22px;
+}
+.making-public-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:22px;
+  align-items:start;
+}
+.mp-banner {
+  grid-column:1 / -1;
+  width:100%;
+  max-width:none;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--rule);
+}
+.mp-banner img { width:100%; max-height:150px; object-fit:cover; object-position:center; }
+.stacked-socials { display:contents; }
+.flip-card--social,
+.mp-event-photo { min-width:0; }
+.flip-card--social .flip-card__inner,
+.making-public-grid > .flip-card .flip-card__inner { aspect-ratio:3 / 4; }
+.flip-card--social .flip-card__face img,
+.making-public-grid > .flip-card .flip-card__face img { object-fit:cover; object-position:center top; }
+.mp-event-photo img { aspect-ratio:3 / 4; object-fit:cover; object-position:center; }
+
+/* Better Angels: complete signage family, organized as artwork / installation pairs. */
+.angels-signage-layout {
+  grid-template-columns:minmax(250px,.72fr) minmax(0,1.28fr);
+  gap:28px;
+}
+.angels-signage-lead,
+.angels-signage-system figure { margin:0; }
+.angels-signage-lead img { width:100%; aspect-ratio:4 / 5; object-fit:cover; object-position:center; }
+.angels-signage-system {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  align-items:start;
+}
+.angels-signage-pair {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+.angels-signage-system img { width:100%; aspect-ratio:4 / 3; object-fit:cover; object-position:center top; }
+.angels-signage-art img { object-fit:contain; background:transparent; }
+.angels-activation-photo { grid-column:1 / -1; }
+.angels-activation-photo img { aspect-ratio:16 / 7; }
+
+/* Poster suite: fill the frame. Cropping is intentional; no black padding/shrink. */
+.case-section--dark { background:#11110f; }
+.winter-gallery { gap:18px; }
+.winter-poster-card img {
+  width:100%;
+  aspect-ratio:7 / 10;
+  object-fit:cover;
+  object-position:center top;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+.poster-triptych { gap:8px; padding:8px; }
+.poster-triptych img { aspect-ratio:7 / 10; object-fit:cover; object-position:center top; }
+
+/* PRX and TFM get clearer hierarchy now; deeper re-art-direction remains next. */
+.prx-pairing { grid-template-columns:.72fr 1.28fr; align-items:start; }
+.prx-card--logo { padding:12px 22px 22px 0; align-self:start; }
+.college-showcase--tfm {
+  grid-template-columns:.65fr 1fr 1fr;
+  align-items:start;
+}
+.college-showcase--tfm img { aspect-ratio:4 / 5; object-fit:cover; object-position:center top; }
+.tfm-logo-block img { object-fit:contain; padding:18px; }
+
+@media (max-width:900px) {
+  :root { --rail:52px; }
+  .case-section > .feature-slab,
+  .case-section > .switcher-grid,
+  .case-section > .extension-layout,
+  .case-section > .making-public-panel,
+  .case-section > .angels-takeaway-grid,
+  .case-section > .angels-script-layout,
+  .case-section > .angels-signage-layout,
+  .case-section > .winter-gallery,
+  .case-section > .prx-hero-figure,
+  .case-section > .prx-pairing,
+  .case-section > .college-showcase,
+  .case-section > .wine-grid { width:100%; margin-left:0; }
+  .switcher-grid--three,
+  .making-public-grid,
+  .angels-signage-layout,
+  .prx-pairing,
+  .college-showcase--tfm { grid-template-columns:1fr; }
+  .switcher-grid--three .image-switcher:nth-child(3) { grid-column:auto; }
+  .image-switcher__stage--wide { aspect-ratio:16 / 9; }
+  .angels-signage-system { grid-template-columns:1fr; }
+  .angels-activation-photo { grid-column:auto; }
+}
+
+@media (max-width:680px) {
+  .page-knot-spine { width:24px; opacity:.055; }
+  .page-knot-spine__art { left:24px; height:24px; }
+  .collage-triennial,
+  .collage-angels,
+  .prx-key-grid { display:grid; grid-template-columns:1fr; grid-template-rows:auto; height:auto; min-height:0; }
+  .collage-triennial .collage-main,
+  .collage-angels .collage-main,
+  .prx-key-grid__hero { grid-row:auto !important; }
+  .angels-signage-pair { grid-template-columns:1fr 1fr; }
 }
