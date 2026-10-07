@@ -173,8 +173,8 @@
     resizeObserver.observe(document.body);
   }
 
-  /* Smooth knots cycle slowly and irregularly. Two copies are updated at the
-     same time: a sharp ink layer and a blurred bleed layer. */
+  /* Smooth knots behave like an unstable printed registration: a short burst
+     of rapid swaps/distortion, then a longer quiet hold. */
   const knotSources = [
     "/assets/home/knot_smooth_svg1.svg",
     "/assets/home/knot_smooth_svg2.svg",
@@ -193,40 +193,62 @@
     const images = slot.querySelectorAll("img");
     let currentIndex = slotIndex % knotSources.length;
     let colorIndex = slotIndex % knotColorClasses.length;
+    let timer;
 
-    const setKnot = (index) => {
-      images.forEach((image) => {
-        image.src = knotSources[index];
-      });
+    const setKnot = (index) => images.forEach((image) => { image.src = knotSources[index]; });
+
+    const randomizeShape = () => {
+      const sx = .82 + Math.random() * .52;
+      const sy = .72 + Math.random() * .56;
+      const skew = -10 + Math.random() * 20;
+      const rotate = -3 + Math.random() * 6;
+      slot.style.setProperty("--knot-sx", sx.toFixed(3));
+      slot.style.setProperty("--knot-sy", sy.toFixed(3));
+      slot.style.setProperty("--knot-skew", `${skew.toFixed(2)}deg`);
+      slot.style.setProperty("--knot-rotate", `${rotate.toFixed(2)}deg`);
     };
 
-    const scheduleNext = () => {
+    const chooseNext = () => {
+      let next = Math.floor(Math.random() * knotSources.length);
+      if (next === currentIndex) next = (next + 1) % knotSources.length;
+      currentIndex = next;
+      colorIndex = (colorIndex + 1 + Math.floor(Math.random() * 2)) % knotColorClasses.length;
+      knotColorClasses.forEach((className) => slot.classList.remove(className));
+      slot.classList.add(knotColorClasses[colorIndex]);
+      setKnot(currentIndex);
+      randomizeShape();
+    };
+
+    const burst = () => {
       if (reducedMotion.matches) return;
+      slot.classList.add("is-fluttering");
+      const swaps = 5 + Math.floor(Math.random() * 7);
+      let count = 0;
 
-      const delay = 4600 + Math.random() * 5200;
+      const flutter = () => {
+        chooseNext();
+        count += 1;
+        if (count < swaps) {
+          timer = window.setTimeout(flutter, 45 + Math.random() * 85);
+        } else {
+          slot.classList.remove("is-fluttering");
+          slot.classList.add("is-settling");
+          window.setTimeout(() => slot.classList.remove("is-settling"), 180);
+          timer = window.setTimeout(burst, 3000 + Math.random() * 6500);
+        }
+      };
 
-      window.setTimeout(() => {
-        slot.classList.add("is-switching");
-
-        window.setTimeout(() => {
-          let nextIndex = Math.floor(Math.random() * knotSources.length);
-          if (nextIndex === currentIndex) {
-            nextIndex = (nextIndex + 1) % knotSources.length;
-          }
-
-          currentIndex = nextIndex;
-          colorIndex = (colorIndex + 1 + Math.floor(Math.random() * 2)) % knotColorClasses.length;
-
-          knotColorClasses.forEach((className) => slot.classList.remove(className));
-          slot.classList.add(knotColorClasses[colorIndex]);
-          setKnot(currentIndex);
-          slot.classList.remove("is-switching");
-          scheduleNext();
-        }, 230);
-      }, delay);
+      flutter();
     };
 
     setKnot(currentIndex);
-    scheduleNext();
+    randomizeShape();
+    if (!reducedMotion.matches) timer = window.setTimeout(burst, 650 + slotIndex * 260 + Math.random() * 900);
+
+    reducedMotion.addEventListener?.("change", () => {
+      window.clearTimeout(timer);
+      slot.classList.remove("is-fluttering", "is-settling");
+      if (!reducedMotion.matches) timer = window.setTimeout(burst, 600);
+    });
   });
 })();
