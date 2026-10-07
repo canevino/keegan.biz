@@ -8292,113 +8292,73 @@ body.design-page::before {
   opacity:.68 !important;
 }
 
+
 /* =====================================================
-   CURRENT LOCK PATCH — 2026-10-07
-   Baseline: uploaded 21:38 files + DESIGN-LOCKS.md.
-   This replaces the stacked v51-v54 overrides with one authoritative layer.
-   Do not change locked layout, type scale, bus sizing, knot geometry/cycling,
-   or asset pairings unless explicitly requested.
+   v51 — LOCKED fixes before final Triennial art-direction pass
+   Do not remove earlier approved behavior. See DESIGN-LOCKS.md.
    ===================================================== */
 
-:root {
-  --paper:#f1ecdf;
-  --paper-light:#f7f2e7;
-}
-
-.page-shell {
-  position:relative;
-  isolation:isolate;
-  background:var(--paper);
-}
-
-/* Paper surface under the content. Two large stocks overlap at different
-   offsets so the page reads as one continuous sheet rather than grey tiles. */
+/* Paper is now built as feathered overlapping sheets in JS. This replaces the
+   hard repeated tiles from v50, keeps the stock moving with the document, and
+   keeps the surface lighter while retaining visible fibre. */
 .page-shell::before,
 .page-shell::after {
-  content:"" !important;
-  display:block !important;
-  position:absolute !important;
-  inset:0 !important;
-  pointer-events:none !important;
-}
-.page-shell::before {
-  z-index:0 !important;
-  background-image:
-    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
-    url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg') !important;
-  background-size:max(1760px,116vw) auto, max(2220px,146vw) auto !important;
-  background-position:center 0, center 690px !important;
-  background-repeat:repeat-y, repeat-y !important;
-  background-blend-mode:multiply,soft-light !important;
-  opacity:.18 !important;
-  filter:brightness(1.26) contrast(1.05) saturate(.78) !important;
-}
-.page-shell::after {
-  z-index:1 !important;
-  background-image:url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg') !important;
-  background-size:max(2100px,138vw) auto !important;
-  background-position:center 330px !important;
-  background-repeat:repeat-y !important;
-  mix-blend-mode:soft-light !important;
-  opacity:.075 !important;
-  filter:brightness(1.34) contrast(1.10) saturate(.72) !important;
-}
-
-.design-site-header,
-.design-main {
-  position:relative;
-  z-index:3;
-}
-
-/* Very light overprint above everything. This lets the stock touch photography
-   without flattening it; type and knots still carry their own stronger print
-   texture through the locked ink filters below. */
-.paper-overprint {
-  position:absolute !important;
-  inset:0 !important;
-  z-index:40 !important;
-  pointer-events:none !important;
-  overflow:hidden !important;
-  background-image:url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg') !important;
-  background-size:max(2200px,145vw) auto !important;
-  background-position:center 510px !important;
-  background-repeat:repeat-y !important;
-  mix-blend-mode:multiply !important;
-  opacity:.030 !important;
-  filter:brightness(1.78) contrast(1.08) saturate(.62) !important;
-  -webkit-mask-image:none !important;
-  mask-image:none !important;
-}
-.paper-overprint::before,
-.paper-overprint::after,
-.paper-overprint__sheet {
   display:none !important;
 }
 
-/* Display ink: preserve approved bleed and add the warm yellow registration
-   contamination at the edges without replacing the actual red/green ink. */
+.paper-overprint {
+  position:absolute;
+  inset:0;
+  z-index:30;
+  pointer-events:none;
+  overflow:hidden;
+  mix-blend-mode:multiply;
+}
+.paper-overprint__sheet {
+  position:absolute;
+  left:0;
+  width:100%;
+  height:1380px;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
+  opacity:.105;
+  filter:grayscale(1) brightness(1.34) contrast(.94);
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.35) 7%, #000 18%, #000 82%, rgba(0,0,0,.35) 93%, transparent 100%);
+  mask-image:linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.35) 7%, #000 18%, #000 82%, rgba(0,0,0,.35) 93%, transparent 100%);
+}
+.paper-overprint__sheet:nth-child(3n + 2) {
+  opacity:.095;
+  filter:grayscale(1) brightness(1.42) contrast(.92);
+}
+.paper-overprint__sheet:nth-child(3n + 3) {
+  opacity:.085;
+  filter:grayscale(1) brightness(1.48) contrast(.90);
+}
+
+/* Brand-colour contamination: approved green and red display type retain their
+   base colour but pick up a slight yellow misregistration like overprinted ink. */
 .portfolio-masthead h1 {
   text-shadow:
-    1.70px .42px .62px rgba(253,185,19,.58),
-    .46px 1.02px .52px rgba(253,185,19,.27),
-    -.32px -.12px .40px rgba(0,106,68,.08) !important;
+    -0.82px -0.28px .82px rgba(0,106,68,.14),
+     1.05px  0.38px .78px rgba(253,185,19,.32),
+     0.12px  0.80px .66px rgba(193,39,45,.10) !important;
 }
-.project-family-heading h2,
 .case-section__header h3,
 .making-public-panel__intro h4,
 .making-public-intro h4 {
   text-shadow:
-    1.42px .34px .56px rgba(253,185,19,.48),
-    .38px .78px .46px rgba(253,185,19,.21),
-    -.26px -.10px .34px rgba(0,106,68,.06) !important;
+    -0.46px -0.18px .56px rgba(0,106,68,.09),
+     0.92px  0.34px .66px rgba(253,185,19,.27),
+     0.08px  0.54px .50px rgba(193,39,45,.07) !important;
 }
 
-/* Locked knot print system. All three layers always use the same rough/bleed
-   filter, and the material overlay follows whichever of the five SVGs is live. */
+/* Knot treatment must never fall back to a clean vector. All three plates use
+   the same textured/roughened filter in every resting colour state. */
 .knot-flash__ink,
 .knot-flash__bleed,
 .knot-flash__register {
-  will-change:filter,transform,opacity;
+  will-change:filter, transform, opacity;
 }
 .knot-flash--black .knot-flash__ink {
   filter:url(#ink-knot-v51) brightness(0) contrast(1.5) !important;
@@ -8444,92 +8404,15 @@ body.design-page::before {
   opacity:.40 !important;
   transform:translate(.68px,-1.42px) scale(1.006) !important;
 }
-.knot-flash.is-hover-glitch .knot-flash__bleed,
-.knot-flash.is-fluttering .knot-flash__bleed { opacity:.82 !important; }
-.knot-flash.is-hover-glitch .knot-flash__register,
-.knot-flash.is-fluttering .knot-flash__register { opacity:.68 !important; }
 
-.knot-flash::after {
-  content:"" !important;
-  display:block !important;
-  position:absolute !important;
-  inset:0 !important;
-  z-index:6 !important;
-  pointer-events:none !important;
-  background-image:
-    url('/assets/home/Texturelabs_InkPaint_323S grey pastel blended overlay.jpg'),
-    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg') !important;
-  background-size:520px auto,740px auto !important;
-  background-position:37% 41%,61% 23% !important;
-  background-repeat:repeat !important;
-  mix-blend-mode:screen !important;
-  opacity:.15 !important;
-  filter:grayscale(1) contrast(1.28) brightness(.72) !important;
-  -webkit-mask-image:var(--knot-mask-image) !important;
-  mask-image:var(--knot-mask-image) !important;
-  -webkit-mask-size:contain !important;
-  mask-size:contain !important;
-  -webkit-mask-repeat:no-repeat !important;
-  mask-repeat:no-repeat !important;
-  -webkit-mask-position:center !important;
-  mask-position:center !important;
-}
-.knot-flash.is-hover-glitch::after,
-.knot-flash.is-fluttering::after { opacity:.23 !important; }
-
-/* Keep the approved local wet-ink hover on “design”. The underlying word and
-   its resting bleed do not move; only the pointer-sized duplicate changes. */
-.portfolio-masthead__main { position:relative; }
-.portfolio-masthead h1 { position:relative; z-index:1; }
-.design-hover-smudge {
-  position:absolute;
-  z-index:2;
-  pointer-events:none;
-  margin:0;
-  color:var(--red) !important;
-  font:inherit;
-  font-size:inherit;
-  font-weight:inherit;
-  line-height:inherit;
-  letter-spacing:inherit;
-  text-transform:inherit;
-  white-space:nowrap;
-  filter:url(#ink-run-v54) !important;
-  text-shadow:none !important;
-  opacity:0 !important;
-  transform:none !important;
-  -webkit-mask-image:radial-gradient(
-    ellipse 126px 88% at var(--smudge-x,50%) var(--smudge-y,50%),
-    #000 0 22%,
-    rgba(0,0,0,.98) 34%,
-    rgba(0,0,0,.80) 50%,
-    rgba(0,0,0,.46) 67%,
-    rgba(0,0,0,.16) 82%,
-    transparent 100%
-  ) !important;
-  mask-image:radial-gradient(
-    ellipse 126px 88% at var(--smudge-x,50%) var(--smudge-y,50%),
-    #000 0 22%,
-    rgba(0,0,0,.98) 34%,
-    rgba(0,0,0,.80) 50%,
-    rgba(0,0,0,.46) 67%,
-    rgba(0,0,0,.16) 82%,
-    transparent 100%
-  ) !important;
-  transition:opacity .06s linear !important;
-}
-.portfolio-masthead__main.is-smudging .design-hover-smudge { opacity:.94 !important; }
-
-/* Across formats: one final state system. The HTML already contains the locked
-   source pairs, so JS never rewrites image URLs. This removes the accumulated
-   hover/click conflicts that caused blank stages. */
+/* Across formats: explicit final state rules override legacy hover rules and
+   guarantee that the artwork and installed views are always rendered. */
 .switcher-grid--three .image-switcher__stage {
   position:relative !important;
   display:grid !important;
   place-items:center !important;
   overflow:hidden !important;
   min-height:0 !important;
-  border:0 !important;
   background:transparent !important;
 }
 .switcher-grid--three .image-switcher__stage--portrait {
@@ -8547,40 +8430,38 @@ body.design-page::before {
   margin:0 !important;
   object-fit:contain !important;
   object-position:center !important;
-  transform:none !important;
   visibility:visible !important;
-  transition:opacity .22s ease !important;
-  pointer-events:none !important;
+  transform:none !important;
+  transition:opacity .24s ease !important;
 }
-.switcher-grid--three .image-switcher__stage > .state-primary {
+.switcher-grid--three .image-switcher:not(.is-secondary) .state-primary {
   opacity:1 !important;
-  z-index:2 !important;
 }
-.switcher-grid--three .image-switcher__stage > .state-secondary {
+.switcher-grid--three .image-switcher:not(.is-secondary) .state-secondary {
   opacity:0 !important;
-  z-index:1 !important;
 }
-.switcher-grid--three .image-switcher.is-secondary .image-switcher__stage > .state-primary,
-.switcher-grid--three .image-switcher.is-hover-secondary .image-switcher__stage > .state-primary {
+.switcher-grid--three .image-switcher.is-secondary .state-primary {
   opacity:0 !important;
-  z-index:1 !important;
 }
-.switcher-grid--three .image-switcher.is-secondary .image-switcher__stage > .state-secondary,
-.switcher-grid--three .image-switcher.is-hover-secondary .image-switcher__stage > .state-secondary {
+.switcher-grid--three .image-switcher.is-secondary .state-secondary {
   opacity:1 !important;
-  z-index:3 !important;
+}
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher__stage:hover .state-primary,
+  .switcher-grid--three .image-switcher__stage:hover .state-secondary,
+  .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-primary,
+  .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-secondary {
+    transform:none !important;
+  }
+  .switcher-grid--three .image-switcher:not(.is-secondary) .image-switcher__stage:hover .state-primary { opacity:0 !important; }
+  .switcher-grid--three .image-switcher:not(.is-secondary) .image-switcher__stage:hover .state-secondary { opacity:1 !important; }
+  .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-primary { opacity:1 !important; }
+  .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-secondary { opacity:0 !important; }
 }
 
-/* Locked bus sizing. */
+/* Preserve the already-approved bus sizing. */
 .image-switcher--bus .image-switcher__stage--wide {
-  width:100% !important;
-  height:auto !important;
-  min-height:0 !important;
   aspect-ratio:2.18 / 1 !important;
-  display:grid !important;
-  place-items:center !important;
-  overflow:hidden !important;
-  background:transparent !important;
 }
 .image-switcher--bus .image-switcher__stage--wide .state-primary {
   width:84% !important;
@@ -8596,7 +8477,233 @@ body.design-page::before {
   margin:auto !important;
   object-fit:cover !important;
 }
-@media (max-width:680px) {
-  .image-switcher--bus .image-switcher__stage--wide { aspect-ratio:1.82 / 1 !important; }
-  .image-switcher--bus .image-switcher__stage--wide .state-primary { width:92% !important; height:72% !important; }
+
+/* =====================================================
+   v52 — interaction + print consistency pass
+   Preserve v51 layout, bus sizing, knot cycling and paper assets.
+   ===================================================== */
+
+/* Stronger yellow plate contamination at display sizes. Keep the actual ink
+   colour intact; this only pushes a warm misregistered edge into joins. */
+.portfolio-masthead h1 {
+  text-shadow:
+    1.35px .42px .65px rgba(253,185,19,.48),
+    -.55px -.20px .55px rgba(0,106,68,.12),
+    0 .82px .55px rgba(193,39,45,.14) !important;
+}
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4 {
+  text-shadow:
+    1.08px .38px .58px rgba(253,185,19,.38),
+    -.42px -.16px .46px rgba(0,106,68,.10),
+    0 .62px .45px rgba(193,39,45,.08) !important;
+}
+
+/* Guarantee material texture on every knot, independent of SVG source and
+   independent of the colour filter on the three image plates. */
+.knot-flash::after {
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:6 !important;
+  pointer-events:none !important;
+  background-image:
+    url('/assets/home/Texturelabs_InkPaint_323S grey pastel blended overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg') !important;
+  background-size:520px auto, 740px auto !important;
+  background-position:37% 41%, 61% 23% !important;
+  background-repeat:repeat !important;
+  mix-blend-mode:screen !important;
+  opacity:.15 !important;
+  filter:grayscale(1) contrast(1.28) brightness(.72) !important;
+  -webkit-mask-image:var(--knot-mask-image) !important;
+  mask-image:var(--knot-mask-image) !important;
+  -webkit-mask-size:contain !important;
+  mask-size:contain !important;
+  -webkit-mask-repeat:no-repeat !important;
+  mask-repeat:no-repeat !important;
+  -webkit-mask-position:center !important;
+  mask-position:center !important;
+}
+.knot-flash.is-hover-glitch::after,
+.knot-flash.is-fluttering::after { opacity:.23 !important; }
+
+/* Paper remains above type/art, but lighter in tone and more visible as fibre.
+   More contrast + higher brightness exposes tooth without grey veiling. */
+.paper-overprint__sheet {
+  opacity:.155 !important;
+  mix-blend-mode:multiply !important;
+  filter:grayscale(1) brightness(1.72) contrast(1.18) !important;
+}
+.paper-overprint__sheet:nth-child(3n + 2) {
+  opacity:.14 !important;
+  filter:grayscale(1) brightness(1.82) contrast(1.16) !important;
+}
+.paper-overprint__sheet:nth-child(3n + 3) {
+  opacity:.13 !important;
+  filter:grayscale(1) brightness(1.90) contrast(1.14) !important;
+}
+
+/* Across formats is click/tap/keyboard deterministic. Older hover-preview
+   rules made a click appear to do nothing while the pointer remained over the
+   image. Keep the correct image pairs and let .is-secondary be the sole state. */
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher:not(.is-secondary) .image-switcher__stage:hover .state-primary { opacity:1 !important; }
+  .switcher-grid--three .image-switcher:not(.is-secondary) .image-switcher__stage:hover .state-secondary { opacity:0 !important; }
+  .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-primary { opacity:0 !important; }
+  .switcher-grid--three .image-switcher.is-secondary .image-switcher__stage:hover .state-secondary { opacity:1 !important; }
+}
+
+/* =====================================================
+   v53 — local ink-run + continuous paper + hover flips
+   Preserve approved v52 knot treatment and layout.
+   ===================================================== */
+
+/* Continuous paper stock: two large textures over the entire page. No sheet
+   tiles, no hard joins. The stock sits above type, rules, knots and images. */
+.paper-overprint {
+  position:absolute !important;
+  inset:0 !important;
+  z-index:40 !important;
+  pointer-events:none !important;
+  overflow:hidden !important;
+  background:none !important;
+  mix-blend-mode:normal !important;
+  opacity:1 !important;
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 110px), transparent 100%) !important;
+  mask-image:linear-gradient(to bottom, transparent 0, #000 88px, #000 calc(100% - 110px), transparent 100%) !important;
+}
+.paper-overprint::before,
+.paper-overprint::after {
+  content:"";
+  position:absolute;
+  inset:-120px -4vw;
+  pointer-events:none;
+  background-repeat:repeat-y;
+  background-position:center top;
+}
+.paper-overprint::before {
+  background-image:url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg');
+  background-size:max(1500px,108vw) auto;
+  mix-blend-mode:multiply;
+  opacity:.115;
+  filter:grayscale(.18) brightness(1.22) contrast(1.06);
+}
+.paper-overprint::after {
+  background-image:url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg');
+  background-size:max(1820px,124vw) auto;
+  background-position:center 340px;
+  mix-blend-mode:soft-light;
+  opacity:.24;
+  filter:grayscale(.10) brightness(1.10) contrast(1.16);
+}
+.paper-overprint__sheet { display:none !important; }
+
+/* More yellow contamination on red/green display ink without turning it into
+   a generic glow. Keep the approved base bleed filters underneath. */
+.portfolio-masthead h1 {
+  text-shadow:
+    1.55px .44px .72px rgba(253,185,19,.58),
+    .55px 1.15px .74px rgba(253,185,19,.26),
+    -.46px -.22px .50px rgba(0,106,68,.11),
+    0 .68px .44px rgba(193,39,45,.08) !important;
+}
+.project-family-heading h2,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4 {
+  text-shadow:
+    1.34px .38px .64px rgba(253,185,19,.46),
+    .40px .92px .54px rgba(253,185,19,.20),
+    -.34px -.14px .40px rgba(0,106,68,.08) !important;
+}
+
+/* Across formats: desktop previews are explicitly hover driven. Click/tap and
+   keyboard still use the existing .is-secondary state for touch/accessibility. */
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher__stage:hover .state-primary { opacity:0 !important; }
+  .switcher-grid--three .image-switcher__stage:hover .state-secondary { opacity:1 !important; }
+}
+
+/* =====================================================
+   v54 — final paper / local ink-run / Across formats repair
+   Preserve all existing v53 typography, knot, layout and bus locks.
+   ===================================================== */
+
+/* Paper: one continuous stock surface, no top/bottom fade and no repeat seams.
+   Two full-page textures are stretched over the complete document at low
+   opacity so fibre reads without turning the page grey. */
+.paper-overprint {
+  -webkit-mask-image:none !important;
+  mask-image:none !important;
+  overflow:hidden !important;
+  background:none !important;
+  opacity:1 !important;
+}
+.paper-overprint::before,
+.paper-overprint::after {
+  inset:0 !important;
+  background-repeat:no-repeat !important;
+  background-position:center center !important;
+  background-size:100% 100% !important;
+}
+.paper-overprint::before {
+  background-image:url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg') !important;
+  mix-blend-mode:soft-light !important;
+  opacity:.105 !important;
+  filter:grayscale(.08) brightness(1.42) contrast(1.15) !important;
+}
+.paper-overprint::after {
+  background-image:url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg') !important;
+  mix-blend-mode:multiply !important;
+  opacity:.060 !important;
+  filter:grayscale(.05) brightness(1.72) contrast(1.12) !important;
+}
+
+/* Red/green ink keeps a warm yellow misregistration at edges and tight joins. */
+.portfolio-masthead h1 {
+  text-shadow:
+    1.75px .42px .62px rgba(253,185,19,.62),
+    .48px 1.08px .52px rgba(253,185,19,.30),
+    -.32px -.12px .40px rgba(0,106,68,.08) !important;
+}
+.project-family-heading h2,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4 {
+  text-shadow:
+    1.48px .34px .56px rgba(253,185,19,.52),
+    .40px .82px .46px rgba(253,185,19,.24),
+    -.26px -.10px .34px rgba(0,106,68,.06) !important;
+}
+
+/* Across formats: state is driven by an explicit hover class from JS, not by
+   the accumulated legacy :hover rules. Visibility + stacking are forced so
+   both supplied photo assets always replace the artwork cleanly. */
+.switcher-grid--three .image-switcher__stage > .state-primary,
+.switcher-grid--three .image-switcher__stage > .state-secondary {
+  display:block !important;
+  visibility:visible !important;
+}
+.switcher-grid--three .image-switcher__stage > .state-primary { z-index:2 !important; }
+.switcher-grid--three .image-switcher__stage > .state-secondary { z-index:1 !important; }
+.switcher-grid--three .image-switcher.is-hover-secondary .image-switcher__stage > .state-primary {
+  opacity:0 !important;
+  visibility:hidden !important;
+  z-index:1 !important;
+}
+.switcher-grid--three .image-switcher.is-hover-secondary .image-switcher__stage > .state-secondary {
+  opacity:1 !important;
+  visibility:visible !important;
+  z-index:3 !important;
+}
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher__stage:hover .state-primary,
+  .switcher-grid--three .image-switcher__stage:hover .state-secondary {
+    /* v54 JS owns desktop hover state. */
+  }
 }

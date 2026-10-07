@@ -336,32 +336,66 @@
   });
 })();
 
-/* CURRENT LOCK PATCH — paper, knot mask, masthead smudge, Across formats. */
+
 (() => {
   "use strict";
 
+  /* v51 paper surface: overlapping feathered sheets. The layer lives inside
+     the page so it scrolls naturally, and rebuilds when projects expand. */
   const shell = document.querySelector(".page-shell");
-  if (shell) {
-    document.querySelectorAll(".paper-overprint").forEach((node) => node.remove());
-    const layer = document.createElement("div");
-    layer.className = "paper-overprint";
-    layer.setAttribute("aria-hidden", "true");
-    shell.appendChild(layer);
+  if (!shell) return;
 
-    const syncPaperHeight = () => {
-      const height = Math.max(
-        shell.scrollHeight,
-        document.documentElement.scrollHeight,
-        window.innerHeight
-      );
+  const textures = [
+    "/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg",
+    "/assets/home/Texturelabs_Paper_226L_paper overlay.jpg",
+    "/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg"
+  ];
+
+  const layer = document.createElement("div");
+  layer.className = "paper-overprint";
+  layer.setAttribute("aria-hidden", "true");
+  shell.appendChild(layer);
+
+  const SHEET_HEIGHT = 1380;
+  const STEP = 1020;
+  let lastCount = 0;
+
+  function rebuildPaper() {
+    const height = Math.max(shell.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
+    const count = Math.max(2, Math.ceil((height + 360) / STEP));
+    if (count === lastCount) {
       layer.style.height = `${height}px`;
-    };
+      return;
+    }
 
-    syncPaperHeight();
-    window.addEventListener("load", syncPaperHeight, { once:true });
-    window.addEventListener("resize", syncPaperHeight);
-    if ("ResizeObserver" in window) new ResizeObserver(syncPaperHeight).observe(shell);
+    layer.replaceChildren();
+    layer.style.height = `${height}px`;
+
+    for (let i = 0; i < count; i += 1) {
+      const sheet = document.createElement("div");
+      sheet.className = "paper-overprint__sheet";
+      sheet.style.top = `${i * STEP - (i ? 180 : 0)}px`;
+      sheet.style.backgroundImage = `url("${textures[i % textures.length]}")`;
+      sheet.style.backgroundPosition = `${18 + ((i * 29) % 64)}% ${12 + ((i * 17) % 70)}%`;
+      layer.appendChild(sheet);
+    }
+
+    lastCount = count;
   }
+
+  rebuildPaper();
+  window.addEventListener("load", rebuildPaper, { once: true });
+  window.addEventListener("resize", rebuildPaper);
+
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(rebuildPaper);
+    observer.observe(shell);
+  }
+})();
+
+/* v52: deterministic Across formats states + guaranteed knot texture mask. */
+(() => {
+  "use strict";
 
   document.querySelectorAll("[data-knot-flash]").forEach((slot) => {
     const first = slot.querySelector("img");
@@ -371,71 +405,135 @@
     };
     syncMask();
     if (first) {
-      new MutationObserver(syncMask).observe(first, {
-        attributes:true,
-        attributeFilter:["src"]
-      });
+      new MutationObserver(syncMask).observe(first, { attributes:true, attributeFilter:["src"] });
     }
   });
 
-  const title = document.querySelector(".portfolio-masthead h1");
-  const holder = title?.parentElement;
-  if (title && holder) {
-    holder.querySelector(".design-hover-smudge")?.remove();
-
-    const smudge = document.createElement("span");
-    smudge.className = "design-hover-smudge";
-    smudge.setAttribute("aria-hidden", "true");
-    smudge.textContent = title.getAttribute("data-ink") || title.textContent.trim();
-    holder.appendChild(smudge);
-
-    const syncBox = () => {
-      const titleBox = title.getBoundingClientRect();
-      const holderBox = holder.getBoundingClientRect();
-      const computed = getComputedStyle(title);
-      smudge.style.left = `${titleBox.left - holderBox.left}px`;
-      smudge.style.top = `${titleBox.top - holderBox.top}px`;
-      smudge.style.width = `${titleBox.width}px`;
-      smudge.style.height = `${titleBox.height}px`;
-      smudge.style.fontSize = computed.fontSize;
-      smudge.style.lineHeight = computed.lineHeight;
-      smudge.style.letterSpacing = computed.letterSpacing;
-      smudge.style.fontWeight = computed.fontWeight;
-      smudge.style.fontFamily = computed.fontFamily;
-    };
-
-    const moveSmudge = (event) => {
-      const rect = title.getBoundingClientRect();
-      const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
-      const y = Math.max(0, Math.min(rect.height, event.clientY - rect.top));
-      holder.style.setProperty("--smudge-x", `${x}px`);
-      holder.style.setProperty("--smudge-y", `${y}px`);
-    };
-
-    title.addEventListener("pointerenter", (event) => {
-      syncBox();
-      moveSmudge(event);
-      holder.classList.add("is-smudging");
-    });
-    title.addEventListener("pointermove", moveSmudge);
-    title.addEventListener("pointerleave", () => holder.classList.remove("is-smudging"));
-    window.addEventListener("resize", syncBox);
-    window.addEventListener("load", syncBox, { once:true });
-    syncBox();
-  }
-
-  const canHover = window.matchMedia("(hover:hover) and (pointer:fine)");
   document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher) => {
+    const primary = switcher.querySelector(".state-primary");
+    const secondary = switcher.querySelector(".state-secondary");
+    const button = switcher.querySelector(".image-switcher__button");
+
+    const sync = () => {
+      const secondaryOn = switcher.classList.contains("is-secondary");
+      primary?.setAttribute("aria-hidden", String(secondaryOn));
+      secondary?.setAttribute("aria-hidden", String(!secondaryOn));
+      if (button) {
+        button.setAttribute("aria-pressed", String(secondaryOn));
+        button.textContent = secondaryOn ? "artwork" : "in use";
+      }
+    };
+
+    sync();
+    new MutationObserver(sync).observe(switcher, { attributes:true, attributeFilter:["class"] });
+  });
+})();
+
+/* v53: one continuous paper overlay. Remove v51/v52 generated sheet tiles. */
+(() => {
+  "use strict";
+  const shell = document.querySelector(".page-shell");
+  if (!shell) return;
+
+  document.querySelectorAll(".paper-overprint").forEach((node) => node.remove());
+  const layer = document.createElement("div");
+  layer.className = "paper-overprint";
+  layer.setAttribute("aria-hidden", "true");
+  shell.appendChild(layer);
+
+  const sync = () => {
+    const height = Math.max(shell.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
+    layer.style.height = `${height}px`;
+  };
+  sync();
+  window.addEventListener("load", sync, { once:true });
+  window.addEventListener("resize", sync);
+  if ("ResizeObserver" in window) new ResizeObserver(sync).observe(shell);
+})();
+
+/* v53: Across formats asset pairs are explicit and hover-driven on desktop. */
+(() => {
+  "use strict";
+
+  const pairs = [
+    ["/design/assets/more connection lyric.png", "/design/assets/more connection lyric photo.png"],
+    ["/design/assets/more depth.png", "/design/assets/more depth image.png"],
+    ["/design/assets/more fun bus.png", "/design/assets/more fun bus image.png"]
+  ];
+
+  const desktopHover = window.matchMedia("(hover:hover) and (pointer:fine)");
+  document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher, index) => {
+    const primary = switcher.querySelector(".state-primary");
+    const secondary = switcher.querySelector(".state-secondary");
+    const button = switcher.querySelector(".image-switcher__button");
+    const pair = pairs[index];
+    if (pair) {
+      if (primary) primary.src = pair[0];
+      if (secondary) secondary.src = pair[1];
+    }
+
     const stage = switcher.querySelector(".image-switcher__stage");
     if (!stage) return;
 
-    const enter = () => {
-      if (canHover.matches) switcher.classList.add("is-hover-secondary");
+    const showInstalled = () => {
+      if (!desktopHover.matches) return;
+      primary?.style.setProperty("opacity", "0", "important");
+      secondary?.style.setProperty("opacity", "1", "important");
+      button?.setAttribute("aria-pressed", "true");
     };
-    const leave = () => switcher.classList.remove("is-hover-secondary");
+    const showArtwork = () => {
+      if (!desktopHover.matches) return;
+      primary?.style.removeProperty("opacity");
+      secondary?.style.removeProperty("opacity");
+      button?.setAttribute("aria-pressed", String(switcher.classList.contains("is-secondary")));
+    };
+
+    stage.addEventListener("pointerenter", showInstalled);
+    stage.addEventListener("pointerleave", showArtwork);
+  });
+})();
+
+/* v54: deterministic Across formats hover preview.
+   Use the exact supplied asset pairs and a dedicated class so older hover CSS
+   cannot cancel the installed-photo state. */
+(() => {
+  "use strict";
+
+  const pairs = [
+    ["/design/assets/more connection lyric.png", "/design/assets/more connection lyric photo.png"],
+    ["/design/assets/more depth.png", "/design/assets/more depth image.png"],
+    ["/design/assets/more fun bus.png", "/design/assets/more fun bus image.png"]
+  ];
+  const canHover = window.matchMedia("(hover:hover) and (pointer:fine)");
+
+  document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher, index) => {
+    const stage = switcher.querySelector(".image-switcher__stage");
+    const primary = switcher.querySelector(".state-primary");
+    const secondary = switcher.querySelector(".state-secondary");
+    const button = switcher.querySelector(".image-switcher__button");
+    const pair = pairs[index];
+    if (!stage || !primary || !secondary || !pair) return;
+
+    primary.src = pair[0];
+    secondary.src = pair[1];
+
+    /* Decode the installed photograph before hover so there is no blank frame. */
+    const preload = new Image();
+    preload.src = pair[1];
+    if (preload.decode) preload.decode().catch(() => {});
+
+    const enter = () => {
+      if (!canHover.matches) return;
+      switcher.classList.add("is-hover-secondary");
+      button?.setAttribute("aria-pressed", "true");
+    };
+    const leave = () => {
+      if (!canHover.matches) return;
+      switcher.classList.remove("is-hover-secondary");
+      button?.setAttribute("aria-pressed", String(switcher.classList.contains("is-secondary")));
+    };
 
     stage.addEventListener("pointerenter", enter);
     stage.addEventListener("pointerleave", leave);
-    canHover.addEventListener?.("change", leave);
   });
 })();
