@@ -8097,3 +8097,197 @@ body.design-page,
   opacity:.38 !important;
   transform:translate(.62px,-1.35px) !important;
 }
+
+
+/* =====================================================
+   v50 — paper-on-top + organic bleed tuning
+   ===================================================== */
+
+body.design-page::before {
+  display:none !important;
+}
+
+.page-shell::before,
+.page-shell::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.page-shell::before {
+  z-index:30;
+  background-image:
+    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg');
+  background-repeat:repeat-y, repeat-y, repeat-y;
+  background-size:100% auto, 100% auto, 100% auto;
+  background-position:center top, center 220px, center 460px;
+  mix-blend-mode:multiply;
+  opacity:.16;
+  filter:grayscale(1) brightness(1.10) contrast(1.02);
+}
+
+.page-shell::after {
+  z-index:31;
+  background-image:
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg'),
+    url('/assets/home/Texturelabs_Paper_303S.jpg');
+  background-repeat:repeat-y, repeat-y;
+  background-size:100% auto, 100% auto;
+  background-position:center 120px, center 0;
+  mix-blend-mode:soft-light;
+  opacity:.11;
+  filter:grayscale(1) brightness(1.20) contrast(1.12);
+}
+
+/* Keep the paper visibly on top of the work without affecting interaction. */
+.design-site-header,
+.design-main {
+  position:relative;
+  z-index:2;
+}
+
+/* Lock all large typography back to a true blur->threshold bleed, then vary the
+   registration slightly by hierarchy so it feels printed rather than cloned. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4 {
+  filter:url(#ink-display-v50) !important;
+}
+
+.portfolio-masthead h1::before,
+.project-family-heading h2::before,
+.project-title::before,
+.case-section__header h3::before,
+.making-public-panel__intro h4::before,
+.making-public-intro h4::before {
+  filter:url(#ink-display-v50) !important;
+  text-shadow:none !important;
+}
+
+.portfolio-masthead h1 {
+  letter-spacing:-.084em !important;
+  text-shadow:
+    -0.95px -0.35px 0 rgba(0,106,68,.18),
+     0.90px  0.34px 0 rgba(253,185,19,.18),
+     0.20px  0.86px 0 rgba(193,39,45,.13) !important;
+}
+.portfolio-masthead h1::before {
+  opacity:.40 !important;
+  transform:translate(.14px,.36px) !important;
+}
+.portfolio-masthead h1::after {
+  opacity:.17 !important;
+  background-size:1700px auto, 2240px auto !important;
+  background-position:16% 24%, 66% 16% !important;
+}
+
+.project-family-heading h2,
+.project-title {
+  letter-spacing:-.061em !important;
+  text-shadow:
+    -0.72px -0.24px 0 rgba(0,106,68,.16),
+     0.74px  0.28px 0 rgba(253,185,19,.17),
+     0.14px  0.68px 0 rgba(193,39,45,.11) !important;
+}
+.project-family-heading h2::before {
+  opacity:.35 !important;
+  transform:translate(.10px,.26px) !important;
+}
+.project-family-heading h2::after {
+  opacity:.15 !important;
+  background-size:1540px auto, 1980px auto !important;
+  background-position:42% 30%, 74% 14% !important;
+}
+.project-title::before {
+  opacity:.36 !important;
+  transform:translate(.12px,.28px) !important;
+}
+.project-title::after {
+  opacity:.16 !important;
+  background-size:1400px auto, 1860px auto !important;
+  background-position:71% 18%, 16% 54% !important;
+}
+
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4 {
+  text-shadow:
+    -0.62px -0.18px 0 rgba(0,106,68,.14),
+     0.62px  0.24px 0 rgba(253,185,19,.15),
+     0.12px  0.58px 0 rgba(193,39,45,.10) !important;
+}
+.case-section__header h3::before,
+.making-public-panel__intro h4::before,
+.making-public-intro h4::before {
+  opacity:.33 !important;
+  transform:translate(.08px,.22px) !important;
+}
+.case-section__header h3::after,
+.making-public-panel__intro h4::after,
+.making-public-intro h4::after {
+  opacity:.14 !important;
+  background-size:1260px auto, 1700px auto !important;
+  background-position:12% 58%, 80% 36% !important;
+}
+
+/* Knot: same stronger organic bleed, but with a little more colour drift and
+   roughness so it feels less even. */
+.knot-flash--black .knot-flash__ink {
+  filter:url(#ink-knot-v50) brightness(0) contrast(1.5) !important;
+}
+.knot-flash--red .knot-flash__ink {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--green .knot-flash__ink {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important;
+}
+.knot-flash--yellow .knot-flash__ink {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) !important;
+}
+.knot-flash--black .knot-flash__bleed {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--black .knot-flash__register {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) !important;
+}
+.knot-flash--red .knot-flash__bleed {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important;
+}
+.knot-flash--red .knot-flash__register {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) !important;
+}
+.knot-flash--green .knot-flash__bleed {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) !important;
+}
+.knot-flash--green .knot-flash__register {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--yellow .knot-flash__bleed {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--yellow .knot-flash__register {
+  filter:url(#ink-knot-v50) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important;
+}
+
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity:.52 !important;
+  transform:translate(-.72px,1.74px) scale(1.008) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity:.42 !important;
+  transform:translate(.70px,-1.48px) scale(1.006) !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed {
+  opacity:.82 !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register {
+  opacity:.68 !important;
+}
