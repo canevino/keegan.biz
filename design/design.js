@@ -224,7 +224,13 @@
     document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
       const images = slot.querySelectorAll("img");
       const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
-      const settledIndex = 0;
+      const pickDifferentIndex = (exclude) => {
+        if (knotSources.length <= 1) return 0;
+        let next = Math.floor(Math.random() * knotSources.length);
+        while (next === exclude) next = Math.floor(Math.random() * knotSources.length);
+        return next;
+      };
+      let settledIndex = Math.floor(Math.random() * knotSources.length);
       let currentIndex = settledIndex;
       const existingColorIndex = knotColorClasses.findIndex((className) => slot.classList.contains(className));
       let colorIndex = existingColorIndex >= 0 ? existingColorIndex : slotIndex % knotColorClasses.length;
@@ -246,13 +252,17 @@
       };
 
       const chooseNext = () => {
-        /* Cycle through every hand-drawn SVG variant instead of pinning the
-           ornament to one geometry. Because all sources are decoded before
-           this runs, the three filtered print layers stay intact while the
-           drawing changes. */
+        /* Walk through the hand-drawn set while the knot is active, but do not
+           force the resting state back to the same default drawing. */
         currentIndex = (currentIndex + 1) % knotSources.length;
         colorIndex = (colorIndex + 1) % knotColorClasses.length;
         setColor(colorIndex);
+        setKnot(currentIndex);
+      };
+
+      const chooseSettled = () => {
+        settledIndex = pickDifferentIndex(currentIndex);
+        currentIndex = settledIndex;
         setKnot(currentIndex);
       };
 
@@ -277,8 +287,7 @@
           count += 1;
           if (count < swaps) timer = window.setTimeout(step, 28 + Math.random() * 28);
           else {
-            currentIndex = settledIndex;
-            setKnot(settledIndex);
+            chooseSettled();
             slot.classList.remove("is-fluttering");
             scheduleIdle();
           }
@@ -305,8 +314,7 @@
         if (!hovering) return;
         hovering = false;
         clearTimer();
-        currentIndex = settledIndex;
-        setKnot(settledIndex);
+        chooseSettled();
         slot.classList.remove("is-hover-glitch");
         scheduleIdle();
       };
