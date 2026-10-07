@@ -153,6 +153,15 @@
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+  /* Large display faces use pseudo-layers for registration and material
+     texture. Set their duplicate text from the actual DOM so the effect never
+     drifts from edited copy. */
+  document.querySelectorAll(
+    ".portfolio-masthead h1, .project-family-heading h2, .project-title, .case-section__header h3, .making-public-intro h4"
+  ).forEach((element) => {
+    element.setAttribute("data-print-text", element.textContent.trim());
+  });
+
   /* Legacy page-height sync is harmless if no long spine is present. */
   function syncPageKnotLength() {
     const height = Math.max(
@@ -172,9 +181,9 @@
     resizeObserver.observe(document.body);
   }
 
-  /* Smooth knots behave like a misregistered screen print: the drawing stays
-     fixed in place, but the ink layer swaps abruptly. Idle glitches are rare;
-     hover keeps the print unstable until the pointer leaves. */
+  /* Smooth knots behave like a misregistered screen print. All SVG variants
+     are fully decoded before swaps begin so the filtered layers never flash
+     clean while a new source is loading. */
   const knotSources = [
     "/assets/home/knot_smooth_svg1.svg",
     "/assets/home/knot_smooth_svg2.svg",
@@ -190,118 +199,243 @@
     "knot-flash--yellow"
   ];
 
-  document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
-    const images = slot.querySelectorAll("img");
-    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
-    let currentIndex = slotIndex % knotSources.length;
-    const existingColorIndex = knotColorClasses.findIndex((className) => slot.classList.contains(className));
-    let colorIndex = existingColorIndex >= 0 ? existingColorIndex : slotIndex % knotColorClasses.length;
-    let timer = 0;
-    let hovering = false;
+  const knotCache = knotSources.map(async (source) => {
+    const preload = new Image();
+    preload.decoding = "async";
+    preload.src = source;
 
-    const setKnot = (index) => {
-      const source = knotSources[index];
-      images.forEach((image) => { image.src = source; });
-      slot.style.setProperty("--knot-mask", `url("${source}")`);
-    };
-
-    const chooseNext = () => {
-      let next = Math.floor(Math.random() * knotSources.length);
-      if (next === currentIndex) next = (next + 1) % knotSources.length;
-      currentIndex = next;
-      colorIndex = (colorIndex + 1) % knotColorClasses.length;
-      knotColorClasses.forEach((className) => slot.classList.remove(className));
-      slot.classList.add(knotColorClasses[colorIndex]);
-      setKnot(currentIndex);
-    };
-
-    const clearTimer = () => {
-      window.clearTimeout(timer);
-      timer = 0;
-    };
-
-    const scheduleIdle = () => {
-      clearTimer();
-      if (reducedMotion.matches || hovering) return;
-      timer = window.setTimeout(idleBurst, 32000 + Math.random() * 18000);
-    };
-
-    const idleBurst = () => {
-      if (reducedMotion.matches || hovering) return;
-      slot.classList.add("is-fluttering");
-      const swaps = 14 + Math.floor(Math.random() * 7);
-      let count = 0;
-
-      const step = () => {
-        chooseNext();
-        count += 1;
-        if (count < swaps) {
-          timer = window.setTimeout(step, 28 + Math.random() * 28);
-        } else {
-          slot.classList.remove("is-fluttering");
-          scheduleIdle();
+    try {
+      await preload.decode();
+    } catch (error) {
+      await new Promise((resolve) => {
+        if (preload.complete) {
+          resolve();
+          return;
         }
+        preload.addEventListener("load", resolve, { once: true });
+        preload.addEventListener("error", resolve, { once: true });
+      });
+    }
+
+    return { source, image: preload };
+  });
+
+  Promise.all(knotCache).then(() => {
+    document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
+      const images = slot.querySelectorAll("img");
+      const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
+      const pickDifferentIndex = (exclude) => {
+        if (knotSources.length <= 1) return 0;
+        let next = Math.floor(Math.random() * knotSources.length);
+        while (next === exclude) next = Math.floor(Math.random() * knotSources.length);
+        return next;
+      };
+      let settledIndex = Math.floor(Math.random() * knotSources.length);
+      let currentIndex = settledIndex;
+      const existingColorIndex = knotColorClasses.findIndex((className) => slot.classList.contains(className));
+      let colorIndex = existingColorIndex >= 0 ? existingColorIndex : slotIndex % knotColorClasses.length;
+      let timer = 0;
+      let hovering = false;
+
+      const setKnot = (index) => {
+        const source = knotSources[index];
+        images.forEach((image) => {
+          image.decoding = "sync";
+          if (image.getAttribute("src") !== source) image.setAttribute("src", source);
+        });
+        void slot.offsetWidth;
       };
 
-      step();
-    };
+      const setColor = (index) => {
+        knotColorClasses.forEach((className) => slot.classList.remove(className));
+        slot.classList.add(knotColorClasses[index]);
+      };
 
-    const hoverLoop = () => {
-      if (!hovering || reducedMotion.matches) return;
-      chooseNext();
-      timer = window.setTimeout(hoverLoop, 30 + Math.random() * 26);
-    };
+      const chooseNext = () => {
+        /* Walk through the hand-drawn set while the knot is active, but do not
+           force the resting state back to the same default drawing. */
+        currentIndex = (currentIndex + 1) % knotSources.length;
+        colorIndex = (colorIndex + 1) % knotColorClasses.length;
+        setColor(colorIndex);
+        setKnot(currentIndex);
+      };
 
-    const startHover = () => {
-      if (!canHover.matches || reducedMotion.matches) return;
-      hovering = true;
-      clearTimer();
-      slot.classList.remove("is-fluttering");
-      slot.classList.add("is-hover-glitch");
-      hoverLoop();
-    };
+      const chooseSettled = () => {
+        settledIndex = pickDifferentIndex(currentIndex);
+        currentIndex = settledIndex;
+        setKnot(currentIndex);
+      };
 
-    const stopHover = () => {
-      if (!hovering) return;
-      hovering = false;
-      clearTimer();
-      slot.classList.remove("is-hover-glitch");
+      const clearTimer = () => {
+        window.clearTimeout(timer);
+        timer = 0;
+      };
+
+      const scheduleIdle = () => {
+        clearTimer();
+        if (reducedMotion.matches || hovering) return;
+        timer = window.setTimeout(idleBurst, 30000 + Math.random() * 12000);
+      };
+
+      const idleBurst = () => {
+        if (reducedMotion.matches || hovering) return;
+        slot.classList.add("is-fluttering");
+        const swaps = 14 + Math.floor(Math.random() * 7);
+        let count = 0;
+        const step = () => {
+          chooseNext();
+          count += 1;
+          if (count < swaps) timer = window.setTimeout(step, 28 + Math.random() * 28);
+          else {
+            chooseSettled();
+            slot.classList.remove("is-fluttering");
+            scheduleIdle();
+          }
+        };
+        step();
+      };
+
+      const hoverLoop = () => {
+        if (!hovering || reducedMotion.matches) return;
+        chooseNext();
+        timer = window.setTimeout(hoverLoop, 30 + Math.random() * 26);
+      };
+
+      const startHover = () => {
+        if (!canHover.matches || reducedMotion.matches) return;
+        hovering = true;
+        clearTimer();
+        slot.classList.remove("is-fluttering");
+        slot.classList.add("is-hover-glitch");
+        hoverLoop();
+      };
+
+      const stopHover = () => {
+        if (!hovering) return;
+        hovering = false;
+        clearTimer();
+        chooseSettled();
+        slot.classList.remove("is-hover-glitch");
+        scheduleIdle();
+      };
+
+      setColor(colorIndex);
+      setKnot(currentIndex);
+      slot.classList.add("is-knot-ready");
       scheduleIdle();
-    };
+      slot.addEventListener("pointerenter", startHover);
+      slot.addEventListener("pointerleave", stopHover);
 
-    knotColorClasses.forEach((className) => slot.classList.remove(className));
-    slot.classList.add(knotColorClasses[colorIndex]);
-    setKnot(currentIndex);
-    scheduleIdle();
-    slot.addEventListener("pointerenter", startHover);
-    slot.addEventListener("pointerleave", stopHover);
-
-    reducedMotion.addEventListener?.("change", () => {
-      clearTimer();
-      hovering = false;
-      slot.classList.remove("is-fluttering", "is-hover-glitch");
-      if (!reducedMotion.matches) scheduleIdle();
+      reducedMotion.addEventListener?.("change", () => {
+        clearTimer();
+        hovering = false;
+        slot.classList.remove("is-fluttering", "is-hover-glitch");
+        if (!reducedMotion.matches) scheduleIdle();
+      });
     });
   });
 })();
 
-
+/* CURRENT LOCK PATCH — paper, knot mask, masthead smudge, Across formats. */
 (() => {
   "use strict";
 
-  /* Pointer-local ink run. This only drives the radial mask position; the
-     actual bleed remains the SVG blur + alpha-threshold filter in index.html. */
-  const title = document.querySelector('.portfolio-masthead h1[data-ink]');
-  if (!title) return;
+  const shell = document.querySelector(".page-shell");
+  if (shell) {
+    document.querySelectorAll(".paper-overprint").forEach((node) => node.remove());
+    const layer = document.createElement("div");
+    layer.className = "paper-overprint";
+    layer.setAttribute("aria-hidden", "true");
+    shell.appendChild(layer);
 
-  const updateInkPoint = (event) => {
-    const rect = title.getBoundingClientRect();
-    const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
-    const y = Math.max(0, Math.min(rect.height, event.clientY - rect.top));
-    title.style.setProperty('--ink-x', `${x}px`);
-    title.style.setProperty('--ink-y', `${y}px`);
-  };
+    const syncPaperHeight = () => {
+      const height = Math.max(
+        shell.scrollHeight,
+        document.documentElement.scrollHeight,
+        window.innerHeight
+      );
+      layer.style.height = `${height}px`;
+    };
 
-  title.addEventListener('pointerenter', updateInkPoint);
-  title.addEventListener('pointermove', updateInkPoint);
+    syncPaperHeight();
+    window.addEventListener("load", syncPaperHeight, { once:true });
+    window.addEventListener("resize", syncPaperHeight);
+    if ("ResizeObserver" in window) new ResizeObserver(syncPaperHeight).observe(shell);
+  }
+
+  document.querySelectorAll("[data-knot-flash]").forEach((slot) => {
+    const first = slot.querySelector("img");
+    const syncMask = () => {
+      const src = first?.getAttribute("src");
+      if (src) slot.style.setProperty("--knot-mask-image", `url("${src}")`);
+    };
+    syncMask();
+    if (first) {
+      new MutationObserver(syncMask).observe(first, {
+        attributes:true,
+        attributeFilter:["src"]
+      });
+    }
+  });
+
+  const title = document.querySelector(".portfolio-masthead h1");
+  const holder = title?.parentElement;
+  if (title && holder) {
+    holder.querySelector(".design-hover-smudge")?.remove();
+
+    const smudge = document.createElement("span");
+    smudge.className = "design-hover-smudge";
+    smudge.setAttribute("aria-hidden", "true");
+    smudge.textContent = title.getAttribute("data-ink") || title.textContent.trim();
+    holder.appendChild(smudge);
+
+    const syncBox = () => {
+      const titleBox = title.getBoundingClientRect();
+      const holderBox = holder.getBoundingClientRect();
+      const computed = getComputedStyle(title);
+      smudge.style.left = `${titleBox.left - holderBox.left}px`;
+      smudge.style.top = `${titleBox.top - holderBox.top}px`;
+      smudge.style.width = `${titleBox.width}px`;
+      smudge.style.height = `${titleBox.height}px`;
+      smudge.style.fontSize = computed.fontSize;
+      smudge.style.lineHeight = computed.lineHeight;
+      smudge.style.letterSpacing = computed.letterSpacing;
+      smudge.style.fontWeight = computed.fontWeight;
+      smudge.style.fontFamily = computed.fontFamily;
+    };
+
+    const moveSmudge = (event) => {
+      const rect = title.getBoundingClientRect();
+      const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
+      const y = Math.max(0, Math.min(rect.height, event.clientY - rect.top));
+      holder.style.setProperty("--smudge-x", `${x}px`);
+      holder.style.setProperty("--smudge-y", `${y}px`);
+    };
+
+    title.addEventListener("pointerenter", (event) => {
+      syncBox();
+      moveSmudge(event);
+      holder.classList.add("is-smudging");
+    });
+    title.addEventListener("pointermove", moveSmudge);
+    title.addEventListener("pointerleave", () => holder.classList.remove("is-smudging"));
+    window.addEventListener("resize", syncBox);
+    window.addEventListener("load", syncBox, { once:true });
+    syncBox();
+  }
+
+  const canHover = window.matchMedia("(hover:hover) and (pointer:fine)");
+  document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher) => {
+    const stage = switcher.querySelector(".image-switcher__stage");
+    if (!stage) return;
+
+    const enter = () => {
+      if (canHover.matches) switcher.classList.add("is-hover-secondary");
+    };
+    const leave = () => switcher.classList.remove("is-hover-secondary");
+
+    stage.addEventListener("pointerenter", enter);
+    stage.addEventListener("pointerleave", leave);
+    canHover.addEventListener?.("change", leave);
+  });
 })();
