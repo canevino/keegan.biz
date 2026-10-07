@@ -153,6 +153,15 @@
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+  /* Large display faces use pseudo-layers for registration and material
+     texture. Set their duplicate text from the actual DOM so the effect never
+     drifts from edited copy. */
+  document.querySelectorAll(
+    ".portfolio-masthead h1, .project-family-heading h2, .project-title, .case-section__header h3, .making-public-intro h4"
+  ).forEach((element) => {
+    element.setAttribute("data-print-text", element.textContent.trim());
+  });
+
   /* Legacy page-height sync is harmless if no long spine is present. */
   function syncPageKnotLength() {
     const height = Math.max(
@@ -237,13 +246,14 @@
       };
 
       const chooseNext = () => {
-        /* Keep one proven SVG geometry so every glitch retains the same
-           texture/bleed treatment. Glitch comes from vertical slices and
-           registration movement, while the brand ink colour still cycles. */
-        currentIndex = settledIndex;
+        /* Cycle through every hand-drawn SVG variant instead of pinning the
+           ornament to one geometry. Because all sources are decoded before
+           this runs, the three filtered print layers stay intact while the
+           drawing changes. */
+        currentIndex = (currentIndex + 1) % knotSources.length;
         colorIndex = (colorIndex + 1) % knotColorClasses.length;
         setColor(colorIndex);
-        setKnot(settledIndex);
+        setKnot(currentIndex);
       };
 
       const clearTimer = () => {
