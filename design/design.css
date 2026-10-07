@@ -6564,261 +6564,158 @@ figure > figcaption {
 }
 
 /* =========================================================
-   v39 - scrolling paper, reliable knot print, subtle registration,
-   tighter display type, bus specimen reset
+   v40 - restore v38 knot print + scrolling paper + compact print type
    ========================================================= */
 
-/* Paper belongs to the page and scrolls with it. It sits behind every asset. */
+/* Paper is part of the document, so it travels with the page. The work itself
+   stays on the higher page-shell layer. */
 body.design-page::before {
   position: absolute !important;
-  top: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  left: 0 !important;
+  inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
   min-height: 100% !important;
-  background-attachment: scroll !important;
   background-image:
     url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
     url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg'),
     url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg') !important;
-  background-size: 1120px auto, 1380px auto, 1680px auto !important;
-  background-position: 50% 0, 16% 9%, 76% 24% !important;
-  background-repeat: repeat, repeat, repeat-y !important;
+  background-size: 1120px auto, 920px auto, 1380px auto !important;
+  background-position: 50% 0, 12% 9%, 78% 20% !important;
+  background-repeat: repeat-y, repeat, repeat-y !important;
   background-blend-mode: multiply, multiply, soft-light !important;
+  opacity: .18 !important;
   mix-blend-mode: multiply !important;
-  opacity: .17 !important;
+  filter: contrast(1.06) !important;
+  z-index: 0 !important;
 }
-.page-shell,
-.design-site-header,
-.design-main,
-.project,
-.project-content,
-.case-section,
-figure,
-.image-switcher,
-.flip-card {
-  position: relative;
-  z-index: 1;
+.page-shell {
+  position: relative !important;
+  z-index: 1 !important;
 }
 
-/* Display type: slightly tighter, gently swollen, with real paper tooth and
-   very small red/green/yellow registration rather than a drop shadow. */
-.portfolio-masthead h1,
+/* Keep imagery and artwork visually above the page material. */
+.design-page img,
+.image-switcher__stage,
+.flip-card__scene,
+.extension-stage,
+.feature-slab,
+.project-key,
+.mp-banner,
+.making-public-card {
+  position: relative;
+  z-index: 2;
+}
+
+/* Slightly tighter display setting. The small registration fringe gives the
+   large type the same physical-print family as the knot without becoming a
+   drop shadow. */
+.portfolio-masthead h1 {
+  letter-spacing: -.058em !important;
+  text-shadow:
+    -.65px .05px .38px rgba(0,106,68,.22),
+     .70px -.02px .42px rgba(253,185,19,.16) !important;
+}
 .project-family-heading h2,
-.project-title,
+.project-title {
+  letter-spacing: -.036em !important;
+  text-shadow:
+    -.48px 0 .32px rgba(193,39,45,.13),
+     .48px 0 .34px rgba(0,106,68,.12) !important;
+}
 .case-section__header h3,
 .case-section--making-public .case-section__header h3 {
-  position: relative !important;
-  isolation: isolate !important;
-  overflow: visible !important;
-  filter: url(#ink-display-v35) !important;
-  text-shadow: none !important;
-}
-.portfolio-masthead h1 { letter-spacing: -.084em !important; }
-.project-family-heading h2,
-.project-title { letter-spacing: -.061em !important; }
-.case-section__header h3,
-.case-section--making-public .case-section__header h3 { letter-spacing: -.054em !important; }
-
-/* Registration/bleed layer. Kept deliberately slight so it reads as print,
-   not a shadow. */
-[data-ink]::before {
-  content: attr(data-ink) !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: -1 !important;
-  pointer-events: none !important;
-  font: inherit !important;
-  line-height: inherit !important;
-  letter-spacing: inherit !important;
-  white-space: inherit !important;
-  color: currentColor !important;
-  opacity: .24 !important;
-  transform: scale(1.006) !important;
-  transform-origin: 50% 55% !important;
-  filter: blur(.36px) url(#ink-display-v35) !important;
+  letter-spacing: -.026em !important;
   text-shadow:
-    1.05px .35px 0 rgba(0,106,68,.42),
-    -0.85px -.20px 0 rgba(253,185,19,.30),
-    .20px 1px 0 rgba(193,39,45,.20) !important;
+    -.38px 0 .28px rgba(193,39,45,.10),
+     .38px 0 .30px rgba(253,185,19,.10) !important;
 }
 
-/* Paper texture is clipped inside the letters at low opacity. This uses the
-   new organic paper asset, not procedural speckles/noise. */
-[data-ink]::after {
-  content: attr(data-ink) !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 2 !important;
-  pointer-events: none !important;
-  font: inherit !important;
-  line-height: inherit !important;
-  letter-spacing: inherit !important;
-  white-space: inherit !important;
-  color: transparent !important;
-  background-image:
-    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
-    url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg') !important;
-  background-size: 620px auto, 980px auto !important;
-  background-position: 37% 31%, 63% 44% !important;
-  background-repeat: repeat, repeat !important;
-  background-blend-mode: multiply !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  opacity: .16 !important;
-  mix-blend-mode: multiply !important;
-  filter: grayscale(1) contrast(1.12) !important;
-}
-
-/* The masthead gets a slightly more visible paper/registration treatment. */
-.portfolio-masthead h1::after { opacity: .20 !important; }
-.portfolio-masthead h1::before {
-  opacity: .28 !important;
-  transform: scale(1.008) !important;
-}
-
-/* Reliable knot rendering: use the JS-provided SVG as a mask so every source
-   receives the exact same color, paper texture, bleed and registration. */
-.portfolio-masthead__ornament.knot-flash {
-  --knot-color: var(--ink);
-  --knot-register-a: var(--yellow);
-  --knot-register-b: var(--green);
-  position: relative !important;
-  isolation: isolate !important;
-}
-.portfolio-masthead__ornament.knot-flash--black {
-  --knot-color: var(--ink);
-  --knot-register-a: var(--yellow);
-  --knot-register-b: var(--red);
-}
-.portfolio-masthead__ornament.knot-flash--red {
-  --knot-color: var(--red);
-  --knot-register-a: var(--green);
-  --knot-register-b: var(--yellow);
-}
-.portfolio-masthead__ornament.knot-flash--green {
-  --knot-color: var(--green);
-  --knot-register-a: var(--red);
-  --knot-register-b: var(--yellow);
-}
-.portfolio-masthead__ornament.knot-flash--yellow {
-  --knot-color: var(--yellow);
-  --knot-register-a: var(--red);
-  --knot-register-b: var(--green);
-}
-
-/* Keep the real SVGs only as source geometry for JS; rendering is handled by
-   the mask layers below, eliminating variant-specific texture failures. */
-.portfolio-masthead__ornament.knot-flash > img {
-  opacity: 0 !important;
-  visibility: hidden !important;
-}
-.portfolio-masthead__ornament.knot-flash::before,
-.portfolio-masthead__ornament.knot-flash::after {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  pointer-events: none !important;
-  -webkit-mask-image: var(--knot-mask) !important;
-  mask-image: var(--knot-mask) !important;
-  -webkit-mask-position: center !important;
-  mask-position: center !important;
-  -webkit-mask-repeat: no-repeat !important;
-  mask-repeat: no-repeat !important;
-  -webkit-mask-size: contain !important;
-  mask-size: contain !important;
-}
-.portfolio-masthead__ornament.knot-flash::before {
-  z-index: 2 !important;
-  background-color: var(--knot-color) !important;
-  background-image:
-    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
-    url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg') !important;
-  background-size: 390px auto, 560px auto !important;
-  background-position: center, 41% 36% !important;
-  background-blend-mode: multiply !important;
+/* Restore the v38 knot construction exactly: three SVG layers, each retaining
+   the print filter. No mask replacement. */
+.portfolio-masthead__ornament .knot-flash__ink,
+.portfolio-masthead__ornament .knot-flash__bleed,
+.portfolio-masthead__ornament .knot-flash__register {
+  display: block !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+  background: none !important;
   filter: url(#ink-knot-v35) !important;
-  opacity: .98 !important;
 }
-.portfolio-masthead__ornament.knot-flash::after {
-  z-index: 1 !important;
-  background:
-    linear-gradient(var(--knot-register-a),var(--knot-register-a)) !important;
-  filter: blur(.42px) url(#ink-knot-v35) !important;
-  opacity: .28 !important;
-  transform: translate(1.45px,.75px) scale(1.006) !important;
+.knot-flash::before { display: none !important; }
+
+.knot-flash--black .knot-flash__ink {
+  filter: url(#ink-knot-v35) brightness(.78) contrast(1.42) !important;
+}
+.knot-flash--red .knot-flash__ink {
+  filter: url(#ink-knot-v35) invert(18%) sepia(86%) saturate(3270%) hue-rotate(347deg) brightness(87%) contrast(96%) !important;
+}
+.knot-flash--green .knot-flash__ink {
+  filter: url(#ink-knot-v35) invert(29%) sepia(38%) saturate(1690%) hue-rotate(108deg) brightness(76%) contrast(106%) !important;
+}
+.knot-flash--yellow .knot-flash__ink {
+  filter: url(#ink-knot-v35) invert(76%) sepia(92%) saturate(1850%) hue-rotate(350deg) brightness(96%) contrast(99%) !important;
+}
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity: .18 !important;
+  transform: translate(1px,.45px) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity: .12 !important;
+  transform: translate(-.8px,-.4px) !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed { opacity:.56 !important; }
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register { opacity:.44 !important; }
+.knot-flash--black .knot-flash__bleed,
+.knot-flash--yellow .knot-flash__bleed,
+.knot-flash--red .knot-flash__register {
+  filter:url(#ink-knot-v35) invert(29%) sepia(38%) saturate(1690%) hue-rotate(108deg) brightness(76%) contrast(106%) !important;
+}
+.knot-flash--black .knot-flash__register,
+.knot-flash--green .knot-flash__bleed,
+.knot-flash--red .knot-flash__bleed {
+  filter:url(#ink-knot-v35) invert(18%) sepia(86%) saturate(3270%) hue-rotate(347deg) brightness(87%) contrast(96%) !important;
+}
+.knot-flash--green .knot-flash__register,
+.knot-flash--yellow .knot-flash__register {
+  filter:url(#ink-knot-v35) invert(76%) sepia(92%) saturate(1850%) hue-rotate(350deg) brightness(96%) contrast(99%) !important;
 }
 
-/* Add the second registration color using a small shadow on the masked color
-   layer itself. It stays attached to the knot rather than reading as a drop shadow. */
-.portfolio-masthead__ornament.knot-flash {
-  filter: drop-shadow(-1.0px -.4px 0 color-mix(in srgb, var(--knot-register-b) 34%, transparent)) !important;
-}
-
-/* Keep the glitch strong while preserving the textured mask every frame. */
-.portfolio-masthead__ornament.knot-flash.is-hover-glitch::before,
-.portfolio-masthead__ornament.knot-flash.is-fluttering::before {
-  animation: knot-mask-main-v39 108ms steps(1,end) infinite !important;
-}
-.portfolio-masthead__ornament.knot-flash.is-hover-glitch::after,
-.portfolio-masthead__ornament.knot-flash.is-fluttering::after {
-  opacity: .62 !important;
-  animation: knot-mask-register-v39 76ms steps(2,end) infinite !important;
-}
-@keyframes knot-mask-main-v39 {
-  0%,12%,100% { clip-path: inset(0 0 0 0); transform: translate(0,0); }
-  13%,27% { clip-path: inset(0 0 70% 0); transform: translate(-5px,1px); }
-  28%,42% { clip-path: inset(31% 0 38% 0); transform: translate(6px,-1px); }
-  43%,58% { clip-path: inset(67% 0 0 0); transform: translate(-4px,1px); }
-  59%,76% { clip-path: inset(12% 0 59% 0); transform: translate(5px,-1px); }
-  77%,99% { clip-path: inset(0 0 0 0); transform: translate(0,0); }
-}
-@keyframes knot-mask-register-v39 {
-  0% { transform: translate(-5px,2px) scale(1.008); }
-  25% { transform: translate(5px,-2px) scale(1.005); }
-  50% { transform: translate(-3px,-1px) scale(1.009); }
-  75% { transform: translate(4px,2px) scale(1.006); }
-  100% { transform: translate(1.45px,.75px) scale(1.006); }
-}
-
-/* Bus specimen: the flat banner is a small specimen centered in a quiet
-   stage. The installed photograph remains larger, but neither state can crop. */
+/* Preserve the bus treatment that was working in v39. */
 .image-switcher--bus .image-switcher__stage--wide {
-  display: grid !important;
-  place-items: center !important;
-  height: 230px !important;
-  min-height: 230px !important;
-  overflow: hidden !important;
-  background: transparent !important;
+  display:grid !important;
+  place-items:center !important;
+  height:230px !important;
+  min-height:230px !important;
+  overflow:hidden !important;
+  background:transparent !important;
 }
 .image-switcher--bus .image-switcher__stage--wide .state-primary,
 .image-switcher--bus .image-switcher__stage--wide .state-secondary {
-  position: absolute !important;
-  inset: 0 !important;
-  margin: auto !important;
-  transform: none !important;
-  object-fit: contain !important;
-  object-position: center !important;
+  position:absolute !important;
+  inset:0 !important;
+  margin:auto !important;
+  transform:none !important;
+  object-fit:contain !important;
+  object-position:center !important;
 }
 .image-switcher--bus .image-switcher__stage--wide .state-primary {
-  width: min(54%, 660px) !important;
-  height: min(56%, 126px) !important;
-  max-width: 660px !important;
-  max-height: 126px !important;
+  width:min(54%,660px) !important;
+  height:min(56%,126px) !important;
+  max-width:660px !important;
+  max-height:126px !important;
 }
 .image-switcher--bus .image-switcher__stage--wide .state-secondary {
-  width: min(78%, 900px) !important;
-  height: min(92%, 212px) !important;
-  max-width: 900px !important;
-  max-height: 212px !important;
+  width:min(78%,900px) !important;
+  height:min(92%,212px) !important;
+  max-width:900px !important;
+  max-height:212px !important;
 }
 .image-switcher--bus:not(.is-secondary) .state-primary { opacity:1 !important; }
 .image-switcher--bus:not(.is-secondary) .state-secondary { opacity:0 !important; }
 .image-switcher--bus.is-secondary .state-primary { opacity:0 !important; }
 .image-switcher--bus.is-secondary .state-secondary { opacity:1 !important; }
-
 @media (hover:hover) and (pointer:fine) {
   .image-switcher--bus .image-switcher__stage--wide:hover .state-primary,
   .image-switcher--bus .image-switcher__stage--wide:hover .state-secondary,
@@ -6828,30 +6725,12 @@ figure,
   }
 }
 @media (max-width:980px) {
-  .image-switcher--bus .image-switcher__stage--wide {
-    height: 210px !important;
-    min-height: 210px !important;
-  }
-  .image-switcher--bus .image-switcher__stage--wide .state-primary {
-    width: 64% !important;
-    height: 52% !important;
-  }
-  .image-switcher--bus .image-switcher__stage--wide .state-secondary {
-    width: 88% !important;
-    height: 88% !important;
-  }
+  .image-switcher--bus .image-switcher__stage--wide { height:210px !important; min-height:210px !important; }
+  .image-switcher--bus .image-switcher__stage--wide .state-primary { width:64% !important; height:52% !important; }
+  .image-switcher--bus .image-switcher__stage--wide .state-secondary { width:88% !important; height:88% !important; }
 }
 @media (max-width:680px) {
-  .image-switcher--bus .image-switcher__stage--wide {
-    height: 170px !important;
-    min-height: 170px !important;
-  }
-  .image-switcher--bus .image-switcher__stage--wide .state-primary {
-    width: 78% !important;
-    height: 48% !important;
-  }
-  .image-switcher--bus .image-switcher__stage--wide .state-secondary {
-    width: 96% !important;
-    height: 88% !important;
-  }
+  .image-switcher--bus .image-switcher__stage--wide { height:170px !important; min-height:170px !important; }
+  .image-switcher--bus .image-switcher__stage--wide .state-primary { width:78% !important; height:48% !important; }
+  .image-switcher--bus .image-switcher__stage--wide .state-secondary { width:96% !important; height:88% !important; }
 }
