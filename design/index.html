@@ -24,8 +24,7 @@
   <feColorMatrix in="paperNoise" type="luminanceToAlpha" result="paperAlpha"/>
   <feComponentTransfer in="paperAlpha" result="lightTooth"><feFuncA type="linear" slope="0.045"/></feComponentTransfer>
   <feComposite in="roughAlpha" in2="lightTooth" operator="out" result="texturedAlpha"/>
-  <feFlood flood-color="currentColor" result="inkColor"/>
-  <feComposite in="inkColor" in2="texturedAlpha" operator="in" result="coreInk"/>
+  <feComposite in="SourceGraphic" in2="texturedAlpha" operator="in" result="coreInk"/>
   <feGaussianBlur in="coreInk" stdDeviation="1.06" result="bleedInk"/>
   <feTurbulence type="fractalNoise" baseFrequency="0.012 0.075" numOctaves="2" seed="43" result="bleedNoise"/>
   <feDisplacementMap in="bleedInk" in2="bleedNoise" scale="1.55" xChannelSelector="R" yChannelSelector="G" result="organicBleed"/>
