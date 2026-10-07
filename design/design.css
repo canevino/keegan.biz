@@ -1758,3 +1758,307 @@ body.design-page::after { display:none !important; }
   .prx-key-grid__hero { grid-row:auto !important; }
   .angels-signage-pair { grid-template-columns:1fr 1fr; }
 }
+
+/* =====================================================
+   v20 — true ink bleed / cleaner print system
+   ===================================================== */
+
+.print-filter-defs {
+  position:absolute;
+  width:0;
+  height:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+/* Remove the v19 background-clipped texture from type. It was eating too much
+   of the letterforms. Print character now comes from blur + threshold. */
+@supports ((-webkit-background-clip:text) or (background-clip:text)) {
+  .portfolio-masthead h1,
+  .selected-heading__main strong,
+  .project-title,
+  .case-section__header h3 {
+    background:none !important;
+    -webkit-background-clip:border-box !important;
+    background-clip:border-box !important;
+    -webkit-text-fill-color:currentColor !important;
+  }
+}
+.portfolio-masthead,
+.portfolio-masthead__main,
+.portfolio-masthead h1 {
+  overflow:visible !important;
+}
+.portfolio-masthead h1 {
+  color:var(--ink) !important;
+  line-height:.9 !important;
+  margin:0 !important;
+  padding:.02em 0 .18em !important;
+  filter:url(#ink-bleed-text);
+}
+.selected-heading__main strong {
+  color:var(--green) !important;
+  filter:url(#ink-bleed-text);
+}
+.project-title,
+.case-section__header h3 {
+  color:var(--ink) !important;
+  filter:url(#ink-bleed-text);
+}
+.project-client,
+.project-number { color:var(--red) !important; }
+
+/* Paper stays quiet. Stronger textures only appear inside selected print zones. */
+body.design-page::before {
+  background-image:url('/assets/home/Texturelabs_Paper_226S grey paper pul overlay.jpg');
+  background-size:900px auto;
+  background-blend-mode:multiply;
+  opacity:.035;
+}
+.feature-slab::before,
+.making-public-panel::before,
+.angels-takeaway-grid::before,
+.prx-pairing::before {
+  opacity:.11;
+  background:
+    url('/assets/home/Texturelabs_Paper_210S wheatpaste grey overlay.jpg') center / 680px auto;
+  background-blend-mode:multiply;
+  mix-blend-mode:multiply;
+  mask-image:linear-gradient(90deg, transparent 0, black 8%, black 92%, transparent 100%);
+}
+
+/* One-bit texture belongs to rails/print objects only, never to the knot itself. */
+.knot-flash::after { display:none !important; }
+.case-section__number::after {
+  width:30px;
+  height:10px;
+  opacity:.9;
+  background-color:currentColor;
+  background-image:radial-gradient(circle at 1px 1px, var(--paper) 0 1px, transparent 1.1px);
+  background-size:4px 4px;
+}
+
+/* Screen-print knots: fixed geometry, rough alpha edge, small registered bleed.
+   No dots, no scale/skew/rotation changes. */
+.knot-flash {
+  overflow:visible;
+  filter:none !important;
+}
+.knot-flash__ink,
+.knot-flash__bleed {
+  transform:none !important;
+  filter:url(#ink-bleed-small) !important;
+}
+.knot-flash__ink { opacity:.98; }
+.knot-flash__bleed {
+  opacity:.32;
+  transform:translate(1.4px,.8px) !important;
+}
+.knot-flash.is-fluttering .knot-flash__bleed,
+.knot-flash.is-hover-glitch .knot-flash__bleed {
+  opacity:.6;
+}
+.knot-flash--red { color:var(--red); }
+.knot-flash--green { color:var(--green); }
+.knot-flash--yellow { color:var(--yellow); }
+.knot-flash--red .knot-flash__ink { filter:url(#ink-bleed-small) brightness(.64) sepia(1) saturate(5.5) hue-rotate(332deg) contrast(1.35) !important; }
+.knot-flash--green .knot-flash__ink { filter:url(#ink-bleed-small) brightness(.48) sepia(1) saturate(3.6) hue-rotate(92deg) contrast(1.5) !important; }
+.knot-flash--yellow .knot-flash__ink { filter:url(#ink-bleed-small) brightness(.96) sepia(1) saturate(5.2) hue-rotate(354deg) contrast(1.25) !important; }
+.knot-flash--red .knot-flash__bleed { filter:url(#ink-bleed-small) brightness(.72) sepia(1) saturate(5.5) hue-rotate(332deg) contrast(1.2) !important; }
+.knot-flash--green .knot-flash__bleed { filter:url(#ink-bleed-small) brightness(.56) sepia(1) saturate(3.6) hue-rotate(92deg) contrast(1.3) !important; }
+.knot-flash--yellow .knot-flash__bleed { filter:url(#ink-bleed-small) brightness(1) sepia(1) saturate(5.2) hue-rotate(354deg) contrast(1.1) !important; }
+
+/* Long edge mark: simple single-color print, no extra texture cloud. */
+.page-knot-spine { opacity:.11; width:34px; }
+.page-knot-spine__art {
+  left:34px;
+  height:34px;
+  transform:rotate(90deg) !important;
+  filter:url(#ink-bleed-small) brightness(.64) sepia(1) saturate(5.3) hue-rotate(332deg) contrast(1.25) !important;
+}
+.page-knot-spine::after { display:none !important; }
+
+/* Key image 01: actual hierarchy, not three floating thumbnails. */
+.collage-triennial {
+  grid-template-columns:minmax(0,1.15fr) minmax(190px,.85fr);
+  grid-template-rows:minmax(0,1fr) 58px;
+  grid-template-areas:
+    "main process"
+    "banner banner";
+  gap:10px;
+  height:clamp(320px,28vw,390px);
+  padding:10px;
+}
+.project-key__collage.collage-triennial .collage-main {
+  grid-area:main;
+  object-fit:contain;
+  object-position:center top;
+}
+.project-key__collage.collage-triennial .collage-secondary--right {
+  grid-area:process;
+  object-fit:contain;
+  object-position:center top;
+}
+.project-key__collage.collage-triennial .collage-secondary--left {
+  grid-area:banner;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Better Angels summary: preserve the photo and let printed pieces stay intact. */
+.collage-angels {
+  grid-template-columns:1.35fr .65fr;
+  grid-template-rows:1fr 1fr;
+  height:clamp(300px,27vw,380px);
+}
+.collage-angels .collage-main {
+  object-fit:cover !important;
+  object-position:center 48% !important;
+}
+.collage-angels .collage-secondary {
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+
+/* Across formats: preserve artwork proportions; no zoomed crops. */
+.image-switcher__stage .state-primary,
+.image-switcher__stage .state-secondary {
+  object-position:center top;
+}
+.image-switcher__stage--portrait .state-primary { object-fit:contain; }
+.image-switcher__stage--portrait .state-secondary { object-fit:contain; }
+.image-switcher__stage--wide .state-primary,
+.image-switcher__stage--wide .state-secondary { object-fit:contain; }
+
+/* Extensions: Art + Stroll and Public Processes occupy one equal-height row.
+   Each source keeps its own proportions inside that shared height. */
+.extension-layout {
+  grid-template-columns:1fr 1fr;
+  gap:34px;
+  align-items:start;
+}
+.extension-card--gif,
+.extension-card--public-processes { min-width:0; }
+.extension-card--gif > img,
+.extension-card--public-processes .flip-card__scene {
+  height:clamp(430px,44vw,650px);
+}
+.extension-card--gif > img {
+  width:100%;
+  object-fit:contain;
+  object-position:center top;
+}
+.extension-card--public-processes .flip-card__inner {
+  width:100%;
+  height:100%;
+  aspect-ratio:auto;
+}
+.extension-card--public-processes .flip-card__face img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center top;
+}
+
+/* Making Public: remove the visual pile. One banner, then three calm columns.
+   Supporting pieces are shown whole, not cropped to arbitrary ratios. */
+.making-public-panel {
+  margin-top:54px;
+  padding-top:18px;
+}
+.making-public-panel__intro {
+  display:block;
+  margin-bottom:18px;
+}
+.making-public-panel__intro h4 { font-size:30px; }
+.making-public-grid {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.mp-banner { padding-bottom:16px; margin-bottom:2px; }
+.mp-banner img {
+  max-height:120px;
+  object-fit:contain;
+  object-position:left top;
+}
+.making-public-grid > .flip-card .flip-card__inner,
+.flip-card--social .flip-card__inner {
+  aspect-ratio:3 / 4;
+}
+.making-public-grid > .flip-card .flip-card__face img,
+.flip-card--social .flip-card__face img {
+  object-fit:contain;
+  object-position:center top;
+}
+.mp-event-photo img {
+  aspect-ratio:auto;
+  height:auto;
+  object-fit:contain;
+  object-position:center top;
+}
+
+/* Better Angels signage: stop cropping source material. Treat each pair as a
+   specimen plus documentation rather than a thumbnail mosaic. */
+.angels-signage-layout {
+  grid-template-columns:minmax(260px,.68fr) minmax(0,1.32fr);
+  gap:34px;
+}
+.angels-signage-lead img {
+  width:100%;
+  height:auto;
+  aspect-ratio:auto;
+  object-fit:contain;
+  object-position:center top;
+}
+.angels-signage-system {
+  grid-template-columns:1fr 1fr;
+  gap:20px 14px;
+}
+.angels-signage-pair {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  align-items:start;
+}
+.angels-signage-system img,
+.angels-activation-photo img {
+  width:100%;
+  height:auto;
+  aspect-ratio:auto;
+  object-fit:contain;
+  object-position:center top;
+}
+.angels-signage-art,
+.angels-signage-pair,
+.angels-activation-photo {
+  align-self:start;
+}
+
+/* Poster suite: crop the posters to the frame instead of shrinking them, but
+   leave enough source around the edge that type is not accidentally lost. */
+.winter-poster-card img,
+.poster-triptych img {
+  aspect-ratio:2 / 3;
+  object-fit:cover;
+  object-position:center 42%;
+}
+
+@media (max-width:900px) {
+  .extension-layout { grid-template-columns:1fr; }
+  .extension-card--gif > img,
+  .extension-card--public-processes .flip-card__scene { height:auto; }
+  .extension-card--public-processes .flip-card__inner { aspect-ratio:1 / 1; height:auto; }
+  .making-public-grid { grid-template-columns:1fr 1fr; }
+  .mp-banner { grid-column:1 / -1; }
+  .angels-signage-layout { grid-template-columns:1fr; }
+}
+
+@media (max-width:680px) {
+  .portfolio-masthead h1 { line-height:.94 !important; padding-bottom:.2em !important; }
+  .collage-triennial { grid-template-columns:1fr; grid-template-areas:"main" "process" "banner"; height:auto; }
+  .project-key__collage.collage-triennial .collage-main,
+  .project-key__collage.collage-triennial .collage-secondary { min-height:0; height:auto; }
+  .making-public-grid,
+  .angels-signage-system { grid-template-columns:1fr; }
+  .angels-signage-pair { grid-template-columns:1fr 1fr; }
+}

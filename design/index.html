@@ -10,6 +10,26 @@
   <script src="design.js" defer></script>
 </head>
 <body class="design-page">
+  <svg class="print-filter-defs" aria-hidden="true" width="0" height="0" focusable="false">
+    <defs>
+      <filter id="ink-bleed-text" x="-10%" y="-28%" width="120%" height="170%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="0.42" result="blurred"/>
+        <feComponentTransfer in="blurred" result="thresholded">
+          <feFuncA type="discrete" tableValues="0 0 0.72 1 1"/>
+        </feComponentTransfer>
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.09" numOctaves="1" seed="11" result="noise"/>
+        <feDisplacementMap in="thresholded" in2="noise" scale="0.45" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+        <feBlend in="rough" in2="SourceGraphic" mode="multiply"/>
+      </filter>
+      <filter id="ink-bleed-small" x="-18%" y="-35%" width="136%" height="190%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="0.55" result="blurred"/>
+        <feComponentTransfer in="blurred" result="thresholded">
+          <feFuncA type="discrete" tableValues="0 0 0.55 1 1"/>
+        </feComponentTransfer>
+        <feBlend in="thresholded" in2="SourceGraphic" mode="multiply"/>
+      </filter>
+    </defs>
+  </svg>
   <div class="page-shell">
     <div class="page-knot-spine" aria-hidden="true">
       <img class="page-knot-spine__art" src="/assets/home/knot_long.svg" alt="">
@@ -116,7 +136,6 @@
                 <span class="case-section__number">02</span>
                 <div>
                   <h3>Across formats</h3>
-                  <p>Artwork first. Hover, tap, or click for the installed view.</p>
                 </div>
               </div>
 
@@ -184,7 +203,6 @@
                   <div class="flip-card__meta">
                     <div>
                       <strong>Public Processes</strong>
-                      <span>two treatments · hover or click</span>
                     </div>
                     <button type="button" class="flip-card__button" aria-pressed="false">flip</button>
                   </div>
@@ -204,7 +222,6 @@
               <div class="making-public-panel">
                 <div class="making-public-panel__intro">
                   <h4>Making Public</h4>
-                  <p>Banner, handout, social, and event documentation.</p>
                 </div>
 
                 <div class="making-public-grid">
@@ -389,10 +406,7 @@
                 <span class="case-section__number">03</span>
                 <div>
                   <h3>Signage + activation</h3>
-                  <p>
-                    Interpretive, artist, welcome, and fundraising signs use one visual family while changing scale and density for different jobs.
-                    The material continues into staff clothing and the live exchange with visitors.
-                  </p>
+                  <p>Interpretive, welcome, fundraising, and activation signage.</p>
                 </div>
               </div>
 
