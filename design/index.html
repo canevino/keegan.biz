@@ -172,6 +172,36 @@
   </feComponentTransfer>
   <feMerge><feMergeNode in="bleedTone"/><feMergeNode in="core"/></feMerge>
 </filter>
+
+<filter id="ink-knot-v51" x="-36%" y="-56%" width="172%" height="212%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="1.18" result="blurred"/>
+  <feComponentTransfer in="blurred" result="thresholded">
+    <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
+  </feComponentTransfer>
+  <feMorphology in="thresholded" operator="dilate" radius="0.22" result="expanded"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.15" numOctaves="3" seed="83" result="edgeNoise"/>
+  <feDisplacementMap in="expanded" in2="edgeNoise" scale="2.35" xChannelSelector="R" yChannelSelector="G" result="roughCore"/>
+
+  <feTurbulence type="fractalNoise" baseFrequency="0.055 0.22" numOctaves="3" seed="117" result="toothNoise"/>
+  <feColorMatrix in="toothNoise" type="saturate" values="0" result="toothGray"/>
+  <feComponentTransfer in="toothGray" result="toothTone">
+    <feFuncR type="linear" slope="0.16" intercept="0.84"/>
+    <feFuncG type="linear" slope="0.16" intercept="0.84"/>
+    <feFuncB type="linear" slope="0.16" intercept="0.84"/>
+    <feFuncA type="linear" slope="0.20"/>
+  </feComponentTransfer>
+  <feComposite in="toothTone" in2="roughCore" operator="in" result="toothInside"/>
+  <feBlend in="roughCore" in2="toothInside" mode="multiply" result="texturedCore"/>
+
+  <feGaussianBlur in="SourceGraphic" stdDeviation="2.25" result="bleedBlur"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.012 0.090" numOctaves="3" seed="31" result="bleedNoise"/>
+  <feDisplacementMap in="bleedBlur" in2="bleedNoise" scale="2.55" xChannelSelector="R" yChannelSelector="G" result="bleedRough"/>
+  <feComponentTransfer in="bleedRough" result="bleedTone">
+    <feFuncA type="linear" slope="0.54"/>
+  </feComponentTransfer>
+  <feMerge><feMergeNode in="bleedTone"/><feMergeNode in="texturedCore"/></feMerge>
+</filter>
+
 </defs>
 </svg>
 <div class="page-shell">

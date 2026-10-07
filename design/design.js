@@ -335,3 +335,60 @@
     });
   });
 })();
+
+
+(() => {
+  "use strict";
+
+  /* v51 paper surface: overlapping feathered sheets. The layer lives inside
+     the page so it scrolls naturally, and rebuilds when projects expand. */
+  const shell = document.querySelector(".page-shell");
+  if (!shell) return;
+
+  const textures = [
+    "/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg",
+    "/assets/home/Texturelabs_Paper_226L_paper overlay.jpg",
+    "/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg"
+  ];
+
+  const layer = document.createElement("div");
+  layer.className = "paper-overprint";
+  layer.setAttribute("aria-hidden", "true");
+  shell.appendChild(layer);
+
+  const SHEET_HEIGHT = 1380;
+  const STEP = 1020;
+  let lastCount = 0;
+
+  function rebuildPaper() {
+    const height = Math.max(shell.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
+    const count = Math.max(2, Math.ceil((height + 360) / STEP));
+    if (count === lastCount) {
+      layer.style.height = `${height}px`;
+      return;
+    }
+
+    layer.replaceChildren();
+    layer.style.height = `${height}px`;
+
+    for (let i = 0; i < count; i += 1) {
+      const sheet = document.createElement("div");
+      sheet.className = "paper-overprint__sheet";
+      sheet.style.top = `${i * STEP - (i ? 180 : 0)}px`;
+      sheet.style.backgroundImage = `url("${textures[i % textures.length]}")`;
+      sheet.style.backgroundPosition = `${18 + ((i * 29) % 64)}% ${12 + ((i * 17) % 70)}%`;
+      layer.appendChild(sheet);
+    }
+
+    lastCount = count;
+  }
+
+  rebuildPaper();
+  window.addEventListener("load", rebuildPaper, { once: true });
+  window.addEventListener("resize", rebuildPaper);
+
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(rebuildPaper);
+    observer.observe(shell);
+  }
+})();
