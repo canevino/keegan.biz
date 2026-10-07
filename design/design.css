@@ -8707,3 +8707,94 @@ body.design-page::before {
     /* v54 JS owns desktop hover state. */
   }
 }
+
+/* =====================================================
+   Across formats hover lock
+   Keep the approved bus behavior untouched. The first two portrait switchers
+   now use the same direct artwork -> installed-photo hover state in CSS, so
+   they do not depend on the later JS hover helper or legacy stacking rules.
+   ===================================================== */
+.switcher-grid--three .image-switcher:nth-child(1) .image-switcher__stage,
+.switcher-grid--three .image-switcher:nth-child(2) .image-switcher__stage {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.switcher-grid--three .image-switcher:nth-child(1) .image-switcher__stage > .state-primary,
+.switcher-grid--three .image-switcher:nth-child(1) .image-switcher__stage > .state-secondary,
+.switcher-grid--three .image-switcher:nth-child(2) .image-switcher__stage > .state-primary,
+.switcher-grid--three .image-switcher:nth-child(2) .image-switcher__stage > .state-secondary {
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+  transition: opacity .22s ease !important;
+  pointer-events: none !important;
+}
+
+.switcher-grid--three .image-switcher:nth-child(1):not(.is-secondary) .state-primary,
+.switcher-grid--three .image-switcher:nth-child(2):not(.is-secondary) .state-primary {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 2 !important;
+}
+.switcher-grid--three .image-switcher:nth-child(1):not(.is-secondary) .state-secondary,
+.switcher-grid--three .image-switcher:nth-child(2):not(.is-secondary) .state-secondary {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  z-index: 1 !important;
+}
+
+.switcher-grid--three .image-switcher:nth-child(1).is-secondary .state-primary,
+.switcher-grid--three .image-switcher:nth-child(2).is-secondary .state-primary,
+.switcher-grid--three .image-switcher:nth-child(1).is-hover-secondary .state-primary,
+.switcher-grid--three .image-switcher:nth-child(2).is-hover-secondary .state-primary {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  z-index: 1 !important;
+}
+.switcher-grid--three .image-switcher:nth-child(1).is-secondary .state-secondary,
+.switcher-grid--three .image-switcher:nth-child(2).is-secondary .state-secondary,
+.switcher-grid--three .image-switcher:nth-child(1).is-hover-secondary .state-secondary,
+.switcher-grid--three .image-switcher:nth-child(2).is-hover-secondary .state-secondary {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 3 !important;
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher:nth-child(1):not(.is-secondary) .image-switcher__stage:hover > .state-primary,
+  .switcher-grid--three .image-switcher:nth-child(2):not(.is-secondary) .image-switcher__stage:hover > .state-primary {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    z-index: 1 !important;
+  }
+  .switcher-grid--three .image-switcher:nth-child(1):not(.is-secondary) .image-switcher__stage:hover > .state-secondary,
+  .switcher-grid--three .image-switcher:nth-child(2):not(.is-secondary) .image-switcher__stage:hover > .state-secondary {
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 3 !important;
+  }
+
+  /* When click/tap has already selected the installed view, hovering mirrors
+     the bus switcher and temporarily reveals the artwork. */
+  .switcher-grid--three .image-switcher:nth-child(1).is-secondary .image-switcher__stage:hover > .state-primary,
+  .switcher-grid--three .image-switcher:nth-child(2).is-secondary .image-switcher__stage:hover > .state-primary {
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 3 !important;
+  }
+  .switcher-grid--three .image-switcher:nth-child(1).is-secondary .image-switcher__stage:hover > .state-secondary,
+  .switcher-grid--three .image-switcher:nth-child(2).is-secondary .image-switcher__stage:hover > .state-secondary {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    z-index: 1 !important;
+  }
+}
