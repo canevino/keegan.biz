@@ -7985,3 +7985,115 @@ body.design-page,
 .knot-flash.is-fluttering .knot-flash__bleed { opacity:.76 !important; }
 .knot-flash.is-hover-glitch .knot-flash__register,
 .knot-flash.is-fluttering .knot-flash__register { opacity:.62 !important; }
+
+/* =====================================================
+   v49 — locked blur + threshold ink bleed
+   Based on the blur -> alpha threshold recipe, then only a small edge warp.
+   ===================================================== */
+
+/* Major typography: the filter itself now creates the bleed. Do not replace it
+   with a shadow. Registration colour stays secondary and restrained. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4 {
+  filter:url(#ink-display-v49) !important;
+  text-shadow:
+    -0.75px -0.25px 0 rgba(0,106,68,.18),
+     0.72px  0.30px 0 rgba(253,185,19,.18),
+     0.12px  0.72px 0 rgba(193,39,45,.12) !important;
+}
+
+/* Same-colour impression underneath the live glyph. This is intentionally
+   close to the face: it thickens joins and lets adjacent letters kiss without
+   reading as a drop shadow. */
+.portfolio-masthead h1::before,
+.project-family-heading h2::before,
+.project-title::before,
+.case-section__header h3::before,
+.making-public-panel__intro h4::before,
+.making-public-intro h4::before {
+  color:currentColor !important;
+  opacity:.36 !important;
+  transform:translate(.08px,.28px) !important;
+  filter:url(#ink-display-v49) !important;
+  text-shadow:none !important;
+}
+
+/* Keep material texture clipped inside the ink, but quieter than the bleed. */
+.portfolio-masthead h1::after,
+.project-family-heading h2::after,
+.project-title::after,
+.case-section__header h3::after,
+.making-public-panel__intro h4::after,
+.making-public-intro h4::after {
+  opacity:.12 !important;
+  background-image:
+    url('/assets/home/Texturelabs_InkPaint_323S grey pastel blended overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg') !important;
+  background-size:1450px auto, 1900px auto !important;
+  background-position:23% 37%, 71% 22% !important;
+  filter:grayscale(1) contrast(1.08) brightness(.98) !important;
+}
+
+/* The large masthead gets slightly tighter so the new threshold bleed can
+   visibly bridge tiny gaps without destroying counters. */
+.portfolio-masthead h1 { letter-spacing:-.083em !important; }
+.project-family-heading h2,
+.project-title { letter-spacing:-.059em !important; }
+
+/* Knot print: every layer uses the same blur/threshold edge logic. The three
+   plates use different brand colours so the misregistration reads as printed
+   colour, not a single halo. */
+.knot-flash--black .knot-flash__ink {
+  filter:url(#ink-knot-v49) brightness(0) contrast(1.5) !important;
+}
+.knot-flash--red .knot-flash__ink {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--green .knot-flash__ink {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important;
+}
+.knot-flash--yellow .knot-flash__ink {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) !important;
+}
+
+/* black: red + yellow registration */
+.knot-flash--black .knot-flash__bleed {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--black .knot-flash__register {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) !important;
+}
+/* red: green + yellow registration */
+.knot-flash--red .knot-flash__bleed {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important;
+}
+.knot-flash--red .knot-flash__register {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) !important;
+}
+/* green: yellow + red registration */
+.knot-flash--green .knot-flash__bleed {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) !important;
+}
+.knot-flash--green .knot-flash__register {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+/* yellow: red + green registration */
+.knot-flash--yellow .knot-flash__bleed {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--yellow .knot-flash__register {
+  filter:url(#ink-knot-v49) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important;
+}
+
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity:.46 !important;
+  transform:translate(-.55px,1.55px) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity:.38 !important;
+  transform:translate(.62px,-1.35px) !important;
+}

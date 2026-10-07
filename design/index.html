@@ -106,6 +106,32 @@
   <feComponentTransfer in="roughBleed" result="fadedBleed"><feFuncA type="linear" slope="0.30"/></feComponentTransfer>
   <feMerge><feMergeNode in="fadedBleed"/><feMergeNode in="core"/></feMerge>
 </filter>
+
+<filter id="ink-display-v49" x="-24%" y="-36%" width="148%" height="172%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="1.22" result="blurred"/>
+  <feComponentTransfer in="blurred" result="thresholded">
+    <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
+  </feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.16" numOctaves="2" seed="37" result="edgeNoise"/>
+  <feDisplacementMap in="thresholded" in2="edgeNoise" scale="1.15" xChannelSelector="R" yChannelSelector="G" result="roughened"/>
+  <feGaussianBlur in="roughened" stdDeviation="0.10" result="microSoft"/>
+  <feComponentTransfer in="microSoft">
+    <feFuncA type="discrete" tableValues="0 0 1 1 1 1"/>
+  </feComponentTransfer>
+</filter>
+
+<filter id="ink-knot-v49" x="-30%" y="-46%" width="160%" height="192%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="1.08" result="blurred"/>
+  <feComponentTransfer in="blurred" result="thresholded">
+    <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
+  </feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.022 0.19" numOctaves="3" seed="83" result="edgeNoise"/>
+  <feDisplacementMap in="thresholded" in2="edgeNoise" scale="2.15" xChannelSelector="R" yChannelSelector="G" result="roughened"/>
+  <feGaussianBlur in="roughened" stdDeviation="0.12" result="microSoft"/>
+  <feComponentTransfer in="microSoft">
+    <feFuncA type="discrete" tableValues="0 0 1 1 1 1"/>
+  </feComponentTransfer>
+</filter>
 </defs>
 </svg>
 <div class="page-shell">
