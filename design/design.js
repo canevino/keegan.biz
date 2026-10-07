@@ -215,7 +215,8 @@
     document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
       const images = slot.querySelectorAll("img");
       const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
-      let currentIndex = slotIndex % knotSources.length;
+      const settledIndex = 0;
+      let currentIndex = settledIndex;
       const existingColorIndex = knotColorClasses.findIndex((className) => slot.classList.contains(className));
       let colorIndex = existingColorIndex >= 0 ? existingColorIndex : slotIndex % knotColorClasses.length;
       let timer = 0;
@@ -265,6 +266,8 @@
           count += 1;
           if (count < swaps) timer = window.setTimeout(step, 28 + Math.random() * 28);
           else {
+            currentIndex = settledIndex;
+            setKnot(settledIndex);
             slot.classList.remove("is-fluttering");
             scheduleIdle();
           }
@@ -291,6 +294,8 @@
         if (!hovering) return;
         hovering = false;
         clearTimer();
+        currentIndex = settledIndex;
+        setKnot(settledIndex);
         slot.classList.remove("is-hover-glitch");
         scheduleIdle();
       };

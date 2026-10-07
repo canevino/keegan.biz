@@ -7020,3 +7020,96 @@ body.design-page::before {
   opacity:.17 !important;
   transform:translate(-1px,1.2px) !important;
 }
+
+/* =========================================================
+   v43 - larger paper sheets + printed display registration
+   ========================================================= */
+
+/* The page itself stays cream. Three large paper sheets sit above type and
+   interface text, like a Photoshop texture layer, but below photographs and
+   artwork. They scroll with the document and are deliberately too large to
+   read as small repeating tiles. */
+body.design-page {
+  position:relative;
+  isolation:isolate;
+  background:var(--paper) !important;
+  background-image:none !important;
+}
+body.design-page::before {
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:20 !important;
+  pointer-events:none !important;
+  background-image:
+    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg') !important;
+  background-size:1900px auto, 2500px auto, 3300px auto !important;
+  background-position:center 0, center 740px, center 1580px !important;
+  background-repeat:repeat-y, repeat-y, repeat-y !important;
+  background-attachment:scroll, scroll, scroll !important;
+  background-blend-mode:multiply, soft-light, multiply !important;
+  mix-blend-mode:multiply !important;
+  opacity:.20 !important;
+  filter:brightness(1.28) contrast(.82) !important;
+}
+
+/* Media stays above the paper layer. Text remains beneath it so the surface
+   actually prints through the letterforms instead of stopping at their edge. */
+.design-page img,
+.design-page video,
+.design-page canvas,
+.design-page svg:not(.print-filter-defs),
+.image-switcher__stage,
+.extension-stage,
+.flip-card__scene,
+.folder-stage,
+.project-key,
+.feature-slab__hero,
+.mp-banner,
+.poster-card,
+.winter-card,
+.prx-card,
+.college-showcase,
+.wine-grid {
+  position:relative;
+  z-index:30;
+}
+
+/* Large type uses the same slight registration language as the knot. Keep it
+   physical and asymmetric rather than a uniform glow. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-intro h4 {
+  filter:url(#ink-display-v41) !important;
+  text-shadow:
+    -1.15px .58px .55px rgba(0,106,68,.25),
+     1.20px -.42px .48px rgba(253,185,19,.24),
+      .32px 1.02px .42px rgba(193,39,45,.16) !important;
+}
+.portfolio-masthead h1 {
+  color:var(--red) !important;
+  letter-spacing:-.078em !important;
+}
+.project-family-heading h2 {
+  color:var(--green) !important;
+  letter-spacing:-.055em !important;
+}
+.project-title {
+  letter-spacing:-.057em !important;
+}
+.case-section__header h3,
+.making-public-intro h4 {
+  letter-spacing:-.042em !important;
+}
+
+/* The knot stays on the v41/v42 three-layer print construction. The settled
+   drawing is always the same source; alternate SVGs are only used while the
+   glitch is running, preventing occasional clean-looking final states. */
+.portfolio-masthead__ornament .knot-flash__ink { opacity:.96 !important; }
+.portfolio-masthead__ornament .knot-flash__bleed { opacity:.30 !important; }
+.portfolio-masthead__ornament .knot-flash__register { opacity:.18 !important; }
