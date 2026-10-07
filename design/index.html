@@ -12,19 +12,23 @@
 <body class="design-page">
 <svg aria-hidden="true" class="print-filter-defs" focusable="false" height="0" width="0">
 <defs>
-<filter color-interpolation-filters="sRGB" height="190%" id="ink-display-v35" width="154%" x="-27%" y="-45%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="0.39" result="soft"/>
-  <feComponentTransfer in="soft" result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1"/>
+<filter color-interpolation-filters="sRGB" height="168%" id="ink-display-v41" width="142%" x="-21%" y="-34%">
+  <feGaussianBlur in="SourceAlpha" result="softAlpha" stdDeviation="1.08"/>
+  <feComponentTransfer in="softAlpha" result="thresholdAlpha">
+    <feFuncA type="discrete" tableValues="0 0 0 1 1 1"/>
   </feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.24" result="spread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.010 0.055" numOctaves="3" seed="41" result="fibers"/>
-  <feDisplacementMap in="spread" in2="fibers" scale="1.28" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.11" numOctaves="2" seed="17" result="paper"/>
-  <feColorMatrix in="paper" values="0.42 0 0 0 0.44  0 0.42 0 0 0.44  0 0 0.42 0 0.44  0 0 0 .13 0" result="paperTone"/>
-  <feComposite in="paperTone" in2="rough" operator="in" result="paperInside"/>
-  <feBlend in="rough" in2="paperInside" mode="multiply" result="inked"/>
-  <feMerge><feMergeNode in="inked"/></feMerge>
+  <feMorphology in="thresholdAlpha" operator="dilate" radius="0.46" result="spreadAlpha"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.020 0.22" numOctaves="2" seed="29" result="edgeNoise"/>
+  <feDisplacementMap in="spreadAlpha" in2="edgeNoise" scale="2.25" xChannelSelector="R" yChannelSelector="G" result="roughAlpha"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.34 0.48" numOctaves="2" seed="11" result="paperNoise"/>
+  <feColorMatrix in="paperNoise" type="luminanceToAlpha" result="paperAlpha"/>
+  <feComponentTransfer in="paperAlpha" result="lightTooth"><feFuncA type="linear" slope="0.15"/></feComponentTransfer>
+  <feComposite in="roughAlpha" in2="lightTooth" operator="out" result="texturedAlpha"/>
+  <feFlood flood-color="currentColor" result="inkColor"/>
+  <feComposite in="inkColor" in2="texturedAlpha" operator="in" result="coreInk"/>
+  <feGaussianBlur in="coreInk" stdDeviation="1.15" result="bleedInk"/>
+  <feComponentTransfer in="bleedInk" result="fadedBleed"><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
+  <feMerge><feMergeNode in="fadedBleed"/><feMergeNode in="coreInk"/></feMerge>
 </filter>
 <filter color-interpolation-filters="sRGB" height="144%" id="ink-small-v34" width="128%" x="-14%" y="-22%">
   <feGaussianBlur in="SourceGraphic" stdDeviation="0.18" result="soft"/>
@@ -36,19 +40,20 @@
   <feComponentTransfer in="grainAlpha" result="grainCut"><feFuncA type="linear" slope="0.075"/></feComponentTransfer>
   <feComposite in="rough" in2="grainCut" operator="out"/>
 </filter>
-<filter color-interpolation-filters="sRGB" height="210%" id="ink-knot-v35" width="174%" x="-37%" y="-55%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="0.34" result="soft"/>
-  <feComponentTransfer in="soft" result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1"/>
-  </feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.24" result="spread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.010 0.065" numOctaves="3" seed="83" result="fibers"/>
-  <feDisplacementMap in="spread" in2="fibers" scale="1.85" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.016 0.12" numOctaves="2" seed="31" result="paper"/>
-  <feColorMatrix in="paper" values="0.38 0 0 0 0.46  0 0.38 0 0 0.46  0 0 0.38 0 0.46  0 0 0 .18 0" result="paperTone"/>
-  <feComposite in="paperTone" in2="rough" operator="in" result="paperInside"/>
-  <feBlend in="rough" in2="paperInside" mode="multiply" result="inked"/>
-  <feMerge><feMergeNode in="inked"/></feMerge>
+<filter color-interpolation-filters="sRGB" height="176%" id="ink-knot-v41" width="146%" x="-23%" y="-38%">
+  <feGaussianBlur in="SourceAlpha" result="softAlpha" stdDeviation="1.02"/>
+  <feComponentTransfer in="softAlpha" result="thresholdAlpha"><feFuncA type="discrete" tableValues="0 0 0 1 1 1"/></feComponentTransfer>
+  <feMorphology in="thresholdAlpha" operator="dilate" radius="0.44" result="spreadAlpha"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.021 0.30" numOctaves="2" seed="37" result="edgeNoise"/>
+  <feDisplacementMap in="spreadAlpha" in2="edgeNoise" scale="2.8" xChannelSelector="R" yChannelSelector="G" result="roughAlpha"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.42 0.58" numOctaves="1" seed="7" result="grainNoise"/>
+  <feColorMatrix in="grainNoise" type="luminanceToAlpha" result="grainAlpha"/>
+  <feComponentTransfer in="grainAlpha" result="knotGrain"><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
+  <feComposite in="roughAlpha" in2="knotGrain" operator="out" result="texturedAlpha"/>
+  <feComposite in="SourceGraphic" in2="texturedAlpha" operator="in" result="core"/>
+  <feGaussianBlur in="SourceGraphic" stdDeviation="1.48" result="bleed"/>
+  <feComponentTransfer in="bleed"><feFuncA type="linear" slope="0.21"/></feComponentTransfer>
+  <feMerge><feMergeNode in="bleed"/><feMergeNode in="core"/></feMerge>
 </filter>
 </defs>
 </svg>

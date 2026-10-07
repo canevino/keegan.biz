@@ -172,9 +172,9 @@
     resizeObserver.observe(document.body);
   }
 
-  /* Smooth knots behave like a misregistered screen print: the drawing stays
-     fixed in place, but the ink layer swaps abruptly. Idle glitches are rare;
-     hover keeps the print unstable until the pointer leaves. */
+  /* Smooth knots behave like a misregistered screen print. All SVG variants
+     are fully decoded before swaps begin so the filtered layers never flash
+     clean while a new source is loading. */
   const knotSources = [
     "/assets/home/knot_smooth_svg1.svg",
     "/assets/home/knot_smooth_svg2.svg",
@@ -190,105 +190,109 @@
     "knot-flash--yellow"
   ];
 
-  // Preload every source before glitch swaps. This keeps the existing filtered
-  // image layers intact instead of letting a newly requested SVG flash clean.
-  knotSources.forEach((source) => {
+  const knotCache = knotSources.map((source) => new Promise((resolve) => {
     const preload = new Image();
-    preload.decoding = "async";
+    preload.onload = () => resolve(source);
+    preload.onerror = () => resolve(source);
     preload.src = source;
-  });
+    if (preload.complete) resolve(source);
+  }));
 
-  document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
-    const images = slot.querySelectorAll("img");
-    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
-    let currentIndex = slotIndex % knotSources.length;
-    const existingColorIndex = knotColorClasses.findIndex((className) => slot.classList.contains(className));
-    let colorIndex = existingColorIndex >= 0 ? existingColorIndex : slotIndex % knotColorClasses.length;
-    let timer = 0;
-    let hovering = false;
+  Promise.all(knotCache).then(() => {
+    document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
+      const images = slot.querySelectorAll("img");
+      const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
+      let currentIndex = slotIndex % knotSources.length;
+      const existingColorIndex = knotColorClasses.findIndex((className) => slot.classList.contains(className));
+      let colorIndex = existingColorIndex >= 0 ? existingColorIndex : slotIndex % knotColorClasses.length;
+      let timer = 0;
+      let hovering = false;
 
-    const setKnot = (index) => {
-      const source = knotSources[index];
-      images.forEach((image) => { image.src = source; });
-      slot.style.setProperty("--knot-mask", `url("${source}")`);
-    };
-
-    const chooseNext = () => {
-      let next = Math.floor(Math.random() * knotSources.length);
-      if (next === currentIndex) next = (next + 1) % knotSources.length;
-      currentIndex = next;
-      colorIndex = (colorIndex + 1) % knotColorClasses.length;
-      knotColorClasses.forEach((className) => slot.classList.remove(className));
-      slot.classList.add(knotColorClasses[colorIndex]);
-      setKnot(currentIndex);
-    };
-
-    const clearTimer = () => {
-      window.clearTimeout(timer);
-      timer = 0;
-    };
-
-    const scheduleIdle = () => {
-      clearTimer();
-      if (reducedMotion.matches || hovering) return;
-      timer = window.setTimeout(idleBurst, 32000 + Math.random() * 18000);
-    };
-
-    const idleBurst = () => {
-      if (reducedMotion.matches || hovering) return;
-      slot.classList.add("is-fluttering");
-      const swaps = 14 + Math.floor(Math.random() * 7);
-      let count = 0;
-
-      const step = () => {
-        chooseNext();
-        count += 1;
-        if (count < swaps) {
-          timer = window.setTimeout(step, 28 + Math.random() * 28);
-        } else {
-          slot.classList.remove("is-fluttering");
-          scheduleIdle();
-        }
+      const setKnot = (index) => {
+        const source = knotSources[index];
+        images.forEach((image) => {
+          if (image.getAttribute("src") !== source) image.setAttribute("src", source);
+        });
       };
 
-      step();
-    };
+      const setColor = (index) => {
+        knotColorClasses.forEach((className) => slot.classList.remove(className));
+        slot.classList.add(knotColorClasses[index]);
+      };
 
-    const hoverLoop = () => {
-      if (!hovering || reducedMotion.matches) return;
-      chooseNext();
-      timer = window.setTimeout(hoverLoop, 30 + Math.random() * 26);
-    };
+      const chooseNext = () => {
+        let next = Math.floor(Math.random() * knotSources.length);
+        if (next === currentIndex) next = (next + 1) % knotSources.length;
+        currentIndex = next;
+        colorIndex = (colorIndex + 1) % knotColorClasses.length;
+        setColor(colorIndex);
+        setKnot(currentIndex);
+      };
 
-    const startHover = () => {
-      if (!canHover.matches || reducedMotion.matches) return;
-      hovering = true;
-      clearTimer();
-      slot.classList.remove("is-fluttering");
-      slot.classList.add("is-hover-glitch");
-      hoverLoop();
-    };
+      const clearTimer = () => {
+        window.clearTimeout(timer);
+        timer = 0;
+      };
 
-    const stopHover = () => {
-      if (!hovering) return;
-      hovering = false;
-      clearTimer();
-      slot.classList.remove("is-hover-glitch");
+      const scheduleIdle = () => {
+        clearTimer();
+        if (reducedMotion.matches || hovering) return;
+        timer = window.setTimeout(idleBurst, 30000 + Math.random() * 12000);
+      };
+
+      const idleBurst = () => {
+        if (reducedMotion.matches || hovering) return;
+        slot.classList.add("is-fluttering");
+        const swaps = 14 + Math.floor(Math.random() * 7);
+        let count = 0;
+        const step = () => {
+          chooseNext();
+          count += 1;
+          if (count < swaps) timer = window.setTimeout(step, 28 + Math.random() * 28);
+          else {
+            slot.classList.remove("is-fluttering");
+            scheduleIdle();
+          }
+        };
+        step();
+      };
+
+      const hoverLoop = () => {
+        if (!hovering || reducedMotion.matches) return;
+        chooseNext();
+        timer = window.setTimeout(hoverLoop, 30 + Math.random() * 26);
+      };
+
+      const startHover = () => {
+        if (!canHover.matches || reducedMotion.matches) return;
+        hovering = true;
+        clearTimer();
+        slot.classList.remove("is-fluttering");
+        slot.classList.add("is-hover-glitch");
+        hoverLoop();
+      };
+
+      const stopHover = () => {
+        if (!hovering) return;
+        hovering = false;
+        clearTimer();
+        slot.classList.remove("is-hover-glitch");
+        scheduleIdle();
+      };
+
+      setColor(colorIndex);
+      setKnot(currentIndex);
+      slot.classList.add("is-knot-ready");
       scheduleIdle();
-    };
+      slot.addEventListener("pointerenter", startHover);
+      slot.addEventListener("pointerleave", stopHover);
 
-    knotColorClasses.forEach((className) => slot.classList.remove(className));
-    slot.classList.add(knotColorClasses[colorIndex]);
-    setKnot(currentIndex);
-    scheduleIdle();
-    slot.addEventListener("pointerenter", startHover);
-    slot.addEventListener("pointerleave", stopHover);
-
-    reducedMotion.addEventListener?.("change", () => {
-      clearTimer();
-      hovering = false;
-      slot.classList.remove("is-fluttering", "is-hover-glitch");
-      if (!reducedMotion.matches) scheduleIdle();
+      reducedMotion.addEventListener?.("change", () => {
+        clearTimer();
+        hovering = false;
+        slot.classList.remove("is-fluttering", "is-hover-glitch");
+        if (!reducedMotion.matches) scheduleIdle();
+      });
     });
   });
 })();

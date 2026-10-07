@@ -6734,3 +6734,191 @@ body.design-page::before {
   .image-switcher--bus .image-switcher__stage--wide .state-primary { width:78% !important; height:48% !important; }
   .image-switcher--bus .image-switcher__stage--wide .state-secondary { width:96% !important; height:88% !important; }
 }
+
+/* =========================================================
+   v41 - lock print system, visible paper, restore full bus scale
+   ========================================================= */
+
+/* Paper should read as material, not a screen overlay. It is attached to the
+   document, scrolls naturally, and sits below all portfolio content. */
+body.design-page {
+  background-color: var(--paper) !important;
+  position: relative !important;
+}
+body.design-page::before {
+  content:"" !important;
+  position:absolute !important;
+  inset:0 !important;
+  min-height:100% !important;
+  width:100% !important;
+  pointer-events:none !important;
+  z-index:0 !important;
+  background-image:
+    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg') !important;
+  background-size:880px auto, 720px auto, 1180px auto !important;
+  background-position:0 0, 37% 120px, 72% 280px !important;
+  background-repeat:repeat, repeat, repeat-y !important;
+  background-blend-mode:multiply, multiply, soft-light !important;
+  opacity:.34 !important;
+  mix-blend-mode:multiply !important;
+  filter:contrast(1.12) brightness(1.03) !important;
+}
+.page-shell,
+.design-main,
+.work-stack,
+.project,
+.project-summary,
+.project-content,
+.case-section,
+.project-family-heading,
+.portfolio-masthead {
+  background-color:transparent !important;
+}
+.page-shell { position:relative !important; z-index:1 !important; }
+.design-page img,
+.image-switcher__stage,
+.flip-card__scene,
+.extension-stage,
+.feature-slab,
+.project-key,
+.mp-banner,
+.making-public-card {
+  position:relative;
+  z-index:2;
+}
+
+/* Restore the stronger blur -> threshold -> tooth treatment from the earlier
+   successful print passes. No offset shadow. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-intro h4 {
+  filter:url(#ink-display-v41) !important;
+}
+.portfolio-masthead h1 {
+  letter-spacing:-.066em !important;
+  text-shadow:
+    -.75px .10px .30px rgba(0,106,68,.18),
+     .75px -.10px .30px rgba(253,185,19,.16) !important;
+}
+.project-family-heading h2,
+.project-title {
+  letter-spacing:-.043em !important;
+  text-shadow:
+    -.48px 0 .24px rgba(193,39,45,.12),
+     .48px 0 .24px rgba(0,106,68,.10) !important;
+}
+.case-section__header h3,
+.making-public-intro h4 {
+  letter-spacing:-.032em !important;
+}
+
+/* v26 knot construction was the strongest version: three genuine SVG print
+   layers, each with rough alpha/tooth. Keep it intact for every source/state. */
+.portfolio-masthead__ornament .knot-flash__ink,
+.portfolio-masthead__ornament .knot-flash__bleed,
+.portfolio-masthead__ornament .knot-flash__register {
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  -webkit-mask:none !important;
+  mask:none !important;
+  background:none !important;
+  mix-blend-mode:multiply !important;
+  filter:url(#ink-knot-v41) !important;
+  will-change:filter, transform, clip-path, opacity;
+}
+.knot-flash::before,
+.knot-flash::after { display:none !important; }
+.portfolio-masthead__ornament .knot-flash__ink { opacity:1 !important; }
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity:.24 !important;
+  transform:translate(2px,1px) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity:.14 !important;
+  transform:translate(-1px,1.5px) !important;
+}
+.knot-flash--black .knot-flash__ink { filter:url(#ink-knot-v41) brightness(0) contrast(1.55) !important; }
+.knot-flash--red .knot-flash__ink { filter:url(#ink-knot-v41) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) !important; }
+.knot-flash--green .knot-flash__ink { filter:url(#ink-knot-v41) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) !important; }
+.knot-flash--yellow .knot-flash__ink { filter:url(#ink-knot-v41) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(102%) !important; }
+
+/* Registration inks stay chromatic in every settled state. */
+.knot-flash--black .knot-flash__bleed,
+.knot-flash--yellow .knot-flash__bleed,
+.knot-flash--red .knot-flash__register {
+  filter:url(#ink-knot-v41) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) !important;
+}
+.knot-flash--black .knot-flash__register,
+.knot-flash--green .knot-flash__bleed,
+.knot-flash--red .knot-flash__bleed {
+  filter:url(#ink-knot-v41) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) !important;
+}
+.knot-flash--green .knot-flash__register,
+.knot-flash--yellow .knot-flash__register {
+  filter:url(#ink-knot-v41) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(102%) !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed {
+  opacity:.72 !important;
+  animation:knot-register-green-v26 72ms steps(2,end) infinite !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register {
+  opacity:.62 !important;
+  animation:knot-register-yellow-v26 94ms steps(2,end) infinite reverse !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__ink,
+.knot-flash.is-fluttering .knot-flash__ink {
+  animation:knot-slice-v26 118ms steps(1,end) infinite !important;
+}
+
+/* Bus: flat artwork remains a specimen, installed view returns to full visual
+   scale. One responsive stage, no arbitrary pixel-height caps. */
+.image-switcher--bus .image-switcher__stage--wide {
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:2.55 / 1 !important;
+  overflow:hidden !important;
+  background:transparent !important;
+}
+.image-switcher--bus .image-switcher__stage--wide .state-primary,
+.image-switcher--bus .image-switcher__stage--wide .state-secondary {
+  position:absolute !important;
+  inset:0 !important;
+  margin:auto !important;
+  transform:none !important;
+  object-position:center !important;
+}
+.image-switcher--bus .image-switcher__stage--wide .state-primary {
+  width:72% !important;
+  height:70% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:contain !important;
+}
+.image-switcher--bus .image-switcher__stage--wide .state-secondary {
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:contain !important;
+}
+.image-switcher--bus:not(.is-secondary) .state-primary { opacity:1 !important; }
+.image-switcher--bus:not(.is-secondary) .state-secondary { opacity:0 !important; }
+.image-switcher--bus.is-secondary .state-primary { opacity:0 !important; }
+.image-switcher--bus.is-secondary .state-secondary { opacity:1 !important; }
+@media (max-width:680px) {
+  .image-switcher--bus .image-switcher__stage--wide { aspect-ratio:2.15 / 1 !important; }
+  .image-switcher--bus .image-switcher__stage--wide .state-primary { width:82% !important; height:74% !important; }
+}
