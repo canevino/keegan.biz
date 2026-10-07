@@ -71,6 +71,32 @@
   <feTurbulence type="fractalNoise" baseFrequency="0.03 0.28" numOctaves="1" seed="23" result="noise"/>
   <feDisplacementMap in="thresholded" in2="noise" scale="0.45" xChannelSelector="R" yChannelSelector="G"/>
 </filter>
+
+<filter id="ink-press-v29" x="-14%" y="-24%" width="128%" height="154%" color-interpolation-filters="sRGB">
+  <feMorphology in="SourceGraphic" operator="dilate" radius="0.62" result="spread"/>
+  <feGaussianBlur in="spread" stdDeviation="0.34" result="softSpread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.23" numOctaves="2" seed="41" result="edgeNoise"/>
+  <feDisplacementMap in="softSpread" in2="edgeNoise" scale="1.45" xChannelSelector="R" yChannelSelector="G" result="roughCore"/>
+  <feGaussianBlur in="spread" stdDeviation="1.08" result="outerBleed"/>
+  <feComponentTransfer in="outerBleed" result="fadedBleed"><feFuncA type="linear" slope="0.20"/></feComponentTransfer>
+  <feMerge><feMergeNode in="fadedBleed"/><feMergeNode in="roughCore"/></feMerge>
+</filter>
+<filter id="ink-soft-v29" x="-8%" y="-14%" width="116%" height="128%" color-interpolation-filters="sRGB">
+  <feMorphology in="SourceGraphic" operator="dilate" radius="0.18" result="spread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.026 0.31" numOctaves="1" seed="13" result="edgeNoise"/>
+  <feDisplacementMap in="spread" in2="edgeNoise" scale="0.42" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="spread" stdDeviation="0.34" result="soft"/>
+  <feComponentTransfer in="soft" result="faded"><feFuncA type="linear" slope="0.08"/></feComponentTransfer>
+  <feMerge><feMergeNode in="faded"/><feMergeNode in="rough"/></feMerge>
+</filter>
+<filter id="ink-knot-v29" x="-18%" y="-30%" width="136%" height="160%" color-interpolation-filters="sRGB">
+  <feMorphology in="SourceGraphic" operator="dilate" radius="0.52" result="spread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.021 0.28" numOctaves="2" seed="47" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="2.25" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="spread" stdDeviation="1.15" result="bleed"/>
+  <feComponentTransfer in="bleed" result="faded"><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
+  <feMerge><feMergeNode in="faded"/><feMergeNode in="rough"/></feMerge>
+</filter>
 </defs>
 </svg>
 <div class="page-shell">
@@ -98,6 +124,9 @@
 <img alt="" class="knot-flash__register" src="/assets/home/knot_smooth_svg1.svg"/></div>
 </div>
 </section>
+<section class="project-family-heading" aria-labelledby="triennial-family-title">
+<h2 data-ink="Boston Public Art Triennial" id="triennial-family-title">Boston Public Art Triennial</h2>
+</section>
 <section aria-label="Project list" class="work-stack">
 <article class="project project--triennial" data-project="" id="project-triennial">
 <div class="project-summary">
@@ -105,7 +134,6 @@
 <span class="project-number">01</span>
 </div>
 <div class="project-summary__copy">
-<p class="project-client">Boston Public Art Triennial</p>
 <h2 class="project-title" data-ink="Triennial 2025: The Exchange">Triennial 2025: The Exchange</h2>
 <button aria-controls="project-triennial-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
@@ -182,7 +210,27 @@
 <p class="case-lede">Beyond the core campaign, I adapted the Triennial identity for individual events and exhibitions. Art + Stroll uses an edited Boston skyline in the house color and type system, with an animated version for social. Public Processes applies the same system to a co-presented exhibition with Boston Cyberarts.</p></div>
 </div>
 <div class="extension-layout"><figure class="extension-card extension-card--gif"><div class="extension-meta"><span>Art + Stroll / event flyer + animation</span></div><div class="extension-stage"><img alt="Art + Stroll animated event graphic" src="/design/assets/art and stroll gif.gif"/></div></figure><article class="extension-card extension-card--public-processes flip-card flip-card--landscape" data-flip-card=""><div class="extension-meta"><span>Public Processes / exhibition poster</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div><div aria-label="Flip Public Processes poster" class="flip-card__scene extension-stage" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Public Processes line drawing poster" src="/design/assets/public processes v2.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Public Processes architectural model poster" src="/design/assets/public processes.png"/></figure></div></div></article></div>
-<div class="making-public-panel"><div class="making-public-intro"><h4 data-ink="Making Public">Making Public</h4><div class="making-public-copy"><p>Print and digital collateral for Making Public, the Triennial’s October 2025 convening at Roxbury Community College. Source imagery came from a youth workshop led by Ñ Press with NUBE East Boston for Gabriel Sosa’s Triennial project. I adapted it across posters, wayfinding, a program handout, QR flyer, newsletter ad, and event banner.</p><p class="case-credit">Design: Keegan Andrulis. Source imagery created at a youth workshop with Ñ Press and NUBE East Boston, part of Gabriel Sosa’s project Ñ Press. Event photography: Annielly Camargo. Produced in-house at the Boston Public Art Triennial, 2025.</p></div></div><figure class="mp-banner"><img alt="Making Public / event banner" src="/design/assets/making public banner 1.png"/></figure><div class="making-public-grid"><article class="flip-card making-public-card" data-flip-card=""><div class="asset-meta"><span>Program handout</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div><div aria-label="Flip Making Public handout" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public / program handout" src="/design/assets/making public program front.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public / program handout reverse" src="/design/assets/making public flyer back.png"/></figure></div></div></article><article class="flip-card flip-card--social making-public-card" data-flip-card=""><div class="asset-meta"><span>Social graphics</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div><div aria-label="Flip Making Public social graphics" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public / social graphic" src="/design/assets/making public social 1.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public / alternate social graphic" src="/design/assets/making public social 2.png"/></figure></div></div></article></div><figure class="mp-event-photo making-public-card"><div class="asset-meta"><span>Event documentation</span></div><img alt="Making Public / event photograph" src="/design/assets/making public event photo.jpg"/></figure></div>
+<div class="making-public-panel">
+<div class="making-public-intro">
+<h4 data-ink="Making Public">Making Public</h4>
+<div class="making-public-copy">
+<p>Print and digital collateral for Making Public, the Triennial’s October 2025 convening at Roxbury Community College. Source imagery came from a youth workshop led by Ñ Press with NUBE East Boston for Gabriel Sosa’s Triennial project. I adapted it across posters, wayfinding, a program handout, QR flyer, newsletter ad, and event banner.</p>
+<p class="case-credit">Design: Keegan Andrulis. Source imagery created at a youth workshop with Ñ Press and NUBE East Boston, part of Gabriel Sosa’s project Ñ Press. Event photography: Annielly Camargo. Produced in-house at the Boston Public Art Triennial, 2025.</p>
+</div>
+</div>
+<figure class="mp-banner"><div class="asset-meta"><span>Event banner</span></div><img alt="Making Public event banner" src="/design/assets/making public banner 1.png"/></figure>
+<div class="making-public-grid">
+<article class="flip-card making-public-card" data-flip-card="">
+<div class="asset-meta"><span>Program handout</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div>
+<div aria-label="Flip Making Public handout" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public program handout" src="/design/assets/making public program front.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public program handout reverse" src="/design/assets/making public flyer back.png"/></figure></div></div>
+</article>
+<article class="flip-card flip-card--social making-public-card" data-flip-card="">
+<div class="asset-meta"><span>Social graphics</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div>
+<div aria-label="Flip Making Public social graphics" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public social graphic" src="/design/assets/making public social 1.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public alternate social graphic" src="/design/assets/making public social 2.png"/></figure></div></div>
+</article>
+<figure class="mp-event-photo making-public-card"><div class="asset-meta"><span>Event documentation</span></div><img alt="Making Public event photograph" src="/design/assets/making public event photo.jpg"/></figure>
+</div>
+</div>
 </section>
 </div>
 </article>
@@ -192,8 +240,8 @@
 <span class="project-number">02</span>
 </div>
 <div class="project-summary__copy">
-<p class="project-client">Boston Public Art Triennial / Heather Kapplow</p>
-<h2 class="project-title"><em>Better Angels</em></h2>
+<p class="project-client">Heather Kapplow</p>
+<h2 class="project-title" data-ink="Better Angels"><em>Better Angels</em></h2>
 <button aria-controls="project-angels-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>

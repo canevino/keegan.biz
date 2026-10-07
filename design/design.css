@@ -4488,3 +4488,274 @@ figure > figcaption,
   .mp-event-photo img { height:auto !important; }
   [data-ink]::after { opacity:.10 !important; }
 }
+
+
+/* =========================================================
+   v29 - print hierarchy, tighter type, Triennial family system
+   ========================================================= */
+
+:root {
+  --display-xl: clamp(82px, 11vw, 158px);
+  --display-lg: clamp(44px, 4.8vw, 70px);
+  --display-md: clamp(38px, 3.7vw, 56px);
+  --body-size: 15px;
+  --label-size: 12px;
+  --meta-size: 11px;
+  --section-gap: clamp(46px, 5vw, 76px);
+}
+
+/* Stronger press effect. Morphology makes neighboring letterforms swell into
+   one another slightly; turbulence keeps the edge from becoming a soft glow. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-intro h4 {
+  filter: url(#ink-press-v29) !important;
+  overflow: visible !important;
+}
+
+.design-text-nav a,
+.project-client,
+.project-toggle,
+.image-switcher__meta h4,
+.image-switcher__button,
+.flip-card__button,
+.case-credit,
+.case-lede,
+.extension-meta,
+.asset-meta,
+figure > figcaption,
+.making-public-copy p {
+  filter: url(#ink-soft-v29) !important;
+}
+
+/* Texture is clipped to ink only. No surrounding texture plate. */
+[data-ink] {
+  position: relative !important;
+  isolation: isolate !important;
+}
+[data-ink]::before { display:none !important; }
+[data-ink]::after {
+  display:block !important;
+  content:attr(data-ink);
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  color:transparent;
+  background-image:
+    url('/assets/home/Texturelabs_InkPaint_323S grey pastel blended overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg');
+  background-size:300px auto, 520px auto;
+  background-position:center;
+  background-repeat:repeat;
+  -webkit-background-clip:text;
+  background-clip:text;
+  opacity:.16;
+  mix-blend-mode:multiply;
+  filter:contrast(1.8) grayscale(1);
+  font:inherit;
+  line-height:inherit;
+  letter-spacing:inherit;
+  text-transform:inherit;
+  white-space:inherit;
+}
+
+/* One consistent type scale and tighter setting throughout. */
+.portfolio-masthead h1 {
+  font-size:var(--display-xl) !important;
+  line-height:.78 !important;
+  letter-spacing:-.082em !important;
+}
+.project-family-heading h2 {
+  margin:0 !important;
+  font-size:var(--display-lg) !important;
+  line-height:.88 !important;
+  letter-spacing:-.064em !important;
+  color:var(--green) !important;
+}
+.project-title {
+  font-size:var(--display-lg) !important;
+  line-height:.88 !important;
+  letter-spacing:-.064em !important;
+}
+.case-section__header h3,
+.making-public-intro h4 {
+  font-size:var(--display-md) !important;
+  line-height:.89 !important;
+  letter-spacing:-.058em !important;
+}
+.case-lede,
+.making-public-copy > p:not(.case-credit) {
+  font-size:var(--body-size) !important;
+  line-height:1.38 !important;
+  letter-spacing:-.014em !important;
+}
+.project-client,
+.image-switcher__meta h4,
+.extension-meta,
+.asset-meta {
+  font-size:var(--label-size) !important;
+  line-height:1.12 !important;
+  letter-spacing:-.018em !important;
+}
+.case-credit,
+figure > figcaption {
+  font-size:var(--meta-size) !important;
+  line-height:1.3 !important;
+  letter-spacing:-.012em !important;
+}
+
+/* Boston Public Art Triennial is the parent. Exchange and Better Angels are
+   sibling project categories below it. */
+.project-family-heading {
+  padding:var(--section-gap) 0 24px !important;
+  border-bottom:0 !important;
+}
+.project--triennial .project-summary,
+.project--angels .project-summary {
+  padding-top:32px !important;
+}
+.project--triennial .project-client { display:none !important; }
+.project--angels .project-client {
+  margin-bottom:8px !important;
+  color:var(--green) !important;
+}
+
+/* Keep every project row and section on the same page grid. */
+.project-summary,
+.case-section,
+.project-family-heading,
+.portfolio-masthead {
+  width:100% !important;
+}
+.project-summary {
+  grid-template-columns:minmax(0,1fr) var(--key-width) !important;
+  column-gap:clamp(44px,5.5vw,84px) !important;
+}
+.case-section--lead {
+  grid-template-columns:minmax(320px,.82fr) minmax(340px,1.18fr) !important;
+  column-gap:clamp(54px,6vw,92px) !important;
+}
+.case-section--lead .case-section__header > div { grid-column:1 !important; }
+.case-section--lead > .feature-slab { grid-column:2 !important; }
+
+/* Flip controls live in the metadata row above the object. Never overlay or
+   clip into the artwork. */
+.asset-meta,
+.extension-meta,
+.flip-card__meta {
+  position:relative !important;
+  z-index:5 !important;
+  overflow:visible !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:end !important;
+  gap:16px !important;
+  min-height:24px !important;
+  margin:0 0 10px !important;
+}
+.flip-card__button--overlay,
+.asset-meta .flip-card__button,
+.extension-meta .flip-card__button {
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  margin:0 !important;
+  align-self:end !important;
+  justify-self:end !important;
+}
+
+/* Making Public: one 12-column composition. Intro + banner, then three equal
+   supporting objects so documentation does not dominate. */
+.making-public-panel {
+  display:grid !important;
+  grid-template-columns:repeat(12,minmax(0,1fr)) !important;
+  column-gap:28px !important;
+  row-gap:34px !important;
+  align-items:start !important;
+  margin-top:48px !important;
+}
+.making-public-intro {
+  grid-column:1 / span 4 !important;
+  grid-row:1 !important;
+  max-width:none !important;
+}
+.mp-banner {
+  grid-column:5 / -1 !important;
+  grid-row:1 !important;
+  align-self:start !important;
+}
+.mp-banner .asset-meta { margin-bottom:8px !important; }
+.mp-banner img {
+  width:100% !important;
+  height:auto !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  object-position:left top !important;
+}
+.making-public-grid {
+  grid-column:1 / -1 !important;
+  grid-row:2 !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:28px !important;
+  align-items:start !important;
+}
+.making-public-card { min-width:0 !important; }
+.making-public-card .flip-card__scene,
+.making-public-card .flip-card__inner,
+.making-public-card .flip-card__face,
+.mp-event-photo img {
+  height:390px !important;
+}
+.making-public-card .flip-card__face img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+.mp-event-photo {
+  display:block !important;
+  margin:0 !important;
+}
+.mp-event-photo img {
+  width:100% !important;
+  object-fit:cover !important;
+  object-position:center 46% !important;
+}
+
+/* Knot keeps the current glitch behavior, but uses the same print texture. */
+.portfolio-masthead__ornament .knot-flash__ink,
+.portfolio-masthead__ornament .knot-flash__bleed,
+.portfolio-masthead__ornament .knot-flash__register {
+  filter:url(#ink-knot-v29) !important;
+}
+.knot-flash--black .knot-flash__ink { filter:url(#ink-knot-v29) grayscale(1) brightness(.16) contrast(1.6) !important; }
+.knot-flash--red .knot-flash__ink { filter:url(#ink-knot-v29) brightness(.66) sepia(1) saturate(5.5) hue-rotate(332deg) contrast(1.35) !important; }
+.knot-flash--green .knot-flash__ink { filter:url(#ink-knot-v29) brightness(.46) sepia(1) saturate(3.8) hue-rotate(92deg) contrast(1.5) !important; }
+.knot-flash--yellow .knot-flash__ink { filter:url(#ink-knot-v29) brightness(.96) sepia(1) saturate(5.4) hue-rotate(354deg) contrast(1.25) !important; }
+
+@media (max-width:980px) {
+  .project-summary,
+  .case-section--lead { grid-template-columns:1fr !important; }
+  .case-section--lead .case-section__header > div,
+  .case-section--lead > .feature-slab { grid-column:1 !important; }
+  .case-section--lead > .feature-slab { margin-top:28px !important; }
+  .project-key { grid-column:1 !important; justify-self:start !important; }
+  .making-public-panel { grid-template-columns:1fr !important; }
+  .making-public-intro,
+  .mp-banner,
+  .making-public-grid { grid-column:1 !important; grid-row:auto !important; }
+  .making-public-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+}
+
+@media (max-width:680px) {
+  [data-ink]::after { opacity:.11; }
+  .making-public-grid { grid-template-columns:1fr !important; }
+  .making-public-card .flip-card__scene,
+  .making-public-card .flip-card__inner,
+  .making-public-card .flip-card__face,
+  .mp-event-photo img { height:auto !important; aspect-ratio:3 / 4 !important; }
+}
