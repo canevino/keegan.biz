@@ -5377,3 +5377,254 @@ figure > figcaption {
   .case-section--making-public .making-public-grid { grid-template-columns:1fr !important; }
   [data-ink]::after { opacity:.13 !important; }
 }
+
+
+/* =========================================================
+   v32 - centered print bleed, persistent knot print, grid alignment
+   ========================================================= */
+
+:root {
+  --v32-gap: clamp(42px, 4.4vw, 72px);
+  --v32-section-space: clamp(58px, 6vw, 88px);
+  --v32-copy: 680px;
+}
+
+/* PRINT TYPE
+   One centered expanded impression. No translated duplicate, no shadow.
+   Texture sits inside the letterforms at the exact same origin. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.case-section--making-public .case-section__header h3 {
+  filter: url(#ink-display-v32) !important;
+  text-shadow: none !important;
+  overflow: visible !important;
+}
+
+.design-text-nav a,
+.project-toggle,
+.image-switcher__meta h4,
+.image-switcher__button,
+.flip-card__button,
+.case-credit,
+.case-lede,
+.case-section__header p,
+.extension-meta,
+.asset-meta,
+figure > figcaption {
+  filter: url(#ink-small-v32) !important;
+  text-shadow: none !important;
+}
+
+[data-ink]::before {
+  display: none !important;
+  content: none !important;
+}
+[data-ink]::after {
+  display: block !important;
+  content: attr(data-ink) !important;
+  position: absolute !important;
+  inset: 0 !important;
+  transform: none !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  color: transparent !important;
+  background-image:
+    url('/assets/home/Texturelabs_InkPaint_352S grey Fine oil paint overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_225S grey paper pulp overlay.jpg') !important;
+  background-size: 220px auto, 430px auto !important;
+  background-repeat: repeat !important;
+  background-position: 50% 50%, 50% 50% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  opacity: .30 !important;
+  mix-blend-mode: multiply !important;
+  filter: contrast(2.1) grayscale(1) !important;
+  font: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  white-space: inherit !important;
+}
+
+/* keep the texture centered on the exact glyph box */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3 {
+  position: relative !important;
+  isolation: isolate !important;
+}
+
+/* KNOT
+   All three layers are always printed. Glitch only increases registration
+   error. This keeps texture/bleed present in every settled color state. */
+.portfolio-masthead__ornament {
+  overflow: visible !important;
+  isolation: isolate !important;
+}
+.portfolio-masthead__ornament .knot-flash__ink,
+.portfolio-masthead__ornament .knot-flash__bleed,
+.portfolio-masthead__ornament .knot-flash__register {
+  filter: url(#ink-knot-v32) !important;
+  mix-blend-mode: multiply !important;
+  will-change: transform, clip-path, opacity, filter !important;
+}
+.portfolio-masthead__ornament .knot-flash__ink {
+  opacity: .96 !important;
+  transform: translate(0,0) !important;
+}
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity: .42 !important;
+  transform: translate(1.6px,.9px) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity: .26 !important;
+  transform: translate(-1.3px,.7px) !important;
+}
+
+.knot-flash--black .knot-flash__ink { filter:url(#ink-knot-v32) brightness(0) contrast(1.55) !important; }
+.knot-flash--red .knot-flash__ink { filter:url(#ink-knot-v32) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important; }
+.knot-flash--green .knot-flash__ink { filter:url(#ink-knot-v32) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important; }
+.knot-flash--yellow .knot-flash__ink { filter:url(#ink-knot-v32) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(104%) !important; }
+
+/* visible complementary registration at rest */
+.knot-flash--black .knot-flash__bleed,
+.knot-flash--red .knot-flash__register,
+.knot-flash--yellow .knot-flash__bleed {
+  filter:url(#ink-knot-v32) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(105%) !important;
+}
+.knot-flash--black .knot-flash__register,
+.knot-flash--green .knot-flash__bleed,
+.knot-flash--red .knot-flash__bleed {
+  filter:url(#ink-knot-v32) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(96%) !important;
+}
+.knot-flash--green .knot-flash__register,
+.knot-flash--yellow .knot-flash__register {
+  filter:url(#ink-knot-v32) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(104%) !important;
+}
+
+.knot-flash.is-hover-glitch .knot-flash__ink,
+.knot-flash.is-fluttering .knot-flash__ink {
+  animation: knot-slice-v32 104ms steps(1,end) infinite !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed {
+  opacity: .76 !important;
+  animation: knot-register-a-v32 76ms steps(2,end) infinite !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register {
+  opacity: .66 !important;
+  animation: knot-register-b-v32 94ms steps(2,end) infinite reverse !important;
+}
+@keyframes knot-register-a-v32 {
+  0%{transform:translate(-9px,2px)} 25%{transform:translate(8px,-3px)} 50%{transform:translate(-5px,-2px)} 75%{transform:translate(6px,3px)} 100%{transform:translate(1.6px,.9px)}
+}
+@keyframes knot-register-b-v32 {
+  0%{transform:translate(7px,-3px)} 33%{transform:translate(-7px,3px)} 66%{transform:translate(5px,2px)} 100%{transform:translate(-1.3px,.7px)}
+}
+@keyframes knot-slice-v32 {
+  0%,12%,100%{clip-path:inset(0);transform:translateX(0)}
+  13%,28%{clip-path:inset(0 0 70% 0);transform:translateX(-8px)}
+  29%,44%{clip-path:inset(31% 0 36% 0);transform:translateX(7px)}
+  45%,60%{clip-path:inset(69% 0 0 0);transform:translateX(-6px)}
+  61%,77%{clip-path:inset(14% 0 59% 0);transform:translateX(6px)}
+  78%,99%{clip-path:inset(0);transform:translateX(0)}
+}
+
+/* ALIGNMENT
+   All major rows use the same left/right measure. Internal modules then align
+   to that edge rather than carrying inherited auto-margins. */
+.design-main,
+.design-site-header {
+  width: min(100%, calc(var(--content) + (var(--gutter) * 2))) !important;
+  margin-inline: auto !important;
+  padding-inline: var(--gutter) !important;
+  box-sizing: border-box !important;
+}
+.portfolio-masthead,
+.project-family-heading,
+.work-stack,
+.project-summary,
+.case-section {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+.project-summary,
+.case-section {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.case-section {
+  padding-top: var(--v32-section-space) !important;
+  padding-bottom: var(--v32-section-space) !important;
+}
+.case-section__header > div {
+  max-width: var(--v32-copy) !important;
+}
+
+/* Exchange: guarantee a clean gap between copy and poster. */
+.case-section--lead {
+  grid-template-columns: minmax(340px,.88fr) minmax(380px,1.12fr) !important;
+  gap: var(--v32-gap) !important;
+}
+.case-section--lead .case-section__header {
+  grid-column: 1 !important;
+  min-width: 0 !important;
+}
+.case-section--lead > .feature-slab {
+  grid-column: 2 !important;
+  min-width: 0 !important;
+}
+.case-section--lead .feature-slab__hero,
+.case-section--lead .feature-slab__hero img {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Peer sections keep identical header rhythm. */
+.case-section--extensions .case-section__header > div,
+.case-section--making-public .case-section__header > div {
+  width: min(100%, var(--v32-copy)) !important;
+  max-width: var(--v32-copy) !important;
+  margin: 0 0 36px 0 !important;
+}
+.case-section--extensions .case-lede,
+.case-section--making-public .case-section__header > div > p:not(.case-credit) {
+  font-size: 15px !important;
+  line-height: 1.48 !important;
+  max-width: 66ch !important;
+}
+
+/* Making Public: preserve the v31 structure, only align it to the same grid. */
+.case-section--making-public {
+  grid-template-columns: minmax(300px,.74fr) minmax(0,1.26fr) !important;
+  column-gap: var(--v32-gap) !important;
+  row-gap: 42px !important;
+}
+.case-section--making-public .making-public-grid {
+  gap: 32px !important;
+}
+.case-section--making-public .asset-meta {
+  margin-bottom: 12px !important;
+}
+
+@media (max-width:980px) {
+  .case-section--lead,
+  .case-section--making-public {
+    grid-template-columns: 1fr !important;
+    gap: 30px !important;
+  }
+  .case-section--lead .case-section__header,
+  .case-section--lead > .feature-slab {
+    grid-column: 1 !important;
+  }
+}
+
+@media (max-width:680px) {
+  [data-ink]::after { opacity: .22 !important; }
+}
