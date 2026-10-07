@@ -223,14 +223,14 @@
     const idleBurst = () => {
       if (reducedMotion.matches || hovering) return;
       slot.classList.add("is-fluttering");
-      const swaps = 7 + Math.floor(Math.random() * 5);
+      const swaps = 10 + Math.floor(Math.random() * 6);
       let count = 0;
 
       const step = () => {
         chooseNext();
         count += 1;
         if (count < swaps) {
-          timer = window.setTimeout(step, 38 + Math.random() * 42);
+          timer = window.setTimeout(step, 22 + Math.random() * 34);
         } else {
           slot.classList.remove("is-fluttering");
           scheduleIdle();
@@ -243,7 +243,7 @@
     const hoverLoop = () => {
       if (!hovering || reducedMotion.matches) return;
       chooseNext();
-      timer = window.setTimeout(hoverLoop, 32 + Math.random() * 40);
+      timer = window.setTimeout(hoverLoop, 24 + Math.random() * 34);
     };
 
     const startHover = () => {

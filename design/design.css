@@ -3341,3 +3341,284 @@ figure > figcaption,
   .making-public-card .flip-card__face,
   .mp-event-photo img { height:auto !important; }
 }
+
+/* =========================================================
+   v25 - structural grid + print texture pass
+   ========================================================= */
+
+:root {
+  --section-rail:64px;
+  --section-gap:36px;
+  --key-width:420px;
+  --extension-height:520px;
+}
+
+/* Keep the paper present, but quiet. */
+body.design-page::before {
+  background-image:
+    url('/assets/home/Texturelabs_Paper_226S grey paper pul overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg') !important;
+  background-size:760px auto, 980px auto !important;
+  background-blend-mode:multiply,multiply !important;
+  opacity:.052 !important;
+}
+
+/* Ink: texture now lives in alpha, so there are no visible texture rectangles. */
+.portfolio-masthead h1,
+.project-title,
+.case-section__header h3,
+.making-public-panel > h4 {
+  filter:url(#ink-bleed) !important;
+}
+.design-text-nav a,
+.project-client,
+.project-number,
+.case-section__number,
+.project-toggle,
+.image-switcher__meta h4,
+.image-switcher__button,
+.flip-card__button,
+.case-credit,
+.case-lede,
+.extension-meta,
+.asset-meta,
+figure > figcaption,
+.making-public-copy p {
+  filter:url(#ink-soft) !important;
+}
+
+/* One structural grid for every expanded section. */
+.case-section {
+  display:grid !important;
+  grid-template-columns:var(--section-rail) minmax(0,1fr) !important;
+  column-gap:var(--section-gap) !important;
+  align-items:start !important;
+  padding:clamp(52px,5.4vw,78px) 0 !important;
+}
+.case-section__header {
+  display:contents !important;
+}
+.case-section__header > .case-section__number {
+  grid-column:1 !important;
+  grid-row:1 !important;
+  margin:0 !important;
+  padding-top:7px !important;
+}
+.case-section__header > div {
+  grid-column:2 !important;
+  grid-row:1 !important;
+  width:min(100%,760px) !important;
+  margin:0 0 34px !important;
+}
+.case-section > :not(.case-section__header) {
+  grid-column:2 !important;
+  width:100% !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+.case-section__header h3 { margin-top:0 !important; }
+
+/* Collapsed rows use the same rail and a fixed key column. */
+.project-summary {
+  display:grid !important;
+  grid-template-columns:var(--section-rail) minmax(0,1fr) var(--key-width) !important;
+  column-gap:var(--section-gap) !important;
+  align-items:start !important;
+}
+.project-summary__rail { width:var(--section-rail) !important; }
+.project-key,
+.project-key--triennial,
+.project-key--angels,
+.project-key--winter,
+.project-key--prx,
+.project-key--college {
+  width:var(--key-width) !important;
+  min-width:var(--key-width) !important;
+  max-width:var(--key-width) !important;
+  justify-self:end !important;
+  display:block !important;
+}
+.project-key > img,
+.project-key--triennial > img,
+.project-key--angels > img,
+.project-key--winter > img,
+.project-key--prx > img,
+.project-key--college > img {
+  display:block !important;
+  width:var(--key-width) !important;
+  min-width:var(--key-width) !important;
+  max-width:var(--key-width) !important;
+  height:auto !important;
+  max-height:none !important;
+  object-fit:contain !important;
+}
+
+/* Knot: no static shadow. Red main ink matches DESIGN. Green/yellow only register during glitch. */
+.portfolio-masthead__ornament { isolation:isolate !important; }
+.portfolio-masthead__ornament .knot-flash__ink {
+  opacity:1 !important;
+  transform:none !important;
+  filter:url(#ink-knot) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) !important;
+}
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity:.08 !important;
+  transform:translate(.7px,.4px) !important;
+  filter:url(#ink-knot) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) !important;
+  mix-blend-mode:multiply !important;
+}
+.knot-flash.is-fluttering .knot-flash__bleed,
+.knot-flash.is-hover-glitch .knot-flash__bleed {
+  opacity:.62 !important;
+  animation:knot-register-v25 92ms steps(2,end) infinite !important;
+}
+.knot-flash.is-fluttering .knot-flash__ink,
+.knot-flash.is-hover-glitch .knot-flash__ink {
+  animation:knot-slice-v25 138ms steps(1,end) infinite !important;
+}
+@keyframes knot-register-v25 {
+  0%{transform:translate(-8px,2px);filter:url(#ink-knot) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%)}
+  33%{transform:translate(7px,-3px);filter:url(#ink-knot) brightness(0) saturate(100%) invert(68%) sepia(96%) saturate(1588%) hue-rotate(351deg) brightness(104%) contrast(101%)}
+  66%{transform:translate(-4px,-2px);filter:url(#ink-knot) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%)}
+  100%{transform:translate(5px,3px);filter:url(#ink-knot) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%)}
+}
+@keyframes knot-slice-v25 {
+  0%,18%,100%{clip-path:inset(0 0 0 0);transform:translateX(0)}
+  19%,34%{clip-path:inset(0 0 62% 0);transform:translateX(-6px)}
+  35%,52%{clip-path:inset(36% 0 28% 0);transform:translateX(6px)}
+  53%,70%{clip-path:inset(70% 0 0 0);transform:translateX(-4px)}
+  71%,86%{clip-path:inset(16% 0 56% 0);transform:translateX(5px)}
+  87%,99%{clip-path:inset(0 0 0 0);transform:translateX(0)}
+}
+
+/* Extensions: same metadata, same stage, no crop. */
+.extension-layout {
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:40px !important;
+  align-items:start !important;
+}
+.extension-card { min-width:0 !important; }
+.extension-meta,
+.asset-meta {
+  min-height:24px !important;
+  margin:0 0 10px !important;
+  display:flex !important;
+  align-items:baseline !important;
+  justify-content:space-between !important;
+  gap:18px !important;
+  color:var(--green) !important;
+  font-size:12px !important;
+  font-weight:700 !important;
+  line-height:1.2 !important;
+}
+.extension-meta .flip-card__button,
+.asset-meta .flip-card__button {
+  flex:0 0 auto !important;
+  margin:0 !important;
+}
+.extension-stage {
+  width:100% !important;
+  height:var(--extension-height) !important;
+  min-height:var(--extension-height) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:visible !important;
+  border:0 !important;
+  background:transparent !important;
+}
+.extension-card--gif .extension-stage > img,
+.extension-card--public-processes .extension-stage img {
+  display:block !important;
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+.extension-card--public-processes .flip-card__inner,
+.extension-card--public-processes .flip-card__face {
+  width:100% !important;
+  height:100% !important;
+}
+.extension-card--public-processes .flip-card__face {
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+/* Making Public: no ornamental rules, one grid, labels outside images. */
+.making-public-panel,
+.making-public-panel::before,
+.making-public-grid,
+.mp-banner,
+.making-public-card,
+.mp-event-photo {
+  border:0 !important;
+  box-shadow:none !important;
+  background:transparent !important;
+}
+.making-public-panel::before { display:none !important; }
+.making-public-panel { padding:0 !important; }
+.mp-banner { padding:0 !important; margin:0 !important; }
+.making-public-grid {
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:34px !important;
+  padding:0 !important;
+  margin-top:30px !important;
+  align-items:start !important;
+}
+.asset-meta { width:100% !important; }
+.making-public-card,
+.mp-event-photo { height:auto !important; }
+.making-public-card .flip-card__scene,
+.making-public-card .flip-card__inner,
+.making-public-card .flip-card__face { height:420px !important; }
+.making-public-card .flip-card__face img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+.mp-event-photo img {
+  display:block !important;
+  width:100% !important;
+  height:420px !important;
+  object-fit:cover !important;
+  object-position:center 42% !important;
+}
+
+/* Keep repeating text styles genuinely equal. */
+.image-switcher__meta h4,
+.extension-meta,
+.asset-meta { font-size:12px !important; }
+.image-switcher__meta h4 { font-weight:700 !important; color:var(--green) !important; }
+.image-switcher__button,.flip-card__button,.project-toggle { font-size:12px !important; }
+
+@media (max-width:980px) {
+  :root { --key-width:340px; --section-rail:48px; --section-gap:24px; }
+  .project-summary { grid-template-columns:var(--section-rail) minmax(0,1fr) !important; }
+  .project-key { grid-column:2 !important; justify-self:start !important; }
+  .case-section { grid-template-columns:var(--section-rail) minmax(0,1fr) !important; }
+  .extension-layout,.making-public-grid { grid-template-columns:1fr !important; }
+  .making-public-card .flip-card__scene,
+  .making-public-card .flip-card__inner,
+  .making-public-card .flip-card__face,
+  .mp-event-photo img { height:auto !important; aspect-ratio:3/4 !important; }
+}
+
+@media (max-width:680px) {
+  :root { --key-width:min(100%,360px); --section-rail:34px; --section-gap:14px; --extension-height:auto; }
+  .project-summary { grid-template-columns:1fr !important; }
+  .project-summary__rail,.project-summary__copy,.project-key { grid-column:1 !important; }
+  .project-key,
+  .project-key > img { width:var(--key-width) !important; min-width:0 !important; }
+  .case-section { grid-template-columns:1fr !important; }
+  .case-section__header { display:grid !important; grid-template-columns:var(--section-rail) minmax(0,1fr) !important; column-gap:var(--section-gap) !important; }
+  .case-section__header > .case-section__number { grid-column:1 !important; }
+  .case-section__header > div { grid-column:2 !important; margin-bottom:28px !important; }
+  .case-section > :not(.case-section__header) { grid-column:1 !important; }
+  .extension-stage { height:auto !important; min-height:0 !important; }
+}

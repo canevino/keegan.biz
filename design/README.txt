@@ -1,25 +1,29 @@
-keegan.biz /design — v24
+keegan.biz /design - v25
 
 Changed
-- Stronger but controlled ink bleed with a soft fade at edges.
-- One large knot only; same print language as the design word, stronger glitch on hover / rare idle glitch.
-- Key images use one fixed visible width; height follows each source image.
-- Boston Public Art Triennial is the project category; Triennial 2025: The Exchange is the first subcategory.
-- No em dashes in visible page copy.
-- Repeated label/body/caption sizes normalized.
-- Flip controls moved above artwork.
-- Art + Stroll and Public Processes share one fixed stage height.
-- Making Public stray rules removed; supporting objects realigned.
-- Across Formats artwork centered in its display stage.
+- Stronger ink bleed with actual alpha texture inside the ink, not texture boxes.
+- One paper field remains subtle across the page.
+- Knot has no static shadow. Main ink matches the red design title; green/yellow appear as misregistration during glitch.
+- Knot glitch uses rapid source swaps plus sliced registration jumps; idle timing stays rare.
+- Expanded sections now use one structural two-column grid: number rail + content rail.
+- Collapsed project rows use the same rail logic and one fixed key-image width.
+- Art + Stroll and Public Processes now share identical metadata and stage structure.
+- Extension artwork uses contain sizing so the GIF is never cropped by CSS.
+- Making Public has no internal divider rules; labels and flip controls sit outside artwork.
+- Repeating labels use one size.
 
 Check
-1. design + knot print weight
-2. knot glitch behavior
-3. key image widths
-4. extension heights
-5. flip control placement
-6. Making Public alignment
-7. text-size consistency
+1. Ink bleed is visible but still readable.
+2. Text has subtle internal paper/ink tooth without rectangular overlays.
+3. Knot has texture and visible glitch, but no static drop-shadow look.
+4. Art + Stroll GIF is fully visible.
+5. Art + Stroll and Public Processes labels are identical in format.
+6. Making Public has no stray rules and flip controls never overlap images.
+7. Every expanded section follows the same left alignment rail.
+8. Every collapsed key image uses the same width.
 
 Next
-Better Angels structure and fold rebuild, then Paul Winter, PRX/Radiotopia, and TFM.
+- Better Angels physical-object rebuild and case-study sequence.
+- Paul Winter poster-suite art direction.
+- PRX / Radiotopia hierarchy.
+- TFM / college hierarchy.
