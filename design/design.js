@@ -237,12 +237,13 @@
       };
 
       const chooseNext = () => {
-        let next = Math.floor(Math.random() * knotSources.length);
-        if (next === currentIndex) next = (next + 1) % knotSources.length;
-        currentIndex = next;
+        /* Keep one proven SVG geometry so every glitch retains the same
+           texture/bleed treatment. Glitch comes from vertical slices and
+           registration movement, while the brand ink colour still cycles. */
+        currentIndex = settledIndex;
         colorIndex = (colorIndex + 1) % knotColorClasses.length;
         setColor(colorIndex);
-        setKnot(currentIndex);
+        setKnot(settledIndex);
       };
 
       const clearTimer = () => {

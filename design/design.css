@@ -7255,3 +7255,119 @@ body.design-page::before {
 .knot-flash--green .knot-flash__register {
   filter:url(#ink-knot-v41) invert(76%) sepia(92%) saturate(1850%) hue-rotate(350deg) brightness(96%) contrast(99%) !important;
 }
+
+/* =========================================================
+   v45 - preserve bleed, add registration, paper above print
+   ========================================================= */
+
+/* Keep the earlier blur -> threshold ink bleed and add registration on top.
+   These are cumulative: glow does not replace the bleed filter. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-intro h4 {
+  filter:url(#ink-display-v41) !important;
+}
+
+.portfolio-masthead h1 {
+  color:var(--red) !important;
+  letter-spacing:-.072em !important;
+  text-shadow:
+    -.95px -.45px 1.05px rgba(0,106,68,.42),
+     1.05px  .35px 1.00px rgba(253,185,19,.38),
+      .15px 1.10px .80px rgba(193,39,45,.24) !important;
+}
+.project-family-heading h2,
+.project-title {
+  letter-spacing:-.050em !important;
+  text-shadow:
+    -.72px -.34px .82px rgba(193,39,45,.26),
+     .78px  .28px .80px rgba(0,106,68,.30),
+      .12px .84px .66px rgba(253,185,19,.22) !important;
+}
+.case-section__header h3,
+.making-public-intro h4 {
+  letter-spacing:-.038em !important;
+  text-shadow:
+    -.52px -.25px .62px rgba(193,39,45,.20),
+     .56px  .20px .60px rgba(0,106,68,.22),
+      .10px .58px .50px rgba(253,185,19,.16) !important;
+}
+
+/* Paper is a visible sheet above printed UI/text/rules/knot, but below actual
+   photography and artwork. It scrolls with the document. */
+body.design-page::before {
+  z-index:15 !important;
+  background-image:
+    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg') !important;
+  background-size:1900px auto, 2600px auto, 3300px auto !important;
+  background-position:center 0, center 1150px, center 2650px !important;
+  background-repeat:repeat-y, repeat-y, repeat-y !important;
+  background-attachment:scroll, scroll, scroll !important;
+  background-blend-mode:multiply, soft-light, multiply !important;
+  mix-blend-mode:multiply !important;
+  opacity:.145 !important;
+  filter:grayscale(.25) brightness(1.72) contrast(.88) saturate(.72) !important;
+}
+
+/* Keep photographic/artwork assets clean above the paper. The knot is
+   intentionally excluded so the same paper surface catches its inks. */
+.design-page img:not(.knot-flash__ink):not(.knot-flash__bleed):not(.knot-flash__register),
+.design-page video,
+.design-page canvas,
+.image-switcher__stage,
+.extension-stage,
+.flip-card__scene,
+.folder-stage,
+.project-key,
+.feature-slab__hero,
+.mp-banner,
+.poster-card,
+.winter-card,
+.prx-card,
+.college-showcase,
+.wine-grid {
+  position:relative !important;
+  z-index:20 !important;
+}
+.portfolio-masthead__ornament,
+.portfolio-masthead__ornament img {
+  z-index:2 !important;
+}
+
+/* Settled registration is vertical-biased. It reads as imperfect printing,
+   not a sideways drop shadow. */
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity:.38 !important;
+  transform:translate(.35px,1.70px) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity:.30 !important;
+  transform:translate(-.30px,-1.35px) !important;
+}
+
+/* Vertical glitch: slices jump up/down with only negligible horizontal drift. */
+@keyframes knot-register-green-v26 {
+  0%{transform:translate(.4px,-6px)}
+  25%{transform:translate(-.5px,5px)}
+  50%{transform:translate(.3px,-3px)}
+  75%{transform:translate(-.4px,4px)}
+  100%{transform:translate(.35px,1.7px)}
+}
+@keyframes knot-register-yellow-v26 {
+  0%{transform:translate(-.4px,5px)}
+  33%{transform:translate(.5px,-6px)}
+  66%{transform:translate(-.3px,3px)}
+  100%{transform:translate(-.3px,-1.35px)}
+}
+@keyframes knot-slice-v26 {
+  0%,15%,100%{clip-path:inset(0 0 0 0);transform:translateY(0)}
+  16%,30%{clip-path:inset(0 0 68% 0);transform:translateY(-7px)}
+  31%,45%{clip-path:inset(29% 0 38% 0);transform:translateY(6px)}
+  46%,61%{clip-path:inset(68% 0 0 0);transform:translateY(-5px)}
+  62%,77%{clip-path:inset(12% 0 62% 0);transform:translateY(5px)}
+  78%,99%{clip-path:inset(0 0 0 0);transform:translateY(0)}
+}
