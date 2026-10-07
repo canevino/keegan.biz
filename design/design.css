@@ -3622,3 +3622,335 @@ figure > figcaption,
   .case-section > :not(.case-section__header) { grid-column:1 !important; }
   .extension-stage { height:auto !important; min-height:0 !important; }
 }
+
+/* =========================================================
+   v26 - visible ink, tighter knot hit area, structural spacing
+   ========================================================= */
+
+:root {
+  --grid-rail: 64px;
+  --grid-gap: 36px;
+  --key-width: 420px;
+  --copy-max: 43rem;
+  --module-gap: 36px;
+}
+
+/* Keep one physical paper field. It should register as paper only when you
+   look for it, not as a dirty screen. */
+body.design-page {
+  background-color: var(--paper) !important;
+}
+body.design-page::before {
+  background-image:
+    url('/assets/home/Texturelabs_Paper_226S grey paper pul overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg') !important;
+  background-size: 680px auto, 960px auto !important;
+  background-blend-mode: multiply, multiply !important;
+  opacity: .072 !important;
+}
+
+/* Text should visibly print, not merely look antialiased. Strong display ink
+   gets the full blur/threshold/grain filter; secondary text gets the lighter
+   version so the page remains readable. */
+.portfolio-masthead h1,
+.project-title,
+.case-section__header h3,
+.making-public-panel h4 {
+  filter: url(#ink-bleed) !important;
+}
+.design-text-nav a,
+.project-client,
+.project-number,
+.case-section__number,
+.project-toggle,
+.image-switcher__meta h4,
+.image-switcher__button,
+.flip-card__button,
+.case-credit,
+.case-lede,
+.extension-meta,
+.asset-meta,
+figure > figcaption,
+.making-public-copy p {
+  filter: url(#ink-soft) !important;
+}
+
+/* Header: the ornament's element box now hugs the visible knot. Hover only
+   activates when the pointer is actually over this compact footprint. */
+.portfolio-masthead {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  column-gap: clamp(48px, 6vw, 110px) !important;
+  align-items: center !important;
+}
+.portfolio-masthead__rail {
+  width: auto !important;
+  min-width: 0 !important;
+  padding-left: 0 !important;
+}
+.portfolio-masthead__ornament {
+  width: clamp(430px, 31vw, 560px) !important;
+  height: clamp(86px, 7.2vw, 116px) !important;
+  flex: 0 0 auto !important;
+  margin: 0 !important;
+  cursor: default !important;
+  overflow: visible !important;
+}
+.portfolio-masthead__ornament img {
+  object-fit: fill !important;
+}
+
+/* Three print registrations, visible only as registration errors rather than
+   a static shadow. */
+.knot-flash__ink,
+.knot-flash__bleed,
+.knot-flash__register {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  mix-blend-mode: multiply !important;
+}
+.portfolio-masthead__ornament .knot-flash__ink {
+  opacity: 1 !important;
+  filter: url(#ink-knot) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) !important;
+}
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity: .22 !important;
+  transform: translate(2px, 1px) !important;
+  filter: url(#ink-knot) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity: .10 !important;
+  transform: translate(-1px, 1.5px) !important;
+  filter: url(#ink-knot) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(102%) !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed {
+  opacity: .72 !important;
+  animation: knot-register-green-v26 72ms steps(2,end) infinite !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register {
+  opacity: .62 !important;
+  animation: knot-register-yellow-v26 94ms steps(2,end) infinite reverse !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__ink,
+.knot-flash.is-fluttering .knot-flash__ink {
+  animation: knot-slice-v26 118ms steps(1,end) infinite !important;
+}
+@keyframes knot-register-green-v26 {
+  0%{transform:translate(-9px,2px)}
+  25%{transform:translate(8px,-4px)}
+  50%{transform:translate(-5px,-2px)}
+  75%{transform:translate(6px,4px)}
+  100%{transform:translate(2px,1px)}
+}
+@keyframes knot-register-yellow-v26 {
+  0%{transform:translate(6px,-3px)}
+  33%{transform:translate(-7px,3px)}
+  66%{transform:translate(4px,2px)}
+  100%{transform:translate(-1px,1.5px)}
+}
+@keyframes knot-slice-v26 {
+  0%,15%,100%{clip-path:inset(0 0 0 0);transform:translateX(0)}
+  16%,30%{clip-path:inset(0 0 68% 0);transform:translateX(-8px)}
+  31%,45%{clip-path:inset(29% 0 38% 0);transform:translateX(7px)}
+  46%,61%{clip-path:inset(68% 0 0 0);transform:translateX(-5px)}
+  62%,77%{clip-path:inset(12% 0 62% 0);transform:translateX(6px)}
+  78%,99%{clip-path:inset(0 0 0 0);transform:translateX(0)}
+}
+
+/* One grid language, everywhere. */
+.project-summary {
+  grid-template-columns: var(--grid-rail) minmax(0,1fr) var(--key-width) !important;
+  column-gap: var(--grid-gap) !important;
+}
+.case-section {
+  grid-template-columns: var(--grid-rail) minmax(0,1fr) !important;
+  column-gap: var(--grid-gap) !important;
+}
+.case-section__header > div {
+  width: min(100%, var(--copy-max)) !important;
+  margin-bottom: var(--module-gap) !important;
+}
+.project-summary__copy,
+.case-section__header > div,
+.making-public-intro,
+.feature-slab,
+.switcher-grid,
+.extension-layout,
+.making-public-panel,
+.angels-takeaway-grid,
+.angels-script-layout,
+.angels-signage-layout,
+.winter-gallery,
+.prx-pairing,
+.college-showcase,
+.wine-grid {
+  min-width: 0 !important;
+}
+
+/* Lead Exchange: text and lead artwork share one row. No extra empty page. */
+.case-section--lead {
+  grid-template-columns: var(--grid-rail) minmax(300px,.82fr) minmax(320px,1.18fr) !important;
+  column-gap: var(--grid-gap) !important;
+}
+.case-section--lead .case-section__header { display: contents !important; }
+.case-section--lead .case-section__header > .case-section__number {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+}
+.case-section--lead .case-section__header > div {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  align-self: start !important;
+}
+.case-section--lead > .feature-slab {
+  grid-column: 3 !important;
+  grid-row: 1 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  display: block !important;
+  align-self: start !important;
+}
+.case-section--lead .feature-slab::before { display:none !important; }
+.case-section--lead .feature-slab__hero img {
+  width: 100% !important;
+  max-height: 680px !important;
+  object-fit: contain !important;
+  object-position: center top !important;
+}
+
+/* Key images: one guaranteed measure for every project, regardless of source
+   aspect ratio. */
+.project-key,
+.project-key--triennial,
+.project-key--angels,
+.project-key--winter,
+.project-key--prx,
+.project-key--college {
+  box-sizing: border-box !important;
+  inline-size: var(--key-width) !important;
+  min-inline-size: var(--key-width) !important;
+  max-inline-size: var(--key-width) !important;
+}
+.project-key > img,
+.project-key--triennial > img,
+.project-key--angels > img,
+.project-key--winter > img,
+.project-key--prx > img,
+.project-key--college > img {
+  box-sizing: border-box !important;
+  inline-size: 100% !important;
+  min-inline-size: 100% !important;
+  max-inline-size: 100% !important;
+}
+
+/* Making Public: first row is copy + banner. Second row is the two printed
+   objects + event documentation. No divider rules. */
+.making-public-panel {
+  display:grid !important;
+  grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr) !important;
+  grid-template-areas:
+    "intro banner"
+    "objects photo" !important;
+  gap:34px 54px !important;
+  align-items:start !important;
+  padding:0 !important;
+  border:0 !important;
+  background:transparent !important;
+}
+.making-public-intro { grid-area:intro !important; }
+.making-public-intro h4 {
+  margin:0 0 18px !important;
+  font-size:clamp(38px,3.4vw,56px) !important;
+  line-height:.94 !important;
+  letter-spacing:-.045em !important;
+  color:var(--green) !important;
+}
+.making-public-copy p { margin:0 0 16px !important; }
+.mp-banner {
+  grid-area:banner !important;
+  align-self:start !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+}
+.mp-banner img {
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  max-height:none !important;
+  object-fit:contain !important;
+}
+.making-public-grid {
+  grid-area:objects !important;
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:28px !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+}
+.mp-event-photo {
+  grid-area:photo !important;
+  margin:0 !important;
+  align-self:start !important;
+}
+.mp-event-photo img {
+  width:100% !important;
+  height:auto !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+.making-public-card .flip-card__scene,
+.making-public-card .flip-card__inner,
+.making-public-card .flip-card__face {
+  height:auto !important;
+  aspect-ratio:3/4 !important;
+}
+
+/* Extensions stay equal-height and uncropped. */
+.extension-stage {
+  height:520px !important;
+  min-height:520px !important;
+  overflow:hidden !important;
+}
+.extension-card--gif .extension-stage > img,
+.extension-card--public-processes .extension-stage img {
+  width:100% !important;
+  height:100% !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+@media (max-width:980px) {
+  :root { --key-width:340px; --grid-rail:48px; --grid-gap:24px; }
+  .case-section--lead {
+    grid-template-columns:var(--grid-rail) minmax(0,1fr) !important;
+  }
+  .case-section--lead .case-section__header > div { grid-column:2 !important; }
+  .case-section--lead > .feature-slab {
+    grid-column:2 !important;
+    grid-row:2 !important;
+    margin-top:28px !important;
+  }
+  .making-public-panel {
+    grid-template-columns:1fr !important;
+    grid-template-areas:"intro" "banner" "objects" "photo" !important;
+  }
+  .making-public-grid { grid-template-columns:1fr 1fr !important; }
+  .portfolio-masthead__ornament { width:min(78vw,520px) !important; }
+}
+
+@media (max-width:680px) {
+  :root { --key-width:min(100%,360px); --grid-rail:34px; --grid-gap:14px; }
+  .making-public-grid { grid-template-columns:1fr !important; }
+  .portfolio-masthead__ornament { width:min(86vw,480px) !important; height:92px !important; }
+}

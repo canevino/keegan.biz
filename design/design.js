@@ -265,8 +265,8 @@
 
     setKnot(currentIndex);
     scheduleIdle();
-    slot.addEventListener("mouseenter", startHover);
-    slot.addEventListener("mouseleave", stopHover);
+    slot.addEventListener("pointerenter", startHover);
+    slot.addEventListener("pointerleave", stopHover);
 
     reducedMotion.addEventListener?.("change", () => {
       clearTimer();
