@@ -4286,3 +4286,205 @@ figure > figcaption,
     grid-template-columns: 1fr !important;
   }
 }
+
+/* =========================================================
+   v28 - return to v21 blur + threshold ink logic
+   ========================================================= */
+
+/* v27's duplicate-text blur read as a shadow. Remove it. The visible bleed is
+   now the v21-style blur-then-threshold recipe, with a restrained grain pass. */
+[data-ink]::before { display:none !important; }
+.portfolio-masthead h1,
+.project-title,
+.case-section__header h3,
+.making-public-intro h4 {
+  text-shadow:none !important;
+  overflow:visible !important;
+  filter:blur(.62px) url(#ink-threshold-v28) !important;
+}
+.case-section__header h3,
+.making-public-intro h4 {
+  filter:blur(.54px) url(#ink-threshold-v28) !important;
+}
+[data-ink]::after {
+  display:block !important;
+  opacity:.13 !important;
+  background-image:
+    url('/assets/home/Texturelabs_InkPaint_352S grey Fine oil paint overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_303S.jpg') !important;
+  background-size:300px auto, 680px auto !important;
+  background-position:center !important;
+  mix-blend-mode:multiply !important;
+  filter:contrast(1.6) grayscale(1) !important;
+}
+.design-text-nav a,
+.project-client,
+.project-toggle,
+.image-switcher__meta h4,
+.image-switcher__button,
+.flip-card__button,
+.case-credit,
+.case-lede,
+.extension-meta,
+.asset-meta,
+figure > figcaption,
+.making-public-copy p {
+  text-shadow:none !important;
+  filter:blur(.17px) url(#ink-threshold-small-v28) !important;
+}
+
+/* Triennial lead: poster and copy are intentionally paired, with enough air
+   that neither reads as attached to the other. */
+.case-section--lead {
+  display:grid !important;
+  grid-template-columns:minmax(340px,420px) minmax(0,1fr) !important;
+  column-gap:clamp(56px,5.5vw,84px) !important;
+  align-items:start !important;
+}
+.case-section--lead .case-section__header {
+  display:block !important;
+  grid-column:2 !important;
+  grid-row:1 !important;
+}
+.case-section--lead .case-section__header > div {
+  width:min(100%,720px) !important;
+  margin:0 !important;
+}
+.case-section--lead > .feature-slab {
+  grid-column:1 !important;
+  grid-row:1 !important;
+  width:100% !important;
+  margin:0 !important;
+}
+.case-section--lead .feature-slab__hero,
+.case-section--lead .feature-slab__hero img {
+  width:100% !important;
+  margin:0 !important;
+}
+.case-section--lead .case-lede { margin-top:22px !important; }
+.case-section--lead .case-credit { margin-top:20px !important; }
+
+/* Knot: the drawing swaps and the ink color swaps on every glitch frame. Keep
+   the stable state crisp enough to read as an SVG, but printed rather than digital. */
+.portfolio-masthead__ornament .knot-flash__ink,
+.portfolio-masthead__ornament .knot-flash__bleed,
+.portfolio-masthead__ornament .knot-flash__register {
+  filter:none !important;
+}
+.knot-flash--black .knot-flash__ink { filter:brightness(0) blur(.44px) url(#ink-threshold-v28) !important; }
+.knot-flash--black .knot-flash__bleed,
+.knot-flash--black .knot-flash__register { filter:brightness(0) blur(.7px) url(#ink-threshold-v28) !important; }
+.knot-flash--red .knot-flash__ink { filter:brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) blur(.44px) url(#ink-threshold-v28) !important; }
+.knot-flash--red .knot-flash__bleed,
+.knot-flash--red .knot-flash__register { filter:brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) blur(.7px) url(#ink-threshold-v28) !important; }
+.knot-flash--green .knot-flash__ink { filter:brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) blur(.44px) url(#ink-threshold-v28) !important; }
+.knot-flash--green .knot-flash__bleed,
+.knot-flash--green .knot-flash__register { filter:brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) blur(.7px) url(#ink-threshold-v28) !important; }
+.knot-flash--yellow .knot-flash__ink { filter:brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) blur(.44px) url(#ink-threshold-v28) !important; }
+.knot-flash--yellow .knot-flash__bleed,
+.knot-flash--yellow .knot-flash__register { filter:brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) blur(.7px) url(#ink-threshold-v28) !important; }
+.portfolio-masthead__ornament .knot-flash__ink { opacity:1 !important; }
+.portfolio-masthead__ornament .knot-flash__bleed { opacity:.22 !important; transform:translate(1.8px,1px) !important; }
+.portfolio-masthead__ornament .knot-flash__register { opacity:.11 !important; transform:translate(-1.4px,.8px) !important; }
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed { opacity:.56 !important; }
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register { opacity:.44 !important; }
+
+/* Making Public: one clear introductory pairing, then three equal visual units.
+   The photo no longer dominates the printed pieces. */
+.making-public-panel {
+  display:grid !important;
+  grid-template-columns:repeat(12,minmax(0,1fr)) !important;
+  column-gap:24px !important;
+  row-gap:34px !important;
+  align-items:start !important;
+}
+.making-public-intro {
+  grid-column:1 / span 4 !important;
+  grid-row:1 !important;
+  max-width:none !important;
+}
+.mp-banner {
+  grid-column:5 / -1 !important;
+  grid-row:1 !important;
+  align-self:start !important;
+}
+.making-public-grid {
+  grid-column:1 / span 8 !important;
+  grid-row:2 !important;
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:24px !important;
+  margin:0 !important;
+}
+.mp-event-photo {
+  grid-column:9 / -1 !important;
+  grid-row:2 !important;
+  margin:0 !important;
+}
+.making-public-card,
+.mp-event-photo {
+  min-width:0 !important;
+}
+.making-public-card .flip-card__scene,
+.making-public-card .flip-card__inner,
+.making-public-card .flip-card__face,
+.mp-event-photo img {
+  height:390px !important;
+  aspect-ratio:auto !important;
+}
+.making-public-card .flip-card__face img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+.mp-event-photo img {
+  width:100% !important;
+  object-fit:cover !important;
+  object-position:center 45% !important;
+}
+.asset-meta .flip-card__button,
+.extension-meta .flip-card__button {
+  order:initial !important;
+  position:static !important;
+  margin:0 !important;
+  align-self:auto !important;
+}
+.asset-meta,
+.extension-meta {
+  justify-content:space-between !important;
+  align-items:baseline !important;
+}
+
+@media (max-width:980px) {
+  .case-section--lead {
+    grid-template-columns:1fr !important;
+    row-gap:30px !important;
+  }
+  .case-section--lead .case-section__header,
+  .case-section--lead > .feature-slab {
+    grid-column:1 !important;
+  }
+  .case-section--lead > .feature-slab { grid-row:2 !important; max-width:520px !important; }
+  .making-public-panel {
+    grid-template-columns:1fr !important;
+  }
+  .making-public-intro,
+  .mp-banner,
+  .making-public-grid,
+  .mp-event-photo {
+    grid-column:1 !important;
+    grid-row:auto !important;
+  }
+}
+
+@media (max-width:680px) {
+  .making-public-grid { grid-template-columns:1fr !important; }
+  .making-public-card .flip-card__scene,
+  .making-public-card .flip-card__inner,
+  .making-public-card .flip-card__face,
+  .mp-event-photo img { height:auto !important; }
+  [data-ink]::after { opacity:.10 !important; }
+}

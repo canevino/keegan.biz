@@ -204,7 +204,7 @@
       let next = Math.floor(Math.random() * knotSources.length);
       if (next === currentIndex) next = (next + 1) % knotSources.length;
       currentIndex = next;
-      colorIndex = (colorIndex + 1 + Math.floor(Math.random() * 2)) % knotColorClasses.length;
+      colorIndex = (colorIndex + 1) % knotColorClasses.length;
       knotColorClasses.forEach((className) => slot.classList.remove(className));
       slot.classList.add(knotColorClasses[colorIndex]);
       setKnot(currentIndex);
@@ -224,14 +224,14 @@
     const idleBurst = () => {
       if (reducedMotion.matches || hovering) return;
       slot.classList.add("is-fluttering");
-      const swaps = 10 + Math.floor(Math.random() * 6);
+      const swaps = 14 + Math.floor(Math.random() * 7);
       let count = 0;
 
       const step = () => {
         chooseNext();
         count += 1;
         if (count < swaps) {
-          timer = window.setTimeout(step, 22 + Math.random() * 34);
+          timer = window.setTimeout(step, 28 + Math.random() * 28);
         } else {
           slot.classList.remove("is-fluttering");
           scheduleIdle();
@@ -244,7 +244,7 @@
     const hoverLoop = () => {
       if (!hovering || reducedMotion.matches) return;
       chooseNext();
-      timer = window.setTimeout(hoverLoop, 24 + Math.random() * 34);
+      timer = window.setTimeout(hoverLoop, 30 + Math.random() * 26);
     };
 
     const startHover = () => {
@@ -264,6 +264,8 @@
       scheduleIdle();
     };
 
+    knotColorClasses.forEach((className) => slot.classList.remove(className));
+    slot.classList.add(knotColorClasses[colorIndex]);
     setKnot(currentIndex);
     scheduleIdle();
     slot.addEventListener("pointerenter", startHover);

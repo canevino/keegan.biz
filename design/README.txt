@@ -1,28 +1,17 @@
-keegan.biz /design — v26
-Date: 2026-10-06
+keegan.biz /design — v28
 
-Changed
-- Stronger visible blur/threshold/grain ink on display type and stronger soft ink on smaller text.
-- Paper texture increased slightly, still global and quiet.
-- Knot hit area tightened to the visible ornament footprint.
-- Knot now uses red, green, and yellow registration layers during glitch, with stronger texture/bleed.
-- Exchange lead text and lead poster share one row to reduce scrolling.
-- Collapsed project key images are structurally locked to one width.
-- Making Public rebuilt into two rows: copy + banner, then printed objects + event documentation.
-- Removed internal Making Public rules; event photo moved into its own aligned column.
-- Extensions remain equal-height and uncropped.
-- Shared rail/gap variables continue to control project and case-study alignment.
+Focused fixes from v27:
+- Restored the v21-era blur + threshold ink logic, which was the strongest earlier version, but removed the color-gradient/shadow behavior.
+- Kept a light clipped texture over solid text.
+- Knot now cycles black, red, green, yellow on every glitch step and glitches more aggressively.
+- Triennial lead poster and copy have a larger structural gap.
+- Making Public is rebuilt on a 12-column grid: intro + banner, then three equal visual units.
+- Flip controls return to the right side of labels instead of appearing before them.
+- Existing content, interactions, and project order otherwise remain unchanged.
 
-Check
-1. Ink bleed is clearly visible on design, project titles, section titles, and Making Public.
-2. Smaller labels/body text have a lighter printed edge without losing readability.
-3. Knot only glitches when pointer is actually over its visible footprint.
-4. Knot glitch shows red/green/yellow registration and visible roughness.
-5. Exchange lead no longer wastes a large vertical gap.
-6. All collapsed key images occupy exactly the same width.
-7. Making Public event documentation is moved and the whole section aligns cleanly.
-8. Extensions remain equal height without cropping the GIF.
-
-Next
-- Better Angels: rebuild fold object and case sequence.
-- Then Paul Winter, PRX/Radiotopia, TFM.
+Check:
+1. Ink bleed reads as rough swollen print, not a drop shadow.
+2. Text color remains flat/consistent with no gradient.
+3. Knot visibly changes color while glitching.
+4. Triennial lead has enough breathing room.
+5. Making Public has three equal-weight lower modules and no dominant event photo.
