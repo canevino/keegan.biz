@@ -194,7 +194,8 @@
     const images = slot.querySelectorAll("img");
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
     let currentIndex = slotIndex % knotSources.length;
-    let colorIndex = slotIndex % knotColorClasses.length;
+    const existingColorIndex = knotColorClasses.findIndex((className) => slot.classList.contains(className));
+    let colorIndex = existingColorIndex >= 0 ? existingColorIndex : slotIndex % knotColorClasses.length;
     let timer = 0;
     let hovering = false;
 
@@ -204,7 +205,9 @@
       let next = Math.floor(Math.random() * knotSources.length);
       if (next === currentIndex) next = (next + 1) % knotSources.length;
       currentIndex = next;
-      colorIndex = (colorIndex + 1) % knotColorClasses.length;
+      let nextColor = Math.floor(Math.random() * knotColorClasses.length);
+      if (nextColor === colorIndex) nextColor = (nextColor + 1) % knotColorClasses.length;
+      colorIndex = nextColor;
       knotColorClasses.forEach((className) => slot.classList.remove(className));
       slot.classList.add(knotColorClasses[colorIndex]);
       setKnot(currentIndex);
