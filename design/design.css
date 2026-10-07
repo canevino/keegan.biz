@@ -1216,3 +1216,175 @@ figure > figcaption {
   .page-knot-spine__art { left:44px; height:44px; transform:rotate(90deg) scaleY(1.22) skewX(-1.6deg); }
   .selected-heading__main strong { width:auto; font-size:clamp(40px,12vw,58px); }
 }
+
+/* =====================================================
+   v18 — system cleanup / Triennial art-direction pass
+   ===================================================== */
+
+/* Keep the typography printed, not dimensional. The prior offset shadows read
+   as browser effects rather than ink. Ink bleed will be developed as texture. */
+.portfolio-masthead h1,
+.selected-heading__main strong,
+.project-title,
+.case-section__header h3 {
+  text-shadow: none !important;
+}
+
+/* No UI-like drop shadows on artwork. Physical depth should come from the
+   photography or paper texture itself. */
+.project-key__collage,
+.project-key__collage .collage-secondary,
+.feature-slab__hero img,
+.prx-hero-figure img,
+.prx-card--campaign > img,
+.paper-folder {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Stable knot geometry. Smooth knots can glitch by swapping drawings/color,
+   but they stay registered to the same footprint. */
+.knot-flash {
+  transform: none !important;
+  transform-origin: center;
+  transition: opacity .08s linear, filter .08s linear;
+}
+.knot-flash.is-fluttering { opacity: .56; filter: contrast(1.3); }
+.knot-flash.is-fluttering .knot-flash__ink { opacity: .92; }
+.knot-flash.is-fluttering .knot-flash__bleed { opacity: .34; transform: none; }
+.knot-flash.is-settling { opacity: 1; }
+.knot-flash__ink { opacity: .82; }
+.knot-flash__bleed {
+  opacity: .25;
+  transform: none;
+  filter: blur(.8px) contrast(1.35);
+}
+
+/* Long knot is a quiet printed edge, not a distorted object. */
+.page-knot-spine {
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 100%;
+  opacity: .105;
+  overflow: hidden;
+  mix-blend-mode: multiply;
+}
+.page-knot-spine__art {
+  left: 48px;
+  height: 48px;
+  transform: rotate(90deg);
+  filter: sepia(.22) saturate(1.18) hue-rotate(326deg) contrast(1.12) brightness(.78);
+}
+.page-knot-spine::after {
+  opacity: .16;
+  background: var(--paper-print) center / 430px auto repeat-y;
+  background-blend-mode: multiply;
+  mix-blend-mode: multiply;
+}
+
+/* The Texturelabs material is now an overlay system. It should stain the base
+   paper rather than create unrelated grey cards. */
+.feature-slab::before,
+.making-public-panel::before,
+.angels-takeaway-grid::before,
+.prx-pairing::before {
+  border: 0;
+  background: var(--paper-wheatpaste) center / 760px auto;
+  background-blend-mode: multiply;
+  mix-blend-mode: multiply;
+  opacity: .12;
+}
+.making-public-panel {
+  background: transparent;
+  border-color: rgba(17,16,14,.14);
+}
+.image-switcher__stage,
+.double-artworks img,
+.angels-signage-grid img,
+.project-key > img,
+.project-key__collage,
+.poster-triptych,
+.college-summary-grid {
+  background-color: transparent;
+}
+
+/* Shared alignment rule: metadata, copy and artwork begin at the top edge of
+   their module. Variation comes from scale/shape, not accidental vertical drift. */
+.project-summary,
+.feature-slab,
+.extension-layout,
+.making-public-grid,
+.angels-takeaway-grid,
+.angels-script-layout,
+.angels-signage-layout,
+.prx-pairing,
+.college-showcase--tfm {
+  align-items: start;
+}
+
+/* Respect source-image proportions. Portrait campaign art stays portrait;
+   installed landscape documentation receives a landscape stage. */
+.image-switcher__stage--portrait { aspect-ratio: 4 / 5; }
+.image-switcher__stage--wide { aspect-ratio: 4 / 3; }
+.image-switcher__stage img { object-position: center top; }
+.image-switcher__stage .state-primary { object-fit: contain; }
+.image-switcher__stage .state-secondary { object-fit: cover; object-position: center top; }
+
+/* Triennial summary collage: top-registered specimen board, no floating-card
+   shadows. The large campaign object carries the weight. */
+.collage-triennial {
+  display: grid;
+  grid-template-columns: minmax(0,1.45fr) minmax(150px,.55fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  height: clamp(270px, 25vw, 350px);
+  padding: 12px;
+}
+.project-key__collage.collage-triennial .collage-main,
+.project-key__collage.collage-triennial .collage-secondary {
+  position: static;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  object-fit: contain;
+  object-position: center top;
+  background: transparent;
+}
+.project-key__collage.collage-triennial .collage-main { grid-row: 1 / -1; }
+
+/* Public Processes is one object with two states rather than two equal posters
+   sitting beside each other. */
+.extension-card--public-processes .flip-card__meta {
+  align-items: flex-start;
+}
+.extension-card--public-processes .flip-card__meta > div {
+  display: grid;
+  gap: 3px;
+}
+.extension-card--public-processes .flip-card__meta strong { font-size: 14px; }
+.extension-card--public-processes .flip-card__meta span { color: var(--muted); font-size: 10px; }
+.flip-card--landscape .flip-card__inner { aspect-ratio: 1 / 1; }
+.flip-card--landscape .flip-card__face img {
+  object-fit: contain;
+  object-position: center top;
+}
+
+/* Restore the Making Public social pair as one flip object. */
+.flip-card--social .flip-card__inner { aspect-ratio: 1 / 1; }
+.flip-card--social .flip-card__face img { object-fit: contain; object-position: center top; }
+.mp-event-photo img { width: 100%; height: auto; object-fit: contain; object-position: top; }
+
+/* Desktop hover supplements click/keyboard; it never replaces them. */
+@media (hover:hover) and (pointer:fine) {
+  .flip-card:hover .flip-card__inner { transform: rotateY(180deg); }
+}
+
+@media (max-width:680px) {
+  .page-knot-spine { right:0; width:30px; opacity:.07; }
+  .page-knot-spine__art { left:30px; height:30px; transform:rotate(90deg); }
+  .collage-triennial { grid-template-columns:1fr; grid-template-rows:auto; height:auto; }
+  .project-key__collage.collage-triennial .collage-main { grid-row:auto; }
+  .project-key__collage.collage-triennial .collage-secondary { min-height:130px; }
+}

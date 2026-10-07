@@ -197,17 +197,6 @@
 
     const setKnot = (index) => images.forEach((image) => { image.src = knotSources[index]; });
 
-    const randomizeShape = () => {
-      const sx = .82 + Math.random() * .52;
-      const sy = .72 + Math.random() * .56;
-      const skew = -10 + Math.random() * 20;
-      const rotate = -3 + Math.random() * 6;
-      slot.style.setProperty("--knot-sx", sx.toFixed(3));
-      slot.style.setProperty("--knot-sy", sy.toFixed(3));
-      slot.style.setProperty("--knot-skew", `${skew.toFixed(2)}deg`);
-      slot.style.setProperty("--knot-rotate", `${rotate.toFixed(2)}deg`);
-    };
-
     const chooseNext = () => {
       let next = Math.floor(Math.random() * knotSources.length);
       if (next === currentIndex) next = (next + 1) % knotSources.length;
@@ -216,25 +205,24 @@
       knotColorClasses.forEach((className) => slot.classList.remove(className));
       slot.classList.add(knotColorClasses[colorIndex]);
       setKnot(currentIndex);
-      randomizeShape();
     };
 
     const burst = () => {
       if (reducedMotion.matches) return;
       slot.classList.add("is-fluttering");
-      const swaps = 5 + Math.floor(Math.random() * 7);
+      const swaps = 4 + Math.floor(Math.random() * 5);
       let count = 0;
 
       const flutter = () => {
         chooseNext();
         count += 1;
         if (count < swaps) {
-          timer = window.setTimeout(flutter, 45 + Math.random() * 85);
+          timer = window.setTimeout(flutter, 38 + Math.random() * 58);
         } else {
           slot.classList.remove("is-fluttering");
           slot.classList.add("is-settling");
-          window.setTimeout(() => slot.classList.remove("is-settling"), 180);
-          timer = window.setTimeout(burst, 3000 + Math.random() * 6500);
+          window.setTimeout(() => slot.classList.remove("is-settling"), 140);
+          timer = window.setTimeout(burst, 3200 + Math.random() * 6200);
         }
       };
 
@@ -242,13 +230,12 @@
     };
 
     setKnot(currentIndex);
-    randomizeShape();
-    if (!reducedMotion.matches) timer = window.setTimeout(burst, 650 + slotIndex * 260 + Math.random() * 900);
+    if (!reducedMotion.matches) timer = window.setTimeout(burst, 700 + slotIndex * 240 + Math.random() * 800);
 
     reducedMotion.addEventListener?.("change", () => {
       window.clearTimeout(timer);
       slot.classList.remove("is-fluttering", "is-settling");
-      if (!reducedMotion.matches) timer = window.setTimeout(burst, 600);
+      if (!reducedMotion.matches) timer = window.setTimeout(burst, 650);
     });
   });
 })();

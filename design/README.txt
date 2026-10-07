@@ -1,68 +1,67 @@
-keegan.biz /design — v17 baseline
+keegan.biz /design — v18 system cleanup + Triennial art-direction pass
 Date: 2026-10-06
-Purpose: single reconciled source of truth before checklist-led refinement
+Base: v17 reconciled baseline
 
 UPLOAD / REPLACE
 - index.html
 - design.css
 - design.js
 
-BASELINE INTENT
-- Preserve the v14.1 interaction model and the v15/v16 art-direction work.
-- Use one custom design-page navigation: keegan.biz scarf + lowercase text links.
-- Keep the page editorial and modernist, with controlled dirty-print texture and selective Celtic-revival knotwork.
-- Do not restructure the project system unless a specific defect requires it.
+PURPOSE OF THIS PASS
+v18 does not attempt to solve every project at once. It fixes the global visual-system problems visible in the first browser review, then tightens the Triennial case study so we have a cleaner standard to use when art-directing Better Angels, Paul Winter, PRX/Radiotopia, and Trinity FM.
 
-RECONCILED IN v17
-- Restored the custom one-scarf/text navigation and removed the accidental shared site-nav dependency.
-- Restored the full-height knot_long.svg page spine expected by CSS/JS.
-- Restored live data-knot-flash ornament markup so the v16 flutter JS actually has targets.
-- Removed all pinch_knot and knot_large references from the design-page HTML.
-- Preserved the newer v16 project copy for Triennial, Better Angels, and PRX.
-- Preserved the v16 Making Public treatment with static social graphics; this leaves 2 explicit flip-card modules, not 3.
-- Restored tabindex/role/aria state on the Better Angels paper object so keyboard fold behavior matches the JS.
-- Preserved reduced-motion support.
+CHECK IN THIS VERSION
+1. DISPLAY TYPE
+- No browser-style drop shadows behind large type.
+- Printed texture remains inside the letters, but dimensional shadow is removed.
+- Project title is always “Triennial 2025: The Exchange.”
 
-ACTIVE ORNAMENT ASSETS
-- /assets/home/knot_long.svg
-- /assets/home/knot_smooth_svg1.svg through knot_smooth_svg5.svg
+2. KNOTS
+- Smooth SVG knots no longer stretch, skew, rotate, or distort in place.
+- Glitch behavior now comes from rapid swaps between the five drawings plus restrained color/ink flicker.
+- Long knot spine is quieter, narrower, registered to the edge, and no longer aggressively skewed/stretched/overprinted.
+- Check whether the long spine feels intentional rather than broken. If not, it will be reduced further or rebuilt as a repeated print element.
 
-CORE v16/v17 SURFACE ASSETS
-- Texturelabs_Paper_226S grey paper pul overlay.jpg
-- Texturelabs_Paper_375S printed paper screen.jpg
-- Texturelabs_Paper_210S wheatpaste grey overlay.jpg
-- Texturelabs_InkPaint_323S grey pastel blended overlay.jpg
-- Texturelabs_InkPaint_324S grey brush strokes overlay.jpg
-- Texturelabs_Film_185S Vintage daguerreotype film.jpg
-- Texturelabs_Concrete_202S grey plaster texture overlay.jpg
-- Texturelabs_Paper_360S black paper screen.jpg
+3. TEXTURE SYSTEM
+- Grey Texturelabs material is treated as a low-opacity multiply overlay on the paper, not as opaque grey UI panels.
+- Local plates should feel related to the same physical stock.
+- No decorative drop shadows on portfolio assets.
+- Ink-bleed texture around type/ornament edges is NOT finished; it is explicitly queued as a dedicated pass rather than simulated with shadows.
 
-NOTE ON LEGACY TEXTURE REFERENCES
-The stylesheet still contains a small number of older section-specific Texturelabs references inherited from the working v15 CSS. They are not being removed in this baseline pass because the goal here is reconciliation without visual regression. They can be consolidated later only after live browser review.
+4. ALIGNMENT / CROPPING
+- Shared modules are top-aligned.
+- Wide Triennial installed imagery now uses a landscape stage instead of being forced into the portrait ratio.
+- Artwork uses top registration and contain where cropping would damage the source shape.
+- This is the beginning of the crop audit, not the final project-by-project crop pass.
 
-STATIC BASELINE AUDIT
-- JS syntax: clean
-- CSS parse errors: 0
-- duplicate HTML ids: 0
-- project accordions: 5
-- Triennial image switchers: 3
-- explicit flip-card modules: 2
-- Better Angels folders: 1
-- live knot-flash ornaments: 3
-- full-height page knot spine: 1
-- pinch_knot references in HTML: 0
-- knot_large references in HTML: 0
-- prefers-reduced-motion: present
-- Better Angels folder keyboard target: restored
+5. TRIENNIAL EXTENSIONS
+- Public Processes is one interactive object: one poster shown at a time, flipping on hover/click/keyboard.
+- Making Public social graphics are again one flip pair rather than two unrelated static squares.
+- Making Public event photography remains visible separately.
+- Triennial summary collage has been rebalanced into a top-registered specimen board with one dominant campaign object.
 
-LOCKED BEHAVIOR
-- Five major project accordions begin closed.
-- Three Triennial artwork / installed-view switchers retain click/tap/keyboard behavior and desktop hover where CSS supplies it.
-- Making Public program and Better Angels flyer use the shared flip-card interaction.
-- Better Angels paper object folds by click/tap/keyboard; flip remains separate; visible fold button remains hidden by CSS.
-- Mobile layouts must not depend on hover.
-- /design/assets paths remain unchanged.
-- Ornament on this page is restricted to knot_long.svg and knot_smooth_svg1–5.svg.
+STATIC QA
+- 5 project accordions
+- 3 Triennial artwork/installed-view switchers
+- 4 flip cards total (Making Public program, Making Public social, Public Processes, Better Angels flyer)
+- 1 Better Angels folder
+- 3 knot-flash ornaments
+- 1 long knot spine
+- 0 duplicate HTML ids
+- design.js syntax clean
+- reduced-motion logic retained
 
-NEXT GATE
-Use portfolio-design-build-checklist-v17.docx. Start with browser QA at desktop/laptop/tablet/mobile widths, then work project-by-project. Do not mark visual items complete from code inspection alone.
+INTENTIONALLY NOT SOLVED IN v18
+These are now explicit checklist items rather than being half-fixed in the same pass:
+- true ink-bleed / misregistration texture treatment
+- complete key-image re-selection and crop audit for every project
+- complete Better Angels fold-object rebuild
+- Better Angels signage inventory/layout including both artwork/specimen and installed views
+- Better Angels cohesion pass across takeaway, whistle/script, signage, and activation
+- Paul Winter poster-suite art direction
+- PRX / Radiotopia hierarchy and cleanup
+- Trinity FM hierarchy and art direction
+- final mobile/tablet pass
+
+WORKING RULE
+Use v18 as the visual-system checkpoint. Review the items above first. Once the global texture/knot/alignment behavior feels right, continue project-by-project rather than applying another whole-page redesign.

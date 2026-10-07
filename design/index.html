@@ -68,7 +68,7 @@
 
             <div class="project-summary__copy">
               <p class="project-client">Boston Public Art Triennial</p>
-              <h2 class="project-title">The Exchange + project extensions</h2>
+              <h2 class="project-title">Triennial 2025: The Exchange</h2>
               <p class="project-blurb">
                 Campaign design for the Triennial’s citywide exhibition, adapting the existing identity across print, advertising,
                 event collateral, and environmental applications. Within the same visual language, I also built smaller collateral systems and event graphics.
@@ -192,13 +192,25 @@
                   <figcaption><strong>Art + Stroll</strong><span>Event graphic</span></figcaption>
                 </figure>
 
-                <div class="extension-card extension-card--double">
-                  <div class="double-artworks">
-                    <figure><img src="/design/assets/public processes v2.png" alt="Public Processes poster with architectural line drawing"></figure>
-                    <figure><img src="/design/assets/public processes.png" alt="Public Processes poster with architectural model"></figure>
+                <article class="extension-card extension-card--public-processes flip-card flip-card--landscape" data-flip-card>
+                  <div class="flip-card__meta">
+                    <div>
+                      <strong>Public Processes</strong>
+                      <span>two poster treatments · hover or click to flip</span>
+                    </div>
+                    <button type="button" class="flip-card__button" aria-pressed="false">flip</button>
                   </div>
-                  <p><strong>Public Processes</strong><br>Two treatments for the Boston Cyberarts exhibition, held together by the same typographic structure.</p>
-                </div>
+                  <div class="flip-card__scene" tabindex="0" role="button" aria-label="Flip between the two Public Processes poster treatments">
+                    <div class="flip-card__inner">
+                      <figure class="flip-card__face flip-card__face--front">
+                        <img src="/design/assets/public processes v2.png" alt="Public Processes poster with architectural line drawing">
+                      </figure>
+                      <figure class="flip-card__face flip-card__face--back">
+                        <img src="/design/assets/public processes.png" alt="Public Processes poster with architectural model">
+                      </figure>
+                    </div>
+                  </div>
+                </article>
               </div>
 
               <div class="making-public-panel">
@@ -231,15 +243,23 @@
                   </article>
 
                   <div class="stacked-socials">
-                    <figure>
-                      <img src="/design/assets/making public social 1.png" alt="Making Public social graphic with program information">
-                      <figcaption>social 01</figcaption>
-                    </figure>
-                    <figure>
-                      <img src="/design/assets/making public social 2.png" alt="Making Public social graphic with event information">
-                      <figcaption>social 02</figcaption>
-                    </figure>
-                    <figure>
+                    <article class="flip-card flip-card--social" data-flip-card>
+                      <div class="flip-card__meta">
+                        <span>social pair</span>
+                        <button type="button" class="flip-card__button" aria-pressed="false">flip</button>
+                      </div>
+                      <div class="flip-card__scene" tabindex="0" role="button" aria-label="Flip between the two Making Public social graphics">
+                        <div class="flip-card__inner">
+                          <figure class="flip-card__face flip-card__face--front">
+                            <img src="/design/assets/making public social 1.png" alt="Making Public social graphic with program information">
+                          </figure>
+                          <figure class="flip-card__face flip-card__face--back">
+                            <img src="/design/assets/making public social 2.png" alt="Making Public social graphic with event information">
+                          </figure>
+                        </div>
+                      </div>
+                    </article>
+                    <figure class="mp-event-photo">
                       <img src="/design/assets/making public event photo.jpg" alt="Making Public event photograph">
                       <figcaption>event photo</figcaption>
                     </figure>
