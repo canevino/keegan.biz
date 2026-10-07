@@ -12,90 +12,28 @@
 <body class="design-page">
 <svg aria-hidden="true" class="print-filter-defs" focusable="false" height="0" width="0">
 <defs>
-<filter color-interpolation-filters="sRGB" height="154%" id="ink-bleed" width="128%" x="-14%" y="-24%">
-<fegaussianblur in="SourceAlpha" result="softAlpha" stddeviation="0.95"></fegaussianblur>
-<fecomponenttransfer in="softAlpha" result="thresholdAlpha">
-<fefunca tablevalues="0 0 0 1 1 1" type="discrete"></fefunca>
-</fecomponenttransfer>
-<femorphology in="thresholdAlpha" operator="dilate" radius="0.38" result="spreadAlpha"></femorphology>
-<feturbulence basefrequency="0.018 0.24" numoctaves="2" result="edgeNoise" seed="29" type="fractalNoise"></feturbulence>
-<fedisplacementmap in="spreadAlpha" in2="edgeNoise" result="roughAlpha" scale="2.05" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
-<feturbulence basefrequency="0.48 0.62" numoctaves="1" result="grainNoise" seed="11" type="fractalNoise"></feturbulence>
-<fecolormatrix in="grainNoise" result="grainAlpha" type="luminanceToAlpha"></fecolormatrix>
-<fecomponenttransfer in="grainAlpha" result="lightGrain"><fefunca slope="0.26" type="linear"></fefunca></fecomponenttransfer>
-<fecomposite in="roughAlpha" in2="lightGrain" operator="out" result="texturedAlpha"></fecomposite>
-<fecomposite in="SourceGraphic" in2="texturedAlpha" operator="in" result="coreInk"></fecomposite>
-<fegaussianblur in="SourceGraphic" result="bleedInk" stddeviation="1.42"></fegaussianblur>
-<fecomponenttransfer in="bleedInk" result="fadedBleed"><fefunca slope="0.23" type="linear"></fefunca></fecomponenttransfer>
-<femerge><femergenode in="fadedBleed"></femergenode><femergenode in="coreInk"></femergenode></femerge>
+<filter color-interpolation-filters="sRGB" height="156%" id="ink-display-v31" width="124%" x="-12%" y="-24%">
+<femorphology in="SourceGraphic" operator="dilate" radius="0.42" result="spread"></femorphology>
+<fegaussianblur in="spread" result="soft" stddeviation="0.68"></fegaussianblur>
+<fecomponenttransfer in="soft" result="thresholded"><fefunca tablevalues="0 0 0.72 1 1" type="discrete"></fefunca></fecomponenttransfer>
+<feturbulence basefrequency="0.024 0.31" numoctaves="2" result="edgeNoise" seed="31" type="fractalNoise"></feturbulence>
+<fedisplacementmap in="thresholded" in2="edgeNoise" result="rough" scale="1.35" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
+<feturbulence basefrequency="0.62 0.77" numoctaves="1" result="grainNoise" seed="13" type="fractalNoise"></feturbulence>
+<fecomposite in="grainNoise" in2="rough" operator="in" result="grain"></fecomposite>
+<fecomponenttransfer in="grain" result="grainSoft"><fefunca slope="0.13" type="linear"></fefunca></fecomponenttransfer>
+<feblend in="rough" in2="grainSoft" mode="multiply"></feblend>
 </filter>
-<filter color-interpolation-filters="sRGB" height="126%" id="ink-soft" width="114%" x="-7%" y="-12%">
-<fegaussianblur in="SourceAlpha" result="softAlpha" stddeviation="0.32"></fegaussianblur>
-<fecomponenttransfer in="softAlpha" result="thresholdAlpha"><fefunca tablevalues="0 0 1 1" type="discrete"></fefunca></fecomponenttransfer>
-<feturbulence basefrequency="0.58 0.66" numoctaves="1" result="grainNoise" seed="19" type="fractalNoise"></feturbulence>
-<fecolormatrix in="grainNoise" result="grainAlpha" type="luminanceToAlpha"></fecolormatrix>
-<fecomponenttransfer in="grainAlpha" result="lightGrain"><fefunca slope="0.12" type="linear"></fefunca></fecomponenttransfer>
-<fecomposite in="thresholdAlpha" in2="lightGrain" operator="out" result="texturedAlpha"></fecomposite>
-<fecomposite in="SourceGraphic" in2="texturedAlpha" operator="in" result="core"></fecomposite>
-<fegaussianblur in="SourceGraphic" result="soft" stddeviation="0.48"></fegaussianblur>
-<fecomponenttransfer in="soft"><fefunca slope="0.09" type="linear"></fefunca></fecomponenttransfer>
-<femerge><femergenode in="soft"></femergenode><femergenode in="core"></femergenode></femerge>
+<filter color-interpolation-filters="sRGB" height="124%" id="ink-small-v31" width="110%" x="-5%" y="-10%">
+<femorphology in="SourceGraphic" operator="dilate" radius="0.10" result="spread"></femorphology>
+<feturbulence basefrequency="0.04 0.34" numoctaves="1" result="noise" seed="17" type="fractalNoise"></feturbulence>
+<fedisplacementmap in="spread" in2="noise" scale="0.34" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
 </filter>
-<filter color-interpolation-filters="sRGB" height="164%" id="ink-knot" width="136%" x="-18%" y="-32%">
-<fegaussianblur in="SourceAlpha" result="softAlpha" stddeviation="1.02"></fegaussianblur>
-<fecomponenttransfer in="softAlpha" result="thresholdAlpha"><fefunca tablevalues="0 0 0 1 1 1" type="discrete"></fefunca></fecomponenttransfer>
-<femorphology in="thresholdAlpha" operator="dilate" radius="0.44" result="spreadAlpha"></femorphology>
-<feturbulence basefrequency="0.021 0.30" numoctaves="2" result="edgeNoise" seed="37" type="fractalNoise"></feturbulence>
-<fedisplacementmap in="spreadAlpha" in2="edgeNoise" result="roughAlpha" scale="2.8" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
-<feturbulence basefrequency="0.42 0.58" numoctaves="1" result="grainNoise" seed="7" type="fractalNoise"></feturbulence>
-<fecolormatrix in="grainNoise" result="grainAlpha" type="luminanceToAlpha"></fecolormatrix>
-<fecomponenttransfer in="grainAlpha" result="knotGrain"><fefunca slope="0.30" type="linear"></fefunca></fecomponenttransfer>
-<fecomposite in="roughAlpha" in2="knotGrain" operator="out" result="texturedAlpha"></fecomposite>
-<fecomposite in="SourceGraphic" in2="texturedAlpha" operator="in" result="core"></fecomposite>
-<fegaussianblur in="SourceGraphic" result="bleed" stddeviation="1.55"></fegaussianblur>
-<fecomponenttransfer in="bleed"><fefunca slope="0.25" type="linear"></fefunca></fecomponenttransfer>
-<femerge><femergenode in="bleed"></femergenode><femergenode in="core"></femergenode></femerge>
-</filter>
-
-<filter id="ink-threshold-v28" x="-12%" y="-22%" width="124%" height="150%" color-interpolation-filters="sRGB">
-  <feComponentTransfer result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1"/>
-  </feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.022 0.20" numOctaves="2" seed="17" result="noise"/>
-  <feDisplacementMap in="thresholded" in2="noise" scale="0.95" xChannelSelector="R" yChannelSelector="G"/>
-</filter>
-<filter id="ink-threshold-small-v28" x="-8%" y="-16%" width="116%" height="132%" color-interpolation-filters="sRGB">
-  <feComponentTransfer result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 1 1"/>
-  </feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.03 0.28" numOctaves="1" seed="23" result="noise"/>
-  <feDisplacementMap in="thresholded" in2="noise" scale="0.45" xChannelSelector="R" yChannelSelector="G"/>
-</filter>
-
-<filter id="ink-press-v29" x="-14%" y="-24%" width="128%" height="154%" color-interpolation-filters="sRGB">
-  <feMorphology in="SourceGraphic" operator="dilate" radius="0.62" result="spread"/>
-  <feGaussianBlur in="spread" stdDeviation="0.34" result="softSpread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.23" numOctaves="2" seed="41" result="edgeNoise"/>
-  <feDisplacementMap in="softSpread" in2="edgeNoise" scale="1.45" xChannelSelector="R" yChannelSelector="G" result="roughCore"/>
-  <feGaussianBlur in="spread" stdDeviation="1.08" result="outerBleed"/>
-  <feComponentTransfer in="outerBleed" result="fadedBleed"><feFuncA type="linear" slope="0.20"/></feComponentTransfer>
-  <feMerge><feMergeNode in="fadedBleed"/><feMergeNode in="roughCore"/></feMerge>
-</filter>
-<filter id="ink-soft-v29" x="-8%" y="-14%" width="116%" height="128%" color-interpolation-filters="sRGB">
-  <feMorphology in="SourceGraphic" operator="dilate" radius="0.18" result="spread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.026 0.31" numOctaves="1" seed="13" result="edgeNoise"/>
-  <feDisplacementMap in="spread" in2="edgeNoise" scale="0.42" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="spread" stdDeviation="0.34" result="soft"/>
-  <feComponentTransfer in="soft" result="faded"><feFuncA type="linear" slope="0.08"/></feComponentTransfer>
-  <feMerge><feMergeNode in="faded"/><feMergeNode in="rough"/></feMerge>
-</filter>
-<filter id="ink-knot-v29" x="-18%" y="-30%" width="136%" height="160%" color-interpolation-filters="sRGB">
-  <feMorphology in="SourceGraphic" operator="dilate" radius="0.52" result="spread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.021 0.28" numOctaves="2" seed="47" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="2.25" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="spread" stdDeviation="1.15" result="bleed"/>
-  <feComponentTransfer in="bleed" result="faded"><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
-  <feMerge><feMergeNode in="faded"/><feMergeNode in="rough"/></feMerge>
+<filter color-interpolation-filters="sRGB" height="160%" id="ink-knot-v31" width="136%" x="-18%" y="-30%">
+<femorphology in="SourceGraphic" operator="dilate" radius="0.48" result="spread"></femorphology>
+<fegaussianblur in="spread" result="soft" stddeviation="0.72"></fegaussianblur>
+<fecomponenttransfer in="soft" result="thresholded"><fefunca tablevalues="0 0 0.72 1 1" type="discrete"></fefunca></fecomponenttransfer>
+<feturbulence basefrequency="0.025 0.31" numoctaves="2" result="noise" seed="47" type="fractalNoise"></feturbulence>
+<fedisplacementmap in="thresholded" in2="noise" scale="2.15" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
 </filter>
 </defs>
 </svg>
@@ -118,13 +56,13 @@
 <h1 data-ink="design" id="design-title">design</h1>
 </div>
 <div class="portfolio-masthead__rail">
-<div aria-hidden="true" class="portfolio-masthead__ornament knot-flash knot-flash--green" data-knot-flash="">
+<div aria-hidden="true" class="portfolio-masthead__ornament knot-flash knot-flash--black" data-knot-flash="">
 <img alt="" class="knot-flash__bleed" src="/assets/home/knot_smooth_svg1.svg"/>
 <img alt="" class="knot-flash__ink" src="/assets/home/knot_smooth_svg1.svg"/>
 <img alt="" class="knot-flash__register" src="/assets/home/knot_smooth_svg1.svg"/></div>
 </div>
 </section>
-<section class="project-family-heading" aria-labelledby="triennial-family-title">
+<section aria-labelledby="triennial-family-title" class="project-family-heading">
 <h2 data-ink="Boston Public Art Triennial" id="triennial-family-title">Boston Public Art Triennial</h2>
 </section>
 <section aria-label="Project list" class="work-stack">
@@ -202,7 +140,7 @@
 </article>
 </div>
 </section>
-<section class="case-section">
+<section class="case-section case-section--extensions">
 <div class="case-section__header">
 <span class="case-section__number">03</span>
 <div>
@@ -210,16 +148,8 @@
 <p class="case-lede">Beyond the core campaign, I adapted the Triennial identity for individual events and exhibitions. Art + Stroll uses an edited Boston skyline in the house color and type system, with an animated version for social. Public Processes applies the same system to a co-presented exhibition with Boston Cyberarts.</p></div>
 </div>
 <div class="extension-layout"><figure class="extension-card extension-card--gif"><div class="extension-meta"><span>Art + Stroll / event flyer + animation</span></div><div class="extension-stage"><img alt="Art + Stroll animated event graphic" src="/design/assets/art and stroll gif.gif"/></div></figure><article class="extension-card extension-card--public-processes flip-card flip-card--landscape" data-flip-card=""><div class="extension-meta"><span>Public Processes / exhibition poster</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div><div aria-label="Flip Public Processes poster" class="flip-card__scene extension-stage" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Public Processes line drawing poster" src="/design/assets/public processes v2.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Public Processes architectural model poster" src="/design/assets/public processes.png"/></figure></div></div></article></div>
-<div class="making-public-panel">
-<div class="making-public-intro">
-<h4 data-ink="Making Public">Making Public</h4>
-<div class="making-public-copy">
-<p>Print and digital collateral for Making Public, the Triennial’s October 2025 convening at Roxbury Community College. Source imagery came from a youth workshop led by Ñ Press with NUBE East Boston for Gabriel Sosa’s Triennial project. I adapted it across posters, wayfinding, a program handout, QR flyer, newsletter ad, and event banner.</p>
-<p class="case-credit">Design: Keegan Andrulis. Source imagery created at a youth workshop with Ñ Press and NUBE East Boston, part of Gabriel Sosa’s project Ñ Press. Event photography: Annielly Camargo. Produced in-house at the Boston Public Art Triennial, 2025.</p>
-</div>
-</div>
-<figure class="mp-banner"><div class="asset-meta"><span>Event banner</span></div><img alt="Making Public event banner" src="/design/assets/making public banner 1.png"/></figure>
-<div class="making-public-grid">
+
+</section><section class="case-section case-section--making-public"><div class="case-section__header"><div><h3 data-ink="Making Public">Making Public</h3><p>Print and digital collateral for Making Public, the Triennial’s October 2025 convening at Roxbury Community College. Source imagery came from a youth workshop led by Ñ Press with NUBE East Boston for Gabriel Sosa’s Triennial project. I adapted it across posters, wayfinding, a program handout, QR flyer, newsletter ad, and event banner.</p><p class="case-credit">Design: Keegan Andrulis. Source imagery created at a youth workshop with Ñ Press and NUBE East Boston, part of Gabriel Sosa’s project Ñ Press. Event photography: Annielly Camargo. Produced in-house at the Boston Public Art Triennial, 2025.</p></div></div><figure class="mp-banner"><div class="asset-meta"><span>Event banner</span></div><img alt="Making Public event banner" src="/design/assets/making public banner 1.png"/></figure><div class="making-public-grid">
 <article class="flip-card making-public-card" data-flip-card="">
 <div class="asset-meta"><span>Program handout</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div>
 <div aria-label="Flip Making Public handout" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public program handout" src="/design/assets/making public program front.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public program handout reverse" src="/design/assets/making public flyer back.png"/></figure></div></div>
@@ -229,9 +159,7 @@
 <div aria-label="Flip Making Public social graphics" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public social graphic" src="/design/assets/making public social 1.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public alternate social graphic" src="/design/assets/making public social 2.png"/></figure></div></div>
 </article>
 <figure class="mp-event-photo making-public-card"><div class="asset-meta"><span>Event documentation</span></div><img alt="Making Public event photograph" src="/design/assets/making public event photo.jpg"/></figure>
-</div>
-</div>
-</section>
+</div></section>
 </div>
 </article>
 <article class="project project--angels" data-project="" id="project-angels">

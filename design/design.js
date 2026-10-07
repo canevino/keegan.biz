@@ -205,9 +205,7 @@
       let next = Math.floor(Math.random() * knotSources.length);
       if (next === currentIndex) next = (next + 1) % knotSources.length;
       currentIndex = next;
-      let nextColor = Math.floor(Math.random() * knotColorClasses.length);
-      if (nextColor === colorIndex) nextColor = (nextColor + 1) % knotColorClasses.length;
-      colorIndex = nextColor;
+      colorIndex = (colorIndex + 1) % knotColorClasses.length;
       knotColorClasses.forEach((className) => slot.classList.remove(className));
       slot.classList.add(knotColorClasses[colorIndex]);
       setKnot(currentIndex);

@@ -5090,3 +5090,290 @@ figure > figcaption,
   [data-ink]::after { opacity: .18 !important; }
   .making-public-grid { grid-template-columns: 1fr !important; }
 }
+
+/* =========================================================
+   v31 - structural reset / real ink / stable Triennial layout
+   ========================================================= */
+
+:root {
+  --v31-gap: clamp(46px, 5vw, 82px);
+  --v31-copy: 560px;
+}
+
+/* PRINT
+   No duplicate shadow. The glyph itself is expanded, thresholded and roughened.
+   Texture stays clipped to the printed area. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3 {
+  filter: url(#ink-display-v31) !important;
+  text-shadow: none !important;
+  overflow: visible !important;
+  letter-spacing: -.052em !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+.portfolio-masthead h1 { letter-spacing: -.064em !important; }
+.case-section__header h3 { letter-spacing: -.048em !important; }
+
+[data-ink]::before { display: none !important; }
+[data-ink]::after {
+  display: block !important;
+  content: attr(data-ink) !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+  color: transparent !important;
+  background-image:
+    url('/assets/home/Texturelabs_InkPaint_352S grey Fine oil paint overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_225S grey paper pulp overlay.jpg') !important;
+  background-size: 300px auto, 520px auto !important;
+  background-repeat: repeat !important;
+  background-position: center !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  opacity: .18 !important;
+  mix-blend-mode: multiply !important;
+  filter: contrast(1.8) grayscale(1) !important;
+  font: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  white-space: inherit !important;
+}
+
+.design-text-nav a,
+.project-toggle,
+.image-switcher__meta h4,
+.image-switcher__button,
+.flip-card__button,
+.case-credit,
+.case-lede,
+.extension-meta,
+.asset-meta,
+figure > figcaption {
+  filter: url(#ink-small-v31) !important;
+  text-shadow: none !important;
+}
+
+/* KNOT
+   Resting color is one brand ink; bleed is always present. During a glitch,
+   the two register layers split into the other brand inks. */
+.portfolio-masthead__ornament .knot-flash__ink,
+.portfolio-masthead__ornament .knot-flash__bleed,
+.portfolio-masthead__ornament .knot-flash__register {
+  filter: url(#ink-knot-v31) !important;
+  mix-blend-mode: multiply !important;
+}
+.portfolio-masthead__ornament .knot-flash__ink { opacity: .98 !important; }
+.portfolio-masthead__ornament .knot-flash__bleed {
+  opacity: .25 !important;
+  transform: translate(1.4px,.8px) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  opacity: .13 !important;
+  transform: translate(-1px,.7px) !important;
+}
+
+.knot-flash--black .knot-flash__ink { filter:url(#ink-knot-v31) brightness(0) contrast(1.5) !important; }
+.knot-flash--red .knot-flash__ink { filter:url(#ink-knot-v31) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) !important; }
+.knot-flash--green .knot-flash__ink { filter:url(#ink-knot-v31) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) !important; }
+.knot-flash--yellow .knot-flash__ink { filter:url(#ink-knot-v31) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(102%) !important; }
+
+/* fixed complementary register colors; these are visible even when settled */
+.knot-flash__bleed { filter:url(#ink-knot-v31) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) !important; }
+.knot-flash__register { filter:url(#ink-knot-v31) brightness(0) saturate(100%) invert(75%) sepia(96%) saturate(1838%) hue-rotate(349deg) brightness(103%) contrast(102%) !important; }
+.knot-flash--green .knot-flash__bleed,
+.knot-flash--yellow .knot-flash__register { filter:url(#ink-knot-v31) brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) !important; }
+.knot-flash--red .knot-flash__register,
+.knot-flash--yellow .knot-flash__bleed { filter:url(#ink-knot-v31) brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) !important; }
+
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed {
+  opacity: .72 !important;
+  animation: knot-register-a-v31 74ms steps(2,end) infinite !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register {
+  opacity: .62 !important;
+  animation: knot-register-b-v31 98ms steps(2,end) infinite reverse !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__ink,
+.knot-flash.is-fluttering .knot-flash__ink {
+  animation: knot-slice-v31 106ms steps(1,end) infinite !important;
+}
+@keyframes knot-register-a-v31 {
+  0%{transform:translate(-10px,2px)} 25%{transform:translate(8px,-4px)} 50%{transform:translate(-6px,-2px)} 75%{transform:translate(7px,4px)} 100%{transform:translate(1.4px,.8px)}
+}
+@keyframes knot-register-b-v31 {
+  0%{transform:translate(7px,-3px)} 33%{transform:translate(-8px,3px)} 66%{transform:translate(5px,2px)} 100%{transform:translate(-1px,.7px)}
+}
+@keyframes knot-slice-v31 {
+  0%,11%,100%{clip-path:inset(0);transform:translateX(0)}
+  12%,26%{clip-path:inset(0 0 72% 0);transform:translateX(-9px)}
+  27%,42%{clip-path:inset(29% 0 38% 0);transform:translateX(8px)}
+  43%,58%{clip-path:inset(70% 0 0 0);transform:translateX(-7px)}
+  59%,75%{clip-path:inset(13% 0 60% 0);transform:translateX(7px)}
+  76%,99%{clip-path:inset(0);transform:translateX(0)}
+}
+
+/* EXCHANGE
+   Explicit two-column placement. Nothing is allowed to auto-flow into the
+   poster column. */
+.case-section--lead {
+  display:grid !important;
+  grid-template-columns:minmax(0,.86fr) minmax(360px,1.14fr) !important;
+  column-gap:var(--v31-gap) !important;
+  align-items:start !important;
+}
+.case-section--lead .case-section__header {
+  display:block !important;
+  grid-column:1 !important;
+  grid-row:1 !important;
+  min-width:0 !important;
+}
+.case-section--lead .case-section__header > div {
+  width:100% !important;
+  max-width:var(--v31-copy) !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.case-section--lead > .feature-slab {
+  grid-column:2 !important;
+  grid-row:1 !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  position:relative !important;
+  z-index:0 !important;
+}
+.case-section--lead .feature-slab__hero,
+.case-section--lead .feature-slab__hero img {
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 !important;
+}
+.case-section--lead .feature-slab__hero img {
+  display:block !important;
+  height:auto !important;
+  max-height:660px !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+
+/* EXTENSIONS + MAKING PUBLIC
+   Both are peer case sections and therefore share exactly the same title,
+   body and credit typography. */
+.case-section--extensions,
+.case-section--making-public {
+  padding-top:clamp(56px,5.5vw,82px) !important;
+  padding-bottom:clamp(56px,5.5vw,82px) !important;
+}
+.case-section--extensions .case-section__header > div,
+.case-section--making-public .case-section__header > div {
+  width:min(100%,760px) !important;
+  max-width:760px !important;
+  margin:0 0 34px !important;
+}
+.case-section--extensions .case-lede,
+.case-section--making-public .case-lede {
+  font-size:15px !important;
+  line-height:1.48 !important;
+  max-width:66ch !important;
+}
+.case-section--making-public .case-credit {
+  margin-top:14px !important;
+}
+
+.case-section--making-public {
+  display:grid !important;
+  grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr) !important;
+  grid-template-areas:
+    "header banner"
+    "objects objects" !important;
+  gap:36px var(--v31-gap) !important;
+  align-items:start !important;
+}
+.case-section--making-public .case-section__header {
+  grid-area:header !important;
+  display:block !important;
+}
+.case-section--making-public .case-section__header > div {
+  margin:0 !important;
+}
+.case-section--making-public .mp-banner {
+  grid-area:banner !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.case-section--making-public .mp-banner img {
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  object-fit:contain !important;
+}
+.case-section--making-public .making-public-grid {
+  grid-area:objects !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:clamp(28px,3vw,44px) !important;
+  align-items:start !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.case-section--making-public .asset-meta {
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:end !important;
+  min-height:24px !important;
+  margin:0 0 10px !important;
+  gap:12px !important;
+}
+.case-section--making-public .asset-meta .flip-card__button {
+  position:static !important;
+  justify-self:end !important;
+  margin:0 !important;
+}
+.case-section--making-public .making-public-card .flip-card__scene,
+.case-section--making-public .making-public-card .flip-card__inner,
+.case-section--making-public .making-public-card .flip-card__face,
+.case-section--making-public .mp-event-photo img {
+  width:100% !important;
+  height:400px !important;
+}
+.case-section--making-public .making-public-card .flip-card__face img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+.case-section--making-public .mp-event-photo img {
+  display:block !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+
+@media (max-width:980px) {
+  .case-section--lead,
+  .case-section--making-public {
+    grid-template-columns:1fr !important;
+    grid-template-areas:none !important;
+    row-gap:32px !important;
+  }
+  .case-section--lead .case-section__header,
+  .case-section--lead > .feature-slab,
+  .case-section--making-public .case-section__header,
+  .case-section--making-public .mp-banner,
+  .case-section--making-public .making-public-grid {
+    grid-column:1 !important;
+    grid-row:auto !important;
+  }
+  .case-section--making-public .making-public-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+@media (max-width:680px) {
+  .case-section--making-public .making-public-grid { grid-template-columns:1fr !important; }
+  [data-ink]::after { opacity:.13 !important; }
+}
