@@ -5,39 +5,48 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>design — keegan.biz</title>
-<!-- v21 · 6 October 2026 -->
+ v22 · 6 October 2026 
 <link href="/assets/site.css" rel="stylesheet"/>
 <link href="design.css" rel="stylesheet"/>
 <script defer="" src="design.js"></script>
 </head>
 <body class="design-page">
-<svg class="print-filter-defs" aria-hidden="true" width="0" height="0" focusable="false">
-  <defs>
-    <filter id="ink-bleed-text" x="-12%" y="-24%" width="124%" height="160%" color-interpolation-filters="sRGB">
-      <feMorphology in="SourceGraphic" operator="dilate" radius="0.34" result="spread"/>
-      <feGaussianBlur in="spread" stdDeviation="0.82" result="soft"/>
-      <feComponentTransfer in="soft" result="thresholded">
-        <feFuncA type="discrete" tableValues="0 0 0.9 1 1"/>
-      </feComponentTransfer>
-      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.22" numOctaves="2" seed="17" result="noise"/>
-      <feDisplacementMap in="thresholded" in2="noise" scale="1.15" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-      <feComposite in="noise" in2="rough" operator="in" result="grain"/>
-      <feComponentTransfer in="grain" result="grainSoft"><feFuncA type="linear" slope="0.16"/></feComponentTransfer>
-      <feBlend in="rough" in2="grainSoft" mode="screen"/>
-    </filter>
-    <filter id="ink-bleed-small" x="-20%" y="-35%" width="140%" height="190%" color-interpolation-filters="sRGB">
-      <feMorphology in="SourceGraphic" operator="dilate" radius="0.28" result="spread"/>
-      <feGaussianBlur in="spread" stdDeviation="0.56" result="soft"/>
-      <feComponentTransfer in="soft" result="thresholded"><feFuncA type="discrete" tableValues="0 0 0.82 1 1"/></feComponentTransfer>
-      <feTurbulence type="fractalNoise" baseFrequency="0.03 0.28" numOctaves="1" seed="23" result="noise"/>
-      <feDisplacementMap in="thresholded" in2="noise" scale="0.72" xChannelSelector="R" yChannelSelector="G"/>
-    </filter>
-  </defs>
+<svg aria-hidden="true" class="print-filter-defs" focusable="false" height="0" width="0">
+<defs>
+<filter color-interpolation-filters="sRGB" height="154%" id="ink-black" width="120%" x="-10%" y="-22%">
+<fegaussianblur in="SourceAlpha" result="soft" stddeviation="1.05"></fegaussianblur>
+<fecomponenttransfer in="soft" result="threshold"><fefunca tablevalues="0 0 0 0 1 1 1 1" type="discrete"></fefunca></fecomponenttransfer>
+<femorphology in="threshold" operator="dilate" radius="0.42" result="spread"></femorphology>
+<feturbulence basefrequency="0.022 0.20" numoctaves="2" result="noise" seed="17" type="fractalNoise"></feturbulence>
+<fedisplacementmap in="spread" in2="noise" result="rough" scale="1.65" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
+<feflood flood-color="#11110f" result="ink"></feflood><fecomposite in="ink" in2="rough" operator="in"></fecomposite>
+</filter>
+<filter color-interpolation-filters="sRGB" height="154%" id="ink-red" width="120%" x="-10%" y="-22%">
+<fegaussianblur in="SourceAlpha" result="soft" stddeviation="1.05"></fegaussianblur>
+<fecomponenttransfer in="soft" result="threshold"><fefunca tablevalues="0 0 0 0 1 1 1 1" type="discrete"></fefunca></fecomponenttransfer>
+<femorphology in="threshold" operator="dilate" radius="0.42" result="spread"></femorphology>
+<feturbulence basefrequency="0.022 0.20" numoctaves="2" result="noise" seed="19" type="fractalNoise"></feturbulence>
+<fedisplacementmap in="spread" in2="noise" result="rough" scale="1.65" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
+<feflood flood-color="#c1272d" result="ink"></feflood><fecomposite in="ink" in2="rough" operator="in"></fecomposite>
+</filter>
+<filter color-interpolation-filters="sRGB" height="154%" id="ink-green" width="120%" x="-10%" y="-22%">
+<fegaussianblur in="SourceAlpha" result="soft" stddeviation="1.05"></fegaussianblur>
+<fecomponenttransfer in="soft" result="threshold"><fefunca tablevalues="0 0 0 0 1 1 1 1" type="discrete"></fefunca></fecomponenttransfer>
+<femorphology in="threshold" operator="dilate" radius="0.42" result="spread"></femorphology>
+<feturbulence basefrequency="0.022 0.20" numoctaves="2" result="noise" seed="23" type="fractalNoise"></feturbulence>
+<fedisplacementmap in="spread" in2="noise" result="rough" scale="1.65" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
+<feflood flood-color="#006a44" result="ink"></feflood><fecomposite in="ink" in2="rough" operator="in"></fecomposite>
+</filter>
+<filter color-interpolation-filters="sRGB" height="180%" id="ink-knot" width="124%" x="-12%" y="-32%">
+<fegaussianblur in="SourceAlpha" result="soft" stddeviation="0.72"></fegaussianblur>
+<fecomponenttransfer in="soft" result="threshold"><fefunca tablevalues="0 0 0 1 1 1" type="discrete"></fefunca></fecomponenttransfer>
+<feturbulence basefrequency="0.035 0.24" numoctaves="2" result="noise" seed="31" type="fractalNoise"></feturbulence>
+<fedisplacementmap in="threshold" in2="noise" scale="1.2" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
+</filter>
+</defs>
 </svg>
 <div class="page-shell">
-<div aria-hidden="true" class="page-knot-spine">
-<img alt="" class="page-knot-spine__art" src="/assets/home/knot_long.svg"/>
-</div>
+
 <header class="design-site-header">
 <a aria-label="keegan.biz home" class="design-home-scarf" href="/">
 <img alt="keegan.biz" src="/assets/home/home-scarf-update.png"/>
@@ -53,74 +62,53 @@
 <main class="design-main">
 <section aria-labelledby="design-title" class="portfolio-masthead">
 <div class="portfolio-masthead__main">
-<h1 id="design-title">design</h1>
+<h1 data-ink="design" id="design-title">design</h1>
 </div>
 <div class="portfolio-masthead__rail">
-
-<div aria-hidden="true" class="portfolio-masthead__ornament knot-flash knot-flash--red" data-knot-flash="">
+<div aria-hidden="true" class="portfolio-masthead__ornament knot-flash knot-flash--green" data-knot-flash="">
 <img alt="" class="knot-flash__bleed" src="/assets/home/knot_smooth_svg1.svg"/>
 <img alt="" class="knot-flash__ink" src="/assets/home/knot_smooth_svg1.svg"/>
 </div>
 </div>
 </section>
-<div aria-label="Selected work" class="selected-heading">
-<div class="selected-heading__label">
-<span>selected work</span>
-<span class="selected-heading__year">2023—26</span>
 
-</div>
-<div class="selected-heading__main">
-<strong>Boston Public Art<br/>Triennial</strong>
-
-</div>
-<div aria-hidden="true" class="selected-heading__ornament knot-flash knot-flash--green" data-knot-flash="">
-<img alt="" class="knot-flash__bleed" src="/assets/home/knot_smooth_svg4.svg"/>
-<img alt="" class="knot-flash__ink" src="/assets/home/knot_smooth_svg4.svg"/>
-</div>
-</div>
 <section aria-label="Project list" class="work-stack">
 <article class="project project--triennial" data-project="" id="project-triennial">
 <div class="project-summary">
 <div class="project-summary__rail">
 <span class="project-number">01</span>
-
 </div>
 <div class="project-summary__copy">
 <p class="project-client">Boston Public Art Triennial</p>
-<h2 class="project-title">Triennial 2025: The Exchange</h2>
-
+<h2 class="project-title" data-ink="Triennial 2025: The Exchange">Triennial 2025: The Exchange</h2>
 <button aria-controls="project-triennial-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--triennial"><div class="project-key__pair key-pair--triennial"><img alt="More Connection campaign poster" src="/design/assets/more connection.png"/><img alt="Public Processes poster" src="/design/assets/public processes.png"/></div></figure>
+<figure class="project-key project-key--triennial"><img alt="More Belonging campaign poster" src="/design/assets/more belonging.png"/></figure>
 </div>
 <div class="project-content" hidden="" id="project-triennial-content">
 <section class="case-section case-section--lead">
 <div class="case-section__header">
 <span class="case-section__number">01</span>
 <div>
-<h3>The Exchange</h3>
-
-</div>
+<h3 data-ink="The Exchange">The Exchange</h3>
+<p class="case-lede">One visual identity across every surface of a citywide public art exhibition. I worked from brand guidelines set by an external designer and adapted the “More ___” system for each format: bus wraps, digital kiosks, A-frames, window posters, and a map poster keying twenty artist locations across nine neighborhoods. Some formats reused one layout, others were new designs within the system, like the window poster shown here, which I updated after the Triennial closed to keep directing people around the corner to Swoon’s installation. Same colors and type throughout, with each format sitting at a different distance and carrying a different amount of information.</p><p class="case-credit">Design and production: Keegan Andrulis. Brand guidelines by Siena Scarff Design. Produced in-house at the Boston Public Art Triennial, 2025.</p></div>
 </div>
 <div class="feature-slab feature-slab--triennial">
 <figure class="feature-slab__hero">
 <img alt="More Connection campaign poster with Swoon artwork" src="/design/assets/more connection.png"/>
-<figcaption><strong>More Connection</strong><span>Information-dense anchor poster</span></figcaption>
-</figure>
-<div class="feature-slab__copy">
-<p><strong>More Connection</strong> carries artwork, map, wayfinding, dates, and funder credits in one poster.</p>
 
-</div>
+</figure>
+
 </div>
 </section>
 <section class="case-section">
 <div class="case-section__header">
 <span class="case-section__number">02</span>
 <div>
-<h3>Across formats</h3>
+<h3 data-ink="Across formats">Across formats</h3>
 </div>
 </div>
 <div class="switcher-grid switcher-grid--three">
@@ -128,7 +116,6 @@
 <div class="image-switcher__meta">
 <div>
 <h4>More Connection / Lyrik</h4>
-
 </div>
 <button aria-pressed="false" class="image-switcher__button" type="button">in use</button>
 </div>
@@ -141,7 +128,6 @@
 <div class="image-switcher__meta">
 <div>
 <h4>More Depth</h4>
-
 </div>
 <button aria-pressed="false" class="image-switcher__button" type="button">in use</button>
 </div>
@@ -154,7 +140,6 @@
 <div class="image-switcher__meta">
 <div>
 <h4>More fun is here</h4>
-
 </div>
 <button aria-pressed="false" class="image-switcher__button" type="button">in use</button>
 </div>
@@ -169,12 +154,11 @@
 <div class="case-section__header">
 <span class="case-section__number">03</span>
 <div>
-<h3>Extensions</h3>
-
-</div>
+<h3 data-ink="Extensions">Extensions</h3>
+<p class="case-lede">Beyond the core campaign, much of the work was taking the Triennial’s established brand and adapting it to specific events and exhibitions. The Art + Stroll walking-tour flyer uses an edited Boston skyline in the Triennial’s color and type treatment, with an animated version for social. The Public Processes graphics apply the same system to a co-presented exhibition with Boston Cyberarts, pairing the brand with an isometric line drawing and an architectural model.</p></div>
 </div>
 <div class="extension-layout"><figure class="extension-card extension-card--gif"><img alt="Art + Stroll animated event graphic" src="/design/assets/art and stroll gif.gif"/></figure><article class="extension-card extension-card--public-processes flip-card flip-card--landscape" data-flip-card=""><div aria-label="Flip Public Processes poster" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Public Processes line drawing poster" src="/design/assets/public processes v2.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Public Processes architectural model poster" src="/design/assets/public processes.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article></div>
-<div class="making-public-panel"><h4>Making Public</h4><figure class="mp-banner"><img alt="Making Public event banner" src="/design/assets/making public banner 1.png"/></figure><div class="making-public-grid"><article class="flip-card making-public-card" data-flip-card=""><div aria-label="Flip Making Public handout" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public program handout" src="/design/assets/making public program front.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public handout reverse" src="/design/assets/making public flyer back.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article><article class="flip-card flip-card--social making-public-card" data-flip-card=""><div aria-label="Flip Making Public social graphics" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public social graphic" src="/design/assets/making public social 1.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public social graphic alternate" src="/design/assets/making public social 2.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article><figure class="mp-event-photo making-public-card"><img alt="Making Public event" src="/design/assets/making public event photo.jpg"/></figure></div></div>
+<div class="making-public-panel"><h4 data-ink="Making Public">Making Public</h4><div class="making-public-copy"><p>Print and digital collateral for Making Public, a convening at Roxbury Community College in October 2025. The image came out of a youth workshop that Ñ Press ran with NUBE East Boston, part of Gabriel Sosa’s Triennial project with the community print studio. From there it ran across posters, on-site wayfinding, a program handout, a QR flyer, and a newsletter ad for Boston Art Review, each one carrying a different amount of information.</p><p class="case-credit">Design: Keegan Andrulis. Source imagery created at a youth workshop with Ñ Press and NUBE East Boston, part of Gabriel Sosa’s project Ñ Press. Event photography: Annielly Camargo. Produced in-house at the Boston Public Art Triennial, 2025.</p></div><figure class="mp-banner"><img alt="Making Public event banner" src="/design/assets/making public banner 1.png"/></figure><div class="making-public-grid"><article class="flip-card making-public-card" data-flip-card=""><div aria-label="Flip Making Public handout" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public program handout" src="/design/assets/making public program front.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public handout reverse" src="/design/assets/making public flyer back.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article><article class="flip-card flip-card--social making-public-card" data-flip-card=""><div aria-label="Flip Making Public social graphics" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public social graphic" src="/design/assets/making public social 1.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public social graphic alternate" src="/design/assets/making public social 2.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article><figure class="mp-event-photo making-public-card"><img alt="Making Public event" src="/design/assets/making public event photo.jpg"/></figure></div></div>
 </section>
 </div>
 </article>
@@ -182,26 +166,23 @@
 <div class="project-summary">
 <div class="project-summary__rail">
 <span class="project-number">02</span>
-
 </div>
 <div class="project-summary__copy">
 <p class="project-client">Boston Public Art Triennial / Heather Kapplow</p>
 <h2 class="project-title"><em>Better Angels</em></h2>
-
 <button aria-controls="project-angels-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--angels"><div class="project-key__pair key-pair--angels"><img alt="Better Angels visitor takeaway in use" src="/design/assets/better angels fold out in use.jpg"/><img alt="Better Angels signage installed at Waterfront Park" src="/design/assets/better angels signage.jpg"/></div></figure>
+<figure class="project-key project-key--angels"><img alt="Better Angels takeaway in use" src="/design/assets/better angels fold out in use.jpg"/></figure>
 </div>
 <div class="project-content" hidden="" id="project-angels-content">
 <section class="case-section">
 <div class="case-section__header">
 <span class="case-section__number">01</span>
 <div>
-<h3>Takeaway system</h3>
-
+<h3 data-ink="Takeaway system">Takeaway system</h3>
 </div>
 </div>
 <div class="angels-takeaway-grid">
@@ -263,8 +244,7 @@
 <div class="case-section__header">
 <span class="case-section__number">02</span>
 <div>
-<h3>Script + whistle</h3>
-
+<h3 data-ink="Script + whistle">Script + whistle</h3>
 </div>
 </div>
 <div class="angels-script-layout">
@@ -284,8 +264,7 @@
 <div class="case-section__header">
 <span class="case-section__number">03</span>
 <div>
-<h3>Signage + activation</h3>
-
+<h3 data-ink="Signage + activation">Signage + activation</h3>
 </div>
 </div>
 <div class="angels-signage-layout">
@@ -314,33 +293,23 @@
 <div class="project-summary">
 <div class="project-summary__rail">
 <span class="project-number">03</span>
-
 </div>
 <div class="project-summary__copy">
 <p class="project-client">Paul Winter Consort</p>
-<h2 class="project-title">Concert posters</h2>
-
+<h2 class="project-title" data-ink="Concert posters">Concert posters</h2>
 <button aria-controls="project-winter-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--winter">
-<div class="poster-triptych">
-<img alt="Adventures in the Universe poster" src="/design/assets/adventures in the universe.png"/>
-<img alt="Spring Equinox Celebration poster" src="/design/assets/spring equinox.png"/>
-<img alt="This Glorious Earth poster" src="/design/assets/this glorious earth.png"/>
-</div>
-
-</figure>
+<figure class="project-key project-key--winter"><img alt="This Glorious Earth concert poster" src="/design/assets/this glorious earth.png"/></figure>
 </div>
 <div class="project-content" hidden="" id="project-winter-content">
 <section class="case-section case-section--dark">
 <div class="case-section__header">
 <span class="case-section__number">01</span>
 <div>
-<h3>Poster suite</h3>
-
+<h3 data-ink="Poster suite">Poster suite</h3>
 </div>
 </div>
 <div class="winter-gallery">
@@ -373,33 +342,23 @@
 <div class="project-summary">
 <div class="project-summary__rail">
 <span class="project-number">04</span>
-
 </div>
 <div class="project-summary__copy">
 <p class="project-client">PRX / Radiotopia</p>
-<h2 class="project-title">Ear Hustle, In the Queue, and Radiotopia</h2>
-
+<h2 class="project-title" data-ink="Ear Hustle, In the Queue, and Radiotopia">Ear Hustle, In the Queue, and Radiotopia</h2>
 <button aria-controls="project-prx-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--prx">
-<div class="prx-key-grid">
-<img alt="Ear Hustle election episode hero art" class="prx-key-grid__hero" src="/design/assets/ear hustle.png"/>
-<img alt="In the Queue logo" src="/design/assets/in the queue.png"/>
-<img alt="Radiotopia Apple Podcasts campaign graphic" src="/design/assets/radiotopia apple.png"/>
-</div>
-
-</figure>
+<figure class="project-key project-key--prx"><img alt="Ear Hustle election episode artwork" src="/design/assets/ear hustle.png"/></figure>
 </div>
 <div class="project-content" hidden="" id="project-prx-content">
 <section class="case-section">
 <div class="case-section__header">
 <span class="case-section__number">01</span>
 <div>
-<h3>Ear Hustle</h3>
-
+<h3 data-ink="Ear Hustle">Ear Hustle</h3>
 </div>
 </div>
 <figure class="prx-hero-figure">
@@ -411,8 +370,7 @@
 <div class="case-section__header">
 <span class="case-section__number">02</span>
 <div>
-<h3>Newsletter + social campaign</h3>
-
+<h3 data-ink="Newsletter + social campaign">Newsletter + social campaign</h3>
 </div>
 </div>
 <div class="prx-pairing">
@@ -438,33 +396,23 @@
 <div class="project-summary">
 <div class="project-summary__rail">
 <span class="project-number">05</span>
-
 </div>
 <div class="project-summary__copy">
 <p class="project-client">Trinity College Dublin</p>
-<h2 class="project-title">Trinity FM, Fullam Campaign, and Cane Vino</h2>
-
+<h2 class="project-title" data-ink="Trinity FM, Fullam Campaign, and Cane Vino">Trinity FM, Fullam Campaign, and Cane Vino</h2>
 <button aria-controls="project-college-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--college">
-<div class="college-summary-grid">
-<img alt="TFM Arts Block Bash poster" class="college-summary-grid__large" src="/design/assets/tfm arts block bash.png"/>
-<img alt="Fullam campaign poster" src="/design/assets/fullam campaign2.png"/>
-<img alt="Cane Vino Pinot Noir bottle label" src="/design/assets/wine label pinot noir.png"/>
-</div>
-
-</figure>
+<figure class="project-key project-key--college"><img alt="Trinity FM Arts Block Bash poster" src="/design/assets/tfm arts block bash.png"/></figure>
 </div>
 <div class="project-content" hidden="" id="project-college-content">
 <section class="case-section">
 <div class="case-section__header">
 <span class="case-section__number">01</span>
 <div>
-<h3>Trinity FM</h3>
-
+<h3 data-ink="Trinity FM">Trinity FM</h3>
 </div>
 </div>
 <div class="college-showcase college-showcase--tfm">
@@ -486,8 +434,7 @@
 <div class="case-section__header">
 <span class="case-section__number">02</span>
 <div>
-<h3>Fullam Campaign</h3>
-
+<h3 data-ink="Fullam Campaign">Fullam Campaign</h3>
 </div>
 </div>
 <div class="college-showcase college-showcase--fullam">
@@ -500,8 +447,7 @@
 <div class="case-section__header">
 <span class="case-section__number">03</span>
 <div>
-<h3>Cane Vino</h3>
-
+<h3 data-ink="Cane Vino">Cane Vino</h3>
 </div>
 </div>
 <div class="wine-grid">

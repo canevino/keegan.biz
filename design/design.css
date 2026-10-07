@@ -2331,3 +2331,386 @@ body.design-page::before {
   .angels-signage-system { grid-template-columns:1fr !important; }
   .angels-signage-pair { grid-template-columns:1fr 1fr !important; }
 }
+
+/* =========================================================
+   v22 — restrained print system / single-knot pass
+   ========================================================= */
+
+:root {
+  --paper:#ece7d7;
+  --paper-light:#f5f0e3;
+  --ink:#11110f;
+  --red:#c1272d;
+  --green:#006a44;
+  --yellow:#fdb913;
+  --rule:rgba(0,106,68,.22);
+  --rule-strong:rgba(193,39,45,.52);
+}
+
+body.design-page::before {
+  opacity:.014 !important;
+  mix-blend-mode:multiply !important;
+}
+
+/* Remove the previous rectangular texture plates and dither swatches. */
+.selected-heading__main::after,
+.project-summary__copy::after,
+.case-section__header > div::after,
+.case-section__number::after,
+.project-number::after,
+.feature-slab::before,
+.making-public-panel::before,
+.angels-takeaway-grid::before,
+.prx-pairing::before {
+  display:none !important;
+}
+
+/* Brand-color structure. */
+.design-site-header,
+.portfolio-masthead,
+.project,
+.project-content,
+.case-section,
+.making-public-panel,
+.making-public-grid {
+  border-color:var(--rule) !important;
+}
+.project::before { background:var(--red) !important; }
+.project-number,
+.case-section__number,
+.project-client,
+.project-toggle,
+.image-switcher__button,
+.flip-card__button,
+.folder-flip,
+.folder-fold { color:var(--red) !important; }
+
+/* Ink: solid brand color first, rough edge second. No RGB/gradient contamination. */
+.portfolio-masthead h1 {
+  color:var(--red) !important;
+  filter:url(#ink-red) !important;
+  overflow:visible !important;
+  padding-bottom:.15em !important;
+}
+.project-title {
+  color:var(--ink) !important;
+  filter:url(#ink-black) !important;
+  overflow:visible !important;
+  padding-bottom:.10em !important;
+}
+.case-section__header h3,
+.making-public-panel > h4 {
+  color:var(--green) !important;
+  filter:url(#ink-green) !important;
+  overflow:visible !important;
+  padding-bottom:.08em !important;
+}
+
+/* A faint physical texture sits OVER solid ink, clipped to the glyphs only. */
+[data-ink] { position:relative; isolation:isolate; }
+[data-ink]::after {
+  content:attr(data-ink);
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  color:transparent;
+  background-image:url('/assets/home/Texturelabs_InkPaint_324S grey brush strokes overlay.jpg');
+  background-size:360px auto;
+  background-position:center;
+  background-repeat:repeat;
+  -webkit-background-clip:text;
+  background-clip:text;
+  opacity:.11;
+  mix-blend-mode:multiply;
+  filter:contrast(1.55) grayscale(1);
+  font:inherit;
+  line-height:inherit;
+  letter-spacing:inherit;
+  text-transform:inherit;
+  white-space:normal;
+}
+
+/* One knot only: top masthead, large enough to stand with the title. */
+.page-knot-spine,
+.selected-heading__ornament,
+.knot-divider { display:none !important; }
+.portfolio-masthead {
+  grid-template-columns:minmax(0,1.55fr) minmax(300px,.72fr) !important;
+  min-height:245px !important;
+}
+.portfolio-masthead__main { padding:34px 0 26px !important; overflow:visible !important; }
+.portfolio-masthead__rail {
+  display:flex !important;
+  align-items:flex-end !important;
+  justify-content:flex-end !important;
+  padding:30px 0 28px 34px !important;
+}
+.portfolio-masthead__ornament {
+  width:min(100%,380px) !important;
+  height:clamp(92px,9vw,132px) !important;
+  overflow:visible !important;
+}
+.portfolio-masthead__ornament img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:right center !important;
+}
+.knot-flash__ink,
+.knot-flash__bleed { filter:url(#ink-knot) !important; }
+.knot-flash__bleed {
+  opacity:.18 !important;
+  transform:translate(2px,1px) !important;
+}
+.knot-flash.is-fluttering .knot-flash__bleed,
+.knot-flash.is-hover-glitch .knot-flash__bleed { opacity:.38 !important; }
+
+/* Remove the redundant intermediate opener: projects begin immediately. */
+.work-stack { margin-top:clamp(44px,5vw,72px) !important; }
+
+/* Project summaries: tighter copy column, smaller single key image. */
+.project-summary {
+  grid-template-columns:64px minmax(340px,1.08fr) minmax(210px,.58fr) !important;
+  gap:clamp(24px,3.1vw,48px) !important;
+  align-items:start !important;
+  padding:44px 0 52px !important;
+}
+.project-summary__copy { padding-top:1px; }
+.project-title { max-width:14ch !important; }
+.project-key {
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-end;
+  min-height:0 !important;
+}
+.project-key > img {
+  width:auto !important;
+  height:auto !important;
+  max-width:min(100%,300px) !important;
+  max-height:310px !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  margin:0 0 0 auto !important;
+  border:0 !important;
+  background:transparent !important;
+}
+.project-key--triennial > img { max-height:300px !important; }
+.project-key--winter > img,
+.project-key--college > img { max-height:320px !important; }
+
+/* Shared content rail. */
+.case-section__header {
+  grid-template-columns:64px minmax(0,820px) !important;
+  gap:clamp(24px,3.1vw,48px) !important;
+  margin-bottom:36px !important;
+}
+.case-section__header h3 {
+  font-size:clamp(42px,4.4vw,64px) !important;
+  line-height:.9 !important;
+  margin:0 0 18px !important;
+}
+.case-lede {
+  max-width:72ch;
+  margin:0;
+  font-size:15px !important;
+  line-height:1.5 !important;
+  color:var(--ink) !important;
+}
+.case-credit {
+  max-width:72ch;
+  margin:16px 0 0 !important;
+  font-size:11px !important;
+  line-height:1.42 !important;
+  color:var(--green) !important;
+  font-weight:700;
+}
+
+/* Exchange lead: poster + text, no tinted background plate. */
+.feature-slab {
+  width:calc(100% - 112px) !important;
+  margin-left:112px !important;
+  max-width:980px !important;
+  display:block !important;
+}
+.feature-slab__hero { width:min(100%,520px) !important; }
+.feature-slab__hero img {
+  width:100% !important;
+  height:auto !important;
+  max-height:none !important;
+  box-shadow:none !important;
+}
+
+/* Across formats: no visible boxes; artwork is centered both ways. */
+.switcher-grid--three {
+  grid-template-columns:1fr 1fr !important;
+  gap:34px 28px !important;
+  align-items:start !important;
+}
+.image-switcher:nth-child(3) { grid-column:1 / -1; }
+.image-switcher__stage {
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+  border:0 !important;
+  background:transparent !important;
+}
+.image-switcher__stage--portrait { aspect-ratio:4 / 5 !important; }
+.image-switcher__stage--wide { aspect-ratio:16 / 6.2 !important; }
+.image-switcher__stage img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+}
+.image-switcher__meta { align-items:baseline !important; }
+.image-switcher__meta h4 { color:var(--green); font-size:18px !important; }
+
+/* Extensions: same physical height, source proportions stay intact. */
+.extension-layout {
+  display:flex !important;
+  align-items:flex-start !important;
+  gap:36px !important;
+  width:calc(100% - 112px) !important;
+  margin-left:112px !important;
+}
+.extension-card--gif { flex:0 0 auto; }
+.extension-card--public-processes { flex:1 1 auto; min-width:0; }
+.extension-card--gif > img,
+.extension-card--public-processes .flip-card__scene {
+  height:560px !important;
+  width:auto !important;
+  max-width:100% !important;
+}
+.extension-card--gif > img {
+  object-fit:contain !important;
+  object-position:center !important;
+}
+.extension-card--public-processes .flip-card__scene { width:100% !important; }
+.extension-card--public-processes .flip-card__inner,
+.extension-card--public-processes .flip-card__face { height:100% !important; }
+.extension-card--public-processes .flip-card__inner { aspect-ratio:auto !important; }
+.extension-card--public-processes .flip-card__face img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+/* Making Public: text + banner, then two portrait objects, then the photograph. */
+.making-public-panel {
+  width:calc(100% - 112px) !important;
+  margin:72px 0 0 112px !important;
+  padding:0 !important;
+  display:grid !important;
+  grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr) !important;
+  gap:28px 46px !important;
+  align-items:start !important;
+}
+.making-public-panel > h4 {
+  grid-column:1;
+  margin:0 !important;
+  font-size:clamp(42px,4.4vw,64px) !important;
+  line-height:.9 !important;
+}
+.making-public-copy {
+  grid-column:1;
+  max-width:44ch;
+  margin-top:-8px;
+  font-size:14px;
+  line-height:1.5;
+}
+.making-public-copy p { margin:0 0 16px; }
+.mp-banner {
+  grid-column:2;
+  grid-row:1 / span 2;
+  margin:0 !important;
+  align-self:end;
+}
+.mp-banner img {
+  width:100% !important;
+  height:auto !important;
+  object-fit:contain !important;
+}
+.making-public-grid {
+  grid-column:1 / -1;
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:20px !important;
+  margin-top:12px !important;
+  padding-top:24px;
+  border-top:1px solid var(--rule) !important;
+}
+.making-public-card { height:560px !important; }
+.making-public-card .flip-card__scene,
+.making-public-card .flip-card__inner,
+.making-public-card .flip-card__face { height:100% !important; }
+.making-public-card .flip-card__inner { aspect-ratio:auto !important; }
+.making-public-card .flip-card__face img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+.mp-event-photo {
+  grid-column:1 / -1;
+  width:72%;
+  margin:16px 0 0 auto !important;
+  height:auto !important;
+}
+.mp-event-photo img {
+  width:100% !important;
+  height:auto !important;
+  object-fit:cover !important;
+  object-position:center 44% !important;
+}
+
+/* Navigation + rules use the site palette rather than neutral greys. */
+.design-site-header { border-bottom-color:rgba(0,106,68,.34) !important; }
+.design-text-nav a::after { background:var(--red) !important; }
+.design-text-nav a.is-current { color:var(--red) !important; }
+
+@media (max-width:900px) {
+  .portfolio-masthead { grid-template-columns:1fr !important; }
+  .portfolio-masthead__rail { border-left:0 !important; padding:0 0 22px !important; }
+  .portfolio-masthead__ornament { width:min(72vw,360px) !important; height:90px !important; }
+  .project-summary { grid-template-columns:48px minmax(0,1fr) !important; }
+  .project-key { grid-column:2; justify-content:flex-start; }
+  .project-key > img { margin:0 !important; max-width:min(100%,280px) !important; }
+  .feature-slab,
+  .extension-layout,
+  .making-public-panel { width:100% !important; margin-left:0 !important; }
+  .extension-layout { display:grid !important; grid-template-columns:1fr !important; }
+  .extension-card--gif > img,
+  .extension-card--public-processes .flip-card__scene { height:auto !important; }
+  .extension-card--public-processes .flip-card__inner { aspect-ratio:1 / 1 !important; height:auto !important; }
+  .making-public-panel { grid-template-columns:1fr !important; }
+  .making-public-panel > h4,
+  .making-public-copy,
+  .mp-banner,
+  .making-public-grid { grid-column:1 !important; grid-row:auto !important; }
+  .making-public-grid { grid-template-columns:1fr 1fr !important; }
+  .making-public-card { height:auto !important; }
+  .making-public-card .flip-card__inner { height:auto !important; aspect-ratio:3 / 4 !important; }
+  .mp-event-photo { width:100% !important; }
+}
+
+@media (max-width:680px) {
+  .portfolio-masthead h1 { font-size:clamp(78px,27vw,126px) !important; }
+  .project-summary { grid-template-columns:1fr !important; }
+  .project-summary__rail,
+  .project-summary__copy,
+  .project-key { grid-column:1 !important; }
+  .case-section__header { grid-template-columns:1fr !important; }
+  .case-section__number { margin-bottom:8px; }
+  .switcher-grid--three { grid-template-columns:1fr !important; }
+  .image-switcher:nth-child(3) { grid-column:1; }
+  .making-public-grid { grid-template-columns:1fr !important; }
+  [data-ink]::after { display:none; }
+}
+/* Ensure the lone knot ignores older v21 color-filter rules. */
+.portfolio-masthead__ornament.knot-flash--green .knot-flash__ink,
+.portfolio-masthead__ornament.knot-flash--green .knot-flash__bleed {
+  filter:url(#ink-knot) brightness(.48) sepia(1) saturate(4.3) hue-rotate(92deg) contrast(1.5) !important;
+}

@@ -1,31 +1,34 @@
-keegan.biz /design — v21
+keegan.biz /design — v22
 6 October 2026
 
-CHANGED
-- stronger blur + threshold + grain ink bleed
-- solid type color restored; texture is a low-opacity overlay, not a clipped fill
-- exactly three knot elements: long edge + two large smooth knots
-- idle knot glitch: about every 30–45 seconds; hover glitches continuously
-- removed repetitive portfolio metadata/captions
-- Triennial key image reduced to More Connection + Public Processes only
-- Better Angels key image reduced to two installed photographs
-- removed image/card boxes
-- Art + Stroll and Public Processes now share one exact display height
-- Making Public rebuilt as banner + three aligned supporting pieces
-- Better Angels signage reorganized without forced crops
-- poster suite remains crop/fill, not contain/shrink
+Upload/replace:
+- index.html
+- design.css
+- design.js
 
-CHECK
-1. ink edges visibly swell/roughen without losing letter shape
-2. design g is fully visible
-3. only three knot elements appear on the whole page
-4. Triennial key image feels deliberate at a glance
-5. Extensions objects are exactly the same height
-6. Making Public reads as one system, not a dashboard
-7. Better Angels signage is uncropped and legible
+What changed:
+- one large top knot only
+- stronger, color-stable ink bleed
+- solid brand-color type + faint texture overlay inside glyphs only
+- removed tinted text boxes and red dot/dither swatches
+- design title red
+- removed redundant selected-work/Boston opener
+- one smaller key image per project; Triennial uses more belonging.png
+- restored full Exchange context + credits
+- Across Formats images centered
+- Art + Stroll / Public Processes exact same stage height
+- Making Public rebuilt and full context + credits restored
+- shared section alignment tightened
 
-NEXT
-- rebuild Better Angels folding object
-- art-direct Paul Winter poster crop positions
-- clean PRX/Radiotopia hierarchy
-- rebuild TFM summary/expanded hierarchy
+Check:
+1. ink edge / no color gradient
+2. no rectangular texture plates
+3. only one knot, large at top
+4. key-image scale
+5. centered Across Formats assets
+6. equal-height Extensions
+7. Making Public hierarchy
+8. credits/context present without repetition
+
+Next:
+Better Angels full rebuild, then Paul Winter, PRX/Radiotopia, TFM.

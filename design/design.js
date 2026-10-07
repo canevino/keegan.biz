@@ -153,8 +153,7 @@
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  /* Keep the rotated long-knot spine exactly as tall as the page, including
-     when accordion projects open or close. */
+  /* Legacy page-height sync is harmless if no long spine is present. */
   function syncPageKnotLength() {
     const height = Math.max(
       document.documentElement.scrollHeight,
@@ -218,7 +217,7 @@
     const scheduleIdle = () => {
       clearTimer();
       if (reducedMotion.matches || hovering) return;
-      timer = window.setTimeout(idleBurst, 30000 + Math.random() * 15000);
+      timer = window.setTimeout(idleBurst, 32000 + Math.random() * 18000);
     };
 
     const idleBurst = () => {
