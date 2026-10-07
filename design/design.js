@@ -217,13 +217,13 @@
     const scheduleIdle = () => {
       clearTimer();
       if (reducedMotion.matches || hovering) return;
-      timer = window.setTimeout(idleBurst, 32000 + Math.random() * 18000);
+      timer = window.setTimeout(idleBurst, 30000 + Math.random() * 16000);
     };
 
     const idleBurst = () => {
       if (reducedMotion.matches || hovering) return;
       slot.classList.add("is-fluttering");
-      const swaps = 3 + Math.floor(Math.random() * 3);
+      const swaps = 4 + Math.floor(Math.random() * 3);
       let count = 0;
 
       const step = () => {
@@ -243,7 +243,7 @@
     const hoverLoop = () => {
       if (!hovering || reducedMotion.matches) return;
       chooseNext();
-      timer = window.setTimeout(hoverLoop, 55 + Math.random() * 70);
+      timer = window.setTimeout(hoverLoop, 42 + Math.random() * 58);
     };
 
     const startHover = () => {

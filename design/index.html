@@ -5,7 +5,6 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>design — keegan.biz</title>
- v22 · 6 October 2026 
 <link href="/assets/site.css" rel="stylesheet"/>
 <link href="design.css" rel="stylesheet"/>
 <script defer="" src="design.js"></script>
@@ -13,35 +12,32 @@
 <body class="design-page">
 <svg aria-hidden="true" class="print-filter-defs" focusable="false" height="0" width="0">
 <defs>
-<filter color-interpolation-filters="sRGB" height="154%" id="ink-black" width="120%" x="-10%" y="-22%">
-<fegaussianblur in="SourceAlpha" result="soft" stddeviation="1.05"></fegaussianblur>
-<fecomponenttransfer in="soft" result="threshold"><fefunca tablevalues="0 0 0 0 1 1 1 1" type="discrete"></fefunca></fecomponenttransfer>
-<femorphology in="threshold" operator="dilate" radius="0.42" result="spread"></femorphology>
-<feturbulence basefrequency="0.022 0.20" numoctaves="2" result="noise" seed="17" type="fractalNoise"></feturbulence>
-<fedisplacementmap in="spread" in2="noise" result="rough" scale="1.65" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
-<feflood flood-color="#11110f" result="ink"></feflood><fecomposite in="ink" in2="rough" operator="in"></fecomposite>
+<filter id="ink-bleed" x="-8%" y="-18%" width="116%" height="142%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="0.78" result="softAlpha"/>
+  <feComponentTransfer in="softAlpha" result="threshold">
+    <feFuncA type="discrete" tableValues="0 0 0 1 1 1"/>
+  </feComponentTransfer>
+  <feMorphology in="threshold" operator="dilate" radius="0.18" result="spread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.21" numOctaves="2" seed="19" result="edgeNoise"/>
+  <feDisplacementMap in="spread" in2="edgeNoise" scale="0.9" xChannelSelector="R" yChannelSelector="G" result="roughAlpha"/>
+  <feComposite in="SourceGraphic" in2="roughAlpha" operator="in" result="crispInk"/>
+  <feGaussianBlur in="SourceGraphic" stdDeviation="0.58" result="softInk"/>
+  <feComponentTransfer in="softInk" result="softFade"><feFuncA type="linear" slope="0.13"/></feComponentTransfer>
+  <feMerge><feMergeNode in="softFade"/><feMergeNode in="crispInk"/></feMerge>
 </filter>
-<filter color-interpolation-filters="sRGB" height="154%" id="ink-red" width="120%" x="-10%" y="-22%">
-<fegaussianblur in="SourceAlpha" result="soft" stddeviation="1.05"></fegaussianblur>
-<fecomponenttransfer in="soft" result="threshold"><fefunca tablevalues="0 0 0 0 1 1 1 1" type="discrete"></fefunca></fecomponenttransfer>
-<femorphology in="threshold" operator="dilate" radius="0.42" result="spread"></femorphology>
-<feturbulence basefrequency="0.022 0.20" numoctaves="2" result="noise" seed="19" type="fractalNoise"></feturbulence>
-<fedisplacementmap in="spread" in2="noise" result="rough" scale="1.65" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
-<feflood flood-color="#c1272d" result="ink"></feflood><fecomposite in="ink" in2="rough" operator="in"></fecomposite>
+<filter id="ink-soft" x="-4%" y="-10%" width="108%" height="124%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="0.24" result="softAlpha"/>
+  <feComponentTransfer in="softAlpha" result="threshold"><feFuncA type="discrete" tableValues="0 0 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.025 0.24" numOctaves="1" seed="11" result="noise"/>
+  <feDisplacementMap in="threshold" in2="noise" scale="0.28" xChannelSelector="R" yChannelSelector="G" result="roughAlpha"/>
+  <feComposite in="SourceGraphic" in2="roughAlpha" operator="in"/>
 </filter>
-<filter color-interpolation-filters="sRGB" height="154%" id="ink-green" width="120%" x="-10%" y="-22%">
-<fegaussianblur in="SourceAlpha" result="soft" stddeviation="1.05"></fegaussianblur>
-<fecomponenttransfer in="soft" result="threshold"><fefunca tablevalues="0 0 0 0 1 1 1 1" type="discrete"></fefunca></fecomponenttransfer>
-<femorphology in="threshold" operator="dilate" radius="0.42" result="spread"></femorphology>
-<feturbulence basefrequency="0.022 0.20" numoctaves="2" result="noise" seed="23" type="fractalNoise"></feturbulence>
-<fedisplacementmap in="spread" in2="noise" result="rough" scale="1.65" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
-<feflood flood-color="#006a44" result="ink"></feflood><fecomposite in="ink" in2="rough" operator="in"></fecomposite>
-</filter>
-<filter color-interpolation-filters="sRGB" height="180%" id="ink-knot" width="124%" x="-12%" y="-32%">
-<fegaussianblur in="SourceAlpha" result="soft" stddeviation="0.72"></fegaussianblur>
-<fecomponenttransfer in="soft" result="threshold"><fefunca tablevalues="0 0 0 1 1 1" type="discrete"></fefunca></fecomponenttransfer>
-<feturbulence basefrequency="0.035 0.24" numoctaves="2" result="noise" seed="31" type="fractalNoise"></feturbulence>
-<fedisplacementmap in="threshold" in2="noise" scale="1.2" xchannelselector="R" ychannelselector="G"></fedisplacementmap>
+<filter id="ink-knot" x="-10%" y="-22%" width="120%" height="150%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="0.62" result="softAlpha"/>
+  <feComponentTransfer in="softAlpha" result="threshold"><feFuncA type="discrete" tableValues="0 0 0 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.022 0.23" numOctaves="2" seed="31" result="noise"/>
+  <feDisplacementMap in="threshold" in2="noise" scale="1.15" xChannelSelector="R" yChannelSelector="G" result="roughAlpha"/>
+  <feComposite in="SourceGraphic" in2="roughAlpha" operator="in"/>
 </filter>
 </defs>
 </svg>
@@ -94,7 +90,7 @@
 <span class="case-section__number">01</span>
 <div>
 <h3 data-ink="The Exchange">The Exchange</h3>
-<p class="case-lede">One visual identity across every surface of a citywide public art exhibition. I worked from brand guidelines set by an external designer and adapted the “More ___” system for each format: bus wraps, digital kiosks, A-frames, window posters, and a map poster keying twenty artist locations across nine neighborhoods. Some formats reused one layout, others were new designs within the system, like the window poster shown here, which I updated after the Triennial closed to keep directing people around the corner to Swoon’s installation. Same colors and type throughout, with each format sitting at a different distance and carrying a different amount of information.</p><p class="case-credit">Design and production: Keegan Andrulis. Brand guidelines by Siena Scarff Design. Produced in-house at the Boston Public Art Triennial, 2025.</p></div>
+<p class="case-lede">One visual identity across a citywide exhibition. Working from Siena Scarff Design’s brand guidelines, I adapted the “More ___” system across bus wraps, digital kiosks, A-frames, window posters, and a map locating twenty artists across nine neighborhoods. Some formats reused a base layout; others were built for their scale and viewing distance. The window poster shown here was updated after the Triennial closed to keep directing visitors to Swoon’s installation.</p><p class="case-credit">Design and production: Keegan Andrulis. Brand guidelines by Siena Scarff Design. Produced in-house at the Boston Public Art Triennial, 2025.</p></div>
 </div>
 <div class="feature-slab feature-slab--triennial">
 <figure class="feature-slab__hero">
@@ -115,7 +111,7 @@
 <article class="image-switcher" data-switcher="">
 <div class="image-switcher__meta">
 <div>
-<h4>More Connection / Lyrik</h4>
+<h4>More Connection — Lyrik Hub</h4>
 </div>
 <button aria-pressed="false" class="image-switcher__button" type="button">in use</button>
 </div>
@@ -127,7 +123,7 @@
 <article class="image-switcher" data-switcher="">
 <div class="image-switcher__meta">
 <div>
-<h4>More Depth</h4>
+<h4>More Depth — digital kiosk</h4>
 </div>
 <button aria-pressed="false" class="image-switcher__button" type="button">in use</button>
 </div>
@@ -139,7 +135,7 @@
 <article class="image-switcher" data-switcher="">
 <div class="image-switcher__meta">
 <div>
-<h4>More fun is here</h4>
+<h4>More Fun Is Here — MBTA bus</h4>
 </div>
 <button aria-pressed="false" class="image-switcher__button" type="button">in use</button>
 </div>
@@ -155,10 +151,10 @@
 <span class="case-section__number">03</span>
 <div>
 <h3 data-ink="Extensions">Extensions</h3>
-<p class="case-lede">Beyond the core campaign, much of the work was taking the Triennial’s established brand and adapting it to specific events and exhibitions. The Art + Stroll walking-tour flyer uses an edited Boston skyline in the Triennial’s color and type treatment, with an animated version for social. The Public Processes graphics apply the same system to a co-presented exhibition with Boston Cyberarts, pairing the brand with an isometric line drawing and an architectural model.</p></div>
+<p class="case-lede">Beyond the core campaign, I adapted the Triennial identity for individual events and exhibitions. Art + Stroll uses an edited Boston skyline in the house color and type system, with an animated version for social. Public Processes applies the same identity to a co-presented exhibition with Boston Cyberarts.</p></div>
 </div>
-<div class="extension-layout"><figure class="extension-card extension-card--gif"><img alt="Art + Stroll animated event graphic" src="/design/assets/art and stroll gif.gif"/></figure><article class="extension-card extension-card--public-processes flip-card flip-card--landscape" data-flip-card=""><div aria-label="Flip Public Processes poster" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Public Processes line drawing poster" src="/design/assets/public processes v2.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Public Processes architectural model poster" src="/design/assets/public processes.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article></div>
-<div class="making-public-panel"><h4 data-ink="Making Public">Making Public</h4><div class="making-public-copy"><p>Print and digital collateral for Making Public, a convening at Roxbury Community College in October 2025. The image came out of a youth workshop that Ñ Press ran with NUBE East Boston, part of Gabriel Sosa’s Triennial project with the community print studio. From there it ran across posters, on-site wayfinding, a program handout, a QR flyer, and a newsletter ad for Boston Art Review, each one carrying a different amount of information.</p><p class="case-credit">Design: Keegan Andrulis. Source imagery created at a youth workshop with Ñ Press and NUBE East Boston, part of Gabriel Sosa’s project Ñ Press. Event photography: Annielly Camargo. Produced in-house at the Boston Public Art Triennial, 2025.</p></div><figure class="mp-banner"><img alt="Making Public event banner" src="/design/assets/making public banner 1.png"/></figure><div class="making-public-grid"><article class="flip-card making-public-card" data-flip-card=""><div aria-label="Flip Making Public handout" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public program handout" src="/design/assets/making public program front.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public handout reverse" src="/design/assets/making public flyer back.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article><article class="flip-card flip-card--social making-public-card" data-flip-card=""><div aria-label="Flip Making Public social graphics" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public social graphic" src="/design/assets/making public social 1.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public social graphic alternate" src="/design/assets/making public social 2.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article><figure class="mp-event-photo making-public-card"><img alt="Making Public event" src="/design/assets/making public event photo.jpg"/></figure></div></div>
+<div class="extension-layout"><figure class="extension-card extension-card--gif"><img alt="Art + Stroll animated event graphic" src="/design/assets/art and stroll gif.gif"/><figcaption>Art + Stroll — event flyer / animation</figcaption></figure><article class="extension-card extension-card--public-processes flip-card flip-card--landscape" data-flip-card=""><div aria-label="Flip Public Processes poster" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Public Processes line drawing poster" src="/design/assets/public processes v2.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Public Processes architectural model poster" src="/design/assets/public processes.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button><figcaption>Public Processes — exhibition poster</figcaption></article></div>
+<div class="making-public-panel"><h4 data-ink="Making Public">Making Public</h4><div class="making-public-copy"><p>Print and digital collateral for Making Public, the Triennial’s October 2025 convening at Roxbury Community College. Source imagery came from a youth workshop led by Ñ Press with NUBE East Boston for Gabriel Sosa’s Triennial project. I adapted it across posters, wayfinding, a program handout, QR flyer, newsletter ad, and event banner.</p><p class="case-credit">Design: Keegan Andrulis. Source imagery created at a youth workshop with Ñ Press and NUBE East Boston, part of Gabriel Sosa’s project Ñ Press. Event photography: Annielly Camargo. Produced in-house at the Boston Public Art Triennial, 2025.</p></div><figure class="mp-banner"><img alt="Making Public — event banner" src="/design/assets/making public banner 1.png"/></figure><div class="making-public-grid"><article class="flip-card making-public-card" data-flip-card=""><div aria-label="Flip Making Public handout" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public — program handout" src="/design/assets/making public program front.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public — program handout reverse" src="/design/assets/making public flyer back.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article><article class="flip-card flip-card--social making-public-card" data-flip-card=""><div aria-label="Flip Making Public social graphics" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public — social graphic" src="/design/assets/making public social 1.png"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public — alternate social graphic" src="/design/assets/making public social 2.png"/></figure></div></div><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></article><figure class="mp-event-photo making-public-card"><img alt="Making Public — event photograph" src="/design/assets/making public event photo.jpg"/></figure></div></div>
 </section>
 </div>
 </article>
