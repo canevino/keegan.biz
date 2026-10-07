@@ -6155,3 +6155,278 @@ figure > figcaption {
     transform:none !important;
   }
 }
+
+/* =========================================================
+   v37 - spacing, typography system, paper surface
+   Ink bleed and knot treatment intentionally left alone.
+   ========================================================= */
+
+:root {
+  /* one spacing system */
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 16px;
+  --space-4: 22px;
+  --space-5: 30px;
+  --space-6: 42px;
+  --space-7: 58px;
+
+  /* one type system */
+  --type-page: clamp(78px, 11.5vw, 168px);
+  --type-family: clamp(40px, 4.5vw, 66px);
+  --type-project: clamp(42px, 4.25vw, 64px);
+  --type-section: clamp(34px, 3.15vw, 48px);
+  --type-subhead: 16px;
+  --type-body: 15px;
+  --type-meta: 12px;
+  --type-credit: 11px;
+  --leading-body: 1.42;
+
+  --section-compact: clamp(30px, 3.4vw, 46px);
+  --module-gap: clamp(20px, 2.2vw, 30px);
+}
+
+/* Paper is a page material, not a layer pasted over the work. */
+body.design-page {
+  position: relative;
+  background: var(--paper);
+}
+body.design-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg');
+  background-size: 1500px auto, 1350px auto, 1800px auto;
+  background-position: center top, 18% 20%, 72% 35%;
+  background-repeat: repeat-y, repeat, repeat-y;
+  background-blend-mode: multiply, multiply, soft-light;
+  opacity: .085;
+  mix-blend-mode: multiply;
+}
+.page-shell {
+  position: relative;
+  z-index: 1;
+}
+
+/* Shared outer rhythm. */
+.design-main {
+  padding-bottom: var(--space-7) !important;
+}
+.design-site-header {
+  padding-top: 12px !important;
+  padding-bottom: 11px !important;
+}
+
+/* Masthead still gets a deliberate pause, but not a dead zone. */
+.portfolio-masthead {
+  min-height: 176px !important;
+}
+.portfolio-masthead__main {
+  padding-top: var(--space-4) !important;
+  padding-bottom: var(--space-4) !important;
+}
+.portfolio-masthead__rail {
+  padding-top: var(--space-4) !important;
+  padding-bottom: var(--space-4) !important;
+}
+.portfolio-masthead h1 {
+  font-size: var(--type-page) !important;
+}
+
+/* Parent project family. */
+.project-family-heading {
+  padding-top: var(--space-6) !important;
+  padding-bottom: var(--space-4) !important;
+}
+.project-family-heading h2 {
+  font-size: var(--type-family) !important;
+  line-height: .92 !important;
+  margin: 0 !important;
+}
+
+/* Collapsed project rows: compact, consistent and aligned. */
+.project-summary {
+  padding-top: var(--space-5) !important;
+  padding-bottom: var(--space-5) !important;
+  gap: var(--module-gap) !important;
+  align-items: start !important;
+}
+.project-title {
+  font-size: var(--type-project) !important;
+  line-height: .91 !important;
+  margin: 0 !important;
+}
+.project-toggle {
+  margin-top: var(--space-3) !important;
+}
+.project-key {
+  margin-top: 0 !important;
+  align-self: start !important;
+}
+
+/* Expanded case rhythm. Related material stays together. */
+.project-content {
+  padding-bottom: var(--space-5) !important;
+}
+.case-section {
+  padding-top: var(--section-compact) !important;
+  padding-bottom: var(--section-compact) !important;
+}
+.case-section + .case-section {
+  margin-top: 0 !important;
+}
+.case-section__header {
+  margin-bottom: var(--space-4) !important;
+}
+.case-section__header > div,
+.case-section--extensions .case-section__header > div,
+.case-section--making-public .case-section__header > div {
+  margin-bottom: 0 !important;
+}
+.case-section__header h3,
+.case-section--making-public .case-section__header h3 {
+  font-size: var(--type-section) !important;
+  line-height: .94 !important;
+  margin: 0 0 var(--space-3) !important;
+}
+.case-section__header p,
+.case-lede,
+.making-public-copy p,
+.making-public-intro p {
+  font-size: var(--type-body) !important;
+  line-height: var(--leading-body) !important;
+  margin-top: 0 !important;
+  margin-bottom: var(--space-3) !important;
+}
+.case-credit,
+.making-public-copy .case-credit,
+.making-public-intro .case-credit {
+  font-size: var(--type-credit) !important;
+  line-height: 1.34 !important;
+  margin-top: var(--space-3) !important;
+  margin-bottom: 0 !important;
+}
+
+/* Metadata and captions share one scale. */
+.image-switcher__meta,
+.extension-meta,
+.asset-meta,
+.flip-card__meta,
+figure > figcaption {
+  font-size: var(--type-meta) !important;
+  line-height: 1.2 !important;
+}
+.image-switcher__meta h4,
+.extension-meta strong,
+.asset-meta strong,
+.flip-card__meta strong {
+  font-size: var(--type-meta) !important;
+  line-height: 1.2 !important;
+}
+
+/* Module spacing: enough air to read as groups, no leftover voids. */
+.case-section--lead,
+.switcher-grid--three,
+.extension-layout,
+.case-section--making-public,
+.case-section--making-public .making-public-grid,
+.angels-takeaway-grid,
+.angels-script-layout,
+.angels-signage-layout,
+.winter-gallery,
+.prx-pairing,
+.college-showcase,
+.wine-grid {
+  gap: var(--module-gap) !important;
+}
+.feature-slab,
+.switcher-grid,
+.extension-layout,
+.making-public-panel,
+.angels-takeaway-grid,
+.angels-script-layout,
+.angels-signage-layout,
+.winter-gallery,
+.prx-hero-figure,
+.prx-pairing,
+.college-showcase,
+.wine-grid {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Across formats: keep labels close to the specimens. */
+.image-switcher__meta {
+  margin-bottom: var(--space-2) !important;
+  min-height: 0 !important;
+}
+.switcher-grid--three {
+  row-gap: var(--space-5) !important;
+  column-gap: var(--module-gap) !important;
+}
+
+/* Extensions and Making Public use the same heading/content cadence. */
+.case-section--extensions,
+.case-section--making-public {
+  row-gap: var(--space-4) !important;
+}
+.case-section--making-public .making-public-grid {
+  margin-top: var(--space-2) !important;
+  row-gap: var(--space-4) !important;
+}
+.case-section--making-public .asset-meta {
+  margin-bottom: var(--space-2) !important;
+  min-height: 0 !important;
+}
+
+/* Keep project transitions intentional: slightly more air than internal modules. */
+.project + .project {
+  margin-top: var(--space-2) !important;
+}
+
+@media (max-width: 980px) {
+  :root {
+    --section-compact: 34px;
+    --module-gap: 22px;
+  }
+  .project-family-heading {
+    padding-top: 34px !important;
+  }
+  .project-summary {
+    padding-top: 28px !important;
+    padding-bottom: 30px !important;
+  }
+}
+
+@media (max-width: 680px) {
+  :root {
+    --section-compact: 28px;
+    --module-gap: 18px;
+    --type-body: 14px;
+    --type-meta: 11px;
+  }
+  .portfolio-masthead {
+    min-height: 0 !important;
+  }
+  .portfolio-masthead__main,
+  .portfolio-masthead__rail {
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+  }
+  .project-family-heading {
+    padding-top: 28px !important;
+    padding-bottom: 18px !important;
+  }
+  .project-summary {
+    padding-top: 24px !important;
+    padding-bottom: 26px !important;
+  }
+  .case-section__header {
+    margin-bottom: 18px !important;
+  }
+}
