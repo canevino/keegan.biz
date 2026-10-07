@@ -3053,3 +3053,291 @@ figure > figcaption { filter:url(#ink-soft); }
   .making-public-card,.mp-event-photo { height:auto !important; }
   .making-public-card .flip-card__inner { height:auto !important; aspect-ratio:3/4 !important; }
 }
+
+/* =========================================================
+   v24 - hierarchy, ink, alignment cleanup
+   ========================================================= */
+
+:root {
+  --paper:#ece7d7;
+  --ink:#11110f;
+  --red:#c1272d;
+  --green:#006a44;
+  --yellow:#fdb913;
+  --rule:rgba(0,106,68,.28);
+  --key-width:420px;
+  --label-size:12px;
+  --body-size:15px;
+  --caption-size:11px;
+}
+
+/* Paper is global. No local texture rectangles behind type. */
+body.design-page::before {
+  background-image:url('/assets/home/Texturelabs_Paper_226S grey paper pul overlay.jpg') !important;
+  background-size:700px auto !important;
+  opacity:.045 !important;
+  mix-blend-mode:multiply !important;
+}
+
+/* One coherent print language. Major type and knot share edge behavior. */
+.portfolio-masthead h1,
+.project-title,
+.case-section__header h3,
+.making-public-panel > h4 {
+  filter:url(#ink-bleed) !important;
+}
+
+.design-text-nav a,
+.project-client,
+.project-number,
+.case-section__number,
+.project-toggle,
+.image-switcher__meta h4,
+.image-switcher__button,
+.flip-card__button,
+.case-credit,
+figure > figcaption,
+.making-public-copy,
+.case-lede {
+  filter:url(#ink-soft);
+}
+
+/* Header: design and knot share a visual height and print weight. */
+.portfolio-masthead {
+  grid-template-columns:minmax(0,1fr) minmax(500px,.92fr) !important;
+  min-height:310px !important;
+  align-items:center !important;
+}
+.portfolio-masthead__main,
+.portfolio-masthead__rail {
+  min-height:310px !important;
+  display:flex !important;
+  align-items:center !important;
+  padding-top:28px !important;
+  padding-bottom:28px !important;
+}
+.portfolio-masthead h1 {
+  color:var(--red) !important;
+  font-size:clamp(112px,10.8vw,170px) !important;
+  line-height:.82 !important;
+  padding:.05em 0 .15em !important;
+  overflow:visible !important;
+}
+.portfolio-masthead__rail {
+  justify-content:center !important;
+  padding-left:48px !important;
+}
+.portfolio-masthead__ornament {
+  width:min(100%,650px) !important;
+  height:clamp(148px,10.5vw,172px) !important;
+  margin:0 !important;
+  overflow:visible !important;
+}
+.portfolio-masthead__ornament img {
+  object-fit:contain !important;
+  filter:url(#ink-knot) brightness(0) saturate(100%) invert(26%) sepia(35%) saturate(1519%) hue-rotate(112deg) brightness(87%) contrast(102%) !important;
+}
+.knot-flash__ink { opacity:1 !important; }
+.knot-flash__bleed {
+  opacity:.22 !important;
+  transform:translate(2px,1px) !important;
+  filter:url(#ink-knot) brightness(0) saturate(100%) invert(24%) sepia(55%) saturate(1871%) hue-rotate(332deg) brightness(91%) contrast(95%) !important;
+  mix-blend-mode:multiply !important;
+}
+.knot-flash.is-fluttering .knot-flash__bleed,
+.knot-flash.is-hover-glitch .knot-flash__bleed { opacity:.48 !important; }
+.knot-flash.is-fluttering .knot-flash__ink,
+.knot-flash.is-hover-glitch .knot-flash__ink { opacity:.88 !important; }
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed {
+  animation:knot-register-v24 82ms steps(2,end) infinite;
+}
+@keyframes knot-register-v24 {
+  0%{transform:translate(-5px,2px)}
+  25%{transform:translate(5px,-3px)}
+  50%{transform:translate(-2px,-2px)}
+  75%{transform:translate(4px,3px)}
+  100%{transform:translate(2px,1px)}
+}
+
+/* Use the brand palette for the structural system. */
+.project { border-bottom:1px solid var(--rule) !important; }
+.project::before { background:var(--red) !important; }
+.project-number,.case-section__number { color:var(--yellow) !important; }
+.project-client,.project-toggle,.image-switcher__button,.flip-card__button { color:var(--red) !important; }
+.case-section__header h3,.making-public-panel > h4,.image-switcher__meta h4 { color:var(--green) !important; }
+.case-credit,figure > figcaption { color:var(--green) !important; }
+
+/* Normalize recurring text sizes. */
+.project-client,.project-number,.case-section__number,.project-toggle,
+.image-switcher__button,.flip-card__button { font-size:var(--label-size) !important; }
+.image-switcher__meta h4 { font-size:18px !important; }
+.case-lede,.making-public-copy { font-size:var(--body-size) !important; line-height:1.48 !important; }
+.case-credit,figure > figcaption { font-size:var(--caption-size) !important; line-height:1.35 !important; }
+
+/* Every collapsed key has the same visible width. Height follows the asset. */
+.project-summary {
+  grid-template-columns:64px minmax(360px,1fr) var(--key-width) !important;
+  align-items:start !important;
+}
+.project-key,
+.project-key--triennial,
+.project-key--angels,
+.project-key--winter,
+.project-key--prx,
+.project-key--college {
+  width:var(--key-width) !important;
+  max-width:var(--key-width) !important;
+  justify-self:end !important;
+  overflow:visible !important;
+}
+.project-key > img,
+.project-key--triennial > img,
+.project-key--angels > img,
+.project-key--winter > img,
+.project-key--prx > img,
+.project-key--college > img {
+  width:100% !important;
+  max-width:none !important;
+  height:auto !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  border:0 !important;
+  background:transparent !important;
+}
+
+/* One alignment rail for expanded sections. */
+.case-section__header,
+.extension-layout,
+.making-public-panel {
+  --section-indent:calc(64px + var(--v23-gap));
+}
+.extension-layout,
+.making-public-panel {
+  width:calc(100% - var(--section-indent)) !important;
+  margin-left:var(--section-indent) !important;
+}
+
+/* Shared extension stage guarantees identical height. */
+.extension-layout {
+  grid-template-columns:1fr 1fr !important;
+  gap:40px !important;
+  align-items:start !important;
+}
+.extension-stage {
+  display:grid !important;
+  place-items:center !important;
+  width:100% !important;
+  height:520px !important;
+  min-height:520px !important;
+  overflow:hidden !important;
+  background:transparent !important;
+  border:0 !important;
+}
+.extension-card--gif .extension-stage > img,
+.extension-card--public-processes .extension-stage img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+.extension-card--public-processes .flip-card__inner,
+.extension-card--public-processes .flip-card__face {
+  width:100% !important;
+  height:100% !important;
+}
+
+/* Flip controls live above objects, never on top of artwork. */
+.flip-card {
+  display:flex !important;
+  flex-direction:column !important;
+}
+.flip-card__button--overlay {
+  position:static !important;
+  inset:auto !important;
+  order:-1 !important;
+  align-self:flex-end !important;
+  margin:0 0 8px !important;
+  z-index:auto !important;
+}
+
+/* Making Public: remove stray rules, preserve hierarchy, equal supporting columns. */
+.making-public-panel {
+  border:0 !important;
+  background:transparent !important;
+  grid-template-columns:minmax(300px,.78fr) minmax(0,1.22fr) !important;
+  column-gap:56px !important;
+  row-gap:26px !important;
+}
+.making-public-panel::before { display:none !important; }
+.making-public-grid {
+  border:0 !important;
+  padding-top:10px !important;
+  margin-top:0 !important;
+  gap:34px !important;
+  align-items:start !important;
+}
+.making-public-panel figure,
+.making-public-panel article {
+  border:0 !important;
+  box-shadow:none !important;
+  background:transparent !important;
+}
+.making-public-card,
+.mp-event-photo { height:440px !important; }
+.making-public-card .flip-card__scene,
+.making-public-card .flip-card__inner,
+.making-public-card .flip-card__face,
+.mp-event-photo img { height:440px !important; }
+.making-public-card .flip-card__face img {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+.mp-event-photo img {
+  width:100% !important;
+  object-fit:cover !important;
+  object-position:center 42% !important;
+}
+
+/* Keep source artwork centered in its stage. */
+.image-switcher__stage img {
+  left:50% !important;
+  top:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+  transform:translate(-50%,-50%) !important;
+  object-position:center !important;
+}
+.image-switcher.is-secondary .state-primary,
+.image-switcher.is-secondary .state-secondary {
+  transform:translate(-50%,-50%) !important;
+}
+
+@media (max-width:980px) {
+  :root { --key-width:340px; }
+  .portfolio-masthead { grid-template-columns:1fr !important; }
+  .portfolio-masthead__main,.portfolio-masthead__rail { min-height:auto !important; }
+  .portfolio-masthead__rail { padding:0 0 24px !important; justify-content:flex-start !important; }
+  .portfolio-masthead__ornament { width:min(90vw,620px) !important; height:150px !important; }
+  .project-summary { grid-template-columns:48px minmax(0,1fr) !important; }
+  .project-key { grid-column:2 !important; justify-self:start !important; }
+  .extension-layout,.making-public-panel { width:100% !important; margin-left:0 !important; }
+}
+
+@media (max-width:680px) {
+  :root { --key-width:min(100%,360px); }
+  .portfolio-masthead h1 { font-size:clamp(88px,28vw,128px) !important; }
+  .portfolio-masthead__ornament { height:120px !important; }
+  .project-summary { grid-template-columns:1fr !important; }
+  .project-key { grid-column:1 !important; }
+  .extension-layout,.making-public-grid { grid-template-columns:1fr !important; }
+  .extension-stage { height:auto !important; min-height:0 !important; aspect-ratio:1/1 !important; }
+  .making-public-card,.mp-event-photo,
+  .making-public-card .flip-card__scene,
+  .making-public-card .flip-card__inner,
+  .making-public-card .flip-card__face,
+  .mp-event-photo img { height:auto !important; }
+}
