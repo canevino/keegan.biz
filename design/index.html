@@ -216,6 +216,18 @@
   <feComponentTransfer in="haloRough" result="haloFade"><feFuncA type="linear" slope="0.34"/></feComponentTransfer>
   <feMerge><feMergeNode in="haloFade"/><feMergeNode in="runRough"/></feMerge>
 </filter>
+<filter id="ink-run-v54" x="-42%" y="-68%" width="184%" height="236%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="4.65" result="runBlur"/>
+  <feComponentTransfer in="runBlur" result="lowThreshold">
+    <feFuncA type="discrete" tableValues="0 1 1 1 1 1 1 1 1 1"/>
+  </feComponentTransfer>
+  <feMorphology in="lowThreshold" operator="dilate" radius="0.95 0.48" result="spread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.008 0.052" numOctaves="3" seed="211" result="fibres"/>
+  <feDisplacementMap in="spread" in2="fibres" scale="5.2" xChannelSelector="R" yChannelSelector="G" result="runRough"/>
+  <feGaussianBlur in="SourceGraphic" stdDeviation="6.2" result="wetHalo"/>
+  <feComponentTransfer in="wetHalo" result="wetHaloFade"><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
+  <feMerge><feMergeNode in="wetHaloFade"/><feMergeNode in="runRough"/></feMerge>
+</filter>
 </defs>
 </svg>
 <div class="page-shell">

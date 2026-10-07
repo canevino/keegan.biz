@@ -8677,3 +8677,112 @@ body.design-page::before {
   .switcher-grid--three .image-switcher__stage:hover .state-primary { opacity:0 !important; }
   .switcher-grid--three .image-switcher__stage:hover .state-secondary { opacity:1 !important; }
 }
+
+/* =====================================================
+   v54 — final paper / local ink-run / Across formats repair
+   Preserve all existing v53 typography, knot, layout and bus locks.
+   ===================================================== */
+
+/* Paper: one continuous stock surface, no top/bottom fade and no repeat seams.
+   Two full-page textures are stretched over the complete document at low
+   opacity so fibre reads without turning the page grey. */
+.paper-overprint {
+  -webkit-mask-image:none !important;
+  mask-image:none !important;
+  overflow:hidden !important;
+  background:none !important;
+  opacity:1 !important;
+}
+.paper-overprint::before,
+.paper-overprint::after {
+  inset:0 !important;
+  background-repeat:no-repeat !important;
+  background-position:center center !important;
+  background-size:100% 100% !important;
+}
+.paper-overprint::before {
+  background-image:url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg') !important;
+  mix-blend-mode:soft-light !important;
+  opacity:.105 !important;
+  filter:grayscale(.08) brightness(1.42) contrast(1.15) !important;
+}
+.paper-overprint::after {
+  background-image:url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg') !important;
+  mix-blend-mode:multiply !important;
+  opacity:.060 !important;
+  filter:grayscale(.05) brightness(1.72) contrast(1.12) !important;
+}
+
+/* Red/green ink keeps a warm yellow misregistration at edges and tight joins. */
+.portfolio-masthead h1 {
+  text-shadow:
+    1.75px .42px .62px rgba(253,185,19,.62),
+    .48px 1.08px .52px rgba(253,185,19,.30),
+    -.32px -.12px .40px rgba(0,106,68,.08) !important;
+}
+.project-family-heading h2,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4 {
+  text-shadow:
+    1.48px .34px .56px rgba(253,185,19,.52),
+    .40px .82px .46px rgba(253,185,19,.24),
+    -.26px -.10px .34px rgba(0,106,68,.06) !important;
+}
+
+/* "design" hover: not a shadow. The duplicate locally switches to a wetter
+   blur + lower-alpha threshold. A radial mask grades this back into the resting
+   print treatment around the pointer. */
+.design-hover-smudge {
+  color:var(--red) !important;
+  filter:url(#ink-run-v54) !important;
+  text-shadow:none !important;
+  opacity:0 !important;
+  transform:none !important;
+  -webkit-mask-image:radial-gradient(
+    ellipse 126px 88% at var(--smudge-x,50%) var(--smudge-y,50%),
+    #000 0 22%,
+    rgba(0,0,0,.98) 34%,
+    rgba(0,0,0,.80) 50%,
+    rgba(0,0,0,.46) 67%,
+    rgba(0,0,0,.16) 82%,
+    transparent 100%
+  ) !important;
+  mask-image:radial-gradient(
+    ellipse 126px 88% at var(--smudge-x,50%) var(--smudge-y,50%),
+    #000 0 22%,
+    rgba(0,0,0,.98) 34%,
+    rgba(0,0,0,.80) 50%,
+    rgba(0,0,0,.46) 67%,
+    rgba(0,0,0,.16) 82%,
+    transparent 100%
+  ) !important;
+}
+.portfolio-masthead__main.is-smudging .design-hover-smudge { opacity:.94 !important; }
+
+/* Across formats: state is driven by an explicit hover class from JS, not by
+   the accumulated legacy :hover rules. Visibility + stacking are forced so
+   both supplied photo assets always replace the artwork cleanly. */
+.switcher-grid--three .image-switcher__stage > .state-primary,
+.switcher-grid--three .image-switcher__stage > .state-secondary {
+  display:block !important;
+  visibility:visible !important;
+}
+.switcher-grid--three .image-switcher__stage > .state-primary { z-index:2 !important; }
+.switcher-grid--three .image-switcher__stage > .state-secondary { z-index:1 !important; }
+.switcher-grid--three .image-switcher.is-hover-secondary .image-switcher__stage > .state-primary {
+  opacity:0 !important;
+  visibility:hidden !important;
+  z-index:1 !important;
+}
+.switcher-grid--three .image-switcher.is-hover-secondary .image-switcher__stage > .state-secondary {
+  opacity:1 !important;
+  visibility:visible !important;
+  z-index:3 !important;
+}
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher__stage:hover .state-primary,
+  .switcher-grid--three .image-switcher__stage:hover .state-secondary {
+    /* v54 JS owns desktop hover state. */
+  }
+}

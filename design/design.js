@@ -539,3 +539,48 @@
     stage.addEventListener("pointerleave", showArtwork);
   });
 })();
+
+/* v54: deterministic Across formats hover preview.
+   Use the exact supplied asset pairs and a dedicated class so older hover CSS
+   cannot cancel the installed-photo state. */
+(() => {
+  "use strict";
+
+  const pairs = [
+    ["/design/assets/more connection lyric.png", "/design/assets/more connection lyric photo.png"],
+    ["/design/assets/more depth.png", "/design/assets/more depth image.png"],
+    ["/design/assets/more fun bus.png", "/design/assets/more fun bus image.png"]
+  ];
+  const canHover = window.matchMedia("(hover:hover) and (pointer:fine)");
+
+  document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher, index) => {
+    const stage = switcher.querySelector(".image-switcher__stage");
+    const primary = switcher.querySelector(".state-primary");
+    const secondary = switcher.querySelector(".state-secondary");
+    const button = switcher.querySelector(".image-switcher__button");
+    const pair = pairs[index];
+    if (!stage || !primary || !secondary || !pair) return;
+
+    primary.src = pair[0];
+    secondary.src = pair[1];
+
+    /* Decode the installed photograph before hover so there is no blank frame. */
+    const preload = new Image();
+    preload.src = pair[1];
+    if (preload.decode) preload.decode().catch(() => {});
+
+    const enter = () => {
+      if (!canHover.matches) return;
+      switcher.classList.add("is-hover-secondary");
+      button?.setAttribute("aria-pressed", "true");
+    };
+    const leave = () => {
+      if (!canHover.matches) return;
+      switcher.classList.remove("is-hover-secondary");
+      button?.setAttribute("aria-pressed", String(switcher.classList.contains("is-secondary")));
+    };
+
+    stage.addEventListener("pointerenter", enter);
+    stage.addEventListener("pointerleave", leave);
+  });
+})();
