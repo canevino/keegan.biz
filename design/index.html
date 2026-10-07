@@ -13,20 +13,18 @@
 <svg aria-hidden="true" class="print-filter-defs" focusable="false" height="0" width="0">
 <defs>
 <filter color-interpolation-filters="sRGB" height="190%" id="ink-display-v35" width="154%" x="-27%" y="-45%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="0.48" result="soft"/>
+  <feGaussianBlur in="SourceGraphic" stdDeviation="0.39" result="soft"/>
   <feComponentTransfer in="soft" result="thresholded">
     <feFuncA type="discrete" tableValues="0 0 0 1 1"/>
   </feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.30" result="spread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.014 0.075" numOctaves="3" seed="41" result="fibers"/>
-  <feDisplacementMap in="spread" in2="fibers" scale="1.65" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.065 0.19" numOctaves="3" seed="17" result="paper"/>
-  <feColorMatrix in="paper" type="luminanceToAlpha" result="paperAlpha"/>
-  <feComponentTransfer in="paperAlpha" result="paperFade">
-    <feFuncA type="linear" slope="0.085" intercept="0"/>
-  </feComponentTransfer>
-  <feComposite in="rough" in2="paperFade" operator="out" result="toothed"/>
-  <feMerge><feMergeNode in="toothed"/></feMerge>
+  <feMorphology in="thresholded" operator="dilate" radius="0.24" result="spread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.010 0.055" numOctaves="3" seed="41" result="fibers"/>
+  <feDisplacementMap in="spread" in2="fibers" scale="1.28" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.11" numOctaves="2" seed="17" result="paper"/>
+  <feColorMatrix in="paper" values="0.42 0 0 0 0.44  0 0.42 0 0 0.44  0 0 0.42 0 0.44  0 0 0 .13 0" result="paperTone"/>
+  <feComposite in="paperTone" in2="rough" operator="in" result="paperInside"/>
+  <feBlend in="rough" in2="paperInside" mode="multiply" result="inked"/>
+  <feMerge><feMergeNode in="inked"/></feMerge>
 </filter>
 <filter color-interpolation-filters="sRGB" height="144%" id="ink-small-v34" width="128%" x="-14%" y="-22%">
   <feGaussianBlur in="SourceGraphic" stdDeviation="0.18" result="soft"/>
@@ -39,20 +37,18 @@
   <feComposite in="rough" in2="grainCut" operator="out"/>
 </filter>
 <filter color-interpolation-filters="sRGB" height="210%" id="ink-knot-v35" width="174%" x="-37%" y="-55%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="0.44" result="soft"/>
+  <feGaussianBlur in="SourceGraphic" stdDeviation="0.34" result="soft"/>
   <feComponentTransfer in="soft" result="thresholded">
     <feFuncA type="discrete" tableValues="0 0 0 1 1"/>
   </feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.34" result="spread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.014 0.085" numOctaves="3" seed="83" result="fibers"/>
-  <feDisplacementMap in="spread" in2="fibers" scale="2.45" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.055 0.17" numOctaves="3" seed="31" result="paper"/>
-  <feColorMatrix in="paper" type="luminanceToAlpha" result="paperAlpha"/>
-  <feComponentTransfer in="paperAlpha" result="paperFade">
-    <feFuncA type="linear" slope="0.055" intercept="0"/>
-  </feComponentTransfer>
-  <feComposite in="rough" in2="paperFade" operator="out" result="toothed"/>
-  <feMerge><feMergeNode in="toothed"/></feMerge>
+  <feMorphology in="thresholded" operator="dilate" radius="0.24" result="spread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.010 0.065" numOctaves="3" seed="83" result="fibers"/>
+  <feDisplacementMap in="spread" in2="fibers" scale="1.85" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.016 0.12" numOctaves="2" seed="31" result="paper"/>
+  <feColorMatrix in="paper" values="0.38 0 0 0 0.46  0 0.38 0 0 0.46  0 0 0.38 0 0.46  0 0 0 .18 0" result="paperTone"/>
+  <feComposite in="paperTone" in2="rough" operator="in" result="paperInside"/>
+  <feBlend in="rough" in2="paperInside" mode="multiply" result="inked"/>
+  <feMerge><feMergeNode in="inked"/></feMerge>
 </filter>
 </defs>
 </svg>
@@ -145,7 +141,7 @@
 <img alt="More Depth campaign displayed on a digital kiosk" class="state-secondary" src="/design/assets/more depth image.png"/>
 </div>
 </article>
-<article class="image-switcher" data-switcher="">
+<article class="image-switcher image-switcher--bus" data-switcher="">
 <div class="image-switcher__meta">
 <div>
 <h4>More Fun Is Here / MBTA bus wrap</h4>
