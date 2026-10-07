@@ -56,6 +56,23 @@
   <feComponentTransfer in="bleed"><feFuncA type="linear" slope="0.21"/></feComponentTransfer>
   <feMerge><feMergeNode in="bleed"/><feMergeNode in="core"/></feMerge>
 </filter>
+
+<filter id="ink-threshold-v46" x="-16%" y="-26%" width="132%" height="160%" color-interpolation-filters="sRGB">
+  <feComponentTransfer result="thresholded">
+    <feFuncA type="discrete" tableValues="0 0 0 1 1 1"/>
+  </feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.19" numOctaves="2" seed="17" result="noise"/>
+  <feDisplacementMap in="thresholded" in2="noise" scale="1.15" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<filter id="ink-press-v46" x="-18%" y="-28%" width="136%" height="164%" color-interpolation-filters="sRGB">
+  <feMorphology in="SourceGraphic" operator="dilate" radius="0.68" result="spread"/>
+  <feGaussianBlur in="spread" stdDeviation="0.40" result="softSpread"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.017 0.22" numOctaves="2" seed="41" result="edgeNoise"/>
+  <feDisplacementMap in="softSpread" in2="edgeNoise" scale="1.65" xChannelSelector="R" yChannelSelector="G" result="roughCore"/>
+  <feGaussianBlur in="spread" stdDeviation="1.30" result="outerBleed"/>
+  <feComponentTransfer in="outerBleed" result="fadedBleed"><feFuncA type="linear" slope="0.28"/></feComponentTransfer>
+  <feMerge><feMergeNode in="fadedBleed"/><feMergeNode in="roughCore"/></feMerge>
+</filter>
 </defs>
 </svg>
 <div class="page-shell">

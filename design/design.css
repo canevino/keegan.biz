@@ -7371,3 +7371,187 @@ body.design-page::before {
   62%,77%{clip-path:inset(12% 0 62% 0);transform:translateY(5px)}
   78%,99%{clip-path:inset(0 0 0 0);transform:translateY(0)}
 }
+
+/* =========================================================
+   v46 - restore physical bleed; keep registration additively
+   ========================================================= */
+
+/* Restore the stronger v28/v29 print logic. This is the actual ink edge and
+   spread. Registration below is additive and does not replace it. */
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-intro h4 {
+  filter:blur(.52px) url(#ink-threshold-v46) !important;
+  overflow:visible !important;
+}
+
+.portfolio-masthead h1,
+.project-family-heading h2,
+.project-title {
+  filter:blur(.58px) url(#ink-threshold-v46) !important;
+}
+
+/* A second low-opacity ink texture is clipped to the glyphs. It is irregular
+   and quiet; the page-paper sheet still sits above it. */
+[data-ink] {
+  position:relative !important;
+  isolation:isolate !important;
+}
+[data-ink]::after {
+  display:block !important;
+  content:attr(data-ink) !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:1 !important;
+  pointer-events:none !important;
+  color:transparent !important;
+  background-image:
+    url('/assets/home/Texturelabs_InkPaint_323S grey pastel blended overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg') !important;
+  background-size:380px auto, 760px auto !important;
+  background-position:17% 31%, 62% 44% !important;
+  background-repeat:repeat !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  opacity:.105 !important;
+  mix-blend-mode:multiply !important;
+  filter:contrast(1.35) grayscale(1) !important;
+  font:inherit !important;
+  line-height:inherit !important;
+  letter-spacing:inherit !important;
+  text-transform:inherit !important;
+  white-space:inherit !important;
+}
+
+/* Display hierarchy: keep requested brand colour and tight print setting. */
+.portfolio-masthead h1 {
+  color:var(--red) !important;
+  letter-spacing:-.072em !important;
+  text-shadow:
+    -1.25px -.55px 1.15px rgba(0,106,68,.36),
+     1.20px  .48px 1.05px rgba(253,185,19,.34),
+      .15px 1.10px .85px rgba(193,39,45,.24) !important;
+}
+.project-family-heading h2,
+.project-title {
+  letter-spacing:-.052em !important;
+  text-shadow:
+    -.90px -.42px .92px rgba(193,39,45,.22),
+     .92px  .34px .88px rgba(0,106,68,.28),
+      .12px .78px .70px rgba(253,185,19,.20) !important;
+}
+.case-section__header h3,
+.making-public-intro h4 {
+  letter-spacing:-.040em !important;
+  text-shadow:
+    -.58px -.28px .62px rgba(193,39,45,.16),
+     .62px  .24px .60px rgba(0,106,68,.18),
+      .08px .50px .50px rgba(253,185,19,.13) !important;
+}
+
+/* One large paper field, visibly above typography, rules, and the knot. Media
+   is promoted above it. Bigger scales prevent a tiled wallpaper appearance. */
+body.design-page::before {
+  position:absolute !important;
+  inset:0 !important;
+  z-index:40 !important;
+  pointer-events:none !important;
+  background-image:
+    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg') !important;
+  background-size:2350px auto, 3150px auto, 4100px auto !important;
+  background-position:center 0, center 1320px, center 3100px !important;
+  background-repeat:repeat-y, repeat-y, repeat-y !important;
+  background-attachment:scroll, scroll, scroll !important;
+  background-blend-mode:multiply,soft-light,multiply !important;
+  mix-blend-mode:multiply !important;
+  opacity:.18 !important;
+  filter:grayscale(.20) brightness(1.78) contrast(.74) saturate(.70) !important;
+}
+
+/* Images/video stay clean and physically above the paper sheet. */
+.design-page img:not(.knot-flash__ink):not(.knot-flash__bleed):not(.knot-flash__register),
+.design-page video,
+.design-page canvas,
+.image-switcher__stage,
+.extension-stage,
+.flip-card__scene,
+.folder-stage,
+.project-key,
+.feature-slab__hero,
+.mp-banner,
+.poster-card,
+.winter-card,
+.prx-card,
+.college-showcase,
+.wine-grid {
+  position:relative !important;
+  z-index:50 !important;
+}
+
+/* Knot: restore the older blur + threshold edge that read as printed, then add
+   two brand-colour registration plates. All three layers use one SVG geometry. */
+.portfolio-masthead__ornament,
+.portfolio-masthead__ornament img {
+  z-index:2 !important;
+}
+.portfolio-masthead__ornament .knot-flash__ink { opacity:1 !important; }
+.portfolio-masthead__ornament .knot-flash__bleed { opacity:.28 !important; transform:translate(.25px,1.45px) !important; }
+.portfolio-masthead__ornament .knot-flash__register { opacity:.20 !important; transform:translate(-.20px,-1.10px) !important; }
+
+.knot-flash--black .knot-flash__ink { filter:brightness(0) blur(.44px) url(#ink-threshold-v46) !important; }
+.knot-flash--red .knot-flash__ink { filter:brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) blur(.44px) url(#ink-threshold-v46) !important; }
+.knot-flash--green .knot-flash__ink { filter:brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) blur(.44px) url(#ink-threshold-v46) !important; }
+.knot-flash--yellow .knot-flash__ink { filter:brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) blur(.44px) url(#ink-threshold-v46) !important; }
+
+/* Two different registration plates are always present, regardless of the
+   main ink colour. */
+.portfolio-masthead__ornament .knot-flash__bleed {
+  filter:brightness(0) saturate(100%) invert(29%) sepia(31%) saturate(1804%) hue-rotate(108deg) brightness(84%) contrast(101%) blur(.72px) url(#ink-threshold-v46) !important;
+}
+.portfolio-masthead__ornament .knot-flash__register {
+  filter:brightness(0) saturate(100%) invert(77%) sepia(96%) saturate(2024%) hue-rotate(348deg) brightness(104%) contrast(102%) blur(.72px) url(#ink-threshold-v46) !important;
+}
+.knot-flash--green .knot-flash__bleed,
+.knot-flash--yellow .knot-flash__register {
+  filter:brightness(0) saturate(100%) invert(18%) sepia(83%) saturate(2874%) hue-rotate(347deg) brightness(92%) contrast(92%) blur(.72px) url(#ink-threshold-v46) !important;
+}
+
+.knot-flash.is-hover-glitch .knot-flash__bleed,
+.knot-flash.is-fluttering .knot-flash__bleed {
+  opacity:.58 !important;
+  animation:knot-register-green-v46 74ms steps(2,end) infinite !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__register,
+.knot-flash.is-fluttering .knot-flash__register {
+  opacity:.48 !important;
+  animation:knot-register-yellow-v46 96ms steps(2,end) infinite reverse !important;
+}
+.knot-flash.is-hover-glitch .knot-flash__ink,
+.knot-flash.is-fluttering .knot-flash__ink {
+  animation:knot-slice-v46 120ms steps(1,end) infinite !important;
+}
+@keyframes knot-register-green-v46 {
+  0%{transform:translate(.2px,-6px)}
+  25%{transform:translate(-.3px,5px)}
+  50%{transform:translate(.2px,-3px)}
+  75%{transform:translate(-.2px,4px)}
+  100%{transform:translate(.25px,1.45px)}
+}
+@keyframes knot-register-yellow-v46 {
+  0%{transform:translate(-.2px,5px)}
+  33%{transform:translate(.3px,-6px)}
+  66%{transform:translate(-.2px,3px)}
+  100%{transform:translate(-.20px,-1.10px)}
+}
+@keyframes knot-slice-v46 {
+  0%,15%,100%{clip-path:inset(0 0 0 0);transform:translateY(0)}
+  16%,30%{clip-path:inset(0 0 68% 0);transform:translateY(-7px)}
+  31%,45%{clip-path:inset(29% 0 38% 0);transform:translateY(6px)}
+  46%,61%{clip-path:inset(68% 0 0 0);transform:translateY(-5px)}
+  62%,77%{clip-path:inset(12% 0 62% 0);transform:translateY(5px)}
+  78%,99%{clip-path:inset(0 0 0 0);transform:translateY(0)}
+}
