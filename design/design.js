@@ -153,15 +153,6 @@
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  /* Large display faces use pseudo-layers for registration and material
-     texture. Set their duplicate text from the actual DOM so the effect never
-     drifts from edited copy. */
-  document.querySelectorAll(
-    ".portfolio-masthead h1, .project-family-heading h2, .project-title, .case-section__header h3, .making-public-intro h4"
-  ).forEach((element) => {
-    element.setAttribute("data-print-text", element.textContent.trim());
-  });
-
   /* Legacy page-height sync is harmless if no long spine is present. */
   function syncPageKnotLength() {
     const height = Math.max(
@@ -181,9 +172,9 @@
     resizeObserver.observe(document.body);
   }
 
-  /* Smooth knots behave like a misregistered screen print. All SVG variants
-     are fully decoded before swaps begin so the filtered layers never flash
-     clean while a new source is loading. */
+  /* Smooth knots behave like a misregistered screen print: the drawing stays
+     fixed in place, but the ink layer swaps abruptly. Idle glitches are rare;
+     hover keeps the print unstable until the pointer leaves. */
   const knotSources = [
     "/assets/home/knot_smooth_svg1.svg",
     "/assets/home/knot_smooth_svg2.svg",
@@ -199,139 +190,97 @@
     "knot-flash--yellow"
   ];
 
-  const knotCache = knotSources.map(async (source) => {
-    const preload = new Image();
-    preload.decoding = "async";
-    preload.src = source;
+  document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
+    const images = slot.querySelectorAll("img");
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
+    let currentIndex = slotIndex % knotSources.length;
+    const existingColorIndex = knotColorClasses.findIndex((className) => slot.classList.contains(className));
+    let colorIndex = existingColorIndex >= 0 ? existingColorIndex : slotIndex % knotColorClasses.length;
+    let timer = 0;
+    let hovering = false;
 
-    try {
-      await preload.decode();
-    } catch (error) {
-      await new Promise((resolve) => {
-        if (preload.complete) {
-          resolve();
-          return;
-        }
-        preload.addEventListener("load", resolve, { once: true });
-        preload.addEventListener("error", resolve, { once: true });
-      });
-    }
+    const setKnot = (index) => {
+      const source = knotSources[index];
+      images.forEach((image) => { image.src = source; });
+      slot.style.setProperty("--knot-mask", `url("${source}")`);
+    };
 
-    return { source, image: preload };
-  });
-
-  Promise.all(knotCache).then(() => {
-    document.querySelectorAll("[data-knot-flash]").forEach((slot, slotIndex) => {
-      const images = slot.querySelectorAll("img");
-      const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
-      const pickDifferentIndex = (exclude) => {
-        if (knotSources.length <= 1) return 0;
-        let next = Math.floor(Math.random() * knotSources.length);
-        while (next === exclude) next = Math.floor(Math.random() * knotSources.length);
-        return next;
-      };
-      let settledIndex = Math.floor(Math.random() * knotSources.length);
-      let currentIndex = settledIndex;
-      const existingColorIndex = knotColorClasses.findIndex((className) => slot.classList.contains(className));
-      let colorIndex = existingColorIndex >= 0 ? existingColorIndex : slotIndex % knotColorClasses.length;
-      let timer = 0;
-      let hovering = false;
-
-      const setKnot = (index) => {
-        const source = knotSources[index];
-        images.forEach((image) => {
-          image.decoding = "sync";
-          if (image.getAttribute("src") !== source) image.setAttribute("src", source);
-        });
-        void slot.offsetWidth;
-      };
-
-      const setColor = (index) => {
-        knotColorClasses.forEach((className) => slot.classList.remove(className));
-        slot.classList.add(knotColorClasses[index]);
-      };
-
-      const chooseNext = () => {
-        /* Walk through the hand-drawn set while the knot is active, but do not
-           force the resting state back to the same default drawing. */
-        currentIndex = (currentIndex + 1) % knotSources.length;
-        colorIndex = (colorIndex + 1) % knotColorClasses.length;
-        setColor(colorIndex);
-        setKnot(currentIndex);
-      };
-
-      const chooseSettled = () => {
-        settledIndex = pickDifferentIndex(currentIndex);
-        currentIndex = settledIndex;
-        setKnot(currentIndex);
-      };
-
-      const clearTimer = () => {
-        window.clearTimeout(timer);
-        timer = 0;
-      };
-
-      const scheduleIdle = () => {
-        clearTimer();
-        if (reducedMotion.matches || hovering) return;
-        timer = window.setTimeout(idleBurst, 30000 + Math.random() * 12000);
-      };
-
-      const idleBurst = () => {
-        if (reducedMotion.matches || hovering) return;
-        slot.classList.add("is-fluttering");
-        const swaps = 14 + Math.floor(Math.random() * 7);
-        let count = 0;
-        const step = () => {
-          chooseNext();
-          count += 1;
-          if (count < swaps) timer = window.setTimeout(step, 28 + Math.random() * 28);
-          else {
-            chooseSettled();
-            slot.classList.remove("is-fluttering");
-            scheduleIdle();
-          }
-        };
-        step();
-      };
-
-      const hoverLoop = () => {
-        if (!hovering || reducedMotion.matches) return;
-        chooseNext();
-        timer = window.setTimeout(hoverLoop, 30 + Math.random() * 26);
-      };
-
-      const startHover = () => {
-        if (!canHover.matches || reducedMotion.matches) return;
-        hovering = true;
-        clearTimer();
-        slot.classList.remove("is-fluttering");
-        slot.classList.add("is-hover-glitch");
-        hoverLoop();
-      };
-
-      const stopHover = () => {
-        if (!hovering) return;
-        hovering = false;
-        clearTimer();
-        chooseSettled();
-        slot.classList.remove("is-hover-glitch");
-        scheduleIdle();
-      };
-
-      setColor(colorIndex);
+    const chooseNext = () => {
+      let next = Math.floor(Math.random() * knotSources.length);
+      if (next === currentIndex) next = (next + 1) % knotSources.length;
+      currentIndex = next;
+      colorIndex = (colorIndex + 1) % knotColorClasses.length;
+      knotColorClasses.forEach((className) => slot.classList.remove(className));
+      slot.classList.add(knotColorClasses[colorIndex]);
       setKnot(currentIndex);
-      slot.classList.add("is-knot-ready");
-      scheduleIdle();
-      slot.addEventListener("pointerenter", startHover);
-      slot.addEventListener("pointerleave", stopHover);
+    };
 
-      reducedMotion.addEventListener?.("change", () => {
-        clearTimer();
-        hovering = false;
-        slot.classList.remove("is-fluttering", "is-hover-glitch");
-        if (!reducedMotion.matches) scheduleIdle();
-      });
+    const clearTimer = () => {
+      window.clearTimeout(timer);
+      timer = 0;
+    };
+
+    const scheduleIdle = () => {
+      clearTimer();
+      if (reducedMotion.matches || hovering) return;
+      timer = window.setTimeout(idleBurst, 32000 + Math.random() * 18000);
+    };
+
+    const idleBurst = () => {
+      if (reducedMotion.matches || hovering) return;
+      slot.classList.add("is-fluttering");
+      const swaps = 14 + Math.floor(Math.random() * 7);
+      let count = 0;
+
+      const step = () => {
+        chooseNext();
+        count += 1;
+        if (count < swaps) {
+          timer = window.setTimeout(step, 28 + Math.random() * 28);
+        } else {
+          slot.classList.remove("is-fluttering");
+          scheduleIdle();
+        }
+      };
+
+      step();
+    };
+
+    const hoverLoop = () => {
+      if (!hovering || reducedMotion.matches) return;
+      chooseNext();
+      timer = window.setTimeout(hoverLoop, 30 + Math.random() * 26);
+    };
+
+    const startHover = () => {
+      if (!canHover.matches || reducedMotion.matches) return;
+      hovering = true;
+      clearTimer();
+      slot.classList.remove("is-fluttering");
+      slot.classList.add("is-hover-glitch");
+      hoverLoop();
+    };
+
+    const stopHover = () => {
+      if (!hovering) return;
+      hovering = false;
+      clearTimer();
+      slot.classList.remove("is-hover-glitch");
+      scheduleIdle();
+    };
+
+    knotColorClasses.forEach((className) => slot.classList.remove(className));
+    slot.classList.add(knotColorClasses[colorIndex]);
+    setKnot(currentIndex);
+    scheduleIdle();
+    slot.addEventListener("pointerenter", startHover);
+    slot.addEventListener("pointerleave", stopHover);
+
+    reducedMotion.addEventListener?.("change", () => {
+      clearTimer();
+      hovering = false;
+      slot.classList.remove("is-fluttering", "is-hover-glitch");
+      if (!reducedMotion.matches) scheduleIdle();
     });
   });
 })();
@@ -340,247 +289,19 @@
 (() => {
   "use strict";
 
-  /* v51 paper surface: overlapping feathered sheets. The layer lives inside
-     the page so it scrolls naturally, and rebuilds when projects expand. */
-  const shell = document.querySelector(".page-shell");
-  if (!shell) return;
+  /* Pointer-local ink run. This only drives the radial mask position; the
+     actual bleed remains the SVG blur + alpha-threshold filter in index.html. */
+  const title = document.querySelector('.portfolio-masthead h1[data-ink]');
+  if (!title) return;
 
-  const textures = [
-    "/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg",
-    "/assets/home/Texturelabs_Paper_226L_paper overlay.jpg",
-    "/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg"
-  ];
-
-  const layer = document.createElement("div");
-  layer.className = "paper-overprint";
-  layer.setAttribute("aria-hidden", "true");
-  shell.appendChild(layer);
-
-  const SHEET_HEIGHT = 1380;
-  const STEP = 1020;
-  let lastCount = 0;
-
-  function rebuildPaper() {
-    const height = Math.max(shell.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
-    const count = Math.max(2, Math.ceil((height + 360) / STEP));
-    if (count === lastCount) {
-      layer.style.height = `${height}px`;
-      return;
-    }
-
-    layer.replaceChildren();
-    layer.style.height = `${height}px`;
-
-    for (let i = 0; i < count; i += 1) {
-      const sheet = document.createElement("div");
-      sheet.className = "paper-overprint__sheet";
-      sheet.style.top = `${i * STEP - (i ? 180 : 0)}px`;
-      sheet.style.backgroundImage = `url("${textures[i % textures.length]}")`;
-      sheet.style.backgroundPosition = `${18 + ((i * 29) % 64)}% ${12 + ((i * 17) % 70)}%`;
-      layer.appendChild(sheet);
-    }
-
-    lastCount = count;
-  }
-
-  rebuildPaper();
-  window.addEventListener("load", rebuildPaper, { once: true });
-  window.addEventListener("resize", rebuildPaper);
-
-  if ("ResizeObserver" in window) {
-    const observer = new ResizeObserver(rebuildPaper);
-    observer.observe(shell);
-  }
-})();
-
-/* v52: deterministic Across formats states + guaranteed knot texture mask. */
-(() => {
-  "use strict";
-
-  document.querySelectorAll("[data-knot-flash]").forEach((slot) => {
-    const first = slot.querySelector("img");
-    const syncMask = () => {
-      const src = first?.getAttribute("src");
-      if (src) slot.style.setProperty("--knot-mask-image", `url("${src}")`);
-    };
-    syncMask();
-    if (first) {
-      new MutationObserver(syncMask).observe(first, { attributes:true, attributeFilter:["src"] });
-    }
-  });
-
-  document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher) => {
-    const primary = switcher.querySelector(".state-primary");
-    const secondary = switcher.querySelector(".state-secondary");
-    const button = switcher.querySelector(".image-switcher__button");
-
-    const sync = () => {
-      const secondaryOn = switcher.classList.contains("is-secondary");
-      primary?.setAttribute("aria-hidden", String(secondaryOn));
-      secondary?.setAttribute("aria-hidden", String(!secondaryOn));
-      if (button) {
-        button.setAttribute("aria-pressed", String(secondaryOn));
-        button.textContent = secondaryOn ? "artwork" : "in use";
-      }
-    };
-
-    sync();
-    new MutationObserver(sync).observe(switcher, { attributes:true, attributeFilter:["class"] });
-  });
-})();
-
-/* v52: local pointer-driven ink run on the word “design”. */
-(() => {
-  "use strict";
-
-  const title = document.querySelector(".portfolio-masthead h1");
-  const holder = title?.parentElement;
-  if (!title || !holder) return;
-
-  const smudge = document.createElement("span");
-  smudge.className = "design-hover-smudge";
-  smudge.setAttribute("aria-hidden", "true");
-  smudge.textContent = title.getAttribute("data-ink") || "design";
-  holder.appendChild(smudge);
-
-  const syncBox = () => {
-    const titleBox = title.getBoundingClientRect();
-    const holderBox = holder.getBoundingClientRect();
-    smudge.style.left = `${titleBox.left - holderBox.left}px`;
-    smudge.style.top = `${titleBox.top - holderBox.top}px`;
-    smudge.style.width = `${titleBox.width}px`;
-    smudge.style.height = `${titleBox.height}px`;
-    smudge.style.fontSize = getComputedStyle(title).fontSize;
-    smudge.style.lineHeight = getComputedStyle(title).lineHeight;
-    smudge.style.letterSpacing = getComputedStyle(title).letterSpacing;
-    smudge.style.fontWeight = getComputedStyle(title).fontWeight;
-  };
-
-  const move = (event) => {
+  const updateInkPoint = (event) => {
     const rect = title.getBoundingClientRect();
     const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
     const y = Math.max(0, Math.min(rect.height, event.clientY - rect.top));
-    holder.style.setProperty("--smudge-x", `${x}px`);
-    holder.style.setProperty("--smudge-y", `${y}px`);
+    title.style.setProperty('--ink-x', `${x}px`);
+    title.style.setProperty('--ink-y', `${y}px`);
   };
 
-  title.addEventListener("pointerenter", (event) => {
-    syncBox();
-    move(event);
-    holder.classList.add("is-smudging");
-  });
-  title.addEventListener("pointermove", move);
-  title.addEventListener("pointerleave", () => holder.classList.remove("is-smudging"));
-  window.addEventListener("resize", syncBox);
-  window.addEventListener("load", syncBox, { once:true });
-  syncBox();
-})();
-
-/* v53: one continuous paper overlay. Remove v51/v52 generated sheet tiles. */
-(() => {
-  "use strict";
-  const shell = document.querySelector(".page-shell");
-  if (!shell) return;
-
-  document.querySelectorAll(".paper-overprint").forEach((node) => node.remove());
-  const layer = document.createElement("div");
-  layer.className = "paper-overprint";
-  layer.setAttribute("aria-hidden", "true");
-  shell.appendChild(layer);
-
-  const sync = () => {
-    const height = Math.max(shell.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
-    layer.style.height = `${height}px`;
-  };
-  sync();
-  window.addEventListener("load", sync, { once:true });
-  window.addEventListener("resize", sync);
-  if ("ResizeObserver" in window) new ResizeObserver(sync).observe(shell);
-})();
-
-/* v53: Across formats asset pairs are explicit and hover-driven on desktop. */
-(() => {
-  "use strict";
-
-  const pairs = [
-    ["/design/assets/more connection lyric.png", "/design/assets/more connection lyric photo.png"],
-    ["/design/assets/more depth.png", "/design/assets/more depth image.png"],
-    ["/design/assets/more fun bus.png", "/design/assets/more fun bus image.png"]
-  ];
-
-  const desktopHover = window.matchMedia("(hover:hover) and (pointer:fine)");
-  document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher, index) => {
-    const primary = switcher.querySelector(".state-primary");
-    const secondary = switcher.querySelector(".state-secondary");
-    const button = switcher.querySelector(".image-switcher__button");
-    const pair = pairs[index];
-    if (pair) {
-      if (primary) primary.src = pair[0];
-      if (secondary) secondary.src = pair[1];
-    }
-
-    const stage = switcher.querySelector(".image-switcher__stage");
-    if (!stage) return;
-
-    const showInstalled = () => {
-      if (!desktopHover.matches) return;
-      primary?.style.setProperty("opacity", "0", "important");
-      secondary?.style.setProperty("opacity", "1", "important");
-      button?.setAttribute("aria-pressed", "true");
-    };
-    const showArtwork = () => {
-      if (!desktopHover.matches) return;
-      primary?.style.removeProperty("opacity");
-      secondary?.style.removeProperty("opacity");
-      button?.setAttribute("aria-pressed", String(switcher.classList.contains("is-secondary")));
-    };
-
-    stage.addEventListener("pointerenter", showInstalled);
-    stage.addEventListener("pointerleave", showArtwork);
-  });
-})();
-
-/* v54: deterministic Across formats hover preview.
-   Use the exact supplied asset pairs and a dedicated class so older hover CSS
-   cannot cancel the installed-photo state. */
-(() => {
-  "use strict";
-
-  const pairs = [
-    ["/design/assets/more connection lyric.png", "/design/assets/more connection lyric photo.png"],
-    ["/design/assets/more depth.png", "/design/assets/more depth image.png"],
-    ["/design/assets/more fun bus.png", "/design/assets/more fun bus image.png"]
-  ];
-  const canHover = window.matchMedia("(hover:hover) and (pointer:fine)");
-
-  document.querySelectorAll(".switcher-grid--three [data-switcher]").forEach((switcher, index) => {
-    const stage = switcher.querySelector(".image-switcher__stage");
-    const primary = switcher.querySelector(".state-primary");
-    const secondary = switcher.querySelector(".state-secondary");
-    const button = switcher.querySelector(".image-switcher__button");
-    const pair = pairs[index];
-    if (!stage || !primary || !secondary || !pair) return;
-
-    primary.src = pair[0];
-    secondary.src = pair[1];
-
-    /* Decode the installed photograph before hover so there is no blank frame. */
-    const preload = new Image();
-    preload.src = pair[1];
-    if (preload.decode) preload.decode().catch(() => {});
-
-    const enter = () => {
-      if (!canHover.matches) return;
-      switcher.classList.add("is-hover-secondary");
-      button?.setAttribute("aria-pressed", "true");
-    };
-    const leave = () => {
-      if (!canHover.matches) return;
-      switcher.classList.remove("is-hover-secondary");
-      button?.setAttribute("aria-pressed", String(switcher.classList.contains("is-secondary")));
-    };
-
-    stage.addEventListener("pointerenter", enter);
-    stage.addEventListener("pointerleave", leave);
-  });
+  title.addEventListener('pointerenter', updateInkPoint);
+  title.addEventListener('pointermove', updateInkPoint);
 })();
