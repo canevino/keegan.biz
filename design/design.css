@@ -10054,3 +10054,27 @@ body.design-page::before {
     height:90% !important;
   }
 }
+
+/* =====================================================
+   v64 — Public Processes bottom-crop repair
+   LOCKS: all v63 sizing/alignment decisions remain unchanged.
+   Only the image fitting inside the Public Processes flip faces changes.
+   ===================================================== */
+
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__face {
+  display:flex !important;
+  align-items:flex-start !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+}
+
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__face img {
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+  flex:0 0 auto !important;
+}
