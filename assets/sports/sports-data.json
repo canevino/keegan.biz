@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-08T13:44:40.135Z",
+  "updatedAt": "2026-10-08T17:25:03.713Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -7,25 +7,62 @@
       "shortName": "Yankees",
       "game": {
         "gamePk": 849838,
-        "status": "preview",
-        "detail": "scheduled",
+        "status": "final",
+        "detail": "final",
         "date": "2026-10-08T00:00:00Z",
         "away": "TB",
         "awayFull": "Tampa Bay Rays",
-        "awayScore": 0,
-        "awayHits": "",
-        "awayErrors": "",
+        "awayScore": 4,
+        "awayHits": 7,
+        "awayErrors": 1,
         "home": "NYY",
         "homeFull": "New York Yankees",
-        "homeScore": 0,
-        "homeHits": "",
-        "homeErrors": "",
-        "innings": [],
+        "homeScore": 3,
+        "homeHits": 7,
+        "homeErrors": 0,
+        "innings": [
+          {
+            "away": 0,
+            "home": 0
+          },
+          {
+            "away": 0,
+            "home": 0
+          },
+          {
+            "away": 1,
+            "home": 1
+          },
+          {
+            "away": 1,
+            "home": 1
+          },
+          {
+            "away": 0,
+            "home": 0
+          },
+          {
+            "away": 2,
+            "home": 1
+          },
+          {
+            "away": 0,
+            "home": 0
+          },
+          {
+            "away": 0,
+            "home": 0
+          },
+          {
+            "away": 0,
+            "home": 0
+          }
+        ],
         "postseason": true,
         "competition": "AL Division Series",
-        "series": "TB leads 2-0",
-        "seriesRecord": "Rays lead Yankees 2–0",
-        "upcomingTime": "next game · today · Wed, Oct 7 · 8:00 PM ET · Yankee Stadium",
+        "series": "TB wins 3-0",
+        "seriesRecord": "Rays lead Yankees 3–0",
+        "upcomingTime": "",
         "gameType": "D"
       },
       "standings": {
