@@ -9054,3 +9054,43 @@ body.design-page::before {
     grid-column: 1 / -1 !important;
   }
 }
+
+/* =========================================================
+   v56 — restore clean media above the paper overprint
+   Better Angels cleanup stays unchanged.
+   The global paper remains over type, rules and knots.
+   ========================================================= */
+
+/* The paper overprint is intentionally a page-level layer. Media containers
+   must sit above that layer, otherwise transformed children (especially flip
+   cards) get trapped below it and pick up the full paper texture. */
+.design-page .project figure,
+.design-page .project-key,
+.design-page .image-switcher,
+.design-page .image-switcher__stage,
+.design-page .flip-card,
+.design-page .flip-card__scene,
+.design-page .extension-stage,
+.design-page .making-public-card,
+.design-page .folder-specimen,
+.design-page .folder-stage,
+.design-page .angels-script-gallery,
+.design-page .angels-signage-system {
+  position: relative !important;
+  z-index: 60 !important;
+}
+
+/* Better Angels photography/artwork should reproduce cleanly. Keep the page
+   material on the surrounding stock instead of veiling the image itself. */
+.project--angels figure,
+.project--angels .flip-card,
+.project--angels .folder-stage {
+  isolation: isolate !important;
+}
+
+.project--angels figure img,
+.project--angels .flip-card__face img {
+  position: relative !important;
+  z-index: 1 !important;
+  opacity: 1 !important;
+}
