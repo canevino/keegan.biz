@@ -8922,3 +8922,61 @@ body.design-page::before {
   background-size: 2150px auto !important;
   background-position: 46% 640px !important;
 }
+
+/* =====================================================
+   LOCKED DISPLAY INK MELT — additive refinement only
+   Baseline: paper-texture-image-balance-v2.
+   Do not alter knot, paper, Across Formats, bus, layout or type scale here.
+   Goal: replace the even yellow rim on the two largest coloured headings with
+   irregular pooled registration ink while preserving the approved bleed/tooth.
+   ===================================================== */
+
+/* DESIGN — keep the red ink stable. The direct registration stays tight; the
+   underprint carries a few larger yellow pools so the contamination gathers at
+   joins and counters instead of reading as one uniform outline. */
+.portfolio-masthead h1 {
+  text-shadow:
+     .72px  .18px  .28px rgba(253,185,19,.44),
+    1.62px  .72px 1.18px rgba(253,185,19,.24),
+    -.34px  .20px  .42px rgba(0,106,68,.065),
+     .10px  .92px  .56px rgba(193,39,45,.07) !important;
+}
+
+.portfolio-masthead h1::before {
+  opacity:.62 !important;
+  transform:translate(.16px,.40px) !important;
+  filter:url(#ink-display-v50) blur(.06px) !important;
+  text-shadow:
+      .55px  .24px  .34px rgba(253,185,19,.72),
+     1.48px  .66px  .82px rgba(253,185,19,.56),
+     2.90px 1.18px 1.72px rgba(253,185,19,.34),
+     -.88px 1.72px 1.46px rgba(253,185,19,.22),
+      .36px 3.02px 2.48px rgba(253,185,19,.17),
+    -2.08px  .12px 2.22px rgba(253,185,19,.105),
+     4.10px 2.30px 2.65px rgba(253,185,19,.115) !important;
+}
+
+/* FAMILY HEADING — same print logic, quieter than the masthead. Yellow should
+   gather in the close joins of the green letters without becoming a glow. */
+.project-family-heading h2 {
+  text-shadow:
+     .64px .18px .26px rgba(253,185,19,.40),
+    1.42px .62px 1.02px rgba(253,185,19,.22),
+    -.28px .12px .36px rgba(193,39,45,.055) !important;
+}
+
+.project-family-heading h2::before {
+  opacity:.50 !important;
+  transform:translate(.12px,.30px) !important;
+  filter:url(#ink-display-v50) blur(.05px) !important;
+  text-shadow:
+      .48px  .20px  .30px rgba(253,185,19,.62),
+     1.22px  .54px  .72px rgba(253,185,19,.48),
+     2.36px 1.02px 1.46px rgba(253,185,19,.29),
+     -.72px 1.34px 1.22px rgba(253,185,19,.18),
+      .24px 2.46px 2.04px rgba(253,185,19,.14),
+     3.46px 1.88px 2.24px rgba(253,185,19,.095) !important;
+}
+
+/* LOCK: all other display ink, knot behaviour, paper, image treatment, hover
+   swaps, bus sizing, typography scale, margins and content remain unchanged. */
