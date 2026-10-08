@@ -10078,3 +10078,22 @@ body.design-page::before {
   object-position:center top !important;
   flex:0 0 auto !important;
 }
+
+/* =====================================================
+   v65 — Lyrik installed-photo height alignment
+   LOCKS: preserve v64 Extensions/Public Processes repair, bus sizing,
+   Across Formats hover logic, paper, bleed, knots, typography and Better Angels.
+   ===================================================== */
+
+/* The installed Lyrik photograph is a wider source than the portrait artwork.
+   Fill the established portrait stage vertically so its visible height matches
+   More Depth. Crop only the excess width; do not alter the artwork state. */
+#project-triennial .switcher-grid--three > .image-switcher:nth-child(1)
+.image-switcher__stage--portrait > .state-secondary {
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+}
