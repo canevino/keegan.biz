@@ -429,6 +429,53 @@
   });
 })();
 
+/* v52: local pointer-driven ink run on the word “design”. */
+(() => {
+  "use strict";
+
+  const title = document.querySelector(".portfolio-masthead h1");
+  const holder = title?.parentElement;
+  if (!title || !holder) return;
+
+  const smudge = document.createElement("span");
+  smudge.className = "design-hover-smudge";
+  smudge.setAttribute("aria-hidden", "true");
+  smudge.textContent = title.getAttribute("data-ink") || "design";
+  holder.appendChild(smudge);
+
+  const syncBox = () => {
+    const titleBox = title.getBoundingClientRect();
+    const holderBox = holder.getBoundingClientRect();
+    smudge.style.left = `${titleBox.left - holderBox.left}px`;
+    smudge.style.top = `${titleBox.top - holderBox.top}px`;
+    smudge.style.width = `${titleBox.width}px`;
+    smudge.style.height = `${titleBox.height}px`;
+    smudge.style.fontSize = getComputedStyle(title).fontSize;
+    smudge.style.lineHeight = getComputedStyle(title).lineHeight;
+    smudge.style.letterSpacing = getComputedStyle(title).letterSpacing;
+    smudge.style.fontWeight = getComputedStyle(title).fontWeight;
+  };
+
+  const move = (event) => {
+    const rect = title.getBoundingClientRect();
+    const x = Math.max(0, Math.min(rect.width, event.clientX - rect.left));
+    const y = Math.max(0, Math.min(rect.height, event.clientY - rect.top));
+    holder.style.setProperty("--smudge-x", `${x}px`);
+    holder.style.setProperty("--smudge-y", `${y}px`);
+  };
+
+  title.addEventListener("pointerenter", (event) => {
+    syncBox();
+    move(event);
+    holder.classList.add("is-smudging");
+  });
+  title.addEventListener("pointermove", move);
+  title.addEventListener("pointerleave", () => holder.classList.remove("is-smudging"));
+  window.addEventListener("resize", syncBox);
+  window.addEventListener("load", syncBox, { once:true });
+  syncBox();
+})();
+
 /* v53: one continuous paper overlay. Remove v51/v52 generated sheet tiles. */
 (() => {
   "use strict";
@@ -536,4 +583,89 @@
     stage.addEventListener("pointerenter", enter);
     stage.addEventListener("pointerleave", leave);
   });
+})();
+
+/* v57: lighter paper only over image rectangles.
+   The main paper layer stays above type/lines/knots, while media itself remains
+   above that layer. These stamps restore a restrained amount of paper to media
+   without putting the full page texture back over photographs/artwork. */
+(() => {
+  "use strict";
+
+  const shell = document.querySelector(".page-shell");
+  const designPage = document.querySelector(".design-page");
+  if (!shell || !designPage) return;
+
+  document.querySelectorAll(".media-paper-stamps").forEach((node) => node.remove());
+
+  const layer = document.createElement("div");
+  layer.className = "media-paper-stamps";
+  layer.setAttribute("aria-hidden", "true");
+  shell.appendChild(layer);
+
+  let raf = 0;
+
+  const sync = () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      const shellRect = shell.getBoundingClientRect();
+      const shellHeight = Math.max(shell.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
+      layer.style.height = `${shellHeight}px`;
+      layer.replaceChildren();
+
+      const rects = [];
+      const seen = new Set();
+
+      designPage.querySelectorAll(".project img").forEach((img) => {
+        if (!img.complete || img.naturalWidth === 0) return;
+        const style = getComputedStyle(img);
+        if (style.display === "none" || style.visibility === "hidden") return;
+
+        const r = img.getBoundingClientRect();
+        if (r.width < 12 || r.height < 12) return;
+
+        /* Front/back flip faces often occupy the same rectangle. Only texture
+           that rectangle once so flip assets do not get double-strength paper. */
+        const key = [
+          Math.round(r.left),
+          Math.round(r.top),
+          Math.round(r.width),
+          Math.round(r.height)
+        ].join(":");
+        if (seen.has(key)) return;
+        seen.add(key);
+        rects.push(r);
+      });
+
+      rects.forEach((r, index) => {
+        const stamp = document.createElement("div");
+        stamp.className = "media-paper-stamp";
+        stamp.style.left = `${r.left - shellRect.left + shell.scrollLeft}px`;
+        stamp.style.top = `${r.top - shellRect.top + shell.scrollTop}px`;
+        stamp.style.width = `${r.width}px`;
+        stamp.style.height = `${r.height}px`;
+
+        /* Small deterministic offsets stop every image from showing the exact
+           same fibre patch without introducing random movement between loads. */
+        stamp.style.setProperty("--media-paper-x", `${18 + ((index * 29) % 67)}%`);
+        stamp.style.setProperty("--media-paper-y", `${14 + ((index * 19) % 71)}%`);
+        stamp.style.setProperty("--media-paper-x2", `${11 + ((index * 37) % 79)}%`);
+        stamp.style.setProperty("--media-paper-y2", `${21 + ((index * 23) % 63)}%`);
+        layer.appendChild(stamp);
+      });
+    });
+  };
+
+  designPage.querySelectorAll(".project img").forEach((img) => {
+    if (!img.complete) img.addEventListener("load", sync, { once:true });
+  });
+
+  sync();
+  window.addEventListener("load", sync, { once:true });
+  window.addEventListener("resize", sync);
+
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(sync);
+    observer.observe(shell);
+  }
 })();

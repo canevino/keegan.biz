@@ -9094,3 +9094,55 @@ body.design-page::before {
   z-index: 1 !important;
   opacity: 1 !important;
 }
+
+/* =========================================================
+   v57 — controlled paper texture over image areas
+   LOCK: page paper, typography, knots, layout and Better Angels spacing
+   stay unchanged. Images receive a lighter, separate paper pass.
+   ========================================================= */
+
+/* v56 correctly lifts image/media content above the strong page paper layer.
+   v57 adds back a deliberately lighter texture only over the image rectangles. */
+.media-paper-stamps {
+  position:absolute;
+  inset:0;
+  z-index:72;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.media-paper-stamp {
+  position:absolute;
+  overflow:hidden;
+  pointer-events:none;
+  isolation:isolate;
+}
+
+.media-paper-stamp::before,
+.media-paper-stamp::after {
+  content:"";
+  position:absolute;
+  inset:-18px;
+  pointer-events:none;
+  background-repeat:repeat;
+}
+
+/* Organic fibre: visible, but roughly one third of the page-level treatment. */
+.media-paper-stamp::before {
+  background-image:url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg');
+  background-size:820px auto;
+  background-position:var(--media-paper-x, 31%) var(--media-paper-y, 37%);
+  mix-blend-mode:soft-light;
+  opacity:.105;
+  filter:grayscale(.04) brightness(1.20) contrast(1.08);
+}
+
+/* Secondary pulp texture: very light so photographs keep their colour/contrast. */
+.media-paper-stamp::after {
+  background-image:url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg');
+  background-size:1040px auto;
+  background-position:var(--media-paper-x2, 63%) var(--media-paper-y2, 54%);
+  mix-blend-mode:multiply;
+  opacity:.022;
+  filter:grayscale(.02) brightness(1.55) contrast(1.04);
+}
