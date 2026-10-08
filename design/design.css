@@ -9146,3 +9146,137 @@ body.design-page::before {
   opacity:.022;
   filter:grayscale(.02) brightness(1.55) contrast(1.04);
 }
+
+/* =========================================================
+   v58 — calmer paper / clean media hierarchy
+   LOCK: layout, typography, ink bleed, knot treatment,
+   Across formats behaviour, Triennial and Better Angels
+   composition remain unchanged.
+   ========================================================= */
+
+/* Slightly reduce the page-wide paper treatment. Keep the same two stock
+   textures and blend modes, but stop them from greying the whole page. */
+.paper-overprint::before {
+  opacity:.078 !important;
+  filter:grayscale(.06) brightness(1.48) contrast(1.12) !important;
+}
+.paper-overprint::after {
+  opacity:.040 !important;
+  filter:grayscale(.04) brightness(1.82) contrast(1.08) !important;
+}
+
+/* Media sits decisively above the main page paper. This does not change any
+   dimensions or grid behaviour; it only fixes the material hierarchy. */
+.design-page .project figure,
+.design-page .project-key,
+.design-page .image-switcher,
+.design-page .image-switcher__stage,
+.design-page .flip-card,
+.design-page .flip-card__scene,
+.design-page .extension-stage,
+.design-page .making-public-card,
+.design-page .folder-specimen,
+.design-page .folder-stage,
+.design-page .angels-script-gallery,
+.design-page .angels-signage-system {
+  z-index:80 !important;
+}
+
+/* The generated image-bound stamps stay above the media, but are deliberately
+   faint. Their inset rule creates a restrained printed-edge separation from the
+   paper without turning every asset into a heavy UI card. */
+.media-paper-stamps {
+  z-index:84 !important;
+}
+.media-paper-stamp {
+  box-shadow:inset 0 0 0 1px rgba(10,12,10,.26) !important;
+}
+.media-paper-stamp::before {
+  opacity:.052 !important;
+  mix-blend-mode:soft-light !important;
+  filter:grayscale(.02) brightness(1.28) contrast(1.06) !important;
+}
+.media-paper-stamp::after {
+  opacity:.010 !important;
+  mix-blend-mode:multiply !important;
+  filter:grayscale(.01) brightness(1.72) contrast(1.02) !important;
+}
+
+
+/* =====================================================
+   v58b — DESIGN HOVER REMOVAL LOCK
+   The masthead word "design" is static. Do not re-enable local smudge hover.
+   This intentionally overrides legacy v52-v54 hover-smudge rules preserved
+   earlier in the stylesheet. No other interactions are changed.
+   ===================================================== */
+.design-hover-smudge,
+.portfolio-masthead h1.is-smudging + .design-hover-smudge,
+.portfolio-masthead__main.is-smudging .design-hover-smudge {
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  filter:none !important;
+  -webkit-mask-image:none !important;
+  mask-image:none !important;
+}
+
+
+/* =====================================================
+   v58c — corrective media hierarchy + static design lock
+   Scope only: paper strength, image treatment, design hover.
+   Layout, typography, bleed, knots, flips and section composition stay locked.
+   ===================================================== */
+
+.design-hover-smudge,
+.portfolio-masthead__main.is-smudging .design-hover-smudge,
+.portfolio-masthead h1.is-smudging + .design-hover-smudge {
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  filter:none !important;
+  text-shadow:none !important;
+  transform:none !important;
+}
+
+.paper-overprint::before {
+  opacity:.064 !important;
+  filter:grayscale(.04) brightness(1.54) contrast(1.10) !important;
+}
+.paper-overprint::after {
+  opacity:.030 !important;
+  filter:grayscale(.03) brightness(1.90) contrast(1.06) !important;
+}
+
+.design-page .project figure,
+.design-page .project-key,
+.design-page .image-switcher,
+.design-page .image-switcher__stage,
+.design-page .flip-card,
+.design-page .flip-card__scene,
+.design-page .extension-stage,
+.design-page .making-public-card,
+.design-page .folder-specimen,
+.design-page .folder-stage,
+.design-page .angels-script-gallery,
+.design-page .angels-signage-system {
+  position:relative !important;
+  z-index:80 !important;
+}
+
+.media-paper-stamps {
+  z-index:84 !important;
+  pointer-events:none !important;
+}
+.media-paper-stamp {
+  box-shadow:inset 0 0 0 1px rgba(10,12,10,.22) !important;
+}
+.media-paper-stamp::before {
+  opacity:.046 !important;
+  mix-blend-mode:soft-light !important;
+  filter:grayscale(.02) brightness(1.34) contrast(1.05) !important;
+}
+.media-paper-stamp::after {
+  opacity:.009 !important;
+  mix-blend-mode:multiply !important;
+  filter:grayscale(.01) brightness(1.78) contrast(1.02) !important;
+}
