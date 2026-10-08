@@ -463,3 +463,72 @@
   if ("ResizeObserver" in window) new ResizeObserver(sync).observe(shell);
 })();
 
+/* v61 — deterministic hover previews.
+   LOCK: exact Triennial asset pairs. Hover is temporary; click/tap remains the
+   persistent state. This replaces accumulated CSS-only hover behavior. */
+(() => {
+  "use strict";
+
+  const canHover = window.matchMedia("(hover:hover) and (pointer:fine)");
+  const pairs = [
+    ["/design/assets/more connection lyric.png", "/design/assets/more connection lyric photo.png"],
+    ["/design/assets/more depth.png", "/design/assets/more depth image.png"],
+    ["/design/assets/more fun bus.png", "/design/assets/more fun bus image.png"]
+  ];
+
+  document.querySelectorAll("#project-triennial .switcher-grid--three [data-switcher]").forEach((switcher, index) => {
+    const stage = switcher.querySelector(".image-switcher__stage");
+    const primary = switcher.querySelector(".state-primary");
+    const secondary = switcher.querySelector(".state-secondary");
+    const button = switcher.querySelector(".image-switcher__button");
+    const pair = pairs[index];
+    if (!stage || !primary || !secondary || !pair) return;
+
+    primary.src = pair[0];
+    secondary.src = pair[1];
+
+    const preload = new Image();
+    preload.src = pair[1];
+    preload.decode?.().catch(() => {});
+
+    const syncButton = () => {
+      const installed = switcher.classList.contains("is-secondary");
+      if (button) {
+        button.setAttribute("aria-pressed", String(installed));
+        button.textContent = installed ? "artwork" : "in use";
+      }
+    };
+
+    stage.addEventListener("pointerenter", () => {
+      if (!canHover.matches) return;
+      switcher.classList.add("is-hover-secondary");
+    });
+
+    stage.addEventListener("pointerleave", () => {
+      switcher.classList.remove("is-hover-secondary");
+      syncButton();
+    });
+
+    syncButton();
+  });
+})();
+
+/* v61 — deterministic flip-card hover.
+   Old raw :hover transforms caused Public Processes and Making Public to fight
+   the click state and appear to jump. The class below is the only hover state. */
+(() => {
+  "use strict";
+  const canHover = window.matchMedia("(hover:hover) and (pointer:fine)");
+
+  document.querySelectorAll("#project-triennial [data-flip-card]").forEach((card) => {
+    const scene = card.querySelector(".flip-card__scene");
+    if (!scene) return;
+
+    scene.addEventListener("pointerenter", () => {
+      if (canHover.matches) card.classList.add("is-hover-flipped");
+    });
+    scene.addEventListener("pointerleave", () => {
+      card.classList.remove("is-hover-flipped");
+    });
+  });
+})();
