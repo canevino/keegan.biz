@@ -9365,3 +9365,211 @@ body.design-page::before {
   visibility: visible !important;
   z-index: 3 !important;
 }
+
+
+/* =====================================================
+   v60 — FLIP / MEDIA CLEANUP LOCK
+   Scope only: remove generated image rectangles, restore stable flip geometry,
+   and restore Across formats hover swapping. No typography, bleed, knot,
+   paper, navigation, or section art-direction changes.
+   ===================================================== */
+
+/* The per-image paper stamps created rectangular halos around transparent PNGs
+   and photographs. The page paper remains unchanged; media itself stays clean. */
+.media-paper-stamps,
+.media-paper-stamp {
+  display:none !important;
+}
+
+.design-page img {
+  border:0 !important;
+  outline:0 !important;
+}
+
+/* Generic flip mechanics: keep the 3-D faces inside a real-sized scene so they
+   cannot spill into following sections. */
+[data-flip-card] .flip-card__scene {
+  position:relative !important;
+  perspective:1200px !important;
+}
+[data-flip-card] .flip-card__inner {
+  position:relative !important;
+  width:100% !important;
+  transform-style:preserve-3d !important;
+  transition:transform .62s cubic-bezier(.2,.7,.2,1) !important;
+}
+[data-flip-card] .flip-card__face {
+  position:absolute !important;
+  inset:0 !important;
+  margin:0 !important;
+  backface-visibility:hidden !important;
+  -webkit-backface-visibility:hidden !important;
+}
+[data-flip-card] .flip-card__face--back {
+  transform:rotateY(180deg) !important;
+}
+[data-flip-card].is-flipped .flip-card__inner {
+  transform:rotateY(180deg) !important;
+}
+
+/* Public Processes: square stage contributes its own height to the layout.
+   The rotating poster can remain visually uncropped without invading Making Public. */
+.extension-card--public-processes {
+  height:auto !important;
+  min-height:0 !important;
+}
+.extension-card--public-processes .flip-card__scene.extension-stage {
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:1 / 1 !important;
+  overflow:visible !important;
+}
+.extension-card--public-processes .flip-card__inner,
+.extension-card--public-processes .flip-card__face {
+  width:100% !important;
+  height:100% !important;
+  aspect-ratio:auto !important;
+}
+.extension-card--public-processes .flip-card__face img {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+/* Making Public: the card itself must not be 420px tall in addition to a 420px
+   scene. Only the visual stage gets the fixed shared height. */
+.case-section--making-public .making-public-card {
+  height:auto !important;
+  min-height:0 !important;
+  overflow:visible !important;
+}
+.case-section--making-public .making-public-card .flip-card__scene,
+.case-section--making-public .making-public-card .flip-card__inner,
+.case-section--making-public .making-public-card .flip-card__face {
+  height:var(--mp-support-height, 420px) !important;
+  min-height:var(--mp-support-height, 420px) !important;
+  aspect-ratio:auto !important;
+}
+.case-section--making-public .making-public-card .flip-card__face img {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+.case-section--making-public .mp-event-photo {
+  height:auto !important;
+  min-height:0 !important;
+}
+.case-section--making-public .mp-event-photo img {
+  display:block !important;
+  width:100% !important;
+  height:var(--mp-support-height, 420px) !important;
+  min-height:var(--mp-support-height, 420px) !important;
+  object-fit:cover !important;
+  object-position:center 48% !important;
+}
+
+/* Across formats: first two portrait switchers use the same simple two-state
+   opacity swap as the approved bus. Their stage keeps a real 4:5 height. */
+.switcher-grid--three .image-switcher:not(.image-switcher--bus) .image-switcher__stage--portrait {
+  position:relative !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:4 / 5 !important;
+  overflow:hidden !important;
+  background:transparent !important;
+  border:0 !important;
+}
+.switcher-grid--three .image-switcher:not(.image-switcher--bus) .image-switcher__stage--portrait > .state-primary,
+.switcher-grid--three .image-switcher:not(.image-switcher--bus) .image-switcher__stage--portrait > .state-secondary {
+  position:absolute !important;
+  inset:0 !important;
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  margin:0 !important;
+  object-fit:contain !important;
+  object-position:center !important;
+  visibility:visible !important;
+  transform:none !important;
+  pointer-events:none !important;
+  transition:opacity .18s ease !important;
+}
+.switcher-grid--three .image-switcher:not(.image-switcher--bus):not(.is-secondary) .state-primary { opacity:1 !important; z-index:2 !important; }
+.switcher-grid--three .image-switcher:not(.image-switcher--bus):not(.is-secondary) .state-secondary { opacity:0 !important; z-index:1 !important; }
+.switcher-grid--three .image-switcher:not(.image-switcher--bus).is-secondary .state-primary { opacity:0 !important; z-index:1 !important; }
+.switcher-grid--three .image-switcher:not(.image-switcher--bus).is-secondary .state-secondary { opacity:1 !important; z-index:2 !important; }
+
+@media (hover:hover) and (pointer:fine) {
+  .switcher-grid--three .image-switcher:not(.image-switcher--bus):not(.is-secondary) .image-switcher__stage--portrait:hover .state-primary { opacity:0 !important; }
+  .switcher-grid--three .image-switcher:not(.image-switcher--bus):not(.is-secondary) .image-switcher__stage--portrait:hover .state-secondary { opacity:1 !important; }
+  .switcher-grid--three .image-switcher:not(.image-switcher--bus).is-secondary .image-switcher__stage--portrait:hover .state-primary { opacity:1 !important; }
+  .switcher-grid--three .image-switcher:not(.image-switcher--bus).is-secondary .image-switcher__stage--portrait:hover .state-secondary { opacity:0 !important; }
+}
+
+/* Restore the approved bus geometry that v59's generic image rule overrode. */
+.image-switcher--bus .image-switcher__stage--wide {
+  position:relative !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:2.18 / 1 !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+  background:transparent !important;
+  border:0 !important;
+}
+.image-switcher--bus .image-switcher__stage--wide .state-primary,
+.image-switcher--bus .image-switcher__stage--wide .state-secondary {
+  position:absolute !important;
+  inset:0 !important;
+  margin:auto !important;
+  max-width:none !important;
+  max-height:none !important;
+  transform:none !important;
+  object-position:center !important;
+  pointer-events:none !important;
+  visibility:visible !important;
+  transition:opacity .18s ease !important;
+}
+.image-switcher--bus .image-switcher__stage--wide .state-primary {
+  width:84% !important;
+  height:68% !important;
+  object-fit:contain !important;
+}
+.image-switcher--bus .image-switcher__stage--wide .state-secondary {
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+}
+.image-switcher--bus:not(.is-secondary) .state-primary { opacity:1 !important; z-index:2 !important; }
+.image-switcher--bus:not(.is-secondary) .state-secondary { opacity:0 !important; z-index:1 !important; }
+.image-switcher--bus.is-secondary .state-primary { opacity:0 !important; z-index:1 !important; }
+.image-switcher--bus.is-secondary .state-secondary { opacity:1 !important; z-index:2 !important; }
+@media (hover:hover) and (pointer:fine) {
+  .image-switcher--bus:not(.is-secondary) .image-switcher__stage--wide:hover .state-primary { opacity:0 !important; }
+  .image-switcher--bus:not(.is-secondary) .image-switcher__stage--wide:hover .state-secondary { opacity:1 !important; }
+  .image-switcher--bus.is-secondary .image-switcher__stage--wide:hover .state-primary { opacity:1 !important; }
+  .image-switcher--bus.is-secondary .image-switcher__stage--wide:hover .state-secondary { opacity:0 !important; }
+}
+
+@media (max-width:680px) {
+  .image-switcher--bus .image-switcher__stage--wide { aspect-ratio:1.82 / 1 !important; }
+  .image-switcher--bus .image-switcher__stage--wide .state-primary { width:92% !important; height:72% !important; }
+  .case-section--making-public .making-public-card .flip-card__scene,
+  .case-section--making-public .making-public-card .flip-card__inner,
+  .case-section--making-public .making-public-card .flip-card__face,
+  .case-section--making-public .mp-event-photo img {
+    height:auto !important;
+    min-height:0 !important;
+  }
+  .case-section--making-public .making-public-card .flip-card__inner { aspect-ratio:3 / 4 !important; }
+}
