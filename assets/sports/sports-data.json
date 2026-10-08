@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-07T23:11:47.529Z",
+  "updatedAt": "2026-10-08T06:19:13.573Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -834,7 +834,7 @@
         {
           "id": "5909176",
           "date": "2026-10-09T12:30:00.000Z",
-          "when": "Fri, Oct 9 · 8:30 AM ET",
+          "when": "tomorrow · Fri, Oct 9 · 8:30 AM ET",
           "status": "scheduled",
           "home": "Veres Rivne",
           "away": "Shakhtar Donetsk",
