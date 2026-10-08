@@ -8859,3 +8859,66 @@ body.design-page::before {
 .making-public-card .flip-card__scene::after {
   pointer-events: none !important;
 }
+
+/* =====================================================
+   PAPER BALANCE FIX 2 — image isolation actually takes effect
+   Preserve approved bleed, knot, Across Formats, bus and layout behavior.
+   ===================================================== */
+
+/* The previous image-specific pass was trapped below .paper-overprint because
+   .design-main/.design-site-header were their own low-z stacking contexts.
+   Remove only that stacking barrier. Text/rules stay below the paper layer;
+   raster media can now use their existing z-index:50 and sit above it. */
+.design-site-header,
+.design-main {
+  z-index: auto !important;
+}
+
+/* Keep the page paper above typography/knots (z < 40) but below imagery.
+   These media surfaces are the approved clean-image layer. */
+.design-page img:not(.knot-flash__ink):not(.knot-flash__bleed):not(.knot-flash__register),
+.design-page video,
+.design-page canvas,
+.project-key,
+.feature-slab__hero,
+.image-switcher__stage,
+.extension-stage,
+.flip-card__scene,
+.folder-stage,
+.mp-banner,
+.mp-event-photo,
+.poster-card,
+.winter-card,
+.prx-card,
+.college-showcase,
+.wine-grid {
+  position: relative !important;
+  z-index: 50 !important;
+}
+
+/* Remove the ineffective local image texture plates from the previous patch.
+   The reduction now comes from correct layer order rather than another filter. */
+.project-key::after,
+.feature-slab__hero::after,
+.image-switcher__stage::after,
+.extension-stage::after,
+.mp-banner::after,
+.making-public-card .flip-card__scene::after,
+.mp-event-photo::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Paper still moves with the page and keeps its native proportions. Fixed,
+   large sheet widths avoid viewport-dependent stretching while retaining the
+   approved texture strength everywhere except the raised media surfaces. */
+.paper-overprint::before {
+  background-repeat: repeat-y !important;
+  background-size: 1700px auto !important;
+  background-position: center top !important;
+}
+.paper-overprint::after {
+  background-repeat: repeat-y !important;
+  background-size: 2150px auto !important;
+  background-position: 46% 640px !important;
+}
