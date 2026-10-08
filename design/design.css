@@ -9280,3 +9280,88 @@ body.design-page::before {
   mix-blend-mode:multiply !important;
   filter:grayscale(.01) brightness(1.78) contrast(1.02) !important;
 }
+
+/* =====================================================
+   v59 — border removal + Across formats lock
+   LOCKS preserved: masthead design hover stays removed; paper hierarchy,
+   typography, bleed, knots, layouts and Better Angels composition unchanged.
+   ===================================================== */
+
+/* No artificial frames around portfolio media. The artwork itself defines its edge. */
+.media-paper-stamp {
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+.design-page .project figure,
+.design-page .project-key,
+.design-page .image-switcher,
+.design-page .image-switcher__stage,
+.design-page .flip-card,
+.design-page .flip-card__scene,
+.design-page .extension-stage,
+.design-page .making-public-card,
+.design-page .folder-specimen,
+.design-page .folder-stage,
+.design-page .angels-script-gallery,
+.design-page .angels-signage-system {
+  outline: 0 !important;
+  box-shadow: none;
+}
+
+/* Do not reintroduce card borders through older accumulated rules. */
+.image-switcher__stage,
+.project-key,
+.feature-slab,
+.extension-stage {
+  border: 0 !important;
+}
+
+/* Across formats: one explicit visibility system for artwork/photo pairs.
+   JS owns the desktop preview class; click/tap keeps the existing persistent
+   .is-secondary state. This mirrors the working bus switcher. */
+.switcher-grid--three .image-switcher__stage {
+  position: relative !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.switcher-grid--three .image-switcher__stage > img.state-primary,
+.switcher-grid--three .image-switcher__stage > img.state-secondary {
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: none !important;
+  transition: opacity .18s ease !important;
+  visibility: visible !important;
+}
+
+.switcher-grid--three .image-switcher__stage > img.state-primary {
+  opacity: 1 !important;
+  z-index: 2 !important;
+}
+
+.switcher-grid--three .image-switcher__stage > img.state-secondary {
+  opacity: 0 !important;
+  z-index: 1 !important;
+}
+
+.switcher-grid--three .image-switcher.is-installed-preview .image-switcher__stage > img.state-primary,
+.switcher-grid--three .image-switcher.is-secondary .image-switcher__stage > img.state-primary {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  z-index: 1 !important;
+}
+
+.switcher-grid--three .image-switcher.is-installed-preview .image-switcher__stage > img.state-secondary,
+.switcher-grid--three .image-switcher.is-secondary .image-switcher__stage > img.state-secondary {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 3 !important;
+}

@@ -634,3 +634,52 @@
     observer.observe(shell);
   }
 })();
+
+/* =====================================================
+   v59 — Across formats deterministic hover lock
+   Exact pairs are enforced here so the first two switchers behave exactly like
+   the already-working bus switcher. No layout or other interaction changes.
+   ===================================================== */
+(() => {
+  "use strict";
+
+  const pairs = [
+    ["/design/assets/more connection lyric.png", "/design/assets/more connection lyric photo.png"],
+    ["/design/assets/more depth.png", "/design/assets/more depth image.png"],
+    ["/design/assets/more fun bus.png", "/design/assets/more fun bus image.png"]
+  ];
+
+  const canHover = window.matchMedia("(hover:hover) and (pointer:fine)");
+  const switchers = Array.from(document.querySelectorAll(".switcher-grid--three [data-switcher]"));
+
+  switchers.forEach((switcher, index) => {
+    const pair = pairs[index];
+    const stage = switcher.querySelector(".image-switcher__stage");
+    const primary = switcher.querySelector("img.state-primary");
+    const secondary = switcher.querySelector("img.state-secondary");
+    const button = switcher.querySelector(".image-switcher__button");
+    if (!pair || !stage || !primary || !secondary) return;
+
+    primary.src = pair[0];
+    secondary.src = pair[1];
+
+    const preload = new Image();
+    preload.src = pair[1];
+    if (preload.decode) preload.decode().catch(() => {});
+
+    const showInstalled = () => {
+      if (!canHover.matches) return;
+      switcher.classList.add("is-installed-preview");
+      button?.setAttribute("aria-pressed", "true");
+    };
+
+    const showArtwork = () => {
+      switcher.classList.remove("is-installed-preview");
+      button?.setAttribute("aria-pressed", String(switcher.classList.contains("is-secondary")));
+    };
+
+    stage.addEventListener("pointerenter", showInstalled);
+    stage.addEventListener("pointerleave", showArtwork);
+    stage.addEventListener("pointercancel", showArtwork);
+  });
+})();
