@@ -9201,3 +9201,856 @@ body.design-page::before {
   mix-blend-mode:multiply !important;
   filter:grayscale(.01) brightness(1.72) contrast(1.02) !important;
 }
+
+
+/* =====================================================
+   v58b — DESIGN HOVER REMOVAL LOCK
+   The masthead word "design" is static. Do not re-enable local smudge hover.
+   This intentionally overrides legacy v52-v54 hover-smudge rules preserved
+   earlier in the stylesheet. No other interactions are changed.
+   ===================================================== */
+.design-hover-smudge,
+.portfolio-masthead h1.is-smudging + .design-hover-smudge,
+.portfolio-masthead__main.is-smudging .design-hover-smudge {
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  filter:none !important;
+  -webkit-mask-image:none !important;
+  mask-image:none !important;
+}
+
+
+/* =====================================================
+   v58c — corrective media hierarchy + static design lock
+   Scope only: paper strength, image treatment, design hover.
+   Layout, typography, bleed, knots, flips and section composition stay locked.
+   ===================================================== */
+
+.design-hover-smudge,
+.portfolio-masthead__main.is-smudging .design-hover-smudge,
+.portfolio-masthead h1.is-smudging + .design-hover-smudge {
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  filter:none !important;
+  text-shadow:none !important;
+  transform:none !important;
+}
+
+.paper-overprint::before {
+  opacity:.064 !important;
+  filter:grayscale(.04) brightness(1.54) contrast(1.10) !important;
+}
+.paper-overprint::after {
+  opacity:.030 !important;
+  filter:grayscale(.03) brightness(1.90) contrast(1.06) !important;
+}
+
+.design-page .project figure,
+.design-page .project-key,
+.design-page .image-switcher,
+.design-page .image-switcher__stage,
+.design-page .flip-card,
+.design-page .flip-card__scene,
+.design-page .extension-stage,
+.design-page .making-public-card,
+.design-page .folder-specimen,
+.design-page .folder-stage,
+.design-page .angels-script-gallery,
+.design-page .angels-signage-system {
+  position:relative !important;
+  z-index:80 !important;
+}
+
+.media-paper-stamps {
+  z-index:84 !important;
+  pointer-events:none !important;
+}
+.media-paper-stamp {
+  box-shadow:inset 0 0 0 1px rgba(10,12,10,.22) !important;
+}
+.media-paper-stamp::before {
+  opacity:.046 !important;
+  mix-blend-mode:soft-light !important;
+  filter:grayscale(.02) brightness(1.34) contrast(1.05) !important;
+}
+.media-paper-stamp::after {
+  opacity:.009 !important;
+  mix-blend-mode:multiply !important;
+  filter:grayscale(.01) brightness(1.78) contrast(1.02) !important;
+}
+
+/* =====================================================
+   v59 — border removal + Across formats lock
+   LOCKS preserved: masthead design hover stays removed; paper hierarchy,
+   typography, bleed, knots, layouts and Better Angels composition unchanged.
+   ===================================================== */
+
+/* No artificial frames around portfolio media. The artwork itself defines its edge. */
+.media-paper-stamp {
+  box-shadow: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+}
+
+.design-page .project figure,
+.design-page .project-key,
+.design-page .image-switcher,
+.design-page .image-switcher__stage,
+.design-page .flip-card,
+.design-page .flip-card__scene,
+.design-page .extension-stage,
+.design-page .making-public-card,
+.design-page .folder-specimen,
+.design-page .folder-stage,
+.design-page .angels-script-gallery,
+.design-page .angels-signage-system {
+  outline: 0 !important;
+  box-shadow: none;
+}
+
+/* Do not reintroduce card borders through older accumulated rules. */
+.image-switcher__stage,
+.project-key,
+.feature-slab,
+.extension-stage {
+  border: 0 !important;
+}
+
+/* Across formats: one explicit visibility system for artwork/photo pairs.
+   JS owns the desktop preview class; click/tap keeps the existing persistent
+   .is-secondary state. This mirrors the working bus switcher. */
+.switcher-grid--three .image-switcher__stage {
+  position: relative !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.switcher-grid--three .image-switcher__stage > img.state-primary,
+.switcher-grid--three .image-switcher__stage > img.state-secondary {
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  transform: none !important;
+  transition: opacity .18s ease !important;
+  visibility: visible !important;
+}
+
+.switcher-grid--three .image-switcher__stage > img.state-primary {
+  opacity: 1 !important;
+  z-index: 2 !important;
+}
+
+.switcher-grid--three .image-switcher__stage > img.state-secondary {
+  opacity: 0 !important;
+  z-index: 1 !important;
+}
+
+.switcher-grid--three .image-switcher.is-installed-preview .image-switcher__stage > img.state-primary,
+.switcher-grid--three .image-switcher.is-secondary .image-switcher__stage > img.state-primary {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  z-index: 1 !important;
+}
+
+.switcher-grid--three .image-switcher.is-installed-preview .image-switcher__stage > img.state-secondary,
+.switcher-grid--three .image-switcher.is-secondary .image-switcher__stage > img.state-secondary {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 3 !important;
+}
+
+/* =====================================================
+   v61 — INTERACTION / MEDIA GEOMETRY REPAIR
+   LOCKS: no Design hover, no media borders, no Triennial layout redesign,
+   no typography / bleed / knot / paper art-direction changes.
+   This block only stabilizes Across formats + flip cards and removes the
+   rectangular wrapper artifacts around raster/PNG media.
+   ===================================================== */
+
+/* MEDIA EDGE LOCK
+   Do not draw UI rectangles around artwork. Transparent PNG areas must reveal
+   the same page stock as their surroundings. */
+#project-triennial .image-switcher,
+#project-triennial .image-switcher__stage,
+#project-triennial .extension-card,
+#project-triennial .extension-stage,
+#project-triennial .flip-card,
+#project-triennial .flip-card__scene,
+#project-triennial .making-public-card,
+#project-triennial .mp-banner,
+#project-triennial figure {
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+}
+
+#project-triennial .image-switcher,
+#project-triennial .image-switcher__stage,
+#project-triennial .extension-card,
+#project-triennial .extension-stage,
+#project-triennial .flip-card,
+#project-triennial .flip-card__scene,
+#project-triennial .making-public-card,
+#project-triennial .mp-banner {
+  background:transparent !important;
+}
+
+#project-triennial img {
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+}
+
+/* ACROSS FORMATS
+   One state model for all three pieces. JS adds .is-hover-secondary on desktop;
+   .is-secondary remains the click/tap state. This deliberately overrides all
+   older :hover rules so the bus and portraits behave identically. */
+#project-triennial .switcher-grid--three .image-switcher__stage {
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+  min-height:0 !important;
+  background:transparent !important;
+}
+
+#project-triennial .switcher-grid--three .image-switcher__stage--portrait {
+  aspect-ratio:4 / 5 !important;
+}
+
+#project-triennial .switcher-grid--three .image-switcher__stage--wide {
+  aspect-ratio:2.18 / 1 !important;
+}
+
+#project-triennial .switcher-grid--three .image-switcher__stage > .state-primary,
+#project-triennial .switcher-grid--three .image-switcher__stage > .state-secondary {
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  margin:auto !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-position:center !important;
+  transform:none !important;
+  visibility:visible !important;
+  pointer-events:none !important;
+  transition:opacity .18s ease !important;
+}
+
+#project-triennial .switcher-grid--three .image-switcher__stage--portrait > .state-primary,
+#project-triennial .switcher-grid--three .image-switcher__stage--portrait > .state-secondary {
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+}
+
+/* Approved bus proportions: flat artwork smaller; installed photograph fills. */
+#project-triennial .image-switcher--bus .image-switcher__stage--wide > .state-primary {
+  width:84% !important;
+  height:68% !important;
+  object-fit:contain !important;
+}
+#project-triennial .image-switcher--bus .image-switcher__stage--wide > .state-secondary {
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+}
+
+/* Resting / clicked states. */
+#project-triennial .switcher-grid--three .image-switcher:not(.is-secondary):not(.is-hover-secondary) .state-primary,
+#project-triennial .switcher-grid--three .image-switcher.is-secondary.is-hover-secondary .state-primary {
+  opacity:1 !important;
+  visibility:visible !important;
+  z-index:3 !important;
+}
+#project-triennial .switcher-grid--three .image-switcher:not(.is-secondary):not(.is-hover-secondary) .state-secondary,
+#project-triennial .switcher-grid--three .image-switcher.is-secondary.is-hover-secondary .state-secondary {
+  opacity:0 !important;
+  visibility:hidden !important;
+  z-index:1 !important;
+}
+
+/* Installed-photo state: either click/tap, or desktop hover. */
+#project-triennial .switcher-grid--three .image-switcher.is-secondary:not(.is-hover-secondary) .state-primary,
+#project-triennial .switcher-grid--three .image-switcher:not(.is-secondary).is-hover-secondary .state-primary {
+  opacity:0 !important;
+  visibility:hidden !important;
+  z-index:1 !important;
+}
+#project-triennial .switcher-grid--three .image-switcher.is-secondary:not(.is-hover-secondary) .state-secondary,
+#project-triennial .switcher-grid--three .image-switcher:not(.is-secondary).is-hover-secondary .state-secondary {
+  opacity:1 !important;
+  visibility:visible !important;
+  z-index:3 !important;
+}
+
+/* FLIP SYSTEM
+   Keep the actual card geometry in normal flow. Hover is represented by a
+   class from JS rather than a raw :hover transform, so clicked and hovered
+   states never fight each other. */
+#project-triennial [data-flip-card] {
+  position:relative !important;
+  min-width:0 !important;
+}
+
+#project-triennial [data-flip-card] .flip-card__scene {
+  position:relative !important;
+  perspective:1200px !important;
+}
+
+#project-triennial [data-flip-card] .flip-card__inner {
+  position:relative !important;
+  width:100% !important;
+  height:100% !important;
+  transform-style:preserve-3d !important;
+  transform:rotateY(0deg) !important;
+  transition:transform .58s cubic-bezier(.2,.72,.2,1) !important;
+}
+
+#project-triennial [data-flip-card] .flip-card__face {
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  margin:0 !important;
+  overflow:hidden !important;
+  backface-visibility:hidden !important;
+  -webkit-backface-visibility:hidden !important;
+}
+
+#project-triennial [data-flip-card] .flip-card__face--front { transform:rotateY(0deg) !important; }
+#project-triennial [data-flip-card] .flip-card__face--back { transform:rotateY(180deg) !important; }
+
+/* Clicked = back. Hover = temporary opposite side, matching the switchers. */
+#project-triennial [data-flip-card].is-flipped:not(.is-hover-flipped) .flip-card__inner,
+#project-triennial [data-flip-card]:not(.is-flipped).is-hover-flipped .flip-card__inner {
+  transform:rotateY(180deg) !important;
+}
+#project-triennial [data-flip-card]:not(.is-flipped):not(.is-hover-flipped) .flip-card__inner,
+#project-triennial [data-flip-card].is-flipped.is-hover-flipped .flip-card__inner {
+  transform:rotateY(0deg) !important;
+}
+
+/* PUBLIC PROCESSES
+   Give the card a real 520px flow height. The old v60 square/auto mixture let
+   the rotating face project into Making Public. */
+#project-triennial .extension-layout {
+  grid-template-columns:1fr 1fr !important;
+  align-items:start !important;
+}
+
+#project-triennial .extension-card--public-processes {
+  min-width:0 !important;
+  min-height:520px !important;
+  height:520px !important;
+  overflow:visible !important;
+}
+
+#project-triennial .extension-card--public-processes .flip-card__scene.extension-stage,
+#project-triennial .extension-card--public-processes .flip-card__inner,
+#project-triennial .extension-card--public-processes .flip-card__face {
+  width:100% !important;
+  height:520px !important;
+  min-height:520px !important;
+  aspect-ratio:auto !important;
+}
+
+#project-triennial .extension-card--public-processes .flip-card__scene.extension-stage {
+  overflow:visible !important;
+}
+
+#project-triennial .extension-card--public-processes .flip-card__face {
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+}
+
+#project-triennial .extension-card--public-processes .flip-card__face img {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+/* MAKING PUBLIC
+   Three support objects share one physical height. The card itself stays in
+   normal flow; only the visual scene is fixed-height. */
+#project-triennial .case-section--making-public {
+  position:relative !important;
+  clear:both !important;
+}
+
+#project-triennial .case-section--making-public .making-public-grid {
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  align-items:start !important;
+}
+
+#project-triennial .case-section--making-public .making-public-card {
+  height:auto !important;
+  min-height:0 !important;
+  overflow:visible !important;
+}
+
+#project-triennial .case-section--making-public .making-public-card .flip-card__scene,
+#project-triennial .case-section--making-public .making-public-card .flip-card__inner,
+#project-triennial .case-section--making-public .making-public-card .flip-card__face {
+  width:100% !important;
+  height:420px !important;
+  min-height:420px !important;
+  aspect-ratio:auto !important;
+}
+
+#project-triennial .case-section--making-public .making-public-card .flip-card__face img {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+
+#project-triennial .case-section--making-public .mp-event-photo {
+  height:auto !important;
+  min-height:0 !important;
+  overflow:visible !important;
+}
+#project-triennial .case-section--making-public .mp-event-photo img {
+  display:block !important;
+  width:100% !important;
+  height:420px !important;
+  min-height:420px !important;
+  object-fit:cover !important;
+  object-position:center 48% !important;
+}
+
+@media (max-width:980px) {
+  #project-triennial .extension-card--public-processes,
+  #project-triennial .extension-card--public-processes .flip-card__scene.extension-stage,
+  #project-triennial .extension-card--public-processes .flip-card__inner,
+  #project-triennial .extension-card--public-processes .flip-card__face {
+    height:460px !important;
+    min-height:460px !important;
+  }
+  #project-triennial .case-section--making-public .making-public-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media (max-width:680px) {
+  #project-triennial .switcher-grid--three .image-switcher__stage--wide {
+    aspect-ratio:1.82 / 1 !important;
+  }
+  #project-triennial .image-switcher--bus .image-switcher__stage--wide > .state-primary {
+    width:92% !important;
+    height:72% !important;
+  }
+  #project-triennial .extension-layout,
+  #project-triennial .case-section--making-public .making-public-grid {
+    grid-template-columns:1fr !important;
+  }
+  #project-triennial .extension-card--public-processes,
+  #project-triennial .extension-card--public-processes .flip-card__scene.extension-stage,
+  #project-triennial .extension-card--public-processes .flip-card__inner,
+  #project-triennial .extension-card--public-processes .flip-card__face,
+  #project-triennial .case-section--making-public .making-public-card .flip-card__scene,
+  #project-triennial .case-section--making-public .making-public-card .flip-card__inner,
+  #project-triennial .case-section--making-public .making-public-card .flip-card__face,
+  #project-triennial .case-section--making-public .mp-event-photo img {
+    height:auto !important;
+    min-height:0 !important;
+  }
+  #project-triennial .extension-card--public-processes .flip-card__inner {
+    aspect-ratio:1 / 1.15 !important;
+  }
+  #project-triennial .case-section--making-public .making-public-card .flip-card__inner {
+    aspect-ratio:3 / 4 !important;
+  }
+}
+
+/* =====================================================
+   v62 — Triennial sizing / margins / Public Processes repair
+   LOCKS: bus artwork + installed sizing, Across hover behavior, paper,
+   knots, masthead, Better Angels, and all approved print effects stay fixed.
+   ===================================================== */
+
+/* ACROSS FORMATS
+   The two portrait specimens are the same source dimensions. Give them the
+   same physical column width and anchor them to opposite sides of the grid.
+   The bus row below is intentionally untouched. */
+#project-triennial .switcher-grid--three {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  column-gap:clamp(54px,6vw,88px) !important;
+  row-gap:clamp(34px,4vw,58px) !important;
+  align-items:start !important;
+}
+#project-triennial .switcher-grid--three > .image-switcher:nth-child(1),
+#project-triennial .switcher-grid--three > .image-switcher:nth-child(2) {
+  width:min(100%,440px) !important;
+  min-width:0 !important;
+}
+#project-triennial .switcher-grid--three > .image-switcher:nth-child(1) {
+  justify-self:start !important;
+}
+#project-triennial .switcher-grid--three > .image-switcher:nth-child(2) {
+  justify-self:end !important;
+}
+#project-triennial .switcher-grid--three > .image-switcher:nth-child(3) {
+  grid-column:1 / -1 !important;
+  width:100% !important;
+}
+#project-triennial .switcher-grid--three .image-switcher__stage--portrait {
+  width:100% !important;
+  aspect-ratio:4 / 5 !important;
+}
+
+/* EXTENSIONS
+   Both posters use their real aspect ratios instead of a shared hard height.
+   This keeps Public Processes fully visible and gives both cards the same
+   outer alignment without stretching either asset. */
+#project-triennial .case-section--extensions .extension-layout {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  column-gap:clamp(54px,6vw,88px) !important;
+  row-gap:30px !important;
+  align-items:start !important;
+  width:100% !important;
+  margin:0 !important;
+}
+#project-triennial .case-section--extensions .extension-card {
+  width:min(100%,440px) !important;
+  min-width:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  margin:0 !important;
+  overflow:visible !important;
+}
+#project-triennial .case-section--extensions .extension-card--gif {
+  justify-self:start !important;
+}
+#project-triennial .case-section--extensions .extension-card--public-processes {
+  justify-self:end !important;
+}
+#project-triennial .case-section--extensions .extension-card--gif .extension-stage {
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:10 / 13 !important;
+  overflow:hidden !important;
+}
+#project-triennial .case-section--extensions .extension-card--gif .extension-stage > img {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+#project-triennial .case-section--extensions .extension-card--public-processes,
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__scene.extension-stage,
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__inner,
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__face {
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:4 / 5 !important;
+}
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__scene.extension-stage {
+  overflow:visible !important;
+}
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__face {
+  overflow:hidden !important;
+}
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__face img {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+/* MAKING PUBLIC
+   Rebuild only this section's geometry. Intro + banner share one row; the
+   three supporting objects share the second row and the same visual height. */
+#project-triennial .case-section--making-public {
+  display:grid !important;
+  grid-template-columns:repeat(12,minmax(0,1fr)) !important;
+  column-gap:clamp(24px,2.6vw,42px) !important;
+  row-gap:clamp(34px,3.5vw,52px) !important;
+  align-items:start !important;
+  clear:both !important;
+}
+#project-triennial .case-section--making-public > .case-section__header {
+  grid-column:1 / span 4 !important;
+  grid-row:1 !important;
+  width:100% !important;
+  margin:0 !important;
+}
+#project-triennial .case-section--making-public > .case-section__header > div {
+  width:100% !important;
+  max-width:34rem !important;
+  margin:0 !important;
+}
+#project-triennial .case-section--making-public > .mp-banner {
+  grid-column:5 / -1 !important;
+  grid-row:1 !important;
+  width:100% !important;
+  margin:0 !important;
+  align-self:start !important;
+}
+#project-triennial .case-section--making-public > .mp-banner img {
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  object-position:left top !important;
+}
+#project-triennial .case-section--making-public > .making-public-grid {
+  grid-column:1 / -1 !important;
+  grid-row:2 !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:clamp(26px,3vw,44px) !important;
+  width:100% !important;
+  margin:0 !important;
+  align-items:start !important;
+}
+#project-triennial .case-section--making-public .making-public-card,
+#project-triennial .case-section--making-public .mp-event-photo {
+  width:100% !important;
+  min-width:0 !important;
+  height:auto !important;
+  min-height:0 !important;
+  margin:0 !important;
+  overflow:visible !important;
+}
+#project-triennial .case-section--making-public .making-public-card .flip-card__scene,
+#project-triennial .case-section--making-public .making-public-card .flip-card__inner,
+#project-triennial .case-section--making-public .making-public-card .flip-card__face,
+#project-triennial .case-section--making-public .mp-event-photo img {
+  width:100% !important;
+  height:410px !important;
+  min-height:410px !important;
+  aspect-ratio:auto !important;
+}
+#project-triennial .case-section--making-public .making-public-card .flip-card__face img {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+#project-triennial .case-section--making-public .mp-event-photo img {
+  display:block !important;
+  object-fit:cover !important;
+  object-position:center 48% !important;
+}
+
+/* MAKING PUBLIC PRINT HEADING LOCK
+   A more-specific legacy rule was overriding the approved section-heading
+   registration. Reassert the exact section-heading treatment here. */
+#project-triennial .case-section--making-public .case-section__header h3 {
+  position:relative !important;
+  isolation:isolate !important;
+  color:var(--green) !important;
+  filter:url(#ink-display-v50) !important;
+  text-shadow:
+    1.48px .34px .56px rgba(253,185,19,.52),
+    .40px .82px .46px rgba(253,185,19,.24),
+    -.26px -.10px .34px rgba(0,106,68,.06) !important;
+}
+#project-triennial .case-section--making-public .case-section__header h3::before {
+  content:attr(data-print-text) !important;
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+  color:currentColor !important;
+  font:inherit !important;
+  line-height:inherit !important;
+  letter-spacing:inherit !important;
+  white-space:normal !important;
+  opacity:.33 !important;
+  transform:translate(.08px,.22px) !important;
+  filter:url(#ink-display-v50) !important;
+  text-shadow:none !important;
+}
+#project-triennial .case-section--making-public .case-section__header h3::after {
+  content:attr(data-print-text) !important;
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:2 !important;
+  pointer-events:none !important;
+  color:transparent !important;
+  font:inherit !important;
+  line-height:inherit !important;
+  letter-spacing:inherit !important;
+  white-space:normal !important;
+  background-image:
+    url('/assets/home/Texturelabs_InkPaint_323S grey pastel blended overlay.jpg'),
+    url('/assets/home/Texturelabs_Paper_375S printed paper screen.jpg') !important;
+  background-size:1260px auto,1700px auto !important;
+  background-position:12% 58%,80% 36% !important;
+  background-repeat:repeat !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  mix-blend-mode:multiply !important;
+  opacity:.14 !important;
+  filter:grayscale(1) contrast(1.12) !important;
+}
+
+@media (max-width:980px) {
+  #project-triennial .switcher-grid--three > .image-switcher:nth-child(1),
+  #project-triennial .switcher-grid--three > .image-switcher:nth-child(2),
+  #project-triennial .case-section--extensions .extension-card {
+    width:100% !important;
+    max-width:440px !important;
+  }
+  #project-triennial .case-section--making-public {
+    grid-template-columns:1fr !important;
+  }
+  #project-triennial .case-section--making-public > .case-section__header,
+  #project-triennial .case-section--making-public > .mp-banner,
+  #project-triennial .case-section--making-public > .making-public-grid {
+    grid-column:1 !important;
+    grid-row:auto !important;
+  }
+  #project-triennial .case-section--making-public > .making-public-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media (max-width:680px) {
+  #project-triennial .switcher-grid--three,
+  #project-triennial .case-section--extensions .extension-layout,
+  #project-triennial .case-section--making-public > .making-public-grid {
+    grid-template-columns:1fr !important;
+  }
+  #project-triennial .switcher-grid--three > .image-switcher:nth-child(1),
+  #project-triennial .switcher-grid--three > .image-switcher:nth-child(2),
+  #project-triennial .case-section--extensions .extension-card {
+    justify-self:start !important;
+    max-width:100% !important;
+  }
+  #project-triennial .switcher-grid--three > .image-switcher:nth-child(3) {
+    grid-column:1 !important;
+  }
+  #project-triennial .case-section--making-public .making-public-card .flip-card__scene,
+  #project-triennial .case-section--making-public .making-public-card .flip-card__inner,
+  #project-triennial .case-section--making-public .making-public-card .flip-card__face,
+  #project-triennial .case-section--making-public .mp-event-photo img {
+    height:auto !important;
+    min-height:0 !important;
+  }
+}
+
+/* =====================================================
+   v63 — Triennial object alignment / bus scale repair
+   LOCKS: no changes to hover logic, flips, paper, bleed, knots,
+   typography, Better Angels, or the established Triennial grid.
+   ===================================================== */
+
+/* Extensions: align the two actual objects on one top edge and one visual
+   height. Both source files stay whole; neither is cropped or stretched. */
+#project-triennial .case-section--extensions .extension-card--gif,
+#project-triennial .case-section--extensions .extension-card--public-processes {
+  aspect-ratio:auto !important;
+  align-self:start !important;
+}
+
+#project-triennial .case-section--extensions .extension-card--gif .extension-stage,
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__scene.extension-stage {
+  width:100% !important;
+  height:560px !important;
+  min-height:560px !important;
+  aspect-ratio:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  align-self:start !important;
+}
+
+#project-triennial .case-section--extensions .extension-card--gif .extension-stage > img,
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__face img {
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  object-position:center top !important;
+}
+
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__inner,
+#project-triennial .case-section--extensions .extension-card--public-processes .flip-card__face {
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  aspect-ratio:auto !important;
+  margin:0 !important;
+}
+
+/* Across formats: both Lyrik states occupy exactly the same portrait stage.
+   This prevents the installed view from reading smaller than the artwork. */
+#project-triennial .switcher-grid--three > .image-switcher:nth-child(1) .image-switcher__stage--portrait > .state-primary,
+#project-triennial .switcher-grid--three > .image-switcher:nth-child(1) .image-switcher__stage--portrait > .state-secondary {
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+/* Bus: the flat artwork was reading too small while the installed photo was
+   dominating the section. Enlarge the artwork and reduce the installed view
+   inside the existing, already-approved stage. */
+#project-triennial .image-switcher--bus .image-switcher__stage--wide > .state-primary {
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+#project-triennial .image-switcher--bus .image-switcher__stage--wide > .state-secondary {
+  width:82% !important;
+  height:82% !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:contain !important;
+  object-position:center !important;
+}
+
+@media (max-width:980px) {
+  #project-triennial .case-section--extensions .extension-card--gif .extension-stage,
+  #project-triennial .case-section--extensions .extension-card--public-processes .flip-card__scene.extension-stage {
+    height:500px !important;
+    min-height:500px !important;
+  }
+}
+
+@media (max-width:680px) {
+  #project-triennial .case-section--extensions .extension-card--gif .extension-stage,
+  #project-triennial .case-section--extensions .extension-card--public-processes .flip-card__scene.extension-stage {
+    height:auto !important;
+    min-height:0 !important;
+    aspect-ratio:4 / 5 !important;
+  }
+  #project-triennial .case-section--extensions .extension-card--gif .extension-stage {
+    aspect-ratio:10 / 13 !important;
+  }
+  #project-triennial .image-switcher--bus .image-switcher__stage--wide > .state-secondary {
+    width:90% !important;
+    height:90% !important;
+  }
+}
