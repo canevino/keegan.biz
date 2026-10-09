@@ -10243,3 +10243,81 @@ body.design-page::before {
   transform:translate(.006em,.004em) scaleX(1.014) scaleY(1.008) !important;
   filter:url(#ink-display-v50) !important;
 }
+
+
+/* =====================================================
+   v73 — controlled weirdness for the hero word "design"
+   LOCK:
+   - Ink/print effects remain ONLY on #design-title and the knot system.
+   - All other text stays clean.
+   - No layout/image/flip/knot behavior changes.
+   ===================================================== */
+
+/* Main body: keep it red and readable. Do NOT run the full SVG ink filter on
+   the primary glyphs; that was creating the grey double-image in v72. */
+#design-title {
+  color:transparent !important;
+  -webkit-text-fill-color:transparent !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f26a73 0%,
+      #eb3544 15%,
+      #dc1d31 48%,
+      #c81429 78%,
+      #b90f23 100%
+    ) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+
+  letter-spacing:-.094em !important;
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+/* Yellow contamination: visible at joins/edges, but clearly secondary to red. */
+#design-title::before {
+  content:attr(data-ink) !important;
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:-2 !important;
+  pointer-events:none !important;
+
+  color:#f2b41f !important;
+  font:inherit !important;
+  line-height:inherit !important;
+  white-space:inherit !important;
+  letter-spacing:-.104em !important;
+
+  opacity:.68 !important;
+  transform:translate(.020em,.016em) scaleX(1.014) scaleY(1.010) !important;
+  filter:blur(1.35px) url(#ink-threshold-v46) !important;
+  text-shadow:none !important;
+  mix-blend-mode:normal !important;
+}
+
+/* Rough red edge + slight letter fusing. This sits behind the crisp red body,
+   so the weirdness is concentrated at the perimeter rather than washing over
+   the whole word. */
+#design-title::after {
+  content:attr(data-ink) !important;
+  display:block !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+
+  color:#d71c31 !important;
+  font:inherit !important;
+  line-height:inherit !important;
+  white-space:inherit !important;
+  letter-spacing:-.116em !important;
+
+  opacity:.84 !important;
+  transform:translate(.004em,.006em) scaleX(1.018) scaleY(1.008) !important;
+  filter:blur(.72px) url(#ink-threshold-v46) !important;
+  text-shadow:none !important;
+  mix-blend-mode:normal !important;
+}
