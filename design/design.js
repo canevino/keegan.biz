@@ -156,9 +156,7 @@
   /* Large display faces use pseudo-layers for registration and material
      texture. Set their duplicate text from the actual DOM so the effect never
      drifts from edited copy. */
-  document.querySelectorAll(
-    ".portfolio-masthead h1, .project-family-heading h2, .project-title, .case-section__header h3, .making-public-intro h4"
-  ).forEach((element) => {
+  document.querySelectorAll(".portfolio-masthead h1").forEach((element) => {
     element.setAttribute("data-print-text", element.textContent.trim());
   });
 
@@ -337,61 +335,7 @@
 })();
 
 
-(() => {
-  "use strict";
-
-  /* v51 paper surface: overlapping feathered sheets. The layer lives inside
-     the page so it scrolls naturally, and rebuilds when projects expand. */
-  const shell = document.querySelector(".page-shell");
-  if (!shell) return;
-
-  const textures = [
-    "/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg",
-    "/assets/home/Texturelabs_Paper_226L_paper overlay.jpg",
-    "/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg"
-  ];
-
-  const layer = document.createElement("div");
-  layer.className = "paper-overprint";
-  layer.setAttribute("aria-hidden", "true");
-  shell.appendChild(layer);
-
-  const SHEET_HEIGHT = 1380;
-  const STEP = 1020;
-  let lastCount = 0;
-
-  function rebuildPaper() {
-    const height = Math.max(shell.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
-    const count = Math.max(2, Math.ceil((height + 360) / STEP));
-    if (count === lastCount) {
-      layer.style.height = `${height}px`;
-      return;
-    }
-
-    layer.replaceChildren();
-    layer.style.height = `${height}px`;
-
-    for (let i = 0; i < count; i += 1) {
-      const sheet = document.createElement("div");
-      sheet.className = "paper-overprint__sheet";
-      sheet.style.top = `${i * STEP - (i ? 180 : 0)}px`;
-      sheet.style.backgroundImage = `url("${textures[i % textures.length]}")`;
-      sheet.style.backgroundPosition = `${18 + ((i * 29) % 64)}% ${12 + ((i * 17) % 70)}%`;
-      layer.appendChild(sheet);
-    }
-
-    lastCount = count;
-  }
-
-  rebuildPaper();
-  window.addEventListener("load", rebuildPaper, { once: true });
-  window.addEventListener("resize", rebuildPaper);
-
-  if ("ResizeObserver" in window) {
-    const observer = new ResizeObserver(rebuildPaper);
-    observer.observe(shell);
-  }
-})();
+/* v67 — paper overlay removed; flat background only. */
 
 /* v52: deterministic Across formats states + guaranteed knot texture mask. */
 (() => {
@@ -441,27 +385,7 @@
   });
 })();
 
-/* v53: one continuous paper overlay. Remove v51/v52 generated sheet tiles. */
-(() => {
-  "use strict";
-  const shell = document.querySelector(".page-shell");
-  if (!shell) return;
-
-  document.querySelectorAll(".paper-overprint").forEach((node) => node.remove());
-  const layer = document.createElement("div");
-  layer.className = "paper-overprint";
-  layer.setAttribute("aria-hidden", "true");
-  shell.appendChild(layer);
-
-  const sync = () => {
-    const height = Math.max(shell.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
-    layer.style.height = `${height}px`;
-  };
-  sync();
-  window.addEventListener("load", sync, { once:true });
-  window.addEventListener("resize", sync);
-  if ("ResizeObserver" in window) new ResizeObserver(sync).observe(shell);
-})();
+/* v67 — no generated paper overlay. */
 
 /* v61 — deterministic hover previews.
    LOCK: exact Triennial asset pairs. Hover is temporary; click/tap remains the

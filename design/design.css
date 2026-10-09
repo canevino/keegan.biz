@@ -10097,3 +10097,105 @@ body.design-page::before {
   object-fit:cover !important;
   object-position:center center !important;
 }
+
+
+/* =====================================================
+   v67 — CLEAN SURFACE / PRINT-EFFECT LOCK
+   LOCKS:
+   - no site-wide paper texture
+   - ink bleed remains ONLY on the masthead word “design” and knot graphics
+   - layout, sizing, hover/flip behavior and media geometry are unchanged
+   ===================================================== */
+
+body.design-page {
+  background:var(--paper) !important;
+  background-image:none !important;
+}
+body.design-page::before,
+body.design-page::after,
+.page-shell::before,
+.page-shell::after,
+.paper-overprint,
+.paper-overprint::before,
+.paper-overprint::after,
+.paper-overprint__sheet,
+.media-paper-stamps,
+.media-paper-stamp,
+.media-paper-stamp::before,
+.media-paper-stamp::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
+  opacity:0 !important;
+  filter:none !important;
+  mix-blend-mode:normal !important;
+}
+
+/* Remove local paper/plaster surface overlays without touching layout. */
+.feature-slab::before,
+.making-public-panel::before,
+.angels-takeaway-grid::before,
+.prx-pairing::before {
+  background:none !important;
+  background-image:none !important;
+  mix-blend-mode:normal !important;
+  opacity:0 !important;
+}
+
+/* The dark poster wall stays dark; only its paper-screen texture is removed. */
+.case-section--dark::after {
+  background:url('/assets/home/Texturelabs_Film_183S.jpg') center / 900px auto !important;
+  background-image:url('/assets/home/Texturelabs_Film_183S.jpg') !important;
+}
+
+/* Clean typography everywhere except the masthead word “design”. */
+.design-page :is(h2,h3,h4,h5,h6,p,span,strong,em,a,button,figcaption,label,li) {
+  filter:none !important;
+  text-shadow:none !important;
+}
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4,
+.selected-heading__main strong,
+#project-triennial .case-section--making-public .case-section__header h3 {
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+/* Remove duplicate print plates / clipped ink texture from non-design type. */
+.project-family-heading h2::before,
+.project-family-heading h2::after,
+.project-title::before,
+.project-title::after,
+.case-section__header h3::before,
+.case-section__header h3::after,
+.making-public-panel__intro h4::before,
+.making-public-panel__intro h4::after,
+.making-public-intro h4::before,
+.making-public-intro h4::after,
+.selected-heading__main::after,
+.project-summary__copy::after,
+.case-section__header > div::after,
+#project-triennial .case-section--making-public .case-section__header h3::before,
+#project-triennial .case-section--making-public .case-section__header h3::after,
+[data-ink]:not([data-ink="design"])::before,
+[data-ink]:not([data-ink="design"])::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
+  filter:none !important;
+  text-shadow:none !important;
+  opacity:0 !important;
+}
+
+/* Preserve the approved static design bleed/registration treatment. */
+.portfolio-masthead h1[data-ink="design"] {
+  color:var(--red) !important;
+  filter:url(#ink-display-v50) !important;
+}
+
+/* Knot print/bleed rules above remain intentionally active. */
