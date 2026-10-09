@@ -506,3 +506,210 @@
    plates and the existing [data-knot-flash] system only. Do not add paper or
    ink effects to project headings/body typography here. The design word's
    variation is art-directed in CSS rather than randomized at runtime. */
+
+
+/* =====================================================
+   v75 — LIVE-TYPE DESIGN WORDMARK
+   Clicking #design-title lets the user backspace/type directly into the
+   artwork. After every edit, the plaintext is rebuilt into the same per-letter
+   red/yellow ink-plate structure used by v74.
+
+   SCOPE LOCK:
+   - This code changes ONLY #design-title.
+   - Ink/print effects remain ONLY on #design-title + [data-knot-flash].
+   - No project heading/body typography is modified.
+   ===================================================== */
+(() => {
+  const title = document.getElementById("design-title");
+  if (!title) return;
+
+  const knownProfiles = new Set(["d", "e", "s", "i", "g", "n"]);
+  const knownVariants = {
+    d: "a",
+    e: "b",
+    s: "c",
+    i: "a",
+    g: "c",
+    n: "b"
+  };
+  const fallbackVariants = ["a", "b", "c"];
+
+  let composing = false;
+
+  const cleanText = (value) =>
+    String(value || "")
+      .replace(/\u00a0/g, " ")
+      .replace(/[\r\n]+/g, " ");
+
+  const getCaretOffset = () => {
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) return cleanText(title.textContent).length;
+
+    const range = selection.getRangeAt(0);
+    if (!title.contains(range.endContainer)) return cleanText(title.textContent).length;
+
+    const before = range.cloneRange();
+    before.selectNodeContents(title);
+    before.setEnd(range.endContainer, range.endOffset);
+    return cleanText(before.toString()).length;
+  };
+
+  const placeCaret = (offset) => {
+    const selection = window.getSelection();
+    if (!selection) return;
+
+    const range = document.createRange();
+    const walker = document.createTreeWalker(title, NodeFilter.SHOW_TEXT);
+
+    let remaining = Math.max(0, offset);
+    let node = walker.nextNode();
+
+    while (node) {
+      const length = node.nodeValue ? node.nodeValue.length : 0;
+      if (remaining <= length) {
+        range.setStart(node, remaining);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        return;
+      }
+      remaining -= length;
+      node = walker.nextNode();
+    }
+
+    range.selectNodeContents(title);
+    range.collapse(false);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  };
+
+  const hashChar = (char, index) => {
+    const code = char.codePointAt(0) || 0;
+    return ((code * 37) + (index * 61) + 17) >>> 0;
+  };
+
+  const applyFallbackProfile = (span, char, index) => {
+    const h = hashChar(char, index);
+    const signed = (n, scale) => (((h >> n) & 15) / 15 - .5) * scale;
+
+    span.style.setProperty("--design-join", `${(-0.082 - ((h & 7) * 0.006)).toFixed(3)}em`);
+    span.style.setProperty("--design-x", `${signed(3, 0.010).toFixed(3)}em`);
+    span.style.setProperty("--design-y", `${signed(7, 0.009).toFixed(3)}em`);
+    span.style.setProperty("--design-sx", (1.006 + ((h >> 5) & 7) * 0.0018).toFixed(4));
+
+    span.style.setProperty("--yellow-x", `${signed(9, 0.040).toFixed(3)}em`);
+    span.style.setProperty("--yellow-y", `${(0.004 + ((h >> 2) & 7) * 0.0025).toFixed(3)}em`);
+    span.style.setProperty("--yellow-opacity", (0.68 + ((h >> 6) & 7) * 0.022).toFixed(3));
+    span.style.setProperty("--yellow-sx", (1.018 + ((h >> 10) & 7) * 0.0017).toFixed(4));
+
+    span.style.setProperty("--red-x", `${signed(12, 0.010).toFixed(3)}em`);
+    span.style.setProperty("--red-y", `${signed(15, 0.008).toFixed(3)}em`);
+    span.style.setProperty("--red-sx", (1.015 + ((h >> 13) & 7) * 0.0022).toFixed(4));
+    span.style.setProperty("--red-sy", (1.009 + ((h >> 16) & 7) * 0.0017).toFixed(4));
+    span.style.setProperty("--red-bleed-opacity", (0.91 + ((h >> 19) & 3) * 0.025).toFixed(3));
+  };
+
+  const makeLetter = (char, index) => {
+    const span = document.createElement("span");
+    const lower = char.toLocaleLowerCase();
+
+    span.classList.add("design-letter");
+
+    if (char === " ") {
+      span.classList.add("design-letter--space");
+      span.dataset.char = "\u00a0";
+      span.textContent = "\u00a0";
+      return span;
+    }
+
+    const variant = knownVariants[lower] || fallbackVariants[hashChar(char, index) % fallbackVariants.length];
+    span.classList.add(`design-letter--${variant}`);
+
+    if (knownProfiles.has(lower)) {
+      span.classList.add(`design-letter--${lower}`);
+    } else {
+      applyFallbackProfile(span, char, index);
+    }
+
+    span.dataset.char = char;
+    span.textContent = char;
+    return span;
+  };
+
+  const render = (text, caretOffset) => {
+    const value = cleanText(text);
+    const fragment = document.createDocumentFragment();
+
+    Array.from(value).forEach((char, index) => {
+      fragment.appendChild(makeLetter(char, index));
+    });
+
+    title.replaceChildren(fragment);
+    title.dataset.value = value;
+
+    requestAnimationFrame(() => {
+      placeCaret(Math.min(caretOffset, value.length));
+    });
+  };
+
+  const normalizeAfterEdit = () => {
+    if (composing) return;
+    const caret = getCaretOffset();
+    render(title.textContent, caret);
+  };
+
+  title.addEventListener("beforeinput", (event) => {
+    if (
+      event.inputType === "insertParagraph" ||
+      event.inputType === "insertLineBreak" ||
+      (event.inputType && event.inputType.startsWith("format"))
+    ) {
+      event.preventDefault();
+    }
+  });
+
+  title.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  });
+
+  title.addEventListener("paste", (event) => {
+    event.preventDefault();
+
+    const pasted = cleanText(
+      event.clipboardData ? event.clipboardData.getData("text/plain") : ""
+    );
+
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) return;
+
+    const range = selection.getRangeAt(0);
+    if (!title.contains(range.commonAncestorContainer)) return;
+
+    range.deleteContents();
+    const textNode = document.createTextNode(pasted);
+    range.insertNode(textNode);
+    range.setStartAfter(textNode);
+    range.collapse(true);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    normalizeAfterEdit();
+  });
+
+  title.addEventListener("compositionstart", () => {
+    composing = true;
+  });
+
+  title.addEventListener("compositionend", () => {
+    composing = false;
+    normalizeAfterEdit();
+  });
+
+  title.addEventListener("input", normalizeAfterEdit);
+
+  /* Keep the initial accessible/readable text state in sync. */
+  title.dataset.value = cleanText(title.textContent);
+})();

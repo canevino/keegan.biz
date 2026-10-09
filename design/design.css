@@ -10445,3 +10445,48 @@ body.design-page::after,
 
 /* Existing knot treatment is intentionally untouched and remains the only
    other allowed print/bleed system on the page. */
+
+
+/* =====================================================
+   v75 — LIVE EDITABLE DESIGN WORDMARK
+   HARD LOCK:
+   - The approved v74 red/yellow blur→threshold ink treatment is unchanged.
+   - Ink/print effects remain scoped ONLY to #design-title and the knot system.
+   - No paper texture is reintroduced.
+   - All other typography remains clean.
+   ===================================================== */
+
+#design-title[contenteditable="true"] {
+  cursor:text !important;
+  caret-color:#d71d31 !important;
+  min-width:.6ch !important;
+  min-height:1em !important;
+  outline:none !important;
+  -webkit-user-select:text !important;
+  user-select:text !important;
+}
+
+#design-title[contenteditable="true"]:focus,
+#design-title[contenteditable="true"]:focus-visible {
+  outline:none !important;
+}
+
+#design-title[contenteditable="true"] .design-letter {
+  cursor:text !important;
+}
+
+#design-title[contenteditable="true"] .design-letter::selection {
+  background:rgba(242,180,38,.28);
+}
+
+#design-title .design-letter--space {
+  min-width:.30em !important;
+  margin-right:0 !important;
+  transform:none !important;
+}
+
+#design-title .design-letter--space::before,
+#design-title .design-letter--space::after {
+  content:none !important;
+  display:none !important;
+}
