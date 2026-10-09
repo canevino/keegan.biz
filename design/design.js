@@ -532,3 +532,46 @@
     });
   });
 })();
+
+/* v66 — Lyrik installed-photo stage fill
+   LOCK: Across Formats layout, hover state logic, bus sizing, More Depth sizing,
+   Extensions, Making Public, paper, print effects, knots and Better Angels remain unchanged.
+   CSS accumulation was still forcing the Lyrik installed photo to `contain`.
+   Apply the final geometry inline with !important so the photograph always fills
+   the already-approved portrait stage and only excess horizontal image area crops. */
+(() => {
+  "use strict";
+
+  const applyLyrikInstalledGeometry = () => {
+    const switchers = Array.from(
+      document.querySelectorAll("#project-triennial .switcher-grid--three [data-switcher]")
+    );
+
+    const lyrik = switchers.find((switcher) => {
+      const primary = switcher.querySelector(".state-primary");
+      return /more connection lyric\.png(?:$|\?)/i.test(primary?.getAttribute("src") || "");
+    }) || switchers[0];
+
+    if (!lyrik) return;
+
+    const stage = lyrik.querySelector(".image-switcher__stage--portrait");
+    const installed = lyrik.querySelector(".state-secondary");
+    if (!stage || !installed) return;
+
+    stage.style.setProperty("overflow", "hidden", "important");
+
+    installed.style.setProperty("position", "absolute", "important");
+    installed.style.setProperty("inset", "0", "important");
+    installed.style.setProperty("width", "100%", "important");
+    installed.style.setProperty("height", "100%", "important");
+    installed.style.setProperty("max-width", "none", "important");
+    installed.style.setProperty("max-height", "none", "important");
+    installed.style.setProperty("margin", "0", "important");
+    installed.style.setProperty("object-fit", "cover", "important");
+    installed.style.setProperty("object-position", "center center", "important");
+    installed.style.setProperty("transform", "none", "important");
+  };
+
+  applyLyrikInstalledGeometry();
+  window.addEventListener("load", applyLyrikInstalledGeometry, { once:true });
+})();
