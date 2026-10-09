@@ -10816,3 +10816,96 @@ body.design-page::after,
   .project--college .college-showcase,
   .project--college .wine-grid { row-gap: 28px !important; }
 }
+
+
+
+/* v82 — Continue the Triennial case-study grid after project 01. */
+/* The summary, typography and global section rules remain inherited unchanged. */
+:is(.project--angels,.project--winter,.project--prx,.project--college) .case-section {
+  padding:clamp(46px,5.1vw,74px) 0 !important;
+}
+:is(.project--angels,.project--winter,.project--prx,.project--college) .case-section:last-child {
+  padding-bottom:0 !important;
+}
+:is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__header {
+  display:grid !important;
+  grid-template-columns:66px minmax(0,700px) !important;
+  gap:var(--gap) !important;
+  margin-bottom:34px !important;
+}
+:is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__number {
+  display:block !important;
+  color:var(--red) !important;
+  font-size:11px !important;
+}
+:is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__header h3 {
+  font-size:clamp(31px,3.1vw,47px) !important;
+  line-height:.94 !important;
+  letter-spacing:-.045em !important;
+  margin:0 0 10px !important;
+  color:var(--green) !important;
+}
+:is(.project--angels,.project--winter,.project--prx,.project--college) .case-section figcaption {
+  margin-top:7px !important;
+  font-size:11px !important;
+  line-height:1.35 !important;
+  color:var(--muted) !important;
+}
+:is(.project--angels,.project--winter,.project--prx,.project--college) .case-section figcaption strong {color:var(--ink)}
+/* The Triennial uses clean two-column editorial copy beside a single specimen. */
+.project--angels .angels-overview__grid {
+  column-gap:var(--gap) !important;
+}
+.project--angels .angels-overview__lede {line-height:1.4 !important;}
+.project--angels .angels-overview__body p {line-height:1.45 !important;}
+.project--angels .angels-overview__credits {
+  font-size:13px !important;
+  line-height:1.5 !important;
+  max-width:85ch !important;
+}
+/* Keep print pieces at their natural aspect ratios; align by shared grid, not forced cropping. */
+.project--winter .winter-gallery,
+.project--prx .prx-pairing,
+.project--college .college-showcase {align-items:start !important;}
+.project--winter .winter-poster-card:nth-child(2) {margin-top:0 !important;}
+:is(.project--winter .winter-poster-card,.project--prx .prx-card) figcaption {margin-top:12px !important;}
+:is(.project--winter .winter-poster-card,.project--prx .prx-card) figcaption h4 {
+  font-size:clamp(18px,1.6vw,22px) !important;
+  line-height:1.1 !important;
+}
+:is(.project--winter .winter-poster-card,.project--prx .prx-card) figcaption p {
+  font-size:15px !important;
+  line-height:1.42 !important;
+}
+.project--college :is(.college-showcase,.wine-grid) figcaption {margin-top:9px !important;}
+/* Folding control: retained v81 state machine, but do not allow obsolete hover to override click. */
+.project--angels .folder-fold {display:inline-flex !important;}
+.project--angels .folder-controls {display:flex !important;align-items:center;gap:14px;}
+.project--angels .folder-stage {touch-action:manipulation;}
+.project--angels .folder-panel {will-change:transform;}
+.project--angels .folder-specimen:not(.is-folded) .folder-panel--tongue {transition-delay:.78s !important;}
+.project--angels .folder-specimen:not(.is-folded) :is(.folder-panel--left,.folder-panel--right) {transition-delay:0s !important;}
+.project--angels .folder-specimen.is-folded .folder-panel--tongue {transition-delay:0s !important;}
+.project--angels .folder-specimen.is-folded :is(.folder-panel--left,.folder-panel--right) {transition-delay:.78s !important;}
+.project--angels [data-flip-card] .flip-card__inner,
+.project--angels [data-flip-card]:hover .flip-card__inner,
+.project--angels [data-flip-card] .flip-card__scene:hover .flip-card__inner {transform:rotateY(0deg) !important;}
+.project--angels [data-flip-card].is-flipped .flip-card__inner,
+.project--angels [data-flip-card].is-flipped:hover .flip-card__inner,
+.project--angels [data-flip-card].is-flipped .flip-card__scene:hover .flip-card__inner {transform:rotateY(180deg) !important;}
+.project--angels [data-flip-card] .flip-card__face {backface-visibility:hidden !important;-webkit-backface-visibility:hidden !important;}
+.project--angels [data-flip-card] .flip-card__face--back {transform:rotateY(180deg) !important;}
+.project--angels [data-flip-card] .flip-card__inner {transform-style:preserve-3d !important;}
+@media(max-width:980px){
+  :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__header {grid-template-columns:46px minmax(0,1fr) !important;}
+}
+@media(max-width:680px){
+  :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__header {grid-template-columns:32px minmax(0,1fr) !important;gap:12px !important;}
+  :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__header h3 {font-size:clamp(28px,8vw,38px) !important;}
+  .project--angels .angels-takeaway-side,.project--angels .angels-script-layout {grid-template-columns:1fr !important;}
+  .project--angels .folder-stage {height:min(112vw,485px) !important;}
+  .project--angels .angels-script-gallery {height:auto !important;aspect-ratio:1 !important;}
+}
+@media(prefers-reduced-motion:reduce){
+  .project--angels :is(.paper-folder,.folder-panel,.flip-card__inner){transition-duration:.01ms !important;transition-delay:0ms !important;}
+}

@@ -102,48 +102,36 @@
 
 (() => {
   "use strict";
-
-  document.querySelectorAll("[data-folder]").forEach((specimen) => {
+  document.querySelectorAll("#project-angels [data-folder]").forEach((specimen) => {
     const flip = specimen.querySelector(".folder-flip");
     const fold = specimen.querySelector(".folder-fold");
     const stage = specimen.querySelector(".folder-stage");
+    const paper = specimen.querySelector(".paper-folder");
+    if (!flip || !fold || !stage || !paper) return;
     let folded = false;
     let flipped = false;
-
     const sync = () => {
       specimen.classList.toggle("is-folded", folded);
       specimen.classList.toggle("is-flipped", flipped);
-      fold?.setAttribute("aria-pressed", String(folded));
-      flip?.setAttribute("aria-pressed", String(flipped));
-      if (fold) fold.textContent = folded ? "unfold" : "fold";
-      if (flip) flip.textContent = "flip";
-      stage?.setAttribute("aria-pressed", String(folded));
+      paper.dataset.side = flipped ? "inside" : "outside";
+      fold.setAttribute("aria-pressed", String(folded));
+      flip.setAttribute("aria-pressed", String(flipped));
+      stage.setAttribute("aria-pressed", String(folded));
+      fold.textContent = folded ? "unfold" : "fold";
+      flip.textContent = flipped ? "outside" : "inside";
+      stage.setAttribute("aria-label", `Better Angels paper takeaway, ${folded ? "folded" : "unfolded"}, showing ${flipped ? "inside" : "outside"}. Activate to ${folded ? "unfold" : "fold"}.`);
     };
-
-    const toggleFold = () => {
-      folded = !folded;
-      sync();
-    };
-
-    fold?.addEventListener("click", (event) => {
-      event.stopPropagation();
-      toggleFold();
-    });
-
-    flip?.addEventListener("click", (event) => {
-      event.stopPropagation();
-      flipped = !flipped;
-      sync();
-    });
-
-    stage?.addEventListener("click", toggleFold);
-    stage?.addEventListener("keydown", (event) => {
+    const toggleFold = () => { folded = !folded; sync(); };
+    const toggleFlip = () => { flipped = !flipped; sync(); };
+    fold.addEventListener("click", toggleFold);
+    flip.addEventListener("click", toggleFlip);
+    stage.addEventListener("click", toggleFold);
+    stage.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         toggleFold();
       }
     });
-
     sync();
   });
 })();
