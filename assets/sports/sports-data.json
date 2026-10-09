@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-09T06:21:23.710Z",
+  "updatedAt": "2026-10-09T13:32:15.829Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -871,8 +871,8 @@
         {
           "id": "5909176",
           "date": "2026-10-09T12:30:00.000Z",
-          "when": "today · Fri, Oct 9 · 8:30 AM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Veres Rivne",
           "away": "Shakhtar Donetsk",
           "competition": "Premier League"
@@ -919,17 +919,17 @@
         "rows": [
           {
             "rank": 1,
+            "team": "Shakhtar Donetsk",
+            "points": 21,
+            "played": 8,
+            "highlight": true
+          },
+          {
+            "rank": 2,
             "team": "Polissya Zhytomyr",
             "points": 18,
             "played": 7,
             "highlight": false
-          },
-          {
-            "rank": 2,
-            "team": "Shakhtar Donetsk",
-            "points": 18,
-            "played": 7,
-            "highlight": true
           },
           {
             "rank": 3,
@@ -956,7 +956,7 @@
             "rank": 6,
             "team": "Veres Rivne",
             "points": 9,
-            "played": 7,
+            "played": 8,
             "highlight": false
           },
           {
