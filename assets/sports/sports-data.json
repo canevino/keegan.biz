@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-09T17:00:30.573Z",
+  "updatedAt": "2026-10-09T22:45:21.829Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -505,8 +505,8 @@
           {
             "rank": 2,
             "team": "West Ham",
-            "points": 15,
-            "played": 8,
+            "points": 16,
+            "played": 9,
             "highlight": false
           },
           {
@@ -525,15 +525,15 @@
           },
           {
             "rank": 5,
-            "team": "West Brom",
+            "team": "QPR",
             "points": 14,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 6,
-            "team": "QPR",
-            "points": 13,
+            "team": "West Brom",
+            "points": 14,
             "played": 8,
             "highlight": false
           },
@@ -869,15 +869,6 @@
       "shortName": "Shakhtar",
       "upcoming": [
         {
-          "id": "5909176",
-          "date": "2026-10-09T12:30:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Veres Rivne",
-          "away": "Shakhtar Donetsk",
-          "competition": "Premier League"
-        },
-        {
           "id": "6106337",
           "date": "2026-10-14T19:00:00.000Z",
           "when": "Wed, Oct 14 · 3:00 PM ET",
@@ -912,6 +903,15 @@
           "home": "Shakhtar Donetsk",
           "away": "Zorya",
           "competition": "Premier League"
+        },
+        {
+          "id": "6284438",
+          "date": "2026-10-28T13:00:00.000Z",
+          "when": "Wed, Oct 28 · 9:00 AM ET",
+          "status": "scheduled",
+          "home": "Shakhtar Donetsk",
+          "away": "Dynamo Kyiv",
+          "competition": "Cup"
         }
       ],
       "standings": {
