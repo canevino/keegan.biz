@@ -10909,3 +10909,126 @@ body.design-page::after,
 @media(prefers-reduced-motion:reduce){
   .project--angels :is(.paper-folder,.folder-panel,.flip-card__inner){transition-duration:.01ms !important;transition-delay:0ms !important;}
 }
+
+
+/* v83: editorial compositions — project 02 onward only.
+   Triennial 2025 and all preceding elements remain unchanged. */
+
+/* One consistent typographic system: 66px rail, green headings, 15px text. */
+.design-page :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section {
+  padding: clamp(44px,4.6vw,68px) 0 !important;
+}
+.design-page :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__header {
+  display:grid !important; grid-template-columns:66px minmax(0,700px) !important;
+  gap:var(--gap) !important; margin:0 0 30px !important;
+}
+.design-page :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__header > div {margin:0 !important;}
+.design-page :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__header h3 {
+  margin:0 0 10px !important; font-size:clamp(29px,3.1vw,43px) !important;
+  line-height:1.02 !important; letter-spacing:-.043em !important; color:var(--green) !important;
+}
+.design-page :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__intro {
+  margin:0 !important; max-width:63ch !important; font-size:15px !important;
+  line-height:1.45 !important; color:var(--ink) !important;
+}
+.design-page :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section figure {margin:0 !important; min-width:0 !important;}
+.design-page :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section figcaption {
+  display:block !important; font-size:12px !important; line-height:1.38 !important;
+  margin-top:10px !important; color:var(--muted) !important;
+}
+/* Better Angels: use Triennial’s copy/hero artwork composition, not two text columns. */
+.design-page .project--angels .angels-overview {
+  padding:clamp(38px,4vw,58px) 0 clamp(42px,4.5vw,64px) !important;
+}
+.design-page .project--angels .angels-overview__grid {
+  display:grid !important; grid-template-columns:minmax(0,1fr) minmax(0,.88fr) !important;
+  gap:24px clamp(44px,5vw,76px) !important; align-items:start !important;
+}
+.design-page .project--angels .angels-editorial-copy {min-width:0;max-width:65ch;}
+.design-page .project--angels .angels-overview__lede {
+  font-size:clamp(19px,1.75vw,24px) !important;line-height:1.32 !important;
+  margin:0 0 22px !important;letter-spacing:-.025em !important;
+}
+.design-page .project--angels .angels-overview__body {display:block !important;}
+.design-page .project--angels .angels-overview__body p {
+  max-width:65ch !important;margin:0 0 15px !important;font-size:15px !important;line-height:1.5 !important;
+}
+.design-page .project--angels .angels-editorial-specimen {
+  width:100%;max-width:550px;justify-self:end;
+}
+.design-page .project--angels .angels-editorial-specimen img {display:block;width:100%;height:auto;object-fit:contain;}
+.design-page .project--angels .angels-overview__credits {
+  grid-column:1 / -1 !important;max-width:105ch !important;margin-top:8px !important;
+  padding-top:16px !important; font-size:12px !important;line-height:1.5 !important;
+}
+/* One large live paper object beside a real two-sided printed specimen. */
+.design-page .project--angels .angels-takeaway-grid {
+  display:grid !important;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr) !important;
+  gap:clamp(28px,4vw,64px) !important;align-items:start !important;
+}
+.design-page .project--angels .angels-takeaway-side {
+  display:block !important;grid-template-columns:none !important;max-width:420px !important;
+}
+.design-page .project--angels .angels-takeaway-side .flip-card {width:100% !important;}
+.design-page .project--angels .folder-specimen__meta {justify-content:space-between !important;}
+.design-page .project--angels .folder-specimen__meta > span {display:block !important; font-size:12px; color:var(--muted);}
+.design-page .project--angels .folder-stage {height:clamp(390px,42vw,590px) !important;}
+.design-page .project--angels .folder-note {display:block !important;max-width:55ch;font-size:12px;line-height:1.4;color:var(--muted);}
+/* A print sheet aligned with a photographic contact sheet, not one narrow strip. */
+.design-page .project--angels .angels-script-layout {
+  display:grid !important;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr) !important;
+  gap:clamp(22px,3vw,46px) !important;align-items:start !important;
+}
+.design-page .project--angels .angels-script-feature img {width:100% !important;height:auto !important;max-height:none !important;object-fit:contain !important;}
+.design-page .project--angels .angels-script-gallery {display:grid !important;grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:8px !important;height:auto !important;aspect-ratio:auto !important;}
+.design-page .project--angels .angels-script-gallery img {width:100% !important;aspect-ratio:1.1 !important;height:auto !important;object-fit:cover !important;}
+/* Signage hierarchy: installed hero, one four-piece print series, two activation photos. */
+.design-page .project--angels .angels-signage-layout {display:block !important;}
+.design-page .project--angels .angels-signage-lead {width:min(76%,860px) !important;margin:0 0 30px !important;}
+.design-page .project--angels .angels-signage-lead img {width:100% !important;height:auto !important;max-height:none !important;aspect-ratio:auto !important;object-fit:contain !important;}
+.design-page .project--angels .angels-signage-art-row {display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:12px !important;}
+.design-page .project--angels .angels-signage-art-row img {width:100% !important;height:auto !important;aspect-ratio:auto !important;object-fit:contain !important;}
+.design-page .project--angels .angels-signage-photo-row {display:grid !important;grid-template-columns:1fr 1fr !important;gap:12px !important;margin-top:28px !important;}
+.design-page .project--angels .angels-signage-photo-row img {width:100% !important;height:clamp(250px,31vw,440px) !important;object-fit:cover !important;}
+/* Posters: equal artwork column widths, natural heights, uninterrupted light background. */
+.design-page .project--winter .case-section--dark {background:transparent !important;color:var(--ink) !important;box-shadow:none !important;}
+.design-page .project--winter .case-section--dark::before,.design-page .project--winter .case-section--dark::after {display:none !important;}
+.design-page .project--winter .winter-gallery {display:grid !important;grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:clamp(18px,2.5vw,38px) !important;align-items:start !important;}
+.design-page .project--winter .winter-poster-card {margin:0 !important;padding:0 !important;transform:none !important;background:transparent !important;}
+.design-page .project--winter .winter-poster-card img {width:100% !important;height:auto !important;max-height:none !important;aspect-ratio:auto !important;object-fit:contain !important;}
+.design-page .project--winter .winter-poster-card figcaption h4,
+.design-page .project--prx .prx-card figcaption h4 {margin:0 0 9px !important;font-size:clamp(18px,1.75vw,23px) !important;line-height:1.1 !important;color:var(--ink) !important;}
+.design-page .project--winter .winter-poster-card figcaption p,
+.design-page .project--prx .prx-card figcaption p {margin:0 !important;font-size:14px !important;line-height:1.47 !important;}
+/* PRX: one lead artwork, then a 2-up identity and campaign spread. */
+.design-page .project--prx .prx-hero-figure {width:min(72%,900px) !important;max-width:none !important;}
+.design-page .project--prx .prx-hero-figure img {width:100% !important;height:auto !important;max-height:none !important;object-fit:contain !important;}
+.design-page .project--prx .prx-pairing {display:grid !important;grid-template-columns:1fr 1fr !important;gap:clamp(22px,3.5vw,54px) !important;align-items:start !important;}
+.design-page .project--prx .prx-pairing::before {display:none !important;}
+.design-page .project--prx .prx-card img {width:100% !important;height:auto !important;max-height:430px !important;object-fit:contain !important;}
+/* Other work: three discrete coordinated grids, same headers and caption system. */
+.design-page .project--college .college-showcase {display:grid !important;grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:clamp(18px,2.5vw,38px) !important;align-items:start !important;}
+.design-page .project--college .college-showcase img {width:100% !important;height:auto !important;aspect-ratio:auto !important;max-height:none !important;object-fit:contain !important;}
+.design-page .project--college .wine-grid {display:grid !important;grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:clamp(16px,2vw,30px) !important;align-items:start !important;}
+.design-page .project--college .wine-grid img {width:100% !important;height:auto !important;max-height:440px !important;object-fit:contain !important;}
+@media(max-width:980px) {
+  .design-page .project--angels .angels-overview__grid {grid-template-columns:1fr 1fr !important;gap:28px !important;}
+  .design-page .project--angels .angels-takeaway-grid {grid-template-columns:1fr 1fr !important;gap:22px !important;}
+  .design-page .project--angels .angels-signage-lead {width:100% !important;}
+  .design-page .project--college .wine-grid {grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+}
+@media(max-width:680px) {
+  .design-page :is(.project--angels,.project--winter,.project--prx,.project--college) .case-section__header {grid-template-columns:32px minmax(0,1fr) !important;gap:12px !important;}
+  .design-page .project--angels .angels-overview__grid,
+  .design-page .project--angels .angels-takeaway-grid,
+  .design-page .project--angels .angels-script-layout,
+  .design-page .project--prx .prx-pairing {grid-template-columns:1fr !important;}
+  .design-page .project--angels .angels-editorial-specimen {justify-self:start !important;max-width:100% !important;}
+  .design-page .project--angels .angels-signage-art-row,
+  .design-page .project--winter .winter-gallery,
+  .design-page .project--college .college-showcase {grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+  .design-page .project--angels .angels-signage-photo-row {grid-template-columns:1fr !important;}
+  .design-page .project--prx .prx-hero-figure {width:100% !important;}
+  .design-page .project--angels .folder-stage {height:min(112vw,485px) !important;}
+  .design-page .project--angels .angels-script-gallery {grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+}
