@@ -499,3 +499,10 @@
   applyLyrikInstalledGeometry();
   window.addEventListener("load", applyLyrikInstalledGeometry, { once:true });
 })();
+
+
+/* v74 DESIGN LOCK
+   Print/ink distortion is intentionally scoped to the #design-title letter
+   plates and the existing [data-knot-flash] system only. Do not add paper or
+   ink effects to project headings/body typography here. The design word's
+   variation is art-directed in CSS rather than randomized at runtime. */

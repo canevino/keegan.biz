@@ -228,6 +228,74 @@
   <feComponentTransfer in="wetHalo" result="wetHaloFade"><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
   <feMerge><feMergeNode in="wetHaloFade"/><feMergeNode in="runRough"/></feMerge>
 </filter>
+
+
+<!-- v74: dedicated hero-word ink system.
+     Blur + alpha threshold produces real edge expansion; turbulence/displacement
+     roughens the perimeter. Red remains the primary ink. Yellow is a secondary
+     misregistration/contamination plate. These filters are for #design-title only. -->
+<filter id="design-red-a-v74" x="-22%" y="-34%" width="144%" height="168%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.55" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.115" numOctaves="2" seed="19" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="1.55" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.14" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#d71d31" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+<filter id="design-red-b-v74" x="-24%" y="-36%" width="148%" height="172%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.95" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.014 0.092" numOctaves="3" seed="43" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="2.15" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.16" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#d51b2f" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+<filter id="design-red-c-v74" x="-23%" y="-35%" width="146%" height="170%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.72" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.021 0.135" numOctaves="2" seed="71" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="1.95" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.12" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#da2033" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+
+<filter id="design-yellow-a-v74" x="-26%" y="-40%" width="152%" height="180%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="2.05" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 1 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.017 0.105" numOctaves="2" seed="31" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="1.65" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.15" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#f2b426" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+<filter id="design-yellow-b-v74" x="-27%" y="-42%" width="154%" height="184%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="2.35" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.013 0.084" numOctaves="3" seed="59" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="2.05" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.15" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#efad1c" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+<filter id="design-yellow-c-v74" x="-26%" y="-40%" width="152%" height="180%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.90" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 1 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.023 0.128" numOctaves="2" seed="83" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="1.80" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.13" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#f4bc31" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+
 </defs>
 </svg>
 <div class="page-shell">
@@ -246,7 +314,7 @@
 <main class="design-main">
 <section aria-labelledby="design-title" class="portfolio-masthead">
 <div class="portfolio-masthead__main">
-<h1 data-ink="design" id="design-title">design</h1>
+<h1 aria-label="design" id="design-title"><span aria-hidden="true" class="design-letter design-letter--d design-letter--a" data-char="d">d</span><span aria-hidden="true" class="design-letter design-letter--e design-letter--b" data-char="e">e</span><span aria-hidden="true" class="design-letter design-letter--s design-letter--c" data-char="s">s</span><span aria-hidden="true" class="design-letter design-letter--i design-letter--a" data-char="i">i</span><span aria-hidden="true" class="design-letter design-letter--g design-letter--c" data-char="g">g</span><span aria-hidden="true" class="design-letter design-letter--n design-letter--b" data-char="n">n</span></h1>
 </div>
 <div class="portfolio-masthead__rail">
 <div aria-hidden="true" class="portfolio-masthead__ornament knot-flash knot-flash--black" data-knot-flash="">

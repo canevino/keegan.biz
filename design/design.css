@@ -10098,36 +10098,180 @@ body.design-page::before {
   object-position:center center !important;
 }
 
+
 /* =====================================================
-   v71 — scope lock + red gel design title
+   v67 — CLEAN SURFACE / PRINT-EFFECT LOCK
    LOCKS:
-   - Ink bleed / print distortion now applies ONLY to the hero word "design"
-     and to the knot system.
-   - Boston Public Art Triennial, project titles, section headings, Making
-     Public, and all other text are intentionally clean.
-   - No layout, spacing, image, hover, flip, or knot-behaviour changes here.
+   - no site-wide paper texture
+   - ink bleed remains ONLY on the masthead word “design” and knot graphics
+   - layout, sizing, hover/flip behavior and media geometry are unchanged
    ===================================================== */
 
-/* Clean all non-design display typography. Earlier print overlays are explicitly
-   disabled so the bleed cannot creep back onto project headings. */
+body.design-page {
+  background:var(--paper) !important;
+  background-image:none !important;
+}
+body.design-page::before,
+body.design-page::after,
+.page-shell::before,
+.page-shell::after,
+.paper-overprint,
+.paper-overprint::before,
+.paper-overprint::after,
+.paper-overprint__sheet,
+.media-paper-stamps,
+.media-paper-stamp,
+.media-paper-stamp::before,
+.media-paper-stamp::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
+  opacity:0 !important;
+  filter:none !important;
+  mix-blend-mode:normal !important;
+}
+
+/* Remove local paper/plaster surface overlays without touching layout. */
+.feature-slab::before,
+.making-public-panel::before,
+.angels-takeaway-grid::before,
+.prx-pairing::before {
+  background:none !important;
+  background-image:none !important;
+  mix-blend-mode:normal !important;
+  opacity:0 !important;
+}
+
+/* The dark poster wall stays dark; only its paper-screen texture is removed. */
+.case-section--dark::after {
+  background:url('/assets/home/Texturelabs_Film_183S.jpg') center / 900px auto !important;
+  background-image:url('/assets/home/Texturelabs_Film_183S.jpg') !important;
+}
+
+/* Clean typography everywhere except the masthead word “design”. */
+.design-page :is(h2,h3,h4,h5,h6,p,span,strong,em,a,button,figcaption,label,li) {
+  filter:none !important;
+  text-shadow:none !important;
+}
 .project-family-heading h2,
 .project-title,
 .case-section__header h3,
-.making-public-intro h4 {
+.making-public-panel__intro h4,
+.making-public-intro h4,
+.selected-heading__main strong,
+#project-triennial .case-section--making-public .case-section__header h3 {
   filter:none !important;
   text-shadow:none !important;
 }
 
-.design-main [data-ink]:not(#design-title)::before,
-.design-main [data-ink]:not(#design-title)::after,
-.project-family-heading [data-ink]::before,
-.project-family-heading [data-ink]::after,
-.project-title[data-ink]::before,
-.project-title[data-ink]::after,
-.case-section__header [data-ink]::before,
-.case-section__header [data-ink]::after,
-.making-public-intro [data-ink]::before,
-.making-public-intro [data-ink]::after {
+/* Remove duplicate print plates / clipped ink texture from non-design type. */
+.project-family-heading h2::before,
+.project-family-heading h2::after,
+.project-title::before,
+.project-title::after,
+.case-section__header h3::before,
+.case-section__header h3::after,
+.making-public-panel__intro h4::before,
+.making-public-panel__intro h4::after,
+.making-public-intro h4::before,
+.making-public-intro h4::after,
+.selected-heading__main::after,
+.project-summary__copy::after,
+.case-section__header > div::after,
+#project-triennial .case-section--making-public .case-section__header h3::before,
+#project-triennial .case-section--making-public .case-section__header h3::after,
+[data-ink]:not([data-ink="design"])::before,
+[data-ink]:not([data-ink="design"])::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
+  filter:none !important;
+  text-shadow:none !important;
+  opacity:0 !important;
+}
+
+/* Preserve the approved static design bleed/registration treatment. */
+.portfolio-masthead h1[data-ink="design"] {
+  color:var(--red) !important;
+  filter:url(#ink-display-v50) !important;
+}
+
+/* Knot print/bleed rules above remain intentionally active. */
+
+
+/* =====================================================
+   v74 — AUTHORITATIVE PRINT-EFFECT SCOPE + HERO WORDMARK
+
+   HARD LOCKS
+   1. Ink/bleed/registration distortion is allowed ONLY on:
+      - #design-title and its .design-letter children
+      - the existing knot system
+   2. ALL other typography stays clean. No print filters, duplicate plates,
+      blur, registration shadows, paper texture or ink bleed elsewhere.
+   3. Site-wide paper texture remains removed.
+   4. No hover/smudge behavior on "design".
+   5. Layout, image sizing, flips, bus behavior, Better Angels and knot logic
+      are not modified by this block.
+
+   DESIGN WORDMARK DIRECTION
+   - red is the primary ink/body
+   - yellow is secondary edge contamination / misregistration
+   - actual bleed uses BLUR -> ALPHA THRESHOLD -> ROUGH DISPLACEMENT
+   - adjacent letters merge irregularly, not uniformly
+   - counters remain readable
+   - roughness lives mainly on the perimeter, never as a grey duplicate
+   ===================================================== */
+
+/* Absolute scope lock: all non-hero typography is clean. */
+.design-page :is(h2,h3,h4,h5,h6,p,strong,em,a,button,figcaption,label,li),
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4,
+.selected-heading__main strong,
+#project-triennial .case-section--making-public .case-section__header h3 {
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+.design-page :is(h2,h3,h4,h5,h6,p,strong,em,a,button,figcaption,label,li)::before,
+.design-page :is(h2,h3,h4,h5,h6,p,strong,em,a,button,figcaption,label,li)::after,
+.project-family-heading h2::before,
+.project-family-heading h2::after,
+.project-title::before,
+.project-title::after,
+.case-section__header h3::before,
+.case-section__header h3::after,
+.making-public-panel__intro h4::before,
+.making-public-panel__intro h4::after,
+.making-public-intro h4::before,
+.making-public-intro h4::after {
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+/* Parent contains only the six art-directed letter objects. Neutralize every
+   legacy whole-word pseudo/filter so no grey ghost plate can reappear. */
+#design-title {
+  position:relative !important;
+  display:inline-flex !important;
+  align-items:baseline !important;
+  isolation:isolate !important;
+  overflow:visible !important;
+  white-space:nowrap !important;
+  color:inherit !important;
+  -webkit-text-fill-color:initial !important;
+  background:none !important;
+  filter:none !important;
+  text-shadow:none !important;
+  letter-spacing:0 !important;
+}
+
+#design-title::before,
+#design-title::after {
   content:none !important;
   display:none !important;
   background:none !important;
@@ -10135,189 +10279,169 @@ body.design-page::before {
   text-shadow:none !important;
 }
 
-/* Hero word only: red is the body colour, yellow is just a taint around the
-   edge. The form is slightly blobby and the overlap layer is tighter so some
-   joins partially merge instead of reading as clean digital type. */
-#design-title {
+/* Each letter has its own ink plates. The deliberately different joins,
+   offsets and filter seeds create minor natural variation without allowing a
+   completely random layout to destroy readability from one load to another. */
+#design-title .design-letter {
   position:relative !important;
   display:inline-block !important;
+  flex:0 0 auto !important;
   isolation:isolate !important;
   overflow:visible !important;
-  z-index:1 !important;
+  vertical-align:baseline !important;
 
   color:transparent !important;
   -webkit-text-fill-color:transparent !important;
   background:
-    linear-gradient(
-      180deg,
-      #ef2834 0%,
-      #e31f2d 34%,
-      #d51a27 70%,
-      #c91420 100%
-    ) !important;
+    radial-gradient(ellipse at 42% 15%, rgba(255,111,123,.34) 0 7%, rgba(255,111,123,0) 32%),
+    linear-gradient(180deg,#ed3d4d 0%,#e32639 30%,#d61c31 66%,#c51529 100%) !important;
   -webkit-background-clip:text !important;
   background-clip:text !important;
 
-  letter-spacing:-.104em !important;
-  filter:blur(.88px) url(#ink-threshold-v46) !important;
-  text-shadow:
-    .018em .010em .018em rgba(205,17,31,.62),
-    .040em .028em .042em rgba(244,179,38,.40),
-   -.020em .018em .026em rgba(255,108,132,.22),
-    0 .050em .040em rgba(180,12,24,.22) !important;
-}
-
-/* Warm yellow contamination hugging the red rather than replacing it. */
-#design-title::before {
-  content:attr(data-ink) !important;
-  display:block !important;
-  position:absolute !important;
-  inset:0 !important;
-  z-index:-2 !important;
-  pointer-events:none !important;
-
-  color:#f4ba2d !important;
-  font:inherit !important;
-  line-height:inherit !important;
-  white-space:inherit !important;
-  letter-spacing:-.114em !important;
-
-  opacity:.54 !important;
-  transform:translate(.010em,.018em) scaleX(1.012) scaleY(1.020) !important;
-  filter:blur(3.35px) url(#ink-threshold-v46) !important;
-  mix-blend-mode:normal !important;
-}
-
-/* Red overlap layer: tighter set + stronger threshold gives the slight random
-   fusing/merging between letters the user asked for. */
-#design-title::after {
-  content:attr(data-ink) !important;
-  display:block !important;
-  position:absolute !important;
-  inset:0 !important;
-  z-index:-1 !important;
-  pointer-events:none !important;
-
-  color:#db1e2b !important;
-  font:inherit !important;
-  line-height:inherit !important;
-  white-space:inherit !important;
-  letter-spacing:-.134em !important;
-
-  opacity:.78 !important;
-  transform:translate(.014em,.008em) scaleX(1.028) scaleY(1.015) !important;
-  filter:blur(1.95px) url(#ink-threshold-v46) !important;
-  mix-blend-mode:normal !important;
-}
-
-
-/* =====================================================
-   v72 — design title refinement
-   LOCKS:
-   - Ink/print effects remain limited to #design-title and the knot system.
-   - All other typography remains clean.
-   - No layout, image, flip, hover, spacing, or knot-behaviour changes.
-   ===================================================== */
-
-/* Red remains dominant. Reduce the digital-looking shadow and let the SVG
-   roughness define the silhouette instead. */
-#design-title {
-  letter-spacing:-.100em !important;
-  filter:url(#ink-display-v50) !important;
-  text-shadow:none !important;
-}
-
-/* More visible yellow contamination, kept mostly at the outer edge and joins. */
-#design-title::before {
-  opacity:.72 !important;
-  letter-spacing:-.108em !important;
-  transform:translate(.012em,.014em) scaleX(1.020) scaleY(1.018) !important;
-  filter:blur(1.15px) url(#ink-display-v50) !important;
-}
-
-/* Pull the merging layer back slightly so joins feel irregular rather than
-   uniformly welded. Keep its edge rough instead of hazy. */
-#design-title::after {
-  opacity:.66 !important;
-  letter-spacing:-.118em !important;
-  transform:translate(.006em,.004em) scaleX(1.014) scaleY(1.008) !important;
-  filter:url(#ink-display-v50) !important;
-}
-
-
-/* =====================================================
-   v73 — controlled weirdness for the hero word "design"
-   LOCK:
-   - Ink/print effects remain ONLY on #design-title and the knot system.
-   - All other text stays clean.
-   - No layout/image/flip/knot behavior changes.
-   ===================================================== */
-
-/* Main body: keep it red and readable. Do NOT run the full SVG ink filter on
-   the primary glyphs; that was creating the grey double-image in v72. */
-#design-title {
-  color:transparent !important;
-  -webkit-text-fill-color:transparent !important;
-
-  background:
-    linear-gradient(
-      180deg,
-      #f26a73 0%,
-      #eb3544 15%,
-      #dc1d31 48%,
-      #c81429 78%,
-      #b90f23 100%
-    ) !important;
-  -webkit-background-clip:text !important;
-  background-clip:text !important;
-
-  letter-spacing:-.094em !important;
+  margin-right:var(--design-join,-.095em) !important;
+  transform:translate(var(--design-x,0),var(--design-y,0)) scaleX(var(--design-sx,1)) !important;
   filter:none !important;
   text-shadow:none !important;
 }
 
-/* Yellow contamination: visible at joins/edges, but clearly secondary to red. */
-#design-title::before {
-  content:attr(data-ink) !important;
-  display:block !important;
+/* Yellow plate: not an outline. It is an independently thresholded ink spread,
+   slightly misregistered per letter so it pools selectively at edges/joins. */
+#design-title .design-letter::before {
+  content:attr(data-char) !important;
   position:absolute !important;
   inset:0 !important;
   z-index:-2 !important;
   pointer-events:none !important;
 
-  color:#f2b41f !important;
+  color:#f2b426 !important;
+  -webkit-text-fill-color:#f2b426 !important;
+  background:none !important;
   font:inherit !important;
   line-height:inherit !important;
-  white-space:inherit !important;
-  letter-spacing:-.104em !important;
+  letter-spacing:0 !important;
+  white-space:nowrap !important;
 
-  opacity:.68 !important;
-  transform:translate(.020em,.016em) scaleX(1.014) scaleY(1.010) !important;
-  filter:blur(1.35px) url(#ink-threshold-v46) !important;
+  opacity:var(--yellow-opacity,.72) !important;
+  transform:translate(var(--yellow-x,.012em),var(--yellow-y,.012em)) scaleX(var(--yellow-sx,1.018)) scaleY(var(--yellow-sy,1.018)) !important;
   text-shadow:none !important;
   mix-blend-mode:normal !important;
 }
 
-/* Rough red edge + slight letter fusing. This sits behind the crisp red body,
-   so the weirdness is concentrated at the perimeter rather than washing over
-   the whole word. */
-#design-title::after {
-  content:attr(data-ink) !important;
-  display:block !important;
+/* Red bleed: same ink colour family as the face, expanded with blur+threshold.
+   This is what makes occasional joins genuinely swell/fuse instead of looking
+   like an offset drop shadow. */
+#design-title .design-letter::after {
+  content:attr(data-char) !important;
   position:absolute !important;
   inset:0 !important;
   z-index:-1 !important;
   pointer-events:none !important;
 
-  color:#d71c31 !important;
+  color:#d71d31 !important;
+  -webkit-text-fill-color:#d71d31 !important;
+  background:none !important;
   font:inherit !important;
   line-height:inherit !important;
-  white-space:inherit !important;
-  letter-spacing:-.116em !important;
+  letter-spacing:0 !important;
+  white-space:nowrap !important;
 
-  opacity:.84 !important;
-  transform:translate(.004em,.006em) scaleX(1.018) scaleY(1.008) !important;
-  filter:blur(.72px) url(#ink-threshold-v46) !important;
+  opacity:var(--red-bleed-opacity,.94) !important;
+  transform:translate(var(--red-x,0),var(--red-y,.002em)) scaleX(var(--red-sx,1.016)) scaleY(var(--red-sy,1.010)) !important;
   text-shadow:none !important;
   mix-blend-mode:normal !important;
 }
+
+/* Three real blur/threshold variants; the six letters alternate between them. */
+#design-title .design-letter--a::after { filter:url(#design-red-a-v74) !important; }
+#design-title .design-letter--b::after { filter:url(#design-red-b-v74) !important; }
+#design-title .design-letter--c::after { filter:url(#design-red-c-v74) !important; }
+#design-title .design-letter--a::before { filter:url(#design-yellow-a-v74) !important; }
+#design-title .design-letter--b::before { filter:url(#design-yellow-b-v74) !important; }
+#design-title .design-letter--c::before { filter:url(#design-yellow-c-v74) !important; }
+
+/* Fixed irregular profile: intentionally uneven joins/registration. */
+#design-title .design-letter--d {
+  --design-join:-.090em;
+  --design-x:0;
+  --design-y:.002em;
+  --design-sx:1.006;
+  --yellow-x:.018em;
+  --yellow-y:.012em;
+  --yellow-opacity:.72;
+  --yellow-sx:1.022;
+  --red-sx:1.014;
+}
+#design-title .design-letter--e {
+  --design-join:-.132em;
+  --design-x:-.002em;
+  --design-y:.004em;
+  --design-sx:1.014;
+  --yellow-x:-.004em;
+  --yellow-y:.018em;
+  --yellow-opacity:.82;
+  --yellow-sx:1.028;
+  --red-sx:1.032;
+  --red-bleed-opacity:.98;
+}
+#design-title .design-letter--s {
+  --design-join:-.086em;
+  --design-x:-.004em;
+  --design-y:-.002em;
+  --design-sx:1.018;
+  --yellow-x:.020em;
+  --yellow-y:-.002em;
+  --yellow-opacity:.76;
+  --yellow-sx:1.024;
+  --red-sx:1.028;
+  --red-sy:1.016;
+}
+#design-title .design-letter--i {
+  --design-join:-.116em;
+  --design-x:.002em;
+  --design-y:0;
+  --design-sx:1.008;
+  --yellow-x:.010em;
+  --yellow-y:.022em;
+  --yellow-opacity:.66;
+  --yellow-sx:1.018;
+  --red-sx:1.020;
+}
+#design-title .design-letter--g {
+  --design-join:-.110em;
+  --design-x:-.004em;
+  --design-y:.006em;
+  --design-sx:1.018;
+  --yellow-x:-.010em;
+  --yellow-y:.014em;
+  --yellow-opacity:.86;
+  --yellow-sx:1.032;
+  --red-x:-.003em;
+  --red-sx:1.034;
+  --red-sy:1.020;
+  --red-bleed-opacity:1;
+}
+#design-title .design-letter--n {
+  --design-join:0em;
+  --design-x:-.004em;
+  --design-y:.002em;
+  --design-sx:1.010;
+  --yellow-x:.018em;
+  --yellow-y:.006em;
+  --yellow-opacity:.72;
+  --yellow-sx:1.020;
+  --red-sx:1.016;
+}
+
+/* No hover/smudge on design. Keep the resting print object stable. */
+#design-title:hover,
+#design-title:focus,
+#design-title:focus-visible,
+#design-title:hover .design-letter,
+#design-title:focus .design-letter,
+#design-title:focus-visible .design-letter {
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+/* Existing knot treatment is intentionally untouched and remains the only
+   other allowed print/bleed system on the page. */
