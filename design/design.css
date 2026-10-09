@@ -10765,3 +10765,54 @@ body.design-page::after,
     font-size: 11px !important;
   }
 }
+
+/* v80 — project continuity; applies only from Better Angels onward. */
+.project--angels .case-section__header,
+.project--winter .case-section__header,
+.project--prx .case-section__header,
+.project--college .case-section__header {
+  margin-bottom: clamp(20px, 2.5vw, 32px) !important;
+}
+.project--winter .winter-poster-card,
+.project--prx .prx-card,
+.project--college .college-showcase figure,
+.project--college .wine-grid figure {
+  min-width: 0;
+  margin: 0;
+}
+.project--winter .winter-poster-card figcaption,
+.project--prx .prx-card figcaption,
+.project--college .college-showcase figcaption,
+.project--college .wine-grid figcaption {
+  margin-top: 12px !important;
+  padding-top: 0 !important;
+  text-align: left;
+  max-width: 58ch;
+}
+.project--winter .winter-poster-card figcaption h4,
+.project--prx .prx-card figcaption h4 {
+  margin: 0 0 7px !important;
+  font-size: clamp(16px, 1.5vw, 20px) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -.025em;
+}
+.project--winter .winter-poster-card figcaption p,
+.project--prx .prx-card figcaption p {
+  margin: 0 !important;
+  font-size: clamp(12px, 1.05vw, 14px) !important;
+  line-height: 1.45 !important;
+  max-width: 52ch;
+}
+.project--college .college-showcase--fullam figcaption {
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  color: var(--muted) !important;
+}
+/* No arbitrary stagger in a three-piece poster series. */
+.project--winter .winter-poster-card:nth-child(2) { margin-top: 0 !important; }
+@media (max-width: 680px) {
+  .project--winter .winter-gallery,
+  .project--prx .prx-pairing,
+  .project--college .college-showcase,
+  .project--college .wine-grid { row-gap: 28px !important; }
+}
