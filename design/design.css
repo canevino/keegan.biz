@@ -10490,3 +10490,38 @@ body.design-page::after,
   content:none !important;
   display:none !important;
 }
+
+
+/* =====================================================
+   v76 — VISIBLE INITIAL TYPE CARET
+   LOCK:
+   - Visual-only typing cue.
+   - Does not change the approved design ink treatment, knot system,
+     layout, typography, images, flips, or live-edit behavior.
+   ===================================================== */
+
+@keyframes design-idle-caret-blink {
+  0%, 46% { opacity: 1; }
+  47%, 100% { opacity: 0; }
+}
+
+/* Show a fake caret at the end before the wordmark receives focus.
+   Once clicked, it disappears and the browser's real editable caret takes over. */
+#design-title[contenteditable="true"]:not(:focus)::after {
+  content:"" !important;
+  display:block !important;
+  flex:0 0 auto !important;
+  align-self:center !important;
+
+  width:.032em !important;
+  height:.76em !important;
+  margin-left:.050em !important;
+
+  background:#d71d31 !important;
+  border:0 !important;
+  filter:none !important;
+  text-shadow:none !important;
+  pointer-events:none !important;
+
+  animation:design-idle-caret-blink 1.05s steps(1,end) infinite !important;
+}
