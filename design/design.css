@@ -10152,3 +10152,41 @@ body.design-page::before {
   filter: url(#ink-run-v54) blur(.65px) !important;
   mix-blend-mode: multiply !important;
 }
+
+/* =====================================================
+   v69 — design wordmark balance
+   Reduce the melt from v68; restore visible yellow registration/bleed.
+   ===================================================== */
+
+#design-title,
+.portfolio-masthead h1#design-title,
+.portfolio-masthead h1[data-ink="design"] {
+  color:#c9232d !important;
+  letter-spacing:-.087em !important;
+  filter:url(#ink-display-v50) !important;
+  text-shadow:
+    1.05px .45px 0 rgba(241,175,24,.72),
+    1.9px 1.0px 1.2px rgba(241,175,24,.34) !important;
+}
+
+#design-title::before,
+.portfolio-masthead h1#design-title::before,
+.portfolio-masthead h1[data-ink="design"]::before {
+  content:"design" !important;
+  color:#efb21b !important;
+  opacity:.62 !important;
+  transform:translate(1.55px,1.0px) scale(1.006) !important;
+  filter:url(#ink-display-v50) blur(1.15px) saturate(1.22) !important;
+  mix-blend-mode:normal !important;
+}
+
+#design-title::after,
+.portfolio-masthead h1#design-title::after,
+.portfolio-masthead h1[data-ink="design"]::after {
+  content:"design" !important;
+  color:#d52a32 !important;
+  opacity:.34 !important;
+  transform:translate(.42px,.34px) scale(1.002) !important;
+  filter:url(#ink-display-v50) blur(.22px) !important;
+  mix-blend-mode:multiply !important;
+}
