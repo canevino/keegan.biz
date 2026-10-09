@@ -10209,3 +10209,37 @@ body.design-page::before {
   filter:blur(1.95px) url(#ink-threshold-v46) !important;
   mix-blend-mode:normal !important;
 }
+
+
+/* =====================================================
+   v72 — design title refinement
+   LOCKS:
+   - Ink/print effects remain limited to #design-title and the knot system.
+   - All other typography remains clean.
+   - No layout, image, flip, hover, spacing, or knot-behaviour changes.
+   ===================================================== */
+
+/* Red remains dominant. Reduce the digital-looking shadow and let the SVG
+   roughness define the silhouette instead. */
+#design-title {
+  letter-spacing:-.100em !important;
+  filter:url(#ink-display-v50) !important;
+  text-shadow:none !important;
+}
+
+/* More visible yellow contamination, kept mostly at the outer edge and joins. */
+#design-title::before {
+  opacity:.72 !important;
+  letter-spacing:-.108em !important;
+  transform:translate(.012em,.014em) scaleX(1.020) scaleY(1.018) !important;
+  filter:blur(1.15px) url(#ink-display-v50) !important;
+}
+
+/* Pull the merging layer back slightly so joins feel irregular rather than
+   uniformly welded. Keep its edge rough instead of hazy. */
+#design-title::after {
+  opacity:.66 !important;
+  letter-spacing:-.118em !important;
+  transform:translate(.006em,.004em) scaleX(1.014) scaleY(1.008) !important;
+  filter:url(#ink-display-v50) !important;
+}
