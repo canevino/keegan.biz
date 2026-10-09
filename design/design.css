@@ -10525,3 +10525,18 @@ body.design-page::after,
 
   animation:design-idle-caret-blink 1.05s steps(1,end) infinite !important;
 }
+
+
+/* =====================================================
+   v77 — NATIVE INITIAL CARET
+   Use the browser's real contenteditable caret from page load.
+   The v76 fake pseudo-caret is disabled so the initial caret and typing caret
+   are literally the same object, size, position, color, and blink behavior.
+   No visual-system changes beyond the caret.
+   ===================================================== */
+
+#design-title[contenteditable="true"]:not(:focus)::after {
+  content:none !important;
+  display:none !important;
+  animation:none !important;
+}

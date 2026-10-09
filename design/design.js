@@ -713,3 +713,41 @@
   /* Keep the initial accessible/readable text state in sync. */
   title.dataset.value = cleanText(title.textContent);
 })();
+
+
+/* =====================================================
+   v77 — SHOW THE REAL CARET FROM INITIAL LOAD
+   Focus the editable wordmark without scrolling the page and collapse the
+   browser selection to its true end. This intentionally uses the native
+   contenteditable caret rather than a CSS imitation.
+   ===================================================== */
+(() => {
+  const showInitialDesignCaret = () => {
+    const title = document.getElementById("design-title");
+    if (!title || title.getAttribute("contenteditable") !== "true") return;
+
+    try {
+      title.focus({ preventScroll: true });
+    } catch (_) {
+      title.focus();
+    }
+
+    const selection = window.getSelection();
+    if (!selection) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(title);
+    range.collapse(false);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      requestAnimationFrame(showInitialDesignCaret);
+    }, { once: true });
+  } else {
+    requestAnimationFrame(showInitialDesignCaret);
+  }
+})();
