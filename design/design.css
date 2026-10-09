@@ -10100,93 +10100,236 @@ body.design-page::before {
 
 
 /* =====================================================
-   v68 — design wordmark only: weirder, blobbier, yellower
-   Stronger bleed only on the masthead "design".
+   v67 — CLEAN SURFACE / PRINT-EFFECT LOCK
+   LOCKS:
+   - no site-wide paper texture
+   - ink bleed remains ONLY on the masthead word “design” and knot graphics
+   - layout, sizing, hover/flip behavior and media geometry are unchanged
    ===================================================== */
 
-#design-title,
-.portfolio-masthead h1#design-title,
-.portfolio-masthead h1[data-ink="design"] {
-  position: relative !important;
-  isolation: isolate !important;
-  color: #cb222c !important;
-  letter-spacing: -.092em !important;
-  text-shadow: none !important;
-  filter: url(#ink-display-v50) !important;
+body.design-page {
+  background:var(--paper) !important;
+  background-image:none !important;
 }
-
-#design-title::before,
-.portfolio-masthead h1#design-title::before,
-.portfolio-masthead h1[data-ink="design"]::before {
-  content: "design" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: -2 !important;
-  pointer-events: none !important;
-  color: #f1af18 !important;
-  font: inherit !important;
-  line-height: inherit !important;
-  letter-spacing: inherit !important;
-  white-space: nowrap !important;
-  opacity: .96 !important;
-  transform: translate(4px, 2.6px) scale(1.02, 1.018) !important;
-  filter: url(#ink-run-v54) blur(3.8px) saturate(1.16) !important;
-  mix-blend-mode: multiply !important;
-}
-
-#design-title::after,
-.portfolio-masthead h1#design-title::after,
-.portfolio-masthead h1[data-ink="design"]::after {
-  content: "design" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: -1 !important;
-  pointer-events: none !important;
-  color: #d32b2f !important;
-  font: inherit !important;
-  line-height: inherit !important;
-  letter-spacing: inherit !important;
-  white-space: nowrap !important;
-  opacity: .82 !important;
-  transform: translate(1.15px, .95px) scale(1.008) !important;
-  filter: url(#ink-run-v54) blur(.65px) !important;
-  mix-blend-mode: multiply !important;
-}
-
-/* =====================================================
-   v69 — design wordmark balance
-   Reduce the melt from v68; restore visible yellow registration/bleed.
-   ===================================================== */
-
-#design-title,
-.portfolio-masthead h1#design-title,
-.portfolio-masthead h1[data-ink="design"] {
-  color:#c9232d !important;
-  letter-spacing:-.087em !important;
-  filter:url(#ink-display-v50) !important;
-  text-shadow:
-    1.05px .45px 0 rgba(241,175,24,.72),
-    1.9px 1.0px 1.2px rgba(241,175,24,.34) !important;
-}
-
-#design-title::before,
-.portfolio-masthead h1#design-title::before,
-.portfolio-masthead h1[data-ink="design"]::before {
-  content:"design" !important;
-  color:#efb21b !important;
-  opacity:.62 !important;
-  transform:translate(1.55px,1.0px) scale(1.006) !important;
-  filter:url(#ink-display-v50) blur(1.15px) saturate(1.22) !important;
+body.design-page::before,
+body.design-page::after,
+.page-shell::before,
+.page-shell::after,
+.paper-overprint,
+.paper-overprint::before,
+.paper-overprint::after,
+.paper-overprint__sheet,
+.media-paper-stamps,
+.media-paper-stamp,
+.media-paper-stamp::before,
+.media-paper-stamp::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
+  opacity:0 !important;
+  filter:none !important;
   mix-blend-mode:normal !important;
 }
 
+/* Remove local paper/plaster surface overlays without touching layout. */
+.feature-slab::before,
+.making-public-panel::before,
+.angels-takeaway-grid::before,
+.prx-pairing::before {
+  background:none !important;
+  background-image:none !important;
+  mix-blend-mode:normal !important;
+  opacity:0 !important;
+}
+
+/* The dark poster wall stays dark; only its paper-screen texture is removed. */
+.case-section--dark::after {
+  background:url('/assets/home/Texturelabs_Film_183S.jpg') center / 900px auto !important;
+  background-image:url('/assets/home/Texturelabs_Film_183S.jpg') !important;
+}
+
+/* Clean typography everywhere except the masthead word “design”. */
+.design-page :is(h2,h3,h4,h5,h6,p,span,strong,em,a,button,figcaption,label,li) {
+  filter:none !important;
+  text-shadow:none !important;
+}
+.project-family-heading h2,
+.project-title,
+.case-section__header h3,
+.making-public-panel__intro h4,
+.making-public-intro h4,
+.selected-heading__main strong,
+#project-triennial .case-section--making-public .case-section__header h3 {
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+/* Remove duplicate print plates / clipped ink texture from non-design type. */
+.project-family-heading h2::before,
+.project-family-heading h2::after,
+.project-title::before,
+.project-title::after,
+.case-section__header h3::before,
+.case-section__header h3::after,
+.making-public-panel__intro h4::before,
+.making-public-panel__intro h4::after,
+.making-public-intro h4::before,
+.making-public-intro h4::after,
+.selected-heading__main::after,
+.project-summary__copy::after,
+.case-section__header > div::after,
+#project-triennial .case-section--making-public .case-section__header h3::before,
+#project-triennial .case-section--making-public .case-section__header h3::after,
+[data-ink]:not([data-ink="design"])::before,
+[data-ink]:not([data-ink="design"])::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
+  filter:none !important;
+  text-shadow:none !important;
+  opacity:0 !important;
+}
+
+/* Preserve the approved static design bleed/registration treatment. */
+.portfolio-masthead h1[data-ink="design"] {
+  color:var(--red) !important;
+  filter:url(#ink-display-v50) !important;
+}
+
+/* Knot print/bleed rules above remain intentionally active. */
+
+/* =====================================================
+   v70 — PRINT EFFECT SCOPE LOCK + GEL / AIRBRUSH MASTHEAD
+
+   DESIGN LOCK:
+   Ink bleed, colour misregistration and print distortion are allowed ONLY on:
+   1. #design-title (the masthead word “design”)
+   2. .knot-flash and its knot print layers
+
+   Do NOT reapply ink filters, registration glow, paper texture or bleed to
+   project-family headings, project titles, section headings, captions or body
+   copy. Those elements remain clean and flat.
+   ===================================================== */
+
+/* Reassert the clean-type lock after all legacy print rules. */
+.design-page .project-family-heading h2,
+.design-page .project-title,
+.design-page .case-section__header h3,
+.design-page .making-public-panel__intro h4,
+.design-page .making-public-intro h4,
+.design-page .selected-heading__main strong,
+.design-page #project-triennial .case-section--making-public .case-section__header h3 {
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+.design-page .project-family-heading h2::before,
+.design-page .project-family-heading h2::after,
+.design-page .project-title::before,
+.design-page .project-title::after,
+.design-page .case-section__header h3::before,
+.design-page .case-section__header h3::after,
+.design-page .making-public-panel__intro h4::before,
+.design-page .making-public-panel__intro h4::after,
+.design-page .making-public-intro h4::before,
+.design-page .making-public-intro h4::after,
+.design-page #project-triennial .case-section--making-public .case-section__header h3::before,
+.design-page #project-triennial .case-section--making-public .case-section__header h3::after,
+.design-page [data-ink]:not([data-ink="design"])::before,
+.design-page [data-ink]:not([data-ink="design"])::after {
+  content:none !important;
+  display:none !important;
+  filter:none !important;
+  text-shadow:none !important;
+  background:none !important;
+  opacity:0 !important;
+}
+
+/* “design”: rounded, inflated red ink with airbrushed depth.
+   Reference direction: soft gel / inflated vinyl, not a flat glow.
+   Keep the word readable and preserve only a restrained print bleed. */
+#design-title,
+.portfolio-masthead h1#design-title,
+.portfolio-masthead h1[data-ink="design"] {
+  position:relative !important;
+  isolation:isolate !important;
+  color:transparent !important;
+  letter-spacing:-.086em !important;
+  background:
+    linear-gradient(
+      155deg,
+      #ef4b58 0%,
+      #e42e3e 24%,
+      #cf2533 54%,
+      #bd1f2c 76%,
+      #a91928 100%
+    ) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  filter:url(#ink-display-v50) !important;
+  text-shadow:
+    1.55px .45px .55px rgba(244,174,27,.72),
+    2.4px 1.15px 1.9px rgba(244,174,27,.24),
+    -.75px -1.05px 1.6px rgba(255,118,127,.26),
+    0 3.2px 3.6px rgba(117,13,28,.15) !important;
+}
+
+/* Warm underprint: visible mainly at the lower/right edges and tight joins.
+   It should read as yellow contamination, not a uniform halo. */
+#design-title::before,
+.portfolio-masthead h1#design-title::before,
+.portfolio-masthead h1[data-ink="design"]::before {
+  content:"design" !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+  color:#efad19 !important;
+  font:inherit !important;
+  line-height:inherit !important;
+  letter-spacing:inherit !important;
+  white-space:nowrap !important;
+  opacity:.68 !important;
+  transform:translate(1.75px,1.05px) scale(1.006) !important;
+  filter:url(#ink-display-v50) blur(.78px) !important;
+  mix-blend-mode:multiply !important;
+}
+
+/* Gloss / volume pass clipped inside the glyphs. It creates the soft,
+   airbrushed inflated quality from the reference without changing the font
+   into a separate illustration. */
 #design-title::after,
 .portfolio-masthead h1#design-title::after,
 .portfolio-masthead h1[data-ink="design"]::after {
   content:"design" !important;
-  color:#d52a32 !important;
-  opacity:.34 !important;
-  transform:translate(.42px,.34px) scale(1.002) !important;
-  filter:url(#ink-display-v50) blur(.22px) !important;
-  mix-blend-mode:multiply !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:2 !important;
+  pointer-events:none !important;
+  color:transparent !important;
+  font:inherit !important;
+  line-height:inherit !important;
+  letter-spacing:inherit !important;
+  white-space:nowrap !important;
+  background:
+    radial-gradient(ellipse 34% 48% at 31% 18%, rgba(255,225,220,.58) 0%, rgba(255,173,177,.22) 26%, transparent 58%),
+    radial-gradient(ellipse 31% 45% at 73% 23%, rgba(255,214,214,.38) 0%, transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.16) 0%, transparent 34%, rgba(87,4,22,.18) 88%, rgba(87,4,22,.27) 100%) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  opacity:.84 !important;
+  filter:blur(.34px) !important;
+  mix-blend-mode:screen !important;
+}
+
+/* Static treatment stays locked: no masthead hover-smudge interaction. */
+.design-hover-smudge,
+.portfolio-masthead__main.is-smudging .design-hover-smudge,
+.portfolio-masthead h1.is-smudging + .design-hover-smudge {
+  display:none !important;
+  opacity:0 !important;
+  visibility:hidden !important;
+  filter:none !important;
 }
