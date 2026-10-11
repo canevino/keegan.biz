@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-10T21:52:51.714Z",
+  "updatedAt": "2026-10-11T06:01:00.546Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -111,7 +111,7 @@
         {
           "id": "5795472",
           "date": "2026-10-11T15:30:00.000Z",
-          "when": "tomorrow · Sun, Oct 11 · 11:30 AM ET",
+          "when": "today · Sun, Oct 11 · 11:30 AM ET",
           "status": "scheduled",
           "home": "Liverpool",
           "away": "Man City",
