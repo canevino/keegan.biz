@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-11T16:20:12.636Z",
+  "updatedAt": "2026-10-11T22:08:40.912Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -109,15 +109,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "5795472",
-          "date": "2026-10-11T15:30:00.000Z",
-          "when": "today · Sun, Oct 11 · 11:30 AM ET",
-          "status": "scheduled",
-          "home": "Liverpool",
-          "away": "Man City",
-          "competition": "Premier League"
-        },
-        {
           "id": "6106405",
           "date": "2026-10-14T16:45:00.000Z",
           "when": "Wed, Oct 14 · 12:45 PM ET",
@@ -152,6 +143,15 @@
           "home": "Liverpool",
           "away": "Brighton",
           "competition": "Premier League"
+        },
+        {
+          "id": "6275371",
+          "date": "2026-10-28T20:00:00.000Z",
+          "when": "Wed, Oct 28 · 4:00 PM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Chelsea",
+          "competition": "EFL Cup"
         }
       ],
       "standings": {
@@ -160,8 +160,8 @@
           {
             "rank": 1,
             "team": "Man City",
-            "points": 15,
-            "played": 5,
+            "points": 18,
+            "played": 6,
             "highlight": false
           },
           {
@@ -208,17 +208,17 @@
           },
           {
             "rank": 8,
-            "team": "Liverpool",
-            "points": 9,
-            "played": 5,
-            "highlight": true
-          },
-          {
-            "rank": 9,
             "team": "Hull",
             "points": 9,
             "played": 6,
             "highlight": false
+          },
+          {
+            "rank": 9,
+            "team": "Liverpool",
+            "points": 9,
+            "played": 6,
+            "highlight": true
           },
           {
             "rank": 10,
@@ -236,8 +236,8 @@
           },
           {
             "rank": 12,
-            "team": "Nottm Forest",
-            "points": 8,
+            "team": "Crystal Palace",
+            "points": 7,
             "played": 6,
             "highlight": false
           },
@@ -250,21 +250,21 @@
           },
           {
             "rank": 14,
-            "team": "Aston Villa",
+            "team": "Nottm Forest",
             "points": 5,
             "played": 6,
             "highlight": false
           },
           {
             "rank": 15,
-            "team": "Sunderland",
-            "points": 4,
+            "team": "Aston Villa",
+            "points": 5,
             "played": 6,
             "highlight": false
           },
           {
             "rank": 16,
-            "team": "Crystal Palace",
+            "team": "Sunderland",
             "points": 4,
             "played": 6,
             "highlight": false
@@ -384,29 +384,29 @@
           },
           {
             "rank": 5,
-            "team": "Dundee United",
+            "team": "St. Johnstone",
             "points": 11,
             "played": 8,
             "highlight": false
           },
           {
             "rank": 6,
+            "team": "Dundee United",
+            "points": 11,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 7,
             "team": "St. Mirren",
             "points": 10,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 7,
-            "team": "St. Johnstone",
-            "points": 9,
-            "played": 8,
-            "highlight": false
-          },
-          {
             "rank": 8,
             "team": "Aberdeen",
-            "points": 9,
+            "points": 8,
             "played": 8,
             "highlight": false
           },
@@ -744,36 +744,36 @@
           {
             "rank": 4,
             "team": "Cagliari",
-            "points": 12,
-            "played": 5,
+            "points": 13,
+            "played": 6,
             "highlight": false
           },
           {
             "rank": 5,
             "team": "Milan",
-            "points": 11,
-            "played": 5,
+            "points": 12,
+            "played": 6,
             "highlight": false
           },
           {
             "rank": 6,
-            "team": "Como",
+            "team": "Juventus",
             "points": 11,
             "played": 6,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "Napoli",
-            "points": 10,
+            "team": "Como",
+            "points": 11,
             "played": 6,
             "highlight": false
           },
           {
             "rank": 8,
-            "team": "Juventus",
+            "team": "Napoli",
             "points": 10,
-            "played": 5,
+            "played": 6,
             "highlight": false
           },
           {
@@ -786,72 +786,72 @@
           {
             "rank": 10,
             "team": "Sassuolo",
-            "points": 7,
-            "played": 5,
-            "highlight": false
-          },
-          {
-            "rank": 11,
-            "team": "Lecce",
-            "points": 7,
+            "points": 8,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 12,
+            "rank": 11,
             "team": "Atalanta",
             "points": 6,
             "played": 5,
             "highlight": false
           },
           {
+            "rank": 12,
+            "team": "Lecce",
+            "points": 6,
+            "played": 6,
+            "highlight": false
+          },
+          {
             "rank": 13,
+            "team": "Bologna",
+            "points": 5,
+            "played": 6,
+            "highlight": false
+          },
+          {
+            "rank": 14,
             "team": "Udinese",
             "points": 4,
             "played": 5,
             "highlight": false
           },
           {
-            "rank": 14,
+            "rank": 15,
             "team": "Torino",
             "points": 4,
             "played": 5,
             "highlight": false
           },
           {
-            "rank": 15,
+            "rank": 16,
             "team": "Monza",
             "points": 4,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 16,
+            "rank": 17,
             "team": "Genoa",
             "points": 4,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 17,
+            "rank": 18,
             "team": "Parma",
             "points": 4,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 18,
+            "rank": 19,
             "team": "Fiorentina",
             "points": 4,
             "played": 6,
             "highlight": true
-          },
-          {
-            "rank": 19,
-            "team": "Bologna",
-            "points": 3,
-            "played": 6,
-            "highlight": false
           },
           {
             "rank": 20,
@@ -927,8 +927,8 @@
           {
             "rank": 2,
             "team": "Polissya Zhytomyr",
-            "points": 18,
-            "played": 7,
+            "points": 19,
+            "played": 8,
             "highlight": false
           },
           {
@@ -982,23 +982,23 @@
           },
           {
             "rank": 10,
-            "team": "Epitsentr Kamianets-Podilskyi",
+            "team": "Bukovyna Chernivtsi",
             "points": 8,
             "played": 8,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Liviy Bereh",
-            "points": 7,
-            "played": 6,
+            "team": "Epitsentr Kamianets-Podilskyi",
+            "points": 8,
+            "played": 8,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Bukovyna Chernivtsi",
+            "team": "Liviy Bereh",
             "points": 7,
-            "played": 7,
+            "played": 6,
             "highlight": false
           },
           {
