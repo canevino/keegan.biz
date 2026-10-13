@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-13T17:36:39.706Z",
+  "updatedAt": "2026-10-13T22:56:13.158Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -447,15 +447,6 @@
       "shortName": "Preston",
       "upcoming": [
         {
-          "id": "5836862",
-          "date": "2026-10-13T19:00:00.000Z",
-          "when": "today · Tue, Oct 13 · 3:00 PM ET",
-          "status": "scheduled",
-          "home": "Birmingham",
-          "away": "Preston",
-          "competition": "Championship"
-        },
-        {
           "id": "5836885",
           "date": "2026-10-17T14:00:00.000Z",
           "when": "Sat, Oct 17 · 10:00 AM ET",
@@ -490,6 +481,15 @@
           "home": "Preston",
           "away": "Sheff Utd",
           "competition": "Championship"
+        },
+        {
+          "id": "5836929",
+          "date": "2026-11-07T15:00:00.000Z",
+          "when": "Sat, Nov 7 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "Preston",
+          "away": "Southampton",
+          "competition": "Championship"
         }
       ],
       "standings": {
@@ -498,155 +498,155 @@
           {
             "rank": 1,
             "team": "Swansea",
-            "points": 20,
-            "played": 9,
+            "points": 23,
+            "played": 10,
             "highlight": false
           },
           {
             "rank": 2,
             "team": "Middlesbrough",
-            "points": 18,
-            "played": 9,
+            "points": 21,
+            "played": 10,
             "highlight": false
           },
           {
             "rank": 3,
+            "team": "Birmingham",
+            "points": 17,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 4,
+            "team": "West Brom",
+            "points": 17,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 5,
             "team": "West Ham",
             "points": 16,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 4,
+            "rank": 6,
             "team": "Stoke",
             "points": 16,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
-            "rank": 5,
-            "team": "Wolves",
-            "points": 14,
-            "played": 8,
+            "rank": 7,
+            "team": "Blackburn",
+            "points": 15,
+            "played": 10,
             "highlight": false
           },
           {
-            "rank": 6,
+            "rank": 8,
             "team": "QPR",
             "points": 14,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 7,
-            "team": "Birmingham",
-            "points": 14,
-            "played": 9,
-            "highlight": false
-          },
-          {
-            "rank": 8,
-            "team": "Millwall",
-            "points": 14,
-            "played": 9,
-            "highlight": false
-          },
-          {
             "rank": 9,
-            "team": "West Brom",
+            "team": "Wolves",
             "points": 14,
             "played": 9,
             "highlight": false
           },
           {
             "rank": 10,
-            "team": "Bristol City",
+            "team": "Millwall",
             "points": 14,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
             "rank": 11,
+            "team": "Bristol City",
+            "points": 14,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 12,
+            "team": "Charlton",
+            "points": 14,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 13,
             "team": "Southampton",
             "points": 13,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 12,
-            "team": "Charlton",
-            "points": 13,
-            "played": 9,
-            "highlight": false
-          },
-          {
-            "rank": 13,
-            "team": "Blackburn",
-            "points": 12,
-            "played": 9,
-            "highlight": false
-          },
-          {
             "rank": 14,
+            "team": "Bolton",
+            "points": 13,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 15,
             "team": "Sheff Utd",
             "points": 12,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 15,
+            "rank": 16,
             "team": "Wrexham",
             "points": 11,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
-            "rank": 16,
+            "rank": 17,
             "team": "Lincoln",
             "points": 11,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 17,
-            "team": "Bolton",
+            "rank": 18,
+            "team": "Cardiff",
             "points": 10,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
-            "rank": 18,
+            "rank": 19,
             "team": "Norwich",
             "points": 9,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 19,
+            "rank": 20,
             "team": "Portsmouth",
             "points": 8,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 20,
-            "team": "Watford",
-            "points": 8,
-            "played": 9,
-            "highlight": false
-          },
-          {
             "rank": 21,
-            "team": "Cardiff",
-            "points": 7,
-            "played": 9,
+            "team": "Burnley",
+            "points": 8,
+            "played": 10,
             "highlight": false
           },
           {
             "rank": 22,
-            "team": "Burnley",
-            "points": 7,
-            "played": 9,
+            "team": "Watford",
+            "points": 8,
+            "played": 10,
             "highlight": false
           },
           {
@@ -660,7 +660,7 @@
             "rank": 24,
             "team": "Preston",
             "points": 4,
-            "played": 9,
+            "played": 10,
             "highlight": true
           }
         ]
