@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-13T22:56:13.158Z",
+  "updatedAt": "2026-10-14T05:04:21.312Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -111,7 +111,7 @@
         {
           "id": "6106405",
           "date": "2026-10-14T16:45:00.000Z",
-          "when": "tomorrow · Wed, Oct 14 · 12:45 PM ET",
+          "when": "today · Wed, Oct 14 · 12:45 PM ET",
           "status": "scheduled",
           "home": "LASK",
           "away": "Liverpool",
@@ -308,7 +308,7 @@
         {
           "id": "6112497",
           "date": "2026-10-15T19:00:00.000Z",
-          "when": "Thu, Oct 15 · 3:00 PM ET",
+          "when": "tomorrow · Thu, Oct 15 · 3:00 PM ET",
           "status": "scheduled",
           "home": "Hearts",
           "away": "Nordsjælland",
@@ -871,7 +871,7 @@
         {
           "id": "6106337",
           "date": "2026-10-14T19:00:00.000Z",
-          "when": "tomorrow · Wed, Oct 14 · 3:00 PM ET",
+          "when": "today · Wed, Oct 14 · 3:00 PM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "AEK Athens",
