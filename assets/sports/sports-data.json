@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-14T17:21:42.240Z",
+  "updatedAt": "2026-10-14T21:49:02.205Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -109,15 +109,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "6106405",
-          "date": "2026-10-14T16:45:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "LASK",
-          "away": "Liverpool",
-          "competition": "Champions League"
-        },
-        {
           "id": "5795476",
           "date": "2026-10-17T14:00:00.000Z",
           "when": "Sat, Oct 17 · 10:00 AM ET",
@@ -152,6 +143,15 @@
           "home": "Liverpool",
           "away": "Chelsea",
           "competition": "EFL Cup"
+        },
+        {
+          "id": "5795501",
+          "date": "2026-11-01T16:30:00.000Z",
+          "when": "Sun, Nov 1 · 11:30 AM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Arsenal",
+          "competition": "Premier League"
         }
       ],
       "standings": {
@@ -511,79 +511,79 @@
           },
           {
             "rank": 3,
+            "team": "West Ham",
+            "points": 19,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 4,
             "team": "Birmingham",
             "points": 17,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 4,
+            "rank": 5,
+            "team": "QPR",
+            "points": 17,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 6,
             "team": "West Brom",
             "points": 17,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 5,
-            "team": "West Ham",
+            "rank": 7,
+            "team": "Southampton",
             "points": 16,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
-            "rank": 6,
+            "rank": 8,
             "team": "Stoke",
             "points": 16,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 7,
+            "rank": 9,
             "team": "Blackburn",
             "points": 15,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 8,
-            "team": "QPR",
-            "points": 14,
-            "played": 9,
-            "highlight": false
-          },
-          {
-            "rank": 9,
+            "rank": 10,
             "team": "Wolves",
             "points": 14,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 10,
+            "rank": 11,
             "team": "Millwall",
             "points": 14,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 11,
+            "rank": 12,
             "team": "Bristol City",
             "points": 14,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 12,
+            "rank": 13,
             "team": "Charlton",
             "points": 14,
             "played": 10,
-            "highlight": false
-          },
-          {
-            "rank": 13,
-            "team": "Southampton",
-            "points": 13,
-            "played": 9,
             "highlight": false
           },
           {
@@ -597,42 +597,42 @@
             "rank": 15,
             "team": "Sheff Utd",
             "points": 12,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
             "rank": 16,
+            "team": "Portsmouth",
+            "points": 11,
+            "played": 9,
+            "highlight": false
+          },
+          {
+            "rank": 17,
             "team": "Wrexham",
             "points": 11,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 17,
+            "rank": 18,
             "team": "Lincoln",
             "points": 11,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
-            "rank": 18,
+            "rank": 19,
             "team": "Cardiff",
             "points": 10,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 19,
+            "rank": 20,
             "team": "Norwich",
             "points": 9,
-            "played": 9,
-            "highlight": false
-          },
-          {
-            "rank": 20,
-            "team": "Portsmouth",
-            "points": 8,
-            "played": 8,
+            "played": 10,
             "highlight": false
           },
           {
@@ -653,7 +653,7 @@
             "rank": 23,
             "team": "Derby",
             "points": 6,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
@@ -869,15 +869,6 @@
       "shortName": "Shakhtar",
       "upcoming": [
         {
-          "id": "6106337",
-          "date": "2026-10-14T19:00:00.000Z",
-          "when": "today · Wed, Oct 14 · 3:00 PM ET",
-          "status": "scheduled",
-          "home": "Shakhtar Donetsk",
-          "away": "AEK Athens",
-          "competition": "Champions League"
-        },
-        {
           "id": "5909184",
           "date": "2026-10-17T15:00:00.000Z",
           "when": "Sat, Oct 17 · 11:00 AM ET",
@@ -912,6 +903,15 @@
           "home": "Shakhtar Donetsk",
           "away": "Dynamo Kyiv",
           "competition": "Cup"
+        },
+        {
+          "id": "5909199",
+          "date": "2026-10-31T16:00:00.000Z",
+          "when": "Sat, Oct 31 · 12:00 PM ET",
+          "status": "scheduled",
+          "home": "Obolon Kyiv",
+          "away": "Shakhtar Donetsk",
+          "competition": "Premier League"
         }
       ],
       "standings": {
