@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-14T12:07:22.962Z",
+  "updatedAt": "2026-10-14T15:10:45.405Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -61,7 +61,7 @@
         "postseason": true,
         "competition": "AL Division Series",
         "series": "TB wins 3-0",
-        "seriesRecord": "Rays lead Yankees 3–0",
+        "seriesRecord": "Rays lead Yankees 2–0",
         "upcomingTime": "",
         "gameType": "D"
       },
