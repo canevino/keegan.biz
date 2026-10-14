@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-14T15:10:45.405Z",
+  "updatedAt": "2026-10-14T17:21:42.240Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -111,8 +111,8 @@
         {
           "id": "6106405",
           "date": "2026-10-14T16:45:00.000Z",
-          "when": "today · Wed, Oct 14 · 12:45 PM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "LASK",
           "away": "Liverpool",
           "competition": "Champions League"
