@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#ece7d7">
   <title>misc · keegan.biz</title>
-  <meta name="description" content="Small things, loose experiments and an interactive ornament-making study.">
+  <meta name="description" content="misc section with an interactive ornament machine.">
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="./style.css">
 </head>
@@ -14,23 +14,24 @@
     <nav data-site-nav></nav>
     <main class="misc-main">
       <header class="misc-intro">
-        <p class="micro">keegan.biz / miscellany</p>
+        <p class="micro">misc / drawing systems</p>
         <h1>misc<span class="dot">.</span></h1>
-        <p class="misc-lede">small experiments, unfinished things, accidents worth keeping.</p>
-        <div class="intro-flourish" aria-hidden="true" id="intro-flourish"></div>
       </header>
 
       <section class="experiment" id="ornament-machine" aria-labelledby="experiment-title">
         <div class="experiment-header">
-          <p class="experiment-number">01 / drawing systems</p>
-          <div>
-            <h2 id="experiment-title">illuminarium<span class="arrow"> ↗</span></h2>
-            <p class="experiment-description">An ornament maker loosely based on illuminated manuscripts, interlace and botanical marginalia. Change the rules and make something else.</p>
+          <div class="experiment-rail">
+            <p class="experiment-number">01 / generative art</p>
+          </div>
+          <div class="experiment-heading">
+            <h2 id="experiment-title">ornament machine<span class="arrow"> ↗</span></h2>
+            <p class="experiment-description">interlace, manuscript letters, distortion, pigment, vines.</p>
           </div>
         </div>
+
         <div class="studio">
           <div class="art-column">
-            <div class="art-meta"><span id="state-name">marginalia / 001</span><span id="seed-label">seed 472818</span></div>
+            <div class="art-meta"><span id="state-name">botanical marginalia</span><span id="seed-label">seed 472818</span></div>
             <div class="art-workspace" id="workspace" aria-label="Generated ornament" role="img">
               <div id="artwork" class="artwork"></div>
             </div>
@@ -41,8 +42,9 @@
               <label class="small-check"><input type="checkbox" id="show-grid"> transparency grid</label>
             </div>
           </div>
+
           <form class="studio-controls" id="studio-controls">
-            <div class="control-intro">Make a change</div>
+            <div class="control-intro">make a change</div>
             <label>arrangement
               <select id="mode">
                 <option value="marginalia">botanical marginalia</option>
@@ -74,15 +76,9 @@
             <label class="checkline"><input type="checkbox" id="initial-visible" checked> decorated letter</label>
             <label class="checkline"><input type="checkbox" id="bleed" checked> uneven ink / bleed</label>
             <label class="checkline"><input type="checkbox" id="transparent" checked> transparent export</label>
-            <p class="control-footnote">The knotwork uses a crossing-and-break grid. Other ornament is drawn from branching paths and repeated, hand-built shapes. Seeded compositions are repeatable.</p>
             <button type="button" id="reset" class="reset-button">restore starting settings ↗</button>
           </form>
         </div>
-        <p class="experiment-note">The SVG is vector artwork. PNG exports at 3,200 pixels wide. Nothing is uploaded or saved to a server.</p>
-      </section>
-      <section class="misc-next" aria-label="Future miscellaneous work">
-        <span>02 / more things eventually</span>
-        <span class="next-mark" aria-hidden="true">✳</span>
       </section>
     </main>
   </div>
