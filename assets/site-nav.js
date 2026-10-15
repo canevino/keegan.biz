@@ -57,9 +57,9 @@
     },
     {
       label: "Miscellaneous",
-      href: "#",
+      href: "/misc/",
       image: "/assets/home/scarf-misc.png",
-      live: false
+      live: true
     },
     {
       label: "Gastronomy",
