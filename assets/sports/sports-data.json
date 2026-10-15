@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-14T21:49:02.205Z",
+  "updatedAt": "2026-10-15T04:53:05.796Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -308,7 +308,7 @@
         {
           "id": "6112497",
           "date": "2026-10-15T19:00:00.000Z",
-          "when": "tomorrow · Thu, Oct 15 · 3:00 PM ET",
+          "when": "today · Thu, Oct 15 · 3:00 PM ET",
           "status": "scheduled",
           "home": "Hearts",
           "away": "Nordsjælland",
