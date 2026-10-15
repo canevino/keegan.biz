@@ -1,41 +1,63 @@
-# Ornament machine / keegan.biz
+# ornament machine / keegan.biz / misc
 
-A browser-based, transparent abstract image generator for `/misc/`. No build system, canvas library, backend, or API key.
+A full replacement for the earlier Illuminarium / Ornament Machine. Static HTML/CSS/JavaScript, no build step and no runtime account. It can also be opened locally from `index.html` (the global site stylesheet will not be available locally, but the local stylesheet includes its own fallbacks).
 
-## Upload
+## Installation
 
-Upload the **contents of this `misc` directory** to the repository's existing `/misc/` directory, replacing the earlier `index.html`, `style.css` and `app.js`. Keep the rest of the site untouched.
+Upload the contents of this folder into `keegan.biz/misc/`, **replacing previous files**. In particular, delete the old `/misc/app.js`; this version uses the new files inside `/misc/js/` instead. Leave the other website directories alone.
 
-The page will be available at https://keegan.biz/misc/ after GitHub Pages publishes. GitHub can take a little time to refresh; hard-refresh the browser if the old design is cached.
+    misc/
+      index.html
+      style.css
+      js/
+        core.js
+        knot.js
+        growth.js
+        letters.js
+        composition.js
+        app.js
+      README.md
+      THIRD_PARTY_LICENSES.md
 
-## Files
+After publishing to GitHub Pages, visit `https://keegan.biz/misc/`. If an old page is still served, hard-refresh/clear its cache. All Javascript assets use relative URLs so the page can live at `/misc/` on GitHub Pages.
 
-- `index.html`: page layout, controls and metadata.
-- `style.css`: page-specific layout; matches the site's shared palette and typography.
-- `app.js`: seeded image generator, authentic crossing/break knot tracing, ornament geometry, print filters, and export tools.
-- `THIRD_PARTY_LICENSES.md`: attribution and MIT license for the knot algorithm adaptation.
+## Design rules
 
-## How it works
+- The **artwork** is a background-free 1280 × 960 SVG. It is meant to float on the site's existing cream background. The optional checkerboard is **preview only**.
+- Site UI: Helvetica, hard edges, `#ece7d7` (interface cream), `#11110f`, `#c1272d`, `#006a44`, `#fdb913`.
+- No historical illustration sprites, cartoon foliage, framed folios, fake parchment, or imposed page labels.
+- Each seed independently chooses an organizing pattern (including negative space and off-canvas crops). The `composition` selector changes the probability of different systems, **not** which picture template is loaded.
+- The most expressive controls are *woven knotwork*, *creeping growth*, *broken lettering*, and *distortion*.
 
-- The weave starts as a diagonal plait across a doubled grid. At crossings, random horizontal and vertical breaks redirect the strands. The program traces closed strands and joins some of them; it redraws the overpass above the underpass at crossings. The final shapes are warped, transformed, layered and printed with irregular edges. This follows the George Bain approach implemented by Olivier Giulieri's Celtic Knot Maker (see attribution).
-- Independent generators create stochastic L-system growth, space-colonization branching, crooked tendrils, typographic fragments, dye deposits, small geometric fragments and misregistered color plates.
-- All artwork lives in a **background-free SVG**. The cream color belongs to the surrounding website, not the image. Exported PNGs retain transparency.
-- "Make something else" changes the seed and creates a new composition, rather than restyling the previous template. The seed can be saved and re-entered to reproduce the output with matching settings.
-- 'Composition' modes bias how much space different elements occupy; they're not fixed posters.
-- Pigment mixing uses Spectral.js 3 when loaded from the optional CDN; when unavailable, RGB blending is the fallback. This is the only optional network request.
+## Modules / how the artwork is built
+
+- **core.js** — seeded xorshift RNG; SVG primitives; blob shapes; SVG ink and print filters influenced by the site's design page; palette mixing with optional Spectral.js (v3). Has a built-in RGB fallback if CDN is blocked.
+- **knot.js** — **real mirror-curve knot tracing**, not hand-wavy loops: diagonal cell crossings, horizontal/vertical breaks, closed strand tracing, joining breaks, and independently repainted overpasses. Adapted from Olivier Giulieri's MIT-licensed Celtic Knot Maker using George Bain's method. Read `THIRD_PARTY_LICENSES.md`.
+- **growth.js** — two separately written 2D systems: target-seeking branches (space colonization) with descendant-based stem width, and directionally drifting tendrils. Drawing across the preview supplies a sampled spine that branches organically to the side. Informed by the growth and stroke-following ideas from VegetationGeneratorThreeJS, VineJS, and the supplied tree-generator projects; no 3D renderer or sprite assets copied.
+- **letters.js** — variable-scale serif/sans alphabetic shards, angled writing lines, and a minimal constructed glyph-mark system. Live hover gently repels nearby text fragments, an intentionally lightweight echo of the motion-sensitive text in Illustrated Manuscript. No imported font or sprite artwork. Font appearance will differ a little across operating systems.
+- **composition.js** — score/structure selection, layering, negative space, overlaps, small fragments and occasional mosaic ink deposits. Independently seeds each region and hands the same controls to all modules. Uses Spectral.js-generated mixtures when available.
+- **app.js** — UI, regeneration, stroke editing (undo / clear), pointer-sensitive text, reproducible seed, download / PNG rasterization and keyboard shortcuts.
 
 ## Controls
 
-- Density, knotwork, branching/growth, letters, distortion, ink bleed and misregistration are adjustable.
-- `space` or `r` regenerates when focus is outside text inputs.
-- Save SVG for vector work or a transparent 2400 × 2000 PNG for Photoshop.
+- **make something else** or `N`: new random seed and composition.
+- Change a slider: rerender with same seed; the parameters really affect composition and shape geometry.
+- Enter a saved **seed** and hit Return or the `↵` button to reconstruct artwork with the current settings. Saved painted strokes are local to the current page session and are not encoded in seed.
+- **draw a vine** or `B`: drag across artwork. It will sprout side shoots when you release. Undo and clear work on the hand-drawn paths. Drawn paths are preserved on reseeding.
+- Hover while not in drawing mode: local letter fragments nudge away from the pointer. This preview interaction does **not** change the exported artwork.
+- **save svg**: original live SVG paths and text, no fill background.
+- **save png**: transparent bitmap, selectable widths 1920/3840/5120 px. The aspect ratio is always 4:3. At 5120 the browser needs more memory.
 
-## Notes
+## Dependencies and licensing
 
-The SVG is an editable document: paths and text remain vector elements. Filters and blended effects may appear different in Illustrator and other vector editors because they support different SVG filter features; the exported PNG is the more faithful browser rendering. Fonts are standard system fonts, not external assets. The generated letters remain text in SVG (convert to outlines in an illustration editor if you need portability).
+No dependency or build step is required. `spectral.js@3.0.0` is an **optional**, remotely loaded pigment-color mixer with an RGB fallback. The knot method has an MIT upstream attribution included in `THIRD_PARTY_LICENSES.md`. Concepts (not third-party source) from the ivy, VineJS, stained glass, Rune.js, Runicjs, Illustrated Manuscript/Pretext, and tree-generator materials were evaluated when designing the geometry and interactions. This is not a redistribution or a port of those applications.
 
-The generator doesn't overwrite any other page or modify site navigation. Its absolute `/assets/site.css` stylesheet reference is intentional and works on the deployed GitHub Pages site.
+The source code and UI do not require Blender, three.js, Vite, WebGPU, Pretext or Rune.js. Keeping the original SVG engine is deliberate: it is editable in Illustrator / Photoshop and deploys on GitHub Pages as static files.
 
-## Branching / tree-generator approach (v3)
+## Known limitations
 
-The new growth slider controls two independent vector-growth algorithms: a stochastic L-system (recursive `F`, `+`, `-`, `[` and `]` instructions) and a space-colonization model (attractor sites cause branches to grow toward free space). Stroke width tapers according to branch depth or descendant mass. A new seed changes rules, attractor fields, spread, color and layering. They are intentionally rendered as abstract networks, not complete trees, with no leaf sprites. Both are original implementations of established public algorithms. Sources for approach: aurbano/TreeGenerator (MIT, parameterized branching/width loss); TanviKumar/treegen (L-system concepts); Angramme/TreeGenerator (space-colonization concept). No third-party tree code is bundled.
+- Browser rendering is the reference. SVG filter support varies in Illustrator, Inkscape and Photoshop, so layers with filters can look different when imported. Prefer PNG for an exact baked appearance or SVG for editable vectors.
+- SVG text remains real text and depends on fonts installed on the viewer's computer. Convert text to outlines in Illustrator when delivering to print or another machine.
+- Color mixing changes slightly depending on whether the optional spectral library has loaded. The exported file embeds its computed colors, so **the saved SVG does not depend on that library**.
+- Pointer disturbance is a preview-only feature. It is not an animated SVG export.
+- This tool does not edit other site sections; do not delete `/assets/site.css`.

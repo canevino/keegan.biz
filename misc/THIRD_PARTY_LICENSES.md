@@ -34,3 +34,14 @@ Optional color mixing: [Spectral.js](https://github.com/rvanwijnen/spectral.js),
 ### Botanical growth methods
 
 The added branching routines are original implementations of general L-system and space-colonization algorithms, developed after reviewing the public projects https://github.com/aurbano/TreeGenerator (MIT), https://github.com/TanviKumar/treegen, and https://github.com/Angramme/TreeGenerator. No source code or assets from these tree projects are redistributed.
+
+### Other reviewed sources (no third-party code incorporated)
+
+- [VegetationGeneratorThreeJS](https://github.com/achrefelouafi/VegetationGeneratorThreeJS): stroke-guided vine growth and tangent branching; concept adapted to original 2D strokes.
+- [VineJS](https://github.com/millerthegorilla/vinejs): procedural winding and branching parameter concepts.
+- [dmackinnon1/celtic](https://github.com/dmackinnon1/celtic): alternative grid knot editor and display ideas.
+- [Rune.js](https://github.com/runemadsen/rune.js) and [Runicjs](https://github.com/batman-nair/Runicjs): programmatic vector drawing and glyph construction references.
+- [Illustrated Manuscript](https://github.com/dengshu2/illustrated-manuscript): dynamic text exclusion and pointer interaction as inspiration for lightweight responsive type fragments. Its dragon art, game logic and Pretext source are not bundled.
+- [Stained Glass Generator](https://github.com/joecooper1/stained-glass-generator): noise, color groupings and mosaic-size controls as inspiration, but not used as a library.
+
+These sources do not have to be installed; there is no corresponding code redistribution.
