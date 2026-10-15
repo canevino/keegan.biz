@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Illuminarium — keegan.biz / misc</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/spectral.js@3.0.0/spectral.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">✳</div><div><div class="brand-title">illuminarium</div><div class="brand-sub">KEEGAN.BIZ / MISC / GENERATIVE ART</div></div></div>
+      <div class="side-scroll">
+        <section class="control-section"><div class="kicker">01 / COMPOSITION</div><label for="style">Manuscript tradition</label><select id="style"><option value="hours">Book of Hours / floral</option><option value="insular">Insular / carpet page</option><option value="gothic">Gothic / narrative panels</option><option value="distorted">Distorted / vine collage</option></select><div class="microcopy" id="styleNote">Botanical border, gold-leaf details and a miniature painting.</div>
+        <label for="palette">Pigment palette</label><select id="palette"><option value="lapis">Lapis & vermilion</option><option value="moss">Moss & madder</option><option value="midnight">Midnight & gold</option><option value="rose">Rose & azurite</option></select></section>
+        <section class="control-section"><div class="kicker">02 / ILLUMINATION</div><label for="initial">Illuminated initial</label><input id="initial" type="text" maxlength="1" value="I" spellcheck="false"><label for="scene">Miniature subject</label><select id="scene"><option value="annunciation">A gilded visitation</option><option value="garden">The walled garden</option><option value="scribe">Scribe & manuscript</option></select><div class="range-title"><label for="ornament">Ornament density</label><output id="ornamentOut">78%</output></div><input type="range" min="20" max="100" value="78" id="ornament"><div class="range-title"><label for="age">Parchment age</label><output id="ageOut">40%</output></div><input type="range" min="0" max="100" value="40" id="age"><div class="checks"><label class="check-row"><input type="checkbox" id="gold" checked> <span>Gilded detailing</span></label><label class="check-row"><input type="checkbox" id="knots" checked> <span>Woven motifs</span></label><label class="check-row"><input type="checkbox" id="grain" checked> <span>Ink & pigment grain</span></label></div></section>
+        <section class="control-section"><div class="kicker">03 / DISTORTION</div><div class="microcopy">Stacked pigment maps, ornamental warping, pixel mosaics and imperfect registration. Strongest in the distorted mode.</div><div class="range-title"><label for="warp">Ornament distortion</label><output id="warpOut">40%</output></div><input type="range" min="0" max="100" value="40" id="warp"><div class="range-title"><label for="mosaic">Pixel mosaic</label><output id="mosaicOut">30%</output></div><input type="range" min="0" max="100" value="30" id="mosaic"><div class="range-title"><label for="offset">Color misregistration</label><output id="offsetOut">25%</output></div><input type="range" min="0" max="100" value="25" id="offset"></section><section class="control-section"><div class="kicker">04 / TEXT</div><label for="manuscriptText">Folio text</label><textarea id="manuscriptText" rows="4">In principio erat verbum, et verbum erat apud deum. Et lux in tenebris lucet, et tenebrae eam non comprehenderunt.</textarea><div class="microcopy">Text stays editable in SVG. Fonts can vary between computers.</div></section>
+        <section class="control-section"><div class="kicker">05 / GENERATION</div><label for="seed">Composition seed</label><div class="seed-row"><input id="seed" type="number" min="1" max="999999999" value="1428"><button id="newSeed" class="small-btn" aria-label="New random seed" title="New random seed">↻</button></div><button id="generate" class="primary">Generate folio <span>↗</span></button><div id="pigmentStatus" class="microcopy pigment-status">Checking spectral pigment engine…</div></section>
+        <section class="control-section export-section"><div class="kicker">06 / EXPORT</div><label for="pngSize">PNG width</label><select id="pngSize"><option value="1800">1,800 px / quick preview</option><option value="3200" selected>3,200 px / high resolution</option><option value="4800">4,800 px / print detail</option></select><div class="export-row"><button id="downloadSVG">Download SVG ↗</button><button id="downloadPNG">Download PNG ↗</button></div><div class="microcopy">SVG is vector-based and opens in Illustrator or Photoshop. PNG is rasterized at the selected size.</div></section>
+        <footer class="sidebar-foot"><a href="/">← keegan.biz</a> &nbsp; / &nbsp; <a href="/misc/">misc</a><br>ALGORITHMIC ORNAMENT · ORIGINAL VECTOR GEOMETRY<br>NOT TRACED FROM HISTORICAL FOLIOS.</footer>
+      </div>
+    </aside>
+    <main class="workspace">
+      <header class="workspace-top"><div><span class="top-index">FOLIO DESIGN /</span> <strong id="compositionName">BOOK OF HOURS</strong></div><div class="top-actions"><span class="top-index" id="folioNumber">NO. 1428</span><button id="zoomOut" class="text-button" aria-label="Zoom out">−</button><span id="zoomLabel" class="top-index">100%</span><button id="zoomIn" class="text-button" aria-label="Zoom in">+</button><button id="fitPage" class="text-button">Fit page</button></div></header>
+      <div class="stage" id="stage"><div id="paperWrap" class="paper-wrap"><div id="preview" aria-label="Generated illuminated manuscript"></div></div></div>
+      <footer class="workspace-bottom"><span>ILLUMINARIUM <span class="bottom-sep">/</span> MANUSCRIPT MACHINE</span><span class="muted">780 × 1080 UNITS <span class="bottom-sep">·</span> REPRODUCIBLE SEED</span></footer>
+    </main>
+  </div>
+</body>
+</html>
