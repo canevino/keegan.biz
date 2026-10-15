@@ -2,58 +2,94 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#ece7d7">
-  <meta name="description" content="A generative ornament machine: Celtic interlace, wandering growth, distressed lettering and ink.">
-  <title>ornament machine / misc — keegan.biz</title>
+  <title>misc · keegan.biz</title>
+  <meta name="description" content="Small things, loose experiments and an interactive ornament-making study.">
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="style.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/spectral.js@3.0.0/spectral.min.js"></script>
-  <script defer src="js/core.js"></script>
-  <script defer src="js/knot.js"></script>
-  <script defer src="js/growth.js"></script>
-  <script defer src="js/letters.js"></script>
-  <script defer src="js/composition.js"></script>
-  <script defer src="js/app.js"></script>
+  <link rel="stylesheet" href="./style.css">
 </head>
-<body>
-  <div class="om-app">
-    <header class="om-header">
-      <a class="om-wordmark" href="/">keegan.biz</a>
-      <nav class="om-links" aria-label="Site"><a href="/illustration/">art</a><a href="/photography/">photo</a><a href="/design/">design</a><a href="/motion/">motion</a><a href="/misc/" aria-current="page">misc</a></nav>
-      <span class="om-counter">experiment / 01</span>
-    </header>
-    <div class="om-layout">
-      <aside class="om-panel">
-        <div class="om-intro"><p class="micro">misc / drawing systems</p><h1>ornament<br>machine<span>↗</span></h1><p class="om-deck">A loose system of interlace, branches, broken letters and printing accidents. No page. No template.</p></div>
-        <button type="button" class="om-primary" id="new">make something else <span>↗</span></button>
-        <div class="om-controls">
-          <div class="field"><label for="mode">composition</label><select id="mode"><option value="chance">chance / no fixed structure</option><option value="interlace">interlace / dense crossings</option><option value="thicket">overgrowth / tendrils</option><option value="type">letters / disintegrating text</option><option value="rupture">rupture / misprints</option></select></div>
-          <div class="field"><label for="palette">inks</label><select id="palette"><option value="site">keegan.biz / four inks</option><option value="mineral">mineral pigments</option><option value="iron">iron / rust</option><option value="electric">acid / cobalt</option><option value="black">black on transparent</option><option value="red">red / ochre</option><option value="random">random family</option></select></div>
-          <div class="field range"><div><label for="density">density</label><output id="density-value">56</output></div><input type="range" id="density" min="0" max="100" value="56"></div>
-          <div class="field range"><div><label for="knots">woven knotwork</label><output id="knots-value">77</output></div><input type="range" id="knots" min="0" max="100" value="77"></div>
-          <div class="field range"><div><label for="growth">creeping growth</label><output id="growth-value">74</output></div><input type="range" id="growth" min="0" max="100" value="74"></div>
-          <div class="field range"><div><label for="letters">broken lettering</label><output id="letters-value">65</output></div><input type="range" id="letters" min="0" max="100" value="65"></div>
-          <div class="field range"><div><label for="damage">distortion</label><output id="damage-value">72</output></div><input type="range" id="damage" min="0" max="100" value="72"></div>
-          <div class="field range"><div><label for="bleed">wet ink</label><output id="bleed-value">59</output></div><input type="range" id="bleed" min="0" max="100" value="59"></div>
-          <div class="field range"><div><label for="misprint">color registration</label><output id="misprint-value">31</output></div><input type="range" id="misprint" min="0" max="100" value="31"></div>
-          <div class="field"><label for="seed">seed / repeatable</label><div class="seed-control"><input id="seed" type="text" inputmode="numeric" spellcheck="false" value=""><button id="repeat" type="button" aria-label="Regenerate using entered seed" title="Use this seed">↵</button></div></div>
-          <div class="tools"><button id="paint" type="button" aria-pressed="false">draw a vine +</button><button id="undo" type="button" disabled>undo stroke</button><button id="clear" type="button" disabled>clear strokes</button></div>
-          <p class="fineprint">draw a vine: drag directly across the artwork. branches grow from your line. its shape is preserved when you change the seed.</p>
-        </div>
-        <div class="om-aside-bottom"><span>transparent by default</span><a href="/design/">design ↗</a></div>
-      </aside>
-      <main class="om-workspace">
-        <div class="om-stagebar"><span id="descriptor">untitled / chance</span><span id="status" role="status">ready</span></div>
-        <div class="om-view" id="view">
-          <div class="om-artbox" id="artbox">
-            <div id="art" aria-label="Generated ornament" role="img"></div>
-            <svg id="scribble" viewBox="0 0 1280 960" aria-hidden="true"><path id="scribble-path" d=""/></svg>
+<body class="misc-page">
+  <div class="page-shell">
+    <nav data-site-nav></nav>
+    <main class="misc-main">
+      <header class="misc-intro">
+        <p class="micro">keegan.biz / miscellany</p>
+        <h1>misc<span class="dot">.</span></h1>
+        <p class="misc-lede">small experiments, unfinished things, accidents worth keeping.</p>
+        <div class="intro-flourish" aria-hidden="true" id="intro-flourish"></div>
+      </header>
+
+      <section class="experiment" id="ornament-machine" aria-labelledby="experiment-title">
+        <div class="experiment-header">
+          <p class="experiment-number">01 / drawing systems</p>
+          <div>
+            <h2 id="experiment-title">illuminarium<span class="arrow"> ↗</span></h2>
+            <p class="experiment-description">An ornament maker loosely based on illuminated manuscripts, interlace and botanical marginalia. Change the rules and make something else.</p>
           </div>
         </div>
-        <div class="om-footer"><div class="exports"><button id="export-svg" type="button">save svg ↗</button><button id="export-png" type="button">save png ↗</button><select id="export-size" aria-label="PNG export resolution"><option value="1920">1920 px</option><option value="3840" selected>3840 px</option><option value="5120">5120 px</option></select></div><label class="checker"><input type="checkbox" id="checker"> show transparency grid</label><span class="om-scale">1280 × 960 / alpha</span></div>
-      </main>
-    </div>
+        <div class="studio">
+          <div class="art-column">
+            <div class="art-meta"><span id="state-name">marginalia / 001</span><span id="seed-label">seed 472818</span></div>
+            <div class="art-workspace" id="workspace" aria-label="Generated ornament" role="img">
+              <div id="artwork" class="artwork"></div>
+            </div>
+            <div class="art-actions">
+              <button type="button" class="text-action main-action" id="regenerate">something else ↗</button>
+              <button type="button" class="text-action" id="save-svg">save svg ↗</button>
+              <button type="button" class="text-action" id="save-png">save png ↗</button>
+              <label class="small-check"><input type="checkbox" id="show-grid"> transparency grid</label>
+            </div>
+          </div>
+          <form class="studio-controls" id="studio-controls">
+            <div class="control-intro">Make a change</div>
+            <label>arrangement
+              <select id="mode">
+                <option value="marginalia">botanical marginalia</option>
+                <option value="initial">decorated initial</option>
+                <option value="interlace">interlaced illumination</option>
+                <option value="chromatic">distorted pigments</option>
+              </select>
+            </label>
+            <label>inks
+              <select id="palette">
+                <option value="medieval">lapis / vermilion / gold</option>
+                <option value="insular">verdigris / madder</option>
+                <option value="site">red / green / yellow</option>
+                <option value="monochrome">black / iron</option>
+                <option value="random">chance</option>
+              </select>
+            </label>
+            <div class="control-pair">
+              <label>initial <input id="initial" type="text" maxlength="1" value="A" autocapitalize="characters" aria-label="Decorated initial"></label>
+              <label>seed <input id="seed" type="number" inputmode="numeric" min="1" max="4294967295" value="472818"></label>
+            </div>
+            <div class="control-divider"></div>
+            <label class="slider">foliage <span id="foliage-out">72</span><input id="foliage" type="range" min="0" max="100" value="72"></label>
+            <label class="slider">knotwork <span id="knots-out">56</span><input id="knots" type="range" min="0" max="100" value="56"></label>
+            <label class="slider">letter fragments <span id="letters-out">23</span><input id="letters" type="range" min="0" max="100" value="23"></label>
+            <label class="slider">pigment / mosaic <span id="pigment-out">40</span><input id="pigment" type="range" min="0" max="100" value="40"></label>
+            <label class="slider">broken print <span id="wear-out">19</span><input id="wear" type="range" min="0" max="100" value="19"></label>
+            <div class="control-divider"></div>
+            <label class="checkline"><input type="checkbox" id="initial-visible" checked> decorated letter</label>
+            <label class="checkline"><input type="checkbox" id="bleed" checked> uneven ink / bleed</label>
+            <label class="checkline"><input type="checkbox" id="transparent" checked> transparent export</label>
+            <p class="control-footnote">The knotwork uses a crossing-and-break grid. Other ornament is drawn from branching paths and repeated, hand-built shapes. Seeded compositions are repeatable.</p>
+            <button type="button" id="reset" class="reset-button">restore starting settings ↗</button>
+          </form>
+        </div>
+        <p class="experiment-note">The SVG is vector artwork. PNG exports at 3,200 pixels wide. Nothing is uploaded or saved to a server.</p>
+      </section>
+      <section class="misc-next" aria-label="Future miscellaneous work">
+        <span>02 / more things eventually</span>
+        <span class="next-mark" aria-hidden="true">✳</span>
+      </section>
+    </main>
   </div>
+  <script src="/assets/site-nav.js" defer></script>
+  <script src="./js/core.js" defer></script>
+  <script src="./js/knot.js" defer></script>
+  <script src="./js/ornament.js" defer></script>
+  <script src="./js/app.js" defer></script>
 </body>
 </html>
