@@ -1,3 +1,5 @@
+> v10 update: See [PASS_2.md](PASS_2.md) for the completed custom Insular letters, vine-attached weaving, irregular knot cartouches, and spatial composition. This document describes the earlier v8 architecture; `js/glyphs.js` is now loaded before `js/initials.js`.
+
 # Architecture and code explanation
 
 This document maps each recommendation from the preceding design audit into a separate module. Every algorithm runs client-side and produces SVG markup; no compiled dependencies or external data feeds are required.
