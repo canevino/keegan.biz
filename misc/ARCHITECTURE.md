@@ -32,24 +32,23 @@ The focal ellipse is not a visible frame. It serves as an **exclusion zone** so 
 
 There are several candidate root directions (from bottom, top and sides), shuffled by the seed. Stems no longer automatically connect the four edges into a square. Every stem is defined by four Bézier points and a base width. The preview still varies within a bounded page-shaped drawing field, not an infinite canvas.
 
-## 4. Botanical anatomy — `js/botany.js`
+## 4. Botanical anatomy — `js/botany.js` (updated in Pass 1 / v9)
 
-A primary stem is **not a constant-width SVG stroke**. `taperedTube(samples, baseWidth, endWidth)` builds two sampled edges around its centerline:
+The scene planner still creates the main cubic Bézier routes. `organicSpine()` subtly displaces the points sideways along the normal of the route, applying low-frequency bending that vanishes at the endpoints, and then recomputes each tangent from adjacent displaced points. This matters because leaves must follow the *actual drawn route*, not an underlying straight segment.
 
-```
-width(t) = endWidth + (baseWidth - endWidth) × (1-t)^1.25
-left(t)  = B(t) + normal(t) × width(t)/2
-right(t) = B(t) - normal(t) × width(t)/2
-stem     = closed polygon(left points + reversed right points)
-```
+`stemOutline()` turns sampled centerlines into filled, variable-width silhouettes. Two edge lists are generated using the local normal. The approximate width law is `tipWidth + (rootWidth-tipWidth)*(1-t)^1.18`. The starting region is broad, while the tips narrow to hairline widths. The rendering adds bark striations and selective longitudinal highlights.
 
-The result is a filled, editable path that is thick near its root and narrow at the tip. A faint line along the central curve adds a hand-inked vein.
+`primaryShoot()` creates branches that begin roughly aligned to their parent stem and turn outward through cubic control points. `secondaryTwig()` adds fine branching at one additional level. This recursion is capped intentionally to keep detail count and SVG complexity bounded.
 
-`shootAt()` uses sampled curve tangents to give a branch its natural point of emergence. Branches have their own small tapered silhouettes. Leaf positions are attached to those branches. Each leaf is defined in *local* coordinates along the positive X axis and is rotated **once** when positioned. This fixes v7's double-rotation error.
+`leafSilhouette()` constructs four leaf families directly as SVG paths: acanthus, miniature acanthus, lanceolate and trumpet. The shapes include alternating lobes, notches and asymmetry. All leaves are drawn in local positive-X coordinates and rotated once according to their attachment tangent. `leafEngraving()` supplies fine veins, scratch hatching and varied line weights; larger leaves receive clipped pigment speckles.
 
-The leaves are stylized acanthus and lanceolate shapes with veins and asymmetric lobes. Smaller curls and rosettes appear at some terminals. Every leaf uses the palette and pigment-surface functions from `pigment.js`. Primary roots are chosen by the scene planner, not by a hardcoded rectangular border.
+`terminalScroll()`, `berryRosette()` and `bud()` attach ornament to actual branch endings. Main roots also receive larger basal acanthus foliage to reduce the appearance of stems cut off at a square edge.
 
-Current constraints: the botany is deliberately flat and ornamental. It is not a biological simulation, 3D ivy system, or genuine reconstruction of historical botanical drawings. It does not include imported leaf sprites, wind or surface raycasting.
+Dense growth is organized into a *hierarchy* of large stems → medium shoots → small twigs → leaves → penwork, rather than a flat layer of randomly positioned marks. Branches are shortened or omitted near the protected focal region and the canvas edges.
+
+The module's public interface and its position in the pipeline are unchanged: `M.botanical(plan, settings, seededRandom) -> SVG markup`.
+
+For details of the v9 adjustments, performance constraints and testing scope, see `PASS_1_BOTANY.md`.
 
 ## 5. Insular initial — `js/initials.js`
 

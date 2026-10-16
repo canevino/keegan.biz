@@ -1,4 +1,4 @@
-# Ornament Machine — modular rebuild (v8)
+# Ornament Machine — modular rebuild (v9 · botanical pass 1)
 
 A self-contained experiment section for `keegan.biz/misc/`, built in plain HTML, CSS and JavaScript. There is **no build step**. The ZIP intentionally contains **only `/misc/`**: do not replace anything in `/assets/`.
 
@@ -18,7 +18,7 @@ A self-contained experiment section for `keegan.biz/misc/`, built in plain HTML,
 | `style.css` | Page layout, controls, viewport breakpoints and space reserved for the fixed scarves. |
 | `js/core.js` | Seeded RNG, geometry, cubic Bézier sampling, paths, bounds, palette definitions. |
 | `js/composition.js` | Chooses the overall hierarchy, main letter region, curves and interlace sites from a seed. |
-| `js/botany.js` | Turns curves into tapered ink silhouettes with tangent-based shoots, acanthus leaves, veins and curls. |
+| `js/botany.js` | Creates curved tapering stems, primary and secondary shoots, carved acanthus/trumpet leaves, vein engraving, ornamental rosettes and scrolling terminals. |
 | `js/interlace.js` | Generates genuine crossing-and-break interlace with traced strands and overpasses. |
 | `js/initials.js` | Builds a decorated, clipped initial with internal interlace and penwork. |
 | `js/pigment.js` | Pigment mixtures and texture clipped into leaf, stem and letter regions. |
@@ -55,4 +55,8 @@ If you add a local Spectral.js browser bundle in a later revision, reference it 
 
 The app uses SVG filters. Browsers can render these differently from Photoshop, Illustrator, or some SVG rasterizers. PNG export is rasterized *in the browser* specifically so it matches the live preview more closely. The SVG keeps paths and live text; standalone applications may replace Georgia/Palatino if unavailable. Converting text to outlines in Illustrator will lock its letter shape at the cost of editability.
 
-See `ARCHITECTURE.md` for implementation details and `SOURCES_AND_LIMITATIONS.md` for historical-fidelity limits.
+See `PASS_1_BOTANY.md` for the updated botanical implementation. See `ARCHITECTURE.md` for the v8 foundation and other modules and `SOURCES_AND_LIMITATIONS.md` for historical-fidelity limits.
+
+## v9 update: botanical pass 1
+
+Only `js/botany.js` changed in the drawing/runtime code. Primary stems are more sinuous, leaf forms and veining are richer, secondary branching is capped, and a botanical terminal vocabulary is attached directly to the plant. See `PASS_1_BOTANY.md`. No global files are touched.
