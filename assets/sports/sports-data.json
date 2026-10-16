@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-16T16:47:25.170Z",
+  "updatedAt": "2026-10-16T21:23:37.013Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -532,37 +532,37 @@
           },
           {
             "rank": 6,
-            "team": "West Brom",
+            "team": "Wolves",
             "points": 17,
             "played": 10,
             "highlight": false
           },
           {
             "rank": 7,
+            "team": "West Brom",
+            "points": 17,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 8,
             "team": "Southampton",
             "points": 16,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 8,
+            "rank": 9,
             "team": "Stoke",
             "points": 16,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 9,
+            "rank": 10,
             "team": "Blackburn",
             "points": 15,
             "played": 10,
-            "highlight": false
-          },
-          {
-            "rank": 10,
-            "team": "Wolves",
-            "points": 14,
-            "played": 9,
             "highlight": false
           },
           {
@@ -639,7 +639,7 @@
             "rank": 21,
             "team": "Burnley",
             "points": 8,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
@@ -743,42 +743,42 @@
           },
           {
             "rank": 4,
+            "team": "Frosinone",
+            "points": 13,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 5,
             "team": "Cagliari",
             "points": 13,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 5,
+            "rank": 6,
             "team": "Milan",
             "points": 12,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 6,
+            "rank": 7,
             "team": "Juventus",
             "points": 11,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 7,
+            "rank": 8,
             "team": "Como",
             "points": 11,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 8,
-            "team": "Napoli",
-            "points": 10,
-            "played": 6,
-            "highlight": false
-          },
-          {
             "rank": 9,
-            "team": "Frosinone",
+            "team": "Napoli",
             "points": 10,
             "played": 6,
             "highlight": false
@@ -794,7 +794,7 @@
             "rank": 11,
             "team": "Sassuolo",
             "points": 8,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
