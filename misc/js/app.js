@@ -52,9 +52,10 @@
    svg=M.render(s);
    el('drawing').innerHTML=svg;
    meta();refreshStatus();
-   if(animate&&el('animate-growth').checked && !drawing)requestAnimationFrame(()=>animateGrowth());
+   // Editing settings shows complete art immediately. Playback is always explicit.
+   if(animate&&el('animate-growth').checked && !drawing)animateGrowth();
  }
- function delayedPaint(){clearTimeout(paintTimer);paintTimer=setTimeout(()=>paint(),100);}
+ function delayedPaint(){clearTimeout(paintTimer);stopPlayback();paintTimer=setTimeout(()=>paint({animate:false}),110);}
  controlIds.forEach(id=>el(id).addEventListener(id==='seed'?'change':'input',delayedPaint));
  el('guideOverlay').addEventListener('change',()=>paint({animate:false}));
  const newSeed=()=>{
@@ -63,7 +64,7 @@
    else a[0]=Math.floor(Math.random()*0xffffffff);
    return a[0]||1;
  };
- el('regenerate').addEventListener('click',()=>{el('seed').value=newSeed();paint();});
+ el('regenerate').addEventListener('click',()=>{el('seed').value=newSeed();paint({animate:false});});
  el('grid').addEventListener('change',ev=>stage.classList.toggle('grid',ev.target.checked));
  function reset(){
    stopPlayback();strokes=[];draft=[];setDrawMode(false);
@@ -146,14 +147,15 @@
    M.growthAnimation?.play(el('drawing').querySelector('svg'));
  }
  M.animationComplete=()=>{
-   if(!drawing)paint({animate:false});
+   // Keep the existing SVG; never regenerate on animation end.
+   M.growthAnimation?.cancel();
  };
  el('replay-growth').addEventListener('click',()=>{
-   paint({animate:false});requestAnimationFrame(animateGrowth);
+   paint({animate:false});animateGrowth();
  });
  el('animate-growth').addEventListener('change',ev=>{
-   if(ev.target.checked)requestAnimationFrame(animateGrowth);
-   else paint({animate:false});
+   if(ev.target.checked){paint({animate:false});animateGrowth();}
+   else {stopPlayback();paint({animate:false});}
  });
 
  // -------------------------- exports --------------------------------

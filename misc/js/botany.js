@@ -30,7 +30,7 @@ window.MS=window.MS||{};
      const nv=norm(p.tng);
      // Grown stems have tapered ends, never blunt cylindrical caps. A woody
      // root widens quickly after emerging from a narrow basal point.
-     const entry=rooted ? (.15+.85*Math.min(1,p.t/.075)) : 1;
+     const entry=rooted ? (1.16-.16*Math.min(1,p.t/.14)) : 1;
      const w=widthAt(base,p.t,tip)*entry;
      const noise=1+.026*Math.sin(p.t*41+base);
      left.push(add(p,nv,.5*w*noise));right.push(add(p,nv,-.5*w*noise));
@@ -87,9 +87,9 @@ window.MS=window.MS||{};
      const test=add(at,polar(candidate.a,candidate.size*.86));
      if(!allowed(test,plan,3))continue;
      const center=add(at,polar(candidate.a,candidate.size*.54));
-     const footprint=Math.max(3,candidate.size*(sp.leaf==='fern'?.13:sp.leaf==='holly'?.33:['acanthus','oak','hazel'].includes(sp.leaf)?.40:.34));
+     const footprint=Math.max(4,candidate.size*(sp.leaf==='fern'?.25:sp.leaf==='holly'?.52:['acanthus','oak','hazel'].includes(sp.leaf)?.54:.48));
      if(plan.spatial && !plan.spatial.accept(center,footprint,{
-       group:plan.activeStem||'spray',density:s.foliage||65}))continue;
+       group:plan.activeStem||'spray',density:Math.min(85,s.foliage||65)}))continue;
      const leaf=M.plantLeaf(sp,at,candidate.a,candidate.size,season,pal,r,s);
      if(!leaf)return '';
      const stalk=M.path(`M${V(p)}L${V(at)}`,M.wood(sp,pal,'new',r),.64);
@@ -115,7 +115,7 @@ window.MS=window.MS||{};
    }
    if(r.chance(.44))out+=M.plantOrgan(sp,tip,a,season,pal,r,r.between(5.5,8));
    // Terminal ornament is a continuation of the twig, never free-floating.
-   if(M.ornamentTerminal)out+=M.ornamentTerminal(sp,tip,a,r.between(7,13),pal,r,s);
+   if(M.ornamentTerminal && r.chance(.12))out+=M.ornamentTerminal(sp,tip,a,r.between(7,11),pal,r,s);
    return out;
  }
  function shoot(start,tng,side,len,sp,season,pal,r,plan,s,sub=false){
@@ -129,7 +129,7 @@ window.MS=window.MS||{};
    const b=add(start,polar(theta+side*turn*.35,len*.36));
    const c=add(end,polar(outAngle+Math.PI-side*r.between(.1,.45),len*.42));
    const points=spine(start,b,c,end,30,r,Math.min(8,len*.085)*(s.distortion/100+.42),sp.habit);
-   const wood=M.wood(sp,pal,sub?'new':'mature',r),base=sub?r.between(.95,1.8):r.between(2.2,5.1);
+   const wood=M.wood(sp,pal,sub?'new':'mature',r),base=sub?r.between(1.0,2.1):r.between(3.0,6.0);
    let woodArt=stemInk(points,base,wood,pal,r,s);
    let foliageArt='',organArt='';
    const leafCount=clamp(Math.round((sub?3:4.5)*sp.frequency*(.65+s.foliage/72)),1,sub?5:8);
@@ -138,7 +138,7 @@ window.MS=window.MS||{};
      const t=.19+(i+.3)*.72/leafCount,p=points[Math.round(t*30)],sign=i%2?1:-1;
      const a=angle(p.tng)+sign*r.between(.75,1.15)*sp.angle;
      const size=len*(sub?r.between(.22,.34):r.between(.31,.48))*sp.scale*(sp.leafScale||1)*(1-.17*t);
-     const attachment=anchored(p,sign,widthAt(base,t,.25),.5);
+     const attachment=add(p,norm(p.tng),sign*widthAt(base,t,.25)*.10);
      foliageArt+=petioleLeaf(attachment,a,size,sp,season,pal,r,plan,s);
      if(pairs)foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.25),.5),angle(p.tng)-sign*.85,size*.95,sp,season,pal,r,plan,s);
    }
@@ -163,8 +163,9 @@ window.MS=window.MS||{};
      const i=Math.round(r.between(.35,.72)*30),p=points[i],a=angle(p.tng)+r.sign()*r.between(.74,1.18);
      organArt+=M.ornamentJunction(sp,p,a,r.between(9,17),pal,r,s,plan,'joint');
    }
-   if(M.ornamentTerminal && !sub)organArt+=M.ornamentTerminal(sp,points[30],angle(points[30].tng),r.between(9,16),pal,r,s);
-   if(M.ornamentSplitTip && !sub)organArt+=M.ornamentSplitTip(sp,points[30],angle(points[30].tng),r.between(9,19),pal,r,s,plan);
+   // Terminal buds already belong to this shoot's reproductive details.
+   if(M.ornamentTerminal && !sub && r.chance(.12))organArt+=M.ornamentTerminal(sp,points[30],angle(points[30].tng),r.between(9,13),pal,r,s);
+   // Decorative split-tip hooks removed: they looked disconnected.
    const axis=M.strokePath(points);
    return `<g class="growth-shoot" data-root-t="${n(s._branchT??.4)}" data-growpath="${axis}">`+
        `<g class="shoot-wood">${woodArt}</g>`+
@@ -178,7 +179,7 @@ window.MS=window.MS||{};
    const amount=clamp(s.foliage/100,0,1),detail=clamp(s.detail/100,0,1);
    const frame=points.filter((_,i)=>i%2===0);
    const midrib=frame.map((p,i)=>(i?'L':'M')+V(p)).join('');
-   let out=M.path(midrib,M.mix(sp.tint,pal.ink,.30),1.65,'opacity=".95"');
+   let wood=M.path(midrib,M.mix(sp.tint,pal.ink,.30),1.65,'opacity=".95"'),foliage='';
    const pairs=Math.round(12+detail*12+amount*7);
    for(let i=1;i<=pairs;i++){
      const t=.065+i*.88/(pairs+1),p=points[Math.round(t*100)];
@@ -193,13 +194,13 @@ window.MS=window.MS||{};
        if(!allowed(end,plan,-8))continue;
        const leaf=`M0 0 Q${M.vec(len*.31,-len*.32)} ${M.vec(len*.80,-len*.095)} Q${M.vec(len*1.03,-len*.03)} ${M.vec(len,0)} Q${M.vec(len*.68,len*.23)} 0 0 Z`;
        const color=M.leafPigment(sp,season,pal,r,s),id='pinna-'+r.int(1000,99999999);
-       out+=`<g transform="translate(${V(at)}) rotate(${n(ang*180/Math.PI)})">`+M.leafFinish(id,leaf,len,color,pal,s,r);
-       if(detail>.36)out+=M.path(`M0 0L${M.vec(len*.87,0)}`,M.mix(color,pal.ink,.42),.37,'opacity=".51"');
-       out+='</g>';
+       foliage+=`<g class="growth-leaf" data-attachment="${V(p)}"><g transform="translate(${V(at)}) rotate(${n(ang*180/Math.PI)})">`+M.leafFinish(id,leaf,len,color,pal,s,r);
+       if(detail>.36)foliage+=M.path(`M0 0L${M.vec(len*.87,0)}`,M.mix(color,pal.ink,.42),.37,'opacity=".51"');
+       foliage+='</g></g>';
      }
    }
-   if(season==='spring'&&r.chance(.34))out+=M.plantOrgan(sp,points[94],angle(points[94].tng),season,pal,r,9);
-   return out;
+   if(season==='spring'&&r.chance(.34))foliage+=M.plantOrgan(sp,points[94],angle(points[94].tng),season,pal,r,9);
+   return {wood,foliage};
  }
  function stemSpecies(s,r,index){
    if(s.species==='hybrid')return M.chooseSpecies('acanthus',r); // main stem is acanthus; named hybrids chosen per shoots
@@ -219,10 +220,10 @@ window.MS=window.MS||{};
      stem.drawnPoints=points;
      if(sp.habit==='fronds'){
        const fern=fernStem(points,sp,season,pal,r,plan,s);
-       sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}" filter="url(#press)"><g class="growth-primary" data-growpath="${M.strokePath(points)}">${fern}</g></g>`);
+       sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}" filter="url(#press)"><g class="growth-primary" data-growpath="${M.strokePath(points)}">${fern.wood}</g><g class="growth-secondary">${fern.foliage}</g></g>`);
        continue;
      }
-     const base=stem.width*(sp.habit==='heavy'?1.10:sp.habit==='climbing'?.68:sp.habit==='twining'?.73:1);
+     const base=stem.width*(sp.habit==='heavy'?1.32:sp.habit==='climbing'?.92:sp.habit==='twining'?.96:1.18);
      const wood=M.wood(sp,pal,'mature',r);
      let woodArt=stemInk(points,base,wood,pal,r,s,true);
      let growth='';
@@ -235,7 +236,8 @@ window.MS=window.MS||{};
        const side=((i%2===0?stem.side:-stem.side)||1)*(r.chance(.12)?-1:1);
        const length=r.between(stem.major?85:70,stem.major?159:128)*sp.scale*(sp.shootScale||1)*(1-.10*t);
        const identity=s.species==='hybrid'?M.chooseSpecies(r.choose(['holly','ivy','dogrose','hazel','oak','acanthus']),r):sp;
-       const launch=anchored(p,side,widthAt(base,t,.1),.25);
+       // Start each lateral well inside the parent silhouette; no floating joins.
+       const launch=add(p,norm(p.tng),side*widthAt(base,t,.1)*.08);
        s._branchT=t;
        growth+=shoot(launch,p.tng,side,length,identity,season,pal,r,plan,s);
      }
@@ -244,15 +246,15 @@ window.MS=window.MS||{};
        for(let i=0;i<2;i++){
          const t=.08+i*.09,p=points[Math.round(t*100)],side=i%2?1:-1;
          const a=angle(p.tng)+side*r.between(.8,1.3),len=r.between(31,51)*sp.scale*(sp.leafScale||1);
-         growth+=petioleLeaf(anchored(p,side,widthAt(base,t,.1)),a,len,sp,season,pal,r,plan,s);
+         growth+=petioleLeaf(add(p,norm(p.tng),side*widthAt(base,t,.1)*.08),a,len,sp,season,pal,r,plan,s);
        }
      }
      if(r.chance(.68)){
        const tip=points[100],ang=angle(tip.tng);
        growth+=M.plantOrgan(sp,tip,ang,season,pal,r,r.between(9,14));
      }
-     if(M.ornamentTerminal && sp.habit!=='fronds')
-       growth+=M.ornamentTerminal(sp,points[100],angle(points[100].tng),r.between(8,16),pal,r,s);
+     if(M.ornamentTerminal && sp.habit!=='fronds' && r.chance(.13))
+       growth+=M.ornamentTerminal(sp,points[100],angle(points[100].tng),r.between(8,13),pal,r,s);
      const axis=M.strokePath(points);
      sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}" filter="url(#press)">`+
        `<g class="growth-primary" data-growpath="${axis}">${woodArt}</g>`+

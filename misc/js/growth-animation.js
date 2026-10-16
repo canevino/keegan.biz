@@ -1,98 +1,101 @@
-/* SVG growth sequence: woody axes first, then shoots, then attached leaves,
-   finally buds, open flowers and the selected season's fruit/flowers.
-   All animation is screen-only; downloaded SVG/PNG contains final art. */
+/* Animation never rebuilds the artwork. Each specimen is drawn only once:
+   the animation exposes existing wood, shoots, leaves, buds and fruit. */
 window.MS=window.MS||{};
 ((M)=>{
  'use strict';
  const ns='http://www.w3.org/2000/svg';
- let current=null;
- const ease='cubic-bezier(.28,.05,.43,1)';
- const q=(root,sel)=>[...root.querySelectorAll(sel)];
- const create=(tag,attrs={})=>{
-   const el=document.createElementNS(ns,tag);
-   for(const [key,value] of Object.entries(attrs))el.setAttribute(key,String(value));
-   return el;
- };
+ let current=null,serial=0;
+ const list=(el,sel)=>Array.from(el.querySelectorAll(sel));
+ const make=(tag,attrs={})=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));return el;};
+ const easing='cubic-bezier(.25,.08,.36,1)';
  function cancel(){
-   if(!current)return;
-   const session=current;current=null;
-   session.timers.forEach(t=>clearTimeout(t));
-   session.animations.forEach(a=>{try{a.cancel()}catch(_){}});
-   session.art?.classList.remove('is-growing');
-   session.masks?.remove();
-   session.targets.forEach(({el,mask})=>{if(el?.isConnected)el.removeAttribute('mask');});
+   const s=current;if(!s)return;current=null;
+   clearTimeout(s.end);
+   // Releasing the animations exposes the COMPLETE source SVG, not a new render.
+   for(const a of s.animations){try{a.cancel()}catch(_){}}
+   for(const el of s.masked)el.removeAttribute('mask');
+   s.defs.remove();s.art.classList.remove('is-growing');
+   for(const el of s.life)el.style.removeProperty('display');
  }
  function play(art){
-   cancel();
-   if(!art||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
-   const stems=q(art,'.growth-primary');
-   const shoots=q(art,'.growth-shoot');
-   const leaves=q(art,'.growth-leaf');
-   const organs=q(art,'.growth-organ');
-   if(!stems.length)return;
-   const session={art,animations:[],timers:[],targets:[],masks:null};current=session;
-   const defs=create('defs');art.insertBefore(defs,art.firstChild);session.masks=defs;
+   cancel();if(!art||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+   const trunks=list(art,'.growth-primary'),shoots=list(art,'.growth-shoot'),leaves=list(art,'.growth-leaf'),organs=list(art,'.growth-organ');
+   if(!trunks.length)return;
+   const defs=make('defs');art.insertBefore(defs,art.firstChild);
+   const s={art,defs,animations:[],masked:[],life:[],end:null};current=s;
    art.classList.add('is-growing');
-   function later(cb,delay){const t=setTimeout(()=>{if(current===session)cb();},delay);session.timers.push(t);}
-   function runAnimation(el,from,to,{delay=0,duration=1000,easing=ease}={}){
-     const animation=el.animate([from,to],{delay,duration,fill:'forwards',easing});
-     session.animations.push(animation);return animation;
+   const animate=(el,frames,delay,duration,ease=easing)=>{
+     const a=el.animate(frames,{delay,duration,easing:ease,fill:'both'});
+     s.animations.push(a);return a;
+   };
+   // Growth masks belong to WOOD ONLY. A mask on the whole specimen caused
+   // the large cut-off edges and disembodied leaves in previous builds.
+   function growPath(el,d,delay,duration,maxWidth){
+     if(!el||!d)return;
+     const pen=make('path',{d,fill:'none',stroke:'#fff','stroke-width':maxWidth,
+       'stroke-linecap':'round','stroke-linejoin':'round'});
+     let len=0;try{len=pen.getTotalLength()}catch(_){}
+     if(!(len>0))return animate(el,[{opacity:0},{opacity:1}],delay,duration);
+     const id='botanical-growth-'+(++serial),mask=make('mask',{
+       id,maskUnits:'userSpaceOnUse',maskContentUnits:'userSpaceOnUse',x:-160,y:-160,width:M.W+320,height:M.H+320
+     });
+     pen.style.strokeDasharray=String(len+4);
+     pen.style.strokeDashoffset=String(len+4);
+     mask.appendChild(pen);defs.appendChild(mask);
+     el.setAttribute('mask',`url(#${id})`);s.masked.push(el);
+     animate(pen,[{strokeDashoffset:String(len+4)},{strokeDashoffset:'0'}],delay,duration,'linear');
    }
-   function revealWood(el,centerline,delay,duration,width){
-     if(!el||!centerline)return;
-     const marker=create('path',{d:centerline,stroke:'white','stroke-width':width,fill:'none','stroke-linejoin':'round','stroke-linecap':'round'});
-     const length=marker.getTotalLength?.()||0;
-     if(!Number.isFinite(length)||length<=0)return;
-     const mask=create('mask',{id:'growing-mask-'+Math.random().toString(36).slice(2),maskUnits:'userSpaceOnUse',x:-110,y:-110,width:M.W+220,height:M.H+220});
-     marker.style.strokeDasharray=String(length+2);marker.style.strokeDashoffset=String(length+2);
-     mask.appendChild(marker);defs.appendChild(mask);
-     el.setAttribute('mask',`url(#${mask.id})`);session.targets.push({el,mask});
-     runAnimation(marker,{strokeDashoffset:String(length+2)},{strokeDashoffset:'0'},{delay,duration});
-   }
-   const totalMain=3000;
-   stems.forEach((stem,i)=>revealWood(stem,stem.getAttribute('data-growpath'),i*240,totalMain,65));
-   const branchStart=2700, branchDuration=1900;
-   const animateShoots=shoots.length<125;
+   const trunkTime=3800;
+   trunks.forEach((trunk,i)=>{
+     const isFern=trunk.closest('[data-trunk="fern"]');
+     growPath(trunk,trunk.getAttribute('data-growpath'),i*95,trunkTime,isFern?5:58);
+   });
+   const totalShoots=shoots.length;
    shoots.forEach((shoot,i)=>{
-     const t=Number(shoot.getAttribute('data-root-t')||(.15+(i%9)*.07));
-     const delay=branchStart+t*1100+(i%5)*95;
+     const parent=shoot.parentElement?.closest('.growth-shoot');
+     const t=Number(shoot.getAttribute('data-root-t')||.4);
+     const delay=parent ? 3100+(i%13)*75 : 1200+t*2200+(i%7)*65;
+     const duration=1400+(i%4)*110;
      const wood=shoot.querySelector(':scope > .shoot-wood');
+     growPath(wood,shoot.getAttribute('data-growpath'),delay,duration,18);
+     // Attached leaf sets grow only AFTER this specific twig reaches them.
      const fol=shoot.querySelector(':scope > .shoot-foliage');
-     const details=shoot.querySelector(':scope > .shoot-details');
-     if(animateShoots&&wood)revealWood(wood,shoot.getAttribute('data-growpath'),delay,branchDuration,48);
-     else if(wood)runAnimation(wood,{opacity:0},{opacity:1},{delay,duration:branchDuration});
-     if(fol)runAnimation(fol,{opacity:0},{opacity:1},{delay:delay+branchDuration*.66,duration:1500});
-     if(details)runAnimation(details,{opacity:0},{opacity:1},{delay:delay+branchDuration+400,duration:1200});
+     if(fol){const children=list(fol,'.growth-leaf');
+       children.forEach((leaf,j)=>{
+         const position=(j+1)/(children.length+1);
+         leaf.style.transformBox='view-box';
+         const xy=(leaf.getAttribute('data-attachment')||'425 500').split(' ').map(Number);
+         leaf.style.transformOrigin=`${xy[0]}px ${xy[1]}px`;
+         animate(leaf,[{opacity:0,transform:'scale(.05)'},{opacity:1,transform:'scale(1)'}],delay+duration*.38+duration*.55*position,570);
+       });
+     }
+     // This includes attached ornamental details and their nested smaller twigs;
+     // keep it after the wood is established to avoid disembodied decorations.
+     const detail=shoot.querySelector(':scope > .shoot-details');
+     if(detail)animate(detail,[{opacity:0},{opacity:1}],delay+duration*.8,710);
    });
-   // Leaves expand from petiole junctions, not from the drawing center.
-   const revealLeaves=leaves.length<=360;
-   if(revealLeaves)leaves.forEach((leaf,i)=>{
-     const raw=leaf.getAttribute('data-attachment')||'0 0',pos=raw.split(/\s+/).map(Number);
-     const anchor=pos.length>=2?`${pos[0]}px ${pos[1]}px`:'center center';
-     leaf.style.transformBox='view-box';leaf.style.transformOrigin=anchor;
-     runAnimation(leaf,{opacity:0,transform:'scale(.08)'},{opacity:1,transform:'scale(1)'},
-       {delay:4300+(i%31)*53,duration:1050});
+   // Leaves directly on a primary axis, not inside a side shoot.
+   const trunkLeaves=leaves.filter(l=>!l.closest('.growth-shoot'));
+   trunkLeaves.forEach((leaf,i)=>{
+     const xy=(leaf.getAttribute('data-attachment')||'425 500').split(' ').map(Number);
+     leaf.style.transformBox='view-box';leaf.style.transformOrigin=`${xy[0]}px ${xy[1]}px`;
+     animate(leaf,[{opacity:0,transform:'scale(.05)'},{opacity:1,transform:'scale(1)'}],2900+i*3100/Math.max(1,trunkLeaves.length),650);
    });
-   const organStart=5850;
+   // Reproductive stages are always descendants of an attached stem. Their
+   // final illustrated state is restored in-place when the timeline finishes.
    organs.forEach((organ,i)=>{
-     const offset=(i%17)*70;
      const bud=organ.querySelector(':scope > .life-bud');
      const bloom=organ.querySelector(':scope > .life-bloom');
      const final=organ.querySelector(':scope > .life-final');
      if(!bud||!bloom||!final)return;
-     // Use real intermediates, not simultaneous fade-in of all mature organs.
-     bud.style.display='';bloom.style.display='none';final.style.display='none';
-     runAnimation(bud,{opacity:0},{opacity:1},{delay:organStart+offset,duration:580});
-     later(()=>{bud.style.display='none';bloom.style.display='';runAnimation(bloom,{opacity:0},{opacity:1},{duration:420});},organStart+offset+680);
-     later(()=>{bloom.style.display='none';final.style.display='';runAnimation(final,{opacity:0},{opacity:1},{duration:600});},organStart+offset+1800);
+     const t=5900+(i%19)*86;
+     for(const el of [bud,bloom,final]){el.style.display='inline';s.life.push(el);}
+     animate(bud,[{opacity:0},{opacity:1},{opacity:1},{opacity:0}],t,1650);
+     animate(bloom,[{opacity:0},{opacity:0},{opacity:1},{opacity:0}],t+920,1500);
+     animate(final,[{opacity:0},{opacity:0},{opacity:1}],t+2140,790);
    });
-   later(()=>{
-     if(current!==session)return;
-     // Replacing the SVG with a clean final render also removes all motion
-     // masks and animated CSS without altering geometry or export state.
-     if(typeof M.animationComplete==='function')M.animationComplete();
-     else cancel();
-   },9400);
+   // DO NOT repaint when ending: that previously caused one-frame flashes.
+   s.end=setTimeout(()=>{if(current===s)cancel();},10700);
  }
  M.growthAnimation={play,cancel};
 })(window.MS);

@@ -25,10 +25,11 @@ window.MS=window.MS||{};
      accept(p,radius,{group='',density=60,ignore=false}={}){
        if(ignore){this.register(p,radius,group);return true;}
        const fill=M.clamp(Number(density)/100,0,1);
-       const minFactor=.86-fill*.10;
+       // At high density the leaves may touch, but must not completely stack.
+       const minFactor=1.00-fill*.075;
        for(const old of nearby(p,radius)){
          const dx=p.x-old.x,dy=p.y-old.y;
-         const proximity=(radius+old.r)*minFactor*(group===old.group?.82:1);
+         const proximity=(radius+old.r)*minFactor*(group===old.group?.91:1);
          if(dx*dx+dy*dy<proximity*proximity)return false;
        }
        this.register(p,radius,group);

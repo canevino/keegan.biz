@@ -67,9 +67,24 @@ window.MS=window.MS||{};
     // Guides influence directions and preferred growth regions. They never
     // manufacture duplicate main stems or force the plant to trace entire
     // lozenges, saltire crosses, or spirals. Species topology comes first.
-    const conformedNatural=amount>.87 ? natural.slice(0,construction.rails.length) : natural;
-    const stems=conformedNatural.map((source,i)=>{
-      const rail=construction.rails[i%construction.rails.length];
+    // A pattern is a topology, not merely a label for the same set of rails.
+    // Species anatomy is retained but the selected pattern explicitly chooses
+    // the number of primary axes, even when guide conformity is 100%.
+    const desired={single:1,crescent:2,diagonal:2,meander:2,radiating:4,cluster:4};
+    const count=Math.min(natural.length,desired[selection]||natural.length);
+    const ordered=selection==='single' ? natural.filter(st=>st.major)[0] || natural[0] : null;
+    const chosen=ordered?[ordered]:natural.slice(0,count);
+    const guideRails=chosen.map((source,i)=>{
+      const sourceRail=construction.rails[(selection==='diagonal' && i===1 ? 2 : i)%construction.rails.length];
+      // Duplicate guide routes are offset slightly for multi-axis crowns,
+      // so growth is never stacked exactly on top of another stem.
+      const copy=Math.floor(i/construction.rails.length);
+      return sourceRail.map(p=>({x:M.clamp(p.x+copy*22*(i%2?1:-1),56,794),
+        y:M.clamp(p.y+copy*16,56,944)}));
+    });
+    construction.rails=guideRails;
+    const stems=chosen.map((source,i)=>{
+      const rail=guideRails[i];
       return {...source,id:i+1,side:source.side||((i%2)?-1:1),
         guidePoints:rail,
         naturalPoints:M.wave(source.a,source.b,source.c,source.d,100),

@@ -98,7 +98,7 @@ window.MS=window.MS||{};
      }
      // An illuminator may gently amplify real anatomical lobes, but never
      // convert an ordinary plant into one generic ornamental sawblade.
-     if(ornament>.01)w*=1+.09*ornament*(1+.16*Math.sin(5*Math.PI*t+phase));
+     if(ornament>.01)w*=1+.26*ornament*(1+.30*Math.sin(5*Math.PI*t+phase));
      return Math.max(0,w);
    };
    const baseBend=r.between(-.028,.028)*len;
@@ -114,7 +114,7 @@ window.MS=window.MS||{};
  }
  function explicitLeaf(kind,len,r,s){
    const ornament=M.ornamentInfluence?M.ornamentInfluence({leaf:kind},s):0;
-   const width=1+.13*ornament;
+   const width=1+.24*ornament;
    const v=(x,y)=>S(x*len,y*len*width);
    if(kind==='ivy'){
      // Five-lobed ivy blade: the basal lobes turn backwards towards the stem,
@@ -131,7 +131,7 @@ window.MS=window.MS||{};
        `C${v(.16,.17)} ${v(.11,.05)} 0 0 Z`;
    }
    if(kind==='holly'){
-     const f=1+ornament*.09,p=(x,y)=>S(len*x,len*y*f);
+     const f=1+ornament*.24,p=(x,y)=>S(len*x,len*y*f);
      return `M0 0 C${p(.13,-.09)} ${p(.20,-.18)} ${p(.26,-.17)} `+
        `L${p(.30,-.31)} Q${p(.38,-.18)} ${p(.44,-.22)} `+
        `L${p(.53,-.36)} Q${p(.60,-.18)} ${p(.67,-.20)} `+
@@ -142,7 +142,7 @@ window.MS=window.MS||{};
        `L${p(.26,.17)} C${p(.20,.18)} ${p(.13,.09)} 0 0 Z`;
    }
    if(kind==='oak'){
-     const f=1+ornament*.15,p=(x,y)=>S(len*x,len*y*f);
+     const f=1+ornament*.27,p=(x,y)=>S(len*x,len*y*f);
      return `M0 0 C${p(.05,-.08)} ${p(.14,-.08)} ${p(.17,-.12)} `+
        `C${p(.12,-.22)} ${p(.22,-.32)} ${p(.29,-.30)} `+
        `Q${p(.35,-.29)} ${p(.38,-.21)} `+
@@ -168,10 +168,13 @@ window.MS=window.MS||{};
    // Keep a crisp botanical blade and its midrib; reserve rich ink for big leaves.
    if(size<42){
      const outline=M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(Math.max(.36,size*.024))}" stroke-linejoin="round"`);
-     const grain=M.shape(d,'url(#speckle)',`opacity="${n(.20+(s.wear||0)*.004)}"`);
+     const grain=M.shape(d,'url(#speckle)',`opacity="${n(.23+(s.wear||0)*.004)}"`);
      const rib=M.path(`M0 0Q${V(size*.52,-size*.011)} ${V(size*.95,0)}`,mix(color,pal.ink,.46),Math.max(.22,size*.017),'opacity=".48"');
      const ornament=M.ornamentLeafInterior?M.ornamentLeafInterior(sp,size,color,pal,r,s):'';
-     return `<g>${outline}${grain}</g>${rib}${ornament}`;
+     const clipId='ornament-clip-'+id;
+     const colorPrint=M.ornamentColorPatch?M.ornamentColorPatch(sp,size,pal,r,s):'';
+     return `<defs><clipPath id="${clipId}"><path d="${d}"/></clipPath></defs>`+
+       `<g>${outline}<g clip-path="url(#${clipId})">${grain}${colorPrint}${rib}${ornament}</g></g>`;
    }
    let z=M.leafFinish(id,d,size,color,pal,s,r);
    z+=`<g clip-path="url(#leaf-clip-${id})">`;
@@ -186,6 +189,7 @@ window.MS=window.MS||{};
        z+=M.path(`M${V(x,-size*.008)}Q${V(x+size*.052,y*.38)} ${V(x+size*.14,y)}`,midrib,Math.max(.22,size*.008),`opacity=".42"`);
      }
    }
+   if(M.ornamentColorPatch)z+=M.ornamentColorPatch(sp,size,pal,r,s);
    if(M.ornamentLeafInterior)z+=M.ornamentLeafInterior(sp,size,color,pal,r,s);
    return z+'</g>';
  }
@@ -216,7 +220,7 @@ window.MS=window.MS||{};
        z+=M.leafFinish(`fern-${r.int(10000,999999999)}`,d,Math.max(8,size*.2),c,pal,s,r);
      }
    }
-   if(M.ornamentTerminal)z+=M.ornamentTerminal(sp,{x:size,y:0},-.25,size*.11,pal,r,s);
+   // Frond tips end in a young crozier naturally, without a loose spiral.
    return z;
  }
  M.plantLeaf=(sp,at,angle,size,season,pal,r,s={registration:0,pigment:40,wear:20})=>{

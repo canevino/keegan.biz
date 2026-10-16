@@ -23,8 +23,8 @@ window.MS=window.MS||{};
     const envelope=Math.pow(Math.sin(Math.PI*t),.82);
     const lobes=kind==='acanthus'?5:kind==='oak'?4:kind==='hawthorn'?3:kind==='holly'?5:kind==='ivy'?3:2;
     const curl=Math.sin(t*Math.PI*2*lobes + phase);
-    const lobeVariation=(.22*curl+.08*Math.sin(t*Math.PI*(lobes+1))) * amount * envelope;
-    return width*(1+.20*amount)*(1+lobeVariation);
+    const lobeVariation=(.29*curl+.11*Math.sin(t*Math.PI*(lobes+1))) * amount * envelope;
+    return width*(1+.34*amount)*(1+lobeVariation);
   };
   M.ornamentPoint=(x,y,t,amount,len,phase)=>P(
     x + amount*len*.04*Math.sin(Math.PI*t)*Math.sin(t*5.2+phase),
@@ -55,6 +55,18 @@ window.MS=window.MS||{};
     return z;
   };
 
+
+  // Printed secondary color is carried by real leaf surfaces, never by detached symbols.
+  M.ornamentColorPatch=(sp,len,pal,r,s)=>{
+    const lev=influence(sp,s);
+    if(lev<.16 || len<10)return '';
+    const strength=Math.pow((lev-.16)/.84,1.13);
+    const color=r.choose([pal.vermillion,pal.lapis,pal.ochre]);
+    const start=len*(.28+r.between(-.04,.05)),width=len*(.12+.18*strength);
+    const side=r.sign(),height=len*(.11+.21*strength)*side;
+    const paint=`M${V(start,-height*.16)}Q${V(start+len*.09,height*.89)} ${V(start+width,height)}L${V(start+width+len*.09,-height*.14)}Z`;
+    return `<path d="${paint}" fill="${color}" opacity="${n(strength*(.32+.29*r.random()))}"/>`;
+  };
   function pointBud(at,angle,size,pal,r){
     const tip=q(at,angle,size*1.18),base=q(at,angle,size*.40);
     const a=q(base,angle+.7,size*.52),b=q(base,angle-.7,size*.52);
@@ -87,20 +99,6 @@ window.MS=window.MS||{};
        '</g>';
     return z;
   }
-  function volute(at,angle,radius,pal,r,amount,side){
-    const sgn=side||r.sign(),center=q(at,angle,radius*.75);
-    const points=[at];
-    const count=24;
-    for(let i=0;i<=count;i++){
-      const t=i/count;
-      const a=angle+Math.PI+sgn*(Math.PI*.10+Math.PI*2.20*t);
-      const rad=radius*(1-.89*t);
-      points.push(q(center,a,rad));
-    }
-    const path=points.map((p,i)=>(i?'L':'M')+V(p.x,p.y)).join('');
-    return M.path(path,r.choose([pal.ink,pal.green,pal.ochre]),r.between(.64,.98)*(1+.18*amount),`opacity="${n(.54+.18*amount)}"`);
-  }
-
   M.ornamentTerminal=(sp,at,angle,scale,pal,r,s,force=false)=>{
     const lev=influence(sp,s);
     if(lev<.34)return '';
@@ -108,37 +106,25 @@ window.MS=window.MS||{};
     const chance=(force?.25:0)+ (vine?.10:.05) + Math.pow(Math.max(0,lev-.34),1.15)*(vine?.35:.18);
     if(!force && !r.chance(chance))return '';
     const size=clamp(scale*(.64+.46*lev),4,18);
-    if(vine && lev>.76 && r.chance(.36))return volute(at,angle,size*.62,pal,r,lev,r.sign());
-    if((sp?.leaf==='acanthus' || lev>.82) && r.chance(.28))return paintedFleuron(at,angle,size,pal,r);
+    // No unattached volutes: terminal details terminate as an actual bud or leaf.
+    if(lev>.78 && r.chance(.44))return paintedFleuron(at,angle,size*.83,pal,r);
     return pointBud(at,angle,size,pal,r);
   };
 
   M.ornamentJunction=(sp,at,angle,size,pal,r,s,plan,role='joint')=>{
     const lev=influence(sp,s);
-    if(lev<.42)return '';
-    const chance=(role==='terminal'?.44:.30)*Math.pow(lev,.9);
+    if(lev<.30)return '';
+    const chance=(role==='terminal'?.68:.67)*Math.pow(lev,1.2);
     if(!r.chance(chance))return '';
     const length=clamp(size*(.7+.48*lev),5,20);
     const direction=angle+r.between(-.48,.48);
     const test=q(at,direction,length*1.35);
     if(plan && (!M.inBounds(test,plan.bounds,10) || plan.spatial && !plan.spatial.accept(test,length*.30,{group:'ornament',density:Math.max(35,Number(s.foliage||70))})))return '';
     const choice=r.random();
-    if(choice<.52)return illuminatedFlower(at,direction,length,pal,r,lev);
-    if(choice<.82)return paintedFleuron(at,direction,length,pal,r);
+    if(choice<.58)return illuminatedFlower(at,direction,length,pal,r,lev);
+    if(choice<.9)return paintedFleuron(at,direction,length,pal,r);
     return pointBud(at,direction,length*.92,pal,r);
   };
 
-  M.ornamentSplitTip=(sp,at,angle,size,pal,r,s,plan)=>{
-    const lev=influence(sp,s),vine=vineLike(sp) || sp?.leaf==='acanthus';
-    if(!vine || lev<.76 || !r.chance((lev-.62)*.26))return '';
-    let z='';
-    for(const side of [-1,1]){
-      const a=angle+side*r.between(.42,.68),end=q(at,a,size*.78);
-      if(plan && !M.inBounds(end,plan.bounds,12))continue;
-      z+=M.path(`M${V(at.x,at.y)} Q${V(q(at,a*.72+angle*.28,size*.36).x,q(at,a*.72+angle*.28,size*.36).y)} ${V(end.x,end.y)}`,
-        M.mix(pal.ink,pal.green,.32),Math.max(.38,size*.050));
-      z+=pointBud(end,a,size*.34,pal,r);
-    }
-    return z;
-  };
+
 })(window.MS);
