@@ -80,6 +80,6 @@ button:focus-visible,select:focus-visible,input:focus-visible {outline:2px solid
 .machine-credits {border-top:1px solid rgba(17,17,15,.20);padding-top:14px;margin-top:24px;max-width:800px;}
 .machine-credits a {color:var(--green);text-decoration:underline;}
 .machine-credits p {margin:12px 0 0;}
-/* SVG life stages stay hidden in final artwork and all exported files. */
+/* The final organ is visible in still art; preview switches stages in-place. */
 .drawing .life-bud,.drawing .life-bloom {display:none;}
-.drawing svg.is-growing .life-bud,.drawing svg.is-growing .life-bloom {display:inline;}
+.drawing svg.is-growing .life-bud,.drawing svg.is-growing .life-bloom,.drawing svg.is-growing .life-final {display:inline;}
