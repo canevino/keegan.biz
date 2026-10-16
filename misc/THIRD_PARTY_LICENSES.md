@@ -1,6 +1,6 @@
 # Open-source attribution
 
-The interlace tracing model in `js/knot.js` is an adaptation of the crossing, break, trace and redraw-overpass method in [Celtic Knot Maker](https://github.com/evoluteur/celtic-knot-maker) by Olivier Giulieri. The implementation was redesigned for random mixed-media ornaments, transformed and distorted shapes, and the host site's export and styling architecture. The underlying weave construction follows George Bain's *Celtic Art: The Methods of Construction*.
+The interlace tracing model in `js/interlace.js` is an adaptation of the crossing, break, trace and redraw-overpass method in [Celtic Knot Maker](https://github.com/evoluteur/celtic-knot-maker) by Olivier Giulieri. The implementation was redesigned for random mixed-media ornaments, transformed and distorted shapes, and the host site's export and styling architecture. The underlying weave construction follows George Bain's *Celtic Art: The Methods of Construction*.
 
 The upstream project is released under the following MIT License:
 

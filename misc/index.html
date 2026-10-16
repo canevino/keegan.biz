@@ -2,90 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ece7d7">
-  <title>misc · keegan.biz</title>
-  <meta name="description" content="misc section with an interactive ornament machine.">
+  <title>misc | keegan.biz</title>
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="/misc/style.css">
 </head>
-<body class="misc-page">
-  <div class="page-shell">
-    <nav data-site-nav></nav>
-    <main class="misc-main">
-      <header class="misc-intro">
-        <p class="micro">misc / drawing systems</p>
-        <h1>misc<span class="dot">.</span></h1>
-      </header>
-
-      <section class="experiment" id="ornament-machine" aria-labelledby="experiment-title">
-        <div class="experiment-header">
-          <div class="experiment-rail">
-            <p class="experiment-number">01 / generative art</p>
+<body>
+<div class="page-shell">
+  <nav data-site-nav></nav>
+  <main class="misc-shell">
+    <header class="misc-heading"><span>misc / 01</span><h1>misc<span class="colored-dot">.</span></h1></header>
+    <section class="machine" aria-labelledby="machine-name">
+      <header class="machine-heading"><h2 id="machine-name">ornament machine</h2></header>
+      <div class="machine-layout">
+        <div class="drawing-side">
+          <div class="drawing-meta"><span id="mode-description">botanical illumination</span><span id="seed-label">seed 472818</span></div>
+          <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated ornament">
+            <div id="drawing" class="drawing"></div>
           </div>
-          <div class="experiment-heading">
-            <h2 id="experiment-title">ornament machine<span class="arrow"> ↗</span></h2>
-            <p class="experiment-description">interlace, manuscript letters, distortion, pigment, vines.</p>
+          <div class="drawing-actions">
+            <button id="regenerate" type="button" class="action primary">something else ↗</button>
+            <button id="export-svg" type="button" class="action">save svg ↗</button>
+            <button id="export-png" type="button" class="action">save png ↗</button>
+            <label class="tiny-check"><input id="grid" type="checkbox"> grid</label>
           </div>
         </div>
-
-        <div class="studio">
-          <div class="art-column">
-            <div class="art-meta"><span id="state-name">botanical marginalia</span><span id="seed-label">seed 472818</span></div>
-            <div class="art-workspace" id="workspace" aria-label="Generated ornament" role="img">
-              <div id="artwork" class="artwork"></div>
-            </div>
-            <div class="art-actions">
-              <button type="button" class="text-action main-action" id="regenerate">something else ↗</button>
-              <button type="button" class="text-action" id="save-svg">save svg ↗</button>
-              <button type="button" class="text-action" id="save-png">save png ↗</button>
-              <label class="small-check"><input type="checkbox" id="show-grid"> transparency grid</label>
-            </div>
-          </div>
-
-          <form class="studio-controls" id="studio-controls">
-            <div class="control-intro">make a change</div>
-            <label>arrangement
-              <select id="mode">
-                <option value="marginalia">botanical marginalia</option>
-                <option value="initial">decorated initial</option>
-                <option value="interlace">interlaced illumination</option>
-                <option value="chromatic">distorted pigments</option>
-              </select>
-            </label>
-            <label>inks
-              <select id="palette">
-                <option value="medieval">lapis / vermilion / gold</option>
-                <option value="insular">verdigris / madder</option>
-                <option value="site">red / green / yellow</option>
-                <option value="monochrome">black / iron</option>
-                <option value="random">chance</option>
-              </select>
-            </label>
-            <div class="control-pair">
-              <label>initial <input id="initial" type="text" maxlength="1" value="A" autocapitalize="characters" aria-label="Decorated initial"></label>
-              <label>seed <input id="seed" type="number" inputmode="numeric" min="1" max="4294967295" value="472818"></label>
-            </div>
-            <div class="control-divider"></div>
-            <label class="slider">foliage <span id="foliage-out">72</span><input id="foliage" type="range" min="0" max="100" value="72"></label>
-            <label class="slider">knotwork <span id="knots-out">56</span><input id="knots" type="range" min="0" max="100" value="56"></label>
-            <label class="slider">letter fragments <span id="letters-out">23</span><input id="letters" type="range" min="0" max="100" value="23"></label>
-            <label class="slider">pigment / mosaic <span id="pigment-out">40</span><input id="pigment" type="range" min="0" max="100" value="40"></label>
-            <label class="slider">broken print <span id="wear-out">19</span><input id="wear" type="range" min="0" max="100" value="19"></label>
-            <div class="control-divider"></div>
-            <label class="checkline"><input type="checkbox" id="initial-visible" checked> decorated letter</label>
-            <label class="checkline"><input type="checkbox" id="bleed" checked> uneven ink / bleed</label>
-            <label class="checkline"><input type="checkbox" id="transparent" checked> transparent export</label>
-            <button type="button" id="reset" class="reset-button">restore starting settings ↗</button>
-          </form>
-        </div>
-      </section>
-    </main>
-  </div>
-  <script src="/assets/site-nav.js" defer></script>
-  <script src="./js/core.js" defer></script>
-  <script src="./js/knot.js" defer></script>
-  <script src="./js/ornament.js" defer></script>
-  <script src="./js/app.js" defer></script>
+        <form class="drawing-controls" id="controls" novalidate>
+          <p class="control-header">make a change</p>
+          <label>structure
+            <select id="mode"><option value="botanical">botanical illumination</option><option value="letter">decorated initial</option><option value="interlace">interlace / carpet ornament</option></select>
+          </label>
+          <label>pigments
+            <select id="palette"><option value="kells">insular / mineral</option><option value="jewel">lapis / vermilion</option><option value="earth">earth / iron</option><option value="site">red / green / yellow</option><option value="monochrome">black / sepia</option></select>
+          </label>
+          <div class="fields-pair"><label>initial <input type="text" id="initial" value="B" maxlength="1" autocapitalize="characters" spellcheck="false"></label><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label></div>
+          <div class="control-sep"></div>
+          <label class="sliding">foliage <output for="foliage" id="foliage-value">70</output><input type="range" id="foliage" min="0" max="100" value="70"></label>
+          <label class="sliding">interlace <output for="knots" id="knots-value">60</output><input type="range" id="knots" min="0" max="100" value="60"></label>
+          <label class="sliding">small details <output for="detail" id="detail-value">52</output><input type="range" id="detail" min="0" max="100" value="52"></label>
+          <label class="sliding">letter fragments <output for="fragments" id="fragments-value">12</output><input type="range" id="fragments" min="0" max="100" value="12"></label>
+          <label class="sliding">pigment variation <output for="pigment" id="pigment-value">46</output><input type="range" id="pigment" min="0" max="100" value="46"></label>
+          <label class="sliding">distortion <output for="distortion" id="distortion-value">20</output><input type="range" id="distortion" min="0" max="100" value="20"></label>
+          <label class="sliding">print wear <output for="wear" id="wear-value">35</output><input type="range" id="wear" min="0" max="100" value="35"></label>
+          <div class="control-sep"></div>
+          <label class="check"><input type="checkbox" id="initial-visible" checked> decorated initial</label>
+          <label class="check"><input type="checkbox" id="bleed" checked> ink bleed</label>
+          <label class="check"><input type="checkbox" id="transparent" checked> transparent export</label>
+          <button type="button" class="action reset" id="reset">reset ↗</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="/assets/site-nav.js" defer></script>
+<script src="/misc/js/core.js" defer></script>
+<script src="/misc/js/pigment.js" defer></script>
+<script src="/misc/js/finish.js" defer></script>
+<script src="/misc/js/interlace.js" defer></script>
+<script src="/misc/js/composition.js" defer></script>
+<script src="/misc/js/botany.js" defer></script>
+<script src="/misc/js/initials.js" defer></script>
+<script src="/misc/js/render.js" defer></script>
+<script src="/misc/js/app.js" defer></script>
 </body>
 </html>
