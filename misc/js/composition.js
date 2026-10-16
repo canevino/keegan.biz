@@ -1,86 +1,59 @@
-/* Pass 2 composition planner.  Every scene gets a shared structural map:
-   focal letter, hand-routed growth axes, and bounded ornament cartouches.
-   A seed determines the arrangement (crescent, diagonal, ascent, or split)
-   before any plant or knot renderer adds details. */
+/* Botanical-only composition planner. Every layout changes the actual growth
+   axes, root count and curve structure; nothing reserves room for letters. */
 window.MS=window.MS||{};
 ((M)=>{
   'use strict';
   const P=(x,y)=>({x,y}),box=(x,y,w,h)=>({x,y,w,h});
   const clampPt=(p,b)=>P(M.clamp(p.x,b.x,b.x+b.w),M.clamp(p.y,b.y,b.y+b.h));
   function curveBox(a,b,c,d){
-    const pts=M.wave(a,b,c,d,32),xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
-    const pad=70,x=Math.min(...xs)-pad,y=Math.min(...ys)-pad;
-    return box(x,y,Math.max(...xs)-Math.min(...xs)+2*pad,Math.max(...ys)-Math.min(...ys)+2*pad);
+    const pts=M.wave(a,b,c,d,32),x=pts.map(p=>p.x),y=pts.map(p=>p.y),padding=85;
+    return box(Math.min(...x)-padding,Math.min(...y)-padding,Math.max(...x)-Math.min(...x)+padding*2,Math.max(...y)-Math.min(...y)+padding*2);
   }
-  const layouts=['crescent','diagonal','ascent','split'];
-  function makeStems(focal,mode,layout,r){
-    const bnd=box(56,54,736,882),f=focal,axes=[];
-    if(layout==='crescent'){
-      axes.push({a:P(r.between(90,190),950),d:P(r.between(228,395),r.between(132,250)),side:1,curve:1});
-      axes.push({a:P(r.between(690,790),950),d:P(r.between(524,720),r.between(125,290)),side:-1,curve:-1});
-    }else if(layout==='diagonal'){
-      axes.push({a:P(r.between(66,130),r.between(785,935)),d:P(r.between(610,760),r.between(150,305)),side:1,curve:1});
-      axes.push({a:P(r.between(660,778),r.between(950,980)),d:P(r.between(240,445),r.between(240,365)),side:-1,curve:-1});
-    }else if(layout==='ascent'){
-      axes.push({a:P(r.between(150,295),968),d:P(r.between(375,575),r.between(94,220)),side:1,curve:1});
-      axes.push({a:P(r.between(560,745),r.between(930,970)),d:P(r.between(560,755),r.between(205,335)),side:-1,curve:-1});
-    }else{
-      axes.push({a:P(62,r.between(555,780)),d:P(r.between(390,600),r.between(93,234)),side:1,curve:1});
-      axes.push({a:P(785,r.between(380,630)),d:P(r.between(300,525),r.between(860,948)),side:-1,curve:-1});
+  function axis(a,d,side,id,r,opts={}){
+    const dx=d.x-a.x,dy=d.y-a.y,normal=M.normal(M.unit({x:dx,y:dy}));
+    const bend=opts.bend??r.between(75,160);
+    const sign=side;
+    // Different control-point offsets give genuinely different S curves, curls,
+    // and asymmetrical plants rather than simply translating a straight stem.
+    const first=(opts.first??.66)*bend*sign;
+    const second=(opts.second??r.choose([-.82,.62,1.07]))*bend*sign;
+    const bounds=box(46,44,756,914);
+    const b=clampPt(P(a.x+dx*.28+normal.x*first,a.y+dy*.28+normal.y*first),bounds);
+    const c=clampPt(P(a.x+dx*.72+normal.x*second,a.y+dy*.72+normal.y*second),bounds);
+    return {id,a,b,c,d,side,major:opts.major!==false,width:opts.major===false?r.between(7,12):r.between(12,21),box:curveBox(a,b,c,d),character:opts.character||'wandering'};
+  }
+  const designs={
+    single(r){return [axis(P(r.between(160,300),952),P(r.between(430,650),r.between(92,188)),1,1,r,{bend:r.between(125,215),first:1.12,second:-.86})];},
+    crescent(r){return [
+      axis(P(r.between(100,180),946),P(r.between(350,490),r.between(120,250)),1,1,r,{first:1.05,second:-.65}),
+      axis(P(r.between(686,760),947),P(r.between(495,635),r.between(130,270)),-1,2,r,{first:.82,second:-1.08})];},
+    diagonal(r){return [
+      axis(P(r.between(85,165),r.between(845,948)),P(r.between(645,762),r.between(90,220)),1,1,r,{first:.8,second:-.8}),
+      axis(P(r.between(700,785),r.between(882,965)),P(r.between(260,445),r.between(330,495)),-1,2,r,{major:false,first:.86,second:-.98})];},
+    radiating(r){
+      const root=P(r.between(285,450),r.between(790,928));
+      return Array.from({length:r.int(3,4)},(_,i)=>{
+        const destinations=[[130,210],[350,125],[660,172],[760,390]];
+        const [tx,ty]=destinations[i];
+        return axis(P(root.x+r.between(-38,38),root.y+r.between(-20,25)),P(tx+r.between(-55,55),ty+r.between(-50,55)),i%2?1:-1,i+1,r,{major:i<2,bend:r.between(65,125),first:1.03,second:-.83});
+      });
+    },
+    meander(r){return [
+      axis(P(r.between(75,155),r.between(810,952)),P(r.between(530,690),r.between(115,230)),1,1,r,{first:1.42,second:-1.25,bend:r.between(140,230),character:'meander'}),
+      axis(P(r.between(690,782),r.between(920,974)),P(r.between(400,590),r.between(265,412)),-1,2,r,{major:false,first:-1.32,second:1.20,bend:r.between(95,178),character:'meander'})];},
+    cluster(r){
+      const center=P(r.between(330,475),r.between(760,890));
+      return Array.from({length:4},(_,i)=>{
+        const tips=[[120,245],[370,120],[610,210],[760,430]],q=tips[i];
+        return axis(P(center.x+r.between(-56,56),center.y+r.between(-48,45)),P(q[0]+r.between(-58,58),q[1]+r.between(-55,55)),i%2?1:-1,i+1,r,{major:i<2,bend:r.between(75,142),first:1.08,second:-.62});
+      });
     }
-    if(mode==='interlace')axes.splice(1,1);
-    else if(mode==='botanical'&&r.chance(.38)){
-      axes.push({a:P(r.between(150,760),970),d:P(r.between(220,660),r.between(80,245)),side:r.sign(),curve:r.sign(),minor:true});
-    }
-    return axes.map((v,i)=>{
-      const a=v.a,d=v.d,dx=d.x-a.x,dy=d.y-a.y;
-      const norm=M.normal(M.unit({x:dx,y:dy}));
-      // Bend the artery around the central initial rather than through it.
-      const approach=(a.x+d.x)*.5;
-      const preferred=approach<f.x?-1:1;
-      const bend=(r.between(55,145)*v.curve)+preferred*r.between(10,45);
-      const b=clampPt(P(a.x+dx*.23+norm.x*bend,a.y+dy*.23+norm.y*bend),bnd);
-      const c=clampPt(P(a.x+dx*.74+norm.x*bend*r.between(.85,1.4),a.y+dy*.74+norm.y*bend*r.between(.85,1.4)),bnd);
-      return {...v,a,b,c,d,width:v.minor?r.between(9,12):r.between(12,20),major:!v.minor&&i<2,id:i+1,box:curveBox(a,b,c,d)};
-    });
-  }
-  function allocateCartouches(stems,focal,mode,r){
-    const cells=[];
-    const n=mode==='interlace'?2:mode==='letter'?1:r.chance(.65)?1:2;
-    const candidates=[];
-    stems.forEach((stem,i)=>{
-      for(const t of [.27,.55,.78]){
-        const pos=M.bezier(stem.a,stem.b,stem.c,stem.d,t),tan=M.tangent(stem.a,stem.b,stem.c,stem.d,t),norm=M.normal(tan);
-        for(const side of [stem.side,-stem.side]){
-          const gap=r.between(65,110);
-          candidates.push({x:pos.x+norm.x*side*gap,y:pos.y+norm.y*side*gap,stem:i,at:pos,rotation:r.between(-17,17)});
-        }
-      }
-    });
-    r.shuffle(candidates).forEach(c=>{
-      if(cells.length>=n)return;
-      c.x=M.clamp(c.x,125,720);c.y=M.clamp(c.y,128,878);
-      const rx=r.between(mode==='interlace'?75:44,mode==='interlace'?115:70),ry=r.between(mode==='interlace'?90:50,mode==='interlace'?128:82);
-      const dx=(c.x-focal.x)/(focal.rx+rx*.68),dy=(c.y-focal.y)/(focal.ry+ry*.68);
-      if(dx*dx+dy*dy<1.1)return;
-      if(cells.some(v=>Math.hypot(v.x-c.x,v.y-c.y)<Math.max(v.rx+rx,v.ry+ry)*.86))return;
-      cells.push({...c,rx,ry});
-    });
-    // If spacing is especially tight, omit the compartment instead of forcing
-    // it to overlap the main letter or another cartouche.
-    return cells;
-  }
+  };
   M.plan=(s,r)=>{
-    const mode=s.mode||'botanical',layout=r.choose(layouts);
-    const center=mode==='letter'?P(r.between(348,498),r.between(450,593)):
-      mode==='interlace'?P(r.between(324,470),r.between(420,590)):
-      P(r.between(343,502),r.between(420,590));
-    const glyphSize=mode==='letter'?r.between(325,415):mode==='interlace'?r.between(180,247):r.between(248,320);
-    const focal={x:center.x,y:center.y,rx:glyphSize*.43,ry:glyphSize*.53};
-    const stems=makeStems(focal,mode,layout,r),compartments=allocateCartouches(stems,focal,mode,r);
-    return {mode,layout,bounds:box(45,45,760,915),center,glyphSize,focal,stems,compartments,
-      // Old property retained for compatibility with third-party experiments.
-      knots:compartments.map((c,id)=>({...c,scale:Math.min(c.rx,c.ry)/280,id})),
-      weaveStem:stems.length?r.int(0,stems.length-1):0};
+    const list=Object.keys(designs);
+    const selection=list.includes(s.pattern)&&s.pattern!=='random'?s.pattern:r.choose(list);
+    const stems=designs[selection](r);
+    return {mode:'botanical',layout:selection,bounds:box(46,45,758,910),focal:{x:-10000,y:-10000,rx:1,ry:1},
+      stems,knots:[],compartments:[],weaveStem:-1};
   };
 })(window.MS);

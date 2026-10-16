@@ -50,10 +50,12 @@ window.MS=window.MS||{};
     return out;
   }
 
-  function organicSpine(stem,r){
+  function organicSpine(stem,r,s){
     const origin=M.wave(stem.a,stem.b,stem.c,stem.d,100);
+    const motion=.45 + M.clamp(s.distortion/100,0,1)*1.75;
+    const character=stem.character==='meander'?1.38:1;
     return undulate(origin,r,{
-      amp:r.between(stem.major?18:11,stem.major?42:24),
+      amp:r.between(stem.major?18:11,stem.major?42:24)*motion*character,
       phase:r.between(-1.2,1.2),
       f1:r.between(1.7,2.5),
       f2:r.between(3.8,5.4),
@@ -180,26 +182,36 @@ window.MS=window.MS||{};
       ? M.mix(pal.green,pal.ochre,r.between(.04,.22))
       : r.choose([pal.lapis,pal.vermillion,pal.green,M.mix(pal.green,pal.ink,.24)]));
     const detail=M.clamp(s.detail/100,0,1);
+    const grain=M.clamp(s.pigment/100,0,1);
+    const wear=M.clamp(s.wear/100,0,1);
     const darkEdge=M.mix(pal.ink,primary,.16);
+    const family=M.paintFamily(primary,pal);
     const petioleLen=opts.petioleLen ?? Math.max(1.8,Math.min(8,len*.10));
     const petioleColor=M.mix(pal.green,pal.ink,.36);
-    let content=M.path(`M0 0 L${M.vec(petioleLen,0)}`,petioleColor,Math.max(.45,len*.03),`opacity=".92"`);
-    const leafTransform=`translate(${M.vec(petioleLen,0)})`;
-    content+=`<g transform="${leafTransform}">`;
-    content+=M.shape(d,primary,`stroke="${darkEdge}" stroke-width="${signed(big?.88:.70)}" stroke-linejoin="round"`);
-    if(big){
-      const id=`fol-${r.int(100000,999999999)}`;
-      content+=`<defs><clipPath id="${id}"><path d="${d}"/></clipPath></defs>`;
-      content+=`<g clip-path="url(#${id})">`;
-      content+=M.shape(d,pal.light,`opacity=".055" transform="translate(${signed(len*.04)} ${signed(-len*.032)})"`);
-      if(s.pigment>9)content+=M.shape(d,'url(#speckle)',`opacity="${signed(.12+s.pigment*.0026)}"`);
-      content+=leafEngraving(len,kind,pal,r,.22+detail*.8);
-      content+='</g>';
-    } else {
-      content+=leafEngraving(len,kind,pal,r,.15+detail*.60);
+    const id=`leaf-${r.int(100000,999999999)}`;
+    let content=M.path(`M0 0 L${M.vec(petioleLen,0)}`,petioleColor,Math.max(.45,len*.03),`opacity=".9"`);
+    content+=`<g transform="translate(${M.vec(petioleLen,0)})">`;
+    // Registration slips only the colored impression; the linework stays legible.
+    content+=M.offsetPrint(d,r.choose([pal.vermillion,pal.lapis,pal.ochre]),s,r,{opacity:.43,scale:big?1:0.6});
+    content+=M.shape(d,M.paintStop(family),`stroke="${darkEdge}" stroke-width="${signed(big?.85:.62)}" stroke-linejoin="round"`);
+    content+=`<defs><clipPath id="${id}"><path d="${d}"/></clipPath></defs>`;
+    content+=`<g clip-path="url(#${id})">`;
+    if(grain>.01){
+      content+=M.shape(d,'url(#speckle)',`opacity="${signed((.10+.52*grain)*(big?1:.73))}"`);
+      const n=big?Math.round(grain*12):Math.round(grain*4);
+      for(let j=0;j<n;j++){
+        const xx=r.between(len*.13,len*.88),yy=r.between(-len*.16,len*.16);
+        const w=r.between(1.2,Math.max(3,len*.16)),h=r.between(.65,Math.max(2,len*.06));
+        content+=M.shape(`M${M.vec(xx,yy)}l${M.vec(w,-h*.12)}l${M.vec(w*.08,h)}Z`,r.choose([pal.light,pal.ochre,primary,pal.ink]),
+          `opacity="${signed(r.between(.08,.27)*grain)}"`);
+      }
     }
-    if(big&&r.chance(.26)){
-      content+=M.path(`M${M.vec(petioleLen+len*.16,-len*.08)}q${M.vec(len*.21,-len*.07)} ${M.vec(len*.31,-len*.035)}`,M.mix(primary,pal.ochre,.25),.55,'opacity=".30"');
+    if(wear>.01)content+=M.shape(d,'url(#dry-grain)',`opacity="${signed(.16+.59*wear)}"`);
+    content+=leafEngraving(len,kind,pal,r,(big?.22:.15)+detail*(big?.8:.60));
+    content+='</g>';
+    if(big&&r.chance(.18)){
+      content+=M.path(`M${M.vec(len*.16,-len*.08)}q${M.vec(len*.21,-len*.07)} ${M.vec(len*.31,-len*.035)}`,
+        M.mix(primary,pal.ochre,.25),.55,'opacity=".28"');
     }
     content+='</g>';
     return `<g transform="translate(${vec(at)}) rotate(${signed(rot*180/Math.PI)})">${content}</g>`;
@@ -346,16 +358,11 @@ window.MS=window.MS||{};
     let result='';
     const stems=plan.stems.slice(0,foliage<.12?1:plan.stems.length);
     for(const stem of stems){
-      const samples=organicSpine(stem,r),baseWidth=stem.width*r.between(.99,1.22);
+      const samples=organicSpine(stem,r,s),baseWidth=stem.width*r.between(.99,1.22);
       const d=stemOutline(samples,baseWidth,1.25,{roundRoot:true,phase:stem.id});
       const bark=M.mix(pal.green,pal.ink,r.between(.38,.57));
       let body=M.painted(`bark-${stem.id}`,d,bark,stem.box,s,r,{stroke:.72,lightweight:true});
       body+=stemDetails(samples,baseWidth,pal,r,M.clamp(s.detail/100,0,1));
-      // Genuine alternating over/under weaving hugs the actual bendy trunk.
-      // Only one major vine receives this treatment; it is not a loose tile.
-      if(stem.id===plan.weaveStem+1 && s.knots>26 && M.braidOnStem){
-        body+=M.braidOnStem(samples,pal,r,{amplitude:Math.min(baseWidth*.38,5.7),width:Math.min(3.4,1.4+s.knots*.019)});
-      }
       const count=stem.major?Math.round(6+foliage*11):Math.round(4+foliage*8);
       const nodes=[];
       for(let j=0;j<count;j++){
