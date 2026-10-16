@@ -31,7 +31,8 @@ window.MS=window.MS||{};
    let body='';
    body+=M.botanical(plan,s,M.rng(M.childSeed(root,43)));
    M.lastGrowthPaths=plan.stems.filter(v=>v.drawnPoints?.length).map(v=>v.drawnPoints.map(p=>({x:p.x,y:p.y})));
-   if(s.detail>0)body+=attachedPenwork(plan,s,M.rng(M.childSeed(root,44)));
+   // Small-details control now affects plant veins, leaflets, bark and organs;
+   // it no longer scatters independent scrolls across the composition.
    const defs=M.pigmentDefs(s,pigmentR)+M.finishDefs(s,finishR);
    const overlay=s.guideOverlay?M.drawGuides(plan.construction):'';
    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${M.W} ${M.H}" width="${M.W}" height="${M.H}" role="img" aria-label="Generated botanical ornament"><defs>${defs}</defs><g id="artwork-layers">${body}</g>${overlay}</svg>`;

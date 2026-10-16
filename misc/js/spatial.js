@@ -25,10 +25,10 @@ window.MS=window.MS||{};
      accept(p,radius,{group='',density=60,ignore=false}={}){
        if(ignore){this.register(p,radius,group);return true;}
        const fill=M.clamp(Number(density)/100,0,1);
-       const minFactor=.51-fill*.16;
+       const minFactor=.86-fill*.10;
        for(const old of nearby(p,radius)){
          const dx=p.x-old.x,dy=p.y-old.y;
-         const proximity=(radius+old.r)*minFactor*(group===old.group?.68:1);
+         const proximity=(radius+old.r)*minFactor*(group===old.group?.82:1);
          if(dx*dx+dy*dy<proximity*proximity)return false;
        }
        this.register(p,radius,group);

@@ -68,8 +68,8 @@ window.MS=window.MS||{};
    const colors={leaf:p.green,blue:p.lapis,red:p.vermillion,ochre:p.ochre,black:p.ink,bark:'#765039'};
    let defs='';
    for(const [family,base] of Object.entries(colors)){
-     const dark=M.mix(base,p.ink,.08+.26*v),mid=M.mix(base,p.ochre,.055+.11*v);
-     const light=M.mix(base,p.light,.12+.36*v);
+     const dark=M.mix(base,p.ink,.08+.20*v),mid=M.mix(base,p.ochre,.05+.09*v);
+     const light=M.mix(base,p.light,.14+.24*v);
      defs+=`<linearGradient id="wash-${family}" gradientUnits="objectBoundingBox" x1="6%" y1="5%" x2="82%" y2="94%">`+
       `<stop offset="0" stop-color="${light}"/><stop offset=".25" stop-color="${base}"/>`+
       `<stop offset=".58" stop-color="${mid}"/><stop offset=".82" stop-color="${base}"/>`+
@@ -81,17 +81,17 @@ window.MS=window.MS||{};
       `<stop offset=".48" stop-color="${p.ochre}" stop-opacity=".28"/>`+
       `<stop offset="1" stop-color="${p.ink}" stop-opacity=".17"/></linearGradient>`;
    let flecks='',micro='',scratches='';
-   for(let i=0;i<130;i++){
+   for(let i=0;i<84;i++){
      const x=r.between(0,67),y=r.between(0,61),a=r.between(.15,1.25);
-     flecks+=M.circle(x,y,a,i%6?p.ink:p.vermillion,`opacity="${n(r.between(.04,.21))}"`);
+     flecks+=M.circle(x,y,a,i%6?p.ink:p.vermillion,`opacity="${n(r.between(.03,.12))}"`);
    }
-   for(let i=0;i<110;i++){
+   for(let i=0;i<72;i++){
      const x=r.between(0,29),y=r.between(0,31),rr=r.between(.075,.36);
-     micro+=M.circle(x,y,rr,p.ink,`opacity="${n(r.between(.05,.20))}"`);
+     micro+=M.circle(x,y,rr,p.ink,`opacity="${n(r.between(.04,.13))}"`);
    }
-   for(let i=0;i<35;i++){
+   for(let i=0;i<20;i++){
      const x=r.between(0,53),y=r.between(0,71),size=r.between(.4,3.0);
-     scratches+=M.shape(`M${V(x,y)}l${V(size,r.between(-.5,.5))}l${V(-size*.20,.20)}Z`,p.light,`opacity="${n(r.between(.08,.38))}"`);
+     scratches+=M.shape(`M${V(x,y)}l${V(size,r.between(-.5,.5))}l${V(-size*.20,.20)}Z`,p.light,`opacity="${n(r.between(.05,.20))}"`);
    }
    defs+=`<pattern id="speckle" patternUnits="userSpaceOnUse" width="67" height="61">${flecks}</pattern>`+
     `<pattern id="micro-grain" patternUnits="userSpaceOnUse" width="29" height="31">${micro}</pattern>`+
@@ -112,12 +112,12 @@ window.MS=window.MS||{};
  function erodeDef(id,bounds,s,r,lightweight=false){
    const wear=clamp(Number(s.wear||0)/100,0,1);
    if(wear<.045)return {id:null,markup:''};
-   const area=lightweight?17:34,holes=Math.floor((.4+wear*1.3)*area);
+   const area=lightweight?10:20,holes=Math.floor((.2+wear*1.1)*area);
    let loss='';
    for(let i=0;i<holes;i++){
      const x=r.between(bounds.x,bounds.x+bounds.w),y=r.between(bounds.y,bounds.y+bounds.h);
-     const rad=r.between(.2,1.15+3.1*wear);
-     loss+=M.circle(x,y,rad,'black',`opacity="${n(r.between(.18,.95))}"`);
+     const rad=r.between(.13,.45+1.5*wear);
+     loss+=M.circle(x,y,rad,'black',`opacity="${n(r.between(.25,.74))}"`);
    }
    const mask=`wear-${id}`;
    const defs=`<mask id="${mask}" maskUnits="userSpaceOnUse" x="${n(bounds.x-5)}" y="${n(bounds.y-5)}" width="${n(bounds.w+10)}" height="${n(bounds.h+10)}">`+
@@ -129,7 +129,7 @@ window.MS=window.MS||{};
    const p=s.pal,texture=clamp(Number(s.pigment||0)/100,0,1),wear=clamp(Number(s.wear||0)/100,0,1);
    const family=opts.bark?'bark':M.paintFamily(color,p);
    const primary=opts.bark?color:M.paintStop(family);
-   const overprint=M.offsetPrint(d,opts.bark?M.mix(color,p.ochre,.21):M.mix(color,p.lapis,.18),s,r,{opacity:.3,scale:opts.bark?.6:1});
+   const overprint=M.offsetPrint(d,opts.bark?M.mix(color,p.ochre,.21):M.mix(color,p.lapis,.18),s,r,{opacity:.18,scale:opts.bark?.45:.7});
    const clip=`pig-${id}`;const erosion=erodeDef(id,bounds,s,r,!!opts.lightweight);
    let out=overprint+`<defs><clipPath id="${clip}"><path d="${d}"/></clipPath>${erosion.markup}</defs>`;
    out+=`<g${erosion.id?` mask="url(#${erosion.id})"`:''}>`;
@@ -152,16 +152,16 @@ window.MS=window.MS||{};
    }
    // Two scales of clamped granulation; no stray squares outside the object.
    if(texture>.015){
-     out+=M.shape(d,'url(#speckle)',`opacity="${n(.07+texture*.52)}"`);
-     out+=M.shape(d,'url(#micro-grain)',`opacity="${n(.08+texture*.40)}"`);
+     out+=M.shape(d,'url(#speckle)',`opacity="${n(.04+texture*.28)}"`);
+     out+=M.shape(d,'url(#micro-grain)',`opacity="${n(.03+texture*.22)}"`);
    }
-   if(wear>.03)out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.12+wear*.64)}"`);
+   if(wear>.03)out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.08+wear*.40)}"`);
    // Sparse pigment-pooling islands have spectral-mixed colors, not random RGB.
-   const count=Math.floor((opts.lightweight?11:29)*texture);
+   const count=Math.floor((opts.lightweight?5:14)*texture);
    for(let i=0;i<count;i++){
      const x=r.between(bounds.x,bounds.x+bounds.w),y=r.between(bounds.y,bounds.y+bounds.h);
      const rad=r.between(.7,2.4+4*texture),col=M.mix(color,r.choose([p.lapis,p.vermillion,p.ochre]),r.between(.12,.34));
-     out+=M.circle(x,y,rad,col,`opacity="${n(r.between(.04,.20)*texture)}"`);
+     out+=M.circle(x,y,rad,col,`opacity="${n(r.between(.02,.10)*texture)}"`);
    }
    out+='</g></g>';
    return out;
@@ -193,10 +193,10 @@ window.MS=window.MS||{};
    if(texture>.01){
      const mapped=M.shape(d,`url(#map-${id})`,`opacity="${fillOpacity}"`);
      layers+=noiseMask?`<g mask="url(#${tonal})">${mapped}</g>`:mapped;
-     layers+=M.shape(d,'url(#speckle)',`opacity="${n(.06+.40*texture)}"`);
-     layers+=M.shape(d,'url(#micro-grain)',`opacity="${n(.04+.37*texture)}"`);
+     layers+=M.shape(d,'url(#speckle)',`opacity="${n(.04+.22*texture)}"`);
+     layers+=M.shape(d,'url(#micro-grain)',`opacity="${n(.03+.18*texture)}"`);
    }
-   if(wear>.03)layers+=M.shape(d,'url(#dry-grain)',`opacity="${n(.10+wear*.56)}"`);
+   if(wear>.03)layers+=M.shape(d,'url(#dry-grain)',`opacity="${n(.07+wear*.34)}"`);
    layers+='</g></g>';
    return defs+layers;
  };

@@ -2,12 +2,12 @@
 (()=>{
  'use strict';
  const M=window.MS, el=id=>document.getElementById(id);
- const defaultSettings={geometry:'random',conform:58,ornament:45,guideOverlay:false,
+ const defaultSettings={geometry:'random',conform:52,ornament:28,guideOverlay:false,
    pattern:'random',species:'random',season:'summer',palette:'kells',seed:472818,
-   foliage:70,detail:52,pigment:46,distortion:20,printWarp:20,wear:35,spread:46,registration:28};
+   foliage:70,finishLevel:24};
  const s={...defaultSettings};
  const textFields=['pattern','geometry','species','season','palette'];
- const numberFields=['seed','conform','ornament','foliage','detail','pigment','wear','spread','printWarp','registration'];
+ const numberFields=['seed','conform','ornament','foliage','finishLevel'];
  const controlIds=[...textFields,...numberFields];
  const stage=el('drawing-stage'),overlay=el('stroke-overlay'),preview=el('stroke-preview');
  let strokes=[],draft=[],drawing=false,pointerId=null,paintTimer=null,svg='',playback=[],version=0;
@@ -15,11 +15,19 @@
  function read(){
    controlIds.forEach(id=>s[id]=numberFields.includes(id)?Number(el(id).value):el(id).value);
    s.seed=Number.isFinite(s.seed)?(s.seed>>>0)||1:1;
-   s.distortion=20; s.bleed=s.spread>0; s.transparent=true;
-   s.guideOverlay=el('guideOverlay').checked && !strokes.length;
-   s.mode='botanical';
-   // These arrays are intentional immutable copies: the renderer never receives
-   // mutable pointer-state arrays while an in-progress stroke is edited.
+   // Four visible sliders with non-overlapping responsibilities:
+   // geometry = directional influence, ornament = botanical stylisation,
+   // density = branch/leaf population, wear = the coherent print finish.
+   const f=M.clamp(s.finishLevel/100,0,1);
+   s.detail=64; // real leaf venation stays legible regardless of density
+   s.pigment=Math.round(19+f*39);        // subtle color variation within shapes
+   s.wear=Math.round(f*78);              // missing ink / dry brush
+   s.spread=Math.round(f*56);            // bleeding stays near source edges
+   s.registration=Math.round(f*26);     // small imperfections, not ghost leaves
+   s.printWarp=Math.round(f*21);        // local print wobble, not plant topology
+   s.distortion=12;                     // gentle botanical waviness, not random shapes
+   s.bleed=s.spread>0;s.transparent=true;
+   s.guideOverlay=el('guideOverlay').checked;
    s.drawnPaths=strokes.map(path=>path.map(p=>({x:p.x,y:p.y})));
  }
  function stopPlayback(){for(const animation of playback)try{animation.cancel()}catch(_){}playback=[];}

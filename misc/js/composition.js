@@ -61,25 +61,19 @@ window.MS=window.MS||{};
     }
     const list=Object.keys(designs);
     const selection=list.includes(s.pattern)&&s.pattern!=='random'?s.pattern:r.choose(list);
-    const natural=designs[selection](r);
+    const natural=(M.makeSpeciesAxes && M.makeSpeciesAxes(s.species,selection,r)) || designs[selection](r);
     const construction=M.constructGuides(s.geometry||'random',r);
     const amount=M.clamp(Number(s.conform??55)/100,0,1);
-    // Below 20% preserve all the original (free) plant axes. As conformity
-    // rises, the guide's branching topology also becomes part of the layout.
-    const guideCount=Math.min(5,construction.rails.length);
-    const count=amount<.20 ? natural.length : Math.max(natural.length,guideCount);
-    const stems=Array.from({length:count},(_,i)=>{
-      const source=natural[i%natural.length],rail=construction.rails[i%construction.rails.length];
-      const id=i+1;
-      const stem={...source,id,side:i%2?-1:1,
+    // Guides influence directions and preferred growth regions. They never
+    // manufacture duplicate main stems or force the plant to trace entire
+    // lozenges, saltire crosses, or spirals. Species topology comes first.
+    const stems=natural.map((source,i)=>{
+      const rail=construction.rails[i%construction.rails.length];
+      return {...source,id:i+1,side:source.side||((i%2)?-1:1),
         guidePoints:rail,
         naturalPoints:M.wave(source.a,source.b,source.c,source.d,100),
         guideAmount:amount,
-        // The guide controls structural axes, while species-dependent compliance
-        // and local growth curvature are resolved in botany.js.
         guideIndex:i};
-      stem.major=i<2 || (guideCount>3 && i===2);
-      return stem;
     });
     return {mode:'botanical',layout:selection,structure:construction.name,construction,conform:amount,
       bounds:box(46,45,758,910),focal:{x:-10000,y:-10000,rx:1,ry:1},
