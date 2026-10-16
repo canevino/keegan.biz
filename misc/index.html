@@ -42,34 +42,28 @@
           <p class="control-header">make a change</p>
           <label>growth pattern
             <select id="pattern">
-              <option value="random">chance / random structure</option>
-              <option value="single">single wandering stem</option>
-              <option value="crescent">crescent growth</option>
-              <option value="diagonal">diagonal overgrowth</option>
-              <option value="radiating">radiating shoots</option>
-              <option value="meander">winding tendrils</option>
+              <option value="random">mixed / surprise</option>
+              <option value="single">upright stem</option>
+              <option value="crescent">paired arch</option>
+              <option value="diagonal">diagonal growth</option>
+              <option value="radiating">radiating growth</option>
+              <option value="meander">winding vine</option>
               <option value="cluster">dense thicket</option>
             </select>
           </label>
           <label>underlying geometry
             <select id="geometry">
-              <option value="random">chance / mixed traditions</option>
-              <optgroup label="Gothic">
-                <option value="gothic-pointed">pointed arches</option>
-                <option value="gothic-quatrefoil">quatrefoil systems</option>
-                <option value="gothic-ogee">ogee curves</option>
-                <option value="gothic-radial">radial tracery</option>
-              </optgroup>
-              <optgroup label="Anglo-Saxon inspired">
-                <option value="anglo-lozenge">lozenge geometry</option>
-                <option value="anglo-fret">stepped fret</option>
-                <option value="anglo-saltire">saltire crossing</option>
-              </optgroup>
-              <optgroup label="Celtic / Insular inspired">
-                <option value="celtic-triskele">triskele</option>
-                <option value="celtic-double-spiral">double spiral</option>
-                <option value="celtic-scroll">curved scrollwork</option>
-              </optgroup>
+              <option value="random">mixed / surprise</option>
+              <option value="gothic-pointed">pointed arch</option>
+              <option value="gothic-quatrefoil">quatrefoil</option>
+              <option value="gothic-radial">radial tracery</option>
+              <option value="anglo-lozenge">lozenge</option>
+              <option value="anglo-fret">stepped fret</option>
+              <option value="celtic-triskele">triskele</option>
+              <option value="celtic-double-spiral">double spiral</option>
+              <option value="celtic-scroll">scrollwork</option>
+              <option value="insular-vesica">vesica</option>
+              <option value="roundel">roundel</option>
             </select>
           </label>
           <label>botanical species
@@ -90,10 +84,10 @@
           </label>
           <label>season
             <select id="season">
-              <option value="spring">spring</option>
-              <option value="summer" selected>summer</option>
-              <option value="autumn">autumn</option>
-              <option value="winter">winter</option>
+              <option value="spring">spring / blossom</option>
+              <option value="summer" selected>summer / full leaf</option>
+              <option value="autumn">autumn / turning leaf</option>
+              <option value="winter">winter / bare & berry</option>
             </select>
           </label>
           <label>pigments
@@ -107,18 +101,14 @@
           </label>
           <div class="fields-pair one-up"><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label></div>
           <div class="control-sep"></div>
-          <label class="sliding">follow geometry <output for="conform" id="conform-value">58</output><input type="range" id="conform" min="0" max="100" value="58"></label>
-          <label class="sliding">ornamental transformation <output for="ornament" id="ornament-value">45</output><input type="range" id="ornament" min="0" max="100" value="45" aria-describedby="ornament-scale"></label>
-          <div class="ornament-scale" id="ornament-scale"><span>botanical</span><span>manuscript ornament</span></div>
+          <label class="sliding">follow geometry <output for="conform" id="conform-value">52</output><input type="range" id="conform" min="0" max="100" value="52"></label>
+          <div class="ornament-control">
+            <label class="sliding">ornamental transformation <output for="ornament" id="ornament-value">28</output><input type="range" id="ornament" min="0" max="100" value="28" aria-describedby="ornament-scale"></label>
+            <div class="ornament-scale" id="ornament-scale"><span>botanical</span><span>manuscript ornament</span></div>
+          </div>
+          <label class="sliding">growth density <output for="foliage" id="foliage-value">70</output><input type="range" id="foliage" min="10" max="100" value="70"></label>
+          <label class="sliding">print wear <output for="finishLevel" id="finishLevel-value">24</output><input type="range" id="finishLevel" min="0" max="100" value="24"></label>
           <label class="check"><input type="checkbox" id="guideOverlay"> show construction guides</label>
-          <label class="sliding">foliage <output for="foliage" id="foliage-value">70</output><input type="range" id="foliage" min="0" max="100" value="70"></label>
-          <label class="sliding">small details <output for="detail" id="detail-value">52</output><input type="range" id="detail" min="0" max="100" value="52"></label>
-          <label class="sliding">pigment variation <output for="pigment" id="pigment-value">46</output><input type="range" id="pigment" min="0" max="100" value="46"></label>
-          
-          <label class="sliding">print wear / dry brush <output for="wear" id="wear-value">35</output><input type="range" id="wear" min="0" max="100" value="35"></label>
-          <label class="sliding">ink spread <output for="spread" id="spread-value">46</output><input type="range" id="spread" min="0" max="100" value="46"></label>
-          <label class="sliding">print distortion <output for="printWarp" id="printWarp-value">20</output><input type="range" id="printWarp" min="0" max="100" value="20"></label>
-          <label class="sliding">color registration <output for="registration" id="registration-value">28</output><input type="range" id="registration" min="0" max="100" value="28"></label>
           <div class="control-sep"></div>
           <button type="button" class="action reset" id="reset">reset ↗</button>
         </form>
@@ -134,6 +124,7 @@
 <script src="/misc/js/geometry.js" defer></script>
 <script src="/misc/js/spatial.js" defer></script>
 <script src="/misc/js/drawing.js" defer></script>
+<script src="/misc/js/architecture.js" defer></script>
 <script src="/misc/js/composition.js" defer></script>
 <script src="/misc/js/species.js" defer></script>
 <script src="/misc/js/ornament.js" defer></script>

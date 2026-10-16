@@ -55,7 +55,7 @@ button:focus-visible,select:focus-visible,input:focus-visible {outline:2px solid
 /* Pass 3 — degree indicator. Uses the existing site control hierarchy. */
 .drawing-controls .ornament-scale {
   display: flex; justify-content: space-between; gap: 10px;
-  margin: -12px 0 3px; font: 10px/1.25 Helvetica, Arial, sans-serif;
+  margin: 4px 0 0; font: 10px/1.25 Helvetica, Arial, sans-serif;
   color: #686156;
 }
 .drawing-controls .ornament-scale span:last-child {text-align: right;}
