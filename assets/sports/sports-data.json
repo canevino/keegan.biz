@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-16T04:44:06.296Z",
+  "updatedAt": "2026-10-16T11:37:53.384Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -905,12 +905,12 @@
           "competition": "Cup"
         },
         {
-          "id": "5909199",
-          "date": "2026-10-31T16:00:00.000Z",
-          "when": "Sat, Oct 31 · 12:00 PM ET",
+          "id": "5909320",
+          "date": "2026-10-30T16:00:00.000Z",
+          "when": "Fri, Oct 30 · 12:00 PM ET",
           "status": "scheduled",
-          "home": "Obolon Kyiv",
-          "away": "Shakhtar Donetsk",
+          "home": "Shakhtar Donetsk",
+          "away": "Obolon Kyiv",
           "competition": "Premier League"
         }
       ],
@@ -970,7 +970,7 @@
             "rank": 8,
             "team": "Veres Rivne",
             "points": 9,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
@@ -1003,23 +1003,23 @@
           },
           {
             "rank": 13,
+            "team": "Obolon Kyiv",
+            "points": 7,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 14,
             "team": "Chornomorets Odesa",
             "points": 5,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 14,
+            "rank": 15,
             "team": "Kryvbas",
             "points": 5,
             "played": 6,
-            "highlight": false
-          },
-          {
-            "rank": 15,
-            "team": "Obolon Kyiv",
-            "points": 4,
-            "played": 7,
             "highlight": false
           },
           {
