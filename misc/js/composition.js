@@ -50,10 +50,39 @@ window.MS=window.MS||{};
     }
   };
   M.plan=(s,r)=>{
+    // A painted stroke completely replaces generated construction axes.
+    // Keep this before the random layout/geometry calls so changing Gothic
+    // style cannot accidentally alter a user-authored plant.
+    if(s.drawnPaths?.length){
+      const stems=M.drawnStems(s.drawnPaths,r);
+      if(stems.length)return {mode:'botanical',layout:'hand-drawn',structure:'hand-drawn',
+        construction:null,conform:0,bounds:box(8,8,M.W-16,M.H-16),
+        focal:{x:-10000,y:-10000,rx:1,ry:1},stems,knots:[],compartments:[],weaveStem:-1};
+    }
     const list=Object.keys(designs);
     const selection=list.includes(s.pattern)&&s.pattern!=='random'?s.pattern:r.choose(list);
-    const stems=designs[selection](r);
-    return {mode:'botanical',layout:selection,bounds:box(46,45,758,910),focal:{x:-10000,y:-10000,rx:1,ry:1},
+    const natural=designs[selection](r);
+    const construction=M.constructGuides(s.geometry||'random',r);
+    const amount=M.clamp(Number(s.conform??55)/100,0,1);
+    // Below 20% preserve all the original (free) plant axes. As conformity
+    // rises, the guide's branching topology also becomes part of the layout.
+    const guideCount=Math.min(5,construction.rails.length);
+    const count=amount<.20 ? natural.length : Math.max(natural.length,guideCount);
+    const stems=Array.from({length:count},(_,i)=>{
+      const source=natural[i%natural.length],rail=construction.rails[i%construction.rails.length];
+      const id=i+1;
+      const stem={...source,id,side:i%2?-1:1,
+        guidePoints:rail,
+        naturalPoints:M.wave(source.a,source.b,source.c,source.d,100),
+        guideAmount:amount,
+        // The guide controls structural axes, while species-dependent compliance
+        // and local growth curvature are resolved in botany.js.
+        guideIndex:i};
+      stem.major=i<2 || (guideCount>3 && i===2);
+      return stem;
+    });
+    return {mode:'botanical',layout:selection,structure:construction.name,construction,conform:amount,
+      bounds:box(46,45,758,910),focal:{x:-10000,y:-10000,rx:1,ry:1},
       stems,knots:[],compartments:[],weaveStem:-1};
   };
 })(window.MS);

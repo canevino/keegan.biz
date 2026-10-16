@@ -35,7 +35,9 @@ window.MS=window.MS||{};
    return col;
  };
  const width=(t,a=.45)=>Math.pow(Math.sin(Math.PI*t),.82)*a;
- function outline(kind,len,r){
+ function outline(kind,len,r,s){
+   const ornament=M.ornamentInfluence?M.ornamentInfluence({leaf:kind},s):0;
+   const phase=r.between(-1.2,1.2);
    const top=[],bottom=[],steps=28;
    let maxW= len*(kind==='hazel'?.37:kind==='oak'?.33:kind==='acanthus'?.32:kind==='holly'?.27:.29);
    const spine=(t)=>{ // leaf axis tapers, with a slightly asymmetric end
@@ -56,30 +58,38 @@ window.MS=window.MS||{};
      }
      if(kind==='ivy')w*= (t<.63?1:.8) * (1 + .18*Math.max(0,Math.sin(t*5*Math.PI)));
      if(['bramble','dogrose','hazel'].includes(kind))w*=1+.08*Math.sin(t*29*Math.PI);
-     const shapeW=maxW*w;
-     top.push(P(spine(t),-shapeW));
-     bottom.push(P(spine(t),shapeW*(.92+.06*Math.sin(t*9))));
+     const shapeW=maxW*(M.ornamentWidth?M.ornamentWidth(kind,t,w,ornament,phase):w);
+     const a=M.ornamentPoint?M.ornamentPoint(spine(t),-shapeW,t,ornament,len,phase):P(spine(t),-shapeW);
+     const b=M.ornamentPoint?M.ornamentPoint(spine(t),shapeW*(.92+.06*Math.sin(t*9)),t,ornament,len,-phase):P(spine(t),shapeW);
+     top.push(a);
+     bottom.push(b);
    }
    // holly points are sharper on outside edges; serration is visible on hazel / rose
    return close([...top,...bottom.reverse()]);
  }
- function explicitLeaf(kind,len,r){
+ function explicitLeaf(kind,len,r,s){
+   const ornament=M.ornamentInfluence?M.ornamentInfluence({leaf:kind},s):0;
+   const phase=r.between(-.7,.7);
+   const transform=q=>{
+      if(!ornament)return P(q[0]*len,q[1]*len);
+      const pt=M.ornamentPoint(q[0]*len,q[1]*len*(1+ornament*.19),q[0],ornament,len,phase);
+      return pt;
+   };
    if(kind==='ivy'){
      const t=[ [0,0],[.20,-.18],[.27,-.48],[.43,-.29],[.53,-.66],[.65,-.33],[.97,-.06],[1,0],[.97,.06],[.65,.33],[.53,.66],[.43,.29],[.27,.48],[.20,.18] ];
-     return close(t.map(q=>P(q[0]*len,q[1]*len)));
+     return close(t.map(transform));
    }
    if(kind==='holly'){
      const t=[[0,0],[.14,-.12],[.23,-.31],[.32,-.20],[.43,-.4],[.51,-.24],[.66,-.35],[.71,-.17],[.88,-.2],[1,0],[.88,.2],[.71,.17],[.66,.35],[.51,.24],[.43,.4],[.32,.20],[.23,.31],[.14,.12]];
-     return close(t.map(q=>P(q[0]*len,q[1]*len)));
+     return close(t.map(transform));
    }
-   return outline(kind,len,r);
+   return outline(kind,len,r,s);
  }
  function simpleLeaf(sp,size,season,pal,r,kindOverride,s={registration:0,pigment:40,wear:20}){
    const kind=kindOverride||sp.leaf;
-   const d=explicitLeaf(kind,size,r),color=M.leafPigment(sp,season,pal,r),id=`leaf-${r.int(10000,999999999)}`;
-   let z=M.offsetPrint(d,pal.ochre,s,r,{opacity:.18,scale:.7});
-   z+=M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(size>.25?Math.max(.55,size*.019):.5)}" stroke-linejoin="round"`);
-   z+=`<defs><clipPath id="${id}"><path d="${d}"/></clipPath></defs><g clip-path="url(#${id})">`;
+   const d=explicitLeaf(kind,size,r,s),color=M.leafPigment(sp,season,pal,r),id=`leaf-${r.int(10000,999999999)}`;
+   let z=M.leafFinish(id,d,size,color,pal,s,r);
+   z+=`<g clip-path="url(#leaf-clip-${id})">`;
    z+=M.path(`M0 0 Q${V(size*.51,-size*.035)} ${V(size*.95,0)}`,mix(color,pal.ink,.57),Math.max(.5,size*.025),`opacity=".68"`);
    const veins=size>14?3:2;
    for(let i=1;i<=veins;i++){
@@ -89,7 +99,7 @@ window.MS=window.MS||{};
        z+=M.path(`M${V(x,-size*.008)}Q${V(x+size*.07,y*.61)} ${V(x+size*.13,y)}`,mix(pal.ink,color,.30),.42,`opacity=".55"`);
      }
    }
-   z+=M.shape(d,'url(#speckle)',`opacity="${n(.06 + .38*(s.pigment||0)/100)}"`);
+   if(M.ornamentLeafInterior)z+=M.ornamentLeafInterior(sp,size,color,pal,r,s);
    return z+'</g>';
  }
  function compound(sp,size,season,pal,r,s){
@@ -108,7 +118,7 @@ window.MS=window.MS||{};
    z+=`<g transform="translate(${V(size*.88,0)})">`+simpleLeaf(sp,size*(rose?.32:.43),season,pal,r,rose?'dogrose':'bramble',s)+`</g>`;
    return z;
  }
- function fernFrond(sp,size,season,pal,r){
+ function fernFrond(sp,size,season,pal,r,s){
    let z=M.path(`M0 0 Q${V(size*.48,-size*.12)} ${V(size,0)}`,M.wood(sp,pal,'new',r),1.4);
    const pairs=12;
    for(let i=1;i<=pairs;i++){
@@ -116,17 +126,21 @@ window.MS=window.MS||{};
      for(const sign of [-1,1]){
        const d=`M${V(x,0)} Q${V(x+size*.04,sign*span*.53)} ${V(x+size*.16,sign*span)} Q${V(x+size*.065,sign*span*.83)} ${V(x,0)}Z`;
        const c=M.leafPigment(sp,season,pal,r);
-       z+=M.shape(d,c,`stroke="${pal.ink}" stroke-width=".45"`);
+       z+=M.leafFinish(`fern-${r.int(10000,999999999)}`,d,Math.max(8,size*.2),c,pal,s,r);
      }
    }
+   if(M.ornamentTerminal)z+=M.ornamentTerminal(sp,{x:size,y:0},-.25,size*.11,pal,r,s);
    return z;
  }
  M.plantLeaf=(sp,at,angle,size,season,pal,r,s={registration:0,pigment:40,wear:20})=>{
    if(season==='winter'&&!sp.evergreen && r.chance(sp.leaf==='fern'?.65:.84))return '';
-   const leaf=sp.leaf==='fern'?fernFrond(sp,size,season,pal,r):['dogrose','bramble'].includes(sp.leaf)?compound(sp,size,season,pal,r,s):simpleLeaf(sp,size,season,pal,r,undefined,s);
+   const leaf=sp.leaf==='fern'?fernFrond(sp,size,season,pal,r,s):['dogrose','bramble'].includes(sp.leaf)?compound(sp,size,season,pal,r,s):simpleLeaf(sp,size,season,pal,r,undefined,s);
+   // Larger illuminated leaves appear as the transformation increases.
+   const ornamental=M.ornamentInfluence?M.ornamentInfluence(sp,s):0;
    const petiole=Math.min(6,Math.max(1,size*.075));
    const stem=M.path(`M0 0 L${V(petiole,0)}`,M.wood(sp,pal,'new',r),Math.max(.46,size*.033));
-   return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">${stem}<g transform="translate(${V(petiole,0)})">${leaf}</g></g>`;
+   const magnify=1+ornamental*.14;
+   return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})">${leaf}</g></g>`;
  };
  function blossom(at,scale,pal,r,white=true){
    let z=''; const p=r.choose([4,5,5]);
