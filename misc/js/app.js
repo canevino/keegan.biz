@@ -1,108 +1,59 @@
-(() => {
+/* Controls, reproducible state and background-free SVG/PNG exports. */
+(()=>{
   'use strict';
-  const O = window.Ornament;
-  const $ = id => document.getElementById(id);
-  const DEFAULT = {
-    mode:'marginalia',
-    palette:'medieval',
-    initial:'B',
-    seed:472818,
-    foliage:72,
-    knots:56,
-    letters:23,
-    pigment:40,
-    wear:19,
-    showInitial:true,
-    bleed:true,
-    transparent:true
-  };
-  let settings = {...DEFAULT}, svgString = '', timer = null;
-  const modes = {
-    marginalia:'botanical marginalia',
-    initial:'decorated initial',
-    interlace:'interlaced illumination',
-    chromatic:'distorted pigments'
-  };
-  const controlIds = ['mode','palette','initial','seed','foliage','knots','letters','pigment','wear'];
-
+  const M=window.MS, el=id=>document.getElementById(id);
+  const initial={mode:'botanical',palette:'kells',initial:'B',seed:472818,foliage:70,knots:60,detail:52,fragments:12,pigment:46,distortion:20,wear:35,initialVisible:true,bleed:true,transparent:true};
+  let settings={...initial},svg='',pending=0;
+  const textFields=['mode','palette','initial'];
+  const numberFields=['seed','foliage','knots','detail','fragments','pigment','distortion','wear'];
+  const ids=[...textFields,...numberFields];
   function read(){
-    for(const id of controlIds){
-      const el = $(id);
-      settings[id] = ['seed','foliage','knots','letters','pigment','wear'].includes(id) ? Number(el.value) : el.value;
-    }
-    settings.initial = String(settings.initial).trim().slice(0,1).toUpperCase() || 'A';
-    settings.seed = (Number(settings.seed) >>> 0) || 1;
-    settings.showInitial = $('initial-visible').checked;
-    settings.bleed = $('bleed').checked;
-    settings.transparent = $('transparent').checked;
+    ids.forEach(id=>{ settings[id]=numberFields.includes(id)?Number(el(id).value):el(id).value; });
+    settings.seed=Number.isFinite(settings.seed)?(settings.seed>>>0)||1:1;
+    settings.initial=(settings.initial||'B').slice(0,1).toUpperCase();
+    settings.initialVisible=el('initial-visible').checked;
+    settings.bleed=el('bleed').checked;
+    settings.transparent=el('transparent').checked;
   }
-  function redraw(){
+  function paint(){
     read();
-    for(const name of ['foliage','knots','letters','pigment','wear']) $(name+'-out').textContent = settings[name];
-    svgString = O.render(settings);
-    $('artwork').innerHTML = svgString;
-    $('artwork').setAttribute('aria-label', `${modes[settings.mode]} in ${settings.palette} ink, seed ${settings.seed}`);
-    $('state-name').textContent = modes[settings.mode];
-    $('seed-label').textContent = 'seed ' + settings.seed;
+    numberFields.slice(1).forEach(id=>el(id+'-value').textContent=settings[id]);
+    svg=M.render(settings);
+    el('drawing').innerHTML=svg;
+    el('seed-label').textContent='seed '+settings.seed;
+    el('mode-description').textContent=el('mode').selectedOptions[0].text;
+    el('drawing-stage').setAttribute('aria-label','Ornament, '+el('mode').selectedOptions[0].text+', seed '+settings.seed);
   }
-  function schedule(){ clearTimeout(timer); timer = setTimeout(redraw, 60); }
-  function download(blob,name){
-    const url = URL.createObjectURL(blob), a = document.createElement('a');
-    a.href = url; a.download = name; a.style.display = 'none';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  const update=()=>{window.clearTimeout(pending);pending=window.setTimeout(paint,75);};
+  ids.forEach(id=>el(id).addEventListener(['initial','seed'].includes(id)?'change':'input',update));
+  ['initial-visible','bleed','transparent'].forEach(id=>el(id).addEventListener('change',paint));
+  const nextSeed=()=>{const x=new Uint32Array(1);if(window.crypto?.getRandomValues)window.crypto.getRandomValues(x);else x[0]=Math.floor(Math.random()*4294967295);return x[0]||1;};
+  el('regenerate').addEventListener('click',()=>{el('seed').value=nextSeed();paint();});
+  el('grid').addEventListener('change',e=>el('drawing-stage').classList.toggle('grid',e.target.checked));
+  el('reset').addEventListener('click',()=>{Object.assign(settings,initial);ids.forEach(id=>el(id).value=initial[id]);el('initial-visible').checked=initial.initialVisible;el('bleed').checked=initial.bleed;el('transparent').checked=initial.transparent;el('grid').checked=false;el('drawing-stage').classList.remove('grid');paint();});
+  function serialization(){
+    // Transparent artwork by default. Background export is explicitly opt-in.
+    if(settings.transparent)return svg;
+    return svg.replace(/(<svg[^>]*>)/,`$1<rect x="0" y="0" width="${M.W}" height="${M.H}" fill="#ece7d7"/>`);
   }
-  function serialized(){
-    if(settings.transparent) return svgString;
-    return svgString.replace(/(<svg[^>]+>)/,'$1<rect x="0" y="0" width="880" height="1040" fill="#ece7d7"/>');
+  function trigger(blob,filename){
+    const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2500);
   }
-  async function savePNG(){
-    const el = $('save-png'); const old = el.textContent;
-    el.disabled = true; el.textContent = 'rendering…';
-    try {
-      const blob = new Blob([serialized()],{type:'image/svg+xml;charset=utf-8'});
-      const url = URL.createObjectURL(blob);
-      const image = new Image();
-      await new Promise((resolve,reject)=>{ image.onload = resolve; image.onerror = () => reject(new Error('Could not render SVG')); image.src = url; });
-      const c = document.createElement('canvas');
-      c.width = 3200; c.height = Math.round(3200*1040/880);
-      const ctx = c.getContext('2d');
-      ctx.drawImage(image,0,0,c.width,c.height);
-      URL.revokeObjectURL(url);
-      const output = await new Promise(resolve => c.toBlob(resolve,'image/png'));
-      if(!output) throw new Error('PNG export failed');
-      download(output,`ornament-machine-${settings.mode}-${settings.seed}.png`);
-    } catch (err) {
-      console.error(err);
-      window.alert('PNG could not be exported. Please try the SVG export.');
-    } finally {
-      el.disabled = false; el.textContent = old;
-    }
-  }
-
-  for(const id of controlIds){
-    const el = $(id);
-    el.addEventListener(['seed','initial','mode','palette'].includes(id) ? 'change' : 'input', schedule);
-  }
-  for(const id of ['initial-visible','bleed','transparent']) $(id).addEventListener('change', redraw);
-  $('regenerate').addEventListener('click', () => {
-    const a = new Uint32Array(1);
-    if(window.crypto?.getRandomValues) window.crypto.getRandomValues(a); else a[0] = Math.floor(Math.random()*0xffffffff);
-    $('seed').value = (a[0] || 314159);
-    redraw();
+  el('export-svg').addEventListener('click',()=>trigger(new Blob([serialization()],{type:'image/svg+xml;charset=utf-8'}),`ornament-${settings.mode}-${settings.seed}.svg`));
+  el('export-png').addEventListener('click',async()=>{
+    const btn=el('export-png');btn.disabled=true;btn.textContent='rendering…';
+    let temp='';
+    try{
+      const doc=new Blob([serialization()],{type:'image/svg+xml;charset=utf-8'});
+      temp=URL.createObjectURL(doc);
+      const image=new Image();
+      await new Promise((res,rej)=>{image.onload=res;image.onerror=rej;image.src=temp;});
+      const canvas=document.createElement('canvas');canvas.width=3200;canvas.height=Math.round(3200*M.H/M.W);
+      const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas unavailable');ctx.drawImage(image,0,0,canvas.width,canvas.height);
+      const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('PNG unavailable');
+      trigger(blob,`ornament-${settings.mode}-${settings.seed}.png`);
+    }catch(err){console.error(err);alert('PNG export failed. SVG export is still available.');}
+    finally{if(temp)URL.revokeObjectURL(temp);btn.disabled=false;btn.textContent='save png ↗';}
   });
-  $('save-svg').addEventListener('click', () => download(new Blob([serialized()],{type:'image/svg+xml;charset=utf-8'}),`ornament-machine-${settings.mode}-${settings.seed}.svg`));
-  $('save-png').addEventListener('click', savePNG);
-  $('show-grid').addEventListener('change', e => $('workspace').classList.toggle('has-grid', e.target.checked));
-  $('reset').addEventListener('click', () => {
-    settings = {...DEFAULT};
-    for(const id of controlIds) $(id).value = DEFAULT[id];
-    $('initial-visible').checked = true;
-    $('bleed').checked = true;
-    $('transparent').checked = true;
-    $('show-grid').checked = false;
-    $('workspace').classList.remove('has-grid');
-    redraw();
-  });
-  redraw();
+  paint();
 })();
