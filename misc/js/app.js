@@ -2,9 +2,9 @@
 (()=>{
   'use strict';
   const M=window.MS, el=id=>document.getElementById(id);
-  const initial={pattern:'random',palette:'kells',seed:472818,foliage:70,detail:52,pigment:46,distortion:20,wear:35,spread:46,registration:28,bleed:true,transparent:true};
+  const initial={pattern:'random',species:'random',season:'summer',palette:'kells',seed:472818,foliage:70,detail:52,pigment:46,distortion:20,wear:35,spread:46,registration:28,bleed:true,transparent:true};
   let settings={...initial},svg='',pending=0;
-  const textFields=['pattern','palette'];
+  const textFields=['pattern','species','season','palette'];
   const numberFields=['seed','foliage','detail','pigment','distortion','wear','spread','registration'];
   const ids=[...textFields,...numberFields];
   function read(){
@@ -20,7 +20,7 @@
     svg=M.render(settings);
     el('drawing').innerHTML=svg;
     el('seed-label').textContent='seed '+settings.seed;
-    el('mode-description').textContent='botanical ornament';
+    el('mode-description').textContent= settings.species==='random'?'mixed botanical growth':settings.species==='hybrid'?'ornamental hybrid':settings.species+' / '+settings.season;
     el('drawing-stage').setAttribute('aria-label','Botanical ornament, seed '+settings.seed);
   }
   const update=()=>{window.clearTimeout(pending);pending=window.setTimeout(paint,75);};

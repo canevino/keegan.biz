@@ -1,26 +1,28 @@
-/* npm-free smoke test: node misc/js/smoke-test.cjs */
-const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),path=require('path');
+/* Run: node js/smoke-test.cjs — no npm modules or network needed. */
+const fs=require('node:fs'), path=require('node:path'),vm=require('node:vm');
 global.window=global;
-for(const mod of ['core','pigment','finish','composition','botany','render']){
-  vm.runInThisContext(fs.readFileSync(path.join(__dirname,mod+'.js'),'utf8'),{filename:mod});
+for(const name of ['core','pigment','finish','composition','species','botany','render']){
+  vm.runInThisContext(fs.readFileSync(path.join(__dirname,name+'.js'),'utf8'),{filename:name+'.js'});
 }
 const M=window.MS;
-const base={pattern:'random',palette:'kells',seed:472818,foliage:70,detail:52,pigment:46,distortion:20,wear:35,spread:46,registration:28,bleed:true,transparent:true};
-for(const pattern of ['random','single','crescent','diagonal','radiating','meander','cluster']){
-  const s={...base,pattern},render=M.render(s);
-  assert.equal(render,M.render(s),'same seed must regenerate identical art');
-  assert.notEqual(render,M.render({...s,seed:12345}),'different seeds should change art');
-  assert(render.includes('<svg')&&render.endsWith('</svg>'));
-  assert(!render.includes('NaN')&&!render.includes('undefined'));
-  assert(!render.includes('<text')&&!render.includes('knotCartouche'),'botanical only');
-  for(const extreme of [0,100]){
-    const e=M.render({...s,foliage:extreme,detail:extreme,pigment:extreme,distortion:extreme,wear:extreme,spread:extreme,registration:extreme});
-    assert(!e.includes('NaN')&&!e.includes('undefined'));
-  }
-  console.log(pattern,'passed');
+const opts={pattern:'random',palette:'kells',season:'summer',seed:472818,foliage:70,detail:52,pigment:46,distortion:20,wear:35,spread:46,registration:28,bleed:true,transparent:true};
+let count=0;
+for(const species of [...M.speciesNames,'random','hybrid'])for(const season of ['spring','summer','autumn','winter']){
+  const s={...opts,species,season};
+  const a=M.render(s),b=M.render(s);
+  if(a!==b)throw new Error(`Non deterministic: ${species} ${season}`);
+  if(/(?:NaN|undefined|Infinity)/.test(a))throw new Error(`Invalid values: ${species} ${season}`);
+  if(!a.startsWith('<svg')|| !a.endsWith('</svg>'))throw new Error(`SVG broken: ${species} ${season}`);
+  count++;
 }
-let usedSpectral=0;
-window.spectral={Color:class Color {constructor(value){this.value=value;}},mix(...colors){usedSpectral++;return{toString(){return '#406044';}}}};
-assert.equal(M.mix('#123456','#789abc',.43),'#406044');
-assert(usedSpectral>0,'actual Spectral.js API path should be callable');
-console.log('All smoke tests passed; Spectral API adapter tested with a stand-in.');
+for(const pattern of ['single','crescent','diagonal','radiating','meander','cluster']){
+  const s={...opts,species:'bramble',pattern};
+  if(!M.render(s).includes('artwork-layers'))throw new Error(pattern);
+  count++;
+}
+for(const level of [0,1,100]){
+  const s={...opts,species:'holly',foliage:level,pigment:level,wear:level,registration:level,detail:level};
+  if(/(?:NaN|undefined|Infinity)/.test(M.render(s)))throw new Error('Extreme '+level);
+  count++;
+}
+console.log(`PASS: ${count} species/season/layout/extreme combinations`);

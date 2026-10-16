@@ -34,7 +34,7 @@ window.MS=window.MS||{};
    return mixed;
  };
  M.paintFamily=(color,pal)=>{
-   const targets={leaf:pal.green,blue:pal.lapis,red:pal.vermillion,ochre:pal.ochre,black:pal.ink};
+   const targets={leaf:pal.green,blue:pal.lapis,red:pal.vermillion,ochre:pal.ochre,black:pal.ink,bark:'#765039'};
    const d=(x,y)=>hexA(x).reduce((v,z,i)=>v+(z-hexA(y)[i])**2,0);
    return Object.keys(targets).sort((a,b)=>d(color,targets[a])-d(color,targets[b]))[0];
  };
@@ -48,7 +48,7 @@ window.MS=window.MS||{};
  };
  M.pigmentDefs=(s,r)=>{
    const p=s.pal;
-   const families={leaf:p.green,blue:p.lapis,red:p.vermillion,ochre:p.ochre,black:p.ink};
+   const families={leaf:p.green,blue:p.lapis,red:p.vermillion,ochre:p.ochre,black:p.ink,bark:'#765039'};
    const tone=(base,offset)=>M.mix(base,offset,.12+.30*Math.min(1,s.pigment/100));
    const gradients=Object.entries(families).map(([name,col],i)=>{
      const bottom=tone(col,p.ink),light=tone(col,p.light);
@@ -75,10 +75,11 @@ window.MS=window.MS||{};
  M.painted=(id,d,color,bounds,s,r,opts={})=>{
    const p=s.pal,detail=clamp((s.pigment||0)/100,0,1),wear=clamp((s.wear||0)/100,0,1);
    const reg=M.offsetPrint(d,r.choose([p.vermillion,p.lapis,p.ochre]),s,r,{opacity:.34,scale:1});
-   const family=M.paintFamily(color,p);
+   const family=opts.bark?'bark':M.paintFamily(color,p);
    let out=reg+`<defs><clipPath id="clip-${id}"><path d="${d}"/></clipPath></defs>`;
-   out+=M.shape(d,M.paintStop(family),`stroke="${p.ink}" stroke-width="${M.n(opts.stroke??1.4)}" stroke-linejoin="round"`);
+   out+=M.shape(d,opts.bark?color:M.paintStop(family),`stroke="${p.ink}" stroke-width="${M.n(opts.stroke??1.4)}" stroke-linejoin="round"`);
    out+=`<g clip-path="url(#clip-${id})">`;
+   if(opts.bark)out+=M.shape(d,'url(#wash-bark)',`opacity=".18"`);
    // Short textured washes are clipped to the branch shape, not free-floating.
    const n=opts.lightweight?Math.floor(14+detail*44):Math.floor(20+detail*100);
    const cols=[p.lapis,p.vermillion,p.green,p.ochre,p.light];
