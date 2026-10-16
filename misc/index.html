@@ -20,11 +20,21 @@
           <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span id="seed-label">seed 472818</span></div>
           <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
             <div id="drawing" class="drawing"></div>
+            <svg id="stroke-overlay" class="stroke-overlay" viewBox="0 0 850 1000" aria-hidden="true"><path id="stroke-preview" d=""/></svg>
+          </div>
+          <div class="draw-toolbar" aria-label="Draw vine paths">
+            <button id="draw-mode" type="button" class="action draw-mode" aria-pressed="false">draw a vine ↗</button>
+            <button id="finish-paths" type="button" class="action" hidden>finish drawing ↗</button>
+            <button id="undo-path" type="button" class="action" disabled>undo path</button>
+            <button id="clear-paths" type="button" class="action" disabled>clear paths</button>
+            <span id="path-status" class="path-status" role="status" aria-live="polite">generated growth</span>
           </div>
           <div class="drawing-actions">
             <button id="regenerate" type="button" class="action primary">something else ↗</button>
             <button id="export-svg" type="button" class="action">save svg ↗</button>
             <button id="export-png" type="button" class="action">save png ↗</button>
+            <button id="replay-growth" type="button" class="action">replay growth ↗</button>
+            <label class="tiny-check"><input id="animate-growth" type="checkbox"> animate</label>
             <label class="tiny-check"><input id="grid" type="checkbox"> grid</label>
           </div>
         </div>
@@ -39,6 +49,27 @@
               <option value="radiating">radiating shoots</option>
               <option value="meander">winding tendrils</option>
               <option value="cluster">dense thicket</option>
+            </select>
+          </label>
+          <label>underlying geometry
+            <select id="geometry">
+              <option value="random">chance / mixed traditions</option>
+              <optgroup label="Gothic">
+                <option value="gothic-pointed">pointed arches</option>
+                <option value="gothic-quatrefoil">quatrefoil systems</option>
+                <option value="gothic-ogee">ogee curves</option>
+                <option value="gothic-radial">radial tracery</option>
+              </optgroup>
+              <optgroup label="Anglo-Saxon inspired">
+                <option value="anglo-lozenge">lozenge geometry</option>
+                <option value="anglo-fret">stepped fret</option>
+                <option value="anglo-saltire">saltire crossing</option>
+              </optgroup>
+              <optgroup label="Celtic / Insular inspired">
+                <option value="celtic-triskele">triskele</option>
+                <option value="celtic-double-spiral">double spiral</option>
+                <option value="celtic-scroll">curved scrollwork</option>
+              </optgroup>
             </select>
           </label>
           <label>botanical species
@@ -76,16 +107,19 @@
           </label>
           <div class="fields-pair one-up"><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label></div>
           <div class="control-sep"></div>
+          <label class="sliding">follow geometry <output for="conform" id="conform-value">58</output><input type="range" id="conform" min="0" max="100" value="58"></label>
+          <label class="sliding">ornamental transformation <output for="ornament" id="ornament-value">45</output><input type="range" id="ornament" min="0" max="100" value="45" aria-describedby="ornament-scale"></label>
+          <div class="ornament-scale" id="ornament-scale"><span>botanical</span><span>manuscript ornament</span></div>
+          <label class="check"><input type="checkbox" id="guideOverlay"> show construction guides</label>
           <label class="sliding">foliage <output for="foliage" id="foliage-value">70</output><input type="range" id="foliage" min="0" max="100" value="70"></label>
           <label class="sliding">small details <output for="detail" id="detail-value">52</output><input type="range" id="detail" min="0" max="100" value="52"></label>
           <label class="sliding">pigment variation <output for="pigment" id="pigment-value">46</output><input type="range" id="pigment" min="0" max="100" value="46"></label>
-          <label class="sliding">branch movement <output for="distortion" id="distortion-value">20</output><input type="range" id="distortion" min="0" max="100" value="20"></label>
-          <label class="sliding">print wear <output for="wear" id="wear-value">35</output><input type="range" id="wear" min="0" max="100" value="35"></label>
+          
+          <label class="sliding">print wear / dry brush <output for="wear" id="wear-value">35</output><input type="range" id="wear" min="0" max="100" value="35"></label>
           <label class="sliding">ink spread <output for="spread" id="spread-value">46</output><input type="range" id="spread" min="0" max="100" value="46"></label>
+          <label class="sliding">print distortion <output for="printWarp" id="printWarp-value">20</output><input type="range" id="printWarp" min="0" max="100" value="20"></label>
           <label class="sliding">color registration <output for="registration" id="registration-value">28</output><input type="range" id="registration" min="0" max="100" value="28"></label>
           <div class="control-sep"></div>
-          <label class="check"><input type="checkbox" id="bleed" checked> ink bleed</label>
-          <label class="check"><input type="checkbox" id="transparent" checked> transparent export</label>
           <button type="button" class="action reset" id="reset">reset ↗</button>
         </form>
       </div>
@@ -94,11 +128,15 @@
 </div>
 <script src="/assets/site-nav.js" defer></script>
 <script src="/misc/js/core.js" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" async onload="window.dispatchEvent(new Event('spectral-ready'))"></script>
 <script src="/misc/js/pigment.js" defer></script>
 <script src="/misc/js/finish.js" defer></script>
+<script src="/misc/js/geometry.js" defer></script>
+<script src="/misc/js/spatial.js" defer></script>
+<script src="/misc/js/drawing.js" defer></script>
 <script src="/misc/js/composition.js" defer></script>
 <script src="/misc/js/species.js" defer></script>
+<script src="/misc/js/ornament.js" defer></script>
 <script src="/misc/js/botany.js" defer></script>
 <script src="/misc/js/render.js" defer></script>
 <script src="/misc/js/app.js" defer></script>
