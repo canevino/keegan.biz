@@ -10,12 +10,16 @@ window.MS=window.MS||{};
    const wear=c(Number(s.wear||0)/100,0,1);
    const spread=c(Number(s.spread||0)/100,0,1);
    const warp=c(Number(s.printWarp||0)/100,0,1);
-   const scale=n(warp*3.2 + wear*.24);
-   const soft=n(.08+spread*(.42+wear*.42));
-   const bleedRadius=n(spread*(.20+.72*wear));
+   const scale=n(.8+warp*4+wear*1.10);
+   const soft=n(.10+spread*(.55+wear*.65));
+   const bleedRadius=n(spread*(1.65+2.1*wear));
    const loss=n(wear*.39);
-   const poolOpacity=n(spread*(.08+.16*wear));
-   return `<filter id="press" x="-16%" y="-16%" width="132%" height="132%" color-interpolation-filters="sRGB">`+
+   const poolOpacity=n(spread*(.22+.28*wear));
+   return `<filter id="rough-ink" x="-9%" y="-9%" width="118%" height="118%">`+
+     `<feTurbulence type="fractalNoise" baseFrequency=".085 .12" numOctaves="3" seed="${r.int(1,99999)}" result="edge-noise"/>`+
+     `<feDisplacementMap in="SourceGraphic" in2="edge-noise" scale="${n(.55+wear*1.25)}" xChannelSelector="R" yChannelSelector="G"/>`+
+     `</filter>`+
+     `<filter id="press" x="-16%" y="-16%" width="132%" height="132%" color-interpolation-filters="sRGB">`+
      // A long-grain field means low-frequency warped curves + short local damage.
      `<feTurbulence type="fractalNoise" baseFrequency="${n(.020+.016*warp)} ${n(.045+.028*warp)}" numOctaves="2" seed="${r.int(1,99998)}" result="warpField"/>`+
      `<feDisplacementMap in="SourceGraphic" in2="warpField" scale="${scale}" xChannelSelector="R" yChannelSelector="G" result="printed"/>`+
@@ -25,7 +29,7 @@ window.MS=window.MS||{};
      `<feComponentTransfer in="alphaBlur" result="thresholdAlpha"><feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1"/></feComponentTransfer>`+
      `<feMorphology in="thresholdAlpha" operator="dilate" radius="${bleedRadius}" result="dilated"/>`+
      `<feTurbulence type="fractalNoise" baseFrequency=".12 .17" numOctaves="2" seed="${r.int(1,99998)}" result="bleedNoise"/>`+
-     `<feDisplacementMap in="dilated" in2="bleedNoise" scale="${n(spread*(.20+wear*1.9))}" xChannelSelector="R" yChannelSelector="G" result="irregularBleed"/>`+
+     `<feDisplacementMap in="dilated" in2="bleedNoise" scale="${n(.40+spread*(.8+wear*2.2))}" xChannelSelector="R" yChannelSelector="G" result="irregularBleed"/>`+
      `<feComposite in="irregularBleed" in2="SourceAlpha" operator="out" result="edgeOnly"/>`+
      `<feFlood flood-color="${s.pal.ink}" flood-opacity="${poolOpacity}" result="poolPigment"/>`+
      `<feComposite in="poolPigment" in2="edgeOnly" operator="in" result="edgeDeposits"/>`+

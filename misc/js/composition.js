@@ -67,7 +67,8 @@ window.MS=window.MS||{};
     // Guides influence directions and preferred growth regions. They never
     // manufacture duplicate main stems or force the plant to trace entire
     // lozenges, saltire crosses, or spirals. Species topology comes first.
-    const stems=natural.map((source,i)=>{
+    const conformedNatural=amount>.87 ? natural.slice(0,construction.rails.length) : natural;
+    const stems=conformedNatural.map((source,i)=>{
       const rail=construction.rails[i%construction.rails.length];
       return {...source,id:i+1,side:source.side||((i%2)?-1:1),
         guidePoints:rail,

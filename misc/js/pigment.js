@@ -196,7 +196,8 @@ window.MS=window.MS||{};
      layers+=M.shape(d,'url(#speckle)',`opacity="${n(.04+.22*texture)}"`);
      layers+=M.shape(d,'url(#micro-grain)',`opacity="${n(.03+.18*texture)}"`);
    }
-   if(wear>.03)layers+=M.shape(d,'url(#dry-grain)',`opacity="${n(.07+wear*.34)}"`);
+   // Even a newly printed leaf has some flecks; higher wear opens dry gaps.
+   layers+=M.shape(d,'url(#dry-grain)',`opacity="${n(.16+wear*.35)}"`);
    layers+='</g></g>';
    return defs+layers;
  };

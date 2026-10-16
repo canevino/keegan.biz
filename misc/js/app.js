@@ -10,7 +10,7 @@
  const numberFields=['seed','conform','ornament','foliage','finishLevel'];
  const controlIds=[...textFields,...numberFields];
  const stage=el('drawing-stage'),overlay=el('stroke-overlay'),preview=el('stroke-preview');
- let strokes=[],draft=[],drawing=false,pointerId=null,paintTimer=null,svg='',playback=[],version=0;
+ let strokes=[],draft=[],drawing=false,pointerId=null,paintTimer=null,svg='';
  const cap=4;
  function read(){
    controlIds.forEach(id=>s[id]=numberFields.includes(id)?Number(el(id).value):el(id).value);
@@ -20,17 +20,17 @@
    // density = branch/leaf population, wear = the coherent print finish.
    const f=M.clamp(s.finishLevel/100,0,1);
    s.detail=64; // real leaf venation stays legible regardless of density
-   s.pigment=Math.round(19+f*39);        // subtle color variation within shapes
-   s.wear=Math.round(f*78);              // missing ink / dry brush
-   s.spread=Math.round(f*56);            // bleeding stays near source edges
-   s.registration=Math.round(f*26);     // small imperfections, not ghost leaves
-   s.printWarp=Math.round(f*21);        // local print wobble, not plant topology
-   s.distortion=12;                     // gentle botanical waviness, not random shapes
+   s.pigment=Math.round(24+f*34);        // subtle color variation within shapes
+   s.wear=Math.round(f*75);              // missing ink / dry brush
+   s.spread=Math.round(20+f*75);            // bleeding stays near source edges
+   s.registration=Math.round(f*20);     // small imperfections, not ghost leaves
+   s.printWarp=Math.round(f*14);        // local print wobble, not plant topology
+   s.distortion=7;                     // gentle botanical waviness, not random shapes
    s.bleed=s.spread>0;s.transparent=true;
    s.guideOverlay=el('guideOverlay').checked;
    s.drawnPaths=strokes.map(path=>path.map(p=>({x:p.x,y:p.y})));
  }
- function stopPlayback(){for(const animation of playback)try{animation.cancel()}catch(_){}playback=[];}
+ function stopPlayback(){M.growthAnimation?.cancel();}
  function meta(){
    el('seed-label').textContent='seed '+s.seed;
    const species=s.species==='random'?'mixed botanical growth':s.species==='hybrid'?'ornamental hybrid':s.species+' / '+s.season;
@@ -40,7 +40,7 @@
  }
  function refreshStatus(message){
    el('path-status').textContent=message||(drawing
-     ? `${strokes.length} of ${cap} paths · drag on artwork` :
+     ? `${strokes.length} of ${cap} paths · drag from base to tip` :
        strokes.length?`${strokes.length} drawn ${strokes.length===1?'stem':'stems'}`:'generated growth');
    el('undo-path').disabled=strokes.length===0;
    el('clear-paths').disabled=strokes.length===0;
@@ -112,12 +112,12 @@
    if(!cancel){
      const p=locationFor(evt);
      if(p&&draft.length&&M.distance(p,draft[draft.length-1])>2&&draft.length<240)draft.push(p);
-     if(M.resampleStroke(draft).length){
-       strokes.push(draft.map(q=>({...q})));
-       // Keep draw mode enabled for another vine. Avoid replaying an animation
-       // during consecutive strokes; the user should see the full composition.
-       paint({animate:false});
-     } else refreshStatus('stroke too short · draw a longer path');
+     const completeStroke=M.resampleStroke(draft).length?draft.map(q=>({...q})):null;
+     try{overlay.releasePointerCapture(evt.pointerId)}catch(_){}
+     abortDraft();
+     if(completeStroke){strokes.push(completeStroke);paint({animate:false});}
+     else refreshStatus('stroke too short · draw from stem base towards its tip');
+     return;
    }
    try{overlay.releasePointerCapture(evt.pointerId)}catch(_){}
    abortDraft();
@@ -139,52 +139,22 @@
    if(evt.key==='Escape'&&drawing){setDrawMode(false);paint({animate:false});}
  });
 
- // ------------------- screen-only reveal ----------------------------
+ // A staged growth sequence is implemented separately from plant generation,
+ // so it never alters the downloaded final SVG or any of the random seeds.
  function animateGrowth(){
-   stopPlayback();
-   if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
-   const drawingSVG=el('drawing').querySelector('svg'),growth=M.lastGrowthPaths||[];
-   if(!drawingSVG || growth.length===0)return;
-   // Limit the effect on extremely large SVGs (not the artwork or exports).
-   const playbackLimit=window.innerWidth<=700?3200000:5000000;
-   if(svg.length>playbackLimit){refreshStatus('animation skipped for complex illustration');return;}
-   const ns='http://www.w3.org/2000/svg';
-   const maskId='growth-mask-'+(++version);
-   const defs=document.createElementNS(ns,'defs'),mask=document.createElementNS(ns,'mask');
-   mask.setAttribute('id',maskId);mask.setAttribute('maskUnits','userSpaceOnUse');
-   mask.setAttribute('x','-200');mask.setAttribute('y','-200');mask.setAttribute('width',String(M.W+400));mask.setAttribute('height',String(M.H+400));
-   mask.setAttribute('style','mask-type:luminance');
-   const lanes=[];
-   for(const [i,points] of growth.entries()){
-     const path=document.createElementNS(ns,'path');
-     path.setAttribute('d',M.strokePath(points));
-     path.setAttribute('stroke','white');path.setAttribute('stroke-width','205');
-     path.setAttribute('stroke-linejoin','round');path.setAttribute('stroke-linecap','round');
-     path.setAttribute('fill','none');
-     const len=Math.max(1,path.getTotalLength());
-     path.style.strokeDasharray=String(len+1);
-     path.style.strokeDashoffset=String(len+1);
-     mask.appendChild(path);lanes.push({path,len,i});
-   }
-   defs.appendChild(mask);drawingSVG.insertBefore(defs,drawingSVG.firstChild);
-   const layers=drawingSVG.querySelector('#artwork-layers');
-   if(!layers)return;
-   layers.setAttribute('mask',`url(#${maskId})`);
-   for(const {path,len,i} of lanes){
-     const animation=path.animate([{strokeDashoffset:len+1},{strokeDashoffset:0}],{
-       duration:2100,delay:i*320,fill:'forwards',easing:'ease-in-out'
-     });
-     playback.push(animation);
-   }
-   // Keep the final result visible after all animation players finish.
-   Promise.all(playback.map(p=>p.finished.catch(()=>null))).then(()=>{
-     if(drawingSVG.isConnected&&drawingSVG.querySelector('#'+maskId)){
-       layers.removeAttribute('mask');defs.remove();
-     }
-   });
+   if(drawing)return;
+   M.growthAnimation?.play(el('drawing').querySelector('svg'));
  }
- el('replay-growth').addEventListener('click',()=>paint({animate:false})||requestAnimationFrame(animateGrowth));
- el('animate-growth').addEventListener('change',ev=>{if(ev.target.checked)requestAnimationFrame(animateGrowth);else paint({animate:false});});
+ M.animationComplete=()=>{
+   if(!drawing)paint({animate:false});
+ };
+ el('replay-growth').addEventListener('click',()=>{
+   paint({animate:false});requestAnimationFrame(animateGrowth);
+ });
+ el('animate-growth').addEventListener('change',ev=>{
+   if(ev.target.checked)requestAnimationFrame(animateGrowth);
+   else paint({animate:false});
+ });
 
  // -------------------------- exports --------------------------------
  // Always render a clean, non-animated SVG with NO construction guide.

@@ -32,9 +32,27 @@ window.MS=window.MS||{};
   );
   M.ornamentLeafInterior=(sp,len,col,pal,r,s)=>{
     const lev=influence(sp,s);
-    if(lev<.64 || len<17 || !r.chance((lev-.5)*.42))return '';
-    const ink=M.mix(pal.ink,col,.27),x=len*r.between(.34,.54),height=len*r.between(.09,.16)*lev;
-    return M.path(`M${V(x,0)}q${V(len*.07,-height)} ${V(len*.14,-height*.12)}q${V(len*.04,height*.35)} ${V(-len*.014,height*.48)}`, ink,Math.max(.35,len*.011),`opacity="${n(.28+.22*lev)}"`);
+    if(lev<.22 || len<17)return '';
+    const ink=lev>.62 ? M.mix(pal.ochre,pal.vermillion,.24) : M.mix(pal.ink,col,.30);
+    const width=Math.max(.35,len*.018);
+    let z=M.path(`M${V(len*.08,0)}Q${V(len*.53,-len*.018)} ${V(len*.86,0)}`,
+      ink,width,`opacity="${n(.17+.55*lev)}"`);
+    if(lev>.42){
+      for(const side of [-1,1])for(let i=0;i<3;i++){
+        const t=.25+i*.20,x=len*t;
+        const y=side*len*.14*Math.sin(Math.PI*t);
+        z+=M.path(`M${V(x,0)}Q${V(x+len*.075,y*.42)} ${V(x+len*.13,y)}`,
+          ink,Math.max(.35,len*.01),`opacity="${n(.12+.42*lev)}"`);
+      }
+    }
+    if(lev>.75){
+      for(let i=0;i<4;i++){
+        const t=.24+i*.18,y=len*.08*Math.sin(Math.PI*t);
+        z+=M.circle(len*t, (i%2?1:-1)*y,Math.max(.5,len*.017),
+          r.choose([pal.ochre,pal.lapis,pal.vermillion]),`opacity="${n((lev-.68)*1.9)}"`);
+      }
+    }
+    return z;
   };
 
   function pointBud(at,angle,size,pal,r){
@@ -87,7 +105,7 @@ window.MS=window.MS||{};
     const lev=influence(sp,s);
     if(lev<.34)return '';
     const vine=vineLike(sp);
-    const chance=(force?.30:0)+ (vine?.12:.06) + Math.pow(Math.max(0,lev-.34),1.45)*(vine?.28:.14);
+    const chance=(force?.25:0)+ (vine?.10:.05) + Math.pow(Math.max(0,lev-.34),1.15)*(vine?.35:.18);
     if(!force && !r.chance(chance))return '';
     const size=clamp(scale*(.64+.46*lev),4,18);
     if(vine && lev>.76 && r.chance(.36))return volute(at,angle,size*.62,pal,r,lev,r.sign());
@@ -98,7 +116,7 @@ window.MS=window.MS||{};
   M.ornamentJunction=(sp,at,angle,size,pal,r,s,plan,role='joint')=>{
     const lev=influence(sp,s);
     if(lev<.42)return '';
-    const chance=(role==='terminal'?.42:.24)*Math.pow(lev,1.06);
+    const chance=(role==='terminal'?.44:.30)*Math.pow(lev,.9);
     if(!r.chance(chance))return '';
     const length=clamp(size*(.7+.48*lev),5,20);
     const direction=angle+r.between(-.48,.48);

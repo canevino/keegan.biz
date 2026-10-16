@@ -45,7 +45,10 @@ window.MS=window.MS||{};
    if(season==='winter'){
      col=sp.evergreen ? mix(col,pal.ink,.12) : mix(col,pal.ochre,.56);
    }
-   if(sp.leaf==='acanthus' && ornament>.42 && r.chance(.10+.14*ornament))col=r.choose([pal.lapis,pal.vermillion,pal.green]);
+   if(ornament>.35 && r.chance(Math.pow((ornament-.35)/.65,1.5)*(sp.leaf==='acanthus'?.23:.13))){
+     // A small number of leaf-shaped colored impressions, not random symbols.
+     col=r.choose([pal.lapis,pal.vermillion,M.mix(col,pal.ochre,.35)]);
+   }
    return col;
  };
  // Natural leaf anatomy is defined here; manuscript treatment is a separate,
@@ -163,9 +166,12 @@ window.MS=window.MS||{};
    // Compound leaves may contain hundreds of tiny leaflets. At this scale the
    // per-leaf filter/mask machinery creates huge SVGs without visible benefit.
    // Keep a crisp botanical blade and its midrib; reserve rich ink for big leaves.
-   if(size<18){
-     return M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(Math.max(.36,size*.024))}" stroke-linejoin="round"`)+
-       M.path(`M0 0Q${V(size*.52,-size*.011)} ${V(size*.95,0)}`,mix(color,pal.ink,.46),Math.max(.22,size*.017),'opacity=".48"');
+   if(size<42){
+     const outline=M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(Math.max(.36,size*.024))}" stroke-linejoin="round"`);
+     const grain=M.shape(d,'url(#speckle)',`opacity="${n(.20+(s.wear||0)*.004)}"`);
+     const rib=M.path(`M0 0Q${V(size*.52,-size*.011)} ${V(size*.95,0)}`,mix(color,pal.ink,.46),Math.max(.22,size*.017),'opacity=".48"');
+     const ornament=M.ornamentLeafInterior?M.ornamentLeafInterior(sp,size,color,pal,r,s):'';
+     return `<g>${outline}${grain}</g>${rib}${ornament}`;
    }
    let z=M.leafFinish(id,d,size,color,pal,s,r);
    z+=`<g clip-path="url(#leaf-clip-${id})">`;
@@ -218,9 +224,9 @@ window.MS=window.MS||{};
    const leaf=sp.leaf==='fern'?fernFrond(sp,size,season,pal,r,s):['dogrose','bramble'].includes(sp.leaf)?compound(sp,size,season,pal,r,s):simpleLeaf(sp,size,season,pal,r,undefined,s);
    // Larger illuminated leaves appear as the transformation increases.
    const ornamental=M.ornamentInfluence?M.ornamentInfluence(sp,s):0;
-   const petiole=Math.min(6,Math.max(1,size*.075));
+   const petiole=Math.min(9,Math.max(2.2,size*.11));
    const stem=M.path(`M0 0 L${V(petiole,0)}`,M.wood(sp,pal,'new',r),Math.max(.46,size*.033));
-   const magnify=1+ornamental*.14;
+   const magnify=1+ornamental*.08;
    return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})">${leaf}</g></g>`;
  };
  function blossom(at,scale,pal,r,white=true){
@@ -247,7 +253,7 @@ window.MS=window.MS||{};
    }
    return z;
  }
- M.plantOrgan=(sp,at,angle,season,pal,r,scale=8)=>{
+ function rawOrgan(sp,at,angle,season,pal,r,scale=8){
    const name=sp.leaf,tip=sum(at,Q(angle,scale*.7));
    if(name==='holly') return season==='winter'||season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'berry',3):season==='spring'?blossom(tip,scale*.47,pal,r):'';
    if(name==='hazel'){
@@ -275,5 +281,24 @@ window.MS=window.MS||{};
    if(name==='fern')return season==='spring'?M.path(`M${V(at.x,at.y)}q${V(scale,-scale)} ${V(scale*.4,-scale*1.1)}q${V(-scale*.3,-scale*.2)} ${V(-scale*.4,scale*.2)}`,sp.tint,1.6):'';
    if(name==='acanthus')return season==='summer'?blossom(tip,scale*.95,pal,r,false):'';
    return '';
+ }
+ // Layered life-cycle states. Only the selected-season final is exported or
+ // shown when still; preview animation reveals a stalk-attached bud, then a
+ // blossom, and finally the season's organ (berries, hips, nut, catkin, etc.).
+ M.plantOrgan=(sp,at,angle,season,pal,r,scale=8)=>{
+   const snapshot=(stage)=>M.rng(M.childSeed((Math.round(at.x*111+at.y*331+scale*17)>>>0),stage));
+   const final=rawOrgan(sp,at,angle,season,pal,snapshot(43),scale);
+   if(!final)return '';
+   const tip=sum(at,Q(angle,scale*.7));
+   const base=M.path(`M${V(at.x,at.y)} Q${V(at.x+Math.cos(angle-.14)*scale*.44,at.y+Math.sin(angle-.14)*scale*.44)} ${V(tip.x,tip.y)}`,
+     M.wood(sp,pal,'new',snapshot(15)),Math.max(.55,scale*.095));
+   const budTip=sum(tip,Q(angle,scale*.32)),v=(p)=>V(p.x,p.y);
+   const bloom=rawOrgan(sp,at,angle,'spring',pal,snapshot(23),scale)||blossom(tip,scale*.79,pal,snapshot(25));
+   const bud=M.path(`M${V(tip.x,tip.y)}L${v(budTip)}`,M.mix(sp.tint,pal.ink,.3),.65)+
+     `<ellipse cx="${n(budTip.x)}" cy="${n(budTip.y)}" rx="${n(scale*.24)}" ry="${n(scale*.37)}" transform="rotate(${n(angle*180/Math.PI+90)} ${v(budTip)})" fill="${M.mix(sp.tint,pal.ochre,.28)}" stroke="${pal.ink}" stroke-width=".46"/>`;
+   return `<g class="growth-organ" data-life="${M.escape(sp.leaf)}">${base}`+
+     `<g class="life-bud">${bud}</g>`+
+     `<g class="life-bloom">${bloom}</g>`+
+     `<g class="life-final">${final}</g></g>`;
  };
 })(window.MS);
