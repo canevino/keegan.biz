@@ -138,5 +138,61 @@ window.MS = window.MS || {};
     return register.replaceAll('stroke="currentColor"',`stroke="${pal[1]}"`)+main;
   }
 
+
+  /* Woven bands following an existing vine centreline. Alternating mask gaps
+     preserve the over-under sequence at each crossing; unlike a tiled knot,
+     this intertwines with the plant and shares its actual curve. */
+  O.braidOnStem=(samples,pal,r,opts={})=>{
+    if(!samples||samples.length<12)return '';
+    const count=r.int(4,7),amp=opts.amplitude||4.9,band=opts.width||2.8;
+    const id='braid-'+r.int(100000,999999999),a=[],b=[];
+    const pts=Array.from({length:101},(_,i)=>samples[Math.round(i*(samples.length-1)/100)]);
+    pts.forEach((p,i)=>{
+      const t=i/100,normal=O.normal(p.tng),h=Math.sin(2*Math.PI*count*t)*amp;
+      a.push([p.x+normal.x*h,p.y+normal.y*h]);
+      b.push([p.x-normal.x*h,p.y-normal.y*h]);
+    });
+    const d=points=>'M'+points.map(p=>`${f(p[0])} ${f(p[1])}`).join('L');
+    let am='',bm='';
+    for(let k=1;k<2*count;k++){
+      const t=k/(2*count),p=pts[Math.round(t*100)],gap=band*1.18;
+      const hole=`<circle cx="${f(p.x)}" cy="${f(p.y)}" r="${f(gap)}" fill="black"/>`;
+      if(k%2)am+=hole;else bm+=hole;
+    }
+    const mask=which=>`<mask id="${id}-${which}" maskUnits="userSpaceOnUse" x="0" y="0" width="850" height="1000"><rect x="0" y="0" width="850" height="1000" fill="white"/>${which==='a'?am:bm}</mask>`;
+    const A=d(a),B=d(b),edge=pal.ink,colors=[pal.ochre,pal.lapis,pal.vermillion,pal.green];
+    const ribbon=(path,col,maskid)=>`<g mask="url(#${maskid})"><path d="${path}" fill="none" stroke="${edge}" stroke-width="${f(band+1.05)}" stroke-linecap="round" stroke-linejoin="round"/><path d="${path}" fill="none" stroke="${col}" stroke-width="${f(band)}" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+    return `<defs>${mask('a')}${mask('b')}</defs><g opacity=".88">${ribbon(A,r.pick(colors),id+'-a')}${ribbon(B,r.pick(colors),id+'-b')}</g>`;
+  };
+
+  /* Dense interlace inside a deliberately non-rectangular cartouche.
+     A cartouche is located by the composition planner, usually near growth
+     or a letter terminal. Underlying grid crossings still obey mirror curves. */
+  O.knotCartouche=(cell,cfg,palette,r)=>{
+    const x=cell.x,y=cell.y,rx=cell.rx,ry=cell.ry;
+    const id='cartouche-'+r.int(100000,999999999),col=palette[0];
+    const n=16,ps=[];
+    const phi=r.n(0,6.28);
+    for(let i=0;i<n;i++){
+      const theta=2*Math.PI*i/n,mod=1+.065*Math.sin(5*theta+phi)+.03*Math.sin(9*theta-phi);
+      ps.push([x+rx*Math.cos(theta)*mod,y+ry*Math.sin(theta)*mod]);
+    }
+    const midpoint=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2];
+    const first=midpoint(ps[n-1],ps[0]);
+    let outline=`M${f(first[0])} ${f(first[1])}`;
+    ps.forEach((p,i)=>{const q=midpoint(p,ps[(i+1)%n]);outline+=`Q${f(p[0])} ${f(p[1])} ${f(q[0])} ${f(q[1])}`;});
+    outline+='Z';
+    const inner=`<path d="${outline}" fill="${palette[3]||palette[2]}" fill-opacity=".075" stroke="${col}" stroke-width="1.3"/>`;
+    const border=`<path d="${outline}" fill="none" stroke="${palette[2]}" stroke-width="4.2" stroke-opacity=".65"/>`;
+    const knots=O.knot(x,y,Math.min(rx,ry)/260,cell.rotation||0,{density:cfg.density||.5,distort:cfg.distort||0,misprint:cfg.misprint||0},palette,r,{big:true});
+    let rivets='';
+    for(let i=0;i<8;i++){
+      const a=2*Math.PI*i/8,xp=x+(rx*.91)*Math.cos(a),yp=y+(ry*.91)*Math.sin(a);
+      rivets+=O.circle(xp,yp,r.n(.8,2.1),palette[(i%3)+1],`stroke="${col}" stroke-width=".45"`);
+    }
+    return `<defs><clipPath id="${id}"><path d="${outline}"/></clipPath></defs>`+
+      `<g opacity=".9">${inner}<g clip-path="url(#${id})">${knots}</g>${border}${rivets}</g>`;
+  };
+
   O.knot=renderKnot;
 })(window.MS);
