@@ -109,10 +109,19 @@
           <label class="sliding">growth density <output for="foliage" id="foliage-value">70</output><input type="range" id="foliage" min="10" max="100" value="70"></label>
           <label class="sliding">print wear <output for="finishLevel" id="finishLevel-value">24</output><input type="range" id="finishLevel" min="0" max="100" value="24"></label>
           <label class="check"><input type="checkbox" id="guideOverlay"> show construction guides</label>
+          <details class="control-note">
+            <summary>How the shapes work</summary>
+            <p><strong>Growth pattern</strong> sets the number and arrangement of main stems. <strong>Underlying geometry</strong> sets their construction curves. At 100% follow geometry, stems trace those curves exactly; at 0% they grow freely. Branches and foliage follow the plant species.</p>
+            <p><strong>Ornamental transformation</strong> alters leaf contours, veins and attached flower details. <strong>Print wear</strong> controls local ink spread, missing pigment and slight plate misregistration.</p>
+          </details>
           <div class="control-sep"></div>
           <button type="button" class="action reset" id="reset">reset ↗</button>
         </form>
       </div>
+      <details class="machine-credits">
+        <summary>credits and sources ↗</summary>
+        <p>Botanical drawing and procedural code for keegan.biz. Pigment mixing uses <a href="https://github.com/rvanwijnen/spectral.js" target="_blank" rel="noopener noreferrer">Spectral.js</a> by Ronald van Wijnen (MIT). The edge treatment references <a href="https://andyjakubowski.com/ink-bleed-effect-with-svg-filters/" target="_blank" rel="noopener noreferrer">Andy Jakubowski’s SVG ink bleed method</a>. Growth interaction was informed by the <a href="https://github.com/dengshu2/illustrated-manuscript" target="_blank" rel="noopener noreferrer">Illustrated Manuscript</a> project by River Marchand; its dragon sprites, animation code and text engine are not included.</p>
+      </details>
     </section>
   </main>
 </div>
@@ -130,6 +139,7 @@
 <script src="/misc/js/ornament.js" defer></script>
 <script src="/misc/js/botany.js" defer></script>
 <script src="/misc/js/render.js" defer></script>
+<script src="/misc/js/growth-animation.js" defer></script>
 <script src="/misc/js/app.js" defer></script>
 </body>
 </html>

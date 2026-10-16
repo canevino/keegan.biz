@@ -71,3 +71,15 @@ button:focus-visible,select:focus-visible,input:focus-visible {outline:2px solid
 .draw-toolbar .action:disabled {opacity:.35;cursor:not-allowed;}
 .path-status {font-size:11px;color:#615a4d;margin-left:auto;}
 @media (max-width:700px){.draw-toolbar {gap:12px}.path-status {width:100%;margin-left:0}}
+
+/* Page-only credits and control notes; no global site files are changed. */
+.control-note,.machine-credits {font: 11px/1.55 Helvetica, Arial, sans-serif;color:#635d51;}
+.control-note summary,.machine-credits summary {color:var(--red);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+.control-note p {margin:9px 0 0;}
+.control-note strong {color:#28241f;}
+.machine-credits {border-top:1px solid rgba(17,17,15,.20);padding-top:14px;margin-top:24px;max-width:800px;}
+.machine-credits a {color:var(--green);text-decoration:underline;}
+.machine-credits p {margin:12px 0 0;}
+/* SVG life stages stay hidden in final artwork and all exported files. */
+.drawing .life-bud,.drawing .life-bloom {display:none;}
+.drawing svg.is-growing .life-bud,.drawing svg.is-growing .life-bloom {display:inline;}
