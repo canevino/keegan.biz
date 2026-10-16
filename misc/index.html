@@ -17,8 +17,8 @@
       <header class="machine-heading"><h2 id="machine-name">ornament machine</h2></header>
       <div class="machine-layout">
         <div class="drawing-side">
-          <div class="drawing-meta"><span id="mode-description">botanical illumination</span><span id="seed-label">seed 472818</span></div>
-          <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated ornament">
+          <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span id="seed-label">seed 472818</span></div>
+          <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
             <div id="drawing" class="drawing"></div>
           </div>
           <div class="drawing-actions">
@@ -30,23 +30,36 @@
         </div>
         <form class="drawing-controls" id="controls" novalidate>
           <p class="control-header">make a change</p>
-          <label>structure
-            <select id="mode"><option value="botanical">botanical illumination</option><option value="letter">decorated initial</option><option value="interlace">interlace / carpet ornament</option></select>
+          <label>growth pattern
+            <select id="pattern">
+              <option value="random">chance / random structure</option>
+              <option value="single">single wandering stem</option>
+              <option value="crescent">crescent growth</option>
+              <option value="diagonal">diagonal overgrowth</option>
+              <option value="radiating">radiating shoots</option>
+              <option value="meander">winding tendrils</option>
+              <option value="cluster">dense thicket</option>
+            </select>
           </label>
           <label>pigments
-            <select id="palette"><option value="kells">insular / mineral</option><option value="jewel">lapis / vermilion</option><option value="earth">earth / iron</option><option value="site">red / green / yellow</option><option value="monochrome">black / sepia</option></select>
+            <select id="palette">
+              <option value="kells">insular / mineral</option>
+              <option value="jewel">lapis / vermilion</option>
+              <option value="earth">earth / iron</option>
+              <option value="site">red / green / yellow</option>
+              <option value="monochrome">black / sepia</option>
+            </select>
           </label>
-          <div class="fields-pair"><label>initial <input type="text" id="initial" value="B" maxlength="1" autocapitalize="characters" spellcheck="false"></label><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label></div>
+          <div class="fields-pair one-up"><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label></div>
           <div class="control-sep"></div>
           <label class="sliding">foliage <output for="foliage" id="foliage-value">70</output><input type="range" id="foliage" min="0" max="100" value="70"></label>
-          <label class="sliding">interlace <output for="knots" id="knots-value">60</output><input type="range" id="knots" min="0" max="100" value="60"></label>
           <label class="sliding">small details <output for="detail" id="detail-value">52</output><input type="range" id="detail" min="0" max="100" value="52"></label>
-          <label class="sliding">letter fragments <output for="fragments" id="fragments-value">12</output><input type="range" id="fragments" min="0" max="100" value="12"></label>
           <label class="sliding">pigment variation <output for="pigment" id="pigment-value">46</output><input type="range" id="pigment" min="0" max="100" value="46"></label>
-          <label class="sliding">distortion <output for="distortion" id="distortion-value">20</output><input type="range" id="distortion" min="0" max="100" value="20"></label>
+          <label class="sliding">branch movement <output for="distortion" id="distortion-value">20</output><input type="range" id="distortion" min="0" max="100" value="20"></label>
           <label class="sliding">print wear <output for="wear" id="wear-value">35</output><input type="range" id="wear" min="0" max="100" value="35"></label>
+          <label class="sliding">ink spread <output for="spread" id="spread-value">46</output><input type="range" id="spread" min="0" max="100" value="46"></label>
+          <label class="sliding">color registration <output for="registration" id="registration-value">28</output><input type="range" id="registration" min="0" max="100" value="28"></label>
           <div class="control-sep"></div>
-          <label class="check"><input type="checkbox" id="initial-visible" checked> decorated initial</label>
           <label class="check"><input type="checkbox" id="bleed" checked> ink bleed</label>
           <label class="check"><input type="checkbox" id="transparent" checked> transparent export</label>
           <button type="button" class="action reset" id="reset">reset ↗</button>
@@ -57,13 +70,11 @@
 </div>
 <script src="/assets/site-nav.js" defer></script>
 <script src="/misc/js/core.js" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" defer></script>
 <script src="/misc/js/pigment.js" defer></script>
 <script src="/misc/js/finish.js" defer></script>
-<script src="/misc/js/interlace.js" defer></script>
 <script src="/misc/js/composition.js" defer></script>
 <script src="/misc/js/botany.js" defer></script>
-<script src="/misc/js/glyphs.js" defer></script>
-<script src="/misc/js/initials.js" defer></script>
 <script src="/misc/js/render.js" defer></script>
 <script src="/misc/js/app.js" defer></script>
 </body>

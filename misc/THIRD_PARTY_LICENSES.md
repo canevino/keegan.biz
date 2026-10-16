@@ -1,13 +1,5 @@
-# Third-party material and algorithms
+# Third-party source / attribution
 
-## Celtic Knot Maker
+**Spectral.js** — © Ronald van Wijnen, MIT License. Source: https://github.com/rvanwijnen/spectral.js/ . This package references the published v3.0.0 browser build by CDN; it does not redistribute Spectral.js source bytes. See the official repository LICENSE for its full text: https://github.com/rvanwijnen/spectral.js/blob/master/LICENSE .
 
-Project: https://github.com/evoluteur/celtic-knot-maker
-Author: Olivier Giulieri
-License: MIT
-
-The mirror-curve interlace mechanism in `js/interlace.js` is adapted from the public algorithmic description and implementation of Celtic Knot Maker (using George Bain's approach). This project retains recognition of that source and its MIT licensing.
-
-Full upstream license and notices: https://github.com/evoluteur/celtic-knot-maker/blob/main/LICENSE
-
-Other generator modules in this package are independently implemented, informed by the references documented in `SOURCES_AND_LIMITATIONS.md`. The Vegetation Generator and VineJS libraries have not been copied into the site. Spectral.js is not bundled.
+The botanical geometry, app controls, SVG compositing code and procedural textures in this package are implemented locally. The older Celtic knot generator code and associated libraries are not loaded or included in this botanical-only version.
