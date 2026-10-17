@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-17T13:44:38.231Z",
+  "updatedAt": "2026-10-17T15:44:04.595Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -111,8 +111,8 @@
         {
           "id": "5795476",
           "date": "2026-10-17T14:00:00.000Z",
-          "when": "today · Sat, Oct 17 · 10:00 AM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Brentford",
           "away": "Liverpool",
           "competition": "Premier League"
@@ -160,8 +160,8 @@
           {
             "rank": 1,
             "team": "Man City",
-            "points": 18,
-            "played": 6,
+            "points": 21,
+            "played": 7,
             "highlight": false
           },
           {
@@ -180,51 +180,51 @@
           },
           {
             "rank": 4,
-            "team": "Brentford",
-            "points": 10,
-            "played": 6,
+            "team": "Chelsea",
+            "points": 13,
+            "played": 7,
             "highlight": false
           },
           {
             "rank": 5,
-            "team": "Everton",
-            "points": 10,
-            "played": 6,
-            "highlight": false
+            "team": "Liverpool",
+            "points": 12,
+            "played": 7,
+            "highlight": true
           },
           {
             "rank": 6,
-            "team": "Chelsea",
+            "team": "Brentford",
             "points": 10,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
             "rank": 7,
+            "team": "Everton",
+            "points": 10,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 8,
             "team": "Leeds",
             "points": 9,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 8,
+            "rank": 9,
             "team": "Hull",
             "points": 9,
-            "played": 6,
+            "played": 7,
             "highlight": false
-          },
-          {
-            "rank": 9,
-            "team": "Liverpool",
-            "points": 9,
-            "played": 6,
-            "highlight": true
           },
           {
             "rank": 10,
             "team": "Ipswich",
             "points": 9,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
@@ -257,43 +257,43 @@
           },
           {
             "rank": 15,
+            "team": "Fulham",
+            "points": 5,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 16,
             "team": "Nottm Forest",
             "points": 5,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 16,
+            "rank": 17,
             "team": "Aston Villa",
             "points": 5,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 17,
+            "rank": 18,
             "team": "Sunderland",
             "points": 4,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 18,
+            "rank": 19,
             "team": "Bournemouth",
             "points": 3,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 19,
+            "rank": 20,
             "team": "Tottenham",
             "points": 3,
-            "played": 6,
-            "highlight": false
-          },
-          {
-            "rank": 20,
-            "team": "Fulham",
-            "points": 2,
             "played": 6,
             "highlight": false
           }
@@ -385,57 +385,57 @@
           {
             "rank": 5,
             "team": "St. Johnstone",
-            "points": 11,
-            "played": 8,
+            "points": 12,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 6,
             "team": "Dundee United",
-            "points": 11,
-            "played": 8,
+            "points": 12,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "St. Mirren",
-            "points": 10,
-            "played": 8,
+            "team": "Aberdeen",
+            "points": 11,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 8,
-            "team": "Aberdeen",
-            "points": 8,
-            "played": 8,
+            "team": "St. Mirren",
+            "points": 10,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 9,
-            "team": "Motherwell",
-            "points": 8,
-            "played": 8,
+            "team": "Falkirk",
+            "points": 9,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 10,
-            "team": "Hibernian",
-            "points": 7,
-            "played": 8,
+            "team": "Motherwell",
+            "points": 8,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Falkirk",
-            "points": 6,
-            "played": 8,
+            "team": "Kilmarnock",
+            "points": 8,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Kilmarnock",
-            "points": 5,
-            "played": 8,
+            "team": "Hibernian",
+            "points": 7,
+            "played": 9,
             "highlight": false
           }
         ]
@@ -449,8 +449,8 @@
         {
           "id": "5836885",
           "date": "2026-10-17T14:00:00.000Z",
-          "when": "today · Sat, Oct 17 · 10:00 AM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Wrexham",
           "away": "Preston",
           "competition": "Championship"
@@ -499,168 +499,168 @@
             "rank": 1,
             "team": "Swansea",
             "points": 23,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 2,
-            "team": "Middlesbrough",
-            "points": 21,
-            "played": 10,
+            "team": "West Ham",
+            "points": 22,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 3,
-            "team": "West Ham",
-            "points": 19,
-            "played": 10,
+            "team": "Middlesbrough",
+            "points": 22,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 4,
             "team": "Birmingham",
-            "points": 17,
-            "played": 10,
+            "points": 20,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 5,
-            "team": "QPR",
-            "points": 17,
-            "played": 10,
+            "team": "Stoke",
+            "points": 19,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 6,
+            "team": "West Brom",
+            "points": 18,
+            "played": 11,
+            "highlight": false
+          },
+          {
+            "rank": 7,
+            "team": "Southampton",
+            "points": 17,
+            "played": 11,
+            "highlight": false
+          },
+          {
+            "rank": 8,
+            "team": "QPR",
+            "points": 17,
+            "played": 11,
+            "highlight": false
+          },
+          {
+            "rank": 9,
             "team": "Wolves",
             "points": 17,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 7,
-            "team": "West Brom",
-            "points": 17,
-            "played": 10,
-            "highlight": false
-          },
-          {
-            "rank": 8,
-            "team": "Southampton",
-            "points": 16,
-            "played": 10,
-            "highlight": false
-          },
-          {
-            "rank": 9,
-            "team": "Stoke",
-            "points": 16,
-            "played": 10,
-            "highlight": false
-          },
-          {
             "rank": 10,
             "team": "Blackburn",
-            "points": 15,
-            "played": 10,
+            "points": 16,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Millwall",
-            "points": 14,
-            "played": 10,
+            "team": "Sheff Utd",
+            "points": 15,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Bristol City",
-            "points": 14,
-            "played": 10,
+            "team": "Millwall",
+            "points": 15,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 13,
-            "team": "Charlton",
+            "team": "Portsmouth",
             "points": 14,
             "played": 10,
             "highlight": false
           },
           {
             "rank": 14,
-            "team": "Bolton",
-            "points": 13,
-            "played": 10,
+            "team": "Wrexham",
+            "points": 14,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 15,
-            "team": "Sheff Utd",
-            "points": 12,
-            "played": 10,
+            "team": "Bolton",
+            "points": 14,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 16,
-            "team": "Portsmouth",
-            "points": 11,
-            "played": 9,
+            "team": "Bristol City",
+            "points": 14,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 17,
-            "team": "Wrexham",
-            "points": 11,
-            "played": 10,
+            "team": "Charlton",
+            "points": 14,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 18,
             "team": "Lincoln",
-            "points": 11,
-            "played": 10,
+            "points": 12,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 19,
             "team": "Cardiff",
-            "points": 10,
-            "played": 10,
+            "points": 11,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 20,
-            "team": "Norwich",
-            "points": 9,
-            "played": 10,
+            "team": "Watford",
+            "points": 11,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 21,
+            "team": "Norwich",
+            "points": 9,
+            "played": 11,
+            "highlight": false
+          },
+          {
+            "rank": 22,
             "team": "Burnley",
             "points": 8,
             "played": 11,
             "highlight": false
           },
           {
-            "rank": 22,
-            "team": "Watford",
-            "points": 8,
-            "played": 10,
-            "highlight": false
-          },
-          {
             "rank": 23,
             "team": "Derby",
             "points": 6,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 24,
             "team": "Preston",
             "points": 4,
-            "played": 10,
+            "played": 11,
             "highlight": true
           }
         ]
@@ -780,7 +780,7 @@
             "rank": 9,
             "team": "Napoli",
             "points": 10,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
@@ -856,8 +856,8 @@
           {
             "rank": 20,
             "team": "Venezia",
-            "points": 0,
-            "played": 6,
+            "points": 3,
+            "played": 7,
             "highlight": false
           }
         ]
@@ -871,8 +871,8 @@
         {
           "id": "5909184",
           "date": "2026-10-17T15:00:00.000Z",
-          "when": "today · Sat, Oct 17 · 11:00 AM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Shakhtar Donetsk",
           "away": "FC Kolos Kovalivka",
           "competition": "Premier League"
@@ -955,7 +955,7 @@
           {
             "rank": 6,
             "team": "Zorya",
-            "points": 12,
+            "points": 14,
             "played": 9,
             "highlight": false
           },
@@ -984,7 +984,7 @@
             "rank": 10,
             "team": "Bukovyna Chernivtsi",
             "points": 8,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
@@ -1011,22 +1011,22 @@
           {
             "rank": 14,
             "team": "Chornomorets Odesa",
-            "points": 6,
+            "points": 5,
             "played": 8,
             "highlight": false
           },
           {
             "rank": 15,
-            "team": "Kryvbas",
+            "team": "Kudrivka",
             "points": 5,
-            "played": 6,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 16,
-            "team": "Kudrivka",
-            "points": 2,
-            "played": 8,
+            "team": "Kryvbas",
+            "points": 5,
+            "played": 6,
             "highlight": false
           }
         ]
