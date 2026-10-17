@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-16T21:23:37.013Z",
+  "updatedAt": "2026-10-17T04:41:27.083Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -111,7 +111,7 @@
         {
           "id": "5795476",
           "date": "2026-10-17T14:00:00.000Z",
-          "when": "tomorrow · Sat, Oct 17 · 10:00 AM ET",
+          "when": "today · Sat, Oct 17 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Brentford",
           "away": "Liverpool",
@@ -308,7 +308,7 @@
         {
           "id": "5793947",
           "date": "2026-10-18T14:00:00.000Z",
-          "when": "Sun, Oct 18 · 10:00 AM ET",
+          "when": "tomorrow · Sun, Oct 18 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Celtic",
           "away": "Hearts",
@@ -449,7 +449,7 @@
         {
           "id": "5836885",
           "date": "2026-10-17T14:00:00.000Z",
-          "when": "tomorrow · Sat, Oct 17 · 10:00 AM ET",
+          "when": "today · Sat, Oct 17 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Wrexham",
           "away": "Preston",
@@ -674,7 +674,7 @@
         {
           "id": "5749703",
           "date": "2026-10-18T13:00:00.000Z",
-          "when": "Sun, Oct 18 · 9:00 AM ET",
+          "when": "tomorrow · Sun, Oct 18 · 9:00 AM ET",
           "status": "scheduled",
           "home": "Fiorentina",
           "away": "Como",
@@ -871,7 +871,7 @@
         {
           "id": "5909184",
           "date": "2026-10-17T15:00:00.000Z",
-          "when": "tomorrow · Sat, Oct 17 · 11:00 AM ET",
+          "when": "today · Sat, Oct 17 · 11:00 AM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "FC Kolos Kovalivka",
