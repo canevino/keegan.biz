@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-17T15:44:04.595Z",
+  "updatedAt": "2026-10-17T20:44:46.126Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -109,15 +109,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "5795476",
-          "date": "2026-10-17T14:00:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Brentford",
-          "away": "Liverpool",
-          "competition": "Premier League"
-        },
-        {
           "id": "6106248",
           "date": "2026-10-20T19:00:00.000Z",
           "when": "Tue, Oct 20 · 3:00 PM ET",
@@ -152,6 +143,15 @@
           "home": "Liverpool",
           "away": "Arsenal",
           "competition": "Premier League"
+        },
+        {
+          "id": "6106330",
+          "date": "2026-11-04T17:45:00.000Z",
+          "when": "Wed, Nov 4 · 12:45 PM ET",
+          "status": "scheduled",
+          "home": "Fenerbahçe",
+          "away": "Liverpool",
+          "competition": "Champions League"
         }
       ],
       "standings": {
@@ -231,47 +231,47 @@
             "rank": 11,
             "team": "Newcastle",
             "points": 8,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
             "rank": 12,
+            "team": "Aston Villa",
+            "points": 8,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 13,
             "team": "Crystal Palace",
             "points": 7,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 13,
+            "rank": 14,
             "team": "Man United",
             "points": 6,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 14,
+            "rank": 15,
             "team": "Coventry",
             "points": 6,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 15,
+            "rank": 16,
             "team": "Fulham",
             "points": 5,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 16,
-            "team": "Nottm Forest",
-            "points": 5,
-            "played": 6,
-            "highlight": false
-          },
-          {
             "rank": 17,
-            "team": "Aston Villa",
+            "team": "Nottm Forest",
             "points": 5,
             "played": 6,
             "highlight": false
@@ -364,8 +364,8 @@
           {
             "rank": 2,
             "team": "Rangers",
-            "points": 19,
-            "played": 8,
+            "points": 20,
+            "played": 9,
             "highlight": false
           },
           {
@@ -378,8 +378,8 @@
           {
             "rank": 4,
             "team": "Dundee FC",
-            "points": 13,
-            "played": 8,
+            "points": 14,
+            "played": 9,
             "highlight": false
           },
           {
@@ -447,15 +447,6 @@
       "shortName": "Preston",
       "upcoming": [
         {
-          "id": "5836885",
-          "date": "2026-10-17T14:00:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Wrexham",
-          "away": "Preston",
-          "competition": "Championship"
-        },
-        {
           "id": "5836892",
           "date": "2026-10-24T14:00:00.000Z",
           "when": "Sat, Oct 24 · 10:00 AM ET",
@@ -489,6 +480,15 @@
           "status": "scheduled",
           "home": "Preston",
           "away": "Southampton",
+          "competition": "Championship"
+        },
+        {
+          "id": "5836944",
+          "date": "2026-11-21T15:00:00.000Z",
+          "when": "Sat, Nov 21 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "West Ham",
+          "away": "Preston",
           "competition": "Championship"
         }
       ],
@@ -525,15 +525,15 @@
           },
           {
             "rank": 5,
-            "team": "Stoke",
-            "points": 19,
+            "team": "West Brom",
+            "points": 20,
             "played": 11,
             "highlight": false
           },
           {
             "rank": 6,
-            "team": "West Brom",
-            "points": 18,
+            "team": "Stoke",
+            "points": 19,
             "played": 11,
             "highlight": false
           },
@@ -546,22 +546,22 @@
           },
           {
             "rank": 8,
-            "team": "QPR",
-            "points": 17,
-            "played": 11,
-            "highlight": false
-          },
-          {
-            "rank": 9,
             "team": "Wolves",
             "points": 17,
             "played": 10,
             "highlight": false
           },
           {
+            "rank": 9,
+            "team": "QPR",
+            "points": 17,
+            "played": 11,
+            "highlight": false
+          },
+          {
             "rank": 10,
             "team": "Blackburn",
-            "points": 16,
+            "points": 15,
             "played": 11,
             "highlight": false
           },
@@ -723,21 +723,21 @@
           {
             "rank": 1,
             "team": "Inter",
-            "points": 16,
-            "played": 6,
+            "points": 19,
+            "played": 7,
             "highlight": false
           },
           {
             "rank": 2,
-            "team": "Lazio",
-            "points": 16,
-            "played": 6,
+            "team": "Roma",
+            "points": 17,
+            "played": 7,
             "highlight": false
           },
           {
             "rank": 3,
-            "team": "Roma",
-            "points": 14,
+            "team": "Lazio",
+            "points": 16,
             "played": 6,
             "highlight": false
           },
@@ -815,7 +815,7 @@
             "rank": 14,
             "team": "Bologna",
             "points": 5,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
@@ -834,24 +834,24 @@
           },
           {
             "rank": 17,
-            "team": "Genoa",
-            "points": 4,
-            "played": 6,
-            "highlight": false
-          },
-          {
-            "rank": 18,
             "team": "Parma",
             "points": 4,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 19,
+            "rank": 18,
             "team": "Fiorentina",
             "points": 4,
             "played": 6,
             "highlight": true
+          },
+          {
+            "rank": 19,
+            "team": "Genoa",
+            "points": 4,
+            "played": 7,
+            "highlight": false
           },
           {
             "rank": 20,
@@ -868,15 +868,6 @@
       "team": "Shakhtar",
       "shortName": "Shakhtar",
       "upcoming": [
-        {
-          "id": "5909184",
-          "date": "2026-10-17T15:00:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Shakhtar Donetsk",
-          "away": "FC Kolos Kovalivka",
-          "competition": "Premier League"
-        },
         {
           "id": "6106252",
           "date": "2026-10-21T19:00:00.000Z",
@@ -912,6 +903,15 @@
           "home": "Shakhtar Donetsk",
           "away": "Obolon Kyiv",
           "competition": "Premier League"
+        },
+        {
+          "id": "6106335",
+          "date": "2026-11-03T17:45:00.000Z",
+          "when": "Tue, Nov 3 · 12:45 PM ET",
+          "status": "scheduled",
+          "home": "Shakhtar Donetsk",
+          "away": "Sporting CP",
+          "competition": "Champions League"
         }
       ],
       "standings": {
@@ -920,8 +920,8 @@
           {
             "rank": 1,
             "team": "Shakhtar Donetsk",
-            "points": 21,
-            "played": 8,
+            "points": 24,
+            "played": 9,
             "highlight": true
           },
           {
@@ -977,7 +977,7 @@
             "rank": 9,
             "team": "FC Kolos Kovalivka",
             "points": 8,
-            "played": 7,
+            "played": 8,
             "highlight": false
           },
           {
