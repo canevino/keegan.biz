@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-17T04:41:27.083Z",
+  "updatedAt": "2026-10-17T10:57:59.230Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -955,8 +955,8 @@
           {
             "rank": 6,
             "team": "Zorya",
-            "points": 11,
-            "played": 8,
+            "points": 12,
+            "played": 9,
             "highlight": false
           },
           {
@@ -1011,8 +1011,8 @@
           {
             "rank": 14,
             "team": "Chornomorets Odesa",
-            "points": 5,
-            "played": 7,
+            "points": 6,
+            "played": 8,
             "highlight": false
           },
           {
