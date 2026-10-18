@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-18T04:47:03.865Z",
+  "updatedAt": "2026-10-18T11:23:50.060Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -792,22 +792,22 @@
           },
           {
             "rank": 11,
+            "team": "Lecce",
+            "points": 9,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 12,
             "team": "Sassuolo",
             "points": 8,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 12,
+            "rank": 13,
             "team": "Torino",
             "points": 7,
-            "played": 6,
-            "highlight": false
-          },
-          {
-            "rank": 13,
-            "team": "Lecce",
-            "points": 6,
             "played": 6,
             "highlight": false
           },
@@ -820,16 +820,16 @@
           },
           {
             "rank": 15,
-            "team": "Udinese",
+            "team": "Monza",
             "points": 4,
             "played": 6,
             "highlight": false
           },
           {
             "rank": 16,
-            "team": "Monza",
+            "team": "Udinese",
             "points": 4,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
@@ -927,15 +927,15 @@
           {
             "rank": 2,
             "team": "Polissya Zhytomyr",
-            "points": 19,
-            "played": 8,
+            "points": 20,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 3,
             "team": "Dynamo Kyiv",
-            "points": 16,
-            "played": 7,
+            "points": 17,
+            "played": 8,
             "highlight": false
           },
           {
@@ -962,8 +962,8 @@
           {
             "rank": 7,
             "team": "LNZ Cherkasy",
-            "points": 11,
-            "played": 8,
+            "points": 14,
+            "played": 9,
             "highlight": false
           },
           {
@@ -1026,7 +1026,7 @@
             "rank": 16,
             "team": "Kryvbas",
             "points": 5,
-            "played": 6,
+            "played": 7,
             "highlight": false
           }
         ]
