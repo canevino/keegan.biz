@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-18T14:02:28.728Z",
+  "updatedAt": "2026-10-18T15:59:54.019Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -107,16 +107,16 @@
           },
           {
             "rank": 2,
-            "team": "Arsenal",
-            "points": 15,
-            "played": 6,
+            "team": "Brighton",
+            "points": 16,
+            "played": 7,
             "highlight": false
           },
           {
             "rank": 3,
-            "team": "Brighton",
-            "points": 13,
-            "played": 6,
+            "team": "Arsenal",
+            "points": 16,
+            "played": 7,
             "highlight": false
           },
           {
@@ -142,16 +142,16 @@
           },
           {
             "rank": 7,
-            "team": "Everton",
+            "team": "Leeds",
             "points": 10,
             "played": 7,
             "highlight": false
           },
           {
             "rank": 8,
-            "team": "Leeds",
-            "points": 9,
-            "played": 6,
+            "team": "Everton",
+            "points": 10,
+            "played": 7,
             "highlight": false
           },
           {
@@ -184,51 +184,51 @@
           },
           {
             "rank": 13,
-            "team": "Crystal Palace",
+            "team": "Man United",
             "points": 7,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
             "rank": 14,
-            "team": "Man United",
-            "points": 6,
-            "played": 6,
+            "team": "Crystal Palace",
+            "points": 7,
+            "played": 7,
             "highlight": false
           },
           {
             "rank": 15,
+            "team": "Nottm Forest",
+            "points": 6,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 16,
+            "team": "Bournemouth",
+            "points": 6,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 17,
             "team": "Coventry",
             "points": 6,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 16,
+            "rank": 18,
             "team": "Fulham",
             "points": 5,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 17,
-            "team": "Nottm Forest",
-            "points": 5,
-            "played": 6,
-            "highlight": false
-          },
-          {
-            "rank": 18,
+            "rank": 19,
             "team": "Sunderland",
             "points": 4,
-            "played": 6,
-            "highlight": false
-          },
-          {
-            "rank": 19,
-            "team": "Bournemouth",
-            "points": 3,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
@@ -249,8 +249,8 @@
         {
           "id": "5793947",
           "date": "2026-10-18T14:00:00.000Z",
-          "when": "today · Sun, Oct 18 · 10:00 AM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Celtic",
           "away": "Hearts",
           "competition": "Premiership"
@@ -298,8 +298,8 @@
           {
             "rank": 1,
             "team": "Celtic",
-            "points": 21,
-            "played": 8,
+            "points": 24,
+            "played": 9,
             "highlight": false
           },
           {
@@ -313,7 +313,7 @@
             "rank": 3,
             "team": "Hearts",
             "points": 16,
-            "played": 8,
+            "played": 9,
             "highlight": true
           },
           {
@@ -613,15 +613,6 @@
       "shortName": "Fiorentina",
       "upcoming": [
         {
-          "id": "5749703",
-          "date": "2026-10-18T13:00:00.000Z",
-          "when": "today · Sun, Oct 18 · 9:00 AM ET",
-          "status": "scheduled",
-          "home": "Fiorentina",
-          "away": "Como",
-          "competition": "Serie A"
-        },
-        {
           "id": "5749714",
           "date": "2026-10-25T11:30:00.000Z",
           "when": "Sun, Oct 25 · 7:30 AM ET",
@@ -656,6 +647,15 @@
           "home": "Fiorentina",
           "away": "Juventus",
           "competition": "Serie A"
+        },
+        {
+          "id": "5749756",
+          "date": "2026-11-23T19:45:00.000Z",
+          "when": "Mon, Nov 23 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Monza",
+          "away": "Fiorentina",
+          "competition": "Serie A"
         }
       ],
       "standings": {
@@ -684,35 +684,35 @@
           },
           {
             "rank": 4,
+            "team": "Como",
+            "points": 14,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 5,
             "team": "Frosinone",
             "points": 13,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 5,
+            "rank": 6,
             "team": "Cagliari",
             "points": 13,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 6,
+            "rank": 7,
             "team": "Milan",
             "points": 12,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 7,
-            "team": "Juventus",
-            "points": 11,
-            "played": 6,
-            "highlight": false
-          },
-          {
             "rank": 8,
-            "team": "Como",
+            "team": "Juventus",
             "points": 11,
             "played": 6,
             "highlight": false
@@ -768,31 +768,31 @@
           },
           {
             "rank": 16,
-            "team": "Udinese",
-            "points": 4,
-            "played": 7,
-            "highlight": false
-          },
-          {
-            "rank": 17,
             "team": "Parma",
             "points": 4,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 18,
-            "team": "Fiorentina",
+            "rank": 17,
+            "team": "Udinese",
             "points": 4,
-            "played": 6,
-            "highlight": true
+            "played": 7,
+            "highlight": false
           },
           {
-            "rank": 19,
+            "rank": 18,
             "team": "Genoa",
             "points": 4,
             "played": 7,
             "highlight": false
+          },
+          {
+            "rank": 19,
+            "team": "Fiorentina",
+            "points": 4,
+            "played": 7,
+            "highlight": true
           },
           {
             "rank": 20,
@@ -868,14 +868,14 @@
           {
             "rank": 2,
             "team": "Polissya Zhytomyr",
-            "points": 20,
+            "points": 22,
             "played": 9,
             "highlight": false
           },
           {
             "rank": 3,
             "team": "Dynamo Kyiv",
-            "points": 17,
+            "points": 16,
             "played": 8,
             "highlight": false
           },
@@ -890,7 +890,7 @@
             "rank": 5,
             "team": "Karpaty",
             "points": 14,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
@@ -909,30 +909,30 @@
           },
           {
             "rank": 8,
+            "team": "Epitsentr Kamianets-Podilskyi",
+            "points": 11,
+            "played": 9,
+            "highlight": false
+          },
+          {
+            "rank": 9,
             "team": "Veres Rivne",
             "points": 9,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 9,
+            "rank": 10,
             "team": "FC Kolos Kovalivka",
             "points": 8,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 10,
+            "rank": 11,
             "team": "Bukovyna Chernivtsi",
             "points": 8,
             "played": 9,
-            "highlight": false
-          },
-          {
-            "rank": 11,
-            "team": "Epitsentr Kamianets-Podilskyi",
-            "points": 8,
-            "played": 8,
             "highlight": false
           },
           {
