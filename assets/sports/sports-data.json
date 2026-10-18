@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-18T15:59:54.019Z",
+  "updatedAt": "2026-10-18T20:54:40.806Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -107,14 +107,14 @@
           },
           {
             "rank": 2,
-            "team": "Brighton",
-            "points": 16,
+            "team": "Arsenal",
+            "points": 18,
             "played": 7,
             "highlight": false
           },
           {
             "rank": 3,
-            "team": "Arsenal",
+            "team": "Brighton",
             "points": 16,
             "played": 7,
             "highlight": false
@@ -198,28 +198,28 @@
           },
           {
             "rank": 15,
-            "team": "Nottm Forest",
-            "points": 6,
-            "played": 7,
-            "highlight": false
-          },
-          {
-            "rank": 16,
             "team": "Bournemouth",
             "points": 6,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 17,
+            "rank": 16,
             "team": "Coventry",
             "points": 6,
             "played": 6,
             "highlight": false
           },
           {
-            "rank": 18,
+            "rank": 17,
             "team": "Fulham",
+            "points": 5,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 18,
+            "team": "Nottm Forest",
             "points": 5,
             "played": 7,
             "highlight": false
@@ -246,15 +246,6 @@
       "team": "Hearts",
       "shortName": "Hearts",
       "upcoming": [
-        {
-          "id": "5793947",
-          "date": "2026-10-18T14:00:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Celtic",
-          "away": "Hearts",
-          "competition": "Premiership"
-        },
         {
           "id": "6112502",
           "date": "2026-10-22T16:45:00.000Z",
@@ -290,6 +281,15 @@
           "home": "Hearts",
           "away": "Hibernian",
           "competition": "League Cup"
+        },
+        {
+          "id": "6112539",
+          "date": "2026-11-05T17:45:00.000Z",
+          "when": "Thu, Nov 5 · 12:45 PM ET",
+          "status": "scheduled",
+          "home": "Thun",
+          "away": "Hearts",
+          "competition": "Conference League"
         }
       ],
       "standings": {
@@ -670,43 +670,43 @@
           },
           {
             "rank": 2,
+            "team": "Lazio",
+            "points": 19,
+            "played": 7,
+            "highlight": false
+          },
+          {
+            "rank": 3,
             "team": "Roma",
             "points": 17,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 3,
-            "team": "Lazio",
-            "points": 16,
-            "played": 6,
+            "rank": 4,
+            "team": "Milan",
+            "points": 15,
+            "played": 7,
             "highlight": false
           },
           {
-            "rank": 4,
+            "rank": 5,
             "team": "Como",
             "points": 14,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 5,
+            "rank": 6,
             "team": "Frosinone",
             "points": 13,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 6,
+            "rank": 7,
             "team": "Cagliari",
             "points": 13,
-            "played": 6,
-            "highlight": false
-          },
-          {
-            "rank": 7,
-            "team": "Milan",
-            "points": 12,
             "played": 6,
             "highlight": false
           },
@@ -714,7 +714,7 @@
             "rank": 8,
             "team": "Juventus",
             "points": 11,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
@@ -728,7 +728,7 @@
             "rank": 10,
             "team": "Atalanta",
             "points": 9,
-            "played": 6,
+            "played": 7,
             "highlight": false
           },
           {
@@ -881,28 +881,28 @@
           },
           {
             "rank": 4,
+            "team": "Karpaty",
+            "points": 15,
+            "played": 9,
+            "highlight": false
+          },
+          {
+            "rank": 5,
             "team": "FC Kharkiv",
             "points": 15,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 5,
-            "team": "Karpaty",
-            "points": 14,
-            "played": 9,
-            "highlight": false
-          },
-          {
             "rank": 6,
-            "team": "Zorya",
+            "team": "LNZ Cherkasy",
             "points": 14,
             "played": 9,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "LNZ Cherkasy",
+            "team": "Zorya",
             "points": 14,
             "played": 9,
             "highlight": false
@@ -910,7 +910,7 @@
           {
             "rank": 8,
             "team": "Epitsentr Kamianets-Podilskyi",
-            "points": 11,
+            "points": 9,
             "played": 9,
             "highlight": false
           },
