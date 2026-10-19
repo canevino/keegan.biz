@@ -2,118 +2,201 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#ece7d7">
   <title>misc | keegan.biz</title>
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="/misc/style.css?v=20261019-editorial">
+  <link rel="stylesheet" href="/misc/style.css">
 </head>
 <body>
-<div class="page-shell">
-  <nav data-site-nav></nav>
-  <main class="misc-shell" id="main-content">
-    <header class="misc-hero" id="top">
-      <p class="section-kicker">keegan.biz / misc</p>
-      <h1>misc<span class="hero-stop">.</span></h1>
-      <div class="misc-index" aria-label="Projects in misc">
-        <a href="#botanical">01 <span>botanical ornament</span> <b aria-hidden="true">↗</b></a>
-      </div>
-    </header>
+  <div class="page-shell">
+    <nav data-site-nav></nav>
 
-    <section class="machine" id="botanical" aria-labelledby="machine-name">
-      <div class="machine-heading">
-        <div><p class="section-kicker">01 / drawing system</p><h2 id="machine-name">botanical<br>ornament<span class="hero-stop">.</span></h2></div>
-        <p class="machine-intro">A generative drawing of branching plants, shaped by geometric guides and printed in uneven ink.</p>
-      </div>
-      <div class="machine-layout">
-        <div class="drawing-side">
-          <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span id="seed-label">seed 472818</span></div>
-          <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
-            <div id="drawing" class="drawing"></div>
-            <svg id="stroke-overlay" class="stroke-overlay" viewBox="0 0 850 1000" aria-hidden="true"><path id="stroke-preview" d=""/></svg>
+    <main class="misc-page">
+      <section class="misc-hero" aria-labelledby="misc-title">
+        <p class="misc-kicker">misc / studies / systems</p>
+        <h1 id="misc-title">misc</h1>
+        <p class="misc-deck">
+          A small studio for experiments that do not belong anywhere else yet:
+          illuminated ornament studies, a future home for chess, and a future home for sports.
+        </p>
+      </section>
+
+      <section class="misc-module" id="ornament-studio" aria-labelledby="ornament-title">
+        <div class="module-head">
+          <p class="module-number">01</p>
+          <div class="module-title-wrap">
+            <p class="module-kicker">redraw in progress</p>
+            <h2 id="ornament-title" class="module-title">ornament studio</h2>
           </div>
-          <div class="drawing-actions">
-            <button id="regenerate" type="button" class="action primary">another drawing <span>↗</span></button>
-            <button id="export-svg" type="button" class="action">svg ↗</button>
-            <button id="export-png" type="button" class="action">png ↗</button>
-            <button id="replay-growth" type="button" class="action">grow ↗</button>
-            <label class="tiny-check"><input id="animate-growth" type="checkbox"> animate</label>
-            <label class="tiny-check"><input id="grid" type="checkbox"> grid</label>
+          <p class="module-note">
+            The generator is pared back and rebuilt around a few better-drawn presets instead of trying to fake infinite variation.
+          </p>
+        </div>
+
+        <div class="ornament-layout">
+          <div class="ornament-stage-wrap">
+            <div class="ornament-meta">
+              <span id="art-caption">bramble / arch study</span>
+              <span id="art-state">hand-drawn preset</span>
+            </div>
+            <div class="ornament-stage" id="ornament-stage" aria-live="polite"></div>
+            <div class="ornament-actions">
+              <button type="button" class="misc-link-button" id="generate-btn">something else ↗</button>
+              <button type="button" class="misc-link-button" id="replay-btn">replay growth ↗</button>
+              <button type="button" class="misc-link-button" id="download-svg-btn">save svg ↗</button>
+            </div>
           </div>
-          <div class="draw-toolbar" aria-label="Draw vine paths">
-            <button id="draw-mode" type="button" class="action draw-mode" aria-pressed="false">draw a vine ↗</button>
-            <button id="finish-paths" type="button" class="action" hidden>finish drawing ↗</button>
-            <button id="undo-path" type="button" class="action" disabled>undo path</button>
-            <button id="clear-paths" type="button" class="action" disabled>clear paths</button>
-            <span id="path-status" class="path-status" role="status" aria-live="polite">generated growth</span>
+
+          <form class="ornament-controls" id="ornament-controls" novalidate>
+            <label>
+              botanical study
+              <select id="species-select">
+                <option value="bramble">bramble</option>
+                <option value="holly">holly</option>
+                <option value="oak">oak</option>
+                <option value="fern">fern</option>
+              </select>
+            </label>
+
+            <label>
+              structure
+              <select id="structure-select">
+                <option value="arch">pointed arch</option>
+                <option value="spray">spray</option>
+                <option value="roundel">roundel</option>
+                <option value="upright">upright stem</option>
+              </select>
+            </label>
+
+            <label>
+              pigments
+              <select id="palette-select">
+                <option value="site">site red / green / yellow</option>
+                <option value="insular">insular / mineral</option>
+                <option value="earth">earth / iron</option>
+              </select>
+            </label>
+
+            <label class="range-label">
+              print wear
+              <span id="wear-value">18</span>
+              <input id="wear-range" type="range" min="0" max="100" value="18">
+            </label>
+
+            <label class="check-row">
+              <input type="checkbox" id="animate-toggle" checked>
+              animate growth
+            </label>
+
+            <div class="controls-text">
+              <p>
+                This version deliberately limits the system. Fewer presets, fewer leaves, thicker main stems,
+                clearer branching, and subtler bleed.
+              </p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="misc-module" id="misc-chess" aria-labelledby="chess-title">
+        <div class="module-head">
+          <p class="module-number">02</p>
+          <div class="module-title-wrap">
+            <p class="module-kicker">migration setup</p>
+            <h2 id="chess-title" class="module-title">chess</h2>
+          </div>
+          <p class="module-note">
+            Structural home for the chess project. The visual language matches the rest of the site; the gameplay logic can be dropped in here next.
+          </p>
+        </div>
+
+        <div class="future-layout">
+          <div class="future-copy">
+            <p class="future-lead">
+              The homepage version is working as a test bed. This section gives it a proper place inside <em>misc</em>.
+            </p>
+            <ul class="future-list">
+              <li>headline and controls aligned to the main site system</li>
+              <li>dedicated mount point for board logic</li>
+              <li>space for local / computer / autoplay modes</li>
+              <li>keeps the red / green / yellow identity you already established</li>
+            </ul>
+            <p class="future-links">
+              <a href="/" class="misc-link-button">see current homepage version ↗</a>
+            </p>
+          </div>
+          <div class="future-preview future-preview--chess">
+            <div class="preview-topline">
+              <span>local</span>
+              <span>computer</span>
+              <span>autoplay</span>
+            </div>
+            <div class="preview-board" aria-hidden="true">
+              <div class="preview-grid"></div>
+              <div class="preview-piece preview-piece--green" style="grid-column: 1; grid-row: 1;">R</div>
+              <div class="preview-piece preview-piece--green" style="grid-column: 2; grid-row: 1;">N</div>
+              <div class="preview-piece preview-piece--green" style="grid-column: 5; grid-row: 1;">K</div>
+              <div class="preview-piece preview-piece--yellow" style="grid-column: 4; grid-row: 8;">Q</div>
+              <div class="preview-piece preview-piece--yellow" style="grid-column: 5; grid-row: 8;">K</div>
+              <div class="preview-piece preview-piece--yellow" style="grid-column: 8; grid-row: 8;">R</div>
+            </div>
+            <div class="preview-footer">
+              <span>yellow to move</span>
+              <span>60:00 / 60:00</span>
+            </div>
           </div>
         </div>
-        <form class="drawing-controls" id="controls" novalidate>
-          <div class="controls-topline"><h3>change the drawing</h3><span class="topline-mark">↙</span></div>
-          <label>plant
-            <select id="species">
-              <option value="random">mixed plants</option>
-              <option value="holly">holly</option><option value="hazel">hazel</option>
-              <option value="ivy">ivy</option><option value="hawthorn">hawthorn</option>
-              <option value="oak">oak</option><option value="dogrose">dog rose</option>
-              <option value="honeysuckle">honeysuckle</option><option value="bramble">bramble</option>
-              <option value="fern">ferns</option><option value="acanthus">acanthus</option>
-              <option value="hybrid">ornamental hybrid</option>
-            </select>
-          </label>
-          <label>growth
-            <select id="pattern">
-              <option value="random">surprise</option><option value="single">upright stem</option>
-              <option value="crescent">paired growth</option><option value="diagonal">diagonal growth</option>
-              <option value="radiating">radiating growth</option><option value="meander">wandering vine</option>
-              <option value="cluster">thicket</option>
-            </select>
-          </label>
-          <label>construction
-            <select id="geometry">
-              <option value="random">surprise</option><option value="gothic-pointed">pointed arch</option>
-              <option value="gothic-quatrefoil">quatrefoil</option><option value="gothic-radial">radial tracery</option>
-              <option value="anglo-lozenge">lozenge</option><option value="anglo-fret">stepped fret</option>
-              <option value="celtic-triskele">triskele</option><option value="celtic-double-spiral">double spiral</option>
-              <option value="celtic-scroll">scrollwork</option><option value="insular-vesica">vesica</option>
-              <option value="roundel">roundel</option>
-            </select>
-          </label>
-          <div class="controls-row two">
-            <label>season<select id="season"><option value="spring">spring</option><option value="summer" selected>summer</option><option value="autumn">autumn</option><option value="winter">winter</option></select></label>
-            <label>ink<select id="palette"><option value="kells">mineral</option><option value="jewel">lapis / red</option><option value="earth">iron / earth</option><option value="site">site colors</option><option value="monochrome">black / sepia</option></select></label>
+      </section>
+
+      <section class="misc-module" id="misc-sports" aria-labelledby="sports-title">
+        <div class="module-head">
+          <p class="module-number">03</p>
+          <div class="module-title-wrap">
+            <p class="module-kicker">migration setup</p>
+            <h2 id="sports-title" class="module-title">sports</h2>
           </div>
-          <div class="control-rule"></div>
-          <label class="sliding">follow geometry <output for="conform" id="conform-value">50</output><input type="range" id="conform" min="0" max="100" value="50"></label>
-          <div class="ornament-control"><label class="sliding">ornament <output for="ornament" id="ornament-value">26</output><input type="range" id="ornament" min="0" max="100" value="26" aria-describedby="ornament-scale"></label><div class="ornament-scale" id="ornament-scale"><span>botanical</span><span>manuscript</span></div></div>
-          <label class="sliding">foliage <output for="foliage" id="foliage-value">52</output><input type="range" id="foliage" min="10" max="100" value="52"></label>
-          <label class="sliding">ink wear <output for="finishLevel" id="finishLevel-value">30</output><input type="range" id="finishLevel" min="0" max="100" value="30"></label>
-          <div class="controls-seed"><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label><label class="check"><input type="checkbox" id="guideOverlay"> show guides</label></div>
-          <details class="control-note"><summary>how it works ↗</summary><p><strong>Growth</strong> chooses the arrangement of stems. <strong>Construction</strong> determines the paths they follow. <strong>Follow geometry</strong> determines how closely they follow those paths. At 0 the stems grow freely; at 100 they follow the geometry precisely.</p><p><strong>Ornament</strong> exaggerates leaf shapes and adds decorative color. <strong>Foliage</strong> changes leaf density. <strong>Ink wear</strong> changes the pressure and bleeding of the printed marks—not how much of the plant survives.</p></details>
-          <button type="button" class="action reset" id="reset">restore defaults ↗</button>
-        </form>
-      </div>
-      <details class="machine-credits"><summary>credits and sources ↗</summary><p>Original botanical generator and drawings for keegan.biz. References include insular manuscript ornament and historic printmaking. Pigment mixing can use <a href="https://github.com/rvanwijnen/spectral.js" target="_blank" rel="noopener noreferrer">Spectral.js</a>. The ink-bleed treatment is informed by <a href="https://andyjakubowski.com/ink-bleed-effect-with-svg-filters/" target="_blank" rel="noopener noreferrer">Andy Jakubowski's SVG filter method</a>; procedural plant growth was informed by <a href="https://github.com/achrefelouafi/VegetationGeneratorThreeJS" target="_blank" rel="noopener noreferrer">Vegetation Generator</a>, <a href="https://github.com/millerthegorilla/vinejs" target="_blank" rel="noopener noreferrer">VineJS</a>, and <a href="https://github.com/dengshu2/illustrated-manuscript" target="_blank" rel="noopener noreferrer">Illustrated Manuscript</a>. No artwork from these projects is copied.</p></details>
-    </section>
-    <!-- Future sections: chess and sports can move here from homepage without rewriting the shared site navigation. -->
-    <footer class="misc-footer"><a href="#top">back to top ↑</a><span>keegan.biz / misc</span></footer>
-  </main>
-</div>
-<script src="/assets/site-nav.js" defer></script>
-<script src="/misc/js/core.js?v=20261019-editorial" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" async onload="window.dispatchEvent(new Event('spectral-ready'))"></script>
-<script src="/misc/js/pigment.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/finish.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/geometry.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/spatial.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/drawing.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/architecture.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/composition.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/species.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/ornament.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/botany.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/render.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/growth-animation.js?v=20261019-editorial" defer></script>
-<script src="/misc/js/app.js?v=20261019-editorial" defer></script>
+          <p class="module-note">
+            A matching home for your football and baseball boards, with room for scores, fixtures, and standings.
+          </p>
+        </div>
+
+        <div class="future-layout future-layout--sports">
+          <div class="future-copy">
+            <p class="future-lead">
+              The current homepage version proves the concept. This section turns it into a proper project rather than a side note.
+            </p>
+            <ul class="future-list">
+              <li>fixed title system, consistent spacing, and clearer hierarchy</li>
+              <li>room for tabs, schedules, standings, and score blocks</li>
+              <li>easy place to separate football and baseball cleanly</li>
+              <li>ready for your live data hooks when you want to move them over</li>
+            </ul>
+            <p class="future-links">
+              <a href="/" class="misc-link-button">see current homepage version ↗</a>
+            </p>
+          </div>
+          <div class="future-preview future-preview--sports">
+            <div class="sports-tabs" aria-hidden="true">
+              <span class="is-active">Liverpool</span>
+              <span>Hearts</span>
+              <span>Fiorentina</span>
+            </div>
+            <div class="sports-row sports-row--header"><span>upcoming</span><span>competition</span></div>
+            <div class="sports-row"><span>Liverpool vs Brighton</span><span>Premier League</span></div>
+            <div class="sports-row"><span>Liverpool vs Chelsea</span><span>EFL Cup</span></div>
+            <div class="sports-row"><span>Fenerbahçe vs Liverpool</span><span>Champions League</span></div>
+            <div class="sports-table-title">sample table</div>
+            <div class="sports-row"><span>1&nbsp;&nbsp;Man City</span><span>21</span></div>
+            <div class="sports-row"><span>2&nbsp;&nbsp;Arsenal</span><span>18</span></div>
+            <div class="sports-row sports-row--accent"><span>5&nbsp;&nbsp;Liverpool</span><span>12</span></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/assets/site-nav.js" defer></script>
+  <script src="/misc/js/app.js" defer></script>
 </body>
 </html>
