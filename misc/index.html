@@ -6,21 +6,39 @@
   <meta name="theme-color" content="#ece7d7">
   <title>misc | keegan.biz</title>
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="/misc/style.css?v=20261019-geometry">
+  <link rel="stylesheet" href="/misc/style.css?v=20261019-editorial">
 </head>
 <body>
 <div class="page-shell">
   <nav data-site-nav></nav>
-  <main class="misc-shell">
-    <header class="misc-heading"><span>misc / 01</span><h1>misc<span class="colored-dot">.</span></h1></header>
-    <section class="machine" aria-labelledby="machine-name">
-      <header class="machine-heading"><h2 id="machine-name">ornament machine</h2></header>
+  <main class="misc-shell" id="main-content">
+    <header class="misc-hero" id="top">
+      <p class="section-kicker">keegan.biz / misc</p>
+      <h1>misc<span class="hero-stop">.</span></h1>
+      <div class="misc-index" aria-label="Projects in misc">
+        <a href="#botanical">01 <span>botanical ornament</span> <b aria-hidden="true">↗</b></a>
+      </div>
+    </header>
+
+    <section class="machine" id="botanical" aria-labelledby="machine-name">
+      <div class="machine-heading">
+        <div><p class="section-kicker">01 / drawing system</p><h2 id="machine-name">botanical<br>ornament<span class="hero-stop">.</span></h2></div>
+        <p class="machine-intro">A generative drawing of branching plants, shaped by geometric guides and printed in uneven ink.</p>
+      </div>
       <div class="machine-layout">
         <div class="drawing-side">
           <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span id="seed-label">seed 472818</span></div>
           <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
             <div id="drawing" class="drawing"></div>
             <svg id="stroke-overlay" class="stroke-overlay" viewBox="0 0 850 1000" aria-hidden="true"><path id="stroke-preview" d=""/></svg>
+          </div>
+          <div class="drawing-actions">
+            <button id="regenerate" type="button" class="action primary">another drawing <span>↗</span></button>
+            <button id="export-svg" type="button" class="action">svg ↗</button>
+            <button id="export-png" type="button" class="action">png ↗</button>
+            <button id="replay-growth" type="button" class="action">grow ↗</button>
+            <label class="tiny-check"><input id="animate-growth" type="checkbox"> animate</label>
+            <label class="tiny-check"><input id="grid" type="checkbox"> grid</label>
           </div>
           <div class="draw-toolbar" aria-label="Draw vine paths">
             <button id="draw-mode" type="button" class="action draw-mode" aria-pressed="false">draw a vine ↗</button>
@@ -29,117 +47,73 @@
             <button id="clear-paths" type="button" class="action" disabled>clear paths</button>
             <span id="path-status" class="path-status" role="status" aria-live="polite">generated growth</span>
           </div>
-          <div class="drawing-actions">
-            <button id="regenerate" type="button" class="action primary">something else ↗</button>
-            <button id="export-svg" type="button" class="action">save svg ↗</button>
-            <button id="export-png" type="button" class="action">save png ↗</button>
-            <button id="replay-growth" type="button" class="action">replay growth ↗</button>
-            <label class="tiny-check"><input id="animate-growth" type="checkbox"> animate</label>
-            <label class="tiny-check"><input id="grid" type="checkbox"> grid</label>
-          </div>
         </div>
         <form class="drawing-controls" id="controls" novalidate>
-          <p class="control-header">make a change</p>
-          <label>growth pattern
-            <select id="pattern">
-              <option value="random">mixed / surprise</option>
-              <option value="single">upright stem</option>
-              <option value="crescent">paired arch</option>
-              <option value="diagonal">diagonal growth</option>
-              <option value="radiating">radiating growth</option>
-              <option value="meander">winding vine</option>
-              <option value="cluster">dense thicket</option>
-            </select>
-          </label>
-          <label>underlying geometry
-            <select id="geometry">
-              <option value="random">mixed / surprise</option>
-              <option value="gothic-pointed">pointed arch</option>
-              <option value="gothic-quatrefoil">quatrefoil</option>
-              <option value="gothic-radial">radial tracery</option>
-              <option value="anglo-lozenge">lozenge</option>
-              <option value="anglo-fret">stepped fret</option>
-              <option value="celtic-triskele">triskele</option>
-              <option value="celtic-double-spiral">double spiral</option>
-              <option value="celtic-scroll">scrollwork</option>
-              <option value="insular-vesica">vesica</option>
-              <option value="roundel">roundel</option>
-            </select>
-          </label>
-          <label>botanical species
+          <div class="controls-topline"><h3>change the drawing</h3><span class="topline-mark">↙</span></div>
+          <label>plant
             <select id="species">
-              <option value="random">mixed species / random</option>
-              <option value="holly">holly</option>
-              <option value="hazel">hazel</option>
-              <option value="ivy">ivy</option>
-              <option value="hawthorn">hawthorn</option>
-              <option value="oak">oak</option>
-              <option value="dogrose">dog rose</option>
-              <option value="honeysuckle">honeysuckle</option>
-              <option value="bramble">bramble</option>
-              <option value="fern">ferns</option>
-              <option value="acanthus">acanthus</option>
+              <option value="random">mixed plants</option>
+              <option value="holly">holly</option><option value="hazel">hazel</option>
+              <option value="ivy">ivy</option><option value="hawthorn">hawthorn</option>
+              <option value="oak">oak</option><option value="dogrose">dog rose</option>
+              <option value="honeysuckle">honeysuckle</option><option value="bramble">bramble</option>
+              <option value="fern">ferns</option><option value="acanthus">acanthus</option>
               <option value="hybrid">ornamental hybrid</option>
             </select>
           </label>
-          <label>season
-            <select id="season">
-              <option value="spring">spring / blossom</option>
-              <option value="summer" selected>summer / full leaf</option>
-              <option value="autumn">autumn / turning leaf</option>
-              <option value="winter">winter / bare & berry</option>
+          <label>growth
+            <select id="pattern">
+              <option value="random">surprise</option><option value="single">upright stem</option>
+              <option value="crescent">paired growth</option><option value="diagonal">diagonal growth</option>
+              <option value="radiating">radiating growth</option><option value="meander">wandering vine</option>
+              <option value="cluster">thicket</option>
             </select>
           </label>
-          <label>pigments
-            <select id="palette">
-              <option value="kells">insular / mineral</option>
-              <option value="jewel">lapis / vermilion</option>
-              <option value="earth">earth / iron</option>
-              <option value="site">red / green / yellow</option>
-              <option value="monochrome">black / sepia</option>
+          <label>construction
+            <select id="geometry">
+              <option value="random">surprise</option><option value="gothic-pointed">pointed arch</option>
+              <option value="gothic-quatrefoil">quatrefoil</option><option value="gothic-radial">radial tracery</option>
+              <option value="anglo-lozenge">lozenge</option><option value="anglo-fret">stepped fret</option>
+              <option value="celtic-triskele">triskele</option><option value="celtic-double-spiral">double spiral</option>
+              <option value="celtic-scroll">scrollwork</option><option value="insular-vesica">vesica</option>
+              <option value="roundel">roundel</option>
             </select>
           </label>
-          <div class="fields-pair one-up"><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label></div>
-          <div class="control-sep"></div>
-          <label class="sliding">follow geometry <output for="conform" id="conform-value">50</output><input type="range" id="conform" min="0" max="100" value="50"></label>
-          <div class="ornament-control">
-            <label class="sliding">ornamental transformation <output for="ornament" id="ornament-value">26</output><input type="range" id="ornament" min="0" max="100" value="26" aria-describedby="ornament-scale"></label>
-            <div class="ornament-scale" id="ornament-scale"><span>botanical</span><span>manuscript ornament</span></div>
+          <div class="controls-row two">
+            <label>season<select id="season"><option value="spring">spring</option><option value="summer" selected>summer</option><option value="autumn">autumn</option><option value="winter">winter</option></select></label>
+            <label>ink<select id="palette"><option value="kells">mineral</option><option value="jewel">lapis / red</option><option value="earth">iron / earth</option><option value="site">site colors</option><option value="monochrome">black / sepia</option></select></label>
           </div>
-          <label class="sliding">growth density <output for="foliage" id="foliage-value">52</output><input type="range" id="foliage" min="10" max="100" value="52"></label>
-          <label class="sliding">print wear <output for="finishLevel" id="finishLevel-value">30</output><input type="range" id="finishLevel" min="0" max="100" value="30"></label>
-          <label class="check"><input type="checkbox" id="guideOverlay"> show construction guides</label>
-          <details class="control-note">
-            <summary>How the shapes work</summary>
-            <p><strong>Growth pattern</strong> controls the number, origins and direction of main stems (upright = one, paired = two, radiating = several sharing a base, etc.). <strong>Underlying geometry</strong> sets their construction curves. At 100% follow geometry, stems trace those curves exactly; at 0% they grow freely. Branches and foliage follow the plant species.</p>
-            <p><strong>Ornamental transformation</strong> alters leaf contours, veins and attached flower details. <strong>Print wear</strong> controls local ink spread, missing pigment and slight plate misregistration.</p>
-          </details>
-          <div class="control-sep"></div>
-          <button type="button" class="action reset" id="reset">reset ↗</button>
+          <div class="control-rule"></div>
+          <label class="sliding">follow geometry <output for="conform" id="conform-value">50</output><input type="range" id="conform" min="0" max="100" value="50"></label>
+          <div class="ornament-control"><label class="sliding">ornament <output for="ornament" id="ornament-value">26</output><input type="range" id="ornament" min="0" max="100" value="26" aria-describedby="ornament-scale"></label><div class="ornament-scale" id="ornament-scale"><span>botanical</span><span>manuscript</span></div></div>
+          <label class="sliding">foliage <output for="foliage" id="foliage-value">52</output><input type="range" id="foliage" min="10" max="100" value="52"></label>
+          <label class="sliding">ink wear <output for="finishLevel" id="finishLevel-value">30</output><input type="range" id="finishLevel" min="0" max="100" value="30"></label>
+          <div class="controls-seed"><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label><label class="check"><input type="checkbox" id="guideOverlay"> show guides</label></div>
+          <details class="control-note"><summary>how it works ↗</summary><p><strong>Growth</strong> chooses the arrangement of stems. <strong>Construction</strong> determines the paths they follow. <strong>Follow geometry</strong> determines how closely they follow those paths. At 0 the stems grow freely; at 100 they follow the geometry precisely.</p><p><strong>Ornament</strong> exaggerates leaf shapes and adds decorative color. <strong>Foliage</strong> changes leaf density. <strong>Ink wear</strong> changes the pressure and bleeding of the printed marks—not how much of the plant survives.</p></details>
+          <button type="button" class="action reset" id="reset">restore defaults ↗</button>
         </form>
       </div>
-      <details class="machine-credits">
-        <summary>credits and sources ↗</summary>
-        <p>Botanical drawing and procedural code for keegan.biz. Pigment mixing uses <a href="https://github.com/rvanwijnen/spectral.js" target="_blank" rel="noopener noreferrer">Spectral.js</a> by Ronald van Wijnen (MIT). The edge treatment references <a href="https://andyjakubowski.com/ink-bleed-effect-with-svg-filters/" target="_blank" rel="noopener noreferrer">Andy Jakubowski’s SVG ink bleed method</a>. Growth interaction was informed by the <a href="https://github.com/dengshu2/illustrated-manuscript" target="_blank" rel="noopener noreferrer">Illustrated Manuscript</a> project by River Marchand; its dragon sprites, animation code and text engine are not included.</p>
-      </details>
+      <details class="machine-credits"><summary>credits and sources ↗</summary><p>Original botanical generator and drawings for keegan.biz. References include insular manuscript ornament and historic printmaking. Pigment mixing can use <a href="https://github.com/rvanwijnen/spectral.js" target="_blank" rel="noopener noreferrer">Spectral.js</a>. The ink-bleed treatment is informed by <a href="https://andyjakubowski.com/ink-bleed-effect-with-svg-filters/" target="_blank" rel="noopener noreferrer">Andy Jakubowski's SVG filter method</a>; procedural plant growth was informed by <a href="https://github.com/achrefelouafi/VegetationGeneratorThreeJS" target="_blank" rel="noopener noreferrer">Vegetation Generator</a>, <a href="https://github.com/millerthegorilla/vinejs" target="_blank" rel="noopener noreferrer">VineJS</a>, and <a href="https://github.com/dengshu2/illustrated-manuscript" target="_blank" rel="noopener noreferrer">Illustrated Manuscript</a>. No artwork from these projects is copied.</p></details>
     </section>
+    <!-- Future sections: chess and sports can move here from homepage without rewriting the shared site navigation. -->
+    <footer class="misc-footer"><a href="#top">back to top ↑</a><span>keegan.biz / misc</span></footer>
   </main>
 </div>
 <script src="/assets/site-nav.js" defer></script>
-<script src="/misc/js/core.js?v=20261019-geometry" defer></script>
+<script src="/misc/js/core.js?v=20261019-editorial" defer></script>
 <script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" async onload="window.dispatchEvent(new Event('spectral-ready'))"></script>
-<script src="/misc/js/pigment.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/finish.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/geometry.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/spatial.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/drawing.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/architecture.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/composition.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/species.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/ornament.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/botany.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/render.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/growth-animation.js?v=20261019-geometry" defer></script>
-<script src="/misc/js/app.js?v=20261019-geometry" defer></script>
+<script src="/misc/js/pigment.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/finish.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/geometry.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/spatial.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/drawing.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/architecture.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/composition.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/species.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/ornament.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/botany.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/render.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/growth-animation.js?v=20261019-editorial" defer></script>
+<script src="/misc/js/app.js?v=20261019-editorial" defer></script>
 </body>
 </html>
