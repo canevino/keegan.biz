@@ -2,9 +2,9 @@
 (()=>{
  'use strict';
  const M=window.MS, el=id=>document.getElementById(id);
- const defaultSettings={geometry:'random',conform:52,ornament:28,guideOverlay:false,
+ const defaultSettings={geometry:'random',conform:50,ornament:26,guideOverlay:false,
    pattern:'random',species:'random',season:'summer',palette:'kells',seed:472818,
-   foliage:70,finishLevel:24};
+   foliage:52,finishLevel:30};
  const s={...defaultSettings};
  const textFields=['pattern','geometry','species','season','palette'];
  const numberFields=['seed','conform','ornament','foliage','finishLevel'];
@@ -55,7 +55,10 @@
    // Editing settings shows complete art immediately. Playback is always explicit.
    if(animate&&el('animate-growth').checked && !drawing)animateGrowth();
  }
- function delayedPaint(){clearTimeout(paintTimer);stopPlayback();paintTimer=setTimeout(()=>paint({animate:false}),110);}
+ // Leave the old timeline intact during a slider's debounce. Cancelling it
+ // early exposed a completed old image for one frame before the new species
+ // was drawn. paint() cancels and replaces in the same synchronous task.
+ function delayedPaint(){clearTimeout(paintTimer);paintTimer=setTimeout(()=>paint({animate:false}),80);}
  controlIds.forEach(id=>el(id).addEventListener(id==='seed'?'change':'input',delayedPaint));
  el('guideOverlay').addEventListener('change',()=>paint({animate:false}));
  const newSeed=()=>{

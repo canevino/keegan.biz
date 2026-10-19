@@ -77,7 +77,7 @@ window.MS=window.MS||{};
    return out;
  }
  function anchored(point,side,width,advance=.8){return add(add(point,norm(point.tng),side*width*.29),point.tng,advance);}
- function petioleLeaf(p,a,size,sp,season,pal,r,plan,s){
+ function petioleLeaf(p,a,size,sp,season,pal,r,plan,s,t=.5){
    // Leaf collision is adjustable. Search for a nearby viable attachment
    // rather than simply deleting foliage and leaving a conspicuous gap.
    const alternatives=[{a,size,shift:0},{a:a+.19,size:size*.96,shift:1.7},
@@ -93,7 +93,7 @@ window.MS=window.MS||{};
      const leaf=M.plantLeaf(sp,at,candidate.a,candidate.size,season,pal,r,s);
      if(!leaf)return '';
      const stalk=M.path(`M${V(p)}L${V(at)}`,M.wood(sp,pal,'new',r),.64);
-     return `<g class="growth-leaf" data-attachment="${V(p)}">${stalk}${leaf}</g>`;
+     return `<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(candidate.a)}" data-grow-t="${n(t)}">${stalk}${leaf}</g>`;
    }
    return '';
  }
@@ -115,7 +115,7 @@ window.MS=window.MS||{};
    }
    if(r.chance(.44))out+=M.plantOrgan(sp,tip,a,season,pal,r,r.between(5.5,8));
    // Terminal ornament is a continuation of the twig, never free-floating.
-   if(M.ornamentTerminal && r.chance(.12))out+=M.ornamentTerminal(sp,tip,a,r.between(7,11),pal,r,s);
+
    return out;
  }
  function shoot(start,tng,side,len,sp,season,pal,r,plan,s,sub=false){
@@ -139,8 +139,8 @@ window.MS=window.MS||{};
      const a=angle(p.tng)+sign*r.between(.75,1.15)*sp.angle;
      const size=len*(sub?r.between(.22,.34):r.between(.31,.48))*sp.scale*(sp.leafScale||1)*(1-.17*t);
      const attachment=add(p,norm(p.tng),sign*widthAt(base,t,.25)*.10);
-     foliageArt+=petioleLeaf(attachment,a,size,sp,season,pal,r,plan,s);
-     if(pairs)foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.25),.5),angle(p.tng)-sign*.85,size*.95,sp,season,pal,r,plan,s);
+     foliageArt+=petioleLeaf(attachment,a,size,sp,season,pal,r,plan,s,t);
+     if(pairs)foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.25),.5),angle(p.tng)-sign*.85,size*.95,sp,season,pal,r,plan,s,t);
    }
    if(sp.habit==='climbing' && r.chance(.46)){
      const p=points[Math.round(r.between(.3,.66)*30)];
@@ -164,7 +164,7 @@ window.MS=window.MS||{};
      organArt+=M.ornamentJunction(sp,p,a,r.between(9,17),pal,r,s,plan,'joint');
    }
    // Terminal buds already belong to this shoot's reproductive details.
-   if(M.ornamentTerminal && !sub && r.chance(.12))organArt+=M.ornamentTerminal(sp,points[30],angle(points[30].tng),r.between(9,13),pal,r,s);
+
    // Decorative split-tip hooks removed: they looked disconnected.
    const axis=M.strokePath(points);
    return `<g class="growth-shoot" data-root-t="${n(s._branchT??.4)}" data-growpath="${axis}">`+
@@ -194,7 +194,7 @@ window.MS=window.MS||{};
        if(!allowed(end,plan,-8))continue;
        const leaf=`M0 0 Q${M.vec(len*.31,-len*.32)} ${M.vec(len*.80,-len*.095)} Q${M.vec(len*1.03,-len*.03)} ${M.vec(len,0)} Q${M.vec(len*.68,len*.23)} 0 0 Z`;
        const color=M.leafPigment(sp,season,pal,r,s),id='pinna-'+r.int(1000,99999999);
-       foliage+=`<g class="growth-leaf" data-attachment="${V(p)}"><g transform="translate(${V(at)}) rotate(${n(ang*180/Math.PI)})">`+M.leafFinish(id,leaf,len,color,pal,s,r);
+       foliage+=`<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(ang)}" data-grow-t="${n(t)}"><g transform="translate(${V(at)}) rotate(${n(ang*180/Math.PI)})">`+M.leafFinish(id,leaf,len,color,pal,s,r);
        if(detail>.36)foliage+=M.path(`M0 0L${M.vec(len*.87,0)}`,M.mix(color,pal.ink,.42),.37,'opacity=".51"');
        foliage+='</g></g>';
      }
@@ -220,7 +220,7 @@ window.MS=window.MS||{};
      stem.drawnPoints=points;
      if(sp.habit==='fronds'){
        const fern=fernStem(points,sp,season,pal,r,plan,s);
-       sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}" filter="url(#press)"><g class="growth-primary" data-growpath="${M.strokePath(points)}">${fern.wood}</g><g class="growth-secondary">${fern.foliage}</g></g>`);
+       sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}"><g class="growth-primary" data-growpath="${M.strokePath(points)}">${fern.wood}</g><g class="growth-secondary">${fern.foliage}</g></g>`);
        continue;
      }
      const base=stem.width*(sp.habit==='heavy'?1.32:sp.habit==='climbing'?.92:sp.habit==='twining'?.96:1.18);
@@ -246,17 +246,16 @@ window.MS=window.MS||{};
        for(let i=0;i<2;i++){
          const t=.08+i*.09,p=points[Math.round(t*100)],side=i%2?1:-1;
          const a=angle(p.tng)+side*r.between(.8,1.3),len=r.between(31,51)*sp.scale*(sp.leafScale||1);
-         growth+=petioleLeaf(add(p,norm(p.tng),side*widthAt(base,t,.1)*.08),a,len,sp,season,pal,r,plan,s);
+         growth+=petioleLeaf(add(p,norm(p.tng),side*widthAt(base,t,.1)*.08),a,len,sp,season,pal,r,plan,s,t);
        }
      }
      if(r.chance(.68)){
        const tip=points[100],ang=angle(tip.tng);
        growth+=M.plantOrgan(sp,tip,ang,season,pal,r,r.between(9,14));
      }
-     if(M.ornamentTerminal && sp.habit!=='fronds' && r.chance(.13))
-       growth+=M.ornamentTerminal(sp,points[100],angle(points[100].tng),r.between(8,13),pal,r,s);
+
      const axis=M.strokePath(points);
-     sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}" filter="url(#press)">`+
+     sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}">`+
        `<g class="growth-primary" data-growpath="${axis}">${woodArt}</g>`+
        `<g class="growth-secondary">${growth}</g></g>`);
    }

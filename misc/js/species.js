@@ -167,14 +167,30 @@ window.MS=window.MS||{};
    // per-leaf filter/mask machinery creates huge SVGs without visible benefit.
    // Keep a crisp botanical blade and its midrib; reserve rich ink for big leaves.
    if(size<42){
-     const outline=M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(Math.max(.36,size*.024))}" stroke-linejoin="round"`);
-     const grain=M.shape(d,'url(#speckle)',`opacity="${n(.23+(s.wear||0)*.004)}"`);
-     const rib=M.path(`M0 0Q${V(size*.52,-size*.011)} ${V(size*.95,0)}`,mix(color,pal.ink,.46),Math.max(.22,size*.017),'opacity=".48"');
+     // The majority of foliage is drawn at this scale. Preserve the
+     // characteristic contour but add restrained secondary venation; without
+     // it small leaves became flat, repeated pieces of colored clip art.
+     const outline=M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(Math.max(.30,size*.020))}" stroke-linejoin="round"`);
+     const grain=M.shape(d,'url(#speckle)',`opacity="${n(.18+(s.wear||0)*.005)}"`);
+     const veinInk=mix(color,pal.ink,.30);
+     const rib=M.path(`M0 0Q${V(size*.52,-size*.011)} ${V(size*.95,0)}`,veinInk,Math.max(.20,size*.015),'opacity=".51"');
+     let fineVeins='';
+     if(size>14){
+       const pairs=size>25?4:3;
+       for(let j=0;j<pairs;j++){
+         const t=.24+j*.55/pairs,x=size*t;
+         for(const direction of [-1,1]){
+           const rise=direction*size*(kind==='hazel'?.20:.16)*Math.sin(Math.PI*t);
+           fineVeins+=M.path(`M${V(x,0)}Q${V(x+size*.060,rise*.34)} ${V(x+size*.13,rise)}`,
+             veinInk,Math.max(.20,size*.010),`opacity="${n(.32+(j%2)*.08)}"`);
+         }
+       }
+     }
      const ornament=M.ornamentLeafInterior?M.ornamentLeafInterior(sp,size,color,pal,r,s):'';
      const clipId='ornament-clip-'+id;
      const colorPrint=M.ornamentColorPatch?M.ornamentColorPatch(sp,size,pal,r,s):'';
      return `<defs><clipPath id="${clipId}"><path d="${d}"/></clipPath></defs>`+
-       `<g>${outline}<g clip-path="url(#${clipId})">${grain}${colorPrint}${rib}${ornament}</g></g>`;
+       `<g>${outline}<g clip-path="url(#${clipId})">${grain}${colorPrint}${rib}${fineVeins}${ornament}</g></g>`;
    }
    let z=M.leafFinish(id,d,size,color,pal,s,r);
    z+=`<g clip-path="url(#leaf-clip-${id})">`;
@@ -300,7 +316,16 @@ window.MS=window.MS||{};
    const bloom=rawOrgan(sp,at,angle,'spring',pal,snapshot(23),scale)||blossom(tip,scale*.79,pal,snapshot(25));
    const bud=M.path(`M${V(tip.x,tip.y)}L${v(budTip)}`,M.mix(sp.tint,pal.ink,.3),.65)+
      `<ellipse cx="${n(budTip.x)}" cy="${n(budTip.y)}" rx="${n(scale*.24)}" ry="${n(scale*.37)}" transform="rotate(${n(angle*180/Math.PI+90)} ${v(budTip)})" fill="${M.mix(sp.tint,pal.ochre,.28)}" stroke="${pal.ink}" stroke-width=".46"/>`;
-   return `<g class="growth-organ" data-life="${M.escape(sp.leaf)}">${base}`+
+   // The life-cycle stages share a single attachment. During playback they
+   // change by geometry/scale (not crossfading); the permanent image only
+   // displays the appropriate final season's organ.
+   const finalStage = (season==='spring'||season==='summer') &&
+     ['dogrose','honeysuckle','acanthus'].includes(sp.leaf) ||
+     season==='spring' && ['holly','hawthorn','bramble'].includes(sp.leaf)
+       ? 'flower' :
+     ['fern','hazel'].includes(sp.leaf) && (season==='winter'||season==='spring')
+       ? 'catkin' : 'fruit';
+   return `<g class="growth-organ" data-life="${M.escape(sp.leaf)}" data-final-stage="${finalStage}" data-life-origin="${V(tip.x,tip.y)}">${base}`+
      `<g class="life-bud">${bud}</g>`+
      `<g class="life-bloom">${bloom}</g>`+
      `<g class="life-final">${final}</g></g>`;

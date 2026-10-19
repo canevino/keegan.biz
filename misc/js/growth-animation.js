@@ -1,101 +1,193 @@
-/* Animation never rebuilds the artwork. Each specimen is drawn only once:
-   the animation exposes existing wood, shoots, leaves, buds and fruit. */
-window.MS=window.MS||{};
-((M)=>{
- 'use strict';
- const ns='http://www.w3.org/2000/svg';
- let current=null,serial=0;
- const list=(el,sel)=>Array.from(el.querySelectorAll(sel));
- const make=(tag,attrs={})=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,String(v));return el;};
- const easing='cubic-bezier(.25,.08,.36,1)';
- function cancel(){
-   const s=current;if(!s)return;current=null;
-   clearTimeout(s.end);
-   // Releasing the animations exposes the COMPLETE source SVG, not a new render.
-   for(const a of s.animations){try{a.cancel()}catch(_){}}
-   for(const el of s.masked)el.removeAttribute('mask');
-   s.defs.remove();s.art.classList.remove('is-growing');
-   for(const el of s.life)el.style.removeProperty('display');
- }
- function play(art){
-   cancel();if(!art||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
-   const trunks=list(art,'.growth-primary'),shoots=list(art,'.growth-shoot'),leaves=list(art,'.growth-leaf'),organs=list(art,'.growth-organ');
-   if(!trunks.length)return;
-   const defs=make('defs');art.insertBefore(defs,art.firstChild);
-   const s={art,defs,animations:[],masked:[],life:[],end:null};current=s;
-   art.classList.add('is-growing');
-   const animate=(el,frames,delay,duration,ease=easing)=>{
-     const a=el.animate(frames,{delay,duration,easing:ease,fill:'both'});
-     s.animations.push(a);return a;
-   };
-   // Growth masks belong to WOOD ONLY. A mask on the whole specimen caused
-   // the large cut-off edges and disembodied leaves in previous builds.
-   function growPath(el,d,delay,duration,maxWidth){
-     if(!el||!d)return;
-     const pen=make('path',{d,fill:'none',stroke:'#fff','stroke-width':maxWidth,
-       'stroke-linecap':'round','stroke-linejoin':'round'});
-     let len=0;try{len=pen.getTotalLength()}catch(_){}
-     if(!(len>0))return animate(el,[{opacity:0},{opacity:1}],delay,duration);
-     const id='botanical-growth-'+(++serial),mask=make('mask',{
-       id,maskUnits:'userSpaceOnUse',maskContentUnits:'userSpaceOnUse',x:-160,y:-160,width:M.W+320,height:M.H+320
-     });
-     pen.style.strokeDasharray=String(len+4);
-     pen.style.strokeDashoffset=String(len+4);
-     mask.appendChild(pen);defs.appendChild(mask);
-     el.setAttribute('mask',`url(#${id})`);s.masked.push(el);
-     animate(pen,[{strokeDashoffset:String(len+4)},{strokeDashoffset:'0'}],delay,duration,'linear');
-   }
-   const trunkTime=3800;
-   trunks.forEach((trunk,i)=>{
-     const isFern=trunk.closest('[data-trunk="fern"]');
-     growPath(trunk,trunk.getAttribute('data-growpath'),i*95,trunkTime,isFern?5:58);
-   });
-   const totalShoots=shoots.length;
-   shoots.forEach((shoot,i)=>{
-     const parent=shoot.parentElement?.closest('.growth-shoot');
-     const t=Number(shoot.getAttribute('data-root-t')||.4);
-     const delay=parent ? 3100+(i%13)*75 : 1200+t*2200+(i%7)*65;
-     const duration=1400+(i%4)*110;
-     const wood=shoot.querySelector(':scope > .shoot-wood');
-     growPath(wood,shoot.getAttribute('data-growpath'),delay,duration,18);
-     // Attached leaf sets grow only AFTER this specific twig reaches them.
-     const fol=shoot.querySelector(':scope > .shoot-foliage');
-     if(fol){const children=list(fol,'.growth-leaf');
-       children.forEach((leaf,j)=>{
-         const position=(j+1)/(children.length+1);
-         leaf.style.transformBox='view-box';
-         const xy=(leaf.getAttribute('data-attachment')||'425 500').split(' ').map(Number);
-         leaf.style.transformOrigin=`${xy[0]}px ${xy[1]}px`;
-         animate(leaf,[{opacity:0,transform:'scale(.05)'},{opacity:1,transform:'scale(1)'}],delay+duration*.38+duration*.55*position,570);
-       });
-     }
-     // This includes attached ornamental details and their nested smaller twigs;
-     // keep it after the wood is established to avoid disembodied decorations.
-     const detail=shoot.querySelector(':scope > .shoot-details');
-     if(detail)animate(detail,[{opacity:0},{opacity:1}],delay+duration*.8,710);
-   });
-   // Leaves directly on a primary axis, not inside a side shoot.
-   const trunkLeaves=leaves.filter(l=>!l.closest('.growth-shoot'));
-   trunkLeaves.forEach((leaf,i)=>{
-     const xy=(leaf.getAttribute('data-attachment')||'425 500').split(' ').map(Number);
-     leaf.style.transformBox='view-box';leaf.style.transformOrigin=`${xy[0]}px ${xy[1]}px`;
-     animate(leaf,[{opacity:0,transform:'scale(.05)'},{opacity:1,transform:'scale(1)'}],2900+i*3100/Math.max(1,trunkLeaves.length),650);
-   });
-   // Reproductive stages are always descendants of an attached stem. Their
-   // final illustrated state is restored in-place when the timeline finishes.
-   organs.forEach((organ,i)=>{
-     const bud=organ.querySelector(':scope > .life-bud');
-     const bloom=organ.querySelector(':scope > .life-bloom');
-     const final=organ.querySelector(':scope > .life-final');
-     if(!bud||!bloom||!final)return;
-     const t=5900+(i%19)*86;
-     for(const el of [bud,bloom,final]){el.style.display='inline';s.life.push(el);}
-     animate(bud,[{opacity:0},{opacity:1},{opacity:1},{opacity:0}],t,1650);
-     animate(bloom,[{opacity:0},{opacity:0},{opacity:1},{opacity:0}],t+920,1500);
-     animate(final,[{opacity:0},{opacity:0},{opacity:1}],t+2140,790);
-   });
-   // DO NOT repaint when ending: that previously caused one-frame flashes.
-   s.end=setTimeout(()=>{if(current===s)cancel();},10700);
- }
- M.growthAnimation={play,cancel};
+/* Organic growth playback (2026-10-18, revised).
+ * The generator, printable SVG and all species geometry are unchanged by playback.
+ * One clock drives every axis, blade and organ: no individual Web Animations,
+ * no opacity crossfades, and no timer-based DOM swaps.  Cancelling ALWAYS
+ * returns to the exact original, complete, exportable illustration.
+ */
+window.MS = window.MS || {};
+((M) => {
+  'use strict';
+  const NS = 'http://www.w3.org/2000/svg';
+  const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+  const smooth = x => { x = clamp(x); return x*x*(3-2*x); };
+  const all = (el, selector) => Array.from(el.querySelectorAll(selector));
+  const create = (tag, attrs = {}) => {
+    const el = document.createElementNS(NS, tag);
+    for (const [key, val] of Object.entries(attrs)) el.setAttribute(key, String(val));
+    return el;
+  };
+  const leafMatrix = (x,y,angle,length,width) => {
+    const cs=Math.cos(angle),sn=Math.sin(angle);
+    const a=length*cs*cs+width*sn*sn, b=(length-width)*cs*sn;
+    const d=length*sn*sn+width*cs*cs;
+    return `matrix(${a.toFixed(5)} ${b.toFixed(5)} ${b.toFixed(5)} ${d.toFixed(5)} ${(x-a*x-b*y).toFixed(3)} ${(y-b*x-d*y).toFixed(3)})`;
+  };
+  const num = (el, name, fallback) => {
+    const n = Number(el.getAttribute(name));
+    return el.hasAttribute(name) && Number.isFinite(n) ? n : fallback;
+  };
+  function coordinate(el, attribute, x=425, y=500) {
+    const a = (el.getAttribute(attribute) || '').split(/[ ,]+/).map(Number);
+    return a.length > 1 && a.every(Number.isFinite) ? a : [x, y];
+  }
+  let active = null;
+  let maskSerial = 0;
+  function stop() {
+    const run = active;
+    if (!run) return;
+    active = null;
+    cancelAnimationFrame(run.raf);
+    // Restore original attributes, rather than trying to guess which animated
+    // transforms, masks or visibilities an SVG element had before playback.
+    for (const [el, prop, original] of run.changes) {
+      if (original === null) el.removeAttribute(prop);
+      else el.setAttribute(prop, original);
+    }
+    run.defs.remove();
+    run.art.classList.remove('is-growing');
+    if (run.art.isConnected) run.art.dispatchEvent(new CustomEvent('growth-complete'));
+  }
+  function play(art) {
+    stop();
+    if (!art || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const plants = all(art, '.growth-plant');
+    if (!plants.length) return;
+    const run = {art, raf: 0, changes: [], changed: new WeakMap(), defs:create('defs'), axes:[], blades:[], organs:[], extra:[], duration:0, previous:-1};
+    active=run;
+    art.insertBefore(run.defs,art.firstChild);
+    art.classList.add('is-growing');
+    const set=(el,prop,val)=>{
+      if (!el) return;
+      let props=run.changed.get(el);
+      if (!props){props=new Set();run.changed.set(el,props);}
+      if(!props.has(prop)) {props.add(prop);run.changes.push([el,prop,el.getAttribute(prop)]);}
+      if(el.getAttribute(prop)!==String(val)) el.setAttribute(prop, String(val));
+    };
+    function wood(target,path,start,duration,width) {
+      if (!target || !path) return;
+      const brush = create('path',{'d':path,'fill':'none','stroke':'white','stroke-width':width,'stroke-linecap':'round','stroke-linejoin':'round'});
+      let length=0;
+      try{length=brush.getTotalLength();}catch(_){}
+      if (!Number.isFinite(length) || length<.5)return;
+      const id='botanical-grow-mask-'+(++maskSerial);
+      // Mask generously oversized in USER coordinates; geometry is never
+      // cropped at the original illustration viewBox or a branch endpoint.
+      const mask=create('mask',{id,maskUnits:'userSpaceOnUse',maskContentUnits:'userSpaceOnUse',x:-1000,y:-1000,width:(M.W||850)+2000,height:(M.H||1000)+2000});
+      mask.appendChild(brush);run.defs.appendChild(mask);
+      set(target,'mask',`url(#${id})`);
+      const L=length+width;
+      brush.setAttribute('stroke-dasharray',`${L} ${L}`);
+      brush.setAttribute('stroke-dashoffset',L);
+      run.axes.push({brush,length:L,start,duration});
+      run.duration=Math.max(run.duration,start+duration);
+    }
+    const phases=new Map();
+    plants.forEach((plant,i)=>{
+      const trunk=plant.querySelector(':scope > .growth-primary');
+      if(!trunk)return;
+      const fern=plant.dataset.trunk==='fern';
+      const phase={start:i*160,duration:fern?3050:3600};
+      phases.set(plant,phase);
+      wood(trunk,trunk.getAttribute('data-growpath'),phase.start,phase.duration,fern?9:82);
+    });
+    // Assign all shoot schedules first, including shoots nested in tertiary
+    // branches. Parents start before their children; every shoot waits until
+    // the parent stem has ACTUALLY grown past its branching position.
+    const shoots=all(art,'.growth-shoot');
+    shoots.forEach((shoot,i)=>{
+      const ancestor=shoot.parentElement.closest('.growth-shoot');
+      const parent=phases.get(ancestor||shoot.closest('.growth-plant'));
+      if(!parent)return;
+      const root=clamp(num(shoot,'data-root-t',.43),.03,.96);
+      const phase={start:parent.start+parent.duration*(ancestor?.26+.68*root:.08+.85*root)+45,
+                   duration:ancestor?1060:1510};
+      phases.set(shoot,phase);
+      wood(shoot.querySelector(':scope > .shoot-wood'),shoot.dataset.growpath,phase.start,phase.duration,28);
+    });
+    // Store the ORIGINAL SVG transform, then grow the whole group from its
+    // attachment in SVG user coordinates, not element-local pixels. A single
+    // RAF updates all leaves in shared frame time, avoiding hundreds of
+    // competing easing engines and racing animation fills.
+    all(art,'.growth-leaf').forEach((leaf,i)=>{
+      const owner=leaf.closest('.growth-shoot')||leaf.closest('.growth-plant');
+      const phase=phases.get(owner);if(!phase)return;
+      const t=clamp(num(leaf,'data-grow-t',.55),.04,.98);
+      const [x,y]=coordinate(leaf,'data-attachment');
+      const original=leaf.getAttribute('transform')||'';
+      const angle=num(leaf,'data-leaf-angle',0);
+      const start=phase.start+phase.duration*(.13+.79*t)+65;
+      const duration=650+((i*11)%6)*37;
+      run.blades.push({leaf,original,x,y,angle,start,duration,last:-1});
+      run.duration=Math.max(run.duration,start+duration);
+      set(leaf,'transform',`${leafMatrix(x,y,angle,.0001,.0001)} ${original}`);
+    });
+    // Full final organ stays the SAME geometric object from very small bud to
+    // blossom / berry. We do not swap life-bud / life-bloom / life-final:
+    // swapping differently drawn groups was the visual pop in the old code.
+    all(art,'.growth-organ').forEach((organ,i)=>{
+      const owner=organ.closest('.growth-shoot')||organ.closest('.growth-plant');
+      const phase=phases.get(owner);if(!phase)return;
+      const final=organ.querySelector(':scope > .life-final');
+      if(!final)return;
+      const bud=organ.querySelector(':scope > .life-bud');
+      const bloom=organ.querySelector(':scope > .life-bloom');
+      if(bud)set(bud,'display','none');
+      if(bloom)set(bloom,'display','none');
+      const [x,y]=coordinate(organ,'data-life-origin');
+      const original=final.getAttribute('transform')||'';
+      const start=phase.start+phase.duration*.84+100+(i%4)*120;
+      // Grow the calyx's connecting stalk along its own short path.
+      // Previously this path was visible from the first frame and appeared
+      // as a detached mark long before its supporting branch emerged.
+      const calyx=organ.querySelector(':scope > path');
+      if(calyx)wood(calyx,calyx.getAttribute('d'),start-320,530,8);
+      const duration=1050+(i%3)*90;
+      run.organs.push({el:final,original,x,y,start,duration,last:-1});
+      run.duration=Math.max(run.duration,start+duration);
+      set(final,'transform',`translate(${x} ${y}) scale(.0001) translate(${-x} ${-y}) ${original}`);
+    });
+    // A single frame reveals the botanical progression in this order:
+    // primary axis -> attached shoots -> petioles and leaf blades -> flowers.
+    // Show the final SVG after exactly reaching 100% (no regen, no reflow).
+    function render(now) {
+      if(active!==run)return;
+      if(run.startTime==null)run.startTime=now;
+      const elapsed=now-run.startTime;
+      // 30fps is adequate for drawn ink and substantially reduces repeated
+      // SVG/filter rasterization on Safari and slower mobile devices.
+      if(elapsed-run.previous >= 1000/30 || elapsed>=run.duration) {
+        run.previous=elapsed;
+        for(const axis of run.axes){
+          const u=clamp((elapsed-axis.start)/axis.duration);
+          const off=axis.length*(1-smooth(u));
+          axis.brush.setAttribute('stroke-dashoffset',off.toFixed(2));
+        }
+        for(const blade of run.blades){
+          const t=clamp((elapsed-blade.start)/blade.duration);
+          const p=smooth(t);
+          if(Math.abs(p-blade.last)<.002)continue;
+          blade.last=p;
+          // Blade first elongates, then fills out. There is no fade-in and no
+          // overshoot or rubber-band bounce. The transform is attachment-fixed.
+          const length=.0001+.9999*smooth(Math.min(1,t*1.26));
+          const width=.0001+.9999*smooth(clamp((t-.12)/.88));
+          set(blade.leaf,'transform',`${leafMatrix(blade.x,blade.y,blade.angle,length,width)} ${blade.original}`);
+        }
+        for(const organ of run.organs){
+          const t=clamp((elapsed-organ.start)/organ.duration);
+          const p=smooth(t);
+          if(Math.abs(p-organ.last)<.002)continue;
+          organ.last=p;
+          // Smooth inflation from a real attachment; the one finished shape
+          // can become a flower, nut or berry without a swapped overlay.
+          const size=.0001+p*.9999;
+          set(organ.el,'transform',`translate(${organ.x} ${organ.y}) scale(${size.toFixed(4)}) translate(${-organ.x} ${-organ.y}) ${organ.original}`);
+        }
+      }
+      if (elapsed < run.duration+100){run.raf=requestAnimationFrame(render);}
+      else stop();
+    }
+    run.raf=requestAnimationFrame(render);
+  }
+  M.growthAnimation={play,cancel:stop};
 })(window.MS);
