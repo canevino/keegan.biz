@@ -82,4 +82,5 @@ button:focus-visible,select:focus-visible,input:focus-visible {outline:2px solid
 .machine-credits p {margin:12px 0 0;}
 /* The final organ is visible in still art; preview switches stages in-place. */
 .drawing .life-bud,.drawing .life-bloom {display:none;}
-.drawing svg.is-growing .life-bud,.drawing svg.is-growing .life-bloom,.drawing svg.is-growing .life-final {display:inline;}
+.drawing svg.is-growing .life-bud,.drawing svg.is-growing .life-bloom {display:none;}
+.drawing svg.is-growing .life-final {display:inline;}
