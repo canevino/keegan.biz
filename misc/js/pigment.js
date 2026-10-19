@@ -110,14 +110,14 @@ window.MS=window.MS||{};
  // A local transparent/eroded relief. Note: fill and outline are grouped under
  // the *same* mask, so holes really remove paint rather than adding cream dots.
  function erodeDef(id,bounds,s,r,lightweight=false){
-   const wear=clamp(Number(s.wear||0)/100,0,1);
+   const wear=clamp(Number(s.wear||0)/100,0,.45);
    if(wear<.045)return {id:null,markup:''};
-   const area=lightweight?10:20,holes=Math.floor((.2+wear*1.1)*area);
+   const area=lightweight?8:14,holes=Math.floor((.2+wear*.62)*area);
    let loss='';
    for(let i=0;i<holes;i++){
      const x=r.between(bounds.x,bounds.x+bounds.w),y=r.between(bounds.y,bounds.y+bounds.h);
-     const rad=r.between(.13,.45+1.5*wear);
-     loss+=M.circle(x,y,rad,'black',`opacity="${n(r.between(.25,.74))}"`);
+     const rad=r.between(.13,.40+.9*wear);
+     loss+=M.circle(x,y,rad,'black',`opacity="${n(r.between(.16,.52))}"`);
    }
    const mask=`wear-${id}`;
    const defs=`<mask id="${mask}" maskUnits="userSpaceOnUse" x="${n(bounds.x-5)}" y="${n(bounds.y-5)}" width="${n(bounds.w+10)}" height="${n(bounds.h+10)}">`+

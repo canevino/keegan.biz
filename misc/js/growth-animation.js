@@ -44,6 +44,7 @@ window.MS = window.MS || {};
       else el.setAttribute(prop, original);
     }
     run.defs.remove();
+    if(run.printGroup){if(run.printFilter)run.printGroup.setAttribute('filter',run.printFilter);else run.printGroup.removeAttribute('filter');}
     run.art.classList.remove('is-growing');
     if (run.art.isConnected) run.art.dispatchEvent(new CustomEvent('growth-complete'));
   }
@@ -52,7 +53,10 @@ window.MS = window.MS || {};
     if (!art || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     const plants = all(art, '.growth-plant');
     if (!plants.length) return;
-    const run = {art, raf: 0, changes: [], changed: new WeakMap(), defs:create('defs'), axes:[], blades:[], organs:[], extra:[], duration:0, previous:-1};
+    const printGroup=art.querySelector('#artwork-layers');
+    const printFilter=printGroup?.getAttribute('filter');
+    if(printGroup)printGroup.removeAttribute('filter');
+    const run = {printGroup,printFilter,art, raf: 0, changes: [], changed: new WeakMap(), defs:create('defs'), axes:[], blades:[], organs:[], extra:[], duration:0, previous:-1};
     active=run;
     art.insertBefore(run.defs,art.firstChild);
     art.classList.add('is-growing');
@@ -86,7 +90,7 @@ window.MS = window.MS || {};
       const trunk=plant.querySelector(':scope > .growth-primary');
       if(!trunk)return;
       const fern=plant.dataset.trunk==='fern';
-      const phase={start:i*160,duration:fern?3050:3600};
+      const phase={start:i*160,duration:fern?2600:3000};
       phases.set(plant,phase);
       wood(trunk,trunk.getAttribute('data-growpath'),phase.start,phase.duration,fern?9:82);
     });
@@ -100,7 +104,7 @@ window.MS = window.MS || {};
       if(!parent)return;
       const root=clamp(num(shoot,'data-root-t',.43),.03,.96);
       const phase={start:parent.start+parent.duration*(ancestor?.26+.68*root:.08+.85*root)+45,
-                   duration:ancestor?1060:1510};
+                   duration:ancestor?780:1250};
       phases.set(shoot,phase);
       wood(shoot.querySelector(':scope > .shoot-wood'),shoot.dataset.growpath,phase.start,phase.duration,28);
     });
@@ -116,7 +120,7 @@ window.MS = window.MS || {};
       const original=leaf.getAttribute('transform')||'';
       const angle=num(leaf,'data-leaf-angle',0);
       const start=phase.start+phase.duration*(.13+.79*t)+65;
-      const duration=650+((i*11)%6)*37;
+      const duration=650+((i*11)%6)*40;
       run.blades.push({leaf,original,x,y,angle,start,duration,last:-1});
       run.duration=Math.max(run.duration,start+duration);
       set(leaf,'transform',`${leafMatrix(x,y,angle,.0001,.0001)} ${original}`);
@@ -165,7 +169,7 @@ window.MS = window.MS || {};
         for(const blade of run.blades){
           const t=clamp((elapsed-blade.start)/blade.duration);
           const p=smooth(t);
-          if(Math.abs(p-blade.last)<.002)continue;
+          if(Math.abs(p-blade.last)<.007)continue;
           blade.last=p;
           // Blade first elongates, then fills out. There is no fade-in and no
           // overshoot or rubber-band bounce. The transform is attachment-fixed.

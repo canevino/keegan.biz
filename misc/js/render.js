@@ -35,6 +35,6 @@ window.MS=window.MS||{};
    // it no longer scatters independent scrolls across the composition.
    const defs=M.pigmentDefs(s,pigmentR)+M.finishDefs(s,finishR);
    const overlay=s.guideOverlay?M.drawGuides(plan.construction):'';
-   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${M.W} ${M.H}" width="${M.W}" height="${M.H}" role="img" aria-label="Generated botanical ornament"><defs>${defs}</defs><g id="artwork-layers">${body}</g>${overlay}</svg>`;
+   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${M.W} ${M.H}" width="${M.W}" height="${M.H}" role="img" aria-label="Generated botanical ornament"><defs>${defs}</defs><g id="artwork-layers" filter="url(#impression)">${body}</g>${overlay}</svg>`;
  };
 })(window.MS);

@@ -1,48 +1,24 @@
-/* Pass 4 — registered print edge, dry ink and local warping.
-   The print distortion slider affects only the impression, NOT growth anatomy.
-   Grained alpha bleeding is isolated to source edges; foliage interiors retain
-   independently masked dry-brush erosion from pigment.js. */
+/* Local, non-destructive print impression. All alpha effects remain bounded. */
 window.MS=window.MS||{};
 ((M)=>{
  'use strict';
  M.finishDefs=(s,r)=>{
-   const c=M.clamp,n=M.n;
-   const wear=c(Number(s.wear||0)/100,0,1);
+   const n=M.n,c=M.clamp;
+   const wear=c(Number(s.wear||0)/100,0,.45);
    const spread=c(Number(s.spread||0)/100,0,1);
-   const warp=c(Number(s.printWarp||0)/100,0,1);
-   const scale=n(.8+warp*4+wear*1.10);
-   const soft=n(.10+spread*(.55+wear*.65));
-   const bleedRadius=n(spread*(1.65+2.1*wear));
-   const loss=n(wear*.39);
-   const poolOpacity=n(spread*(.22+.28*wear));
-   return `<filter id="rough-ink" x="-9%" y="-9%" width="118%" height="118%">`+
-     `<feTurbulence type="fractalNoise" baseFrequency=".085 .12" numOctaves="3" seed="${r.int(1,99999)}" result="edge-noise"/>`+
-     `<feDisplacementMap in="SourceGraphic" in2="edge-noise" scale="${n(.55+wear*1.25)}" xChannelSelector="R" yChannelSelector="G"/>`+
-     `</filter>`+
-     `<filter id="press" x="-16%" y="-16%" width="132%" height="132%" color-interpolation-filters="sRGB">`+
-     // A long-grain field means low-frequency warped curves + short local damage.
-     `<feTurbulence type="fractalNoise" baseFrequency="${n(.020+.016*warp)} ${n(.045+.028*warp)}" numOctaves="2" seed="${r.int(1,99998)}" result="warpField"/>`+
-     `<feDisplacementMap in="SourceGraphic" in2="warpField" scale="${scale}" xChannelSelector="R" yChannelSelector="G" result="printed"/>`+
-     // Ink spread: expand noisy alpha, then subtract actual original alpha so
-     // pooled color deposits on the exterior, not as a uniform blurry halo.
-     `<feGaussianBlur in="SourceAlpha" stdDeviation="${soft}" result="alphaBlur"/>`+
-     `<feComponentTransfer in="alphaBlur" result="thresholdAlpha"><feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1"/></feComponentTransfer>`+
-     `<feMorphology in="thresholdAlpha" operator="dilate" radius="${bleedRadius}" result="dilated"/>`+
-     `<feTurbulence type="fractalNoise" baseFrequency=".12 .17" numOctaves="2" seed="${r.int(1,99998)}" result="bleedNoise"/>`+
-     `<feDisplacementMap in="dilated" in2="bleedNoise" scale="${n(.40+spread*(.8+wear*2.2))}" xChannelSelector="R" yChannelSelector="G" result="irregularBleed"/>`+
-     `<feComposite in="irregularBleed" in2="SourceAlpha" operator="out" result="edgeOnly"/>`+
-     `<feFlood flood-color="${s.pal.ink}" flood-opacity="${poolOpacity}" result="poolPigment"/>`+
-     `<feComposite in="poolPigment" in2="edgeOnly" operator="in" result="edgeDeposits"/>`+
-     // Patchy pressure is deliberately subtle: large pigment holes are made
-     // by masks in pigment.js, so this filter doesn't destroy illustration.
-     `<feTurbulence type="fractalNoise" baseFrequency=".23" numOctaves="2" seed="${r.int(1,99998)}" result="pressure"/>`+
-     `<feColorMatrix in="pressure" type="saturate" values="0" result="mono"/>`+
-     `<feComponentTransfer in="mono" result="missing"><feFuncA type="linear" slope="${n(.05+.52*wear)}" intercept="-${n(.03+.09*wear)}"/></feComponentTransfer>`+
-     `<feComposite in="printed" in2="missing" operator="out" result="dryInk"/>`+
-     `<feMerge><feMergeNode in="edgeDeposits"/><feMergeNode in="dryInk"/></feMerge></filter>`+
-     `<filter id="dry-print" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">`+
-     `<feTurbulence type="fractalNoise" baseFrequency=".065" numOctaves="2" seed="${r.int(1,99998)}" result="n"/>`+
-     `<feDisplacementMap in="SourceGraphic" in2="n" scale="${n(.1+.8*wear+2*warp)}" xChannelSelector="R" yChannelSelector="G"/></filter>`+
-     `<filter id="faint" x="-12%" y="-12%" width="124%" height="124%"><feGaussianBlur in="SourceGraphic" stdDeviation="${n(.16+wear*.6)}"/></filter>`;
+   const warp=c(Number(s.printWarp||0)/100,0,.25);
+   const blur=n(.40+.65*spread), radius=n(.70+1.70*spread);
+   const displace=n(1.25+2.20*spread+1.3*warp);
+   return `<filter id="impression" x="-9%" y="-9%" width="118%" height="118%" color-interpolation-filters="sRGB">`+
+       `<feTurbulence type="fractalNoise" baseFrequency=".075 .098" numOctaves="2" seed="${r.int(1,99999)}" result="fiber"/>`+
+       `<feDisplacementMap in="SourceGraphic" in2="fiber" scale="${displace}" xChannelSelector="R" yChannelSelector="G" result="drawn"/>`+
+       `<feGaussianBlur in="SourceAlpha" stdDeviation="${blur}" result="wet"/>`+
+       `<feMorphology in="wet" operator="dilate" radius="${radius}" result="spread"/>`+
+       `<feComponentTransfer in="spread" result="hardEdge"><feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1"/></feComponentTransfer>`+
+       `<feComposite in="hardEdge" in2="SourceAlpha" operator="out" result="rim"/>`+
+       `<feFlood flood-color="${s.pal.ink}" flood-opacity="${n(.16+.16*spread)}" result="edgeColor"/>`+
+       `<feComposite in="edgeColor" in2="rim" operator="in" result="edgeInk"/>`+
+       `<feMerge><feMergeNode in="edgeInk"/><feMergeNode in="drawn"/></feMerge></filter>`+
+       `<filter id="dry-print" x="-9%" y="-9%" width="118%" height="118%"><feTurbulence type="fractalNoise" baseFrequency=".10" seed="${r.int(1,99998)}" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="${n(.35+wear*2)}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
  };
 })(window.MS);

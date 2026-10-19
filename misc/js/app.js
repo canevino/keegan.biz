@@ -4,13 +4,13 @@
  const M=window.MS, el=id=>document.getElementById(id);
  const defaultSettings={geometry:'random',conform:50,ornament:26,guideOverlay:false,
    pattern:'random',species:'random',season:'summer',palette:'kells',seed:472818,
-   foliage:52,finishLevel:30};
+   foliage:63,finishLevel:36};
  const s={...defaultSettings};
  const textFields=['pattern','geometry','species','season','palette'];
  const numberFields=['seed','conform','ornament','foliage','finishLevel'];
  const controlIds=[...textFields,...numberFields];
  const stage=el('drawing-stage'),overlay=el('stroke-overlay'),preview=el('stroke-preview');
- let strokes=[],draft=[],drawing=false,pointerId=null,paintTimer=null,svg='';
+ let strokes=[],draft=[],drawing=false,pointerId=null,paintTimer=null,svg='',framedViewBox=null;
  const cap=4;
  function read(){
    controlIds.forEach(id=>s[id]=numberFields.includes(id)?Number(el(id).value):el(id).value);
@@ -19,13 +19,13 @@
    // geometry = directional influence, ornament = botanical stylisation,
    // density = branch/leaf population, wear = the coherent print finish.
    const f=M.clamp(s.finishLevel/100,0,1);
-   s.detail=64; // real leaf venation stays legible regardless of density
-   s.pigment=Math.round(24+f*34);        // subtle color variation within shapes
-   s.wear=Math.round(f*75);              // missing ink / dry brush
-   s.spread=Math.round(20+f*75);            // bleeding stays near source edges
-   s.registration=Math.round(f*20);     // small imperfections, not ghost leaves
-   s.printWarp=Math.round(f*14);        // local print wobble, not plant topology
-   s.distortion=7;                     // gentle botanical waviness, not random shapes
+   s.detail=78; // real leaf venation stays legible regardless of density
+   s.pigment=Math.round(42+f*24);        // subtle color variation within shapes
+   s.wear=Math.round(8+f*37);              // missing ink / dry brush
+   s.spread=Math.round(36+f*58);            // bleeding stays near source edges
+   s.registration=Math.round(5+f*16);     // small imperfections, not ghost leaves
+   s.printWarp=Math.round(2+f*18);        // local print wobble, not plant topology
+   s.distortion=10;                     // gentle botanical waviness, not random shapes
    s.bleed=s.spread>0;s.transparent=true;
    s.guideOverlay=el('guideOverlay').checked;
    s.drawnPaths=strokes.map(path=>path.map(p=>({x:p.x,y:p.y})));
@@ -45,12 +45,30 @@
    el('undo-path').disabled=strokes.length===0;
    el('clear-paths').disabled=strokes.length===0;
  }
+ function fitDrawing(){
+   const art=el('drawing').querySelector('svg'),plant=art?.querySelector('#botanical-plants');
+   if(!art||!plant)return;
+   // The SVG is still authored on the same 850 × 1000 sheet; framing changes
+   // ONLY the camera/viewBox and never the botanical coordinates or export data.
+   try{
+     const b=plant.getBBox();
+     if(![b.x,b.y,b.width,b.height].every(Number.isFinite)||b.width<1||b.height<1)return;
+     const aspect=M.W/M.H, margin=1.23;
+     let w=Math.max(260,b.width*margin),h=Math.max(300,b.height*margin);
+     if(w/h<aspect)w=h*aspect;else h=w/aspect;
+     const midX=b.x+b.width*.5,midY=b.y+b.height*.5;
+     framedViewBox=[midX-w*.5,midY-h*.5,w,h].map(n=>Math.round(n*100)/100).join(' ');
+     art.setAttribute('viewBox',framedViewBox);
+     overlay.setAttribute('viewBox',framedViewBox);
+   }catch(err){console.warn('Art frame fallback:',err);}
+ }
  function paint({animate=true}={}){
    clearTimeout(paintTimer);read();
    numberFields.slice(1).forEach(id=>el(id+'-value').textContent=s[id]);
    stopPlayback();
    svg=M.render(s);
    el('drawing').innerHTML=svg;
+   fitDrawing();
    meta();refreshStatus();
    // Editing settings shows complete art immediately. Playback is always explicit.
    if(animate&&el('animate-growth').checked && !drawing)animateGrowth();
@@ -164,7 +182,10 @@
  // -------------------------- exports --------------------------------
  // Always render a clean, non-animated SVG with NO construction guide.
  // The authored growth paths remain part of that export.
- function cleanSVG(){return M.render({...s,guideOverlay:false,drawnPaths:strokes.map(a=>a.map(p=>({...p})))});}
+ function cleanSVG(){
+   const data=M.render({...s,guideOverlay:false,drawnPaths:strokes.map(a=>a.map(p=>({...p})))});
+   return framedViewBox?data.replace(`viewBox="0 0 ${M.W} ${M.H}"`,`viewBox="${framedViewBox}"`):data;
+ }
  function download(blob,filename){
    const url=URL.createObjectURL(blob),a=document.createElement('a');
    a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
@@ -189,7 +210,7 @@
      if(!blob)throw Error('PNG export failed');
      download(blob,`ornament-${strokes.length?'drawn-':''}${s.seed}.png`);
    }catch(error){console.error(error);alert('PNG export failed. Try saving the SVG instead.');}
-   finally{if(url)URL.revokeObjectURL(url);btn.disabled=false;btn.textContent='save png ↗';}
+   finally{if(url)URL.revokeObjectURL(url);btn.disabled=false;btn.textContent='png ↗';}
  });
  window.addEventListener('spectral-ready',()=>{if(M.verifySpectral?.().working)paint({animate:false});});
  setDrawMode(false);paint({animate:false});
