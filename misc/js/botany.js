@@ -226,7 +226,7 @@ window.MS=window.MS||{};
        if(!allowed(end,plan,-8))continue;
        const leaf=`M0 0 Q${M.vec(len*.31,-len*.32)} ${M.vec(len*.80,-len*.095)} Q${M.vec(len*1.03,-len*.03)} ${M.vec(len,0)} Q${M.vec(len*.68,len*.23)} 0 0 Z`;
        const color=M.leafPigment(sp,season,pal,r,s),id='pinna-'+r.int(1000,99999999);
-       foliage+=`<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(ang)}" data-grow-t="${n(t)}"><g transform="translate(${V(at)}) rotate(${n(ang*180/Math.PI)})">`+M.leafFinish(id,leaf,len,color,pal,s,r);
+       foliage+=`<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(ang)}" data-grow-t="${n(t)}"><g transform="translate(${V(at)}) rotate(${n(ang*180/Math.PI)})">`+`<g data-print-leaf="fine">${M.leafFinish(id,leaf,len,color,pal,s,r)}</g>`;
        if(detail>.36)foliage+=M.path(`M0 0L${M.vec(len*.87,0)}`,M.mix(color,pal.ink,.42),.37,'opacity=".51"');
        foliage+='</g></g>';
      }
