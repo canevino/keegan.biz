@@ -50,13 +50,13 @@ window.MS = window.MS || {};
   }
   function play(art) {
     stop();
-    if (!art || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    if (!art || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) { M.animationComplete?.(); return; }
     const plants = all(art, '.growth-plant');
-    if (!plants.length) return;
+    if (!plants.length) { M.animationComplete?.(); return; }
     const printGroup=art.querySelector('#artwork-layers');
     const printFilter=printGroup?.getAttribute('filter');
     if(printGroup)printGroup.removeAttribute('filter');
-    const run = {printGroup,printFilter,art, raf: 0, changes: [], changed: new WeakMap(), defs:create('defs'), axes:[], blades:[], organs:[], extra:[], duration:0, previous:-1};
+    const run = {printGroup,printFilter,art, raf: 0, changes: [], changed: new WeakMap(), defs:create('defs'), axes:[], blades:[], organs:[], extra:[], reveals:[], duration:0, previous:-1};
     active=run;
     art.insertBefore(run.defs,art.firstChild);
     art.classList.add('is-growing');
@@ -90,9 +90,9 @@ window.MS = window.MS || {};
       const trunk=plant.querySelector(':scope > .growth-primary');
       if(!trunk)return;
       const fern=plant.dataset.trunk==='fern';
-      const phase={start:i*160,duration:fern?2600:3000};
+      const phase={start:i*320,duration:fern?3100:3500};
       phases.set(plant,phase);
-      wood(trunk,trunk.getAttribute('data-growpath'),phase.start,phase.duration,fern?9:82);
+      wood(trunk,trunk.getAttribute('data-growpath'),phase.start,phase.duration,num(trunk,'data-grow-width',fern?10:24));
     });
     // Assign all shoot schedules first, including shoots nested in tertiary
     // branches. Parents start before their children; every shoot waits until
@@ -104,9 +104,18 @@ window.MS = window.MS || {};
       if(!parent)return;
       const root=clamp(num(shoot,'data-root-t',.43),.03,.96);
       const phase={start:parent.start+parent.duration*(ancestor?.26+.68*root:.08+.85*root)+45,
-                   duration:ancestor?780:1250};
+                   duration:ancestor?1000:1450};
       phases.set(shoot,phase);
-      wood(shoot.querySelector(':scope > .shoot-wood'),shoot.dataset.growpath,phase.start,phase.duration,28);
+      // Hide the complete nested shoot until the parent axis reaches its joint.
+      // Without this, tiny nested twig marks were painted at t=0 despite masks.
+      set(shoot,'visibility','hidden');
+      run.reveals.push({target:shoot,start:phase.start});
+      const woodElement=shoot.querySelector(':scope > .shoot-wood');
+      wood(woodElement,shoot.dataset.growpath,phase.start,phase.duration,num(woodElement,'data-grow-width',9));
+      // Bud stalks, secondary thorns and ornamental details previously leaked
+      // into frame zero. Attach a separate growth mask to their parent twig.
+      const detailElement=shoot.querySelector(':scope > .shoot-details');
+      if(detailElement)wood(detailElement,shoot.dataset.growpath,phase.start+phase.duration*.65,phase.duration*.85,100);
     });
     // Store the ORIGINAL SVG transform, then grow the whole group from its
     // attachment in SVG user coordinates, not element-local pixels. A single
@@ -120,7 +129,7 @@ window.MS = window.MS || {};
       const original=leaf.getAttribute('transform')||'';
       const angle=num(leaf,'data-leaf-angle',0);
       const start=phase.start+phase.duration*(.13+.79*t)+65;
-      const duration=650+((i*11)%6)*40;
+      const duration=760+((i*11)%6)*46;
       run.blades.push({leaf,original,x,y,angle,start,duration,last:-1});
       run.duration=Math.max(run.duration,start+duration);
       set(leaf,'transform',`${leafMatrix(x,y,angle,.0001,.0001)} ${original}`);
@@ -157,10 +166,13 @@ window.MS = window.MS || {};
       if(active!==run)return;
       if(run.startTime==null)run.startTime=now;
       const elapsed=now-run.startTime;
-      // 30fps is adequate for drawn ink and substantially reduces repeated
-      // SVG/filter rasterization on Safari and slower mobile devices.
-      if(elapsed-run.previous >= 1000/30 || elapsed>=run.duration) {
+      // Approximately 40fps avoids stuttering while limiting per-frame SVG work.
+      if(elapsed-run.previous >= 1000/40 || elapsed>=run.duration) {
         run.previous=elapsed;
+        for(const item of run.reveals){
+          const expected=elapsed>=item.start?'visible':'hidden';
+          if(item.target.getAttribute('visibility')!==expected)set(item.target,'visibility',expected);
+        }
         for(const axis of run.axes){
           const u=clamp((elapsed-axis.start)/axis.duration);
           const off=axis.length*(1-smooth(u));

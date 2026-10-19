@@ -170,8 +170,9 @@ window.MS=window.MS||{};
      // The majority of foliage is drawn at this scale. Preserve the
      // characteristic contour but add restrained secondary venation; without
      // it small leaves became flat, repeated pieces of colored clip art.
-     const outline=M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(Math.max(.30,size*.020))}" stroke-linejoin="round"`);
-     const grain=M.shape(d,'url(#speckle)',`opacity="${n(.14+(s.wear||0)*.003)}"`);
+     const outline=M.shape(d,'none',`stroke="${pal.ink}" stroke-width="${n(Math.max(.30,size*.020))}" stroke-linejoin="round"`);
+     const basePrint=M.shape(d,color,'data-pixel-pigment="1"');
+     const grain=M.shape(d,'url(#speckle)',`opacity="${n(.14+(s.wear||0)*.003)}" data-pixel-pigment="1"`);
      const light=M.mix(color,pal.light,.14+Math.min(.20,(s.pigment||0)/330));
      const shade=M.mix(color,pal.ink,.10);
      const translucent=`<linearGradient id="shade-${id}" x1="0" y1="0" x2=".65" y2="1"><stop offset="0" stop-color="${light}"/><stop offset=".48" stop-color="${color}"/><stop offset="1" stop-color="${shade}"/></linearGradient>`;
@@ -193,7 +194,7 @@ window.MS=window.MS||{};
      const clipId='ornament-clip-'+id;
      const colorPrint=M.ornamentColorPatch?M.ornamentColorPatch(sp,size,pal,r,s):'';
      return `<defs><clipPath id="${clipId}"><path d="${d}"/></clipPath>${translucent}</defs>`+
-       `<g>${outline}<g clip-path="url(#${clipId})"><path d="${d}" fill="url(#shade-${id})" opacity=".38"/>${grain}${colorPrint}${rib}${fineVeins}${ornament}</g></g>`;
+       `<g>${basePrint}${outline}<g clip-path="url(#${clipId})"><path d="${d}" fill="url(#shade-${id})" opacity=".38" data-pixel-pigment="1"/>${grain}${colorPrint}${rib}${fineVeins}${ornament}</g></g>`;
    }
    let z=M.leafFinish(id,d,size,color,pal,s,r);
    z+=`<g clip-path="url(#leaf-clip-${id})">`;

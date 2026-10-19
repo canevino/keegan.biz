@@ -200,7 +200,7 @@ window.MS=window.MS||{};
    plan.activeShoot=prevShoot;
    const axis=M.strokePath(points);
    return `<g class="growth-shoot" data-root-t="${n(s._branchT??.4)}" data-growpath="${axis}">`+
-       `<g class="shoot-wood">${woodArt}</g>`+
+       `<g class="shoot-wood" data-grow-width="${n(Math.max(4,base*3.1))}">${woodArt}</g>`+
        `<g class="shoot-foliage">${foliageArt}</g>`+
        `<g class="shoot-details">${organArt}</g></g>`;
  }
@@ -252,7 +252,7 @@ window.MS=window.MS||{};
      stem.drawnPoints=points;
      if(sp.habit==='fronds'){
        const fern=fernStem(points,sp,season,pal,r,plan,s);
-       sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}"><g class="growth-primary" data-growpath="${M.strokePath(points)}">${fern.wood}</g><g class="growth-secondary">${fern.foliage}</g></g>`);
+       sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}"><g class="growth-primary" data-grow-width="10" data-growpath="${M.strokePath(points)}">${fern.wood}</g><g class="growth-secondary">${fern.foliage}</g></g>`);
        continue;
      }
      const base=stem.width*(sp.habit==='heavy'?1.08:sp.habit==='climbing'?.86:sp.habit==='twining'?.88:1.01);
@@ -290,7 +290,7 @@ window.MS=window.MS||{};
      const axis=M.strokePath(points);
      sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}">`+
        `<g class="growth-secondary">${growth}</g>`+
-       `<g class="growth-primary" data-growpath="${axis}">${woodArt}</g></g>`);
+       `<g class="growth-primary" data-grow-width="${n(Math.max(8,base*2.7))}" data-growpath="${axis}">${woodArt}</g></g>`);
    }
    // Whole-plant painter's order: one branch and its leaves are composed as a
    // unit, rather than putting *every* woody stem behind *every* leaf.

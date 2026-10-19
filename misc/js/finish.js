@@ -1,25 +1,27 @@
-/* Local, non-destructive print impression. All alpha effects remain bounded. */
+/* Local, non-destructive ink impression. No exterior glow or shadow. */
 window.MS=window.MS||{};
 ((M)=>{
  'use strict';
  M.finishDefs=(s,r)=>{
    const n=M.n,c=M.clamp;
-   const wear=c(Number(s.wear||0)/100,0,.45);
+   const wear=c(Number(s.wear||0)/100,0,1);
    const spread=c(Number(s.spread||0)/100,0,1);
-   const warp=c(Number(s.printWarp||0)/100,0,.25);
-   const blur=n(.40+.65*spread), radius=n(.70+1.70*spread);
-   const displace=n(1.25+2.20*spread+1.3*warp);
-   return `<filter id="impression" x="-9%" y="-9%" width="118%" height="118%" color-interpolation-filters="sRGB">`+
-       `<feTurbulence type="fractalNoise" baseFrequency=".075 .098" numOctaves="2" seed="${r.int(1,99999)}" result="fiber"/>`+
-       `<feDisplacementMap in="SourceGraphic" in2="fiber" scale="${displace}" xChannelSelector="R" yChannelSelector="G" result="drawn"/>`+
-       `<feGaussianBlur in="SourceAlpha" stdDeviation="${blur}" result="wet"/>`+
-       `<feMorphology in="wet" operator="dilate" radius="${radius}" result="spread"/>`+
-       `<feComponentTransfer in="spread" result="hardEdge"><feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1"/></feComponentTransfer>`+
-       `<feComposite in="hardEdge" in2="SourceAlpha" operator="out" result="rim"/>`+
-       `<feFlood flood-color="${s.pal.ink}" flood-opacity="${n(.16+.16*spread)}" result="edgeColor"/>`+
-       `<feComposite in="edgeColor" in2="rim" operator="in" result="edgeInk"/>`+
-       `<feMerge><feMergeNode in="edgeInk"/><feMergeNode in="drawn"/></feMerge></filter>`+
-       `<filter id="dry-print" x="-9%" y="-9%" width="118%" height="118%"><feTurbulence type="fractalNoise" baseFrequency=".10" seed="${r.int(1,99998)}" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="${n(.35+wear*2)}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+   const warp=c(Number(s.printWarp||0)/100,0,1);
+   // The old wide blurred alpha dilation drew a uniform grey outer halo.
+   // Ink now pools *inside* existing printed edges; there is no drop shadow.
+   const edge=n(.23+.36*spread);
+   const shift=n(.22+.50*spread+.20*warp);
+   return `<filter id="impression" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">`+
+       `<feTurbulence type="fractalNoise" baseFrequency=".058 .083" numOctaves="2" seed="${r.int(1,99999)}" result="fiber"/>`+
+       `<feDisplacementMap in="SourceGraphic" in2="fiber" scale="${shift}" xChannelSelector="R" yChannelSelector="G" result="drawn"/>`+
+       `<feMorphology in="SourceAlpha" operator="erode" radius="${edge}" result="inside"/>`+
+       `<feComposite in="SourceAlpha" in2="inside" operator="out" result="wetEdge"/>`+
+       `<feFlood flood-color="${s.pal.ink}" flood-opacity="${n(.07+.11*spread)}" result="ink"/>`+
+       `<feComposite in="ink" in2="wetEdge" operator="in" result="pooled"/>`+
+       `<feMerge><feMergeNode in="drawn"/><feMergeNode in="pooled"/></feMerge></filter>`+
+       `<filter id="dry-print" x="-4%" y="-4%" width="108%" height="108%">`+
+       `<feTurbulence type="fractalNoise" baseFrequency=".11" seed="${r.int(1,99998)}" numOctaves="2" result="n"/>`+
+       `<feDisplacementMap in="SourceGraphic" in2="n" scale="${n(.18+wear*.64)}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
  };
 })(window.MS);
 
@@ -40,9 +42,9 @@ window.MS=window.MS||{};
    const random=M.rng(M.childSeed((Number(s.seed)>>>0)||1,0x50A731E));
    return {
      enabled:true,
-     lowResScale:Math.round((.56-.30*wear)*1000)/1000,
-     offsetX:(random.between(-1,1)*wear*.72).toFixed(3),
-     offsetY:(random.between(-1,1)*wear*.72).toFixed(3)
+     lowResScale:Math.round((.34-.10*wear)*1000)/1000,
+     offsetX:(random.between(-1,1)*wear*.24).toFixed(3),
+     offsetY:(random.between(-1,1)*wear*.24).toFixed(3)
    };
  };
 
@@ -112,7 +114,19 @@ window.MS=window.MS||{};
      const sc=small.getContext('2d',{alpha:true});
      if(!sc)throw Error('2D canvas unavailable');
      sc.clearRect(0,0,w,h);
+     // Sampling at native low resolution gives visible hard pigment pixels.
+     sc.imageSmoothingEnabled=true;
      sc.drawImage(im,0,0,w,h);
+     // Print-plate threshold: eliminate pale translucent fringe pixels.
+     // Illustrator's jagged raster cells are sharply inked, not grey glows.
+     const sample=sc.getImageData(0,0,w,h);
+     const pixels=sample.data;
+     for(let i=0;i<pixels.length;i+=4){
+       const alpha=pixels[i+3];
+       if(alpha<135){pixels[i+3]=0;continue;}
+       pixels[i+3]=255;
+     }
+     sc.putImageData(sample,0,0);
      // Deliberately upscale at nearest neighbour BEFORE embedding, so the
      // stepped pigment survives even when Illustrator smooths placed images.
      const full=document.createElement('canvas');full.width=M.W;full.height=M.H;
@@ -125,12 +139,17 @@ window.MS=window.MS||{};
 
  M.useVectorPigment=svg=>{
    if(!svg)return;
+   // Playback is entirely original vector paint; never rasterize mid-frame.
+   svg.querySelector('#artwork-layers')?.removeAttribute('filter');
    const plate=svg.querySelector('#pixel-pigment-plate');
    if(plate)plate.setAttribute('display','none');
    svg.querySelectorAll('[data-pixel-pigment]').forEach(el=>el.removeAttribute('display'));
  };
  M.usePixelPigment=svg=>{
    if(!svg)return;
+   // Filtering the combined image after pixelation antialiases the hard
+   // steps and recreates the old grey halo. All pigment is already clipped.
+   svg.querySelector('#artwork-layers')?.removeAttribute('filter');
    const plate=svg.querySelector('#pixel-pigment-plate');
    if(!plate)return;
    // Still a true transparent PNG: no paper-colored rectangle or fill.

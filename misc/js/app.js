@@ -62,24 +62,33 @@
      overlay.setAttribute('viewBox',framedViewBox);
    }catch(err){console.warn('Art frame fallback:',err);}
  }
- function paint({animate=true}={}){
+ function makePixelPlate(art,settings,revision){
+   return M.applyPixelPlate(art,settings).then(()=>{
+     // An earlier rasterization must never replace a newer species.
+     if(revision!==paintRevision||!art.isConnected)return;
+     if(playingGrowth)M.useVectorPigment(art);
+   }).catch(error=>console.warn('Vector finish retained',error));
+ }
+ function paint({animate=false,forceGrowth=false}={}){
    clearTimeout(paintTimer);read();
    const revision=++paintRevision;
    numberFields.slice(1).forEach(id=>el(id+'-value').textContent=s[id]);
    stopPlayback();
    svg=M.render(s);
    el('drawing').innerHTML=svg;
-   fitDrawing();
-   meta();refreshStatus();
+   fitDrawing();meta();refreshStatus();
    const art=el('drawing').querySelector('svg');
    const settings={...s};
-   // Paint the hybrid plate asynchronously. The revision guard prevents an
-   // old species/seed finishing on top of a newer drawing.
-   M.applyPixelPlate(art,settings).then(()=>{
-     if(revision!==paintRevision||!art.isConnected)return;
-     if(playingGrowth)M.useVectorPigment(art);
-   }).catch(error=>console.warn('Vector finish retained',error));
-   if(animate&&el('animate-growth').checked && !drawing)animateGrowth();
+   const animateNow=(forceGrowth||(animate&&el('animate-growth').checked))&&!drawing;
+   if(animateNow){
+     // No temporary complete pixel bitmap while stems are just emerging.
+     // Render the stable plate ONCE, after the vector growth completes.
+     playingGrowth=true;
+     M.useVectorPigment(art);
+     M.growthAnimation?.play(art);
+   } else {
+     makePixelPlate(art,settings,revision);
+   }
  }
  // Leave the old timeline intact during a slider's debounce. Cancelling it
  // early exposed a completed old image for one frame before the new species
@@ -174,24 +183,23 @@
  function animateGrowth(){
    if(drawing)return;
    const art=el('drawing').querySelector('svg');
-   // The staged growth animation requires independently growing leaves.
-   // Temporarily display the original vector pigments during playback.
+   if(!art)return;
    playingGrowth=true;
    M.useVectorPigment(art);
    M.growthAnimation?.play(art);
  }
  M.animationComplete=()=>{
    const art=el('drawing').querySelector('svg');
+   if(!art||!playingGrowth)return;
    playingGrowth=false;
-   M.growthAnimation?.cancel();
-   M.usePixelPigment(art);
+   // Render the plate only after growth is complete; keep current art visible
+   // until it is ready, preventing missing leaves or flash-to-final glitches.
+   makePixelPlate(art,{...s},paintRevision);
  };
- el('replay-growth').addEventListener('click',()=>{
-   paint({animate:false});animateGrowth();
- });
+ el('replay-growth').addEventListener('click',()=>paint({forceGrowth:true}));
  el('animate-growth').addEventListener('change',ev=>{
-   if(ev.target.checked){paint({animate:false});animateGrowth();}
-   else {stopPlayback();paint({animate:false});}
+   if(ev.target.checked)paint({forceGrowth:true});
+   else paint({animate:false});
  });
 
  // -------------------------- exports --------------------------------
