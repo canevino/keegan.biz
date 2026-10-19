@@ -10,7 +10,7 @@
  const numberFields=['seed','conform','ornament','foliage','finishLevel'];
  const controlIds=[...textFields,...numberFields];
  const stage=el('drawing-stage'),overlay=el('stroke-overlay'),preview=el('stroke-preview');
- let strokes=[],draft=[],drawing=false,pointerId=null,paintTimer=null,svg='',framedViewBox=null;
+ let strokes=[],draft=[],drawing=false,pointerId=null,paintTimer=null,svg='',framedViewBox=null,paintRevision=0,playingGrowth=false;
  const cap=4;
  function read(){
    controlIds.forEach(id=>s[id]=numberFields.includes(id)?Number(el(id).value):el(id).value);
@@ -30,7 +30,7 @@
    s.guideOverlay=el('guideOverlay').checked;
    s.drawnPaths=strokes.map(path=>path.map(p=>({x:p.x,y:p.y})));
  }
- function stopPlayback(){M.growthAnimation?.cancel();}
+ function stopPlayback(){playingGrowth=false;M.growthAnimation?.cancel();}
  function meta(){
    el('seed-label').textContent='seed '+s.seed;
    const species=s.species==='random'?'mixed botanical growth':s.species==='hybrid'?'ornamental hybrid':s.species+' / '+s.season;
@@ -64,13 +64,21 @@
  }
  function paint({animate=true}={}){
    clearTimeout(paintTimer);read();
+   const revision=++paintRevision;
    numberFields.slice(1).forEach(id=>el(id+'-value').textContent=s[id]);
    stopPlayback();
    svg=M.render(s);
    el('drawing').innerHTML=svg;
    fitDrawing();
    meta();refreshStatus();
-   // Editing settings shows complete art immediately. Playback is always explicit.
+   const art=el('drawing').querySelector('svg');
+   const settings={...s};
+   // Paint the hybrid plate asynchronously. The revision guard prevents an
+   // old species/seed finishing on top of a newer drawing.
+   M.applyPixelPlate(art,settings).then(()=>{
+     if(revision!==paintRevision||!art.isConnected)return;
+     if(playingGrowth)M.useVectorPigment(art);
+   }).catch(error=>console.warn('Vector finish retained',error));
    if(animate&&el('animate-growth').checked && !drawing)animateGrowth();
  }
  // Leave the old timeline intact during a slider's debounce. Cancelling it
@@ -165,11 +173,18 @@
  // so it never alters the downloaded final SVG or any of the random seeds.
  function animateGrowth(){
    if(drawing)return;
-   M.growthAnimation?.play(el('drawing').querySelector('svg'));
+   const art=el('drawing').querySelector('svg');
+   // The staged growth animation requires independently growing leaves.
+   // Temporarily display the original vector pigments during playback.
+   playingGrowth=true;
+   M.useVectorPigment(art);
+   M.growthAnimation?.play(art);
  }
  M.animationComplete=()=>{
-   // Keep the existing SVG; never regenerate on animation end.
+   const art=el('drawing').querySelector('svg');
+   playingGrowth=false;
    M.growthAnimation?.cancel();
+   M.usePixelPigment(art);
  };
  el('replay-growth').addEventListener('click',()=>{
    paint({animate:false});animateGrowth();
@@ -182,24 +197,35 @@
  // -------------------------- exports --------------------------------
  // Always render a clean, non-animated SVG with NO construction guide.
  // The authored growth paths remain part of that export.
- function cleanSVG(){
+ async function cleanSVG(){
+   read();
    const data=M.render({...s,guideOverlay:false,drawnPaths:strokes.map(a=>a.map(p=>({...p})))});
-   return framedViewBox?data.replace(`viewBox="0 0 ${M.W} ${M.H}"`,`viewBox="${framedViewBox}"`):data;
+   const parsed=new DOMParser().parseFromString(data,'image/svg+xml');
+   const root=parsed.documentElement;
+   // The same pigment renderer is used for browser, SVG and PNG. SVG holds
+   // the true vector stems and outlines plus an embedded pixelated PNG plate.
+   await M.applyPixelPlate(root,{...s});
+   if(framedViewBox)root.setAttribute('viewBox',framedViewBox);
+   return new XMLSerializer().serializeToString(root);
  }
  function download(blob,filename){
    const url=URL.createObjectURL(blob),a=document.createElement('a');
    a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
    setTimeout(()=>URL.revokeObjectURL(url),3500);
  }
- el('export-svg').addEventListener('click',()=>{
-   const data=cleanSVG();
-   download(new Blob([data],{type:'image/svg+xml;charset=utf-8'}),`ornament-${strokes.length?'drawn-':''}${s.seed}.svg`);
+ el('export-svg').addEventListener('click',async()=>{
+   const button=el('export-svg');button.disabled=true;
+   try{
+     const data=await cleanSVG();
+     download(new Blob([data],{type:'image/svg+xml;charset=utf-8'}),`ornament-${strokes.length?'drawn-':''}${s.seed}.svg`);
+   }catch(error){console.error(error);alert('SVG export failed.');}
+   finally{button.disabled=false;}
  });
  el('export-png').addEventListener('click',async()=>{
    const btn=el('export-png');btn.disabled=true;btn.textContent='rendering…';
    let url='';
    try{
-     const data=cleanSVG();
+     const data=await cleanSVG();
      url=URL.createObjectURL(new Blob([data],{type:'image/svg+xml;charset=utf-8'}));
      const image=new Image();
      await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=reject;image.src=url;});

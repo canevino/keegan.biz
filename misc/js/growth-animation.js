@@ -189,7 +189,7 @@ window.MS = window.MS || {};
         }
       }
       if (elapsed < run.duration+100){run.raf=requestAnimationFrame(render);}
-      else stop();
+      else {stop(); M.animationComplete?.();}
     }
     run.raf=requestAnimationFrame(render);
   }

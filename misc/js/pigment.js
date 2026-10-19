@@ -188,17 +188,22 @@ window.MS=window.MS||{};
    const registration=M.offsetPrint(d,M.mix(color,pal.ochre,.30),s,r,{opacity:.25,scale:.76});
    // Unlike a flat fill + cream flecks, eroded regions retain transparency.
    let layers=registration+`<g${erosion.id?` mask="url(#${erosion.id})"`:''}>`;
-   layers+=M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(Math.max(.55,size*.019))}" stroke-linejoin="round"`);
+   // Pass 0: color is a print plate; the original dark contour remains SVG.
+   // Tagging *only* paint preserves the generator, leaf venation and animation.
+   layers+=M.shape(d,color,'data-pixel-pigment="1"');
    layers+=`<g clip-path="url(#${clip})">`;
    if(texture>.01){
-     const mapped=M.shape(d,`url(#map-${id})`,`opacity="${fillOpacity}"`);
+     const mapped=M.shape(d,`url(#map-${id})`,`opacity="${fillOpacity}" data-pixel-pigment="1"`);
      layers+=noiseMask?`<g mask="url(#${tonal})">${mapped}</g>`:mapped;
-     layers+=M.shape(d,'url(#speckle)',`opacity="${n(.04+.22*texture)}"`);
-     layers+=M.shape(d,'url(#micro-grain)',`opacity="${n(.03+.18*texture)}"`);
+     layers+=M.shape(d,'url(#speckle)',`opacity="${n(.04+.22*texture)}" data-pixel-pigment="1"`);
+     layers+=M.shape(d,'url(#micro-grain)',`opacity="${n(.03+.18*texture)}" data-pixel-pigment="1"`);
    }
    // Even a newly printed leaf has some flecks; higher wear opens dry gaps.
-   layers+=M.shape(d,'url(#dry-grain)',`opacity="${n(.16+wear*.35)}"`);
-   layers+='</g></g>';
+   layers+=M.shape(d,'url(#dry-grain)',`opacity="${n(.16+wear*.35)}" data-pixel-pigment="1"`);
+   layers+='</g>';
+   // Outline after all pigment layers, so the darkest detail remains sharp.
+   layers+=M.shape(d,'none',`stroke="${pal.ink}" stroke-width="${n(Math.max(.55,size*.019))}" stroke-linejoin="round"`);
+   layers+='</g>';
    return defs+layers;
  };
 })(window.MS);
