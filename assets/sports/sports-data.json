@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-18T20:54:40.806Z",
+  "updatedAt": "2026-10-19T04:55:11.002Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -52,7 +52,7 @@
         {
           "id": "6106248",
           "date": "2026-10-20T19:00:00.000Z",
-          "when": "Tue, Oct 20 · 3:00 PM ET",
+          "when": "tomorrow · Tue, Oct 20 · 3:00 PM ET",
           "status": "scheduled",
           "home": "Liverpool",
           "away": "Villarreal",
