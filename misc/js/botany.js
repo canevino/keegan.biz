@@ -25,17 +25,26 @@ window.MS=window.MS||{};
    return out;
  }
  function silhouette(points,base,tip=.12,rooted=false){
+   // The root of a side shoot emerges from inside its parent instead of
+   // producing a hard-edged socket. The continuous strip tapers at both ends.
    const left=[],right=[];
    for(const p of points){
-     const nv=norm(p.tng);
-     // Grown stems have tapered ends, never blunt cylindrical caps. A woody
-     // root widens quickly after emerging from a narrow basal point.
-     const entry=rooted ? (1.16-.16*Math.min(1,p.t/.14)) : 1;
-     const w=widthAt(base,p.t,tip)*entry;
-     const noise=1+.026*Math.sin(p.t*41+base);
-     left.push(add(p,nv,.5*w*noise));right.push(add(p,nv,-.5*w*noise));
+     const normal=norm(p.tng),t=clamp(p.t,0,1);
+     const entry=rooted?1:(.28+.72*Math.min(1,t/.085));
+     const width=widthAt(base,t,tip)*entry;
+     const irregular=1+.016*Math.sin(t*23+base*1.3)+.009*Math.sin(t*51);
+     left.push(add(p,normal,.5*width*irregular));
+     right.push(add(p,normal,-.5*width*irregular));
    }
-   return M.poly([...left,...right.reverse()]);
+   const outline=[...left,...right.reverse()];
+   // Quadratic smoothing removes polygon facets along stems without changing
+   // their sampled backbone or the geometry-guided path.
+   let d=`M${V(outline[0])}`;
+   for(let i=0;i<outline.length;i++){
+     const p=outline[i],q=outline[(i+1)%outline.length];
+     d+=`Q${V(p)} ${V(P((p.x+q.x)/2,(p.y+q.y)/2))}`;
+   }
+   return d+'Z';
  }
  function spine(a,b,c,d,count,r,motion,habit){return wavy(M.wave(a,b,c,d,count),r,motion,habit);}
  function guidedSpine(stem,sp,r,motion,s){
@@ -53,8 +62,12 @@ window.MS=window.MS||{};
      const lo=guide[backwards?guide.length-1-j:j];
      const hi=guide[backwards?Math.max(0,guide.length-2-j):Math.min(guide.length-1,j+1)];
      const target=M.pt(lo,hi,fraction);
-     return {...p,x:p.x*(1-conform)+target.x*conform,
-       y:p.y*(1-conform)+target.y*conform};
+     // Intermediate conformity preserves real root attachment and the plant's
+     // outward growing tip. Full conformity alone traces the complete guide.
+     const span=i/(raw.length-1);
+     const pull=conform>=.999?1:conform*(.16+.84*Math.pow(Math.sin(Math.PI*span),.72));
+     return {...p,x:p.x*(1-pull)+target.x*pull,
+       y:p.y*(1-pull)+target.y*pull};
    });
    for(let i=0;i<guided.length;i++){
      const a=guided[Math.max(0,i-2)],b=guided[Math.min(guided.length-1,i+2)];
@@ -78,22 +91,35 @@ window.MS=window.MS||{};
  }
  function anchored(point,side,width,advance=.8){return add(add(point,norm(point.tng),side*width*.29),point.tng,advance);}
  function petioleLeaf(p,a,size,sp,season,pal,r,plan,s,t=.5){
-   // Leaf collision is adjustable. Search for a nearby viable attachment
-   // rather than simply deleting foliage and leaving a conspicuous gap.
-   const alternatives=[{a,size,shift:0},{a:a+.19,size:size*.96,shift:1.7},
-     {a:a-.22,size:size*.9,shift:-1.4},{a:a+.32,size:size*.8,shift:3.2}];
-   for(const candidate of alternatives){
-     const at=add(p,polar(a+Math.PI/2,candidate.shift));
-     const test=add(at,polar(candidate.a,candidate.size*.86));
-     if(!allowed(test,plan,3))continue;
-     const center=add(at,polar(candidate.a,candidate.size*.54));
-     const footprint=Math.max(4,candidate.size*(sp.leaf==='fern'?.25:sp.leaf==='holly'?.52:['acanthus','oak','hazel'].includes(sp.leaf)?.54:.48));
-     if(plan.spatial && !plan.spatial.accept(center,footprint,{
-       group:plan.activeStem||'spray',density:Math.min(85,s.foliage||65)}))continue;
-     const leaf=M.plantLeaf(sp,at,candidate.a,candidate.size,season,pal,r,s);
-     if(!leaf)return '';
-     const stalk=M.path(`M${V(p)}L${V(at)}`,M.wood(sp,pal,'new',r),.64);
-     return `<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(candidate.a)}" data-grow-t="${n(t)}">${stalk}${leaf}</g>`;
+   // Keep real petiole attachment and reduce the finished blade size BEFORE
+   // collision testing. Previously a giant compound leaf was checked as a
+   // tiny circle, which produced impossible stacks of foliage.
+   const max={holly:37,hazel:42,ivy:38,hawthorn:30,oak:48,dogrose:39,
+      honeysuckle:37,bramble:39,acanthus:46,fern:31}[sp.leaf]||36;
+   size=clamp(size,9,max)*r.between(.89,1.07);
+   const variants=[
+     [0,1,0],[.24,.94,0],[-.25,.91,0],[.39,.81,0],[-.40,.80,0],
+     [.13,.78,3],[-.17,.76,-3],[.48,.67,0],[-.50,.67,0]
+   ];
+   for(const [rotation,scale,shift] of variants){
+     const aa=a+rotation,sz=size*scale;
+     const at=add(p,polar(a+Math.PI/2,shift));
+     const center=add(at,polar(aa,sz*.60+Math.min(8,sz*.12)));
+     const far=add(at,polar(aa,sz*1.15));
+     if(!allowed(center,plan,13)||!allowed(far,plan,9))continue;
+     const broad={holly:.59,hazel:.57,ivy:.62,hawthorn:.58,oak:.60,
+         dogrose:.64,honeysuckle:.56,bramble:.64,acanthus:.61,fern:.45};
+     const footprint=sz*(broad[sp.leaf]||.63);
+     if(plan.spatial&&!plan.spatial.accept(center,footprint,{
+         group:plan.activeShoot||plan.activeStem||'spray',density:s.foliage||50,
+         anchor:p,angle:aa}))continue;
+     const leaf=M.plantLeaf(sp,at,aa,sz,season,pal,r,s);
+     if(!leaf)continue;
+     // The petiole connects to the structural branch; avoid ghost connectors
+     // extending across surrounding leaves.
+     const stalk=M.distance(p,at)>.7 ? M.path(`M${V(p)}L${V(at)}`,
+         M.wood(sp,pal,'new',r),.65):'';
+     return `<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(aa)}" data-grow-t="${n(t)}">${stalk}${leaf}</g>`;
    }
    return '';
  }
@@ -105,7 +131,7 @@ window.MS=window.MS||{};
    for(let i=0;i<count;i++){
      const p=samples[Math.round(ts[i]* (samples.length-1))],side=i%2?1:-1;
      const phi=angle(p.tng)+side*(kind==='honeysuckle'?.86:kind==='fern'?.88:1.0);
-     const len=r.between(kind==='holly'?23:20,kind==='oak'?43:35)*sp.scale*(sp.leafScale||1);
+     const len=r.between(kind==='holly'?17:15,kind==='oak'?32:27)*sp.scale*(sp.leafScale||1);
      out+=petioleLeaf(anchored(p,side,1.3,1),phi,len,sp,season,pal,r,plan,s);
      if(kind==='honeysuckle')out+=petioleLeaf(anchored(p,-side,1.3,1),angle(p.tng)-side*.90,len*.95,sp,season,pal,r,plan,s);
    }
@@ -126,21 +152,26 @@ window.MS=window.MS||{};
    const attracted=M.attractShoot?M.attractShoot(start,end,plan.construction,s.conform||0,sp.habit):end;
    if(allowed(attracted,plan,7))end=attracted;
    if(!allowed(end,plan,7))return '';
-   const b=add(start,polar(theta+side*turn*.35,len*.36));
-   const c=add(end,polar(outAngle+Math.PI-side*r.between(.1,.45),len*.42));
+   // A new shoot begins tangent to the parent, then gradually leans into
+   // its own direction. This replaces the sharp wedge-shaped T junction.
+   const parentDirection=norm(tng),sideVec=polar(theta+side*Math.PI/2,1);
+   const b=add(add(start,tng,len*.24),sideVec,len*.025);
+   const c=add(end,polar(outAngle+Math.PI-side*.28,len*.34));
    const points=spine(start,b,c,end,30,r,Math.min(8,len*.085)*(s.distortion/100+.42),sp.habit);
-   const wood=M.wood(sp,pal,sub?'new':'mature',r),base=sub?r.between(1.0,2.1):r.between(3.0,6.0);
+   const wood=M.wood(sp,pal,sub?'new':'mature',r),base=sub?r.between(1.0,1.7):r.between(2.1,4.4);
+   const prevShoot=plan.activeShoot;plan.activeShoot='spray-'+r.int(10000,99999999);
    let woodArt=stemInk(points,base,wood,pal,r,s);
+   plan.spatial?.addWood?.(points,base,plan.activeStem);
    let foliageArt='',organArt='';
-   const leafCount=clamp(Math.round((sub?3:4.5)*sp.frequency*(.65+s.foliage/72)),1,sub?5:8);
+   const leafCount=clamp(Math.round((sub?2.3:3.7)*sp.frequency*(.52+s.foliage/110)),1,sub?4:6);
    const pairs=sp.habit==='twining';
    for(let i=0;i<leafCount;i++){
      const t=.19+(i+.3)*.72/leafCount,p=points[Math.round(t*30)],sign=i%2?1:-1;
      const a=angle(p.tng)+sign*r.between(.75,1.15)*sp.angle;
-     const size=len*(sub?r.between(.22,.34):r.between(.31,.48))*sp.scale*(sp.leafScale||1)*(1-.17*t);
+     const size=len*(sub?r.between(.20,.28):r.between(.24,.34))*sp.scale*(sp.leafScale||1)*(1-.26*t);
      const attachment=add(p,norm(p.tng),sign*widthAt(base,t,.25)*.10);
      foliageArt+=petioleLeaf(attachment,a,size,sp,season,pal,r,plan,s,t);
-     if(pairs)foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.25),.5),angle(p.tng)-sign*.85,size*.95,sp,season,pal,r,plan,s,t);
+     if(pairs && r.chance(.66))foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.25),.5),angle(p.tng)-sign*.85,size*.95,sp,season,pal,r,plan,s,t);
    }
    if(sp.habit==='climbing' && r.chance(.46)){
      const p=points[Math.round(r.between(.3,.66)*30)];
@@ -156,7 +187,7 @@ window.MS=window.MS||{};
      const j=Math.round(r.between(.43,.65)*30),p=points[j],sign=r.sign();
      organArt+=shoot(anchored(p,sign,widthAt(base,p.t,.25)),p.tng,sign,len*r.between(.32,.55)*sp.twigs,sp,season,pal,r,plan,s,true);
    }
-   if(sp.habit==='fronds' || r.chance(.12))organArt+=twigDetails(points,sp,season,pal,r,plan,s);
+   if(sp.habit==='fronds' || r.chance(.09))organArt+=twigDetails(points,sp,season,pal,r,plan,s);
    else if(r.chance(.62))organArt+=M.plantOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(6,10));
    // Add restrained foliate ornament at true branch nodes, not loose symbols.
    if(M.ornamentJunction && !sub){
@@ -166,6 +197,7 @@ window.MS=window.MS||{};
    // Terminal buds already belong to this shoot's reproductive details.
 
    // Decorative split-tip hooks removed: they looked disconnected.
+   plan.activeShoot=prevShoot;
    const axis=M.strokePath(points);
    return `<g class="growth-shoot" data-root-t="${n(s._branchT??.4)}" data-growpath="${axis}">`+
        `<g class="shoot-wood">${woodArt}</g>`+
@@ -223,18 +255,19 @@ window.MS=window.MS||{};
        sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}"><g class="growth-primary" data-growpath="${M.strokePath(points)}">${fern.wood}</g><g class="growth-secondary">${fern.foliage}</g></g>`);
        continue;
      }
-     const base=stem.width*(sp.habit==='heavy'?1.32:sp.habit==='climbing'?.92:sp.habit==='twining'?.96:1.18);
+     const base=stem.width*(sp.habit==='heavy'?1.08:sp.habit==='climbing'?.86:sp.habit==='twining'?.88:1.01);
      const wood=M.wood(sp,pal,'mature',r);
+     plan.spatial?.addWood?.(points,base,plan.activeStem);
      let woodArt=stemInk(points,base,wood,pal,r,s,true);
      let growth='';
-     let count=clamp(Math.round((stem.major?8:6)*sp.frequency*(.43+fol*.96)*(sp.shootDensity||1)),2,19);
+     let count=clamp(Math.round((stem.major?7:5)*sp.frequency*(.42+fol*.89)*(sp.shootDensity||1)),2,14);
      if(season==='winter'&&!sp.evergreen)count=Math.max(2,Math.round(count*.76));
      // Slightly irregular spacing instead of 12 evenly-spaced identical twigs.
      const positions=Array.from({length:count},(_,i)=>clamp(.11+(i+.4)*.77/count+r.between(-.023,.023),.06,.91));
      for(let i=0;i<count;i++){
        const t=positions[i],idx=Math.round(t*100),p=points[idx];
        const side=((i%2===0?stem.side:-stem.side)||1)*(r.chance(.12)?-1:1);
-       const length=r.between(stem.major?85:70,stem.major?159:128)*sp.scale*(sp.shootScale||1)*(1-.10*t);
+       const length=r.between(stem.major?80:64,stem.major?136:109)*sp.scale*(sp.shootScale||1)*(1-.12*t);
        const identity=s.species==='hybrid'?M.chooseSpecies(r.choose(['holly','ivy','dogrose','hazel','oak','acanthus']),r):sp;
        // Start each lateral well inside the parent silhouette; no floating joins.
        const launch=add(p,norm(p.tng),side*widthAt(base,t,.1)*.08);
@@ -245,7 +278,7 @@ window.MS=window.MS||{};
      if(!['twining','climbing'].includes(sp.habit)){
        for(let i=0;i<2;i++){
          const t=.08+i*.09,p=points[Math.round(t*100)],side=i%2?1:-1;
-         const a=angle(p.tng)+side*r.between(.8,1.3),len=r.between(31,51)*sp.scale*(sp.leafScale||1);
+         const a=angle(p.tng)+side*r.between(.8,1.3),len=r.between(20,34)*sp.scale*(sp.leafScale||1);
          growth+=petioleLeaf(add(p,norm(p.tng),side*widthAt(base,t,.1)*.08),a,len,sp,season,pal,r,plan,s,t);
        }
      }
@@ -256,8 +289,8 @@ window.MS=window.MS||{};
 
      const axis=M.strokePath(points);
      sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}">`+
-       `<g class="growth-primary" data-growpath="${axis}">${woodArt}</g>`+
-       `<g class="growth-secondary">${growth}</g></g>`);
+       `<g class="growth-secondary">${growth}</g>`+
+       `<g class="growth-primary" data-growpath="${axis}">${woodArt}</g></g>`);
    }
    // Whole-plant painter's order: one branch and its leaves are composed as a
    // unit, rather than putting *every* woody stem behind *every* leaf.

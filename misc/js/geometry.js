@@ -134,7 +134,11 @@ window.MS=window.MS||{};
  };
  M.constructGuides=(selected,r)=>{
    const locked=!!styles[selected];
-   const name=locked?selected:r.choose(M.geometryStyles);
+   // Most spontaneous drawings favour open branching guides. More radical
+   // spirals, frets and closed roundels remain available when selected.
+   const naturalGuides=['gothic-pointed','gothic-pointed','gothic-radial',
+       'gothic-radial','insular-vesica','anglo-lozenge','celtic-scroll'];
+   const name=locked?selected:r.choose(naturalGuides);
    let rails=styles[name](r);
    const rotation=locked?r.between(-.04,.04):r.between(-.12,.12);
    const mirror=locked?1:(r.chance(.28)?-1:1);

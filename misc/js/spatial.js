@@ -1,38 +1,54 @@
-/* Lightweight scene-wide collision field for foliage and branch terminals.
-   It gently discourages unreadable stacks without flattening dense planting. */
+/* Botanical spacing in real leaf units; no loose foliage sprites.
+   Uses deterministic spatial hashing, broad-phase circles and distances from
+   woody axes. A small contact overlap is allowed, dense collisions are not. */
 window.MS=window.MS||{};
 ((M)=>{
  'use strict';
  M.makeSpatialField=()=>{
-   const cell=44, buckets=new Map();
-   const ix=x=>Math.floor(x/cell);
-   const key=(x,y)=>x+','+y;
-   const nearby=(p,radius)=>{
-     const reach=Math.ceil((radius+60)/cell),x=ix(p.x),y=ix(p.y),out=[];
-     for(let a=x-reach;a<=x+reach;a++)for(let b=y-reach;b<=y+reach;b++){
-       const bucket=buckets.get(key(a,b));if(bucket)out.push(...bucket);
-     }
-     return out;
+   const size=48,buckets=new Map(),axes=[];
+   const ix=x=>Math.floor(x/size),key=(x,y)=>x+','+y;
+   const register=(p,r,group)=>{
+     const k=key(ix(p.x),ix(p.y));
+     if(!buckets.has(k))buckets.set(k,[]);
+     buckets.get(k).push({x:p.x,y:p.y,r,group});
+   };
+   const dist2=(p,a,b)=>{
+     const dx=b.x-a.x,dy=b.y-a.y,ll=dx*dx+dy*dy||1;
+     const t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/ll));
+     return (p.x-a.x-t*dx)**2+(p.y-a.y-t*dy)**2;
    };
    return {
-     register(p,radius=10,group=''){
-       const item={x:p.x,y:p.y,r:radius,group};
-       const k=key(ix(p.x),ix(p.y));
-       if(!buckets.has(k))buckets.set(k,[]);
-       buckets.get(k).push(item);
-     },
-     // Existing leaves on the same spray are allowed more natural overlap.
-     accept(p,radius,{group='',density=60,ignore=false}={}){
-       if(ignore){this.register(p,radius,group);return true;}
-       const fill=M.clamp(Number(density)/100,0,1);
-       // At high density the leaves may touch, but must not completely stack.
-       const minFactor=1.00-fill*.075;
-       for(const old of nearby(p,radius)){
-         const dx=p.x-old.x,dy=p.y-old.y;
-         const proximity=(radius+old.r)*minFactor*(group===old.group?.91:1);
-         if(dx*dx+dy*dy<proximity*proximity)return false;
+     register,
+     addWood(points,width,group){
+       if(!points?.length)return;
+       for(let i=0;i<points.length-3;i+=3){
+         axes.push({a:points[i],b:points[Math.min(i+3,points.length-1)],
+           r:Math.max(.7,width*.3),group});
        }
-       this.register(p,radius,group);
+     },
+     accept(p,r,{group='',density=50,anchor=null}={}){
+       const near=Math.ceil((r+60)/size),x=ix(p.x),y=ix(p.y);
+       const crowdFactor=.95-M.clamp((Number(density)-35)/100,0,.45)*.12;
+       for(let a=x-near;a<=x+near;a++)for(let b=y-near;b<=y+near;b++){
+         for(const old of buckets.get(key(a,b))||[]){
+           const dx=p.x-old.x,dy=p.y-old.y;
+           const threshold=(r+old.r)*crowdFactor*(old.group===group?.82:1);
+           if(dx*dx+dy*dy < threshold*threshold)return false;
+         }
+       }
+       // Blade centers cannot sit on a large woody axis; stems and leaves
+       // may touch around their authentic attachment points.
+       for(const axis of axes){
+         const reach=Math.min(15,axis.r+Math.max(5,r*.32));
+         if(dist2(p,axis.a,axis.b)<reach*reach){
+           if(anchor&&axis.group===group&&dist2(anchor,axis.a,axis.b)<10*10){
+             // Leaf genuinely begins on this branch; do not falsely reject it
+             // because the petiole intersects the branch at its socket.
+             if(dist2(p,axis.a,axis.b)<(axis.r+2.5)**2)return false;
+           } else return false;
+         }
+       }
+       register(p,r,group);
        return true;
      }
    };

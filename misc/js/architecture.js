@@ -17,8 +17,8 @@ window.MS=window.MS||{};
    const root=crown(r,baseX,922),out=[];
    for(let i=0;i<count;i++){
      const k=count===1?0:(i/(count-1)*2-1),end=P(root.x+k*spread+rand(r,49),endY+rand(r,80)+Math.abs(k)*70);
-     const a=move(root,k*rand(r,16),rand(r,12));
-     const b=P(root.x+k*spread*.31+rand(r,45),root.y-260+rand(r,42));
+     const a=move(root,k*62+rand(r,10),rand(r,10));
+     const b=P(root.x+k*spread*.33+rand(r,24),root.y-255+rand(r,28));
      const c=P(end.x-k*spread*bend+rand(r,50),end.y+235+rand(r,46));
      out.push(make(a,b,c,end,width*(i===Math.floor(count/2)?1.2:r.between(.72,.96)),i===0||i===Math.floor(count/2)?'main':'lateral',habit));
    }
