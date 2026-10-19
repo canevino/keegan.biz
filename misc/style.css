@@ -579,3 +579,18 @@
   .home .botany-panel-title {font-size:clamp(52px,15vw,72px);}
   .home .botany-close {flex-basis:44px;width:44px;height:44px;font-size:44px;}
 }
+
+/* Precisely spaced homepage-style launcher list; no site-wide changes.
+   Chess is vertically centered; the following two controls share its anchor. */
+.home .chess-launcher,
+.home .sports-launcher,
+.home .botany-launcher {
+  line-height: 1;
+  transform: translateY(-50%);
+}
+.home .sports-launcher { top: calc(50% + 46px); }
+.home .botany-launcher { top: calc(50% + 92px); }
+@media(max-width:700px) {
+  .home .sports-launcher { top: calc(50% + 42px); }
+  .home .botany-launcher { top: calc(50% + 84px); }
+}
