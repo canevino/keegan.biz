@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-20T17:20:57.000Z",
+  "updatedAt": "2026-10-20T21:43:56.692Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -50,15 +50,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "6106248",
-          "date": "2026-10-20T19:00:00.000Z",
-          "when": "today · Tue, Oct 20 · 3:00 PM ET",
-          "status": "scheduled",
-          "home": "Liverpool",
-          "away": "Villarreal",
-          "competition": "Champions League"
-        },
-        {
           "id": "5795492",
           "date": "2026-10-25T14:00:00.000Z",
           "when": "Sun, Oct 25 · 10:00 AM ET",
@@ -93,6 +84,15 @@
           "home": "Fenerbahçe",
           "away": "Liverpool",
           "competition": "Champions League"
+        },
+        {
+          "id": "5795507",
+          "date": "2026-11-08T14:00:00.000Z",
+          "when": "Sun, Nov 8 · 9:00 AM ET",
+          "status": "scheduled",
+          "home": "Crystal Palace",
+          "away": "Liverpool",
+          "competition": "Premier League"
         }
       ],
       "standings": {
@@ -480,16 +480,16 @@
           },
           {
             "rank": 7,
-            "team": "Southampton",
-            "points": 17,
+            "team": "Wolves",
+            "points": 18,
             "played": 11,
             "highlight": false
           },
           {
             "rank": 8,
-            "team": "Wolves",
+            "team": "Southampton",
             "points": 17,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
@@ -523,8 +523,8 @@
           {
             "rank": 13,
             "team": "Portsmouth",
-            "points": 14,
-            "played": 10,
+            "points": 15,
+            "played": 11,
             "highlight": false
           },
           {
