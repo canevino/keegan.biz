@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-21T17:23:18.688Z",
+  "updatedAt": "2026-10-21T21:50:40.352Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -810,15 +810,6 @@
       "shortName": "Shakhtar",
       "upcoming": [
         {
-          "id": "6106252",
-          "date": "2026-10-21T19:00:00.000Z",
-          "when": "today · Wed, Oct 21 · 3:00 PM ET",
-          "status": "scheduled",
-          "home": "Inter",
-          "away": "Shakhtar Donetsk",
-          "competition": "Champions League"
-        },
-        {
           "id": "5909191",
           "date": "2026-10-24T15:00:00.000Z",
           "when": "Sat, Oct 24 · 11:00 AM ET",
@@ -853,6 +844,15 @@
           "home": "Shakhtar Donetsk",
           "away": "Sporting CP",
           "competition": "Champions League"
+        },
+        {
+          "id": "5909208",
+          "date": "2026-11-07T16:00:00.000Z",
+          "when": "Sat, Nov 7 · 11:00 AM ET",
+          "status": "scheduled",
+          "home": "Shakhtar Donetsk",
+          "away": "Dynamo Kyiv",
+          "competition": "Premier League"
         }
       ],
       "standings": {
