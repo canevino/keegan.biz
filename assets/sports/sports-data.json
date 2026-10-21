@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-20T21:43:56.692Z",
+  "updatedAt": "2026-10-21T05:01:25.475Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -249,7 +249,7 @@
         {
           "id": "6112502",
           "date": "2026-10-22T16:45:00.000Z",
-          "when": "Thu, Oct 22 · 12:45 PM ET",
+          "when": "tomorrow · Thu, Oct 22 · 12:45 PM ET",
           "status": "scheduled",
           "home": "Trabzonspor",
           "away": "Hearts",
@@ -812,7 +812,7 @@
         {
           "id": "6106252",
           "date": "2026-10-21T19:00:00.000Z",
-          "when": "tomorrow · Wed, Oct 21 · 3:00 PM ET",
+          "when": "today · Wed, Oct 21 · 3:00 PM ET",
           "status": "scheduled",
           "home": "Inter",
           "away": "Shakhtar Donetsk",
