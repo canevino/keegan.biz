@@ -67,6 +67,7 @@
      // An earlier rasterization must never replace a newer species.
      if(revision!==paintRevision||!art.isConnected)return;
      if(playingGrowth)M.useVectorPigment(art);
+     else M.pixelPlayback?.finish(art);
    }).catch(error=>console.warn('Vector finish retained',error));
  }
  function paint({animate=false,forceGrowth=false}={}){
@@ -84,6 +85,7 @@
      // No temporary complete pixel bitmap while stems are just emerging.
      // Render the stable plate ONCE, after the vector growth completes.
      playingGrowth=true;
+     M.currentPixelSettings={...s};
      M.useVectorPigment(art);
      M.growthAnimation?.play(art);
    } else {
@@ -185,6 +187,7 @@
    const art=el('drawing').querySelector('svg');
    if(!art)return;
    playingGrowth=true;
+   M.currentPixelSettings={...s};
    M.useVectorPigment(art);
    M.growthAnimation?.play(art);
  }
@@ -192,9 +195,8 @@
    const art=el('drawing').querySelector('svg');
    if(!art||!playingGrowth)return;
    playingGrowth=false;
-   // Render the plate only after growth is complete; keep current art visible
-   // until it is ready, preventing missing leaves or flash-to-final glitches.
-   makePixelPlate(art,{...s},paintRevision);
+   // Reuse the already-rendered pixel plate; never flash a vector frame.
+   if(!M.pixelPlayback?.promote(art))makePixelPlate(art,{...s},paintRevision);
  };
  el('replay-growth').addEventListener('click',()=>paint({forceGrowth:true}));
  el('animate-growth').addEventListener('change',ev=>{

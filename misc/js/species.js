@@ -176,8 +176,8 @@ window.MS=window.MS||{};
      const light=M.mix(color,pal.light,.14+Math.min(.20,(s.pigment||0)/330));
      const shade=M.mix(color,pal.ink,.10);
      const translucent=`<linearGradient id="shade-${id}" x1="0" y1="0" x2=".65" y2="1"><stop offset="0" stop-color="${light}"/><stop offset=".48" stop-color="${color}"/><stop offset="1" stop-color="${shade}"/></linearGradient>`;
-     const veinInk=M.mix(pal.ochre,pal.vermillion,.23);
-     const rib=M.path(`M0 0Q${V(size*.52,-size*.011)} ${V(size*.95,0)}`,veinInk,Math.max(.60,size*.026),'opacity=".87"');
+     const veinInk=mix(color,pal.ink,.30);
+     const rib=M.path(`M0 0Q${V(size*.52,-size*.011)} ${V(size*.95,0)}`,veinInk,Math.max(.20,size*.015),'opacity=".51"');
      let fineVeins='';
      if(size>14){
        const pairs=size>25?4:3;
@@ -186,7 +186,7 @@ window.MS=window.MS||{};
          for(const direction of [-1,1]){
            const rise=direction*size*(kind==='hazel'?.20:.16)*Math.sin(Math.PI*t);
            fineVeins+=M.path(`M${V(x,0)}Q${V(x+size*.060,rise*.34)} ${V(x+size*.13,rise)}`,
-             veinInk,Math.max(.44,size*.018),`opacity="${n(.63+(j%2)*.09)}"`);
+             veinInk,Math.max(.20,size*.010),`opacity="${n(.32+(j%2)*.08)}"`);
          }
        }
      }
@@ -198,15 +198,15 @@ window.MS=window.MS||{};
    }
    let z=M.leafFinish(id,d,size,color,pal,s,r);
    z+=`<g clip-path="url(#leaf-clip-${id})">`;
-   const midrib=M.mix(pal.ochre,pal.vermillion,.22);
-   z+=M.path(`M0 0 Q${V(size*.49,-size*.012)} ${V(size*.97,0)}`,midrib,Math.max(.58,size*.028),`opacity=".78"`);
+   const midrib=mix(color,pal.ink,.44);
+   z+=M.path(`M0 0 Q${V(size*.49,-size*.012)} ${V(size*.97,0)}`,midrib,Math.max(.35,size*.014),`opacity=".58"`);
    const veins=Math.max(2,Math.round((Number(s.detail??60)/100)*(size>28?7:5)));
    const broad=['acanthus','hawthorn','hazel','ivy','oak','holly'].includes(kind);
    for(let i=0;i<veins;i++){
      const t=.18+(i+.2)*.65/veins,x=size*t;
      for(const sign of [-1,1]){
        const y=sign*size*(broad?.27:.19)*Math.sin(Math.PI*t)*(.83+.13*r.random());
-       z+=M.path(`M${V(x,-size*.008)}Q${V(x+size*.052,y*.38)} ${V(x+size*.14,y)}`,midrib,Math.max(.38,size*.015),`opacity=".62"`);
+       z+=M.path(`M${V(x,-size*.008)}Q${V(x+size*.052,y*.38)} ${V(x+size*.14,y)}`,midrib,Math.max(.22,size*.008),`opacity=".42"`);
      }
    }
    if(M.ornamentColorPatch)z+=M.ornamentColorPatch(sp,size,pal,r,s);
@@ -251,7 +251,7 @@ window.MS=window.MS||{};
    const petiole=Math.min(9,Math.max(2.2,size*.11));
    const stem=M.path(`M0 0 L${V(petiole,0)}`,M.wood(sp,pal,'new',r),Math.max(.46,size*.033));
    const magnify=1+ornamental*.08;
-   return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})" data-print-leaf="${(size >= 31 && !['dogrose','bramble','honeysuckle','fern'].includes(sp.leaf)) ? 'coarse' : 'fine'}">${leaf}</g></g>`;
+   return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})">${leaf}</g></g>`;
  };
  function blossom(at,scale,pal,r,white=true){
    let z=''; const p=r.choose([4,5,5]);
@@ -263,7 +263,8 @@ window.MS=window.MS||{};
    return z;
  }
  function fruitCluster(sp,at,a,scale,pal,r,type,count){
-   const berryColors=type==='berry'?[pal.vermillion,'#982f20']:type==='blackberry'?['#332a36','#482e48','#6d3c4b']:['#977333','#7a4d33'];
+   scale=Math.max(7.6,scale*1.25); // retain fruit at the same stepped resolution as foliage
+   const berryColors=type==='berry'?[pal.vermillion,'#982f20']:type==='blackberry'?['#241729','#41263e','#663045']:['#977333','#7a4d33'];
    let z='';
    for(let i=0;i<count;i++){
      const start=at,ang=a+(i-(count-1)/2)*.55,len=scale*(1.0+.13*i),tip=sum(start,Q(ang,len));
@@ -271,9 +272,9 @@ window.MS=window.MS||{};
      if(type==='blackberry'){
        for(let j=0;j<7;j++){
          const phi=j*2.4,x=tip.x+Math.cos(phi)*scale*.18*(j%2+1),y=tip.y+Math.sin(phi)*scale*.23;
-         z+=M.circle(x,y,scale*.16,r.choose(berryColors),`stroke="${pal.ink}" stroke-width=".35"`);
+         z+=M.circle(x,y,Math.max(2.15,scale*.23),r.choose(berryColors),`stroke="${pal.ink}" stroke-width=".9"`);
        }
-     } else z+=M.circle(tip.x,tip.y,scale*.42,r.choose(berryColors),`stroke="${pal.ink}" stroke-width=".65"`);
+     } else z+=M.circle(tip.x,tip.y,Math.max(3.4,scale*.43),r.choose(berryColors),`stroke="${pal.ink}" stroke-width="1.1"`);
    }
    return z;
  }
