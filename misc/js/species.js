@@ -272,9 +272,9 @@ window.MS=window.MS||{};
      if(type==='blackberry'){
        for(let j=0;j<7;j++){
          const phi=j*2.4,x=tip.x+Math.cos(phi)*scale*.18*(j%2+1),y=tip.y+Math.sin(phi)*scale*.23;
-         z+=M.circle(x,y,Math.max(2.15,scale*.23),r.choose(berryColors),`stroke="${pal.ink}" stroke-width=".9"`);
+         z+=M.circle(x,y,Math.max(2.15,scale*.23),r.choose(berryColors),`stroke="${pal.ink}" stroke-width=".9" data-pixel-organ="1"`);
        }
-     } else z+=M.circle(tip.x,tip.y,Math.max(3.4,scale*.43),r.choose(berryColors),`stroke="${pal.ink}" stroke-width="1.1"`);
+     } else z+=M.circle(tip.x,tip.y,Math.max(3.4,scale*.43),r.choose(berryColors),`stroke="${pal.ink}" stroke-width="1.1" data-pixel-organ="1"`);
    }
    return z;
  }

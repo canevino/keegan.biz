@@ -1,7 +1,8 @@
-/* Insular print plate: retain native vector resolution and botanical anatomy.
-   Deliberate small square steps are applied to broad contour cells ONLY.
-   Thin twigs, veins and fine marks remain sharp, not enlarged raster pixels.
-   The exact same high-resolution print plate is used for animation/export. */
+/* Insular print finish — continuous vector anatomy with selective plate edges.
+   Stems, thin petioles, thorns, and fine veins are NEVER block-processed.
+   A restrained square-grain impression sits underneath colored leaf/fruit
+   silhouettes; native-resolution ink and outlines remain on top.
+   Finished export and animated growth use the identical paint plate. */
 window.MS=window.MS||{};
 ((M)=>{
  'use strict';
@@ -15,9 +16,10 @@ window.MS=window.MS||{};
      `<feDisplacementMap in="SourceGraphic" in2="fiber" scale="${n(.10+.38*wear)}" xChannelSelector="R" yChannelSelector="G"/></filter>`+
      `<filter id="dry-print" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency=".11" seed="${r.int(1,99998)}" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="${n(.12+wear*.42)}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
  };
- // Never downsample the original illustration. Render it larger than the
- // authored 850x1000 SVG and introduce just 2–3-unit steps at the contour.
- M.pixelPlateSettings=s=>({resolution:1.65,cell:2.15+clamp(Number(s.finishLevel??30)/100,0,1)*.55});
+ // Keep the underlying illustration sharp at display/print size. The
+ // irregular edges are a separate pigment impression, not a raster effect
+ // applied to the drawing itself.
+ M.pixelPlateSettings=s=>({resolution:2,cell:1.65+clamp(Number(s.finishLevel??30)/100,0,1)*.22});
  const encode=source=>{
    const clone=source.cloneNode(true);
    clone.setAttribute('xmlns',NS);
@@ -33,57 +35,96 @@ window.MS=window.MS||{};
    clone.insertBefore(style,clone.firstChild);
    return new XMLSerializer().serializeToString(clone);
  };
- // Step only where solid painted areas meet transparent background. A thin
- // hairline remains the high-resolution original, never reduced to pixels.
- function stepContours(canvas,settings){
-   const ctx=canvas.getContext('2d',{willReadFrequently:true});
-   const w=canvas.width,h=canvas.height;
-   const cell=Math.max(3,Math.round(settings.cell*settings.resolution));
-   const image=ctx.getImageData(0,0,w,h),src=image.data;
-   // Read from a snapshot; changes to one block must not affect neighbours.
-   const before=new Uint8ClampedArray(src);
-   for(let y=0;y<h;y+=cell){
-     for(let x=0;x<w;x+=cell){
-       const tw=Math.min(cell,w-x),th=Math.min(cell,h-y),area=tw*th;
-       let strong=0,empty=0,sumR=0,sumG=0,sumB=0,weight=0;
-       for(let dy=0;dy<th;dy++)for(let dx=0;dx<tw;dx++){
-         const i=((y+dy)*w+(x+dx))*4,al=before[i+3];
-         if(al>=192){strong++;const v=al/255;sumR+=before[i]*v;sumG+=before[i+1]*v;sumB+=before[i+2]*v;weight+=v;}
-         if(al<32)empty++;
-       }
-       // Must contain BOTH solid ink and true outside transparency, and
-       // enough interior ink to be a silhouette rather than fine venation.
-       if(!empty||!strong||strong<area*.39||strong>area*.89)continue;
-       // Small reproducible variations imitate an uneven printed contour.
-       const hash=((x*73+y*131)^(x*y*17))>>>0;
-       const occupy=(strong/area)>(.42+(hash%11-5)*.008);
-       const r=Math.round(sumR/weight),g=Math.round(sumG/weight),b=Math.round(sumB/weight);
-       for(let dy=0;dy<th;dy++)for(let dx=0;dx<tw;dx++){
-         const i=((y+dy)*w+(x+dx))*4;
-         if(occupy){src[i]=r;src[i+1]=g;src[i+2]=b;src[i+3]=255;}
-         else {src[i]=src[i+1]=src[i+2]=src[i+3]=0;}
-       }
+ // Build a second SVG image containing only broad ink silhouettes.
+ // Preserving the original nesting retains every branch transform, clip and
+ // species attachment; removing untagged objects excludes thin stems entirely.
+ function pigmentOnly(source){
+   const clone=source.cloneNode(true);
+   clone.querySelectorAll('#pixel-print-plate,#construction-guides').forEach(e=>e.remove());
+   const art=clone.querySelector('#artwork-layers');
+   if(!art)return null;
+   art.removeAttribute('display');
+   art.removeAttribute('visibility');
+   const visit=node=>{
+     if(node.nodeType!==1)return false;
+     if(node.localName==='defs')return true; // gradient, mask and clip dependencies
+     if(node.hasAttribute('data-pixel-pigment')||node.hasAttribute('data-pixel-organ'))return true;
+     let hasInk=false;
+     for(const child of [...node.children]){
+       if(visit(child))hasInk=true;else child.remove();
      }
-   }
-   ctx.putImageData(image,0,0);
-   return canvas;
+     return hasInk;
+   };
+   visit(art);
+   // Hide optional seasonal stages, in the same manner as the main artwork.
+   const style=create('style');
+   style.textContent='.life-bud,.life-bloom{display:none}';
+   clone.insertBefore(style,clone.firstChild);
+   return new XMLSerializer().serializeToString(clone);
  }
- async function raster(svg,settings,output='data'){
-   const blob=new Blob([encode(svg)],{type:'image/svg+xml;charset=utf-8'});
+ async function loadSVG(markup){
+   const blob=new Blob([markup],{type:'image/svg+xml;charset=utf-8'});
    const url=URL.createObjectURL(blob),img=new Image();
    try{
-     await new Promise((res,rej)=>{img.onload=res;img.onerror=()=>rej(new Error('SVG rasterisation failed'));img.src=url;});
-     const W=Number(M.W)||850,H=Number(M.H)||1000;
-     const hi=document.createElement('canvas');
-     hi.width=Math.round(W*settings.resolution);
-     hi.height=Math.round(H*settings.resolution);
-     const ctx=hi.getContext('2d',{willReadFrequently:true});
-     if(!ctx)throw Error('Canvas 2D unavailable');
-     ctx.imageSmoothingEnabled=true;
-     ctx.drawImage(img,0,0,hi.width,hi.height);
-     stepContours(hi,settings);
-     return output==='low'?hi:hi.toDataURL('image/png');
+     await new Promise((res,rej)=>{img.onload=res;img.onerror=()=>rej(Error('Botanical print plate could not be rasterized'));img.src=url;});
+     return img;
    }finally{URL.revokeObjectURL(url);}
+ }
+ // A tiny irregular impression INSIDE leaf/berry pigment, never a glow
+ // or outside halo. Square pixels are clipped by the native SVG silhouettes.
+ // Every stem, petiole, vein and outline keeps its original vector edges.
+ async function contourImpression(source,settings){
+   const markup=pigmentOnly(source);
+   if(!markup)return null;
+   const image=await loadSVG(markup);
+   const cell=settings.cell, w=Math.max(1,Math.round(M.W/cell)),h=Math.max(1,Math.round(M.H/cell));
+   const low=document.createElement('canvas');low.width=w;low.height=h;
+   const lc=low.getContext('2d',{willReadFrequently:true});
+   lc.imageSmoothingEnabled=true;lc.imageSmoothingQuality='high';
+   lc.drawImage(image,0,0,w,h);
+   const src=lc.getImageData(0,0,w,h).data;
+   const edge=lc.createImageData(w,h),out=edge.data;
+   for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
+     const k=(y*w+x)*4;if(src[k+3]<160)continue;
+     const adjacent=[(k-4)+3,(k+4)+3,(k-w*4)+3,(k+w*4)+3];
+     if(!adjacent.some(i=>src[i]<140))continue;
+     const hash=((x*73856093)^(y*19349663))>>>0;
+     if(hash%11===0)continue; // small localized ink skips
+     out[k]=Math.round(src[k]*.70);
+     out[k+1]=Math.round(src[k+1]*.68);
+     out[k+2]=Math.round(src[k+2]*.64);
+     out[k+3]=92;
+   }
+   const cells=document.createElement('canvas');cells.width=w;cells.height=h;
+   cells.getContext('2d').putImageData(edge,0,0);
+   const rim=document.createElement('canvas');
+   rim.width=Math.round(M.W*settings.resolution);rim.height=Math.round(M.H*settings.resolution);
+   const ctx=rim.getContext('2d');
+   ctx.imageSmoothingEnabled=false;
+   ctx.drawImage(cells,0,0,rim.width,rim.height);
+   // Clip the impression with the SHARP original silhouette. No effect is
+   // permitted in the surrounding transparent area or on branch strokes.
+   ctx.globalCompositeOperation='destination-in';
+   ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+   ctx.drawImage(image,0,0,rim.width,rim.height);
+   ctx.globalCompositeOperation='source-over';
+   return rim;
+ }
+ async function raster(svg,settings,output='data'){
+   const [original,edging]=await Promise.all([
+     loadSVG(encode(svg)),
+     contourImpression(svg,settings)
+   ]);
+   const W=Number(M.W)||850,H=Number(M.H)||1000;
+   const hi=document.createElement('canvas');
+   hi.width=Math.round(W*settings.resolution);
+   hi.height=Math.round(H*settings.resolution);
+   const ctx=hi.getContext('2d');
+   if(!ctx)throw Error('Canvas 2D unavailable');
+   ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+   ctx.drawImage(original,0,0,hi.width,hi.height);
+   if(edging)ctx.drawImage(edging,0,0,hi.width,hi.height);
+   return output==='low'?hi:hi.toDataURL('image/png');
  }
  M.applyPixelPlate=async(svg,s)=>{
    if(!svg)return svg;
