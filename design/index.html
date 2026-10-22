@@ -299,15 +299,10 @@
 </defs>
 </svg>
 <!-- Work-in-progress welcome notice -->
-<dialog class="wip-dialog" id="wip-dialog" aria-labelledby="wip-dialog-title" aria-describedby="wip-dialog-description">
+<dialog class="wip-dialog" id="wip-dialog" aria-label="Work in progress notice" aria-describedby="wip-dialog-message">
   <div class="wip-dialog__inner">
-    <span class="wip-dialog__eyebrow">keegan.biz / a note</span>
-    <h2 class="wip-dialog__title" id="wip-dialog-title">Thanks for visiting,</h2>
-    <p class="wip-dialog__description" id="wip-dialog-description">this page is a work in progress. Please forgive the appearance.</p>
-    <div class="wip-dialog__footer">
-      <span class="wip-dialog__index" aria-hidden="true">001 / 001</span>
-      <button type="button" class="wip-dialog__dismiss" data-wip-dismiss autofocus>continue <span aria-hidden="true">↗</span></button>
-    </div>
+    <button type="button" class="wip-dialog__close" data-wip-dismiss aria-label="Close notice" autofocus>&times;</button>
+    <p class="wip-dialog__message" id="wip-dialog-message">Thanks for visiting, this page is a work in progress. Please forgive the appearance.</p>
   </div>
 </dialog>
 <div class="page-shell">
