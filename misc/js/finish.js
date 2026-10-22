@@ -1,7 +1,7 @@
-/* Fine-grained Insular print impression — foliage, stems, and fruit share
-   one raster pipeline without sacrificing petioles, vein detail, or tips.
-   The source SVG remains editable and is retained underneath the print plate.
-   Animation uses the same resolution and treatment as the finished image. */
+/* Insular print plate: retain native vector resolution and botanical anatomy.
+   Deliberate small square steps are applied to broad contour cells ONLY.
+   Thin twigs, veins and fine marks remain sharp, not enlarged raster pixels.
+   The exact same high-resolution print plate is used for animation/export. */
 window.MS=window.MS||{};
 ((M)=>{
  'use strict';
@@ -10,25 +10,21 @@ window.MS=window.MS||{};
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
  M.finishDefs=(s,r)=>{
    const n=M.n,wear=clamp(Number(s.wear||0)/100,0,1);
-   // Small inward impression, no blur or exterior grey shadow.
    return `<filter id="impression" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">`+
      `<feTurbulence type="fractalNoise" baseFrequency=".065 .09" numOctaves="2" seed="${r.int(1,99999)}" result="fiber"/>`+
-     `<feDisplacementMap in="SourceGraphic" in2="fiber" scale="${n(.16+.42*wear)}" xChannelSelector="R" yChannelSelector="G"/></filter>`+
+     `<feDisplacementMap in="SourceGraphic" in2="fiber" scale="${n(.10+.38*wear)}" xChannelSelector="R" yChannelSelector="G"/></filter>`+
      `<filter id="dry-print" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency=".11" seed="${r.int(1,99998)}" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="${n(.12+wear*.42)}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
  };
- M.pixelPlateSettings=s=>{
-   const wear=clamp(Number(s.finishLevel??35)/100,0,1);
-   // Approximately one source unit per print cell (previously ~3).
-   // Preserve very thin stems and leaf venation at ordinary site size.
-   return {scale:.86-.035*wear, threshold:Math.round(5+8*wear)};
- };
+ // Never downsample the original illustration. Render it larger than the
+ // authored 850x1000 SVG and introduce just 2–3-unit steps at the contour.
+ M.pixelPlateSettings=s=>({resolution:1.65,cell:2.15+clamp(Number(s.finishLevel??30)/100,0,1)*.55});
  const encode=source=>{
    const clone=source.cloneNode(true);
    clone.setAttribute('xmlns',NS);
    clone.removeAttribute('style');
    clone.removeAttribute('class');
    clone.removeAttribute('aria-hidden');
-   clone.querySelectorAll('#pixel-print-plate').forEach(e=>e.remove());
+   clone.querySelectorAll('#pixel-print-plate,#construction-guides').forEach(e=>e.remove());
    const art=clone.querySelector('#artwork-layers');
    if(art){art.removeAttribute('display');art.removeAttribute('visibility');}
    // In browser, life stages are hidden by page CSS; exported SVG must match.
@@ -37,35 +33,56 @@ window.MS=window.MS||{};
    clone.insertBefore(style,clone.firstChild);
    return new XMLSerializer().serializeToString(clone);
  };
+ // Step only where solid painted areas meet transparent background. A thin
+ // hairline remains the high-resolution original, never reduced to pixels.
+ function stepContours(canvas,settings){
+   const ctx=canvas.getContext('2d',{willReadFrequently:true});
+   const w=canvas.width,h=canvas.height;
+   const cell=Math.max(3,Math.round(settings.cell*settings.resolution));
+   const image=ctx.getImageData(0,0,w,h),src=image.data;
+   // Read from a snapshot; changes to one block must not affect neighbours.
+   const before=new Uint8ClampedArray(src);
+   for(let y=0;y<h;y+=cell){
+     for(let x=0;x<w;x+=cell){
+       const tw=Math.min(cell,w-x),th=Math.min(cell,h-y),area=tw*th;
+       let strong=0,empty=0,sumR=0,sumG=0,sumB=0,weight=0;
+       for(let dy=0;dy<th;dy++)for(let dx=0;dx<tw;dx++){
+         const i=((y+dy)*w+(x+dx))*4,al=before[i+3];
+         if(al>=192){strong++;const v=al/255;sumR+=before[i]*v;sumG+=before[i+1]*v;sumB+=before[i+2]*v;weight+=v;}
+         if(al<32)empty++;
+       }
+       // Must contain BOTH solid ink and true outside transparency, and
+       // enough interior ink to be a silhouette rather than fine venation.
+       if(!empty||!strong||strong<area*.39||strong>area*.89)continue;
+       // Small reproducible variations imitate an uneven printed contour.
+       const hash=((x*73+y*131)^(x*y*17))>>>0;
+       const occupy=(strong/area)>(.42+(hash%11-5)*.008);
+       const r=Math.round(sumR/weight),g=Math.round(sumG/weight),b=Math.round(sumB/weight);
+       for(let dy=0;dy<th;dy++)for(let dx=0;dx<tw;dx++){
+         const i=((y+dy)*w+(x+dx))*4;
+         if(occupy){src[i]=r;src[i+1]=g;src[i+2]=b;src[i+3]=255;}
+         else {src[i]=src[i+1]=src[i+2]=src[i+3]=0;}
+       }
+     }
+   }
+   ctx.putImageData(image,0,0);
+   return canvas;
+ }
  async function raster(svg,settings,output='data'){
-   const src=encode(svg),blob=new Blob([src],{type:'image/svg+xml;charset=utf-8'});
+   const blob=new Blob([encode(svg)],{type:'image/svg+xml;charset=utf-8'});
    const url=URL.createObjectURL(blob),img=new Image();
    try{
      await new Promise((res,rej)=>{img.onload=res;img.onerror=()=>rej(new Error('SVG rasterisation failed'));img.src=url;});
      const W=Number(M.W)||850,H=Number(M.H)||1000;
-     const w=Math.max(170,Math.round(W*settings.scale));
-     const h=Math.max(200,Math.round(H*settings.scale));
-     const low=document.createElement('canvas');low.width=w;low.height=h;
-     const ctx=low.getContext('2d',{willReadFrequently:true});
-     if(!ctx)throw new Error('Canvas 2D unavailable');
-     ctx.clearRect(0,0,w,h);ctx.imageSmoothingEnabled=true;
-     ctx.drawImage(img,0,0,w,h);
-     // Do not threshold thin strokes into disconnected fragments. Only clear
-     // nearly invisible fringe pixels; retain antialiasing inside ink edges.
-     const data=ctx.getImageData(0,0,w,h),a=data.data;
-     for(let i=0;i<a.length;i+=4){
-       const alpha=a[i+3];
-       if(alpha<=settings.threshold){a[i+3]=0;continue;}
-       a[i+3]=Math.round((alpha-settings.threshold)*255/(255-settings.threshold));
-     }
-     ctx.putImageData(data,0,0);
-     if(output==='low')return low;
-     // Near-source-resolution imprint: subtle hand-set steps rather than
-     // oversized square clusters. Illustrator still honors the print cells.
-     const hi=document.createElement('canvas');hi.width=W;hi.height=H;
-     const hc=hi.getContext('2d');hc.imageSmoothingEnabled=false;
-     hc.clearRect(0,0,W,H);hc.drawImage(low,0,0,W,H);
-     return hi.toDataURL('image/png');
+     const hi=document.createElement('canvas');
+     hi.width=Math.round(W*settings.resolution);
+     hi.height=Math.round(H*settings.resolution);
+     const ctx=hi.getContext('2d',{willReadFrequently:true});
+     if(!ctx)throw Error('Canvas 2D unavailable');
+     ctx.imageSmoothingEnabled=true;
+     ctx.drawImage(img,0,0,hi.width,hi.height);
+     stepContours(hi,settings);
+     return output==='low'?hi:hi.toDataURL('image/png');
    }finally{URL.revokeObjectURL(url);}
  }
  M.applyPixelPlate=async(svg,s)=>{
@@ -80,7 +97,7 @@ window.MS=window.MS||{};
    plate.setAttribute('x','0');plate.setAttribute('y','0');
    plate.setAttribute('width',String(M.W));plate.setAttribute('height',String(M.H));
    plate.setAttribute('href',data);plate.setAttribute('preserveAspectRatio','none');
-   plate.setAttribute('image-rendering','pixelated');
+   plate.setAttribute('image-rendering','auto');
    art.setAttribute('display','none');
    // Construction guides remain a separate optional, transparent overlay.
    art.parentNode.insertBefore(plate,art.nextSibling);
@@ -182,7 +199,10 @@ window.MS=window.MS||{};
      mctx.beginPath();mctx.arc(a.point[0],a.point[1],radius,0,2*Math.PI);mctx.fill();
    }
    ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,w,h);
-   ctx.drawImage(plate,0,0,w,h);
+   // Match the fitted SVG viewBox during animation: no sudden zoom or jump.
+   ctx.setTransform(w/vb[2],0,0,h/vb[3],-vb[0]*w/vb[2],-vb[1]*h/vb[3]);
+   ctx.drawImage(plate,0,0,M.W,M.H);
+   ctx.setTransform(1,0,0,1,0,0);
    ctx.globalCompositeOperation='destination-in';ctx.drawImage(mask,0,0);
    ctx.globalCompositeOperation='source-over';
  }
@@ -190,7 +210,7 @@ window.MS=window.MS||{};
    play(svg,s){
      stop();if(!svg?.parentElement)return;
      const settings=M.pixelPlateSettings(s||{}),canvas=document.createElement('canvas');
-     canvas.width=Math.round(M.W*settings.scale);canvas.height=Math.round(M.H*settings.scale);
+     canvas.width=Math.round(M.W*settings.resolution);canvas.height=Math.round(M.H*settings.resolution);
      canvas.className='growth-pixel-canvas';canvas.setAttribute('aria-hidden','true');
      svg.parentNode.appendChild(canvas);svg.style.visibility='hidden';
      const mask=document.createElement('canvas');mask.width=canvas.width;mask.height=canvas.height;
@@ -219,12 +239,9 @@ window.MS=window.MS||{};
    promote(svg){
      const run=live;
      if(!run||run.svg!==svg||!run.plate)return false;
-     const hi=document.createElement('canvas');hi.width=M.W;hi.height=M.H;
-     const hc=hi.getContext('2d');hc.imageSmoothingEnabled=false;
-     hc.drawImage(run.plate,0,0,M.W,M.H);
      const plate=create('image');plate.id='pixel-print-plate';
-     plate.setAttribute('href',hi.toDataURL('image/png'));
-     for(const [k,v] of Object.entries({x:0,y:0,width:M.W,height:M.H,preserveAspectRatio:'none','image-rendering':'pixelated'}))plate.setAttribute(k,String(v));
+     plate.setAttribute('href',run.plate.toDataURL('image/png'));
+     for(const [k,v] of Object.entries({x:0,y:0,width:M.W,height:M.H,preserveAspectRatio:'none','image-rendering':'auto'}))plate.setAttribute(k,String(v));
      const art=svg.querySelector('#artwork-layers');art.setAttribute('display','none');
      art.parentNode.insertBefore(plate,art.nextSibling);
      stop();return true;
