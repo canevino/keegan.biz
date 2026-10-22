@@ -80,6 +80,26 @@ window.MS=window.MS||{};
    const xs=points.map(p=>p.x),ys=points.map(p=>p.y),pad=w+8;
    const bounds={x:Math.min(...xs)-pad,y:Math.min(...ys)-pad,w:Math.max(...xs)-Math.min(...xs)+2*pad,h:Math.max(...ys)-Math.min(...ys)+2*pad};
    let out=M.painted(trace,d,color,bounds,s,r,{stroke:major?.65:.45,lightweight:true,bark:true});
+   // Pass 2: bark has its own ink, not the same grain as leaves. Interrupted
+   // lengthwise mineral deposits follow the actual wood axis and are clipped
+   // to the illustrated trunk so they never float into the paper.
+   if(w>1.5){
+     const uid=`wood-grain-${trace}`;
+     const salt=(Number(trace.match(/\d+/)?.[0])||7181)^0x6f3a71;
+     const grainR=M.rng(M.childSeed(Number(s.seed)>>>0||1,salt));
+     let strokes='';
+     for(let i=5;i<points.length-3;i+=major?5:7){
+       const pt=points[i],t=pt.t,tan=pt.tng,perp=norm(tan);
+       const current=Math.max(.3,widthAt(w,t,.15));
+       const offset=grainR.between(-.32,.32)*current;
+       const a=add(pt,perp,offset),len=Math.min(8,current*grainR.between(.8,1.8));
+       const b=add(a,tan,len),c=add(b,perp,grainR.between(-.33,.33));
+       const shade=grainR.chance(.53)?M.mix(color,pal.ink,.48):M.mix(color,pal.light,.43);
+       strokes+=M.path(`M${V(a)}Q${V(b)} ${V(c)}`,shade,
+         Math.max(.22,Math.min(.69,current*.16)),`opacity="${n(grainR.between(.22,.50))}"`);
+     }
+     if(strokes)out+=`<defs><clipPath id="${uid}"><path d="${d}"/></clipPath></defs><g clip-path="url(#${uid})">${strokes}</g>`;
+   }
    if(major){
      const stroke=points.filter((_,i)=>i%3===0).map((p,i)=>{
        const off=norm(p.tng),vv=add(p,off,w*.09);return `${i?'L':'M'}${V(vv)}`;

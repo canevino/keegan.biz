@@ -19,7 +19,7 @@ window.MS=window.MS||{};
  // Keep the underlying illustration sharp at display/print size. The
  // irregular edges are a separate pigment impression, not a raster effect
  // applied to the drawing itself.
- M.pixelPlateSettings=s=>({resolution:2,cell:1.65+clamp(Number(s.finishLevel??30)/100,0,1)*.22});
+ M.pixelPlateSettings=s=>({resolution:2,cell:1.00+clamp(Number(s.finishLevel??30)/100,0,1)*.15});
  const encode=source=>{
    const clone=source.cloneNode(true);
    clone.setAttribute('xmlns',NS);
@@ -90,10 +90,10 @@ window.MS=window.MS||{};
      if(!adjacent.some(i=>src[i]<140))continue;
      const hash=((x*73856093)^(y*19349663))>>>0;
      if(hash%11===0)continue; // small localized ink skips
-     out[k]=Math.round(src[k]*.70);
-     out[k+1]=Math.round(src[k+1]*.68);
-     out[k+2]=Math.round(src[k+2]*.64);
-     out[k+3]=92;
+     out[k]=Math.round(src[k]*.73);
+     out[k+1]=Math.round(src[k+1]*.70);
+     out[k+2]=Math.round(src[k+2]*.70);
+     out[k+3]=57;
    }
    const cells=document.createElement('canvas');cells.width=w;cells.height=h;
    cells.getContext('2d').putImageData(edge,0,0);

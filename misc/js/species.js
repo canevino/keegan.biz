@@ -205,7 +205,7 @@ window.MS=window.MS||{};
         tip1=pt(center,a-.17,scale*.68),tip2=pt(center,a+.16,scale*.66);
      const d=`M${S(center.x,center.y)}C${S(left.x,left.y)} ${S(tip1.x,tip1.y)} ${S(edge.x,edge.y)}`+
        `C${S(tip2.x,tip2.y)} ${S(right.x,right.y)} ${S(center.x,center.y)}Z`;
-     z+=M.shape(d,blossomColor,`stroke="${pal.ink}" stroke-width=".56"`);
+     z+=M.shape(d,blossomColor,`stroke="${pal.ink}" stroke-width=".56"`)+M.shape(d,'url(#brush-fiber)',`opacity=".46"`)+M.shape(d,'url(#micro-grain)',`opacity=".33"`);
      z+=M.path(`M${S(center.x,center.y)}Q${S(edge.x,edge.y)} ${S(tip1.x,tip1.y)}`,
        M.mix(blossomColor,pal.vermillion,.36),.35,'opacity=".6"');
    }
@@ -249,6 +249,7 @@ window.MS=window.MS||{};
    }
    const color=type==='ivy'?'#283e55':pal.vermillion;
    return M.circle(at.x,at.y,size*.49,color,`stroke="${pal.ink}" stroke-width=".55" data-pixel-organ="1"`)+
+     M.circle(at.x,at.y,size*.47,'url(#micro-grain)',`opacity=".50" data-pixel-organ="1"`)+
      M.circle(at.x-size*.14,at.y-size*.16,size*.12,M.mix(color,pal.light,.38),'opacity=".54"');
  }
  function fruitCluster(sp,at,a,scale,pal,r,type,count){
