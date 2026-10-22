@@ -1,6 +1,5 @@
-/* Botanical anatomy / species pass 1: each stem receives an actual plant profile.
-   Pass 2 will supply Gothic geometry; this pass deliberately retains the existing
-   layout axes and all v3 material/printing controls. No letters or knot grids. */
+/* Pass 1 visual anatomy: species-specific woody gesture, phyllotaxis and organs.
+   Keeps all existing geometry, seed, export and growth interactions. */
 window.MS=window.MS||{};
 ((M)=>{
  'use strict';
@@ -75,7 +74,7 @@ window.MS=window.MS||{};
    }
    return conform>=.999 ? guided : wavy(guided,r,motion*.40*(1-conform),sp.habit);
  }
- function stemInk(points,w,color,pal,r,s,major=false){
+ function stemInk(points,w,color,pal,r,s,major=false,sp=null){
    const d=silhouette(points,w,major?.09:.16,major);
    const trace=major?`stem-${r.int(1000,999999999)}`:`shoot-${r.int(1000,999999999)}`;
    const xs=points.map(p=>p.x),ys=points.map(p=>p.y),pad=w+8;
@@ -86,6 +85,27 @@ window.MS=window.MS||{};
        const off=norm(p.tng),vv=add(p,off,w*.09);return `${i?'L':'M'}${V(vv)}`;
      }).join('');
      out+=M.path(stroke,M.mix(color,pal.light,.27),.52,'opacity=".43"');
+     // Bark is illustrated *on the plant*: interrupted fissures on oak,
+     // fine lenticels on hazel, sparse rings on ivy. No random floating marks.
+     if(sp){
+       const step=sp.leaf==='oak'?6:sp.leaf==='hazel'?9:sp.leaf==='holly'?12:15;
+       for(let i=step;i<points.length-step;i+=step){
+         const p=points[i],t=p.t,normal=norm(p.tng),radius=widthAt(w,t,.09)*.39;
+         const offset=r.between(-.28,.28)*radius;
+         const start=add(p,normal,offset),direction=r.sign();
+         const q=add(start,normal,direction*r.between(1.5,Math.max(2,radius*.62)));
+         const col=M.mix(color,r.chance(.72)?pal.ink:pal.light,r.between(.22,.4));
+         out+=M.path(`M${V(start)}Q${V(add(start,p.tng,r.between(1,3)))} ${V(q)}`,
+           col,sp.leaf==='oak'?.76:.43,`opacity="${n(r.between(.26,.55))}"`);
+       }
+     }
+   } else if(w>2.3){
+     // A single interrupted highlight helps the lateral taper read as wood
+     // instead of a mathematically perfect filled ribbon.
+     const stripe=points.filter((_,i)=>i%3===0).slice(2,-2).map((p,i)=>{
+       const q=add(p,norm(p.tng),widthAt(w,p.t,.16)*.13);return `${i?'L':'M'}${V(q)}`;
+     }).join('');
+     if(stripe)out+=M.path(stripe,M.mix(color,pal.light,.28),.38,'opacity=".31"');
    }
    return out;
  }
@@ -139,7 +159,7 @@ window.MS=window.MS||{};
      const q=samples[Math.round(samples.length*.56)],p=anchored(q,1,.7,0);
      if(['bramble','hawthorn','dogrose'].includes(kind))out+=M.path(`M${V(p)}l${M.vec(r.between(-4,4),-r.between(3,7))}`,M.wood(sp,pal,'mature',r),1.1);
    }
-   if(r.chance(.44))out+=M.plantOrgan(sp,tip,a,season,pal,r,r.between(5.5,8));
+   if(r.chance(.52))out+=M.plantOrgan(sp,tip,a,season,pal,r,r.between(8,11));
    // Terminal ornament is a continuation of the twig, never free-floating.
 
    return out;
@@ -160,18 +180,25 @@ window.MS=window.MS||{};
    const points=spine(start,b,c,end,30,r,Math.min(8,len*.085)*(s.distortion/100+.42),sp.habit);
    const wood=M.wood(sp,pal,sub?'new':'mature',r),base=sub?r.between(1.0,1.7):r.between(2.1,4.4);
    const prevShoot=plan.activeShoot;plan.activeShoot='spray-'+r.int(10000,99999999);
-   let woodArt=stemInk(points,base,wood,pal,r,s);
+   let woodArt=stemInk(points,base,wood,pal,r,s,false,sp);
    plan.spatial?.addWood?.(points,base,plan.activeStem);
    let foliageArt='',organArt='';
-   const leafCount=clamp(Math.round((sub?2.3:3.7)*sp.frequency*(.52+s.foliage/110)),1,sub?4:6);
-   const pairs=sp.habit==='twining';
+   // Alternate or opposite leaves reflect species, not an evenly spaced
+   // computational ladder. Variation happens at the node, not by rotating a
+   // detached sprite away from its own stalk.
+   const opposite=['honeysuckle'].includes(sp.leaf);
+   const whorled=sp.leaf==='ivy',cluster=sp.leaf==='holly'||sp.leaf==='hawthorn';
+   const leafCount=clamp(Math.round((sub?2.4:3.9)*sp.frequency*(.49+s.foliage/105)),1,sub?4:7);
    for(let i=0;i<leafCount;i++){
-     const t=.19+(i+.3)*.72/leafCount,p=points[Math.round(t*30)],sign=i%2?1:-1;
-     const a=angle(p.tng)+sign*r.between(.75,1.15)*sp.angle;
-     const size=len*(sub?r.between(.20,.28):r.between(.24,.34))*sp.scale*(sp.leafScale||1)*(1-.26*t);
+     const t=clamp(.14+(i+.38)*.78/leafCount+r.between(-.027,.027),.12,.93),p=points[Math.round(t*30)],sign=i%2?1:-1;
+     const a=angle(p.tng)+sign*r.between(.76,1.09)*sp.angle;
+     const size=len*(sub?r.between(.20,.29):r.between(.22,.33))*sp.scale*(sp.leafScale||1)*(1-.25*t);
      const attachment=add(p,norm(p.tng),sign*widthAt(base,t,.25)*.10);
      foliageArt+=petioleLeaf(attachment,a,size,sp,season,pal,r,plan,s,t);
-     if(pairs && r.chance(.66))foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.25),.5),angle(p.tng)-sign*.85,size*.95,sp,season,pal,r,plan,s,t);
+     if(opposite || (whorled&&r.chance(.24)) || (cluster&&r.chance(.23))){
+       const aa=angle(p.tng)-sign*r.between(.72,.99)*sp.angle;
+       foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.25),.5),aa,size*r.between(.83,.97),sp,season,pal,r,plan,s,t);
+     }
    }
    if(sp.habit==='climbing' && r.chance(.46)){
      const p=points[Math.round(r.between(.3,.66)*30)];
@@ -188,7 +215,7 @@ window.MS=window.MS||{};
      organArt+=shoot(anchored(p,sign,widthAt(base,p.t,.25)),p.tng,sign,len*r.between(.32,.55)*sp.twigs,sp,season,pal,r,plan,s,true);
    }
    if(sp.habit==='fronds' || r.chance(.09))organArt+=twigDetails(points,sp,season,pal,r,plan,s);
-   else if(r.chance(.62))organArt+=M.plantOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(6,10));
+   else if(r.chance(.72))organArt+=M.plantOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(8,12));
    // Add restrained foliate ornament at true branch nodes, not loose symbols.
    if(M.ornamentJunction && !sub){
      const i=Math.round(r.between(.35,.72)*30),p=points[i],a=angle(p.tng)+r.sign()*r.between(.74,1.18);
@@ -212,7 +239,7 @@ window.MS=window.MS||{};
    const frame=points.filter((_,i)=>i%2===0);
    const midrib=frame.map((p,i)=>(i?'L':'M')+V(p)).join('');
    let wood=M.path(midrib,M.mix(sp.tint,pal.ink,.30),1.65,'opacity=".95"'),foliage='';
-   const pairs=Math.round(12+detail*12+amount*7);
+   const pairs=Math.round(13+detail*8+amount*5);
    for(let i=1;i<=pairs;i++){
      const t=.065+i*.88/(pairs+1),p=points[Math.round(t*100)];
      const span=47*(.43+.8*amount)*Math.sin(Math.PI*t)**.69*(1-.30*t);
@@ -224,10 +251,23 @@ window.MS=window.MS||{};
        const at=add(p,normal,side*1.2);
        const spA=P(Math.cos(ang),Math.sin(ang)),end=add(at,spA,len);
        if(!allowed(end,plan,-8))continue;
-       const leaf=`M0 0 Q${M.vec(len*.31,-len*.32)} ${M.vec(len*.80,-len*.095)} Q${M.vec(len*1.03,-len*.03)} ${M.vec(len,0)} Q${M.vec(len*.68,len*.23)} 0 0 Z`;
-       const color=M.leafPigment(sp,season,pal,r,s),id='pinna-'+r.int(1000,99999999);
-       foliage+=`<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(ang)}" data-grow-t="${n(t)}"><g transform="translate(${V(at)}) rotate(${n(ang*180/Math.PI)})">`+`<g data-print-leaf="fine">${M.leafFinish(id,leaf,len,color,pal,s,r)}</g>`;
-       if(detail>.36)foliage+=M.path(`M0 0L${M.vec(len*.87,0)}`,M.mix(color,pal.ink,.42),.37,'opacity=".51"');
+       const color=M.leafPigment(sp,season,pal,r,s);
+       // Each pinna has a thin rachis and pairs of tapering pinnules.
+       // Lightweight colored shapes avoid thousands of individual SVG masks.
+       let pinnules=M.path(`M0 0Q${M.vec(len*.43,-len*.08)} ${M.vec(len,0)}`,
+         M.mix(sp.tint,pal.ink,.34),Math.max(.35,len*.037));
+       const smallPairs=Math.max(3,Math.min(6,Math.round(len/6)));
+       for(let k=0;k<smallPairs;k++){
+         const u=.12+(k+.27)*.76/smallPairs,xx=len*u,
+           length=len*.23*Math.pow(Math.sin(Math.PI*u),.8)*(1-.20*u);
+         for(const sign of [-1,1]){
+           const endx=xx+length*.73,endy=sign*length*.76;
+           const d=`M${M.vec(xx,0)}Q${M.vec(xx+length*.11,endy*.92)} ${M.vec(endx,endy)}`+
+             `Q${M.vec(xx+length*.81,endy*.46)} ${M.vec(xx,0)}Z`;
+           pinnules+=M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(Math.max(.25,len*.016))}"`);
+         }
+       }
+       foliage+=`<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(ang)}" data-grow-t="${n(t)}"><g transform="translate(${V(at)}) rotate(${n(ang*180/Math.PI)})">${pinnules}`;
        foliage+='</g></g>';
      }
    }
@@ -258,7 +298,7 @@ window.MS=window.MS||{};
      const base=stem.width*(sp.habit==='heavy'?1.08:sp.habit==='climbing'?.86:sp.habit==='twining'?.88:1.01);
      const wood=M.wood(sp,pal,'mature',r);
      plan.spatial?.addWood?.(points,base,plan.activeStem);
-     let woodArt=stemInk(points,base,wood,pal,r,s,true);
+     let woodArt=stemInk(points,base,wood,pal,r,s,true,sp);
      let growth='';
      let count=clamp(Math.round((stem.major?7:5)*sp.frequency*(.42+fol*.89)*(sp.shootDensity||1)),2,14);
      if(season==='winter'&&!sp.evergreen)count=Math.max(2,Math.round(count*.76));
@@ -284,7 +324,7 @@ window.MS=window.MS||{};
      }
      if(r.chance(.68)){
        const tip=points[100],ang=angle(tip.tng);
-       growth+=M.plantOrgan(sp,tip,ang,season,pal,r,r.between(9,14));
+       growth+=M.plantOrgan(sp,tip,ang,season,pal,r,r.between(11,16));
      }
 
      const axis=M.strokePath(points);

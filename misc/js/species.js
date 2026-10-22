@@ -51,196 +51,133 @@ window.MS=window.MS||{};
    }
    return col;
  };
- // Natural leaf anatomy is defined here; manuscript treatment is a separate,
- // low-amplitude variation of this silhouette, never a replacement polygon.
- const bell=(t,p=.8)=>Math.pow(Math.max(0,Math.sin(Math.PI*t)),p);
- const S=(x,y)=>V(x,y);
- const smoothClose=pts=>{
-   // Cardinal cubic interpolation keeps every prescribed lobe while removing
-   // the visibly polygonal, repeated zigzags of the older outline builder.
-   const N=pts.length;
-   let d=`M${S(pts[0].x,pts[0].y)}`;
+ // Pass 1 / leaf atlas. Each shape is a variation of its species, not an
+ // interchangeable decorative glyph. Variation changes lobes, taper, asymmetry
+ // and minor insect/printing irregularities, never botanical identity.
+ const S=(x,y)=>M.vec(x,y);
+ const smoothClose=(pts,sharp=false)=>{
+   const N=pts.length; let d=`M${S(pts[0].x,pts[0].y)}`;
    for(let i=0;i<N;i++){
      const prev=pts[(i+N-1)%N],from=pts[i],to=pts[(i+1)%N],next=pts[(i+2)%N];
-     const k=.15;
-     const c1=P(from.x+(to.x-prev.x)*k,from.y+(to.y-prev.y)*k);
-     const c2=P(to.x-(next.x-from.x)*k,to.y-(next.y-from.y)*k);
-     d+=`C${S(c1.x,c1.y)} ${S(c2.x,c2.y)} ${S(to.x,to.y)}`;
+     // Smoother historical-plate contours; angular hollies retain true spines.
+     if(sharp){d+=`L${S(to.x,to.y)}`;continue;}
+     const k=.135;
+     d+=`C${S(from.x+(to.x-prev.x)*k,from.y+(to.y-prev.y)*k)} `+
+       `${S(to.x-(next.x-from.x)*k,to.y-(next.y-from.y)*k)} ${S(to.x,to.y)}`;
    }
    return d+'Z';
  };
- function outline(kind,len,r,s){
+ const bell=(t,p=.76)=>Math.pow(Math.max(0,Math.sin(Math.PI*t)),p);
+ const bump=(t,c,w)=>Math.exp(-Math.pow((t-c)/w,2));
+ function blade(kind,len,r,s){
    const ornament=M.ornamentInfluence?M.ornamentInfluence({leaf:kind},s):0;
-   const phase=r.between(-.5,.5);
-   const serrate=['hazel','dogrose','bramble'].includes(kind);
-   const steps=serrate?24:20;
-   const size=kind==='hazel'?.35:kind==='acanthus'?.36:kind==='hawthorn'?.32:kind==='bramble'?.27:kind==='dogrose'?.24:kind==='honeysuckle'?.27:.30;
-   const left=[],right=[];
-   const width=(t,side)=>{
-     let w=bell(t,kind==='hazel'?.67:kind==='honeysuckle'?.90:.79);
-     // Pointed, heart-like hazel blades have their greatest width in the basal
-     // half. Honeysuckle is entire-margined, bramble and rose are serrated.
-     if(kind==='hazel')w*=1+.22*(1-t);
-     if(kind==='honeysuckle')w*=.89+.23*t;
-     if(kind==='dogrose')w*=.90+.10*t;
-     if(kind==='hawthorn'){
-       const lobe=.20*Math.cos(6.6*Math.PI*t+phase);
-       w*=.84+lobe+.09*Math.sin(3.2*Math.PI*t);
+   const variant=r.int(0,5),yaw=r.between(-.075,.075),phase=r.between(-1,1);
+   const pairs=kind==='holly'?32:kind==='hazel'?42:kind==='oak'?34:kind==='bramble'||kind==='dogrose'?40:44;
+   const widths={holly:.27,hazel:.36,ivy:.39,hawthorn:.32,oak:.39,
+     dogrose:.27,honeysuckle:.25,bramble:.29,fern:.12,acanthus:.41};
+   const scale=(widths[kind]||.3)*(1+variant*.023+ornament*.085);
+   let result=[];
+   for(const side of [-1,1]){
+     const line=[];
+     for(let i=0;i<=pairs;i++){
+       const t=i/pairs;
+       // A shared stalk-tip axis with a slight hand-drawn bow.
+       let x=t*len;
+       let w=bell(t,kind==='honeysuckle'?.98:.74);
+       const sideOffset=side*(.044*Math.sin(3.7*t+phase)+.029*Math.sin(7*t+variant));
+       if(kind==='hazel'){
+         // Rounded, broad-at-base hazel with a true serrate edge.
+         w*=1.19-.44*t;
+         w*=1+.039*Math.cos(32*Math.PI*t+side*.48);
+       } else if(kind==='holly'){
+         // Four distinct sharp spines per margin; intervening lobes curve inward.
+         w*=.83 + [.23,.44,.65,.84].reduce((v,q)=>v+.25*bump(t,q+.007*side,.023)-.15*bump(t,q+.065,.035),0);
+       } else if(kind==='oak'){
+         // Three or four broad, rounded lobes with clear deep sinuses.
+         const lobes=[.22,.45,.70];
+         w*=.40 + lobes.reduce((v,q)=>v+.60*bump(t,q+side*.015,.105),0);
+         w*=1-.13*bump(t,.83,.035);
+       } else if(kind==='hawthorn'){
+         w*=.70 + [.29,.58,.80].reduce((v,q)=>v+.35*bump(t,q+.012*side,.072)-.14*bump(t,q+.12,.04),0);
+       } else if(kind==='acanthus'){
+         w*=.55 + [.16,.32,.52,.70,.86].reduce((v,q)=>v+.56*bump(t,q+side*.012,.061)-.25*bump(t,q+.077,.025),0);
+       } else if(kind==='ivy'){
+         // Long central spear with two backward-facing lobes either side.
+         w*=.46+.52*bump(t,.28,.13)+.70*bump(t,.51,.12)-.25*bump(t,.69,.075);
+       } else if(kind==='dogrose'||kind==='bramble'){
+         w*=kind==='bramble'?1.08-.20*t:.90+.16*t;
+         w*=1+.047*Math.cos((kind==='bramble'?28:32)*Math.PI*t+side*.45);
+       } else if(kind==='honeysuckle'){
+         w*=.76+.37*bump(t,.54,.35);
+       }
+       w*=1+sideOffset + .025*Math.sin(t*12.5+variant+side);
+       // A very small amount of irregular hand-cut outline; never pixelation.
+       w*=1+(kind==='oak'?.003:.010)*Math.sin(t*50+variant*2.1+side);
+       const y=side*len*scale*Math.max(0,w)+len*yaw*.25*Math.sin(Math.PI*t);
+       line.push({x,y});
      }
-     if(kind==='acanthus'){
-       const lobes=.31*Math.cos(8.4*Math.PI*t+phase);
-       w*=.79+lobes+.05*Math.sin(2.7*Math.PI*t);
-     }
-     if(kind==='bramble')w*=.99+.05*Math.cos(8*Math.PI*t);
-     if(serrate){
-       const wave=Math.cos((kind==='hazel'?18:kind==='dogrose'?16:14)*Math.PI*t+(side===1?.4:1.0));
-       w*=1+(kind==='hazel'?.045:.047)*Math.pow(Math.max(0,wave),3);
-     }
-     // An illuminator may gently amplify real anatomical lobes, but never
-     // convert an ordinary plant into one generic ornamental sawblade.
-     if(ornament>.01)w*=1+.26*ornament*(1+.30*Math.sin(5*Math.PI*t+phase));
-     return Math.max(0,w);
-   };
-   const baseBend=r.between(-.028,.028)*len;
-   for(let i=0;i<=steps;i++){
-     const t=i/steps;
-     const x=t*len;
-     const y=baseBend*Math.sin(Math.PI*t)*t;
-     const sideVariation=1+.055*Math.sin(t*3*Math.PI+phase);
-     left.push(P(x,y-size*len*width(t,-1)*sideVariation));
-     right.push(P(x,y+size*len*width(t,1)*(1-.043*Math.sin(t*4*Math.PI+phase))));
+     result.push(line);
    }
-   return smoothClose([...left,...right.slice(1,-1).reverse()]);
+   return smoothClose([...result[0],...result[1].slice(1,-1).reverse()],kind==='holly');
  }
- function explicitLeaf(kind,len,r,s){
-   const ornament=M.ornamentInfluence?M.ornamentInfluence({leaf:kind},s):0;
-   const width=1+.24*ornament;
-   const v=(x,y)=>S(x*len,y*len*width);
-   if(kind==='ivy'){
-     // Five-lobed ivy blade: the basal lobes turn backwards towards the stem,
-     // with curved sinuses and a broad central leaf rather than sharp triangles.
-     return `M0 0 C${v(.11,-.05)} ${v(.16,-.17)} ${v(.17,-.28)} `+
-       `C${v(.24,-.32)} ${v(.29,-.25)} ${v(.32,-.23)} `+
-       `C${v(.39,-.27)} ${v(.39,-.46)} ${v(.44,-.48)} `+
-       `C${v(.53,-.47)} ${v(.52,-.25)} ${v(.57,-.23)} `+
-       `C${v(.72,-.20)} ${v(.80,-.09)} ${v(1,0)} `+
-       `C${v(.80,.09)} ${v(.72,.20)} ${v(.57,.23)} `+
-       `C${v(.52,.25)} ${v(.53,.47)} ${v(.44,.48)} `+
-       `C${v(.39,.46)} ${v(.39,.27)} ${v(.32,.23)} `+
-       `C${v(.29,.25)} ${v(.24,.32)} ${v(.17,.28)} `+
-       `C${v(.16,.17)} ${v(.11,.05)} 0 0 Z`;
+ function leafVeins(kind,size,color,pal,r){
+   const ink=M.mix(color,pal.ink,.53),major=M.mix(color,pal.ochre,.20);
+   const length=kind==='ivy'?.92:.94;
+   let out=M.path(`M${S(size*.035,0)}Q${S(size*.53,-size*.026)} ${S(size*length,0)}`,
+      major,Math.max(.26,size*.020),'opacity=".66"');
+   // Secondary veins follow the species' actual midrib; no artificial lettering.
+   const venation=['fern'].includes(kind)?0:kind==='holly'?3:kind==='oak'||kind==='acanthus'?5:4;
+   for(let i=0;i<venation;i++){
+     const t=.22+(i+.23)*.60/venation,x=size*t;
+     for(const side of [-1,1]){
+       const uneven=r.between(.86,1.12),w=size*(kind==='acanthus'?.27:kind==='oak'?.26:kind==='ivy'?.23:kind==='holly'?.18:.19)*Math.sin(Math.PI*t)*uneven;
+       out+=M.path(`M${S(x,0)}Q${S(x+size*.035,side*w*.31)} ${S(x+size*.11,side*w)}`,
+         ink,Math.max(.22,size*.009),`opacity="${M.n(.34+r.between(-.07,.12))}"`);
+     }
    }
-   if(kind==='holly'){
-     const f=1+ornament*.24,p=(x,y)=>S(len*x,len*y*f);
-     return `M0 0 C${p(.13,-.09)} ${p(.20,-.18)} ${p(.26,-.17)} `+
-       `L${p(.30,-.31)} Q${p(.38,-.18)} ${p(.44,-.22)} `+
-       `L${p(.53,-.36)} Q${p(.60,-.18)} ${p(.67,-.20)} `+
-       `L${p(.75,-.27)} Q${p(.85,-.11)} ${p(1,0)} `+
-       `Q${p(.84,.12)} ${p(.75,.27)} `+
-       `L${p(.67,.20)} Q${p(.60,.18)} ${p(.53,.36)} `+
-       `L${p(.44,.22)} Q${p(.38,.18)} ${p(.30,.31)} `+
-       `L${p(.26,.17)} C${p(.20,.18)} ${p(.13,.09)} 0 0 Z`;
-   }
-   if(kind==='oak'){
-     const f=1+ornament*.27,p=(x,y)=>S(len*x,len*y*f);
-     return `M0 0 C${p(.05,-.08)} ${p(.14,-.08)} ${p(.17,-.12)} `+
-       `C${p(.12,-.22)} ${p(.22,-.32)} ${p(.29,-.30)} `+
-       `Q${p(.35,-.29)} ${p(.38,-.21)} `+
-       `C${p(.34,-.40)} ${p(.46,-.43)} ${p(.53,-.39)} `+
-       `Q${p(.60,-.34)} ${p(.59,-.24)} `+
-       `C${p(.64,-.40)} ${p(.74,-.38)} ${p(.78,-.28)} `+
-       `Q${p(.80,-.15)} ${p(.84,-.16)} Q${p(.94,-.13)} ${p(1,0)} `+
-       `Q${p(.94,.13)} ${p(.84,.16)} Q${p(.80,.15)} ${p(.78,.28)} `+
-       `C${p(.74,.38)} ${p(.64,.40)} ${p(.59,.24)} `+
-       `Q${p(.60,.34)} ${p(.53,.39)} `+
-       `C${p(.46,.43)} ${p(.34,.40)} ${p(.38,.21)} `+
-       `Q${p(.35,.29)} ${p(.29,.30)} `+
-       `C${p(.22,.32)} ${p(.12,.22)} ${p(.17,.12)} `+
-       `C${p(.14,.08)} ${p(.05,.08)} 0 0 Z`;
-   }
-   return outline(kind,len,r,s);
+   return out;
  }
  function simpleLeaf(sp,size,season,pal,r,kindOverride,s={registration:0,pigment:40,wear:20}){
-   const kind=kindOverride||sp.leaf;
-   const d=explicitLeaf(kind,size,r,s),color=M.leafPigment(sp,season,pal,r,s),id=`leaf-${r.int(10000,999999999)}`;
-   // Compound leaves may contain hundreds of tiny leaflets. At this scale the
-   // per-leaf filter/mask machinery creates huge SVGs without visible benefit.
-   // Keep a crisp botanical blade and its midrib; reserve rich ink for big leaves.
-   if(size<42){
-     // The majority of foliage is drawn at this scale. Preserve the
-     // characteristic contour but add restrained secondary venation; without
-     // it small leaves became flat, repeated pieces of colored clip art.
-     const outline=M.shape(d,'none',`stroke="${pal.ink}" stroke-width="${n(Math.max(.30,size*.020))}" stroke-linejoin="round"`);
-     const basePrint=M.shape(d,color,'data-pixel-pigment="1"');
-     const grain=M.shape(d,'url(#speckle)',`opacity="${n(.14+(s.wear||0)*.003)}" data-pixel-pigment="1"`);
-     const light=M.mix(color,pal.light,.14+Math.min(.20,(s.pigment||0)/330));
-     const shade=M.mix(color,pal.ink,.10);
-     const translucent=`<linearGradient id="shade-${id}" x1="0" y1="0" x2=".65" y2="1"><stop offset="0" stop-color="${light}"/><stop offset=".48" stop-color="${color}"/><stop offset="1" stop-color="${shade}"/></linearGradient>`;
-     const veinInk=mix(color,pal.ink,.30);
-     const rib=M.path(`M0 0Q${V(size*.52,-size*.011)} ${V(size*.95,0)}`,veinInk,Math.max(.20,size*.015),'opacity=".51"');
-     let fineVeins='';
-     if(size>14){
-       const pairs=size>25?4:3;
-       for(let j=0;j<pairs;j++){
-         const t=.24+j*.55/pairs,x=size*t;
-         for(const direction of [-1,1]){
-           const rise=direction*size*(kind==='hazel'?.20:.16)*Math.sin(Math.PI*t);
-           fineVeins+=M.path(`M${V(x,0)}Q${V(x+size*.060,rise*.34)} ${V(x+size*.13,rise)}`,
-             veinInk,Math.max(.20,size*.010),`opacity="${n(.32+(j%2)*.08)}"`);
-         }
-       }
-     }
-     const ornament=M.ornamentLeafInterior?M.ornamentLeafInterior(sp,size,color,pal,r,s):'';
-     const clipId='ornament-clip-'+id;
-     const colorPrint=M.ornamentColorPatch?M.ornamentColorPatch(sp,size,pal,r,s):'';
-     return `<defs><clipPath id="${clipId}"><path d="${d}"/></clipPath>${translucent}</defs>`+
-       `<g>${basePrint}${outline}<g clip-path="url(#${clipId})"><path d="${d}" fill="url(#shade-${id})" opacity=".38" data-pixel-pigment="1"/>${grain}${colorPrint}${rib}${fineVeins}${ornament}</g></g>`;
-   }
-   let z=M.leafFinish(id,d,size,color,pal,s,r);
-   z+=`<g clip-path="url(#leaf-clip-${id})">`;
-   const midrib=mix(color,pal.ink,.44);
-   z+=M.path(`M0 0 Q${V(size*.49,-size*.012)} ${V(size*.97,0)}`,midrib,Math.max(.35,size*.014),`opacity=".58"`);
-   const veins=Math.max(2,Math.round((Number(s.detail??60)/100)*(size>28?7:5)));
-   const broad=['acanthus','hawthorn','hazel','ivy','oak','holly'].includes(kind);
-   for(let i=0;i<veins;i++){
-     const t=.18+(i+.2)*.65/veins,x=size*t;
-     for(const sign of [-1,1]){
-       const y=sign*size*(broad?.27:.19)*Math.sin(Math.PI*t)*(.83+.13*r.random());
-       z+=M.path(`M${V(x,-size*.008)}Q${V(x+size*.052,y*.38)} ${V(x+size*.14,y)}`,midrib,Math.max(.22,size*.008),`opacity=".42"`);
-     }
-   }
-   if(M.ornamentColorPatch)z+=M.ornamentColorPatch(sp,size,pal,r,s);
-   if(M.ornamentLeafInterior)z+=M.ornamentLeafInterior(sp,size,color,pal,r,s);
-   return z+'</g>';
+   const kind=kindOverride||sp.leaf,d=blade(kind,size,r,s),
+     color=M.leafPigment(sp,season,pal,r,s),id=`leaf-${r.int(10000,999999999)}`;
+   let art=M.leafFinish(id,d,size,color,pal,s,r);
+   const clipId=`leaf-clip-${id}`;
+   const veins=leafVeins(kind,size,color,pal,r);
+   const ornament=M.ornamentLeafInterior?M.ornamentLeafInterior(sp,size,color,pal,r,s):'';
+   const patch=M.ornamentColorPatch?M.ornamentColorPatch(sp,size,pal,r,s):'';
+   art+=`<g clip-path="url(#${clipId})">${veins}${patch}${ornament}</g>`;
+   return art;
  }
  function compound(sp,size,season,pal,r,s){
-   const rose=sp.leaf==='dogrose',count=rose?2:(r.chance(.48)?2:1);
-   let z=M.path(`M0 0 Q${V(size*.43,-size*.04)} ${V(size*.90,0)}`,mix(sp.bark,pal.ink,.23),Math.max(.45,size*.021));
-   for(let i=0;i<count;i++){
-     const t=(i+1)/(count+1),x=size*(.16+t*.56);
-     const signs=[-1,1];
-     for(const sign of signs){
-       const a=sign*(rose?.72:.82) + r.between(-.08,.08);
-       const d=size*(rose?.35:.41)*(1+.09*r.random());
-       z+=`<g transform="translate(${V(x,0)}) rotate(${n(a*180/Math.PI)})">`+simpleLeaf(sp,d,season,pal,r,rose?'dogrose':'bramble',s)+'</g>';
+   const rose=sp.leaf==='dogrose',pairs=rose?(r.chance(.54)?3:2):(r.chance(.62)?2:1);
+   const shaft=M.mix(sp.bark,sp.tint,.28);
+   let z=M.path(`M0 0 Q${S(size*.42,-size*.045)} ${S(size*.96,0)}`,shaft,Math.max(.48,size*.022));
+   for(let i=0;i<pairs;i++){
+     const t=.19+i*.25,x=size*t;
+     for(const side of [-1,1]){
+       const len=size*(rose?.36:.42)*(.91+.09*r.random())*(1-.08*i),a=side*(rose?.84:.91)+r.between(-.09,.09);
+       const basal=S(x,0);
+       z+=`<g transform="translate(${basal}) rotate(${M.n(a*180/Math.PI)})">`+
+         simpleLeaf(sp,len,season,pal,r,sp.leaf,s)+'</g>';
      }
-
    }
-   z+=`<g transform="translate(${V(size*.88,0)})">`+simpleLeaf(sp,size*(rose?.37:.45),season,pal,r,rose?'dogrose':'bramble',s)+`</g>`;
+   z+=`<g transform="translate(${S(size*.75,0)})">`+
+     simpleLeaf(sp,size*(rose?.41:.49),season,pal,r,sp.leaf,s)+'</g>';
    return z;
  }
  function fernFrond(sp,size,season,pal,r,s){
-   let z=M.path(`M0 0 Q${V(size*.48,-size*.12)} ${V(size,0)}`,M.wood(sp,pal,'new',r),1.4);
-   const pairs=12;
-   for(let i=1;i<=pairs;i++){
-     const t=i/(pairs+1),x=size*t,span=size*.21*Math.sin(Math.PI*t)**.88;
-     for(const sign of [-1,1]){
-       const d=`M${V(x,0)} Q${V(x+size*.04,sign*span*.53)} ${V(x+size*.16,sign*span)} Q${V(x+size*.065,sign*span*.83)} ${V(x,0)}Z`;
-       const c=M.leafPigment(sp,season,pal,r,s);
-       z+=M.leafFinish(`fern-${r.int(10000,999999999)}`,d,Math.max(8,size*.2),c,pal,s,r);
+   const shaft=M.mix(sp.tint,pal.ink,.34);
+   let z=M.path(`M0 0 Q${S(size*.44,-size*.075)} ${S(size*.99,0)}`,shaft,Math.max(.65,size*.023));
+   const pairs=Math.max(7,Math.round(size/7));
+   for(let i=0;i<pairs;i++){
+     const t=.10+i*.82/pairs,span=size*.24*Math.pow(Math.sin(Math.PI*t),.92)*(1-.25*t),x=size*t;
+     for(const side of [-1,1]){
+       const len=span*(1+r.between(-.07,.07));
+       const a=side*(.95+.18*t);
+       z+=`<g transform="translate(${S(x,0)}) rotate(${M.n(a*180/Math.PI)})">`+
+          simpleLeaf(sp,len,season,pal,r,'honeysuckle',s)+'</g>';
      }
    }
-   // Frond tips end in a young crozier naturally, without a loose spiral.
    return z;
  }
  M.plantLeaf=(sp,at,angle,size,season,pal,r,s={registration:0,pigment:40,wear:20})=>{
@@ -253,58 +190,113 @@ window.MS=window.MS||{};
    const magnify=1+ornamental*.08;
    return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})">${leaf}</g></g>`;
  };
- function blossom(at,scale,pal,r,white=true){
-   let z=''; const p=r.choose([4,5,5]);
-   for(let i=0;i<p;i++){
-     const a=i*2*Math.PI/p,dx=Math.cos(a)*scale*.36,dy=Math.sin(a)*scale*.36;
-     z+=`<ellipse cx="${n(at.x+dx)}" cy="${n(at.y+dy)}" rx="${n(scale*.28)}" ry="${n(scale*.48)}" transform="rotate(${n(a*180/Math.PI+90)} ${V(at.x+dx,at.y+dy)})" fill="${white?mix(pal.light,'#fff4e2',.65):r.choose([pal.lapis,pal.vermillion,pal.ochre])}" stroke="${pal.ink}" stroke-width=".38"/>`;
+ // Species organs use illustrated morphology: a five-petalled rose is not a
+ // colored dot, a blackberry consists of individual drupelets, and acorns have
+ // visible cups. Motifs attach at a real shoot terminal.
+ const pt=(at,a,d)=>({x:at.x+Math.cos(a)*d,y:at.y+Math.sin(a)*d});
+ function blossom(at,scale,pal,r,kind='hawthorn'){
+   let z='',petals=kind==='honeysuckle'?4:5;
+   const blossomColor=kind==='dogrose'?M.mix('#e9b8a7',pal.light,.38):
+     kind==='acanthus'?pal.lapis:M.mix(pal.light,'#ffffff',.73);
+   const center=at;
+   for(let i=0;i<petals;i++){
+     const a=(i+(.035*r.random()))*2*Math.PI/petals+ r.between(-.08,.08),
+        edge=pt(center,a,scale*.51),left=pt(center,a-.51,scale*.32),right=pt(center,a+.51,scale*.34),
+        tip1=pt(center,a-.17,scale*.68),tip2=pt(center,a+.16,scale*.66);
+     const d=`M${S(center.x,center.y)}C${S(left.x,left.y)} ${S(tip1.x,tip1.y)} ${S(edge.x,edge.y)}`+
+       `C${S(tip2.x,tip2.y)} ${S(right.x,right.y)} ${S(center.x,center.y)}Z`;
+     z+=M.shape(d,blossomColor,`stroke="${pal.ink}" stroke-width=".56"`);
+     z+=M.path(`M${S(center.x,center.y)}Q${S(edge.x,edge.y)} ${S(tip1.x,tip1.y)}`,
+       M.mix(blossomColor,pal.vermillion,.36),.35,'opacity=".6"');
    }
-   z+=M.circle(at.x,at.y,scale*.18,pal.ochre,`stroke="${pal.ink}" stroke-width=".3"`);
+   z+=M.circle(center.x,center.y,Math.max(1.2,scale*.17),pal.ochre,`stroke="${pal.ink}" stroke-width=".35"`);
+   const stamens=kind==='dogrose'?7:kind==='hawthorn'?5:3;
+   for(let i=0;i<stamens;i++){
+     const ang=i*2.4,a=pt(center,ang,scale*.28),b=pt(center,ang,scale*.36);
+     z+=M.path(`M${S(a.x,a.y)}L${S(b.x,b.y)}`,pal.ochre,.36);
+     z+=M.circle(b.x,b.y,.48,pal.vermillion);
+   }
    return z;
  }
- function fruitCluster(sp,at,a,scale,pal,r,type,count){
-   scale=Math.max(7.6,scale*1.25); // retain fruit at the same stepped resolution as foliage
-   const berryColors=type==='berry'?[pal.vermillion,'#982f20']:type==='blackberry'?['#241729','#41263e','#663045']:['#977333','#7a4d33'];
-   let z='';
-   for(let i=0;i<count;i++){
-     const start=at,ang=a+(i-(count-1)/2)*.55,len=scale*(1.0+.13*i),tip=sum(start,Q(ang,len));
-     z+=M.path(`M${V(start.x,start.y)} Q${V(start.x+Math.cos(ang-.2)*len*.54,start.y+Math.sin(ang-.2)*len*.54)} ${V(tip.x,tip.y)}`,mix(sp.bark,pal.ink,.14),.62);
-     if(type==='blackberry'){
-       for(let j=0;j<7;j++){
-         const phi=j*2.4,x=tip.x+Math.cos(phi)*scale*.18*(j%2+1),y=tip.y+Math.sin(phi)*scale*.23;
-         z+=M.circle(x,y,Math.max(2.15,scale*.23),r.choose(berryColors),`stroke="${pal.ink}" stroke-width=".9" data-pixel-organ="1"`);
+ function berry(sp,at,size,pal,r,type){
+   const shadow=M.mix(pal.ink,type==='blackberry'?'#532d50':pal.vermillion,.47);
+   if(type==='blackberry'){
+     let z='';
+     // Blackberry cross-section: small dark drupelets taper into a cone.
+     for(let row=0;row<3;row++){
+       const count=4-row;
+       for(let j=0;j<count;j++){
+         const x=at.x+(j-(count-1)/2)*size*.34,y=at.y+(row-1)*size*.30;
+         const col=r.choose(['#302333','#4b2e47','#673449','#261e29']);
+         z+=M.circle(x,y,size*.19,col,`stroke="${pal.ink}" stroke-width=".38" data-pixel-organ="1"`);
+         z+=M.circle(x-size*.05,y-size*.05,Math.max(.26,size*.045),M.mix(col,pal.light,.36),'opacity=".66"');
        }
-     } else z+=M.circle(tip.x,tip.y,Math.max(3.4,scale*.43),r.choose(berryColors),`stroke="${pal.ink}" stroke-width="1.1" data-pixel-organ="1"`);
+     }
+     z+=M.path(`M${S(at.x-size*.43,at.y-size*.45)}Q${S(at.x,at.y-size*.65)} ${S(at.x+size*.43,at.y-size*.45)}`,sp.tint,.6);
+     return z;
+   }
+   if(type==='hip'){
+     const d=`M${S(at.x-size*.20,at.y-size*.45)}Q${S(at.x-size*.65,at.y)} ${S(at.x-size*.19,at.y+size*.65)}Q${S(at.x+size*.22,at.y+size*.72)} ${S(at.x+size*.40,at.y)}Q${S(at.x+size*.28,at.y-size*.42)} ${S(at.x-size*.20,at.y-size*.45)}Z`;
+     return M.shape(d,pal.vermillion,`stroke="${pal.ink}" stroke-width=".56" data-pixel-organ="1"`)+
+       M.path(`M${S(at.x,at.y-size*.52)}l${S(-size*.14,-size*.22)}m${S(size*.14,size*.22)}l${S(size*.17,-size*.20)}`,sp.tint,.59);
+   }
+   if(type==='acorn'){
+     const d=`M${S(at.x-size*.35,at.y-size*.22)}Q${S(at.x-size*.46,at.y+size*.36)} ${S(at.x,at.y+size*.78)}Q${S(at.x+size*.46,at.y+size*.36)} ${S(at.x+size*.35,at.y-size*.22)}Z`;
+     const cap=`M${S(at.x-size*.45,at.y)}Q${S(at.x,at.y-size*.61)} ${S(at.x+size*.45,at.y)}Q${S(at.x,at.y+size*.18)} ${S(at.x-size*.45,at.y)}Z`;
+     return M.shape(d,M.mix(pal.ochre,sp.bark,.36),`stroke="${pal.ink}" stroke-width=".56" data-pixel-organ="1"`)+
+       M.shape(cap,M.mix(sp.tint,sp.bark,.46),`stroke="${pal.ink}" stroke-width=".46"`)+
+       M.path(`M${S(at.x-size*.25,at.y-.8)}l${S(size*.5,.3)}`,pal.ochre,.45);
+   }
+   const color=type==='ivy'?'#283e55':pal.vermillion;
+   return M.circle(at.x,at.y,size*.49,color,`stroke="${pal.ink}" stroke-width=".55" data-pixel-organ="1"`)+
+     M.circle(at.x-size*.14,at.y-size*.16,size*.12,M.mix(color,pal.light,.38),'opacity=".54"');
+ }
+ function fruitCluster(sp,at,a,scale,pal,r,type,count){
+   let z='';const L=Math.max(6,scale);
+   for(let i=0;i<count;i++){
+     const dir=a+(i-(count-1)/2)*.43+r.between(-.07,.07),tip=pt(at,dir,L*(.58+r.between(.05,.28)));
+     z+=M.path(`M${S(at.x,at.y)}Q${S(at.x+(tip.x-at.x)*.42,at.y+(tip.y-at.y)*.36)} ${S(tip.x,tip.y)}`,
+        M.mix(sp.tint,sp.bark,.42),Math.max(.52,scale*.075));
+     z+=berry(sp,tip,scale*(type==='blackberry'?.79:type==='hip'?.65:type==='acorn'?.72:.47),pal,r,type);
    }
    return z;
  }
  function rawOrgan(sp,at,angle,season,pal,r,scale=8){
-   const name=sp.leaf,tip=sum(at,Q(angle,scale*.7));
-   if(name==='holly') return season==='winter'||season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'berry',3):season==='spring'?blossom(tip,scale*.47,pal,r):'';
+   const name=sp.leaf,tip=pt(at,angle,scale*.65);
+   if(name==='holly')return ['winter','autumn'].includes(season)?fruitCluster(sp,tip,angle,scale,pal,r,'red',3):season==='spring'?blossom(tip,scale*.53,pal,r,name):'';
    if(name==='hazel'){
      if(season==='winter'||season==='spring'){
-       let z='';for(let i=0;i<2;i++){const pt=sum(at,Q(angle+(.42*i-.17),scale*.7));z+=M.path(`M${V(at.x,at.y)}Q${V(pt.x,pt.y)} ${V(pt.x+1,pt.y+scale*1.2)}`,mix(sp.bark,pal.ink,.14),1);for(let j=0;j<5;j++)z+=M.circle(pt.x+1,pt.y+j*scale*.26,scale*.23,pal.ochre,`stroke="${pal.ink}" stroke-width=".35"`);}return z;
+       let z='';for(let i=0;i<2;i++){
+         const p=pt(tip,angle+(i?-.42:.32),scale*.40);
+         z+=M.path(`M${S(tip.x,tip.y)}Q${S(p.x,p.y+scale*.50)} ${S(p.x+scale*.24,p.y+scale*1.2)}`,sp.bark,.68);
+         for(let j=0;j<5;j++){
+           const q={x:p.x+scale*.14+Math.sin(j*1.2)*scale*.05,y:p.y+scale*.36+j*scale*.17};
+           z+=M.shape(`M${S(q.x-scale*.23,q.y-scale*.10)}Q${S(q.x,q.y-scale*.26)} ${S(q.x+scale*.23,q.y-scale*.10)}Q${S(q.x,q.y+scale*.20)} ${S(q.x-scale*.23,q.y-scale*.10)}Z`,pal.ochre,`stroke="${pal.ink}" stroke-width=".34"`);
+         }
+       }return z;
      }
-     if(season==='autumn')return fruitCluster(sp,tip,angle,scale*.8,pal,r,'nut',2);return '';
+     return season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'acorn',2):'';
    }
-   if(name==='ivy')return season==='winter'?fruitCluster(sp,tip,angle,scale,pal,r,'blackberry',3):'';
-   if(name==='hawthorn')return season==='spring'?blossom(tip,scale*1.20,pal,r):season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'berry',3):'';
-   if(name==='oak'){
-     if(season==='autumn'){
-       let z=fruitCluster(sp,tip,angle,scale*.75,pal,r,'nut',2);
-       z+=M.shape(`M${V(tip.x-scale*.46,tip.y)}Q${V(tip.x,tip.y-scale*.42)} ${V(tip.x+scale*.46,tip.y)}Z`,mix(pal.ochre,sp.bark,.2),`stroke="${pal.ink}" stroke-width=".5"`);return z;
-     }return '';
-   }
-   if(name==='dogrose')return season==='spring'||season==='summer'?blossom(tip,scale*1.65,pal,r):fruitCluster(sp,tip,angle,scale,pal,r,'berry',2);
+   if(name==='ivy')return season==='winter'?fruitCluster(sp,tip,angle,scale,pal,r,'ivy',4):'';
+   if(name==='hawthorn')return season==='spring'?blossom(tip,scale*1.12,pal,r,name):season==='autumn'||season==='winter'?fruitCluster(sp,tip,angle,scale,pal,r,'red',3):'';
+   if(name==='oak')return season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'acorn',2):'';
+   if(name==='dogrose')return season==='spring'||season==='summer'?blossom(tip,scale*1.85,pal,r,name):fruitCluster(sp,tip,angle,scale,pal,r,'hip',1);
    if(name==='honeysuckle'){
-     if(season==='summer'||season==='spring'){
-       let z='';for(let i=0;i<4;i++){const a=angle+(i-1.5)*.3,pt=sum(tip,Q(a,scale*.5));z+=M.path(`M${V(tip.x,tip.y)}Q${V(pt.x,pt.y-scale*.35)} ${V(pt.x+Math.cos(a)*scale,pt.y+Math.sin(a)*scale)}`,pal.ochre,Math.max(1,scale*.13));z+=M.circle(pt.x+Math.cos(a)*scale,pt.y+Math.sin(a)*scale,scale*.13,pal.vermillion);}return z;
+     if(season==='spring'||season==='summer'){
+       let z='';for(let i=0;i<4;i++){
+         const dir=angle+(i-1.5)*.23,base=pt(tip,dir,scale*.32),head=pt(base,dir,scale*.88);
+         const tube=`M${S(tip.x,tip.y)}Q${S(base.x+scale*.06,base.y-scale*.10)} ${S(head.x,head.y)}`;
+         z+=M.path(tube,M.mix(pal.ochre,pal.light,.28),Math.max(.85,scale*.13));
+         const lip1=pt(head,dir-.60,scale*.34),lip2=pt(head,dir+.55,scale*.34);
+         z+=M.path(`M${S(lip1.x,lip1.y)}Q${S(head.x,head.y)} ${S(lip2.x,lip2.y)}`,pal.vermillion,.65);
+         for(let k=0;k<3;k++){const st=pt(head,dir+(k-1)*.28,scale*.53);z+=M.path(`M${S(head.x,head.y)}L${S(st.x,st.y)}`,pal.ochre,.35);z+=M.circle(st.x,st.y,.42,pal.vermillion);}
+       }return z;
      }
-     return season==='autumn'?fruitCluster(sp,tip,angle,scale*.6,pal,r,'berry',3):'';
+     return season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'red',2):'';
    }
-   if(name==='bramble')return season==='spring'?blossom(tip,scale*.9,pal,r):season==='summer'||season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'blackberry',2):'';
-   if(name==='fern')return season==='spring'?M.path(`M${V(at.x,at.y)}q${V(scale,-scale)} ${V(scale*.4,-scale*1.1)}q${V(-scale*.3,-scale*.2)} ${V(-scale*.4,scale*.2)}`,sp.tint,1.6):'';
-   if(name==='acanthus')return season==='summer'?blossom(tip,scale*.95,pal,r,false):'';
+   if(name==='bramble')return season==='spring'?blossom(tip,scale*1.05,pal,r,name):season==='summer'||season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'blackberry',1):'';
+   if(name==='fern')return season==='spring'?M.path(`M${S(at.x,at.y)}q${S(scale,-scale)} ${S(scale*.4,-scale*1.1)}`,sp.tint,1.2):'';
+   if(name==='acanthus')return season==='summer'?blossom(tip,scale*.91,pal,r,name):'';
    return '';
  }
  // Layered life-cycle states. Only the selected-season final is exported or
