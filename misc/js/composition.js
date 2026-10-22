@@ -25,8 +25,8 @@ window.MS=window.MS||{};
   const designs={
     single(r){return [axis(P(r.between(160,300),952),P(r.between(430,650),r.between(92,188)),1,1,r,{bend:r.between(125,215),first:1.12,second:-.86})];},
     crescent(r){return [
-      axis(P(r.between(100,180),946),P(r.between(350,490),r.between(120,250)),1,1,r,{first:1.05,second:-.65}),
-      axis(P(r.between(686,760),947),P(r.between(495,635),r.between(130,270)),-1,2,r,{first:.82,second:-1.08})];},
+      axis(P(r.between(92,160),946),P(r.between(295,430),r.between(120,235)),1,1,r,{first:1.02,second:-.58,bend:r.between(105,170)}),
+      axis(P(r.between(700,772),947),P(r.between(560,700),r.between(140,285)),-1,2,r,{first:.78,second:-.96,bend:r.between(98,165)})];},
     diagonal(r){return [
       axis(P(r.between(85,165),r.between(845,948)),P(r.between(645,762),r.between(90,220)),1,1,r,{first:.8,second:-.8}),
       axis(P(r.between(700,785),r.between(882,965)),P(r.between(260,445),r.between(330,495)),-1,2,r,{major:false,first:.86,second:-.98})];},

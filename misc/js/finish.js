@@ -11,15 +11,18 @@ window.MS=window.MS||{};
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
  M.finishDefs=(s,r)=>{
    const n=M.n,wear=clamp(Number(s.wear||0)/100,0,1);
-   return `<filter id="impression" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">`+
-     `<feTurbulence type="fractalNoise" baseFrequency=".065 .09" numOctaves="2" seed="${r.int(1,99999)}" result="fiber"/>`+
-     `<feDisplacementMap in="SourceGraphic" in2="fiber" scale="${n(.10+.38*wear)}" xChannelSelector="R" yChannelSelector="G"/></filter>`+
-     `<filter id="dry-print" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency=".11" seed="${r.int(1,99998)}" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="${n(.12+wear*.42)}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+   return `<filter id="impression" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">`+
+     `<feTurbulence type="fractalNoise" baseFrequency="${n(.055+.03*wear)} ${n(.08+.05*wear)}" numOctaves="2" seed="${r.int(1,99999)}" result="fiber"/>`+
+     `<feDisplacementMap in="SourceGraphic" in2="fiber" scale="${n(.10+1.15*wear)}" xChannelSelector="R" yChannelSelector="G"/></filter>`+
+     `<filter id="dry-print" x="-4%" y="-4%" width="108%" height="108%"><feTurbulence type="fractalNoise" baseFrequency="${n(.10+.04*wear)}" seed="${r.int(1,99998)}" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="${n(.16+1.5*wear)}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
  };
  // Keep the underlying illustration sharp at display/print size. The
  // irregular edges are a separate pigment impression, not a raster effect
  // applied to the drawing itself.
- M.pixelPlateSettings=s=>({resolution:2,cell:1.00+clamp(Number(s.finishLevel??30)/100,0,1)*.15});
+ M.pixelPlateSettings=s=>{
+   const wear=clamp(Number((s.wear ?? s.finishLevel ?? 30))/100,0,1);
+   return {resolution:2.35,cell:1.0+wear*.08,wear,spread:wear};
+ };
  const encode=source=>{
    const clone=source.cloneNode(true);
    clone.setAttribute('xmlns',NS);
@@ -83,7 +86,8 @@ window.MS=window.MS||{};
    const markup=pigmentOnly(source);
    if(!markup)return null;
    const image=await loadSVG(markup);
-   const cell=settings.cell, w=Math.max(1,Math.round(M.W/cell)),h=Math.max(1,Math.round(M.H/cell));
+   const cell=settings.cell,wear=clamp(Number(settings.wear||0),0,1);
+   const w=Math.max(1,Math.round(M.W/cell)),h=Math.max(1,Math.round(M.H/cell));
    const low=document.createElement('canvas');low.width=w;low.height=h;
    const lc=low.getContext('2d',{willReadFrequently:true});
    lc.imageSmoothingEnabled=true;lc.imageSmoothingQuality='high';
@@ -91,15 +95,19 @@ window.MS=window.MS||{};
    const src=lc.getImageData(0,0,w,h).data;
    const edge=lc.createImageData(w,h),out=edge.data;
    for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
-     const k=(y*w+x)*4;if(src[k+3]<160)continue;
-     const adjacent=[(k-4)+3,(k+4)+3,(k-w*4)+3,(k+w*4)+3];
-     if(!adjacent.some(i=>src[i]<140))continue;
+     const k=(y*w+x)*4;if(src[k+3]<150)continue;
+     const adjacent=[src[(k-4)+3],src[(k+4)+3],src[(k-w*4)+3],src[(k+w*4)+3]];
+     const edgePixel=adjacent.some(v=>v<138);
      const hash=((x*73856093)^(y*19349663))>>>0;
-     if(hash%11===0)continue; // small localized ink skips
-     out[k]=Math.round(src[k]*.73);
-     out[k+1]=Math.round(src[k+1]*.70);
-     out[k+2]=Math.round(src[k+2]*.70);
-     out[k+3]=57;
+     const skipMod=Math.max(3,Math.round(13-wear*8));
+     const scuffMod=Math.max(21,Math.round(58-wear*28));
+     const alpha=edgePixel ? (36+wear*72) : (wear>.18 && hash%scuffMod===0 ? 10+wear*30 : 0);
+     if(alpha<=0)continue;
+     if(edgePixel && hash%skipMod===0)continue;
+     out[k]=Math.round(src[k]*(edgePixel?.72:.78));
+     out[k+1]=Math.round(src[k+1]*(edgePixel?.68:.74));
+     out[k+2]=Math.round(src[k+2]*(edgePixel?.68:.74));
+     out[k+3]=Math.round(alpha);
    }
    const cells=document.createElement('canvas');cells.width=w;cells.height=h;
    cells.getContext('2d').putImageData(edge,0,0);

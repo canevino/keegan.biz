@@ -28,20 +28,20 @@ window.MS=window.MS||{};
      },
      accept(p,r,{group='',density=50,anchor=null}={}){
        const near=Math.ceil((r+60)/size),x=ix(p.x),y=ix(p.y);
-       const crowdFactor=.95-M.clamp((Number(density)-35)/100,0,.45)*.12;
+       const crowdFactor=1.04-M.clamp((Number(density)-35)/100,0,.45)*.08;
        for(let a=x-near;a<=x+near;a++)for(let b=y-near;b<=y+near;b++){
          for(const old of buckets.get(key(a,b))||[]){
            const dx=p.x-old.x,dy=p.y-old.y;
-           const threshold=(r+old.r)*crowdFactor*(old.group===group?.82:1);
+           const threshold=(r+old.r)*crowdFactor*(old.group===group?.92:1.04);
            if(dx*dx+dy*dy < threshold*threshold)return false;
          }
        }
        // Blade centers cannot sit on a large woody axis; stems and leaves
        // may touch around their authentic attachment points.
        for(const axis of axes){
-         const reach=Math.min(15,axis.r+Math.max(5,r*.32));
+         const reach=Math.min(18,axis.r+Math.max(6,r*.42));
          if(dist2(p,axis.a,axis.b)<reach*reach){
-           if(anchor&&axis.group===group&&dist2(anchor,axis.a,axis.b)<10*10){
+           if(anchor&&axis.group===group&&dist2(anchor,axis.a,axis.b)<14*14){
              // Leaf genuinely begins on this branch; do not falsely reject it
              // because the petiole intersects the branch at its socket.
              if(dist2(p,axis.a,axis.b)<(axis.r+2.5)**2)return false;
