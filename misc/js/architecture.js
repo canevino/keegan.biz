@@ -60,7 +60,7 @@ window.MS=window.MS||{};
      const root=crown(r,420,934);
      return [
        make(root,P(160,660),P(690,530),P(376+rand(r,50),145),5.4,'main','twining'),
-       make(move(root,18,-8),P(675,680),P(180,415),P(477+rand(r,32),127),4.4,'main','twining'),
+       make(root,P(675,680),P(180,415),P(477+rand(r,32),127),4.4,'main','twining'),
        make(P(362,560),P(230,460),P(200,280),P(150+rand(r,55),234),2.3,'lateral','twining')
      ];
    },
@@ -68,24 +68,24 @@ window.MS=window.MS||{};
      const root=crown(r,415,910);
      return [
        make(root,P(90,625),P(170,250),P(70+rand(r,55),460+rand(r,65)),7.5,'main','arching-cane'),
-       make(move(root,13,-18),P(565,400),P(740,260),P(730+rand(r,42),545+rand(r,55)),7,'main','arching-cane'),
-       make(move(root,-23,-31),P(300,410),P(525,220),P(520+rand(r,60),280),4.8,'lateral','arching-cane')
+       make(root,P(565,400),P(740,260),P(730+rand(r,42),545+rand(r,55)),7,'main','arching-cane'),
+       make(root,P(300,410),P(525,220),P(520+rand(r,60),280),4.8,'lateral','arching-cane')
      ];
    },
    dogrose(r){
      const root=crown(r,412,918);
      return [
        make(root,P(175,645),P(145,345),P(65+rand(r,65),470),6.5,'main','rose-cane'),
-       make(move(root,16,-10),P(655,615),P(705,295),P(755+rand(r,32),470),6.0,'main','rose-cane'),
-       make(move(root,-11,-12),P(270,515),P(375,255),P(450+rand(r,70),185),4.4,'lateral','rose-cane')
+       make(root,P(655,615),P(705,295),P(755+rand(r,32),470),6.0,'main','rose-cane'),
+       make(root,P(270,515),P(375,255),P(450+rand(r,70),185),4.4,'lateral','rose-cane')
      ];
    },
    acanthus(r){
      const root=crown(r,425,915);
      return [
        make(root,P(275,610),P(250,325),P(310+rand(r,50),168),9,'main','acanthus'),
-       make(move(root,22,-19),P(550,615),P(600,290),P(605+rand(r,50),150),8,'main','acanthus'),
-       make(move(root,-17,-25),P(190,710),P(120,570),P(115+rand(r,45),380),4.5,'lateral','acanthus')
+       make(root,P(550,615),P(600,290),P(605+rand(r,50),150),8,'main','acanthus'),
+       make(root,P(190,710),P(120,570),P(115+rand(r,45),380),4.5,'lateral','acanthus')
      ];
    },
    fern(r){

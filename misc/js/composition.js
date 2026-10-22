@@ -60,7 +60,10 @@ window.MS=window.MS||{};
         focal:{x:-10000,y:-10000,rx:1,ry:1},stems,knots:[],compartments:[],weaveStem:-1};
     }
     const list=Object.keys(designs);
-    const selection=list.includes(s.pattern)&&s.pattern!=='random'?s.pattern:r.choose(list);
+    // Surprise is a composed specimen, not a 1-in-6 chance of a bare cane.
+    // A single upright stem remains an explicit, available growth option.
+    const collection=['crescent','diagonal','meander','radiating','crescent','diagonal','meander','cluster'];
+    const selection=list.includes(s.pattern)&&s.pattern!=='random'?s.pattern:r.choose(collection);
     const natural=(M.makeSpeciesAxes && M.makeSpeciesAxes(s.species,selection,r)) || designs[selection](r);
     const construction=M.constructGuides(s.geometry||'random',r);
     const amount=M.clamp(Number(s.conform??55)/100,0,1);

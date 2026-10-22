@@ -23,6 +23,10 @@ window.MS=window.MS||{};
  const encode=source=>{
    const clone=source.cloneNode(true);
    clone.setAttribute('xmlns',NS);
+   // Render the UNFITTED master sheet. The live art's viewBox is a camera,
+   // never a transform baked into the embedded print plate.
+   clone.setAttribute('viewBox',`0 0 ${M.W} ${M.H}`);
+   clone.setAttribute('width',String(M.W));clone.setAttribute('height',String(M.H));
    clone.removeAttribute('style');
    clone.removeAttribute('class');
    clone.removeAttribute('aria-hidden');
@@ -40,6 +44,8 @@ window.MS=window.MS||{};
  // species attachment; removing untagged objects excludes thin stems entirely.
  function pigmentOnly(source){
    const clone=source.cloneNode(true);
+   clone.setAttribute('viewBox',`0 0 ${M.W} ${M.H}`);
+   clone.setAttribute('width',String(M.W));clone.setAttribute('height',String(M.H));
    clone.querySelectorAll('#pixel-print-plate,#construction-guides').forEach(e=>e.remove());
    const art=clone.querySelector('#artwork-layers');
    if(!art)return null;

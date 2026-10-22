@@ -64,7 +64,7 @@ window.MS=window.MS||{};
      // Intermediate conformity preserves real root attachment and the plant's
      // outward growing tip. Full conformity alone traces the complete guide.
      const span=i/(raw.length-1);
-     const pull=conform>=.999?1:conform*(.16+.84*Math.pow(Math.sin(Math.PI*span),.72));
+     const pull=conform>=.999?1:conform*Math.pow(Math.sin(Math.PI*span),.72);
      return {...p,x:p.x*(1-pull)+target.x*pull,
        y:p.y*(1-pull)+target.y*pull};
    });
@@ -134,9 +134,9 @@ window.MS=window.MS||{};
    // Keep real petiole attachment and reduce the finished blade size BEFORE
    // collision testing. Previously a giant compound leaf was checked as a
    // tiny circle, which produced impossible stacks of foliage.
-   const max={holly:37,hazel:42,ivy:38,hawthorn:30,oak:48,dogrose:39,
+   const max={holly:39,hazel:44,ivy:40,hawthorn:32,oak:48,dogrose:39,
       honeysuckle:37,bramble:39,acanthus:46,fern:31}[sp.leaf]||36;
-   size=clamp(size,9,max)*r.between(.89,1.07);
+   size=clamp(size*1.19,9,max)*r.between(.78,1.18);
    const variants=[
      [0,1,0],[.24,.94,0],[-.25,.91,0],[.39,.81,0],[-.40,.80,0],
      [.13,.78,3],[-.17,.76,-3],[.48,.67,0],[-.50,.67,0]
@@ -208,11 +208,11 @@ window.MS=window.MS||{};
    // detached sprite away from its own stalk.
    const opposite=['honeysuckle'].includes(sp.leaf);
    const whorled=sp.leaf==='ivy',cluster=sp.leaf==='holly'||sp.leaf==='hawthorn';
-   const leafCount=clamp(Math.round((sub?2.4:3.9)*sp.frequency*(.49+s.foliage/105)),1,sub?4:7);
+   const leafCount=clamp(Math.round((sub?2.4:3.9)*sp.frequency*(.49+s.foliage/105)*r.between(.80,1.16)),1,sub?4:7);
    for(let i=0;i<leafCount;i++){
      const t=clamp(.14+(i+.38)*.78/leafCount+r.between(-.027,.027),.12,.93),p=points[Math.round(t*30)],sign=i%2?1:-1;
      const a=angle(p.tng)+sign*r.between(.76,1.09)*sp.angle;
-     const size=len*(sub?r.between(.20,.29):r.between(.22,.33))*sp.scale*(sp.leafScale||1)*(1-.25*t);
+     const size=len*(sub?r.between(.18,.32):r.between(.19,.38))*sp.scale*(sp.leafScale||1)*(1-.33*t);
      const attachment=add(p,norm(p.tng),sign*widthAt(base,t,.25)*.10);
      foliageArt+=petioleLeaf(attachment,a,size,sp,season,pal,r,plan,s,t);
      if(opposite || (whorled&&r.chance(.24)) || (cluster&&r.chance(.23))){
@@ -323,11 +323,11 @@ window.MS=window.MS||{};
      let count=clamp(Math.round((stem.major?7:5)*sp.frequency*(.42+fol*.89)*(sp.shootDensity||1)),2,14);
      if(season==='winter'&&!sp.evergreen)count=Math.max(2,Math.round(count*.76));
      // Slightly irregular spacing instead of 12 evenly-spaced identical twigs.
-     const positions=Array.from({length:count},(_,i)=>clamp(.11+(i+.4)*.77/count+r.between(-.023,.023),.06,.91));
+     const positions=Array.from({length:count},(_,i)=>clamp(.09+(i+.4)*.79/count+r.between(-.036,.036),.06,.92));
      for(let i=0;i<count;i++){
        const t=positions[i],idx=Math.round(t*100),p=points[idx];
        const side=((i%2===0?stem.side:-stem.side)||1)*(r.chance(.12)?-1:1);
-       const length=r.between(stem.major?80:64,stem.major?136:109)*sp.scale*(sp.shootScale||1)*(1-.12*t);
+       const length=r.between(stem.major?66:55,stem.major?157:125)*sp.scale*(sp.shootScale||1)*(1-.12*t);
        const identity=s.species==='hybrid'?M.chooseSpecies(r.choose(['holly','ivy','dogrose','hazel','oak','acanthus']),r):sp;
        // Start each lateral well inside the parent silhouette; no floating joins.
        const launch=add(p,norm(p.tng),side*widthAt(base,t,.1)*.08);

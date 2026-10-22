@@ -53,11 +53,14 @@
    try{
      const b=plant.getBBox();
      if(![b.x,b.y,b.width,b.height].every(Number.isFinite)||b.width<1||b.height<1)return;
-     const aspect=M.W/M.H, margin=1.23;
-     let w=Math.max(260,b.width*margin),h=Math.max(300,b.height*margin);
+     // Frame true plant bounds, with a predictable border regardless of silhouette.
+     // Small narrow stems get more breathing space than wide trees.
+     const aspect=M.W/M.H, margin=b.width<310 ? 1.34 : 1.25;
+     let w=Math.max(330,b.width*margin),h=Math.max(430,b.height*margin);
      if(w/h<aspect)w=h*aspect;else h=w/aspect;
      const midX=b.x+b.width*.5,midY=b.y+b.height*.5;
      framedViewBox=[midX-w*.5,midY-h*.5,w,h].map(n=>Math.round(n*100)/100).join(' ');
+     // The picture and the underlying vector sheet now have one shared frame.
      art.setAttribute('viewBox',framedViewBox);
      overlay.setAttribute('viewBox',framedViewBox);
    }catch(err){console.warn('Art frame fallback:',err);}

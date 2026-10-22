@@ -34,7 +34,7 @@ window.MS=window.MS||{};
     const lev=influence(sp,s);
     if(lev<.22 || len<17)return '';
     const ink=lev>.62 ? M.mix(pal.ochre,pal.vermillion,.24) : M.mix(pal.ink,col,.30);
-    const width=Math.max(.35,len*.018);
+    const width=Math.max(.35,len*.020);
     let z=M.path(`M${V(len*.08,0)}Q${V(len*.53,-len*.018)} ${V(len*.86,0)}`,
       ink,width,`opacity="${n(.17+.55*lev)}"`);
     if(lev>.42){
@@ -45,8 +45,8 @@ window.MS=window.MS||{};
           ink,Math.max(.35,len*.01),`opacity="${n(.12+.42*lev)}"`);
       }
     }
-    if(lev>.75){
-      for(let i=0;i<4;i++){
+    if(lev>.66){
+      for(let i=0;i<5;i++){
         const t=.24+i*.18,y=len*.08*Math.sin(Math.PI*t);
         z+=M.circle(len*t, (i%2?1:-1)*y,Math.max(.5,len*.017),
           r.choose([pal.ochre,pal.lapis,pal.vermillion]),`opacity="${n((lev-.68)*1.9)}"`);
@@ -60,12 +60,12 @@ window.MS=window.MS||{};
   M.ornamentColorPatch=(sp,len,pal,r,s)=>{
     const lev=influence(sp,s);
     if(lev<.16 || len<10)return '';
-    const strength=Math.pow((lev-.16)/.84,1.13);
+    const strength=Math.pow((lev-.16)/.84,1.00);
     const color=r.choose([pal.vermillion,pal.lapis,pal.ochre]);
-    const start=len*(.28+r.between(-.04,.05)),width=len*(.12+.18*strength);
+    const start=len*(.28+r.between(-.04,.05)),width=len*(.15+.21*strength);
     const side=r.sign(),height=len*(.11+.21*strength)*side;
     const paint=`M${V(start,-height*.16)}Q${V(start+len*.09,height*.89)} ${V(start+width,height)}L${V(start+width+len*.09,-height*.14)}Z`;
-    return `<path d="${paint}" fill="${color}" opacity="${n(strength*(.32+.29*r.random()))}"/>`;
+    return `<path d="${paint}" fill="${color}" opacity="${n(strength*(.41+.38*r.random()))}"/>`;
   };
   function pointBud(at,angle,size,pal,r){
     const tip=q(at,angle,size*1.18),base=q(at,angle,size*.40);
@@ -114,15 +114,15 @@ window.MS=window.MS||{};
   M.ornamentJunction=(sp,at,angle,size,pal,r,s,plan,role='joint')=>{
     const lev=influence(sp,s);
     if(lev<.30)return '';
-    const chance=(role==='terminal'?.68:.67)*Math.pow(lev,1.2);
+    const chance=(role==='terminal'?.82:.87)*Math.pow(lev,.85);
     if(!r.chance(chance))return '';
-    const length=clamp(size*(.7+.48*lev),5,20);
+    const length=clamp(size*(.83+.68*lev),7,27);
     const direction=angle+r.between(-.48,.48);
     const test=q(at,direction,length*1.35);
     if(plan && (!M.inBounds(test,plan.bounds,10) || plan.spatial && !plan.spatial.accept(test,length*.30,{group:'ornament',density:Math.max(35,Number(s.foliage||70))})))return '';
     const choice=r.random();
-    if(choice<.58)return illuminatedFlower(at,direction,length,pal,r,lev);
-    if(choice<.9)return paintedFleuron(at,direction,length,pal,r);
+    if(choice<.67)return illuminatedFlower(at,direction,length,pal,r,lev);
+    if(choice<.94)return paintedFleuron(at,direction,length,pal,r);
     return pointBud(at,direction,length*.92,pal,r);
   };
 
