@@ -1,7 +1,7 @@
-/* Unified Insular print plate — all coloured forms, branch outlines, veins,
-   blossom and fruit share ONE nearest-neighbour raster. SVG remains the
-   underlying editable geometry; the site and exported files share the plate.
-   Animation uses the same rasterisation rather than reverting to vector. */
+/* Fine-grained Insular print impression — foliage, stems, and fruit share
+   one raster pipeline without sacrificing petioles, vein detail, or tips.
+   The source SVG remains editable and is retained underneath the print plate.
+   Animation uses the same resolution and treatment as the finished image. */
 window.MS=window.MS||{};
 ((M)=>{
  'use strict';
@@ -18,8 +18,9 @@ window.MS=window.MS||{};
  };
  M.pixelPlateSettings=s=>{
    const wear=clamp(Number(s.finishLevel??35)/100,0,1);
-   // About 2.5–3 source units per pixel, consistently on branches and leaves.
-   return {scale:.38-.055*wear, threshold:Math.round(85+25*wear)};
+   // Approximately one source unit per print cell (previously ~3).
+   // Preserve very thin stems and leaf venation at ordinary site size.
+   return {scale:.86-.035*wear, threshold:Math.round(5+8*wear)};
  };
  const encode=source=>{
    const clone=source.cloneNode(true);
@@ -49,17 +50,18 @@ window.MS=window.MS||{};
      if(!ctx)throw new Error('Canvas 2D unavailable');
      ctx.clearRect(0,0,w,h);ctx.imageSmoothingEnabled=true;
      ctx.drawImage(img,0,0,w,h);
-     // No soft grey outer halo. Keep translucent true interior ink if strong.
+     // Do not threshold thin strokes into disconnected fragments. Only clear
+     // nearly invisible fringe pixels; retain antialiasing inside ink edges.
      const data=ctx.getImageData(0,0,w,h),a=data.data;
      for(let i=0;i<a.length;i+=4){
        const alpha=a[i+3];
-       if(alpha<settings.threshold){a[i+3]=0;continue;}
-       // Preserve minimal local transparency, but clean anti-alias fringe.
-       a[i+3]=alpha<220?Math.min(255,Math.round((alpha-settings.threshold)*255/(220-settings.threshold))):255;
+       if(alpha<=settings.threshold){a[i+3]=0;continue;}
+       a[i+3]=Math.round((alpha-settings.threshold)*255/(255-settings.threshold));
      }
      ctx.putImageData(data,0,0);
      if(output==='low')return low;
-     // Upscale nearest-neighbour BEFORE embedding. Illustrator honors the cells.
+     // Near-source-resolution imprint: subtle hand-set steps rather than
+     // oversized square clusters. Illustrator still honors the print cells.
      const hi=document.createElement('canvas');hi.width=W;hi.height=H;
      const hc=hi.getContext('2d');hc.imageSmoothingEnabled=false;
      hc.clearRect(0,0,W,H);hc.drawImage(low,0,0,W,H);
@@ -94,8 +96,8 @@ window.MS=window.MS||{};
    svg.querySelector('#artwork-layers')?.setAttribute('display','none');
    svg.querySelector('#pixel-print-plate')?.removeAttribute('display');
  };
- // Prepare the *finished* print plate once; reveal it on a low-resolution
- // canvas with moving botanical masks. No expensive SVG rasterisation per frame.
+ // Prepare the finished print plate once; reveal it with moving botanical
+ // masks. Never re-rasterize the entire SVG for each animation frame.
  let live=null;
  const ease=v=>{v=clamp(v,0,1);return v*v*(3-2*v);};
  const q=(node,k,fallback=0)=>{const val=Number(node.getAttribute(k));return Number.isFinite(val)?val:fallback;};
