@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-22T17:20:23.984Z",
+  "updatedAt": "2026-10-22T21:45:43.652Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -247,15 +247,6 @@
       "shortName": "Hearts",
       "upcoming": [
         {
-          "id": "6112502",
-          "date": "2026-10-22T16:45:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Trabzonspor",
-          "away": "Hearts",
-          "competition": "Conference League"
-        },
-        {
           "id": "5793955",
           "date": "2026-10-25T14:00:00.000Z",
           "when": "Sun, Oct 25 · 10:00 AM ET",
@@ -290,6 +281,15 @@
           "home": "Thun",
           "away": "Hearts",
           "competition": "Conference League"
+        },
+        {
+          "id": "5793975",
+          "date": "2026-11-08T15:00:00.000Z",
+          "when": "Sun, Nov 8 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "Hearts",
+          "away": "Falkirk",
+          "competition": "Premiership"
         }
       ],
       "standings": {
