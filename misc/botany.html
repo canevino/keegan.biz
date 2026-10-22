@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>botanical ornament | keegan.biz</title>
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="/misc/botany.css?v=20261022-pass3-atlas-framing">
+  <link rel="stylesheet" href="/misc/botany.css?v=20261022-pass4-randomize-wear">
 
 </head>
 <body>
@@ -27,15 +27,8 @@
             <button id="export-svg" type="button" class="action">svg ↗</button>
             <button id="export-png" type="button" class="action">png ↗</button>
             <button id="replay-growth" type="button" class="action">grow ↗</button>
-            <label class="tiny-check"><input id="animate-growth" type="checkbox"> animate</label>
+            <button id="randomize" type="button" class="action">randomize ↗</button>
             <label class="tiny-check"><input id="grid" type="checkbox"> grid</label>
-          </div>
-          <div class="draw-toolbar" aria-label="Draw vine paths">
-            <button id="draw-mode" type="button" class="action draw-mode" aria-pressed="false">draw a vine ↗</button>
-            <button id="finish-paths" type="button" class="action" hidden>finish drawing ↗</button>
-            <button id="undo-path" type="button" class="action" disabled>undo path</button>
-            <button id="clear-paths" type="button" class="action" disabled>clear paths</button>
-            <span id="path-status" class="path-status" role="status" aria-live="polite">generated growth</span>
           </div>
         </div>
         <form class="drawing-controls" id="controls" novalidate>
@@ -79,7 +72,7 @@
           <label class="sliding">foliage <output for="foliage" id="foliage-value">52</output><input type="range" id="foliage" min="10" max="100" value="52"></label>
           <label class="sliding">ink wear <output for="finishLevel" id="finishLevel-value">30</output><input type="range" id="finishLevel" min="0" max="100" value="30"></label>
           <div class="controls-seed"><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label><label class="check"><input type="checkbox" id="guideOverlay"> show guides</label></div>
-          <details class="control-note"><summary>how it works ↗</summary><p><strong>Growth</strong> chooses the arrangement of stems. <strong>Construction</strong> determines the paths they follow. <strong>Follow geometry</strong> determines how closely they follow those paths. At 0 the stems grow freely; at 100 they follow the geometry precisely.</p><p><strong>Ornament</strong> exaggerates leaf shapes and adds decorative color. <strong>Foliage</strong> changes leaf density. <strong>Ink wear</strong> changes the pressure and bleeding of the printed marks—not how much of the plant survives.</p></details>
+          <details class="control-note"><summary>how it works ↗</summary><p><strong>Growth</strong> chooses the arrangement of stems. <strong>Construction</strong> determines the paths they follow. <strong>Follow geometry</strong> determines how closely they follow those paths. At 0 the stems grow freely; at 100 they follow the geometry precisely.</p><p><strong>Ornament</strong> exaggerates leaf shapes and adds decorative color. <strong>Foliage</strong> changes leaf density. <strong>Ink wear</strong> now visibly changes abrasion, plate pressure, offset, and edge breakup in the printed marks.</p></details>
           <button type="button" class="action reset" id="reset">restore defaults ↗</button>
         </form>
       </div>
@@ -103,20 +96,20 @@
     }
   })();
   </script>
-<script src="/misc/js/core.js?v=20261022-pass3-atlas-framing" defer></script>
+<script src="/misc/js/core.js?v=20261022-pass4-randomize-wear" defer></script>
 <script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" async onload="window.dispatchEvent(new Event('spectral-ready'))"></script>
-<script src="/misc/js/pigment.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/finish.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/geometry.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/spatial.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/drawing.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/architecture.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/composition.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/species.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/ornament.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/botany.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/render.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/growth-animation.js?v=20261022-pass3-atlas-framing" defer></script>
-<script src="/misc/js/app.js?v=20261022-pass3-atlas-framing" defer></script>
+<script src="/misc/js/pigment.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/finish.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/geometry.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/spatial.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/drawing.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/architecture.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/composition.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/species.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/ornament.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/botany.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/render.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/growth-animation.js?v=20261022-pass4-randomize-wear" defer></script>
+<script src="/misc/js/app.js?v=20261022-pass4-randomize-wear" defer></script>
 </body>
 </html>
