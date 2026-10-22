@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-22T15:18:36.824Z",
+  "updatedAt": "2026-10-22T17:20:23.984Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -249,8 +249,8 @@
         {
           "id": "6112502",
           "date": "2026-10-22T16:45:00.000Z",
-          "when": "today · Thu, Oct 22 · 12:45 PM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Trabzonspor",
           "away": "Hearts",
           "competition": "Conference League"
