@@ -11032,3 +11032,79 @@ body.design-page::after,
   .design-page .project--angels .folder-stage {height:min(112vw,485px) !important;}
   .design-page .project--angels .angels-script-gallery {grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
 }
+
+
+/* Work-in-progress notice: a restrained editorial sheet, matching the design page. */
+.design-page .wip-dialog {
+  position: fixed;
+  box-sizing: border-box;
+  width: min(520px, calc(100% - 36px));
+  max-width: none;
+  max-height: calc(100dvh - 36px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  color: var(--ink);
+  background: var(--paper-light);
+  box-shadow: 12px 12px 0 rgba(17,17,15,.22);
+  overflow: auto;
+}
+.design-page .wip-dialog::backdrop {
+  background: rgba(17,17,15,.48);
+}
+.design-page .wip-dialog__inner {
+  padding: clamp(24px, 5vw, 42px);
+  border-top: 7px solid var(--red);
+}
+.design-page .wip-dialog__eyebrow {
+  display: block;
+  margin-bottom: clamp(35px, 7vw, 62px);
+  font: 700 11px/1.2 Helvetica, Arial, sans-serif;
+  letter-spacing: .025em;
+  text-transform: lowercase;
+}
+.design-page .wip-dialog__title {
+  margin: 0 0 16px;
+  max-width: 11ch;
+  color: var(--red);
+  font: 700 clamp(44px, 7vw, 72px)/.90 Helvetica, Arial, sans-serif;
+  letter-spacing: -.065em;
+}
+.design-page .wip-dialog__description {
+  max-width: 33ch;
+  margin: 0 0 clamp(34px, 6vw, 54px);
+  font: 400 clamp(17px, 2vw, 21px)/1.3 Helvetica, Arial, sans-serif;
+  letter-spacing: -.018em;
+}
+.design-page .wip-dialog__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule-strong);
+}
+.design-page .wip-dialog__index {
+  color: var(--muted);
+  font: 700 10px/1.3 Helvetica, Arial, sans-serif;
+}
+.design-page .wip-dialog__dismiss {
+  padding: 0 0 4px;
+  border: 0;
+  border-bottom: 2px solid var(--red);
+  border-radius: 0;
+  background: transparent;
+  color: var(--red);
+  font: 700 14px/1.1 Helvetica, Arial, sans-serif;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+.design-page .wip-dialog__dismiss:hover { color: var(--ink); border-color: var(--ink); }
+.design-page .wip-dialog__dismiss:focus-visible { outline: 2px solid var(--red); outline-offset: 5px; }
+@media (max-width: 480px) {
+  .design-page .wip-dialog { width: calc(100% - 28px); }
+  .design-page .wip-dialog__inner { padding: 24px; border-top-width: 6px; }
+  .design-page .wip-dialog__eyebrow { margin-bottom: 38px; }
+  .design-page .wip-dialog__title { font-size: clamp(44px, 12vw, 58px); }
+}

@@ -739,3 +739,50 @@
     requestAnimationFrame(showInitialDesignCaret);
   }
 })();
+
+
+/* Show the design work-in-progress notice once per browser tab/session. */
+(() => {
+  "use strict";
+
+  const initializeNotice = () => {
+    const dialog = document.getElementById("wip-dialog");
+    if (!dialog || typeof dialog.showModal !== "function") return;
+
+    const key = "keegan-biz-design-wip-dismissed";
+    try {
+      if (sessionStorage.getItem(key) === "1") return;
+    } catch (_) { /* Storage can be disabled; the notice still works. */ }
+
+    const dismissButton = dialog.querySelector("[data-wip-dismiss]");
+    dismissButton?.addEventListener("click", () => dialog.close());
+
+    dialog.addEventListener("click", (event) => {
+      // Native dialog dispatches backdrop clicks on the dialog itself.
+      if (event.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener("close", () => {
+      try { sessionStorage.setItem(key, "1"); } catch (_) {}
+      // Keep the site's editable design wordmark ready after the note closes.
+      const title = document.getElementById("design-title");
+      if (!title || title.getAttribute("contenteditable") !== "true") return;
+      title.focus({ preventScroll: true });
+      const selection = window.getSelection();
+      if (!selection) return;
+      const range = document.createRange();
+      range.selectNodeContents(title);
+      range.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    });
+
+    dialog.showModal(); // Native modal handles keyboard focus and Escape.
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeNotice, { once: true });
+  } else {
+    initializeNotice();
+  }
+})();
