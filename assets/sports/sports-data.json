@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-23T15:06:29.838Z",
+  "updatedAt": "2026-10-23T17:17:42.853Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -860,29 +860,29 @@
         "rows": [
           {
             "rank": 1,
+            "team": "Polissya Zhytomyr",
+            "points": 25,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 2,
             "team": "Shakhtar Donetsk",
             "points": 24,
             "played": 9,
             "highlight": true
           },
           {
-            "rank": 2,
-            "team": "Polissya Zhytomyr",
-            "points": 22,
+            "rank": 3,
+            "team": "Dynamo Kyiv",
+            "points": 19,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 3,
+            "rank": 4,
             "team": "FC Kharkiv",
             "points": 18,
-            "played": 8,
-            "highlight": false
-          },
-          {
-            "rank": 4,
-            "team": "Dynamo Kyiv",
-            "points": 16,
             "played": 8,
             "highlight": false
           },
@@ -946,7 +946,7 @@
             "rank": 13,
             "team": "Obolon Kyiv",
             "points": 7,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
@@ -960,7 +960,7 @@
             "rank": 15,
             "team": "Kudrivka",
             "points": 5,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
