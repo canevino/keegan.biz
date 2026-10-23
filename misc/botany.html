@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>botanical ornament | keegan.biz</title>
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="/misc/botany.css?v=20261022-no-animation">
+  <link rel="stylesheet" href="/misc/botany.css?v=20261023-chess-ui">
 
 </head>
 <body>
@@ -20,19 +20,19 @@
           <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span id="seed-label">seed 472818</span></div>
           <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
             <div id="drawing" class="drawing"></div>
-            <svg id="stroke-overlay" class="stroke-overlay" viewBox="0 0 850 1000" aria-hidden="true"></svg>
+            
           </div>
-          <div class="drawing-actions">
-            <button id="regenerate" type="button" class="action primary">another drawing <span>↗</span></button>
-            <button id="export-svg" type="button" class="action">svg ↗</button>
-            <button id="export-png" type="button" class="action">png ↗</button>
-
-            <button id="randomize" type="button" class="action">randomize ↗</button>
-            <label class="tiny-check"><input id="grid" type="checkbox"> grid</label>
+          <div class="drawing-actions" aria-label="Drawing actions">
+            <button id="regenerate" type="button" class="action primary">new drawing</button>
+            <button id="randomize" type="button" class="action">randomize settings</button>
+            <div class="download-actions" aria-label="Export drawing">
+              <button id="export-svg" type="button" class="action">save svg</button>
+              <button id="export-png" type="button" class="action">save png</button>
+            </div>
           </div>
         </div>
         <form class="drawing-controls" id="controls" novalidate>
-          <div class="controls-topline"><h3>change the drawing</h3><span class="topline-mark">↙</span></div>
+          <div class="controls-topline"><h3>settings</h3><button type="button" class="action reset" id="reset">reset</button></div>
           <label>plant
             <select id="species">
               <option value="random">mixed plants</option>
@@ -52,7 +52,7 @@
               <option value="cluster">thicket</option>
             </select>
           </label>
-          <label>construction
+          <label>shape
             <select id="geometry">
               <option value="random">surprise</option><option value="gothic-pointed">pointed arch</option>
               <option value="gothic-quatrefoil">quatrefoil</option><option value="gothic-radial">radial tracery</option>
@@ -66,17 +66,16 @@
             <label>season<select id="season"><option value="spring">spring</option><option value="summer" selected>summer</option><option value="autumn">autumn</option><option value="winter">winter</option></select></label>
             <label>ink<select id="palette"><option value="kells">mineral</option><option value="jewel">lapis / red</option><option value="earth">iron / earth</option><option value="site">site colors</option><option value="monochrome">black / sepia</option></select></label>
           </div>
-          <div class="control-rule"></div>
-          <label class="sliding">follow geometry <output for="conform" id="conform-value">50</output><input type="range" id="conform" min="0" max="100" value="50"></label>
+          <div class="control-rule" aria-hidden="true"></div>
+          <label class="sliding">follow shape <output for="conform" id="conform-value">50</output><input type="range" id="conform" min="0" max="100" value="50"></label>
           <div class="ornament-control"><label class="sliding">ornament <output for="ornament" id="ornament-value">26</output><input type="range" id="ornament" min="0" max="100" value="26" aria-describedby="ornament-scale"></label><div class="ornament-scale" id="ornament-scale"><span>botanical</span><span>manuscript</span></div></div>
           <label class="sliding">foliage <output for="foliage" id="foliage-value">66</output><input type="range" id="foliage" min="10" max="100" value="66"></label>
-          <label class="sliding">ink wear <output for="finishLevel" id="finishLevel-value">30</output><input type="range" id="finishLevel" min="0" max="100" value="30"></label>
+          <label class="sliding">print wear <output for="finishLevel" id="finishLevel-value">30</output><input type="range" id="finishLevel" min="0" max="100" value="30"></label>
           <div class="controls-seed"><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label></div>
-          <details class="control-note"><summary>how it works ↗</summary><p><strong>Growth</strong> chooses the arrangement of stems. <strong>Construction</strong> establishes the invisible geometric paths. <strong>Follow geometry</strong> controls how closely the stems follow those paths. At 0 the stems grow freely; at 100 they follow the geometry precisely.</p><p><strong>Ornament</strong> exaggerates leaf shapes and adds decorative color. <strong>Foliage</strong> changes leaf density. <strong>Ink wear</strong> now visibly changes abrasion, plate pressure, offset, and edge breakup in the printed marks.</p></details>
-          <button type="button" class="action reset" id="reset">restore defaults ↗</button>
+          <details class="control-note"><summary>how it works</summary><p><strong>Growth</strong> sets how many main stems grow and which routes they take. <strong>Shape</strong> supplies the underlying paths. <strong>Follow shape</strong> controls how closely the stems follow those paths. At 0 the stems grow freely; at 100 they follow the geometry precisely.</p><p><strong>Ornament</strong> exaggerates leaf shapes and adds decorative color. <strong>Foliage</strong> changes leaf density. <strong>Ink wear</strong> now visibly changes abrasion, plate pressure, offset, and edge breakup in the printed marks.</p></details>
         </form>
       </div>
-      <details class="machine-credits"><summary>credits and sources ↗</summary><p>Original botanical generator and drawings for keegan.biz. References include insular manuscript ornament and historic printmaking. Pigment mixing can use <a href="https://github.com/rvanwijnen/spectral.js" target="_blank" rel="noopener noreferrer">Spectral.js</a>. The ink-bleed treatment is informed by <a href="https://andyjakubowski.com/ink-bleed-effect-with-svg-filters/" target="_blank" rel="noopener noreferrer">Andy Jakubowski's SVG filter method</a>; procedural plant growth was informed by <a href="https://github.com/achrefelouafi/VegetationGeneratorThreeJS" target="_blank" rel="noopener noreferrer">Vegetation Generator</a>, <a href="https://github.com/millerthegorilla/vinejs" target="_blank" rel="noopener noreferrer">VineJS</a>, and <a href="https://github.com/dengshu2/illustrated-manuscript" target="_blank" rel="noopener noreferrer">Illustrated Manuscript</a>. No artwork from these projects is copied.</p></details>
+      <details class="machine-credits"><summary>credits and sources</summary><p>Original botanical generator and drawings for keegan.biz. References include insular manuscript ornament and historic printmaking. Pigment mixing can use <a href="https://github.com/rvanwijnen/spectral.js" target="_blank" rel="noopener noreferrer">Spectral.js</a>. The ink-bleed treatment is informed by <a href="https://andyjakubowski.com/ink-bleed-effect-with-svg-filters/" target="_blank" rel="noopener noreferrer">Andy Jakubowski's SVG filter method</a>; procedural plant growth was informed by <a href="https://github.com/achrefelouafi/VegetationGeneratorThreeJS" target="_blank" rel="noopener noreferrer">Vegetation Generator</a>, <a href="https://github.com/millerthegorilla/vinejs" target="_blank" rel="noopener noreferrer">VineJS</a>, and <a href="https://github.com/dengshu2/illustrated-manuscript" target="_blank" rel="noopener noreferrer">Illustrated Manuscript</a>. No artwork from these projects is copied.</p></details>
     </section>
   </main>
   <script>
@@ -96,19 +95,19 @@
     }
   })();
   </script>
-<script src="/misc/js/core.js?v=20261022-no-animation" defer></script>
+<script src="/misc/js/core.js?v=20261023-chess-ui" defer></script>
 <script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" async onload="window.dispatchEvent(new Event('spectral-ready'))"></script>
-<script src="/misc/js/pigment.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/finish.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/geometry.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/spatial.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/drawing.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/architecture.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/composition.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/species.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/ornament.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/botany.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/render.js?v=20261022-no-animation" defer></script>
-<script src="/misc/js/app.js?v=20261022-no-animation" defer></script>
+<script src="/misc/js/pigment.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/finish.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/geometry.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/spatial.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/drawing.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/architecture.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/composition.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/species.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/ornament.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/botany.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/render.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/app.js?v=20261023-chess-ui" defer></script>
 </body>
 </html>
