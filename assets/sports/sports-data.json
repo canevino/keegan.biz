@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-23T17:17:42.853Z",
+  "updatedAt": "2026-10-23T21:31:29.091Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -156,14 +156,14 @@
           },
           {
             "rank": 9,
-            "team": "Hull",
-            "points": 9,
-            "played": 7,
+            "team": "Ipswich",
+            "points": 10,
+            "played": 8,
             "highlight": false
           },
           {
             "rank": 10,
-            "team": "Ipswich",
+            "team": "Hull",
             "points": 9,
             "played": 7,
             "highlight": false
@@ -205,28 +205,28 @@
           },
           {
             "rank": 16,
+            "team": "Nottm Forest",
+            "points": 6,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 17,
             "team": "Tottenham",
             "points": 6,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 17,
+            "rank": 18,
             "team": "Coventry",
             "points": 6,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 18,
-            "team": "Fulham",
-            "points": 5,
-            "played": 7,
-            "highlight": false
-          },
-          {
             "rank": 19,
-            "team": "Nottm Forest",
+            "team": "Fulham",
             "points": 5,
             "played": 7,
             "highlight": false
@@ -438,21 +438,21 @@
         "rows": [
           {
             "rank": 1,
+            "team": "Middlesbrough",
+            "points": 25,
+            "played": 12,
+            "highlight": false
+          },
+          {
+            "rank": 2,
             "team": "Swansea",
             "points": 23,
             "played": 11,
             "highlight": false
           },
           {
-            "rank": 2,
-            "team": "West Ham",
-            "points": 22,
-            "played": 11,
-            "highlight": false
-          },
-          {
             "rank": 3,
-            "team": "Middlesbrough",
+            "team": "West Ham",
             "points": 22,
             "played": 11,
             "highlight": false
@@ -536,23 +536,23 @@
           },
           {
             "rank": 15,
-            "team": "Bolton",
-            "points": 14,
-            "played": 11,
-            "highlight": false
-          },
-          {
-            "rank": 16,
             "team": "Bristol City",
             "points": 14,
             "played": 11,
             "highlight": false
           },
           {
-            "rank": 17,
+            "rank": 16,
             "team": "Charlton",
             "points": 14,
             "played": 11,
+            "highlight": false
+          },
+          {
+            "rank": 17,
+            "team": "Bolton",
+            "points": 14,
+            "played": 12,
             "highlight": false
           },
           {
@@ -705,28 +705,28 @@
           },
           {
             "rank": 7,
+            "team": "Torino",
+            "points": 13,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 8,
             "team": "Cagliari",
             "points": 13,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 8,
+            "rank": 9,
             "team": "Juventus",
             "points": 11,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 9,
-            "team": "Napoli",
-            "points": 10,
-            "played": 7,
-            "highlight": false
-          },
-          {
             "rank": 10,
-            "team": "Torino",
+            "team": "Napoli",
             "points": 10,
             "played": 7,
             "highlight": false
@@ -756,7 +756,7 @@
             "rank": 14,
             "team": "Monza",
             "points": 7,
-            "played": 7,
+            "played": 8,
             "highlight": false
           },
           {
