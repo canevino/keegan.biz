@@ -34,12 +34,14 @@ window.MS = window.MS || {};
   M.curveD=(a,b,c,d)=>`M${M.vec(a.x,a.y)}C${M.vec(b.x,b.y)} ${M.vec(c.x,c.y)} ${M.vec(d.x,d.y)}`;
   M.wave=(a,b,c,d,samples=60)=>Array.from({length:samples+1},(_,i)=>{const t=i/samples,p=M.bezier(a,b,c,d,t),tng=M.tangent(a,b,c,d,t);return {...p,tng,t};});
   M.poly=(pts)=>pts.map((p,i)=>`${i?'L':'M'}${M.vec(p.x,p.y)}`).join('')+'Z';
+  // Curated historic-pigment harmonies, not a randomly saturated RGB palette.
+  // Leaf and wood profiles remain species-specific; these are the shared inks.
   M.palettes={
-    kells:{ink:'#28231d',vermillion:'#ab3829',lapis:'#244479',green:'#5a704a',ochre:'#b48e3e',light:'#e2d5af'},
-    jewel:{ink:'#24211d',vermillion:'#bb3f2d',lapis:'#274c93',green:'#557153',ochre:'#bb913b',light:'#e6d9bc'},
-    earth:{ink:'#33271f',vermillion:'#904231',lapis:'#516579',green:'#687049',ochre:'#ae8556',light:'#e0d3bd'},
-    site:{ink:'#11110f',vermillion:'#c1272d',lapis:'#214b93',green:'#006a44',ochre:'#d4a52d',light:'#e6d49f'},
-    monochrome:{ink:'#211d19',vermillion:'#4b3b30',lapis:'#615147',green:'#786b54',ochre:'#a99774',light:'#ddd0ad'}
+    kells:{ink:'#352d24',vermillion:'#a64b3e',lapis:'#375a82',green:'#607b57',ochre:'#be9954',light:'#ebdfbb'},
+    jewel:{ink:'#302a2b',vermillion:'#ac4050',lapis:'#325e92',green:'#547b70',ochre:'#c29a51',light:'#eee0c7'},
+    earth:{ink:'#3c3229',vermillion:'#9b5844',lapis:'#677483',green:'#687b55',ochre:'#b79565',light:'#e8d8c0'},
+    site:{ink:'#252322',vermillion:'#c1272d',lapis:'#245c91',green:'#126b4d',ochre:'#dfac3f',light:'#efe3c4'},
+    monochrome:{ink:'#2e2924',vermillion:'#675448',lapis:'#6e6962',green:'#747565',ochre:'#ad9d7f',light:'#e7dbbe'}
   };
   M.palette=(id)=>M.palettes[id]||M.palettes.kells;
   // Bounding boxes determine where secondary ornament is allowed to grow.

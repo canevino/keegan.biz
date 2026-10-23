@@ -156,12 +156,12 @@ window.MS=window.MS||{};
    const bounds={x:-size*.06,y:-size*.52,w:size*1.13,h:size*1.04};
    const clip=`leaf-clip-${id}`,mask=wornMask(`leaf-${id}`,bounds,s,r,true),maskRef=mask?` mask="url(#wear-leaf-${id})"`:'';
    const grad=`leaf-wash-${id}`;
-   const pale=M.mix(color,pal.light,.24+.26*variation),deep=M.mix(color,pal.ink,.16+.29*variation),mid=M.mix(color,pal.ochre,.08+.17*variation);
+   const pale=M.mix(color,pal.light,.36+.24*variation),deep=M.mix(color,pal.ink,.18+.23*variation),mid=M.mix(color,pal.ochre,.10+.14*variation);
    const angle=n(r.between(-12,12));
    let out=M.offsetPrint(d,M.mix(color,pal.ochre,.30),s,r,{opacity:.15,scale:.55});
    out+=`<defs><clipPath id="${clip}"><path d="${d}"/></clipPath>${mask}`+
        `<linearGradient id="${grad}" x1="0%" y1="0%" x2="96%" y2="100%" gradientTransform="rotate(${angle} .5 .5)">`+
-       `<stop offset="0" stop-color="${pale}"/><stop offset=".24" stop-color="${color}"/>`+
+       `<stop offset="0" stop-color="${pale}"/><stop offset=".28" stop-color="${color}"/>`+
        `<stop offset=".64" stop-color="${mid}"/><stop offset="1" stop-color="${deep}"/></linearGradient></defs>`;
    out+=`<g${maskRef}>`;
    out+=M.shape(d,`url(#${grad})`,'data-pixel-pigment="1"');
@@ -195,7 +195,7 @@ window.MS=window.MS||{};
    out+='</g>';
    // The outline is hand-inked, but subtle; at high wear break up pigment
    // BELOW the contour without making the drawing itself disappear.
-   out+=M.shape(d,'none',`stroke="${M.mix(pal.ink,color,.12)}" stroke-width="${n(Math.max(.50,size*.018))}" stroke-linejoin="round"`);
+   out+=M.shape(d,'none',`stroke="${M.mix(pal.ink,color,.27)}" stroke-width="${n(Math.max(.45,size*.015))}" stroke-linejoin="round"`);
    out+='</g>';
    return out;
  };

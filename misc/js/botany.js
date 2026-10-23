@@ -136,7 +136,7 @@ window.MS=window.MS||{};
    // tiny circle, which produced impossible stacks of foliage.
    const max={holly:39,hazel:44,ivy:40,hawthorn:32,oak:48,dogrose:39,
       honeysuckle:37,bramble:39,acanthus:46,fern:31}[sp.leaf]||36;
-   size=clamp(size*1.19,9,max)*r.between(.78,1.18);
+   size=clamp(size*1.16,11,max)*r.between(.86,1.13);
    const variants=[
      [0,1,0],[.24,.94,0],[-.25,.91,0],[.39,.81,0],[-.40,.80,0],
      [.13,.78,3],[-.17,.76,-3],[.48,.67,0],[-.50,.67,0]
@@ -235,7 +235,7 @@ window.MS=window.MS||{};
      organArt+=shoot(anchored(p,sign,widthAt(base,p.t,.25)),p.tng,sign,len*r.between(.32,.55)*sp.twigs,sp,season,pal,r,plan,s,true);
    }
    if(sp.habit==='fronds' || r.chance(.09))organArt+=twigDetails(points,sp,season,pal,r,plan,s);
-   else if(r.chance(.72))organArt+=M.plantOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(8,12));
+   else if(r.chance(.72))organArt+=M.plantOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(10,15));
    // Add restrained foliate ornament at true branch nodes, not loose symbols.
    if(M.ornamentJunction && !sub){
      const i=Math.round(r.between(.35,.72)*30),p=points[i],a=angle(p.tng)+r.sign()*r.between(.74,1.18);
@@ -304,8 +304,17 @@ window.MS=window.MS||{};
    const sections=[];
    plan.spatial=M.makeSpatialField?M.makeSpatialField():null;
    const stems=plan.stems.slice(0,fol<.09?1:plan.stems.length);
+   // Mixed means a coherent folio, not a lottery of unrelated silhouettes.
+   // Families retain variation through leaf shape, seasonal organs and seed.
+   const illustratedFamilies=[
+     ['dogrose','hawthorn'],['bramble','dogrose'],['dogrose','hazel'],
+     ['honeysuckle','ivy'],['honeysuckle','dogrose'],['bramble','ivy']
+   ];
+   const folio=r.choose(illustratedFamilies);
    for(let k=0;k<stems.length;k++){
-     const stem=stems[k],sp=stemSpecies(s,r,k);
+     const stem=stems[k],sp=(s.species==='random'
+       ? M.chooseSpecies(folio[k%folio.length],r)
+       : stemSpecies(s,r,k));
      const motion=(.40+clamp(s.distortion/100,0,1)*.95)*r.between(7,19);
      plan.activeStem='stem-'+stem.id;
      const points=guidedSpine(stem,sp,r,motion,s);
@@ -315,7 +324,8 @@ window.MS=window.MS||{};
        sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}"><g class="growth-primary" data-grow-width="10" data-growpath="${M.strokePath(points)}">${fern.wood}</g><g class="growth-secondary">${fern.foliage}</g></g>`);
        continue;
      }
-     const base=stem.width*(sp.habit==='heavy'?1.08:sp.habit==='climbing'?.86:sp.habit==='twining'?.88:1.01);
+     // Lower stem mass: the earlier heavy brown ribbons overwhelmed the leaf plates.
+     const base=stem.width*.74*(sp.habit==='heavy'?1.07:sp.habit==='climbing'?.90:sp.habit==='twining'?.89:1.0);
      const wood=M.wood(sp,pal,'mature',r);
      plan.spatial?.addWood?.(points,base,plan.activeStem);
      let woodArt=stemInk(points,base,wood,pal,r,s,true,sp);

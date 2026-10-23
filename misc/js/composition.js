@@ -62,9 +62,14 @@ window.MS=window.MS||{};
     const list=Object.keys(designs);
     // Surprise is a composed specimen, not a 1-in-6 chance of a bare cane.
     // A single upright stem remains an explicit, available growth option.
-    const collection=['crescent','diagonal','meander','radiating','crescent','diagonal','meander','cluster'];
+    const collection=['single','crescent','single','meander','radiating','single','cluster','crescent'];
     const selection=list.includes(s.pattern)&&s.pattern!=='random'?s.pattern:r.choose(collection);
-    const natural=(M.makeSpeciesAxes && M.makeSpeciesAxes(s.species,selection,r)) || designs[selection](r);
+    // Even in mixed mode, the axis should have a plant's characteristic
+    // gesture. Generic mathematical V-shapes made the specimens look sterile.
+    const architectureSpecies=s.species==='random'
+      ? r.choose(['dogrose','honeysuckle','hazel','bramble','hawthorn','ivy'])
+      : s.species;
+    const natural=(M.makeSpeciesAxes && M.makeSpeciesAxes(architectureSpecies,selection,r)) || designs[selection](r);
     const construction=M.constructGuides(s.geometry||'random',r);
     const amount=M.clamp(Number(s.conform??55)/100,0,1);
     // Guides influence directions and preferred growth regions. They never
@@ -77,8 +82,16 @@ window.MS=window.MS||{};
     const count=Math.min(natural.length,desired[selection]||natural.length);
     const ordered=selection==='single' ? natural.filter(st=>st.major)[0] || natural[0] : null;
     const chosen=ordered?[ordered]:natural.slice(0,count);
+    // Each growth mode uses a distinct, deliberate ordering of the *same*
+    // construction rails. At 100% conformance the stems remain precisely on
+    // the chosen shape, without different modes becoming identical drawings.
+    const topologyRails={
+      single:[0], crescent:[0,1], diagonal:[0,2],
+      meander:[2,0], radiating:[0,1,2,3,4], cluster:[2,0,1,4,3]
+    };
+    const route=topologyRails[selection]||topologyRails.single;
     const guideRails=chosen.map((source,i)=>{
-      const sourceRail=construction.rails[(selection==='diagonal' && i===1 ? 2 : i)%construction.rails.length];
+      const sourceRail=construction.rails[route[i%route.length]%construction.rails.length];
       // Duplicate guide routes are offset slightly for multi-axis crowns,
       // so growth is never stacked exactly on top of another stem.
       const copy=Math.floor(i/construction.rails.length);

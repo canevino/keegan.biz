@@ -10,29 +10,35 @@ window.MS=window.MS||{};
  const close=pts=>M.poly(pts);
  const mix=(a,b,t)=>M.mix(a,b,t);
  M.speciesProfiles={
-   holly:{name:'holly',habit:'upright',leaf:'holly',bark:'#684832',tint:'#455e39',scale:1.02,leafScale:1.25,frequency:1.14,shootDensity:1.24,shootScale:.82,tertiary:.73,angle:.80,twigs:1.1,evergreen:true,fruit:'holly'},
-   hazel:{name:'hazel',habit:'arching',leaf:'hazel',bark:'#886044',tint:'#637341',scale:1.12,leafScale:1.09,frequency:1.0,shootDensity:.92,shootScale:1.04,tertiary:.70,angle:1.16,twigs:1.22,evergreen:false,fruit:'hazel'},
-   ivy:{name:'ivy',habit:'climbing',leaf:'ivy',bark:'#6a5036',tint:'#386547',scale:1.03,leafScale:1.05,frequency:1.16,shootDensity:1.15,shootScale:1.15,tertiary:.63,angle:1.0,twigs:.85,evergreen:true,fruit:'ivy'},
-   hawthorn:{name:'hawthorn',habit:'angular',leaf:'hawthorn',bark:'#67432f',tint:'#5e713d',scale:.97,leafScale:1.13,frequency:1.20,shootDensity:1.35,shootScale:.88,tertiary:.80,angle:1.05,twigs:1.14,evergreen:false,fruit:'hawthorn'},
-   oak:{name:'oak',habit:'heavy',leaf:'oak',bark:'#684733',tint:'#526d3c',scale:1.22,leafScale:1.30,frequency:.88,shootDensity:.95,shootScale:1.04,tertiary:.52,angle:.92,twigs:.82,evergreen:false,fruit:'oak'},
-   dogrose:{name:'dog rose',habit:'arching',leaf:'dogrose',bark:'#80563e',tint:'#537344',scale:1.12,leafScale:1.20,frequency:1.04,shootDensity:1.0,shootScale:1.10,tertiary:.8,angle:1.2,twigs:1.16,evergreen:false,fruit:'dogrose'},
-   honeysuckle:{name:'honeysuckle',habit:'twining',leaf:'honeysuckle',bark:'#765139',tint:'#65804d',scale:1.05,leafScale:1.1,frequency:1.08,shootDensity:1.16,shootScale:.9,tertiary:.76,angle:1.12,twigs:1.06,evergreen:false,fruit:'honeysuckle'},
-   bramble:{name:'bramble',habit:'arching',leaf:'bramble',bark:'#76513e',tint:'#496e42',scale:1.11,leafScale:1.1,frequency:1.05,shootDensity:1.2,shootScale:1.11,tertiary:.94,angle:1.20,twigs:1.25,evergreen:false,fruit:'bramble'},
-   fern:{name:'fern',habit:'fronds',leaf:'fern',bark:'#765c3d',tint:'#56734b',scale:1.25,leafScale:1.0,frequency:1.0,shootDensity:1.0,shootScale:1.0,tertiary:0,angle:.94,twigs:0,evergreen:false,fruit:'fern'},
-   acanthus:{name:'acanthus',habit:'ornamental',leaf:'acanthus',bark:'#83573f',tint:'#607348',scale:1.24,leafScale:1.25,frequency:.90,shootDensity:.78,shootScale:1.14,tertiary:.5,angle:1.06,twigs:.93,evergreen:true,fruit:'acanthus'}
+   holly:{name:'holly',habit:'upright',leaf:'holly',bark:'#67503c',tint:'#52744d',scale:1.02,leafScale:1.25,frequency:1.14,shootDensity:1.24,shootScale:.82,tertiary:.73,angle:.80,twigs:1.1,evergreen:true,fruit:'holly'},
+   hazel:{name:'hazel',habit:'arching',leaf:'hazel',bark:'#80634b',tint:'#7b885d',scale:1.12,leafScale:1.09,frequency:1.0,shootDensity:.92,shootScale:1.04,tertiary:.70,angle:1.16,twigs:1.22,evergreen:false,fruit:'hazel'},
+   ivy:{name:'ivy',habit:'climbing',leaf:'ivy',bark:'#69563d',tint:'#426f5d',scale:1.03,leafScale:1.05,frequency:1.16,shootDensity:1.15,shootScale:1.15,tertiary:.63,angle:1.0,twigs:.85,evergreen:true,fruit:'ivy'},
+   hawthorn:{name:'hawthorn',habit:'angular',leaf:'hawthorn',bark:'#6d5242',tint:'#63815c',scale:.97,leafScale:1.13,frequency:1.20,shootDensity:1.35,shootScale:.88,tertiary:.80,angle:1.05,twigs:1.14,evergreen:false,fruit:'hawthorn'},
+   oak:{name:'oak',habit:'heavy',leaf:'oak',bark:'#68513c',tint:'#687c4d',scale:1.22,leafScale:1.30,frequency:.88,shootDensity:.95,shootScale:1.04,tertiary:.52,angle:.92,twigs:.82,evergreen:false,fruit:'oak'},
+   dogrose:{name:'dog rose',habit:'arching',leaf:'dogrose',bark:'#765743',tint:'#63845d',scale:1.12,leafScale:1.20,frequency:1.04,shootDensity:1.0,shootScale:1.10,tertiary:.8,angle:1.2,twigs:1.16,evergreen:false,fruit:'dogrose'},
+   honeysuckle:{name:'honeysuckle',habit:'twining',leaf:'honeysuckle',bark:'#695445',tint:'#648c70',scale:1.05,leafScale:1.1,frequency:1.08,shootDensity:1.16,shootScale:.9,tertiary:.76,angle:1.12,twigs:1.06,evergreen:false,fruit:'honeysuckle'},
+   bramble:{name:'bramble',habit:'arching',leaf:'bramble',bark:'#725640',tint:'#52795a',scale:1.11,leafScale:1.1,frequency:1.05,shootDensity:1.2,shootScale:1.11,tertiary:.94,angle:1.20,twigs:1.25,evergreen:false,fruit:'bramble'},
+   fern:{name:'fern',habit:'fronds',leaf:'fern',bark:'#65513d',tint:'#668263',scale:1.25,leafScale:1.0,frequency:1.0,shootDensity:1.0,shootScale:1.0,tertiary:0,angle:.94,twigs:0,evergreen:false,fruit:'fern'},
+   acanthus:{name:'acanthus',habit:'ornamental',leaf:'acanthus',bark:'#765b45',tint:'#73815e',scale:1.24,leafScale:1.25,frequency:.90,shootDensity:.78,shootScale:1.14,tertiary:.5,angle:1.06,twigs:.93,evergreen:true,fruit:'acanthus'}
  };
  M.speciesNames=Object.keys(M.speciesProfiles);
  M.chooseSpecies=(selected,r)=>M.speciesProfiles[selected]||M.speciesProfiles[r.choose(M.speciesNames)];
  M.wood=(sp,pal,age,r)=>{const a=mix(sp.bark,pal.ink,r.between(.06,.20)); return age==='new'?mix(a,sp.tint,.35):a;};
  M.leafPigment=(sp,season,pal,r,s={})=>{
    const ornament=M.clamp(Number(s.ornament||0)/100,0,1);
-   let col=mix(sp.tint,pal.green,.14+r.between(0,.16));
+   // Each blade is a distinct painted impression: green remains dominant,
+   // with mineral blue/ochre shadows rather than uniformly flat green.
+   const variation=r.random();
+   let col=mix(sp.tint,pal.green,.12+r.between(0,.20));
+   if(variation<.18)col=mix(col,pal.ochre,r.between(.12,.29));
+   else if(variation>.80)col=mix(col,pal.lapis,r.between(.09,.22));
+   else if(variation>.54)col=mix(col,pal.light,r.between(.09,.20));
    if(season==='spring'){
      col=mix(col,pal.light,r.between(.16,.30));
      if(!sp.evergreen)col=mix(col,pal.ochre,r.between(.02,.10));
    }
    if(season==='summer'){
-     col=mix(col,pal.ink,r.between(.02,.08));
+     col=mix(col,pal.ink,r.between(.01,.035));
    }
    if(season==='autumn'&&!sp.evergreen){
      col=r.choose([
@@ -47,7 +53,7 @@ window.MS=window.MS||{};
    }
    if(ornament>.35 && r.chance(Math.pow((ornament-.35)/.65,1.5)*(sp.leaf==='acanthus'?.23:.13))){
      // A small number of leaf-shaped colored impressions, not random symbols.
-     col=r.choose([pal.lapis,pal.vermillion,M.mix(col,pal.ochre,.35)]);
+     col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(.26,.48));
    }
    return col;
  };
@@ -349,10 +355,14 @@ window.MS=window.MS||{};
        let z='';for(let i=0;i<4;i++){
          const dir=angle+(i-1.5)*.23,base=pt(tip,dir,scale*.32),head=pt(base,dir,scale*.88);
          const tube=`M${S(tip.x,tip.y)}Q${S(base.x+scale*.06,base.y-scale*.10)} ${S(head.x,head.y)}`;
-         z+=M.path(tube,M.mix(pal.ochre,pal.light,.28),Math.max(.85,scale*.13));
-         const lip1=pt(head,dir-.60,scale*.34),lip2=pt(head,dir+.55,scale*.34);
-         z+=M.path(`M${S(lip1.x,lip1.y)}Q${S(head.x,head.y)} ${S(lip2.x,lip2.y)}`,pal.vermillion,.65);
-         for(let k=0;k<3;k++){const st=pt(head,dir+(k-1)*.28,scale*.53);z+=M.path(`M${S(head.x,head.y)}L${S(st.x,st.y)}`,pal.ochre,.35);z+=M.circle(st.x,st.y,.42,pal.vermillion);}
+         const corolla=i%3===0 ? M.mix(pal.vermillion,pal.light,.34)
+           : i%3===1 ? M.mix(pal.ochre,pal.light,.26) : M.mix(pal.vermillion,pal.ochre,.30);
+         z+=M.path(tube,corolla,Math.max(1.2,scale*.22));
+         const lip1=pt(head,dir-.66,scale*.49),lip2=pt(head,dir+.61,scale*.47);
+         const sideA=pt(head,dir-.85,scale*.17),sideB=pt(head,dir+.84,scale*.17);
+         z+=M.shape(`M${S(head.x,head.y)}Q${S(sideA.x,sideA.y)} ${S(lip1.x,lip1.y)}Q${S(head.x+Math.cos(dir)*scale*.38,head.y+Math.sin(dir)*scale*.38)} ${S(head.x,head.y)}Z`,corolla,`stroke="${M.mix(pal.ink,corolla,.40)}" stroke-width=".35"`);
+         z+=M.shape(`M${S(head.x,head.y)}Q${S(sideB.x,sideB.y)} ${S(lip2.x,lip2.y)}Q${S(head.x+Math.cos(dir)*scale*.34,head.y+Math.sin(dir)*scale*.34)} ${S(head.x,head.y)}Z`,M.mix(corolla,pal.light,.25),`stroke="${M.mix(pal.ink,corolla,.47)}" stroke-width=".34"`);
+         for(let k=0;k<3;k++){const st=pt(head,dir+(k-1)*.24,scale*.69);z+=M.path(`M${S(head.x,head.y)}L${S(st.x,st.y)}`,pal.ochre,.42);z+=M.circle(st.x,st.y,.54,pal.vermillion);}
        }return z;
      }
      return season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'red',2):'';

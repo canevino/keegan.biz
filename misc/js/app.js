@@ -9,16 +9,14 @@
  const defaultSettings={
    geometry:'random',conform:50,ornament:26,
    pattern:'random',species:'random',season:'summer',palette:'kells',seed:472818,
-   foliage:66,finishLevel:36
+   foliage:66,finishLevel:30
  };
  const s={...defaultSettings};
  const textFields=['pattern','geometry','species','season','palette'];
  const numberFields=['seed','conform','ornament','foliage','finishLevel'];
  const controlIds=[...textFields,...numberFields];
  const stage=el('drawing-stage');
- const overlay=el('stroke-overlay');
  let paintTimer=null,svg='',framedViewBox=null,paintRevision=0;
- const strokes=[];
 
  function read(){
    controlIds.forEach(id=>{
@@ -58,7 +56,7 @@
  function fitDrawing(){
    const art=el('drawing')?.querySelector('svg');
    const plant=art?.querySelector('#botanical-plants') || art?.querySelector('#artwork-layers');
-   if(!art||!plant||!overlay)return;
+   if(!art||!plant)return;
    try{
      const b=plant.getBBox();
      if(![b.x,b.y,b.width,b.height].every(Number.isFinite)||b.width<1||b.height<1)return;
@@ -68,7 +66,6 @@
      const midX=b.x+b.width*.5,midY=b.y+b.height*.5;
      framedViewBox=[midX-w*.5,midY-h*.5,w,h].map(n=>Math.round(n*100)/100).join(' ');
      art.setAttribute('viewBox',framedViewBox);
-     overlay.setAttribute('viewBox',framedViewBox);
    }catch(err){console.warn('Art frame fallback:',err);}
  }
 
@@ -96,7 +93,6 @@
 
  function delayedPaint(){clearTimeout(paintTimer);paintTimer=setTimeout(()=>paint(),80);}
  controlIds.forEach(id=>on(id,id==='seed'?'change':'input',delayedPaint));
- on('grid','change',ev=>stage?.classList.toggle('grid',ev.target.checked));
 
  const newSeed=()=>{
    const a=new Uint32Array(1);
@@ -124,15 +120,11 @@
    if(has('foliage')) el('foliage').value=String(Math.floor(18+Math.random()*83));
    if(has('finishLevel')) el('finishLevel').value=String(Math.floor(Math.random()*101));
    if(has('seed')) el('seed').value=String(newSeed());
-   if(has('grid')) el('grid').checked=false;
-   stage?.classList.remove('grid');
    paint();
  });
 
  function reset(){
    controlIds.forEach(id=>{if(has(id))el(id).value=defaultSettings[id];});
-   if(has('grid'))el('grid').checked=false;
-   stage?.classList.remove('grid');
    paint();
  }
  on('reset','click',reset);
@@ -178,7 +170,7 @@
      if(!blob) throw Error('PNG export failed');
      download(blob,`ornament-${s.seed}.png`);
    }catch(error){console.error(error);alert('PNG export failed. Try saving the SVG instead.');}
-   finally{ if(url)URL.revokeObjectURL(url); btn.disabled=false;btn.textContent='png ↗'; }
+   finally{ if(url)URL.revokeObjectURL(url); btn.disabled=false;btn.textContent='save png'; }
  });
 
  window.addEventListener('spectral-ready',()=>{if(M.verifySpectral?.().working)paint();});
