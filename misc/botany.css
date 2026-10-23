@@ -35,7 +35,7 @@
 .controls-seed{padding-top:3px;border-top:1px solid var(--misc-rule);display:flex;gap:14px;justify-content:space-between;align-items:end}.controls-seed>label:first-child{flex:0 1 110px}.controls-seed .check{padding:0 0 13px;white-space:nowrap}
 .control-note,.machine-credits{font-size:12px;line-height:1.5}.control-note{border-top:1px solid var(--misc-rule);padding-top:12px}.control-note summary,.machine-credits summary{color:var(--misc-red);font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.control-note p{margin:12px 0 0;color:#504b43}.control-note strong{color:var(--misc-ink)}.drawing-controls .reset{align-self:flex-start;margin-top:2px}
 .machine-credits{border-top:1px solid var(--misc-rule);margin-top:27px;padding-top:18px;max-width:660px}.machine-credits p{max-width:650px;color:#504b43}.machine-credits a{color:var(--misc-green)}.misc-footer{border-top:2px solid var(--misc-ink);font-size:12px;display:flex;justify-content:space-between;gap:12px;padding:18px 0;color:#655f56}.misc-footer a{color:var(--misc-red);font-weight:700}
-.drawing .life-bud,.drawing .life-bloom{display:none}.drawing svg.is-growing .life-final{display:inline}
+.drawing .life-bud,.drawing .life-bloom{display:none}
 .drawing-stage.is-drawing #drawing{opacity:.90}
 :where(button,select,input,summary,a):focus-visible{outline:2px solid var(--misc-red);outline-offset:3px}
 @media(max-width:1240px){.misc-shell{width:calc(100% - 44px);margin:auto;padding:140px 0 70px}.misc-hero{padding-top:22px;min-height:48vh}.machine-heading h2{font-size:clamp(50px,8vw,95px)}}
@@ -59,4 +59,3 @@ body{color:var(--ink);font-family:Helvetica,Arial,sans-serif}
 
 /* Animation is rendered into the same stepped print grid as exported art. */
 .drawing{position:relative;isolation:isolate}
-.drawing .growth-pixel-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;image-rendering:auto;pointer-events:none;z-index:1}
