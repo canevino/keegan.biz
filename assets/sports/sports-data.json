@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-23T05:03:55.366Z",
+  "updatedAt": "2026-10-23T11:50:49.661Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -909,23 +909,23 @@
           },
           {
             "rank": 8,
+            "team": "FC Kolos Kovalivka",
+            "points": 11,
+            "played": 9,
+            "highlight": false
+          },
+          {
+            "rank": 9,
             "team": "Epitsentr Kamianets-Podilskyi",
             "points": 9,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 9,
+            "rank": 10,
             "team": "Veres Rivne",
             "points": 9,
-            "played": 9,
-            "highlight": false
-          },
-          {
-            "rank": 10,
-            "team": "FC Kolos Kovalivka",
-            "points": 8,
-            "played": 8,
+            "played": 10,
             "highlight": false
           },
           {
