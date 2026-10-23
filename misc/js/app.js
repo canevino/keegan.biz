@@ -7,9 +7,9 @@
  const on=(id,event,handler)=>{const node=el(id);if(node)node.addEventListener(event,handler);};
 
  const defaultSettings={
-   geometry:'random',conform:50,ornament:26,guideOverlay:false,
+   geometry:'random',conform:50,ornament:26,
    pattern:'random',species:'random',season:'summer',palette:'kells',seed:472818,
-   foliage:63,finishLevel:36
+   foliage:66,finishLevel:36
  };
  const s={...defaultSettings};
  const textFields=['pattern','geometry','species','season','palette'];
@@ -17,7 +17,7 @@
  const controlIds=[...textFields,...numberFields];
  const stage=el('drawing-stage');
  const overlay=el('stroke-overlay');
- let paintTimer=null,svg='',framedViewBox=null,paintRevision=0,playingGrowth=false;
+ let paintTimer=null,svg='',framedViewBox=null,paintRevision=0;
  const strokes=[];
 
  function read(){
@@ -38,11 +38,10 @@
    s.distortion=10;
    s.bleed=s.spread>0;
    s.transparent=true;
-   s.guideOverlay=has('guideOverlay') && el('guideOverlay').checked;
+   s.guideOverlay=false; // guides remain internal construction only
    s.drawnPaths=[];
  }
 
- function stopPlayback(){playingGrowth=false;M.growthAnimation?.cancel();}
 
  function meta(){
    if(has('seed-label'))el('seed-label').textContent='seed '+s.seed;
@@ -76,17 +75,15 @@
  function makePixelPlate(art,settings,revision){
    return M.applyPixelPlate(art,settings).then(()=>{
      if(revision!==paintRevision||!art.isConnected)return;
-     if(playingGrowth)M.useVectorPigment(art);
-     else M.pixelPlayback?.finish(art);
+     // The completed print plate is displayed immediately; no animation layer.
    }).catch(error=>console.warn('Vector finish retained',error));
  }
 
- function paint({animate=false,forceGrowth=false}={}){
+ function paint(){
    clearTimeout(paintTimer);
    read();
    const revision=++paintRevision;
    numberFields.slice(1).forEach(id=>{if(has(id+'-value'))el(id+'-value').textContent=s[id];});
-   stopPlayback();
    svg=M.render(s);
    if(has('drawing'))el('drawing').innerHTML=svg;
    fitDrawing();
@@ -94,20 +91,11 @@
    const art=el('drawing')?.querySelector('svg');
    if(!art)return;
    const settings={...s};
-   const animateNow=(forceGrowth||animate);
-   if(animateNow){
-     playingGrowth=true;
-     M.currentPixelSettings={...s};
-     M.useVectorPigment(art);
-     M.growthAnimation?.play(art);
-   } else {
-     makePixelPlate(art,settings,revision);
-   }
+   makePixelPlate(art,settings,revision);
  }
 
- function delayedPaint(){clearTimeout(paintTimer);paintTimer=setTimeout(()=>paint({animate:false}),80);}
+ function delayedPaint(){clearTimeout(paintTimer);paintTimer=setTimeout(()=>paint(),80);}
  controlIds.forEach(id=>on(id,id==='seed'?'change':'input',delayedPaint));
- on('guideOverlay','change',()=>paint({animate:false}));
  on('grid','change',ev=>stage?.classList.toggle('grid',ev.target.checked));
 
  const newSeed=()=>{
@@ -124,7 +112,7 @@
    return pool[Math.floor(Math.random()*pool.length)] || opts[0] || null;
  }
 
- on('regenerate','click',()=>{ if(has('seed')) el('seed').value=newSeed(); paint({animate:false}); });
+ on('regenerate','click',()=>{ if(has('seed')) el('seed').value=newSeed(); paint(); });
  on('randomize','click',()=>{
    if(has('species')) el('species').value=pick('species',{avoidRandom:true});
    if(has('pattern')) el('pattern').value=pick('pattern',{avoidRandom:true});
@@ -136,37 +124,19 @@
    if(has('foliage')) el('foliage').value=String(Math.floor(18+Math.random()*83));
    if(has('finishLevel')) el('finishLevel').value=String(Math.floor(Math.random()*101));
    if(has('seed')) el('seed').value=String(newSeed());
-   if(has('guideOverlay')) el('guideOverlay').checked=false;
    if(has('grid')) el('grid').checked=false;
    stage?.classList.remove('grid');
-   paint({animate:false});
+   paint();
  });
 
  function reset(){
-   stopPlayback();
    controlIds.forEach(id=>{if(has(id))el(id).value=defaultSettings[id];});
-   if(has('guideOverlay'))el('guideOverlay').checked=false;
    if(has('grid'))el('grid').checked=false;
    stage?.classList.remove('grid');
-   paint({animate:false});
+   paint();
  }
  on('reset','click',reset);
 
- function animateGrowth(){
-   const art=el('drawing')?.querySelector('svg');
-   if(!art)return;
-   playingGrowth=true;
-   M.currentPixelSettings={...s};
-   M.useVectorPigment(art);
-   M.growthAnimation?.play(art);
- }
- M.animationComplete=()=>{
-   const art=el('drawing')?.querySelector('svg');
-   if(!art||!playingGrowth)return;
-   playingGrowth=false;
-   if(!M.pixelPlayback?.promote(art))makePixelPlate(art,{...s},paintRevision);
- };
- on('replay-growth','click',()=>paint({forceGrowth:true}));
 
  async function cleanSVG(){
    read();
@@ -211,6 +181,6 @@
    finally{ if(url)URL.revokeObjectURL(url); btn.disabled=false;btn.textContent='png ↗'; }
  });
 
- window.addEventListener('spectral-ready',()=>{if(M.verifySpectral?.().working)paint({animate:false});});
- paint({animate:false});
+ window.addEventListener('spectral-ready',()=>{if(M.verifySpectral?.().working)paint();});
+ paint();
 })();
