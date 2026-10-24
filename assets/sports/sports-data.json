@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-24T04:48:41.511Z",
+  "updatedAt": "2026-10-24T11:17:23.957Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -874,16 +874,16 @@
           },
           {
             "rank": 3,
-            "team": "Dynamo Kyiv",
-            "points": 19,
+            "team": "FC Kharkiv",
+            "points": 21,
             "played": 9,
             "highlight": false
           },
           {
             "rank": 4,
-            "team": "FC Kharkiv",
-            "points": 18,
-            "played": 8,
+            "team": "Dynamo Kyiv",
+            "points": 19,
+            "played": 9,
             "highlight": false
           },
           {
@@ -896,8 +896,8 @@
           {
             "rank": 6,
             "team": "LNZ Cherkasy",
-            "points": 14,
-            "played": 9,
+            "points": 15,
+            "played": 10,
             "highlight": false
           },
           {
@@ -918,7 +918,7 @@
             "rank": 9,
             "team": "Epitsentr Kamianets-Podilskyi",
             "points": 9,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
@@ -930,16 +930,16 @@
           },
           {
             "rank": 11,
-            "team": "Bukovyna Chernivtsi",
+            "team": "Liviy Bereh",
             "points": 8,
             "played": 9,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Liviy Bereh",
-            "points": 7,
-            "played": 8,
+            "team": "Bukovyna Chernivtsi",
+            "points": 8,
+            "played": 9,
             "highlight": false
           },
           {
