@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-23T21:31:29.091Z",
+  "updatedAt": "2026-10-24T04:48:41.511Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -52,7 +52,7 @@
         {
           "id": "5795492",
           "date": "2026-10-25T14:00:00.000Z",
-          "when": "Sun, Oct 25 · 10:00 AM ET",
+          "when": "tomorrow · Sun, Oct 25 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Liverpool",
           "away": "Brighton",
@@ -249,7 +249,7 @@
         {
           "id": "5793955",
           "date": "2026-10-25T14:00:00.000Z",
-          "when": "Sun, Oct 25 · 10:00 AM ET",
+          "when": "tomorrow · Sun, Oct 25 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Motherwell",
           "away": "Hearts",
@@ -390,7 +390,7 @@
         {
           "id": "5836892",
           "date": "2026-10-24T14:00:00.000Z",
-          "when": "tomorrow · Sat, Oct 24 · 10:00 AM ET",
+          "when": "today · Sat, Oct 24 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Preston",
           "away": "West Brom",
@@ -615,7 +615,7 @@
         {
           "id": "5749714",
           "date": "2026-10-25T11:30:00.000Z",
-          "when": "Sun, Oct 25 · 7:30 AM ET",
+          "when": "tomorrow · Sun, Oct 25 · 7:30 AM ET",
           "status": "scheduled",
           "home": "Inter",
           "away": "Fiorentina",
@@ -812,7 +812,7 @@
         {
           "id": "5909191",
           "date": "2026-10-24T15:00:00.000Z",
-          "when": "tomorrow · Sat, Oct 24 · 11:00 AM ET",
+          "when": "today · Sat, Oct 24 · 11:00 AM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "Zorya",
