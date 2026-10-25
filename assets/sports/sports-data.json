@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-25T04:56:51.392Z",
+  "updatedAt": "2026-10-25T11:46:53.438Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -615,8 +615,8 @@
         {
           "id": "5749714",
           "date": "2026-10-25T11:30:00.000Z",
-          "when": "today · Sun, Oct 25 · 7:30 AM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Inter",
           "away": "Fiorentina",
           "competition": "Serie A"
@@ -671,8 +671,8 @@
           {
             "rank": 2,
             "team": "Inter",
-            "points": 19,
-            "played": 7,
+            "points": 20,
+            "played": 8,
             "highlight": false
           },
           {
@@ -768,24 +768,24 @@
           },
           {
             "rank": 16,
+            "team": "Fiorentina",
+            "points": 5,
+            "played": 8,
+            "highlight": true
+          },
+          {
+            "rank": 17,
             "team": "Udinese",
             "points": 4,
             "played": 7,
             "highlight": false
           },
           {
-            "rank": 17,
+            "rank": 18,
             "team": "Genoa",
             "points": 4,
             "played": 7,
             "highlight": false
-          },
-          {
-            "rank": 18,
-            "team": "Fiorentina",
-            "points": 4,
-            "played": 7,
-            "highlight": true
           },
           {
             "rank": 19,
@@ -889,20 +889,20 @@
           {
             "rank": 5,
             "team": "Karpaty",
-            "points": 15,
-            "played": 9,
+            "points": 16,
+            "played": 10,
             "highlight": false
           },
           {
             "rank": 6,
-            "team": "Zorya",
+            "team": "LNZ Cherkasy",
             "points": 15,
             "played": 10,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "LNZ Cherkasy",
+            "team": "Zorya",
             "points": 15,
             "played": 10,
             "highlight": false
@@ -923,21 +923,21 @@
           },
           {
             "rank": 10,
-            "team": "Veres Rivne",
+            "team": "Bukovyna Chernivtsi",
             "points": 9,
             "played": 10,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Liviy Bereh",
-            "points": 8,
-            "played": 9,
+            "team": "Veres Rivne",
+            "points": 9,
+            "played": 10,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Bukovyna Chernivtsi",
+            "team": "Liviy Bereh",
             "points": 8,
             "played": 9,
             "highlight": false
@@ -952,22 +952,22 @@
           {
             "rank": 14,
             "team": "Chornomorets Odesa",
-            "points": 5,
-            "played": 8,
+            "points": 6,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 15,
-            "team": "Kudrivka",
-            "points": 5,
-            "played": 10,
+            "team": "Kryvbas",
+            "points": 6,
+            "played": 8,
             "highlight": false
           },
           {
             "rank": 16,
-            "team": "Kryvbas",
+            "team": "Kudrivka",
             "points": 5,
-            "played": 7,
+            "played": 10,
             "highlight": false
           }
         ]
@@ -987,9 +987,19 @@
       "active": false,
       "team": "Ukraine",
       "shortName": "Ukraine",
-      "upcoming": [],
+      "upcoming": [
+        {
+          "id": "5181809",
+          "date": "2026-11-14T19:45:00.000Z",
+          "when": "Sat, Nov 14 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Northern Ireland",
+          "away": "Ukraine",
+          "competition": "UEFA Nations League B Grp. 2"
+        }
+      ],
       "standings": {
-        "title": "",
+        "title": "UEFA Nations League B Grp. 2",
         "rows": []
       }
     },
@@ -1017,9 +1027,19 @@
       "active": false,
       "team": "Ireland",
       "shortName": "Ireland",
-      "upcoming": [],
+      "upcoming": [
+        {
+          "id": "5181821",
+          "date": "2026-11-14T19:45:00.000Z",
+          "when": "Sat, Nov 14 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Austria",
+          "away": "Ireland",
+          "competition": "UEFA Nations League B Grp. 3"
+        }
+      ],
       "standings": {
-        "title": "",
+        "title": "UEFA Nations League B Grp. 3",
         "rows": []
       }
     }
