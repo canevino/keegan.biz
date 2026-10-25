@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-25T16:35:25.628Z",
+  "updatedAt": "2026-10-25T20:58:50.699Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -684,16 +684,16 @@
           },
           {
             "rank": 4,
-            "team": "Como",
-            "points": 17,
+            "team": "Milan",
+            "points": 18,
             "played": 8,
             "highlight": false
           },
           {
             "rank": 5,
-            "team": "Milan",
-            "points": 15,
-            "played": 7,
+            "team": "Como",
+            "points": 17,
+            "played": 8,
             "highlight": false
           },
           {
@@ -705,30 +705,30 @@
           },
           {
             "rank": 7,
+            "team": "Juventus",
+            "points": 14,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 8,
             "team": "Torino",
             "points": 13,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 8,
+            "rank": 9,
             "team": "Cagliari",
             "points": 13,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 9,
+            "rank": 10,
             "team": "Napoli",
             "points": 11,
             "played": 8,
-            "highlight": false
-          },
-          {
-            "rank": 10,
-            "team": "Juventus",
-            "points": 11,
-            "played": 7,
             "highlight": false
           },
           {
@@ -742,7 +742,7 @@
             "rank": 12,
             "team": "Lecce",
             "points": 9,
-            "played": 7,
+            "played": 8,
             "highlight": false
           },
           {
@@ -777,7 +777,7 @@
             "rank": 17,
             "team": "Udinese",
             "points": 4,
-            "played": 7,
+            "played": 8,
             "highlight": false
           },
           {
