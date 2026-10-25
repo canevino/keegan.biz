@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-25T14:23:37.110Z",
+  "updatedAt": "2026-10-25T16:35:25.628Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -50,15 +50,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "5795492",
-          "date": "2026-10-25T14:00:00.000Z",
-          "when": "today · Sun, Oct 25 · 10:00 AM ET",
-          "status": "scheduled",
-          "home": "Liverpool",
-          "away": "Brighton",
-          "competition": "Premier League"
-        },
-        {
           "id": "6275371",
           "date": "2026-10-28T20:00:00.000Z",
           "when": "Wed, Oct 28 · 4:00 PM ET",
@@ -93,6 +84,15 @@
           "home": "Crystal Palace",
           "away": "Liverpool",
           "competition": "Premier League"
+        },
+        {
+          "id": "5795521",
+          "date": "2026-11-22T16:30:00.000Z",
+          "when": "Sun, Nov 22 · 11:30 AM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Man United",
+          "competition": "Premier League"
         }
       ],
       "standings": {
@@ -116,105 +116,105 @@
             "rank": 3,
             "team": "Brighton",
             "points": 16,
-            "played": 7,
+            "played": 8,
             "highlight": false
           },
           {
             "rank": 4,
+            "team": "Liverpool",
+            "points": 15,
+            "played": 8,
+            "highlight": true
+          },
+          {
+            "rank": 5,
             "team": "Chelsea",
             "points": 13,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 5,
-            "team": "Liverpool",
-            "points": 12,
-            "played": 7,
-            "highlight": true
-          },
-          {
             "rank": 6,
-            "team": "Aston Villa",
+            "team": "Brentford",
             "points": 11,
             "played": 8,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "Brentford",
-            "points": 10,
-            "played": 7,
+            "team": "Leeds",
+            "points": 11,
+            "played": 8,
             "highlight": false
           },
           {
             "rank": 8,
-            "team": "Leeds",
-            "points": 10,
-            "played": 7,
+            "team": "Newcastle",
+            "points": 11,
+            "played": 8,
             "highlight": false
           },
           {
             "rank": 9,
-            "team": "Everton",
-            "points": 10,
+            "team": "Aston Villa",
+            "points": 11,
             "played": 8,
             "highlight": false
           },
           {
             "rank": 10,
-            "team": "Ipswich",
+            "team": "Hull",
             "points": 10,
             "played": 8,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Hull",
-            "points": 9,
-            "played": 7,
+            "team": "Everton",
+            "points": 10,
+            "played": 8,
             "highlight": false
           },
           {
             "rank": 12,
+            "team": "Ipswich",
+            "points": 10,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 13,
+            "team": "Bournemouth",
+            "points": 9,
+            "played": 8,
+            "highlight": false
+          },
+          {
+            "rank": 14,
             "team": "Tottenham",
             "points": 9,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 13,
+            "rank": 15,
             "team": "Fulham",
             "points": 8,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 14,
-            "team": "Newcastle",
-            "points": 8,
-            "played": 7,
-            "highlight": false
-          },
-          {
-            "rank": 15,
+            "rank": 16,
             "team": "Man United",
             "points": 7,
-            "played": 7,
-            "highlight": false
-          },
-          {
-            "rank": 16,
-            "team": "Crystal Palace",
-            "points": 7,
-            "played": 7,
+            "played": 8,
             "highlight": false
           },
           {
             "rank": 17,
-            "team": "Bournemouth",
-            "points": 6,
-            "played": 7,
+            "team": "Crystal Palace",
+            "points": 7,
+            "played": 8,
             "highlight": false
           },
           {
@@ -234,8 +234,8 @@
           {
             "rank": 20,
             "team": "Sunderland",
-            "points": 4,
-            "played": 7,
+            "points": 5,
+            "played": 8,
             "highlight": false
           }
         ]
@@ -246,15 +246,6 @@
       "team": "Hearts",
       "shortName": "Hearts",
       "upcoming": [
-        {
-          "id": "5793955",
-          "date": "2026-10-25T14:00:00.000Z",
-          "when": "today · Sun, Oct 25 · 10:00 AM ET",
-          "status": "scheduled",
-          "home": "Motherwell",
-          "away": "Hearts",
-          "competition": "Premiership"
-        },
         {
           "id": "5793961",
           "date": "2026-10-28T20:00:00.000Z",
@@ -290,6 +281,15 @@
           "home": "Hearts",
           "away": "Falkirk",
           "competition": "Premiership"
+        },
+        {
+          "id": "5793977",
+          "date": "2026-11-21T17:45:00.000Z",
+          "when": "Sat, Nov 21 · 12:45 PM ET",
+          "status": "scheduled",
+          "home": "Dundee FC",
+          "away": "Hearts",
+          "competition": "Premiership"
         }
       ],
       "standings": {
@@ -298,8 +298,8 @@
           {
             "rank": 1,
             "team": "Celtic",
-            "points": 24,
-            "played": 9,
+            "points": 27,
+            "played": 10,
             "highlight": false
           },
           {
@@ -312,8 +312,8 @@
           {
             "rank": 3,
             "team": "Hearts",
-            "points": 16,
-            "played": 9,
+            "points": 19,
+            "played": 10,
             "highlight": true
           },
           {
@@ -362,7 +362,7 @@
             "rank": 10,
             "team": "Motherwell",
             "points": 8,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
@@ -376,7 +376,7 @@
             "rank": 12,
             "team": "Hibernian",
             "points": 7,
-            "played": 9,
+            "played": 10,
             "highlight": false
           }
         ]
@@ -613,15 +613,6 @@
       "shortName": "Fiorentina",
       "upcoming": [
         {
-          "id": "5749714",
-          "date": "2026-10-25T11:30:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Inter",
-          "away": "Fiorentina",
-          "competition": "Serie A"
-        },
-        {
           "id": "5749722",
           "date": "2026-10-29T19:45:00.000Z",
           "when": "Thu, Oct 29 · 3:45 PM ET",
@@ -656,6 +647,15 @@
           "home": "Monza",
           "away": "Fiorentina",
           "competition": "Serie A"
+        },
+        {
+          "id": "5749768",
+          "date": "2026-11-29T11:30:00.000Z",
+          "when": "Sun, Nov 29 · 6:30 AM ET",
+          "status": "scheduled",
+          "home": "Udinese",
+          "away": "Fiorentina",
+          "competition": "Serie A"
         }
       ],
       "standings": {
@@ -663,15 +663,15 @@
         "rows": [
           {
             "rank": 1,
-            "team": "Lazio",
+            "team": "Inter",
             "points": 22,
             "played": 8,
             "highlight": false
           },
           {
             "rank": 2,
-            "team": "Inter",
-            "points": 20,
+            "team": "Lazio",
+            "points": 22,
             "played": 8,
             "highlight": false
           },
@@ -699,8 +699,8 @@
           {
             "rank": 6,
             "team": "Frosinone",
-            "points": 13,
-            "played": 7,
+            "points": 14,
+            "played": 8,
             "highlight": false
           },
           {
@@ -734,8 +734,8 @@
           {
             "rank": 11,
             "team": "Atalanta",
-            "points": 9,
-            "played": 7,
+            "points": 10,
+            "played": 8,
             "highlight": false
           },
           {
@@ -768,10 +768,10 @@
           },
           {
             "rank": 16,
-            "team": "Fiorentina",
-            "points": 5,
+            "team": "Genoa",
+            "points": 7,
             "played": 8,
-            "highlight": true
+            "highlight": false
           },
           {
             "rank": 17,
@@ -782,10 +782,10 @@
           },
           {
             "rank": 18,
-            "team": "Genoa",
+            "team": "Fiorentina",
             "points": 4,
-            "played": 7,
-            "highlight": false
+            "played": 8,
+            "highlight": true
           },
           {
             "rank": 19,
@@ -798,7 +798,7 @@
             "rank": 20,
             "team": "Venezia",
             "points": 3,
-            "played": 7,
+            "played": 8,
             "highlight": false
           }
         ]
