@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-25T20:58:50.699Z",
+  "updatedAt": "2026-10-26T05:00:07.787Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -812,7 +812,7 @@
         {
           "id": "6284438",
           "date": "2026-10-27T16:00:00.000Z",
-          "when": "Tue, Oct 27 · 12:00 PM ET",
+          "when": "tomorrow · Tue, Oct 27 · 12:00 PM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "Dynamo Kyiv",
@@ -1015,6 +1015,15 @@
           "status": "scheduled",
           "home": "England",
           "away": "Croatia",
+          "competition": "UEFA Nations League A Grp. 3"
+        },
+        {
+          "id": "5181860",
+          "date": "2026-11-15T19:45:00.000Z",
+          "when": "Sun, Nov 15 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Spain",
+          "away": "England",
           "competition": "UEFA Nations League A Grp. 3"
         }
       ],
