@@ -60,7 +60,7 @@ window.MS=window.MS||{};
    const {variation,wear,spread}=M.materialStrength(s);
    let z='';
    for(const [key,col] of Object.entries(colors)){
-     const light=M.mix(col,pal.light,.12+variation*.19),dark=M.mix(col,pal.ink,.14+variation*.21);
+     const light=M.mix(col,pal.light,.14+variation*.20),dark=M.mix(col,pal.ink,.16+variation*.22);
      z+=`<linearGradient id="wash-${key}" x1=".09" y1=".04" x2=".84" y2=".97" objectBoundingBox="true">`+
        `<stop offset="0" stop-color="${light}"/><stop offset=".38" stop-color="${col}"/>`+
        `<stop offset=".71" stop-color="${M.mix(col,pal.ochre,variation*.11)}"/><stop offset="1" stop-color="${dark}"/></linearGradient>`;
@@ -143,8 +143,8 @@ window.MS=window.MS||{};
      `<stop stop-color="${high}" offset="1"/></linearGradient></defs>`;
    out+=`<g${maskRef}>${M.shape(d,`url(#${grad})`,`stroke="${M.mix(color,pal.ink,.50)}" stroke-width="${n(opts.stroke??.6)}" stroke-linejoin="round"`)}`;
    out+=`<g clip-path="url(#${clip})">`;
-   out+=M.shape(d,'url(#micro-grain)',`opacity="${n(.13+variation*.26)}"`);
-   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.14+wear*.27)}"`);
+   out+=M.shape(d,'url(#micro-grain)',`opacity="${n(.11+variation*.23)}"`);
+   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.12+wear*.23)}"`);
    if(wear>.03)out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.08+wear*.55)}"`);
    out+=tonalIslands(bounds,color,pal,s,r,true);
    out+=pooledContour(d,id,pal,s,r,clip,true);
@@ -188,9 +188,13 @@ window.MS=window.MS||{};
        }
      }
    }
-   out+=M.shape(d,'url(#micro-grain)' ,`opacity="${n(.18+.36*variation)}" data-pixel-pigment="1"`);
-   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.16+.40*wear)}" data-pixel-pigment="1"`);
-   out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.14+.46*wear)}" data-pixel-pigment="1"`);
+   out+=M.shape(d,'url(#micro-grain)' ,`opacity="${n(.16+.34*variation)}" data-pixel-pigment="1"`);
+   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.14+.34*wear)}" data-pixel-pigment="1"`);
+   out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.10+.36*wear)}" data-pixel-pigment="1"`);
+   if(size>14){
+     const glaze=`M${vec(size*.08,size*.02)}Q${vec(size*.32,-size*.22)} ${vec(size*.62,-size*.14)}Q${vec(size*.40,-size*.03)} ${vec(size*.12,size*.06)}Z`;
+     out+=M.shape(glaze,M.mix(color,pal.light,.46),`opacity="${n(.08+.15*variation)}"`);
+   }
    out+=pooledContour(d,id,pal,s,r,clip,false);
    out+='</g>';
    // The outline is hand-inked, but subtle; at high wear break up pigment

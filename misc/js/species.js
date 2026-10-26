@@ -27,18 +27,23 @@ window.MS=window.MS||{};
  M.leafPigment=(sp,season,pal,r,s={})=>{
    const ornament=M.clamp(Number(s.ornament||0)/100,0,1);
    // Each blade is a distinct painted impression: green remains dominant,
-   // with mineral blue/ochre shadows rather than uniformly flat green.
+   // but species lean cool/warm and pick up slightly different mineral stains.
    const variation=r.random();
-   let col=mix(sp.tint,pal.green,.12+r.between(0,.20));
-   if(variation<.18)col=mix(col,pal.ochre,r.between(.12,.29));
-   else if(variation>.80)col=mix(col,pal.lapis,r.between(.09,.22));
-   else if(variation>.54)col=mix(col,pal.light,r.between(.09,.20));
+   const familyBias={holly:'cool',ivy:'cool',honeysuckle:'light',hazel:'warm',oak:'earth',hawthorn:'light',dogrose:'warm',bramble:'cool',fern:'light',acanthus:'earth'}[sp.leaf]||'earth';
+   let col=mix(sp.tint,pal.green,.10+r.between(0,.18));
+   if(familyBias==='cool')col=mix(col,pal.lapis,r.between(.05,.16));
+   if(familyBias==='warm')col=mix(col,pal.ochre,r.between(.05,.16));
+   if(familyBias==='light')col=mix(col,pal.light,r.between(.06,.15));
+   if(familyBias==='earth')col=mix(col,pal.ink,r.between(.03,.10));
+   if(variation<.16)col=mix(col,pal.ochre,r.between(.10,.24));
+   else if(variation>.82)col=mix(col,pal.lapis,r.between(.08,.18));
+   else if(variation>.56)col=mix(col,pal.light,r.between(.06,.16));
    if(season==='spring'){
      col=mix(col,pal.light,r.between(.16,.30));
      if(!sp.evergreen)col=mix(col,pal.ochre,r.between(.02,.10));
    }
    if(season==='summer'){
-     col=mix(col,pal.ink,r.between(.01,.035));
+     col=mix(col,pal.ink,r.between(.01,.05));
    }
    if(season==='autumn'&&!sp.evergreen){
      col=r.choose([
@@ -49,11 +54,10 @@ window.MS=window.MS||{};
      ]);
    }
    if(season==='winter'){
-     col=sp.evergreen ? mix(col,pal.ink,.12) : mix(col,pal.ochre,.56);
+     col=sp.evergreen ? mix(col,pal.ink,.13) : mix(col,pal.ochre,.56);
    }
-   if(ornament>.35 && r.chance(Math.pow((ornament-.35)/.65,1.5)*(sp.leaf==='acanthus'?.23:.13))){
-     // A small number of leaf-shaped colored impressions, not random symbols.
-     col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(.26,.48));
+   if(ornament>.35 && r.chance(Math.pow((ornament-.35)/.65,1.5)*(sp.leaf==='acanthus'?.24:.14))){
+     col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(.22,.42));
    }
    return col;
  };
@@ -102,14 +106,14 @@ window.MS=window.MS||{};
          w*=1+.039*Math.cos(32*Math.PI*t+side*.48);
        } else if(kind==='holly'){
          // Four distinct sharp spines per margin; intervening lobes curve inward.
-         w*=.83 + [.23,.44,.65,.84].reduce((v,q)=>v+.25*bump(t,q+.007*side,.023)-.15*bump(t,q+.065,.035),0);
+         w*=.79 + [.22,.43,.64,.84].reduce((v,q)=>v+.29*bump(t,q+.007*side,.020)-.17*bump(t,q+.068,.033),0);
        } else if(kind==='oak'){
          // Three or four broad, rounded lobes with clear deep sinuses.
          const lobes=[.22,.45,.70];
          w*=.40 + lobes.reduce((v,q)=>v+.60*bump(t,q+side*.015,.105),0);
          w*=1-.13*bump(t,.83,.035);
        } else if(kind==='hawthorn'){
-         w*=.70 + [.29,.58,.80].reduce((v,q)=>v+.35*bump(t,q+.012*side,.072)-.14*bump(t,q+.12,.04),0);
+         w*=.66 + [.27,.56,.80].reduce((v,q)=>v+.39*bump(t,q+.010*side,.068)-.15*bump(t,q+.11,.04),0);
        } else if(kind==='acanthus'){
          w*=.55 + [.16,.32,.52,.70,.86].reduce((v,q)=>v+.56*bump(t,q+side*.012,.061)-.25*bump(t,q+.077,.025),0);
        } else if(kind==='ivy'){
@@ -119,7 +123,7 @@ window.MS=window.MS||{};
          w*=kind==='bramble'?1.08-.20*t:.90+.16*t;
          w*=1+.047*Math.cos((kind==='bramble'?28:32)*Math.PI*t+side*.45);
        } else if(kind==='honeysuckle'){
-         w*=.76+.37*bump(t,.54,.35);
+         w*=.72+.42*bump(t,.55,.34)-.08*bump(t,.18,.07);
        }
        // Non-mirrored undulations give leaves individuality without losing the
        // defining outline of a holly, rose leaflet, oak or acanthus blade.

@@ -24,7 +24,7 @@ window.MS=window.MS||{};
     const lobes=kind==='acanthus'?5:kind==='oak'?4:kind==='hawthorn'?3:kind==='holly'?5:kind==='ivy'?3:2;
     const curl=Math.sin(t*Math.PI*2*lobes + phase);
     const lobeVariation=(.29*curl+.11*Math.sin(t*Math.PI*(lobes+1))) * amount * envelope;
-    return width*(1+.34*amount)*(1+lobeVariation);
+    return width*(1+.28*amount)*(1+lobeVariation*.92);
   };
   M.ornamentPoint=(x,y,t,amount,len,phase)=>P(
     x + amount*len*.04*Math.sin(Math.PI*t)*Math.sin(t*5.2+phase),
@@ -43,6 +43,11 @@ window.MS=window.MS||{};
         const y=side*len*.14*Math.sin(Math.PI*t);
         z+=M.path(`M${V(x,0)}Q${V(x+len*.075,y*.42)} ${V(x+len*.13,y)}`,
           ink,Math.max(.35,len*.01),`opacity="${n(.12+.42*lev)}"`);
+      }
+      for(let i=0;i<2;i++){
+        const t=.34+i*.24,arc=side=>side*len*(.06+.03*i)*Math.sin(Math.PI*t);
+        z+=M.path(`M${V(len*t,-arc(1))}Q${V(len*(t+.08),0)} ${V(len*(t+.16),arc(1))}`,
+          M.mix(ink,pal.light,.18),Math.max(.28,len*.008),`opacity="${n(.11+.28*lev)}"`);
       }
     }
     if(lev>.66){
@@ -107,7 +112,8 @@ window.MS=window.MS||{};
     if(!force && !r.chance(chance))return '';
     const size=clamp(scale*(.64+.46*lev),4,18);
     // No unattached volutes: terminal details terminate as an actual bud or leaf.
-    if(lev>.78 && r.chance(.44))return paintedFleuron(at,angle,size*.83,pal,r);
+    if(lev>.82 && (vine || sp?.leaf==='acanthus') && r.chance(.38))return paintedFleuron(at,angle,size*.83,pal,r);
+    if(lev>.70 && !vine && r.chance(.16))return illuminatedFlower(at,angle,size*.76,pal,r,lev);
     return pointBud(at,angle,size,pal,r);
   };
 

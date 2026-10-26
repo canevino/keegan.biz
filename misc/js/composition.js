@@ -1,58 +1,110 @@
 /* Botanical-only composition planner. Every layout changes the actual growth
-   axes, root count and curve structure; nothing reserves room for letters. */
+   axes, root count and curve structure; nothing reserves room for letters.
+   Pass 5: stronger specimen hierarchy, cleaner framing, and more authored
+   silhouettes so outputs feel composed rather than merely procedural. */
 window.MS=window.MS||{};
 ((M)=>{
   'use strict';
   const P=(x,y)=>({x,y}),box=(x,y,w,h)=>({x,y,w,h});
   const clampPt=(p,b)=>P(M.clamp(p.x,b.x,b.x+b.w),M.clamp(p.y,b.y,b.y+b.h));
+  const STAGE=box(62,54,726,888);
   function curveBox(a,b,c,d){
-    const pts=M.wave(a,b,c,d,32),x=pts.map(p=>p.x),y=pts.map(p=>p.y),padding=85;
+    const pts=M.wave(a,b,c,d,34),x=pts.map(p=>p.x),y=pts.map(p=>p.y),padding=78;
     return box(Math.min(...x)-padding,Math.min(...y)-padding,Math.max(...x)-Math.min(...x)+padding*2,Math.max(...y)-Math.min(...y)+padding*2);
   }
   function axis(a,d,side,id,r,opts={}){
     const dx=d.x-a.x,dy=d.y-a.y,normal=M.normal(M.unit({x:dx,y:dy}));
-    const bend=opts.bend??r.between(75,160);
+    const bend=opts.bend??r.between(72,154);
     const sign=side;
-    // Different control-point offsets give genuinely different S curves, curls,
-    // and asymmetrical plants rather than simply translating a straight stem.
     const first=(opts.first??.66)*bend*sign;
     const second=(opts.second??r.choose([-.82,.62,1.07]))*bend*sign;
-    const bounds=box(46,44,756,914);
-    const b=clampPt(P(a.x+dx*.28+normal.x*first,a.y+dy*.28+normal.y*first),bounds);
-    const c=clampPt(P(a.x+dx*.72+normal.x*second,a.y+dy*.72+normal.y*second),bounds);
-    return {id,a,b,c,d,side,major:opts.major!==false,width:opts.major===false?r.between(7,12):r.between(12,21),box:curveBox(a,b,c,d),character:opts.character||'wandering'};
+    const b=clampPt(P(a.x+dx*.27+normal.x*first,a.y+dy*.26+normal.y*first),STAGE);
+    const c=clampPt(P(a.x+dx*.73+normal.x*second,a.y+dy*.74+normal.y*second),STAGE);
+    return {
+      id,a,b,c,d,side,
+      major:opts.major!==false,
+      width:opts.major===false?r.between(7,11):r.between(12,20),
+      box:curveBox(a,b,c,d),
+      character:opts.character||'wandering',
+      emphasis:opts.emphasis||1
+    };
   }
   const designs={
-    single(r){return [axis(P(r.between(160,300),952),P(r.between(430,650),r.between(92,188)),1,1,r,{bend:r.between(125,215),first:1.12,second:-.86})];},
-    crescent(r){return [
-      axis(P(r.between(92,160),946),P(r.between(295,430),r.between(120,235)),1,1,r,{first:1.02,second:-.58,bend:r.between(105,170)}),
-      axis(P(r.between(700,772),947),P(r.between(560,700),r.between(140,285)),-1,2,r,{first:.78,second:-.96,bend:r.between(98,165)})];},
-    diagonal(r){return [
-      axis(P(r.between(85,165),r.between(845,948)),P(r.between(645,762),r.between(90,220)),1,1,r,{first:.8,second:-.8}),
-      axis(P(r.between(700,785),r.between(882,965)),P(r.between(260,445),r.between(330,495)),-1,2,r,{major:false,first:.86,second:-.98})];},
+    single(r){
+      const root=P(r.between(290,405),r.between(900,946));
+      const tip=P(r.between(395,565),r.between(104,198));
+      return [
+        axis(root,tip,r.chance(.55)?1:-1,1,r,{bend:r.between(134,212),first:r.between(.88,1.18),second:r.between(-1.02,-.62),character:'hero',emphasis:1.35})
+      ];
+    },
+    crescent(r){
+      const leftRoot=P(r.between(130,210),r.between(892,944));
+      const rightRoot=P(r.between(618,710),r.between(900,952));
+      return [
+        axis(leftRoot,P(r.between(300,420),r.between(144,268)),1,1,r,{first:1.07,second:-.54,bend:r.between(106,172),character:'hero',emphasis:1.18}),
+        axis(rightRoot,P(r.between(500,672),r.between(152,294)),-1,2,r,{first:.82,second:-.94,bend:r.between(96,162),character:'support',emphasis:.94})
+      ];
+    },
+    diagonal(r){
+      return [
+        axis(P(r.between(126,210),r.between(858,938)),P(r.between(612,740),r.between(114,194)),1,1,r,{first:.92,second:-.82,bend:r.between(98,164),character:'sweep',emphasis:1.16}),
+        axis(P(r.between(644,734),r.between(904,960)),P(r.between(272,400),r.between(310,468)),-1,2,r,{major:false,first:.92,second:-1.02,bend:r.between(92,152),character:'echo',emphasis:.78})
+      ];
+    },
     radiating(r){
-      const root=P(r.between(285,450),r.between(790,928));
-      return Array.from({length:r.int(3,4)},(_,i)=>{
-        const destinations=[[130,210],[350,125],[660,172],[760,390]];
+      const root=P(r.between(350,446),r.between(792,910));
+      const destinations=[[126,256],[332,124],[560,146],[734,334]];
+      return Array.from({length:4},(_,i)=>{
         const [tx,ty]=destinations[i];
-        return axis(P(root.x+r.between(-38,38),root.y+r.between(-20,25)),P(tx+r.between(-55,55),ty+r.between(-50,55)),i%2?1:-1,i+1,r,{major:i<2,bend:r.between(65,125),first:1.03,second:-.83});
+        return axis(
+          P(root.x+r.between(-28,28),root.y+r.between(-20,20)),
+          P(tx+r.between(-44,44),ty+r.between(-44,44)),
+          i<2?-1:1,
+          i+1,
+          r,
+          {major:i<2,bend:r.between(66,122),first:r.between(.92,1.12),second:r.between(-.92,-.58),character:i===1?'hero':'crown',emphasis:i===1?1.2:.92}
+        );
       });
     },
-    meander(r){return [
-      axis(P(r.between(75,155),r.between(810,952)),P(r.between(530,690),r.between(115,230)),1,1,r,{first:1.42,second:-1.25,bend:r.between(140,230),character:'meander'}),
-      axis(P(r.between(690,782),r.between(920,974)),P(r.between(400,590),r.between(265,412)),-1,2,r,{major:false,first:-1.32,second:1.20,bend:r.between(95,178),character:'meander'})];},
+    meander(r){
+      return [
+        axis(P(r.between(108,190),r.between(864,946)),P(r.between(528,684),r.between(138,224)),1,1,r,{first:1.42,second:-1.22,bend:r.between(138,220),character:'meander',emphasis:1.18}),
+        axis(P(r.between(636,728),r.between(914,968)),P(r.between(392,566),r.between(256,418)),-1,2,r,{major:false,first:-1.28,second:1.14,bend:r.between(98,172),character:'counter',emphasis:.82})
+      ];
+    },
     cluster(r){
-      const center=P(r.between(330,475),r.between(760,890));
+      const center=P(r.between(350,462),r.between(782,890));
+      const tips=[[150,276],[344,126],[532,166],[706,378]];
       return Array.from({length:4},(_,i)=>{
-        const tips=[[120,245],[370,120],[610,210],[760,430]],q=tips[i];
-        return axis(P(center.x+r.between(-56,56),center.y+r.between(-48,45)),P(q[0]+r.between(-58,58),q[1]+r.between(-55,55)),i%2?1:-1,i+1,r,{major:i<2,bend:r.between(75,142),first:1.08,second:-.62});
+        const [x,y]=tips[i];
+        return axis(
+          P(center.x+r.between(-54,54),center.y+r.between(-34,38)),
+          P(x+r.between(-50,50),y+r.between(-48,48)),
+          i%2?1:-1,
+          i+1,
+          r,
+          {major:i<2,bend:r.between(78,136),first:r.between(.96,1.15),second:r.between(-.86,-.46),character:i===0?'hero':'thicket',emphasis:i===0?1.18:.88}
+        );
       });
     }
   };
+
+  const speciesAffinities={
+    holly:['single','crescent','radiating'],
+    hazel:['crescent','cluster','single'],
+    ivy:['meander','diagonal','crescent'],
+    hawthorn:['radiating','cluster','crescent'],
+    oak:['single','radiating','cluster'],
+    dogrose:['crescent','single','cluster'],
+    honeysuckle:['meander','diagonal','crescent'],
+    bramble:['cluster','crescent','diagonal'],
+    fern:['radiating','single','crescent'],
+    acanthus:['single','radiating','meander'],
+    hybrid:['single','crescent','meander']
+  };
+  const surpriseLayouts=['single','crescent','single','meander','radiating','single','cluster','crescent','diagonal'];
+
   M.plan=(s,r)=>{
-    // A painted stroke completely replaces generated construction axes.
-    // Keep this before the random layout/geometry calls so changing Gothic
-    // style cannot accidentally alter a user-authored plant.
     if(s.drawnPaths?.length){
       const stems=M.drawnStems(s.drawnPaths,r);
       if(stems.length)return {mode:'botanical',layout:'hand-drawn',structure:'hand-drawn',
@@ -60,31 +112,21 @@ window.MS=window.MS||{};
         focal:{x:-10000,y:-10000,rx:1,ry:1},stems,knots:[],compartments:[],weaveStem:-1};
     }
     const list=Object.keys(designs);
-    // Surprise is a composed specimen, not a 1-in-6 chance of a bare cane.
-    // A single upright stem remains an explicit, available growth option.
-    const collection=['single','crescent','single','meander','radiating','single','cluster','crescent'];
-    const selection=list.includes(s.pattern)&&s.pattern!=='random'?s.pattern:r.choose(collection);
-    // Even in mixed mode, the axis should have a plant's characteristic
-    // gesture. Generic mathematical V-shapes made the specimens look sterile.
+    const preferred=speciesAffinities[s.species]||surpriseLayouts;
+    const selection=list.includes(s.pattern)&&s.pattern!=='random'
+      ? s.pattern
+      : r.choose([...preferred,...surpriseLayouts]);
+
     const architectureSpecies=s.species==='random'
-      ? r.choose(['dogrose','honeysuckle','hazel','bramble','hawthorn','ivy'])
+      ? r.choose(['dogrose','honeysuckle','hazel','bramble','hawthorn','ivy','holly'])
       : s.species;
     const natural=(M.makeSpeciesAxes && M.makeSpeciesAxes(architectureSpecies,selection,r)) || designs[selection](r);
     const construction=M.constructGuides(s.geometry||'random',r);
     const amount=M.clamp(Number(s.conform??55)/100,0,1);
-    // Guides influence directions and preferred growth regions. They never
-    // manufacture duplicate main stems or force the plant to trace entire
-    // lozenges, saltire crosses, or spirals. Species topology comes first.
-    // A pattern is a topology, not merely a label for the same set of rails.
-    // Species anatomy is retained but the selected pattern explicitly chooses
-    // the number of primary axes, even when guide conformity is 100%.
     const desired={single:1,crescent:2,diagonal:2,meander:2,radiating:4,cluster:4};
     const count=Math.min(natural.length,desired[selection]||natural.length);
     const ordered=selection==='single' ? natural.filter(st=>st.major)[0] || natural[0] : null;
     const chosen=ordered?[ordered]:natural.slice(0,count);
-    // Each growth mode uses a distinct, deliberate ordering of the *same*
-    // construction rails. At 100% conformance the stems remain precisely on
-    // the chosen shape, without different modes becoming identical drawings.
     const topologyRails={
       single:[0], crescent:[0,1], diagonal:[0,2],
       meander:[2,0], radiating:[0,1,2,3,4], cluster:[2,0,1,4,3]
@@ -92,23 +134,27 @@ window.MS=window.MS||{};
     const route=topologyRails[selection]||topologyRails.single;
     const guideRails=chosen.map((source,i)=>{
       const sourceRail=construction.rails[route[i%route.length]%construction.rails.length];
-      // Duplicate guide routes are offset slightly for multi-axis crowns,
-      // so growth is never stacked exactly on top of another stem.
       const copy=Math.floor(i/construction.rails.length);
-      return sourceRail.map(p=>({x:M.clamp(p.x+copy*22*(i%2?1:-1),56,794),
-        y:M.clamp(p.y+copy*16,56,944)}));
+      const sway=source.side||((i%2)?-1:1);
+      return sourceRail.map((p,j)=>{
+        const t=j/(Math.max(1,sourceRail.length-1));
+        const xOffset=copy*18*sway + (selection==='cluster'?sway*10*Math.sin(Math.PI*t):0);
+        const yOffset=copy*14 + (selection==='single'?-18*Math.max(0,.35-t):0);
+        return {x:M.clamp(p.x+xOffset,70,780),y:M.clamp(p.y+yOffset,66,938)};
+      });
     });
     construction.rails=guideRails;
-    const stems=chosen.map((source,i)=>{
-      const rail=guideRails[i];
-      return {...source,id:i+1,side:source.side||((i%2)?-1:1),
-        guidePoints:rail,
-        naturalPoints:M.wave(source.a,source.b,source.c,source.d,100),
-        guideAmount:amount,
-        guideIndex:i};
-    });
+    const stems=chosen.map((source,i)=>({
+      ...source,
+      id:i+1,
+      side:source.side||((i%2)?-1:1),
+      guidePoints:guideRails[i],
+      naturalPoints:M.wave(source.a,source.b,source.c,source.d,100),
+      guideAmount:amount,
+      guideIndex:i
+    }));
     return {mode:'botanical',layout:selection,structure:construction.name,construction,conform:amount,
-      bounds:box(46,45,758,910),focal:{x:-10000,y:-10000,rx:1,ry:1},
+      bounds:box(54,58,742,894),focal:{x:-10000,y:-10000,rx:1,ry:1},
       stems,knots:[],compartments:[],weaveStem:-1};
   };
 })(window.MS);
