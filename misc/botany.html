@@ -5,34 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>botanical ornament | keegan.biz</title>
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="/misc/botany.css?v=20261023-chess-ui">
+  <link rel="stylesheet" href="/misc/botany.css?v=20261026-botany-chess-unified">
 
 </head>
 <body>
   <main class="misc-shell" id="main-content">
-    <section class="machine" id="botanical" aria-labelledby="machine-name">
-      <div class="machine-heading">
-        <div><p class="section-kicker">01 / drawing system</p><h2 id="machine-name">botanical<br>ornament<span class="hero-stop">.</span></h2></div>
-        <p class="machine-intro">A generative drawing of branching plants, shaped by geometric guides and printed in uneven ink.</p>
-      </div>
-      <div class="machine-layout">
-        <div class="drawing-side">
-          <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span id="seed-label">seed 472818</span></div>
-          <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
-            <div id="drawing" class="drawing"></div>
-            
-          </div>
-          <div class="drawing-actions" aria-label="Drawing actions">
-            <button id="regenerate" type="button" class="action primary">new drawing</button>
-            <button id="randomize" type="button" class="action">randomize settings</button>
-            <div class="download-actions" aria-label="Export drawing">
-              <button id="export-svg" type="button" class="action">save svg</button>
-              <button id="export-png" type="button" class="action">save png</button>
-            </div>
-          </div>
+    <section class="machine" id="botanical" aria-label="Botanical drawing generator">
+      <form class="drawing-controls" id="controls" novalidate>
+        <div class="botany-settings-head">
+          <span class="botany-settings-label">change the drawing</span>
+          <button type="button" class="action reset" id="reset">reset</button>
         </div>
-        <form class="drawing-controls" id="controls" novalidate>
-          <div class="controls-topline"><h3>settings</h3><button type="button" class="action reset" id="reset">reset</button></div>
+        <div class="botany-basic-grid">
           <label>plant
             <select id="species">
               <option value="random">mixed plants</option>
@@ -62,20 +46,67 @@
               <option value="roundel">roundel</option>
             </select>
           </label>
-          <div class="controls-row two">
-            <label>season<select id="season"><option value="spring">spring</option><option value="summer" selected>summer</option><option value="autumn">autumn</option><option value="winter">winter</option></select></label>
-            <label>ink<select id="palette"><option value="kells">mineral</option><option value="jewel">lapis / red</option><option value="earth">iron / earth</option><option value="site">site colors</option><option value="monochrome">black / sepia</option></select></label>
+        </div>
+        <div class="botany-secondary-row">
+          <label>season
+            <select id="season">
+              <option value="spring">spring</option><option value="summer" selected>summer</option>
+              <option value="autumn">autumn</option><option value="winter">winter</option>
+            </select>
+          </label>
+          <label>ink
+            <select id="palette">
+              <option value="kells">mineral</option><option value="jewel">lapis / red</option>
+              <option value="earth">iron / earth</option><option value="site">site colors</option>
+              <option value="monochrome">black / sepia</option>
+            </select>
+          </label>
+        </div>
+        <details class="advanced-settings" id="botany-fine-tune">
+          <summary>fine tune</summary>
+          <div class="fine-tune-grid">
+            <label class="sliding">follow shape <output for="conform" id="conform-value">50</output>
+              <input type="range" id="conform" min="0" max="100" value="50">
+            </label>
+            <div class="ornament-control">
+              <label class="sliding">ornament <output for="ornament" id="ornament-value">26</output>
+                <input type="range" id="ornament" min="0" max="100" value="26" aria-describedby="ornament-scale">
+              </label>
+              <div class="ornament-scale" id="ornament-scale"><span>botanical</span><span>manuscript</span></div>
+            </div>
+            <label class="sliding">foliage <output for="foliage" id="foliage-value">66</output>
+              <input type="range" id="foliage" min="10" max="100" value="66">
+            </label>
+            <label class="sliding">print wear <output for="finishLevel" id="finishLevel-value">30</output>
+              <input type="range" id="finishLevel" min="0" max="100" value="30">
+            </label>
+            <label class="seed-setting">seed
+              <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818">
+            </label>
           </div>
-          <div class="control-rule" aria-hidden="true"></div>
-          <label class="sliding">follow shape <output for="conform" id="conform-value">50</output><input type="range" id="conform" min="0" max="100" value="50"></label>
-          <div class="ornament-control"><label class="sliding">ornament <output for="ornament" id="ornament-value">26</output><input type="range" id="ornament" min="0" max="100" value="26" aria-describedby="ornament-scale"></label><div class="ornament-scale" id="ornament-scale"><span>botanical</span><span>manuscript</span></div></div>
-          <label class="sliding">foliage <output for="foliage" id="foliage-value">66</output><input type="range" id="foliage" min="10" max="100" value="66"></label>
-          <label class="sliding">print wear <output for="finishLevel" id="finishLevel-value">30</output><input type="range" id="finishLevel" min="0" max="100" value="30"></label>
-          <div class="controls-seed"><label>seed <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818"></label></div>
-          <details class="control-note"><summary>how it works</summary><p><strong>Growth</strong> sets how many main stems grow and which routes they take. <strong>Shape</strong> supplies the underlying paths. <strong>Follow shape</strong> controls how closely the stems follow those paths. At 0 the stems grow freely; at 100 they follow the geometry precisely.</p><p><strong>Ornament</strong> exaggerates leaf shapes and adds decorative color. <strong>Foliage</strong> changes leaf density. <strong>Ink wear</strong> now visibly changes abrasion, plate pressure, offset, and edge breakup in the printed marks.</p></details>
-        </form>
+        </details>
+      </form>
+      <div class="drawing-side">
+        <div class="drawing-meta">
+          <span id="mode-description">botanical ornament</span>
+          <span id="seed-label">seed 472818</span>
+        </div>
+        <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
+          <div id="drawing" class="drawing"></div>
+        </div>
+        <div class="drawing-actions" aria-label="Drawing actions">
+          <button id="regenerate" type="button" class="action primary">new drawing</button>
+          <button id="randomize" type="button" class="action">randomize</button>
+          <div class="download-actions" aria-label="Export drawing">
+            <button id="export-svg" type="button" class="action">save svg</button>
+            <button id="export-png" type="button" class="action">save png</button>
+          </div>
+        </div>
       </div>
-      <details class="machine-credits"><summary>credits and sources</summary><p>Original botanical generator and drawings for keegan.biz. References include insular manuscript ornament and historic printmaking. Pigment mixing can use <a href="https://github.com/rvanwijnen/spectral.js" target="_blank" rel="noopener noreferrer">Spectral.js</a>. The ink-bleed treatment is informed by <a href="https://andyjakubowski.com/ink-bleed-effect-with-svg-filters/" target="_blank" rel="noopener noreferrer">Andy Jakubowski's SVG filter method</a>; procedural plant growth was informed by <a href="https://github.com/achrefelouafi/VegetationGeneratorThreeJS" target="_blank" rel="noopener noreferrer">Vegetation Generator</a>, <a href="https://github.com/millerthegorilla/vinejs" target="_blank" rel="noopener noreferrer">VineJS</a>, and <a href="https://github.com/dengshu2/illustrated-manuscript" target="_blank" rel="noopener noreferrer">Illustrated Manuscript</a>. No artwork from these projects is copied.</p></details>
+      <details class="machine-credits">
+        <summary>credits and sources</summary>
+        <p>Original botanical generator and drawings for keegan.biz. References include insular manuscript ornament and historic printmaking. Pigment mixing can use <a href="https://github.com/rvanwijnen/spectral.js" target="_blank" rel="noopener noreferrer">Spectral.js</a>. The ink-bleed treatment is informed by <a href="https://andyjakubowski.com/ink-bleed-effect-with-svg-filters/" target="_blank" rel="noopener noreferrer">Andy Jakubowski's SVG filter method</a>; procedural plant growth was informed by <a href="https://github.com/achrefelouafi/VegetationGeneratorThreeJS" target="_blank" rel="noopener noreferrer">Vegetation Generator</a>, <a href="https://github.com/millerthegorilla/vinejs" target="_blank" rel="noopener noreferrer">VineJS</a>, and <a href="https://github.com/dengshu2/illustrated-manuscript" target="_blank" rel="noopener noreferrer">Illustrated Manuscript</a>. No artwork from these projects is copied.</p>
+      </details>
     </section>
   </main>
   <script>
@@ -95,19 +126,19 @@
     }
   })();
   </script>
-<script src="/misc/js/core.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/core.js?v=20261026-botany-chess-unified" defer></script>
 <script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" async onload="window.dispatchEvent(new Event('spectral-ready'))"></script>
-<script src="/misc/js/pigment.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/finish.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/geometry.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/spatial.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/drawing.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/architecture.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/composition.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/species.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/ornament.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/botany.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/render.js?v=20261023-chess-ui" defer></script>
-<script src="/misc/js/app.js?v=20261023-chess-ui" defer></script>
+<script src="/misc/js/pigment.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/finish.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/geometry.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/spatial.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/drawing.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/architecture.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/composition.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/species.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/ornament.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/botany.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/render.js?v=20261026-botany-chess-unified" defer></script>
+<script src="/misc/js/app.js?v=20261026-botany-chess-unified" defer></script>
 </body>
 </html>

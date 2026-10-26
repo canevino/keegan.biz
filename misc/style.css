@@ -529,7 +529,7 @@
 .home.botany-open .sports-launcher {display:none;}
 .home .botany-panel {
   display:none;
-  width:min(100%, 920px);
+  width:min(100%, 700px);
   margin:clamp(72px,10vh,126px) auto 0;
   min-width:0;
 }
@@ -539,7 +539,7 @@
   justify-content:space-between;
   align-items:flex-start;
   gap:20px;
-  margin-bottom:18px;
+  margin-bottom:12px;
 }
 .home .botany-panel-title {
   margin:0;
@@ -550,21 +550,20 @@
   font-weight:700;
 }
 .home .botany-close {
-  flex:0 0 52px;
-  display:grid;
-  place-items:center;
-  width:52px;
-  height:52px;
+  flex:0 0 auto;
+  width:auto;
+  height:auto;
   margin:-5px 0 0;
   padding:0;
   border:0;
   background:transparent;
   color:var(--red);
   font-family:Helvetica,Arial,sans-serif;
-  font-size:52px;
-  line-height:1;
+  font-size:clamp(42px,4vw,62px);
+  line-height:.75;
   cursor:pointer;
 }
+.home .botany-close:hover {transform:rotate(4deg)}
 .home .botany-frame {
   display:block;
   width:100%;
