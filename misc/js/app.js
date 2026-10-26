@@ -57,14 +57,48 @@
    const art=el('drawing')?.querySelector('svg');
    const plant=art?.querySelector('#botanical-plants') || art?.querySelector('#artwork-layers');
    if(!art||!plant)return;
+   const unionBBox=(nodes)=>{
+     let box=null;
+     for(const node of nodes){
+       if(!node || typeof node.getBBox!=='function') continue;
+       let b;
+       try{ b=node.getBBox(); }catch(_){ continue; }
+       if(!b || ![b.x,b.y,b.width,b.height].every(Number.isFinite) || b.width<=0 || b.height<=0) continue;
+       box=box ? {
+         x:Math.min(box.x,b.x),
+         y:Math.min(box.y,b.y),
+         width:Math.max(box.x+box.width,b.x+b.width)-Math.min(box.x,b.x),
+         height:Math.max(box.y+box.height,b.y+b.height)-Math.min(box.y,b.y)
+       } : {x:b.x,y:b.y,width:b.width,height:b.height};
+     }
+     return box;
+   };
    try{
-     const b=plant.getBBox();
-     if(![b.x,b.y,b.width,b.height].every(Number.isFinite)||b.width<1||b.height<1)return;
-     const aspect=M.W/M.H,margin=b.width<310?1.34:1.25;
-     let w=Math.max(330,b.width*margin),h=Math.max(430,b.height*margin);
+     const structureBBox=plant.getBBox();
+     const focusNodes=[
+       ...plant.querySelectorAll('.growth-leaf,[data-pixel-organ],[data-pixel-pigment],.shoot-details,.shoot-foliage')
+     ];
+     let b=unionBBox(focusNodes) || structureBBox;
+     if(structureBBox && structureBBox.width>0 && structureBBox.height>0 && b){
+       const sx=structureBBox.x+structureBBox.width*.5, sy=structureBBox.y+structureBBox.height*.5;
+       const bx=b.x+b.width*.5, by=b.y+b.height*.5;
+       b={
+         x:Math.min(b.x, bx + (sx-bx)*.16 - b.width*.06),
+         y:Math.min(b.y, by + (sy-by)*.12 - b.height*.06),
+         width:Math.max(b.width, (Math.max(b.x+b.width,structureBBox.x+structureBBox.width)-Math.min(b.x,structureBBox.x))*0.9),
+         height:Math.max(b.height, (Math.max(b.y+b.height,structureBBox.y+structureBBox.height)-Math.min(b.y,structureBBox.y))*0.88)
+       };
+     }
+     if(!b||![b.x,b.y,b.width,b.height].every(Number.isFinite)||b.width<1||b.height<1)return;
+     const aspect=M.W/M.H;
+     const density=(b.width*b.height)/(M.W*M.H);
+     const margin=density<.10?1.16:density<.18?1.20:1.24;
+     let w=Math.max(260,b.width*margin),h=Math.max(360,b.height*margin);
      if(w/h<aspect)w=h*aspect;else h=w/aspect;
      const midX=b.x+b.width*.5,midY=b.y+b.height*.5;
-     framedViewBox=[midX-w*.5,midY-h*.5,w,h].map(n=>Math.round(n*100)/100).join(' ');
+     const x=Math.max(0,Math.min(M.W-w,midX-w*.5));
+     const y=Math.max(0,Math.min(M.H-h,midY-h*.5));
+     framedViewBox=[x,y,w,h].map(n=>Math.round(n*100)/100).join(' ');
      art.setAttribute('viewBox',framedViewBox);
    }catch(err){console.warn('Art frame fallback:',err);}
  }

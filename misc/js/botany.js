@@ -218,7 +218,8 @@ window.MS=window.MS||{};
    // detached sprite away from its own stalk.
    const opposite=['honeysuckle'].includes(sp.leaf);
    const whorled=sp.leaf==='ivy',cluster=sp.leaf==='holly'||sp.leaf==='hawthorn';
-   const leafCount=clamp(Math.round((sub?2.4:3.9)*sp.frequency*(.49+s.foliage/105)*r.between(.80,1.16)),1,sub?4:7);
+   const seasonalBoost=season==='winter'?.90:season==='spring'?1.05:1;
+   const leafCount=clamp(Math.round((sub?2.8:4.7)*sp.frequency*(.56+s.foliage/98)*seasonalBoost*r.between(.86,1.18)),2,sub?5:8);
    for(let i=0;i<leafCount;i++){
      const t=clamp(.14+(i+.38)*.78/leafCount+r.between(-.027,.027),.12,.93),p=points[Math.round(t*30)],sign=i%2?1:-1;
      const a=angle(p.tng)+sign*r.between(.76,1.09)*sp.angle;
@@ -240,12 +241,12 @@ window.MS=window.MS||{};
        woodArt+=M.path(`M${V(p)}l${M.vec(Math.cos(dir)*r.between(3,6),Math.sin(dir)*r.between(3,6))}`,wood,.72);
      }
    }
-   if(!sub && sp.habit!=='fronds' && r.chance((sp.tertiary||.68)*s.foliage/100)){
+   if(!sub && sp.habit!=='fronds' && r.chance((sp.tertiary||.68)*(.12+s.foliage/100))){
      const j=Math.round(r.between(.43,.65)*30),p=points[j],sign=r.sign();
      organArt+=shoot(anchored(p,sign,widthAt(base,p.t,.25)),p.tng,sign,len*r.between(.32,.55)*sp.twigs,sp,season,pal,r,plan,s,true);
    }
-   if(sp.habit==='fronds' || r.chance(.09))organArt+=twigDetails(points,sp,season,pal,r,plan,s);
-   else if(r.chance(.72))organArt+=M.plantOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(10,15));
+   if(sp.habit==='fronds' || r.chance(.12))organArt+=twigDetails(points,sp,season,pal,r,plan,s);
+   else if(r.chance(season==='winter'?.92:season==='spring'?.84:.76))organArt+=M.plantOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(10,16));
    // Add restrained foliate ornament at true branch nodes, not loose symbols.
    if(M.ornamentJunction && !sub){
      const i=Math.round(r.between(.35,.72)*30),p=points[i],a=angle(p.tng)+r.sign()*r.between(.74,1.18);

@@ -104,6 +104,49 @@ window.MS=window.MS||{};
   };
   const surpriseLayouts=['single','crescent','single','meander','radiating','single','cluster','crescent','diagonal'];
 
+  function displayedStems(stems,layout){
+    const limits={single:1,crescent:2,diagonal:2,meander:2,radiating:4,cluster:4};
+    if(layout==='single')return [stems.find(st=>st.major)||stems[0]].filter(Boolean);
+    return stems.slice(0,limits[layout]||stems.length);
+  }
+  function stemLayoutScore(stems){
+    if(!stems||!stems.length)return -1e9;
+    const all=[];
+    stems.forEach(st=>{ (M.wave(st.a,st.b,st.c,st.d,26)||[]).forEach(p=>all.push(p)); });
+    const xs=all.map(p=>p.x), ys=all.map(p=>p.y);
+    const minX=Math.min(...xs), maxX=Math.max(...xs), minY=Math.min(...ys), maxY=Math.max(...ys);
+    const w=maxX-minX, h=maxY-minY, cx=(minX+maxX)/2, cy=(minY+maxY)/2;
+    const area=(w*h)/(STAGE.w*STAGE.h);
+    const centerPenalty=Math.abs(cx-(STAGE.x+STAGE.w/2))/STAGE.w + Math.abs(cy-(STAGE.y+STAGE.h*0.48))/STAGE.h;
+    const targetArea=.22;
+    const areaPenalty=Math.abs(area-targetArea)*2.8;
+    const aspectPenalty=Math.abs((h/Math.max(1,w))-1.55)*.22;
+    const spreadBonus=Math.min(1.1,w/430)+Math.min(1.0,h/710);
+    // Avoid preferring an ostensibly broad crown made of axes that will be
+    // discarded by the chosen growth mode. Distinct trunks get a small bonus.
+    const breadthPenalty=Math.max(0,320-w)/220;
+    const majorBonus=stems.filter(st=>st.major).length*.12;
+    const activeBonus=Math.min(3,stems.length-1)*.23;
+    return spreadBonus + majorBonus + activeBonus - centerPenalty - areaPenalty - aspectPenalty - breadthPenalty;
+  }
+  function pickNaturals(s,selection,architectureSpecies){
+    const list=Object.keys(designs);
+    const preferred=(speciesAffinities[s.species]||surpriseLayouts).filter(v=>list.includes(v));
+    const explicit=list.includes(s.pattern)&&s.pattern!=='random';
+    const layouts=explicit ? [selection] : [...new Set([selection,...preferred])].slice(0,4);
+    const candidates=[];
+    layouts.forEach((layout,layoutIndex)=>{
+      for(let i=0;i<3;i++){
+        const rr=M.rng(M.childSeed(Number(s.seed)>>>0||1,0x71f200 + layoutIndex*37 + i*101));
+        const natural=(M.makeSpeciesAxes && M.makeSpeciesAxes(architectureSpecies,layout,rr)) || designs[layout](rr);
+        const actual=displayedStems(natural,layout);
+        candidates.push({layout,stems:natural,score:stemLayoutScore(actual)});
+      }
+    });
+    candidates.sort((a,b)=>b.score-a.score);
+    return candidates[0] || {layout:selection,stems:designs[selection](M.rng(M.childSeed(Number(s.seed)>>>0||1,1901)))};
+  }
+
   M.plan=(s,r)=>{
     if(s.drawnPaths?.length){
       const stems=M.drawnStems(s.drawnPaths,r);
@@ -120,26 +163,25 @@ window.MS=window.MS||{};
     const architectureSpecies=s.species==='random'
       ? r.choose(['dogrose','honeysuckle','hazel','bramble','hawthorn','ivy','holly'])
       : s.species;
-    const natural=(M.makeSpeciesAxes && M.makeSpeciesAxes(architectureSpecies,selection,r)) || designs[selection](r);
+    const best=pickNaturals(s,selection,architectureSpecies);
+    const selectionResolved=best.layout||selection;
+    const natural=best.stems;
     const construction=M.constructGuides(s.geometry||'random',r);
     const amount=M.clamp(Number(s.conform??55)/100,0,1);
-    const desired={single:1,crescent:2,diagonal:2,meander:2,radiating:4,cluster:4};
-    const count=Math.min(natural.length,desired[selection]||natural.length);
-    const ordered=selection==='single' ? natural.filter(st=>st.major)[0] || natural[0] : null;
-    const chosen=ordered?[ordered]:natural.slice(0,count);
+    const chosen=displayedStems(natural,selectionResolved);
     const topologyRails={
       single:[0], crescent:[0,1], diagonal:[0,2],
       meander:[2,0], radiating:[0,1,2,3,4], cluster:[2,0,1,4,3]
     };
-    const route=topologyRails[selection]||topologyRails.single;
+    const route=topologyRails[selectionResolved]||topologyRails.single;
     const guideRails=chosen.map((source,i)=>{
       const sourceRail=construction.rails[route[i%route.length]%construction.rails.length];
       const copy=Math.floor(i/construction.rails.length);
       const sway=source.side||((i%2)?-1:1);
       return sourceRail.map((p,j)=>{
         const t=j/(Math.max(1,sourceRail.length-1));
-        const xOffset=copy*18*sway + (selection==='cluster'?sway*10*Math.sin(Math.PI*t):0);
-        const yOffset=copy*14 + (selection==='single'?-18*Math.max(0,.35-t):0);
+        const xOffset=copy*18*sway + (selectionResolved==='cluster'?sway*10*Math.sin(Math.PI*t):0);
+        const yOffset=copy*14 + (selectionResolved==='single'?-18*Math.max(0,.35-t):0);
         return {x:M.clamp(p.x+xOffset,70,780),y:M.clamp(p.y+yOffset,66,938)};
       });
     });
@@ -153,7 +195,7 @@ window.MS=window.MS||{};
       guideAmount:amount,
       guideIndex:i
     }));
-    return {mode:'botanical',layout:selection,structure:construction.name,construction,conform:amount,
+    return {mode:'botanical',layout:selectionResolved,structure:construction.name,construction,conform:amount,
       bounds:box(54,58,742,894),focal:{x:-10000,y:-10000,rx:1,ry:1},
       stems,knots:[],compartments:[],weaveStem:-1};
   };
