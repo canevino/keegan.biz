@@ -8,80 +8,76 @@
   <title>AT map | keegan.biz</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="./styles.css?v=3">
+  <link rel="stylesheet" href="./styles.css?v=5">
   <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script defer src="./config.js?v=3"></script>
-  <script defer src="./app.js?v=3"></script>
+  <script defer src="./config.js?v=5"></script>
+  <script defer src="./app.js?v=5"></script>
 </head>
 <body>
   <div class="site-shell">
     <header class="topbar">
-      <div class="identity">
-        <a class="wordmark" href="/" aria-label="keegan.biz home">keegan.biz</a>
-        <div class="identity-lines">
-          <strong>AT map</strong>
-          <span>Northwest Connecticut</span>
-        </div>
+      <div class="site-identity">
+        <a class="home-scarf" href="/" aria-label="Return to keegan.biz homepage">
+          <img src="/assets/home/home-scarf-update.png" alt="keegan.biz">
+        </a>
+        <span class="header-separator" aria-hidden="true"></span>
+        <span class="page-title">AT map</span>
       </div>
-      <div class="header-tools" aria-label="Map tools">
-        <button type="button" class="tool" id="key-button" aria-controls="key-panel" aria-expanded="false">Key</button>
-        <button type="button" class="tool" id="copy-link">Copy link</button>
-        <button type="button" class="tool" id="measure-button" aria-pressed="false">Measure</button>
-      </div>
+      <button type="button" class="text-button copy-button" id="copy-link">Copy link</button>
     </header>
 
     <main class="workarea">
-      <div class="map-paper" aria-hidden="true"></div>
-      <div id="map" role="application" aria-label="Interactive map of the Appalachian Trail in northwest Connecticut"></div>
-
-      <section class="floating-panel key-panel" id="key-panel" aria-label="Map key" hidden>
-        <div class="panel-heading">
-          <h1>Map key</h1>
-          <button type="button" class="close-button" id="close-key" aria-label="Close map key">×</button>
-        </div>
-        <div class="panel-scroll">
-          <div class="legend-group"><h2>Trails</h2>
+      <aside class="key-panel" aria-label="Map key">
+        <div class="key-scroll">
+          <h1 class="key-title">Map key</h1>
+          <section class="legend-group" aria-labelledby="key-trails">
+            <h2 id="key-trails">Trails</h2>
             <div class="legend-row"><span class="swatch line-at"></span><span>Appalachian Trail</span></div>
             <div class="legend-row"><span class="swatch line-near"></span><span>Nearby trails</span></div>
-          </div>
-          <div class="legend-group"><h2>Fishing</h2>
+          </section>
+          <section class="legend-group" aria-labelledby="key-fishing">
+            <h2 id="key-fishing">Fishing</h2>
             <div class="legend-row"><span class="swatch fish-release"></span><span>Catch and release</span></div>
-            <div class="legend-row"><span class="swatch fish-keep"></span><span>Keep (check current regulations)</span></div>
+            <div class="legend-row"><span class="swatch fish-keep"></span><span>Keep</span></div>
             <div class="legend-row"><span class="swatch fish-other"></span><span>Other category</span></div>
-          </div>
-          <div class="legend-group"><h2>Places</h2>
+          </section>
+          <section class="legend-group" aria-labelledby="key-places">
+            <h2 id="key-places">Places</h2>
             <div class="legend-row"><span class="swatch camp"></span><span>Camps and shelters</span></div>
             <div class="legend-row"><span class="swatch peak"></span><span>Peaks</span></div>
             <div class="legend-row"><span class="swatch poi"></span><span>Points of interest</span></div>
             <div class="legend-row"><span class="swatch historic"></span><span>Historic sites</span></div>
             <div class="legend-row"><span class="swatch dam"></span><span>Dams</span></div>
             <div class="legend-row"><span class="swatch waterfall"></span><span>Waterfalls</span></div>
-          </div>
-          <div class="legend-group"><h2>Terrain and water</h2>
+          </section>
+          <section class="legend-group" aria-labelledby="key-terrain">
+            <h2 id="key-terrain">Terrain and water</h2>
             <div class="legend-row"><span class="swatch river"></span><span>Rivers and streams</span></div>
             <div class="legend-row"><span class="swatch lake"></span><span>Lakes and ponds</span></div>
             <div class="legend-row"><span class="swatch forest"></span><span>Forest / protected land</span></div>
             <div class="legend-row"><span class="swatch contour"></span><span>Contours</span></div>
+          </section>
+        </div>
+        <div class="key-footer">
+          <div class="distance" aria-live="polite">
+            <span class="footer-label">Distance</span>
+            <div class="distance-value"><strong id="measurement-value">0.00</strong><span>mi</span></div>
+            <div class="measure-actions" id="measure-actions" hidden>
+              <button type="button" class="text-button" id="undo-measure">Undo</button>
+              <button type="button" class="text-button" id="clear-measure">Clear</button>
+            </div>
           </div>
-          <p class="key-note">Key based on the QGIS project screenshots. Confirm fishing restrictions and route conditions with current sources.</p>
+          <div class="scale-host" id="scale-host" aria-label="Map scale"></div>
         </div>
-      </section>
+      </aside>
 
-      <section class="floating-panel measure-panel" id="measure-panel" aria-label="Distance measurement" hidden>
-        <div class="panel-heading">
-          <h1>Measure distance</h1>
-          <button type="button" class="close-button" id="close-measure" aria-label="Close measure tool">×</button>
-        </div>
-        <p>Click points on the map to trace a distance. This measures straight-line segments, not trail mileage.</p>
-        <div class="measurement"><strong id="measurement-value">0.00</strong><span>miles</span></div>
-        <div class="measure-actions">
-          <button type="button" class="tool" id="undo-measure">Undo</button>
-          <button type="button" class="tool" id="clear-measure">Clear</button>
-        </div>
-      </section>
-
-      <button class="return-button" type="button" id="recenter" title="Return to overview" aria-label="Return to map overview">↗ <span>Overview</span></button>
-      <div class="toast" id="toast" aria-live="polite" role="status"></div>
+      <div class="map-wrap" id="map-wrap">
+        <div class="map-paper" aria-hidden="true"></div>
+        <div id="map" role="application" aria-label="Interactive Appalachian Trail map of northwest Connecticut"></div>
+        <div class="map-fade" aria-hidden="true"></div>
+        <button type="button" class="map-measure-button" id="measure-button" aria-pressed="false">Measure</button>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </div>
     </main>
   </div>
 </body>

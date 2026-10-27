@@ -1,25 +1,23 @@
-/* keegan.biz/map — QGIS transparent PNG tile edition.
-   Tiles are uploaded separately to map/tiles/base/{z}/{x}/{y}.png.
-   The paper textures already live in /assets/home/ and are NOT bundled here. */
+/* keegan.biz/map — XYZ transparent PNG tiles from QGIS.
+   Keep tiles at map/tiles/base/{z}/{x}/{y}.png and textures in /assets/home/.
+   No additional GeoJSON layers are required. */
 window.AT_MAP_CONFIG = {
   desktopView: { center: [41.867, -73.3626], zoom: 10 },
-  mobileView:  { center: [41.867, -73.3626], zoom: 9 },
+  mobileView:  { center: [41.867, -73.3626], zoom: 10 },
 
-  // Never zoom beyond the highest exported PNG level.
+  // QGIS directory export: levels 9 through 15, 256x256 PNG, standard XYZ.
   minZoom: 9,
   maxZoom: 15,
   tilesMinZoom: 9,
   tilesMaxZoom: 15,
   tileUrl: './tiles/base/{z}/{x}/{y}.png',
 
-  // Keep navigation near the northwest Connecticut / AT corridor.
-  navigationBounds: [[41.10, -74.55], [42.65, -72.35]],
+  // Allows north-south exploration without wandering far outside the export.
+  navigationBounds: [[41.08, -74.45], [42.60, -72.45]],
 
-  // At overview scales only, softly feather the OUTER edges of the raster.
-  // These do not edit the actual tile files.
-  fadeCenter: [41.875, -73.41],
-  fadeBounds: [[41.44, -73.81], [42.31, -73.035]],
+  // Only a faint screen-edge cream vignette at the two overview levels.
+  // No mask is applied to the tile layer, so zoom 9 can never be hidden by it.
   fadeThroughZoom: 10,
 
-  attribution: 'Map compiled in QGIS · Verify conditions and regulations locally'
+  attribution: 'Map compiled in QGIS'
 };
