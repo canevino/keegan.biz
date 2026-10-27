@@ -96,13 +96,52 @@
     toastTimeout = setTimeout(() => element.classList.remove('visible'), 2400);
   }
 
-  // This is a screen-space fade only; unlike the previous geographic tile-pane
-  // mask, it does not hide the map when zooming to level 9.
-  function syncOverviewFade() {
-    $('map-wrap').classList.toggle('overview-fade', map.getZoom() <= c.fadeThroughZoom);
+  // Soft-edged print area at the furthest-out zoom. Mask each actual tile
+  // image (not Leaflet's zero-sized tile pane), preventing the blank-map issue
+  // caused by pane-level masks. The feather follows geographic coordinates.
+  const mapWrap = $('map-wrap');
+  let overviewFrame = 0;
+  function updateOverviewTreatment() {
+    mapWrap.classList.toggle('is-overview', map.getZoom() === c.minZoom);
+    const images = map.getContainer().querySelectorAll('img.leaflet-tile.qgis-tiles');
+    if (map.getZoom() !== c.minZoom) {
+      images.forEach(image => {
+        image.style.maskImage = '';
+        image.style.webkitMaskImage = '';
+        image.style.maskComposite = '';
+        image.style.webkitMaskComposite = '';
+      });
+      return;
+    }
+    const extent = L.latLngBounds(c.overviewPlateBounds || c.navigationBounds);
+    const nw = map.latLngToContainerPoint(extent.getNorthWest());
+    const se = map.latLngToContainerPoint(extent.getSouthEast());
+    const rect = map.getContainer().getBoundingClientRect();
+    const feather = Math.min(c.overviewFeatherPixels || 75, Math.abs(se.x-nw.x)/3, Math.abs(se.y-nw.y)/3);
+    const px = n => Math.round(n * 10) / 10 + 'px';
+    images.forEach(image => {
+      const box = image.getBoundingClientRect();
+      if (!box.width || !box.height) return;
+      const x = box.left - rect.left;
+      const y = box.top - rect.top;
+      const l = nw.x - x, r = se.x - x, t = nw.y - y, b = se.y - y;
+      const horizontal = `linear-gradient(to right, transparent ${px(l)}, black ${px(l+feather)}, black ${px(r-feather)}, transparent ${px(r)})`;
+      const vertical = `linear-gradient(to bottom, transparent ${px(t)}, black ${px(t+feather)}, black ${px(b-feather)}, transparent ${px(b)})`;
+      image.style.maskImage = horizontal + ', ' + vertical;
+      image.style.webkitMaskImage = horizontal + ', ' + vertical;
+      image.style.maskComposite = 'intersect';
+      image.style.webkitMaskComposite = 'source-in';
+    });
   }
-  map.on('zoomend', syncOverviewFade);
-  syncOverviewFade();
+  function scheduleOverviewTreatment() {
+    cancelAnimationFrame(overviewFrame);
+    overviewFrame = requestAnimationFrame(updateOverviewTreatment);
+  }
+  map.on('zoomend moveend resize', scheduleOverviewTreatment);
+  [nativeTiles, retinaTiles].filter(Boolean).forEach(layer => {
+    layer.on('tileload load', scheduleOverviewTreatment);
+  });
+  scheduleOverviewTreatment();
 
   function currentViewLink() {
     const center = map.getCenter();
@@ -114,15 +153,6 @@
     firstMove = false;
     if (history.replaceState && location.protocol !== 'file:') {
       history.replaceState(null, '', currentViewLink());
-    }
-  });
-  $('copy-link').addEventListener('click', async () => {
-    const url = currentViewLink();
-    try {
-      await navigator.clipboard.writeText(url);
-      toast('Map link copied');
-    } catch {
-      window.prompt('Copy map link:', url);
     }
   });
 

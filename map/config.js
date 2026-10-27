@@ -20,6 +20,9 @@ window.AT_MAP_CONFIG = {
   // At zoom 15 use native z15 tiles (there is no z16 export).
   useRetinaTiles: true,
 
-  fadeThroughZoom: 10,
+  // Portrait print area for the overview. The map gradually blends into paper
+  // at this frame rather than ending in hard, unrelated GIS source boundaries.
+  overviewPlateBounds: [[41.15, -73.86], [42.28, -73.03]],
+  overviewFeatherPixels: 75,
   attribution: 'Map compiled in QGIS'
 };

@@ -22,7 +22,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
 .text-button { border: 0; padding: 0; background: transparent; color: var(--red); font-size: 12px; font-weight: 700; }
 .text-button:hover { text-decoration: underline; text-underline-offset: 3px; }
 .text-button:disabled { opacity: .32; cursor: default; text-decoration: none; }
-.copy-button { flex: 0 0 auto; }
+
 .workarea { position: relative; display: flex; flex: 1 1 auto; min-height: 0; isolation: isolate; }
 
 /* Always-open key on the LEFT: no checkboxes, no drawer, no overlays. */
@@ -64,27 +64,40 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
 .scale-host .leaflet-control-scale { display: inline-block; float: none; clear: both; margin: 0 !important; }
 .scale-host .leaflet-control-scale-line { background: transparent !important; border-color: rgba(17,17,15,.7) !important; color: var(--ink); font-size: 10px !important; padding: 1px 5px 0; }
 
-/* Map is printed over light creamy paper. Textures exist in /assets/home/. */
+/* Layered paper, using only existing repository files. The backing grain
+   stays visible in blank areas; a very light grain also sits above the map. */
 .map-wrap { position: relative; flex: 1 1 auto; min-width: 0; overflow: hidden; isolation: isolate; background: var(--paper); }
 .map-paper { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: var(--paper); pointer-events: none; }
 .map-paper::before, .map-paper::after { content: ''; position: absolute; inset: 0; pointer-events: none; }
 .map-paper::before {
-  background: url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg') center / 1200px auto repeat;
-  opacity: .055;
-  mix-blend-mode: multiply;
+  background-image: url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg');
+  background-position: center;
+  background-size: 1050px auto;
+  background-repeat: repeat;
+  opacity: .32;
+  mix-blend-mode: soft-light;
+  filter: contrast(1.6) brightness(1.18);
 }
 .map-paper::after {
-  background: url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg') center / 1550px auto repeat;
-  opacity: .040;
+  background-image: url('/assets/home/Texturelabs_Paper_226L_paper overlay.jpg');
+  background-position: left top;
+  background-size: 830px auto;
+  background-repeat: repeat;
+  opacity: .18;
   mix-blend-mode: multiply;
+  filter: contrast(1.35) brightness(1.5);
 }
 #map { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; background: transparent !important; }
 .leaflet-container { background: transparent !important; font-family: Helvetica, Arial, sans-serif; }
-/* Deliberately no multiply blend on the raster tile pane: it darkened the QGIS artwork. */
-.leaflet-tile-pane { mix-blend-mode: normal !important; -webkit-mask-image: none !important; mask-image: none !important; }
-/* Faint edge toning only on overview zooms. Screen-space, never masks or hides tiles. */
-.map-fade { position: absolute; z-index: 2; inset: 0; opacity: 0; pointer-events: none; transition: opacity 240ms ease; background: radial-gradient(ellipse 95% 102% at 50% 49%, rgba(236,231,215,0) 57%, rgba(236,231,215,.06) 77%, rgba(236,231,215,.20) 100%); }
-.overview-fade .map-fade { opacity: 1; }
+.leaflet-tile-pane { mix-blend-mode: normal !important; }
+.qgis-tiles { image-rendering: auto; opacity: 1 !important; }
+/* Print plate: quiet, paler cartography at the broadest zoom. At detail zooms,
+   show the original unaltered QGIS colors. */
+.is-overview .qgis-tiles { filter: saturate(.83) contrast(.92) brightness(1.06); }
+.map-grain { position: absolute; z-index: 400; inset: 0; pointer-events: none; background-image: url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg'), url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'); background-size: 1050px auto, 1450px auto; background-position: center, 0 0; background-repeat: repeat, repeat; opacity: .31; mix-blend-mode: soft-light; filter: contrast(1.65) brightness(1.1); }
+/* A faint print wash at overview scale, never a giant dark vignette. */
+.map-fade { position: absolute; z-index: 401; inset: 0; opacity: 0; pointer-events: none; transition: opacity 200ms ease; background: rgba(236,231,215,.07); }
+.is-overview .map-fade { opacity: 1; }
 
 .leaflet-control-zoom { margin: 13px 13px 0 0 !important; border: 1px solid var(--red) !important; border-radius: 0 !important; box-shadow: none !important; }
 .leaflet-control-zoom a { width: 34px !important; height: 34px !important; line-height: 32px !important; background: var(--paper) !important; border-color: var(--red) !important; border-radius: 0 !important; color: var(--red) !important; }
@@ -113,7 +126,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
   .swatch { flex-basis: 21px; width: 21px; }
   .key-footer { padding: 9px 8px 10px 11px; }
   .distance-value strong { font-size: 21px; }
-  .copy-button { font-size: 11px; }
+
   .leaflet-control-zoom { margin: 9px 9px 0 0 !important; }
 }
 @media (max-width: 390px) {
@@ -124,9 +137,16 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
   .key-title { font-size: 15px; }
 }
 
-/* Native QGIS artwork: no darkening, zoom filter, or forced pixelation. */
-.qgis-tiles { filter: none !important; image-rendering: auto; opacity: 1 !important; }
 @media (max-width: 700px) {
   .measurement-heading { align-items: flex-start; gap: 5px; }
   .key-measure-button { font-size: 10px; padding: 7px 6px; }
 }
+
+/* Same paper family on the surrounding page, not just the map. */
+.topbar, .key-panel, .key-footer { background-color: var(--paper); }
+.topbar::before, .key-panel::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg') center / 1000px auto repeat;
+  opacity: .22; mix-blend-mode: soft-light;
+}
+.topbar > *, .key-panel > * { position: relative; z-index: 1; }
