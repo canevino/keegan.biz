@@ -1,7 +1,6 @@
-/* keegan.biz/map — transparent QGIS XYZ PNG tiles, zoom 9–15.
-   Only these four files need replacing. Keep /map/tiles/base/ and /assets/home/.
-   Bounds derived from the exported 14-level tile coverage, with small padding.
-   Geographic bounds restrict navigation; the source map has irregular edges. */
+/* keegan.biz/map — QGIS PNG tiles + map-attached paper + procedural diagonal fade.
+   Replace only the four page files. NO veil PNG, no extra assets required.
+   Keep /map/tiles/base and /assets/home as they are. */
 window.AT_MAP_CONFIG = {
   desktopView: { center: [41.88, -73.40], zoom: 10 },
   mobileView: { center: [41.88, -73.40], zoom: 11 },
@@ -20,9 +19,17 @@ window.AT_MAP_CONFIG = {
   // At zoom 15 use native z15 tiles (there is no z16 export).
   useRetinaTiles: true,
 
-  // Portrait print area for the overview. The map gradually blends into paper
-  // at this frame rather than ending in hard, unrelated GIS source boundaries.
-  overviewPlateBounds: [[41.15, -73.86], [42.28, -73.03]],
-  overviewFeatherPixels: 75,
+  // NE to SW diagonal, roughly following the trail across the map.
+  // The central strip is fully visible. Beyond it, the map softly fades
+  // into cream paper. Coordinates are [latitude, longitude].
+  // Adjust endpoints / widths here if you want a wider or narrower strip.
+  diagonalFade: {
+    northEast: [42.47, -73.06],
+    southWest: [41.25, -73.88],
+    clearHalfWidthKm: 20,
+    featherKm: 13,
+    // At z10–11 this is fully active; on closer views it eases away.
+    opacityByZoom: { 10: 1, 11: 1, 12: 0.78, 13: 0.35, 14: 0, 15: 0 }
+  },
   attribution: 'Map compiled in QGIS'
 };
