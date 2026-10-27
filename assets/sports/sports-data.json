@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-27T15:53:43.683Z",
+  "updatedAt": "2026-10-27T22:25:25.603Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -663,14 +663,14 @@
         "rows": [
           {
             "rank": 1,
-            "team": "Inter",
-            "points": 22,
-            "played": 8,
+            "team": "Lazio",
+            "points": 25,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 2,
-            "team": "Lazio",
+            "team": "Inter",
             "points": 22,
             "played": 8,
             "highlight": false
@@ -678,21 +678,21 @@
           {
             "rank": 3,
             "team": "Roma",
-            "points": 18,
-            "played": 8,
+            "points": 21,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 4,
-            "team": "Milan",
-            "points": 18,
-            "played": 8,
+            "team": "Como",
+            "points": 20,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 5,
-            "team": "Como",
-            "points": 17,
+            "team": "Milan",
+            "points": 18,
             "played": 8,
             "highlight": false
           },
@@ -714,14 +714,14 @@
             "rank": 8,
             "team": "Torino",
             "points": 13,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 9,
             "team": "Cagliari",
             "points": 13,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
@@ -756,7 +756,7 @@
             "rank": 14,
             "team": "Sassuolo",
             "points": 8,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
@@ -810,15 +810,6 @@
       "shortName": "Shakhtar",
       "upcoming": [
         {
-          "id": "6284438",
-          "date": "2026-10-27T16:00:00.000Z",
-          "when": "today · Tue, Oct 27 · 12:00 PM ET",
-          "status": "scheduled",
-          "home": "Shakhtar Donetsk",
-          "away": "Dynamo Kyiv",
-          "competition": "Cup"
-        },
-        {
           "id": "5909320",
           "date": "2026-10-30T16:00:00.000Z",
           "when": "Fri, Oct 30 · 12:00 PM ET",
@@ -853,6 +844,15 @@
           "home": "Liviy Bereh",
           "away": "Shakhtar Donetsk",
           "competition": "Premier League"
+        },
+        {
+          "id": "6106336",
+          "date": "2026-11-25T20:00:00.000Z",
+          "when": "Wed, Nov 25 · 3:00 PM ET",
+          "status": "scheduled",
+          "home": "Shakhtar Donetsk",
+          "away": "Fenerbahçe",
+          "competition": "Champions League"
         }
       ],
       "standings": {
