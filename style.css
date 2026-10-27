@@ -1,25 +1,41 @@
-/* keegan.biz homepage: one featured illustration */
+/* keegan.biz homepage — one illustration, fitted to the screen */
+
+/* The homepage itself should never create vertical scrolling. */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  overflow-y: hidden;
+}
 
 .home {
   --home-left: clamp(40px, 5.5vw, 88px);
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
 }
 
 .hero {
-  min-height: 100vh;
-  min-height: 100dvh;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
-  /* Leave room for the existing vertical scarf navigation on desktop. */
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+
+  /* Keep clear of the original vertical scarf navigation. */
   padding:
-    clamp(38px, 5vh, 64px)
+    clamp(32px, 4.5vh, 54px)
     clamp(345px, 30vw, 480px)
-    clamp(50px, 6vw, 100px)
+    clamp(20px, 3vh, 36px)
     var(--home-left);
 }
 
 .welcome-slot {
+  flex: 0 0 auto;
   width: 100%;
   margin: 0;
 }
@@ -29,93 +45,111 @@
   width: max-content;
   max-width: 100%;
   color: var(--green, #006a44);
-  font-size: clamp(68px, 6.6vw, 106px);
+  font-size: clamp(50px, 5vw, 80px);
   font-weight: 700;
   line-height: .95;
   letter-spacing: -.065em;
 }
 
 .site-title {
+  flex: 0 0 auto;
   margin: 0;
   color: var(--ink, #11110f);
-  font-size: clamp(34px, 3.5vw, 56px);
+  font-size: clamp(25px, 2.5vw, 40px);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -.055em;
 }
 
 .home-illustration {
-  /* No card, border, caption or shadow: just the original drawing. */
-  width: 100%;
-  max-width: 1300px;
-  margin: clamp(38px, 5.5vh, 75px) auto 0;
+  /* Flexing the image area makes it shrink on shorter screens. */
+  flex: 1 1 auto;
+  min-height: 0;
+  width: min(100%, 940px);
+  margin: clamp(25px, 4vh, 44px) 0 0;
   padding: 0;
 }
 
 .home-illustration img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   max-width: none;
+  object-fit: contain;
+  object-position: top left;
   mix-blend-mode: multiply;
 }
 
-/* The scarf navigation moves across the top below this breakpoint. */
+/* The scarf rack moves from the right edge to the top. */
 @media (max-width: 1240px) {
   .hero {
     padding:
-      156px
+      clamp(112px, 15vh, 148px)
       clamp(34px, 6vw, 72px)
-      70px;
+      clamp(18px, 3vh, 32px);
   }
 
   .welcome-word {
-    font-size: clamp(54px, 8vw, 86px);
+    font-size: clamp(48px, 6.5vw, 72px);
   }
 
   .site-title {
-    font-size: clamp(30px, 5vw, 48px);
+    font-size: clamp(27px, 3.8vw, 40px);
   }
 
   .home-illustration {
-    max-width: 1000px;
-    margin-top: clamp(36px, 5vh, 65px);
+    width: min(100%, 900px);
+    margin-top: clamp(22px, 3.5vh, 36px);
   }
 }
 
 @media (max-width: 700px) {
   .hero {
     padding:
-      150px
+      clamp(104px, 15vh, 128px)
       calc(22px + env(safe-area-inset-right))
-      calc(50px + env(safe-area-inset-bottom))
+      calc(20px + env(safe-area-inset-bottom))
       calc(22px + env(safe-area-inset-left));
   }
 
   .welcome-word {
-    font-size: clamp(42px, 12vw, 68px);
+    font-size: clamp(38px, 9vw, 56px);
   }
 
   .site-title {
-    margin-top: 4px;
-    font-size: clamp(25px, 7vw, 38px);
+    margin-top: 2px;
+    font-size: clamp(23px, 5.7vw, 33px);
   }
 
   .home-illustration {
-    margin-top: 40px;
+    width: 100%;
+    margin-top: clamp(18px, 3vh, 28px);
   }
 }
 
-@media (max-width: 420px) {
+/* Keep the title and artwork comfortable on very short viewports. */
+@media (max-height: 570px) {
   .hero {
-    padding-top: 140px;
+    padding-top: 22px;
+    padding-bottom: 12px;
   }
 
   .welcome-word {
-    font-size: clamp(36px, 11vw, 48px);
+    font-size: clamp(36px, 4.5vw, 64px);
   }
 
   .site-title {
-    font-size: clamp(22px, 6.5vw, 28px);
+    font-size: clamp(21px, 2.5vw, 32px);
+  }
+
+  .home-illustration {
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 1240px) and (max-height: 570px) {
+  .hero {
+    /* Leave room for the horizontal scarf rack, even on short screens. */
+    padding-top: 105px;
   }
 }
