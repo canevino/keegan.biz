@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-26T22:46:35.228Z",
+  "updatedAt": "2026-10-27T05:17:31.048Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -52,7 +52,7 @@
         {
           "id": "6275371",
           "date": "2026-10-28T20:00:00.000Z",
-          "when": "Wed, Oct 28 · 4:00 PM ET",
+          "when": "tomorrow · Wed, Oct 28 · 4:00 PM ET",
           "status": "scheduled",
           "home": "Liverpool",
           "away": "Chelsea",
@@ -249,7 +249,7 @@
         {
           "id": "5793961",
           "date": "2026-10-28T20:00:00.000Z",
-          "when": "Wed, Oct 28 · 4:00 PM ET",
+          "when": "tomorrow · Wed, Oct 28 · 4:00 PM ET",
           "status": "scheduled",
           "home": "Hearts",
           "away": "Rangers",
@@ -812,7 +812,7 @@
         {
           "id": "6284438",
           "date": "2026-10-27T16:00:00.000Z",
-          "when": "tomorrow · Tue, Oct 27 · 12:00 PM ET",
+          "when": "today · Tue, Oct 27 · 12:00 PM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "Dynamo Kyiv",
@@ -977,9 +977,19 @@
       "active": false,
       "team": "Lithuania",
       "shortName": "Lithuania",
-      "upcoming": [],
+      "upcoming": [
+        {
+          "id": "5181885",
+          "date": "2026-11-16T17:00:00.000Z",
+          "when": "Mon, Nov 16 · 12:00 PM ET",
+          "status": "scheduled",
+          "home": "Lithuania",
+          "away": "Liechtenstein",
+          "competition": "UEFA Nations League D Grp. 2"
+        }
+      ],
       "standings": {
-        "title": "",
+        "title": "UEFA Nations League D Grp. 2",
         "rows": []
       }
     },
