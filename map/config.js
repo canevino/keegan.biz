@@ -1,4 +1,4 @@
-/* keegan.biz/map — QGIS PNG tiles + map-attached paper + procedural diagonal fade.
+/* keegan.biz/map — QGIS PNG tiles + map-attached paper + continuous viewport-wide geographic fade.
    Replace only the four page files. NO veil PNG, no extra assets required.
    Keep /map/tiles/base and /assets/home as they are. */
 window.AT_MAP_CONFIG = {
@@ -19,17 +19,16 @@ window.AT_MAP_CONFIG = {
   // At zoom 15 use native z15 tiles (there is no z16 export).
   useRetinaTiles: true,
 
-  // NE to SW diagonal, roughly following the trail across the map.
-  // The central strip is fully visible. Beyond it, the map softly fades
-  // into cream paper. Coordinates are [latitude, longitude].
-  // Adjust endpoints / widths here if you want a wider or narrower strip.
+  // Centreline of the printed-map appearance (southwest to northeast).
+  // Fade is computed ONCE across the viewport: no square/canvas tile seams.
+  // Adjust these numbers if the band should be wider or narrower.
   diagonalFade: {
     northEast: [42.47, -73.06],
     southWest: [41.25, -73.88],
-    clearHalfWidthKm: 20,
-    featherKm: 13,
+    clearHalfWidthKm: 13,
+    featherKm: 19,
     // At z10–11 this is fully active; on closer views it eases away.
-    opacityByZoom: { 10: 1, 11: 1, 12: 0.78, 13: 0.35, 14: 0, 15: 0 }
+    opacityByZoom: { 10: 1, 11: 0.90, 12: 0.52, 13: 0.18, 14: 0, 15: 0 }
   },
   attribution: 'Map compiled in QGIS'
 };

@@ -103,9 +103,6 @@
   map.createPane('paperBelow');
   map.getPane('paperBelow').style.zIndex = '150';
   map.getPane('paperBelow').style.pointerEvents = 'none';
-  map.createPane('terrainVeil');
-  map.getPane('terrainVeil').style.zIndex = '350';
-  map.getPane('terrainVeil').style.pointerEvents = 'none';
   map.createPane('paperAbove');
   map.getPane('paperAbove').style.zIndex = '360';
   map.getPane('paperAbove').style.pointerEvents = 'none';
@@ -139,89 +136,85 @@
   new PaperTiles({...paperOptions, pane: 'paperBelow', paperTop: false}).addTo(map);
   new PaperTiles({...paperOptions, pane: 'paperAbove', paperTop: true}).addTo(map);
 
-  // A single geographic diagonal from the upper-right (north-east) to the
-  // lower-left (south-west). At each zoom, canvas tiles calculate distance to
-  // this line in Web Mercator world pixels; the outer parts of the old QGIS
-  // export fade into cream. There is NO stored/generated image-mask file.
-  // Because these are Leaflet GridLayer tiles, the fade pans and zooms with
-  // the cartography, and stays aligned across tile boundaries.
+  // ONE continuous geographic fade across the entire viewport.
+  // The old implementation drew one canvas per XYZ tile; this produced square
+  // patches during pan/zoom and revealed the underlying QGIS export edges.
+  // Here a single overlaid DIV uses a CSS mask with four gradient stops.
+  // Its position is calculated using projected geographic endpoints, and
+  // refreshed on pan/zoom so the diagonal stays attached to the trail.
+  // No generated image or corridor-veil.png is used.
   const diagonal = c.diagonalFade;
   if (diagonal && diagonal.northEast && diagonal.southWest) {
-    const DiagonalFadeTiles = L.GridLayer.extend({
-      createTile(coords) {
-        const canvas = L.DomUtil.create('canvas', 'diagonal-fade-tile');
-        const size = this.getTileSize();
-        const w = size.x, h = size.y;
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d', { willReadFrequently: false });
-        if (!ctx) return canvas;
+    const fade = L.DomUtil.create('div', 'geographic-fade', map.getContainer());
+    fade.setAttribute('aria-hidden', 'true');
+    const texAnchor = L.latLng(42.0, -73.45);
+    let pendingFadeFrame = 0;
 
-        // Leaflet/Web Mercator tile-pixel coordinates, same as the QGIS XYZ tiles.
-        const a = L.CRS.EPSG3857.latLngToPoint(L.latLng(diagonal.northEast), coords.z);
-        const b = L.CRS.EPSG3857.latLngToPoint(L.latLng(diagonal.southWest), coords.z);
-        const dx = b.x - a.x, dy = b.y - a.y;
-        const len2 = dx * dx + dy * dy;
-        if (!len2) return canvas;
-
-        const middleLat = (diagonal.northEast[0] + diagonal.southWest[0]) / 2;
-        // Mercator pixels per ground km at the corridor's mid-latitude.
-        const pixelsPerKm = (256 * Math.pow(2, coords.z)) /
-          (40075.016686 * Math.cos(middleLat * Math.PI / 180));
-        const inner = Math.max(0, diagonal.clearHalfWidthKm) * pixelsPerKm;
-        const feather = Math.max(0.1, diagonal.featherKm) * pixelsPerKm;
-        const outer = inner + feather;
-        const originX = coords.x * w, originY = coords.y * h;
-
-        // Skip rasterizing completely transparent tiles in the central strip.
-        // The squared-distance calculation also rounds the far ends of the fade.
-        const image = ctx.createImageData(w, h);
-        const data = image.data;
-        let hasColor = false;
-        for (let y = 0; y < h; y++) {
-          const wy = originY + y + 0.5;
-          for (let x = 0; x < w; x++) {
-            const wx = originX + x + 0.5;
-            const along = Math.max(0, Math.min(1,
-              ((wx - a.x) * dx + (wy - a.y) * dy) / len2));
-            const offX = wx - (a.x + dx * along);
-            const offY = wy - (a.y + dy * along);
-            const distance = Math.sqrt(offX * offX + offY * offY);
-            if (distance <= inner) continue;
-            const t = Math.min(1, (distance - inner) / feather);
-            // Smoothstep keeps both edges of the feather visually seamless.
-            const alpha = Math.round(255 * t * t * (3 - 2 * t));
-            if (alpha === 0) continue;
-            hasColor = true;
-            const p = (y * w + x) * 4;
-            data[p] = 236;
-            data[p + 1] = 231;
-            data[p + 2] = 215;
-            data[p + 3] = alpha;
-          }
-        }
-        if (hasColor) ctx.putImageData(image, 0, 0);
-        return canvas;
-      }
-    });
-    const fadedTiles = new DiagonalFadeTiles({
-      pane: 'terrainVeil', tileSize: 256,
-      minZoom: c.minZoom, maxZoom: c.maxZoom,
-      noWrap: true, updateWhenZooming: false, keepBuffer: 2
-    }).addTo(map);
-    const fadePane = map.getPane('terrainVeil');
-    function syncDiagonalFade() {
+    function syncContinuousFade() {
+      pendingFadeFrame = 0;
+      const zoom = map.getZoom();
       const strengths = diagonal.opacityByZoom || {};
-      const strength = strengths[map.getZoom()] ?? 0;
-      fadePane.style.opacity = String(strength);
-      if (strength > 0) {
-        if (!map.hasLayer(fadedTiles)) fadedTiles.addTo(map);
-      } else if (map.hasLayer(fadedTiles)) {
-        map.removeLayer(fadedTiles);
+      const strength = Object.prototype.hasOwnProperty.call(strengths, zoom)
+        ? Number(strengths[zoom]) : 0;
+      if (!(strength > 0)) {
+        fade.style.display = 'none';
+        return;
       }
+      fade.style.display = 'block';
+      fade.style.opacity = String(Math.max(0, Math.min(1, strength)));
+
+      const size = map.getSize();
+      const a = map.latLngToContainerPoint(diagonal.northEast);
+      const b = map.latLngToContainerPoint(diagonal.southWest);
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const len = Math.hypot(dx, dy);
+      if (len < 1 || !size.x || !size.y) return;
+
+      // Unit normal to the geographic diagonal in VIEWPORT pixel coordinates.
+      const nx = -dy / len;
+      const ny = dx / len;
+      // CSS gradient 0deg goes UP and 90deg goes RIGHT.
+      const cssAngle = (Math.atan2(nx, -ny) * 180 / Math.PI + 360) % 360;
+      const gradientLength = Math.abs(nx * size.x) + Math.abs(ny * size.y);
+      const centreOffset = nx * (a.x - size.x / 2) + ny * (a.y - size.y / 2);
+      const centre = 50 + (centreOffset / gradientLength) * 100;
+
+      const midLat = (diagonal.northEast[0] + diagonal.southWest[0]) / 2;
+      const pixelsPerKm = 256 * Math.pow(2, zoom) /
+        (40075.016686 * Math.cos(midLat * Math.PI / 180));
+      const inner = Math.max(0, diagonal.clearHalfWidthKm) * pixelsPerKm /
+        gradientLength * 100;
+      const outer = inner + Math.max(1, diagonal.featherKm) * pixelsPerKm /
+        gradientLength * 100;
+      const pct = n => `${n.toFixed(4)}%`;
+      // The mask reveals the PAPER overlay only outside the diagonal band.
+      // Using a SINGLE gradient eliminates tile-square edges completely.
+      const mask = `linear-gradient(${cssAngle.toFixed(4)}deg, ` +
+        `#000 ${pct(centre - outer)}, ` +
+        `transparent ${pct(centre - inner)}, ` +
+        `transparent ${pct(centre + inner)}, ` +
+        `#000 ${pct(centre + outer)})`;
+      fade.style.maskImage = mask;
+      fade.style.webkitMaskImage = mask;
+
+      // Both paper textures are registered to one fixed geographic anchor.
+      // Their position changes with map pan/zoom, not browser-window scrolling.
+      const textureOrigin = map.latLngToContainerPoint(texAnchor);
+      const scale = Math.pow(2, zoom - 10);
+      const s1 = Math.min(1150 * scale, 4800);
+      const s2 = Math.min(790 * scale, 3600);
+      fade.style.setProperty('--fade-paper-size-1', `${s1}px`);
+      fade.style.setProperty('--fade-paper-size-2', `${s2}px`);
+      fade.style.setProperty('--fade-paper-x', `${textureOrigin.x}px`);
+      fade.style.setProperty('--fade-paper-y', `${textureOrigin.y}px`);
     }
-    map.on('zoomend', syncDiagonalFade);
-    syncDiagonalFade();
+    function scheduleFade() {
+      if (pendingFadeFrame) return;
+      pendingFadeFrame = window.requestAnimationFrame(syncContinuousFade);
+    }
+    map.on('move zoom zoomend resize', scheduleFade);
+    scheduleFade();
   }
 
   function currentViewLink() {
