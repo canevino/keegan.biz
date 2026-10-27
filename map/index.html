@@ -8,10 +8,10 @@
   <title>AT map | keegan.biz</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="./styles.css?v=5">
+  <link rel="stylesheet" href="./styles.css?v=7">
   <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script defer src="./config.js?v=5"></script>
-  <script defer src="./app.js?v=5"></script>
+  <script defer src="./config.js?v=7"></script>
+  <script defer src="./app.js?v=7"></script>
 </head>
 <body>
   <div class="site-shell">
@@ -20,8 +20,6 @@
         <a class="home-scarf" href="/" aria-label="Return to keegan.biz homepage">
           <img src="/assets/home/home-scarf-update.png" alt="keegan.biz">
         </a>
-        <span class="header-separator" aria-hidden="true"></span>
-        <span class="page-title">AT map</span>
       </div>
       <button type="button" class="text-button copy-button" id="copy-link">Copy link</button>
     </header>
@@ -39,7 +37,6 @@
             <h2 id="key-fishing">Fishing</h2>
             <div class="legend-row"><span class="swatch fish-release"></span><span>Catch and release</span></div>
             <div class="legend-row"><span class="swatch fish-keep"></span><span>Keep</span></div>
-            <div class="legend-row"><span class="swatch fish-other"></span><span>Other category</span></div>
           </section>
           <section class="legend-group" aria-labelledby="key-places">
             <h2 id="key-places">Places</h2>
@@ -60,7 +57,10 @@
         </div>
         <div class="key-footer">
           <div class="distance" aria-live="polite">
-            <span class="footer-label">Distance</span>
+            <div class="measurement-heading">
+              <span class="footer-label">Distance</span>
+              <button type="button" class="key-measure-button" id="measure-button" aria-pressed="false">Measure</button>
+            </div>
             <div class="distance-value"><strong id="measurement-value">0.00</strong><span>mi</span></div>
             <div class="measure-actions" id="measure-actions" hidden>
               <button type="button" class="text-button" id="undo-measure">Undo</button>
@@ -75,7 +75,6 @@
         <div class="map-paper" aria-hidden="true"></div>
         <div id="map" role="application" aria-label="Interactive Appalachian Trail map of northwest Connecticut"></div>
         <div class="map-fade" aria-hidden="true"></div>
-        <button type="button" class="map-measure-button" id="measure-button" aria-pressed="false">Measure</button>
         <div class="toast" id="toast" role="status" aria-live="polite"></div>
       </div>
     </main>

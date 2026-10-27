@@ -5,7 +5,7 @@
   --red: #c1272d;
   --green: #006a44;
   --yellow: #fdb913;
-  --header: 68px;
+  --header: 75px;
   --key-width: 254px;
 }
 *, *::before, *::after { box-sizing: border-box; }
@@ -16,11 +16,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
 .site-shell { display: flex; flex-direction: column; height: 100vh; height: 100dvh; min-height: 320px; overflow: hidden; background: var(--paper); }
 .topbar { position: relative; z-index: 900; display: flex; align-items: center; justify-content: space-between; gap: 14px; height: var(--header); flex: 0 0 var(--header); padding: 8px 21px; border-bottom: 1px solid rgba(17,17,15,.4); background: var(--paper); }
 .site-identity { display: flex; align-items: center; min-width: 0; gap: 16px; }
-.home-scarf { display: flex; width: 132px; height: 48px; flex: 0 0 auto; align-items: center; justify-content: flex-start; }
+.home-scarf { display: flex; width: 224px; height: 61px; flex: 0 0 auto; align-items: center; justify-content: flex-start; transform: none !important; transition: none !important; }
 .home-scarf img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: left center; }
-.home-scarf:hover { transform: translateX(-3px) rotate(-1deg); }
-.header-separator { width: 1px; height: 23px; background: rgba(17,17,15,.32); }
-.page-title { color: var(--red); font-size: 19px; font-weight: 700; letter-spacing: -.035em; white-space: nowrap; }
+.home-scarf:hover, .home-scarf:focus-visible, .home-scarf img:hover { transform: none !important; transition: none !important; }
 .text-button { border: 0; padding: 0; background: transparent; color: var(--red); font-size: 12px; font-weight: 700; }
 .text-button:hover { text-decoration: underline; text-underline-offset: 3px; }
 .text-button:disabled { opacity: .32; cursor: default; text-decoration: none; }
@@ -37,10 +35,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
 .swatch { position: relative; display: inline-flex; flex: 0 0 25px; width: 25px; height: 18px; align-items: center; justify-content: center; }
 .swatch.line-at::after { content: ''; width: 24px; border-top: 2px dashed #745b43; }
 .swatch.line-near::after { content: ''; width: 24px; border-top: 1.5px dashed #8a7359; }
-.swatch.fish-release::after, .swatch.fish-keep::after, .swatch.fish-other::after, .swatch.camp::after, .swatch.poi::after, .swatch.historic::after { content: ''; width: 11px; height: 11px; border-radius: 50%; }
+.swatch.fish-release::after, .swatch.fish-keep::after, .swatch.camp::after, .swatch.poi::after, .swatch.historic::after { content: ''; width: 11px; height: 11px; border-radius: 50%; }
 .swatch.fish-release::after { border: 3px solid #3a7fa3; background: #fff; }
 .swatch.fish-keep::after { border: 1px solid #3a7fa3; background: #3a7fa3; }
-.swatch.fish-other::after { border: 1px solid #7a7a00; background: #f1e900; }
 .swatch.camp::after { width: 7px; height: 7px; background: #73736a; }
 .swatch.poi::after { border: 1px solid #7c8e2a; background: #cbd42e; }
 .swatch.historic::after { border: 1px solid #bf7883; background: #efa3b0; }
@@ -54,7 +51,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
 
 /* The actual distance measurement readout + live scale belong with the key. */
 .key-footer { flex: 0 0 auto; padding: 13px 18px 13px 21px; border-top: 1px solid rgba(17,17,15,.22); background: var(--paper); }
-.footer-label { display: block; margin-bottom: 5px; color: var(--green); font-size: 11px; font-weight: 700; }
+.footer-label { display: block; margin: 0; color: var(--green); font-size: 11px; font-weight: 700; }
+.measurement-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.key-measure-button { border: 1px solid var(--red); padding: 7px 10px; border-radius: 0; background: transparent; color: var(--red); font-size: 11px; font-weight: 700; line-height: 1; }
+.key-measure-button:hover, .key-measure-button.active { background: var(--red); color: var(--paper); }
+
 .distance-value { display: flex; align-items: baseline; gap: 5px; color: var(--ink); }
 .distance-value strong { font-size: 24px; line-height: 1.1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
 .distance-value span { font-size: 11px; }
@@ -89,8 +90,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
 .leaflet-control-zoom a { width: 34px !important; height: 34px !important; line-height: 32px !important; background: var(--paper) !important; border-color: var(--red) !important; border-radius: 0 !important; color: var(--red) !important; }
 .leaflet-control-zoom a:hover { background: var(--red) !important; color: var(--paper) !important; }
 .leaflet-control-attribution { background: rgba(236,231,215,.82) !important; font-size: 9px !important; }
-.map-measure-button { position: absolute; top: 94px; right: 13px; z-index: 500; padding: 10px 12px; border: 1px solid var(--red); background: var(--paper); color: var(--red); font-size: 11px; font-weight: 700; line-height: 1; }
-.map-measure-button:hover, .map-measure-button.active { background: var(--red); color: var(--paper); }
 .is-measuring #map { cursor: crosshair; }
 .toast { position: absolute; z-index: 700; left: 50%; bottom: 32px; min-width: 135px; padding: 9px 12px; border: 1px solid var(--red); background: var(--paper); color: var(--red); font-size: 11px; line-height: 1.2; text-align: center; opacity: 0; pointer-events: none; transform: translate(-50%, 6px); transition: opacity .16s ease, transform .16s ease; }
 .toast.visible { opacity: 1; transform: translate(-50%, 0); }
@@ -102,12 +101,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
   .legend-row { gap: 7px; font-size: 10.5px; }
 }
 @media (max-width: 700px) {
-  :root { --header: 60px; --key-width: 174px; }
+  :root { --header: 67px; --key-width: 174px; }
   .topbar { padding: 7px 12px; }
   .site-identity { gap: 10px; }
-  .home-scarf { width: 96px; height: 42px; }
-  .header-separator { height: 20px; }
-  .page-title { font-size: 15px; }
+  .home-scarf { width: 152px; height: 51px; }
   .key-scroll { padding: 15px 8px 8px 11px; }
   .key-title { margin-bottom: 17px; font-size: 16px; }
   .legend-group { margin-bottom: 15px; }
@@ -118,13 +115,18 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
   .distance-value strong { font-size: 21px; }
   .copy-button { font-size: 11px; }
   .leaflet-control-zoom { margin: 9px 9px 0 0 !important; }
-  .map-measure-button { top: 87px; right: 9px; padding: 10px 9px; }
 }
 @media (max-width: 390px) {
   :root { --key-width: 149px; }
-  .home-scarf { width: 70px; }
+  .home-scarf { width: 127px; }
   .site-identity { gap: 7px; }
-  .page-title { font-size: 13px; }
   .legend-row { font-size: 9px; }
   .key-title { font-size: 15px; }
+}
+
+/* Native QGIS artwork: no darkening, zoom filter, or forced pixelation. */
+.qgis-tiles { filter: none !important; image-rendering: auto; opacity: 1 !important; }
+@media (max-width: 700px) {
+  .measurement-heading { align-items: flex-start; gap: 5px; }
+  .key-measure-button { font-size: 10px; padding: 7px 6px; }
 }

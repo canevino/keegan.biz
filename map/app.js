@@ -17,7 +17,7 @@
     zoomSnap: 1,
     zoomDelta: 1,
     maxBounds: c.navigationBounds,
-    maxBoundsViscosity: 0.9,
+    maxBoundsViscosity: 1.0,
     preferCanvas: true,
     wheelPxPerZoomLevel: 95
   });
@@ -40,22 +40,52 @@
   const sharedView = parseHash();
   map.setView(sharedView ? sharedView.center : initial.center, sharedView ? sharedView.zoom : initial.zoom, { animate: false });
 
-  const tiles = L.tileLayer(c.tileUrl, {
-    minZoom: c.tilesMinZoom,
+  // Hard-limit panning to the actual exported region. This also constrains
+  // restored #view URLs, including old links centered outside the map.
+  map.setMaxBounds(L.latLngBounds(c.navigationBounds));
+  map.panInsideBounds(c.navigationBounds, { animate: false });
+
+  const commonTiles = {
+    minZoom: c.minZoom,
+    maxZoom: c.maxZoom,
     minNativeZoom: c.tilesMinZoom,
     maxNativeZoom: c.tilesMaxZoom,
-    maxZoom: c.maxZoom,
     noWrap: true,
+    bounds: c.navigationBounds,
     updateWhenZooming: false,
     attribution: c.attribution,
     className: 'qgis-tiles'
-  }).addTo(map);
+  };
+  const nativeTiles = L.tileLayer(c.tileUrl, commonTiles);
 
-  // Missing tiles outside the irregular export boundary are expected. Do not mask
-  // the tile pane or replace those areas with a dark layer; reveal the cream paper.
-  tiles.on('tileerror', event => {
-    console.warn('XYZ tile was not found:', event.coords);
+  // Leaflet displays 256px tiles over 256 CSS pixels by default. On Retina
+  // displays, existing higher-zoom QGIS tiles can give a sharper result:
+  // four z+1 images at 128 CSS pixels each. Never request a nonexistent z16.
+  const retinaCapable = !!c.useRetinaTiles && window.devicePixelRatio > 1.25;
+  const retinaTiles = retinaCapable ? L.tileLayer(c.tileUrl, {
+    ...commonTiles,
+    maxZoom: c.maxZoom - 1,
+    maxNativeZoom: c.tilesMaxZoom - 1,
+    tileSize: 128,
+    zoomOffset: 1,
+    attribution: c.attribution
+  }) : null;
+  let activeTiles = null;
+  function syncTiles() {
+    const desired = retinaTiles && map.getZoom() < c.maxZoom
+      ? retinaTiles : nativeTiles;
+    if (desired === activeTiles) return;
+    desired.addTo(map);
+    if (activeTiles) map.removeLayer(activeTiles);
+    activeTiles = desired;
+  }
+  [nativeTiles, retinaTiles].filter(Boolean).forEach(layer => {
+    layer.on('tileerror', event => {
+      console.warn('QGIS XYZ tile missing:', event.coords);
+    });
   });
+  map.on('zoomend', syncTiles);
+  syncTiles();
 
   let toastTimeout;
   function toast(message) {
@@ -127,7 +157,7 @@
     document.body.classList.toggle('is-measuring', on);
     $('measure-button').classList.toggle('active', on);
     $('measure-button').setAttribute('aria-pressed', String(on));
-    $('measure-button').textContent = on ? 'Done' : 'Measure';
+    $('measure-button').textContent = on ? 'Finish' : 'Measure';
     $('measure-actions').hidden = !on && !measurementPoints.length;
     if (on) {
       map.doubleClickZoom.disable();

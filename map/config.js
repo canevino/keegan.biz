@@ -1,23 +1,25 @@
-/* keegan.biz/map — XYZ transparent PNG tiles from QGIS.
-   Keep tiles at map/tiles/base/{z}/{x}/{y}.png and textures in /assets/home/.
-   No additional GeoJSON layers are required. */
+/* keegan.biz/map — transparent QGIS XYZ PNG tiles, zoom 9–15.
+   Only these four files need replacing. Keep /map/tiles/base/ and /assets/home/.
+   Bounds derived from the exported 14-level tile coverage, with small padding.
+   Geographic bounds restrict navigation; the source map has irregular edges. */
 window.AT_MAP_CONFIG = {
-  desktopView: { center: [41.867, -73.3626], zoom: 10 },
-  mobileView:  { center: [41.867, -73.3626], zoom: 10 },
+  desktopView: { center: [41.88, -73.40], zoom: 10 },
+  mobileView: { center: [41.88, -73.40], zoom: 11 },
 
-  // QGIS directory export: levels 9 through 15, 256x256 PNG, standard XYZ.
-  minZoom: 9,
+  // Do not shrink the entire map to a tiny island at zoom 9.
+  minZoom: 10,
   maxZoom: 15,
   tilesMinZoom: 9,
   tilesMaxZoom: 15,
   tileUrl: './tiles/base/{z}/{x}/{y}.png',
 
-  // Allows north-south exploration without wandering far outside the export.
-  navigationBounds: [[41.08, -74.45], [42.60, -72.45]],
+  // Strict north/south/east/west navigation boundary of the exported map.
+  navigationBounds: [[41.40, -73.86], [42.36, -72.98]],
 
-  // Only a faint screen-edge cream vignette at the two overview levels.
-  // No mask is applied to the tile layer, so zoom 9 can never be hidden by it.
+  // On high-density screens use z+1 tiles at map zooms 10–14.
+  // At zoom 15 use native z15 tiles (there is no z16 export).
+  useRetinaTiles: true,
+
   fadeThroughZoom: 10,
-
   attribution: 'Map compiled in QGIS'
 };
