@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-28T16:42:38.525Z",
+  "updatedAt": "2026-10-28T22:42:30.535Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -50,15 +50,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "6275371",
-          "date": "2026-10-28T20:00:00.000Z",
-          "when": "today · Wed, Oct 28 · 4:00 PM ET",
-          "status": "scheduled",
-          "home": "Liverpool",
-          "away": "Chelsea",
-          "competition": "EFL Cup"
-        },
-        {
           "id": "5795501",
           "date": "2026-11-01T16:30:00.000Z",
           "when": "Sun, Nov 1 · 11:30 AM ET",
@@ -93,6 +84,15 @@
           "home": "Liverpool",
           "away": "Man United",
           "competition": "Premier League"
+        },
+        {
+          "id": "6106294",
+          "date": "2026-11-25T20:00:00.000Z",
+          "when": "Wed, Nov 25 · 3:00 PM ET",
+          "status": "scheduled",
+          "home": "Club Brugge",
+          "away": "Liverpool",
+          "competition": "Champions League"
         }
       ],
       "standings": {
@@ -247,15 +247,6 @@
       "shortName": "Hearts",
       "upcoming": [
         {
-          "id": "5793961",
-          "date": "2026-10-28T20:00:00.000Z",
-          "when": "today · Wed, Oct 28 · 4:00 PM ET",
-          "status": "scheduled",
-          "home": "Hearts",
-          "away": "Rangers",
-          "competition": "Premiership"
-        },
-        {
           "id": "6241189",
           "date": "2026-11-01T15:00:00.000Z",
           "when": "Sun, Nov 1 · 10:00 AM ET",
@@ -290,6 +281,15 @@
           "home": "Dundee FC",
           "away": "Hearts",
           "competition": "Premiership"
+        },
+        {
+          "id": "6112495",
+          "date": "2026-11-26T17:45:00.000Z",
+          "when": "Thu, Nov 26 · 12:45 PM ET",
+          "status": "scheduled",
+          "home": "Hearts",
+          "away": "Monaco",
+          "competition": "Conference League"
         }
       ],
       "standings": {
@@ -298,85 +298,85 @@
           {
             "rank": 1,
             "team": "Celtic",
-            "points": 27,
-            "played": 10,
+            "points": 28,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 2,
             "team": "Rangers",
-            "points": 23,
-            "played": 10,
+            "points": 24,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 3,
             "team": "Hearts",
-            "points": 19,
-            "played": 10,
+            "points": 20,
+            "played": 11,
             "highlight": true
           },
           {
             "rank": 4,
-            "team": "Dundee United",
-            "points": 15,
-            "played": 10,
+            "team": "Dundee FC",
+            "points": 17,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 5,
-            "team": "Dundee FC",
-            "points": 14,
-            "played": 10,
+            "team": "Dundee United",
+            "points": 16,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 6,
-            "team": "St. Mirren",
-            "points": 13,
-            "played": 10,
+            "team": "Falkirk",
+            "points": 15,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "Falkirk",
-            "points": 12,
-            "played": 10,
+            "team": "St. Mirren",
+            "points": 14,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 8,
             "team": "St. Johnstone",
-            "points": 12,
-            "played": 10,
+            "points": 13,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 9,
             "team": "Aberdeen",
             "points": 11,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 10,
             "team": "Motherwell",
-            "points": 8,
-            "played": 10,
+            "points": 9,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Kilmarnock",
+            "team": "Hibernian",
             "points": 8,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Hibernian",
-            "points": 7,
-            "played": 10,
+            "team": "Kilmarnock",
+            "points": 8,
+            "played": 11,
             "highlight": false
           }
         ]
@@ -663,16 +663,16 @@
         "rows": [
           {
             "rank": 1,
-            "team": "Lazio",
+            "team": "Inter",
             "points": 25,
             "played": 9,
             "highlight": false
           },
           {
             "rank": 2,
-            "team": "Inter",
-            "points": 22,
-            "played": 8,
+            "team": "Lazio",
+            "points": 25,
+            "played": 9,
             "highlight": false
           },
           {
@@ -693,112 +693,112 @@
             "rank": 5,
             "team": "Milan",
             "points": 18,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 6,
+            "team": "Napoli",
+            "points": 14,
+            "played": 9,
+            "highlight": false
+          },
+          {
+            "rank": 7,
             "team": "Frosinone",
             "points": 14,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 7,
+            "rank": 8,
             "team": "Juventus",
             "points": 14,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
-            "rank": 8,
+            "rank": 9,
             "team": "Torino",
             "points": 13,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 9,
+            "rank": 10,
             "team": "Cagliari",
             "points": 13,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 10,
-            "team": "Napoli",
+            "rank": 11,
+            "team": "Bologna",
             "points": 11,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
-            "rank": 11,
+            "rank": 12,
             "team": "Atalanta",
             "points": 10,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 12,
+            "rank": 13,
+            "team": "Genoa",
+            "points": 10,
+            "played": 9,
+            "highlight": false
+          },
+          {
+            "rank": 14,
             "team": "Lecce",
             "points": 9,
             "played": 8,
             "highlight": false
           },
           {
-            "rank": 13,
-            "team": "Bologna",
-            "points": 8,
-            "played": 8,
-            "highlight": false
-          },
-          {
-            "rank": 14,
+            "rank": 15,
             "team": "Sassuolo",
             "points": 8,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 15,
+            "rank": 16,
             "team": "Monza",
             "points": 7,
-            "played": 8,
-            "highlight": false
-          },
-          {
-            "rank": 16,
-            "team": "Genoa",
-            "points": 7,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 17,
             "team": "Udinese",
-            "points": 4,
-            "played": 8,
+            "points": 5,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 18,
+            "team": "Parma",
+            "points": 5,
+            "played": 9,
+            "highlight": false
+          },
+          {
+            "rank": 19,
             "team": "Fiorentina",
             "points": 4,
             "played": 8,
             "highlight": true
           },
           {
-            "rank": 19,
-            "team": "Parma",
-            "points": 4,
-            "played": 8,
-            "highlight": false
-          },
-          {
             "rank": 20,
             "team": "Venezia",
             "points": 3,
-            "played": 8,
+            "played": 9,
             "highlight": false
           }
         ]
