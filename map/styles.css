@@ -1,4 +1,4 @@
-/* keegan.biz / map. Four files. Geographic diagonal edge fade generated in code. */
+/* keegan.biz / map. Clean QGIS tiles: no textures, fades or masks. */
 :root {
   --paper: #ece7d7;
   --ink: #11110f;
@@ -64,65 +64,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
 .scale-host .leaflet-control-scale { display: inline-block; float: none; clear: both; margin: 0 !important; }
 .scale-host .leaflet-control-scale-line { background: transparent !important; border-color: rgba(17,17,15,.7) !important; color: var(--ink); font-size: 10px !important; padding: 1px 5px 0; }
 
-/* Geographic paper treatment: Leaflet GridLayers use tile world pixels, so
-   the paper pans/zooms with the QGIS tiles, not with the browser viewport. */
+/* The exported QGIS PNGs are shown directly, without CSS texture layers. */
 .map-wrap { position: relative; flex: 1 1 auto; min-width: 0; overflow: hidden; isolation: isolate; background: var(--paper); }
 #map { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; background: var(--paper) !important; }
 .leaflet-container { background: var(--paper) !important; font-family: Helvetica, Arial, sans-serif; }
-.leaflet-tile-pane { mix-blend-mode: normal !important; }
-.qgis-tiles { image-rendering: auto; opacity: 1 !important; }
-.geo-paper-tile { position: relative; overflow: hidden; box-sizing: border-box; width: 256px; height: 256px; border: 0; }
-.geo-paper-tile::before, .geo-paper-tile::after {
-  content: ''; display: block; position: absolute; inset: 0; pointer-events: none;
-  background-repeat: repeat; mix-blend-mode: multiply;
-}
-.geo-paper-tile::before {
-  background-image: url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg');
-  background-size: var(--texture-size-1); background-position: var(--texture-pos-1);
-  filter: brightness(1.5) contrast(1.25);
-}
-.geo-paper-tile::after {
-  background-image: url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg');
-  background-size: var(--texture-size-2); background-position: var(--texture-pos-2);
-  filter: brightness(1.65) contrast(1.32);
-}
-.paper-bottom { background-color: var(--paper); }
-.paper-bottom::before { opacity: .47; }
-.paper-bottom::after { opacity: .28; }
-/* Light top grain keeps the paper material visible inside the map as well. */
-.paper-top { background: transparent; }
-.paper-top::before { opacity: .10; }
-.paper-top::after { opacity: .085; }
-/* A SINGLE full-viewport material overlay; the mask shape follows the
-   geographic diagonal (set by app.js), not the square XYZ tile grid. */
-.geographic-fade {
-  position: absolute;
-  inset: 0;
-  z-index: 700; /* above Leaflet mapPane (400), below controls (1000) */
-  pointer-events: none !important;
-  overflow: hidden;
-  background: var(--paper);
-  will-change: mask-image, opacity;
-}
-.geographic-fade::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg'),
-    url('/assets/home/Texturelabs_Paper_231L_watercolor paper overlay..jpg');
-  background-repeat: repeat, repeat;
-  background-size:
-    var(--fade-paper-size-1) auto,
-    var(--fade-paper-size-2) auto;
-  background-position:
-    var(--fade-paper-x) var(--fade-paper-y),
-    var(--fade-paper-x) var(--fade-paper-y);
-  opacity: .20;
-  mix-blend-mode: multiply;
-  filter: brightness(1.45) contrast(1.15);
-}
+.leaflet-tile-pane { mix-blend-mode: normal !important; opacity: 1 !important; }
+.qgis-tiles { image-rendering: auto; opacity: 1 !important; filter: none !important; mask: none !important; -webkit-mask: none !important; }
 .leaflet-control-zoom { margin: 13px 13px 0 0 !important; border: 1px solid var(--red) !important; border-radius: 0 !important; box-shadow: none !important; }
 .leaflet-control-zoom a { width: 34px !important; height: 34px !important; line-height: 32px !important; background: var(--paper) !important; border-color: var(--red) !important; border-radius: 0 !important; color: var(--red) !important; }
 .leaflet-control-zoom a:hover { background: var(--red) !important; color: var(--paper) !important; }
@@ -166,11 +113,4 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-o
   .key-measure-button { font-size: 10px; padding: 7px 6px; }
 }
 
-/* Same paper family on the surrounding page, not just the map. */
-.topbar, .key-panel, .key-footer { background-color: var(--paper); }
-.topbar::before, .key-panel::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: url('/assets/home/Texturelabs_Paper_170L_organic paper overlay.jpg') center / 1000px auto repeat;
-  opacity: .22; mix-blend-mode: soft-light;
-}
-.topbar > *, .key-panel > * { position: relative; z-index: 1; }
+/* Header, key, and map margins use the plain site cream. */
