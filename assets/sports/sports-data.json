@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-29T16:56:29.963Z",
+  "updatedAt": "2026-10-29T22:52:10.392Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -613,15 +613,6 @@
       "shortName": "Fiorentina",
       "upcoming": [
         {
-          "id": "5749722",
-          "date": "2026-10-29T19:45:00.000Z",
-          "when": "today · Thu, Oct 29 · 3:45 PM ET",
-          "status": "scheduled",
-          "home": "Fiorentina",
-          "away": "Atalanta",
-          "competition": "Serie A"
-        },
-        {
           "id": "5749738",
           "date": "2026-11-02T17:30:00.000Z",
           "when": "Mon, Nov 2 · 12:30 PM ET",
@@ -655,6 +646,15 @@
           "status": "scheduled",
           "home": "Udinese",
           "away": "Fiorentina",
+          "competition": "Serie A"
+        },
+        {
+          "id": "5749772",
+          "date": "2026-12-07T19:45:00.000Z",
+          "when": "Mon, Dec 7 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Fiorentina",
+          "away": "Cagliari",
           "competition": "Serie A"
         }
       ],
@@ -698,16 +698,16 @@
           },
           {
             "rank": 6,
-            "team": "Napoli",
-            "points": 14,
+            "team": "Frosinone",
+            "points": 17,
             "played": 9,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "Frosinone",
+            "team": "Napoli",
             "points": 14,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
@@ -741,8 +741,8 @@
           {
             "rank": 12,
             "team": "Atalanta",
-            "points": 10,
-            "played": 8,
+            "points": 11,
+            "played": 9,
             "highlight": false
           },
           {
@@ -756,7 +756,7 @@
             "rank": 14,
             "team": "Lecce",
             "points": 9,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
@@ -782,17 +782,17 @@
           },
           {
             "rank": 18,
+            "team": "Fiorentina",
+            "points": 5,
+            "played": 9,
+            "highlight": true
+          },
+          {
+            "rank": 19,
             "team": "Parma",
             "points": 5,
             "played": 9,
             "highlight": false
-          },
-          {
-            "rank": 19,
-            "team": "Fiorentina",
-            "points": 4,
-            "played": 8,
-            "highlight": true
           },
           {
             "rank": 20,
@@ -1023,7 +1023,7 @@
       }
     },
     "england": {
-      "active": false,
+      "active": true,
       "team": "England",
       "shortName": "England",
       "upcoming": [
