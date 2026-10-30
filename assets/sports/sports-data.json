@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-30T16:42:31.051Z",
+  "updatedAt": "2026-10-30T22:29:44.657Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -501,22 +501,22 @@
           },
           {
             "rank": 10,
+            "team": "Sheff Utd",
+            "points": 19,
+            "played": 13,
+            "highlight": false
+          },
+          {
+            "rank": 11,
             "team": "Blackburn",
             "points": 18,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 11,
+            "rank": 12,
             "team": "Portsmouth",
             "points": 18,
-            "played": 12,
-            "highlight": false
-          },
-          {
-            "rank": 12,
-            "team": "Sheff Utd",
-            "points": 16,
             "played": 12,
             "highlight": false
           },
@@ -552,7 +552,7 @@
             "rank": 17,
             "team": "Wrexham",
             "points": 14,
-            "played": 12,
+            "played": 13,
             "highlight": false
           },
           {
@@ -810,15 +810,6 @@
       "shortName": "Shakhtar",
       "upcoming": [
         {
-          "id": "5909320",
-          "date": "2026-10-30T16:00:00.000Z",
-          "when": "today · Fri, Oct 30 · 12:00 PM ET",
-          "status": "scheduled",
-          "home": "Shakhtar Donetsk",
-          "away": "Obolon Kyiv",
-          "competition": "Premier League"
-        },
-        {
           "id": "6106335",
           "date": "2026-11-03T17:45:00.000Z",
           "when": "Tue, Nov 3 · 12:45 PM ET",
@@ -853,6 +844,15 @@
           "home": "Shakhtar Donetsk",
           "away": "Fenerbahçe",
           "competition": "Champions League"
+        },
+        {
+          "id": "5909224",
+          "date": "2026-11-28T16:00:00.000Z",
+          "when": "Sat, Nov 28 · 11:00 AM ET",
+          "status": "scheduled",
+          "home": "Shakhtar Donetsk",
+          "away": "Bukovyna Chernivtsi",
+          "competition": "Premier League"
         }
       ],
       "standings": {
@@ -860,17 +860,17 @@
         "rows": [
           {
             "rank": 1,
+            "team": "Shakhtar Donetsk",
+            "points": 28,
+            "played": 11,
+            "highlight": true
+          },
+          {
+            "rank": 2,
             "team": "Polissya Zhytomyr",
             "points": 25,
             "played": 10,
             "highlight": false
-          },
-          {
-            "rank": 2,
-            "team": "Shakhtar Donetsk",
-            "points": 25,
-            "played": 10,
-            "highlight": true
           },
           {
             "rank": 3,
@@ -946,7 +946,7 @@
             "rank": 13,
             "team": "Obolon Kyiv",
             "points": 7,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
