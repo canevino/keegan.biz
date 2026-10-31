@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-31T05:57:30.232Z",
+  "updatedAt": "2026-10-31T12:49:21.341Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -129,8 +129,8 @@
           {
             "rank": 5,
             "team": "Chelsea",
-            "points": 13,
-            "played": 8,
+            "points": 14,
+            "played": 9,
             "highlight": false
           },
           {
@@ -206,8 +206,8 @@
           {
             "rank": 16,
             "team": "Man United",
-            "points": 7,
-            "played": 8,
+            "points": 8,
+            "played": 9,
             "highlight": false
           },
           {
@@ -388,15 +388,6 @@
       "shortName": "Preston",
       "upcoming": [
         {
-          "id": "5836906",
-          "date": "2026-10-31T12:30:00.000Z",
-          "when": "today · Sat, Oct 31 · 8:30 AM ET",
-          "status": "scheduled",
-          "home": "Stoke",
-          "away": "Preston",
-          "competition": "Championship"
-        },
-        {
           "id": "5836914",
           "date": "2026-11-03T19:45:00.000Z",
           "when": "Tue, Nov 3 · 2:45 PM ET",
@@ -431,6 +422,15 @@
           "home": "Cardiff",
           "away": "Preston",
           "competition": "Championship"
+        },
+        {
+          "id": "5836963",
+          "date": "2026-11-28T12:30:00.000Z",
+          "when": "Sat, Nov 28 · 7:30 AM ET",
+          "status": "scheduled",
+          "home": "Preston",
+          "away": "Norwich",
+          "competition": "Championship"
         }
       ],
       "standings": {
@@ -445,56 +445,56 @@
           },
           {
             "rank": 2,
+            "team": "Birmingham",
+            "points": 23,
+            "played": 13,
+            "highlight": false
+          },
+          {
+            "rank": 3,
             "team": "Swansea",
             "points": 23,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 3,
+            "rank": 4,
             "team": "West Ham",
             "points": 22,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 4,
+            "rank": 5,
             "team": "Wolves",
             "points": 21,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 5,
+            "rank": 6,
             "team": "West Brom",
             "points": 21,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 6,
+            "rank": 7,
+            "team": "Stoke",
+            "points": 21,
+            "played": 13,
+            "highlight": false
+          },
+          {
+            "rank": 8,
             "team": "Southampton",
             "points": 20,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 7,
-            "team": "Birmingham",
-            "points": 20,
-            "played": 12,
-            "highlight": false
-          },
-          {
-            "rank": 8,
-            "team": "QPR",
-            "points": 20,
-            "played": 12,
-            "highlight": false
-          },
-          {
             "rank": 9,
-            "team": "Stoke",
+            "team": "QPR",
             "points": 20,
             "played": 12,
             "highlight": false
@@ -538,7 +538,7 @@
             "rank": 15,
             "team": "Lincoln",
             "points": 15,
-            "played": 12,
+            "played": 13,
             "highlight": false
           },
           {
@@ -571,16 +571,16 @@
           },
           {
             "rank": 20,
-            "team": "Norwich",
-            "points": 12,
-            "played": 12,
+            "team": "Watford",
+            "points": 14,
+            "played": 13,
             "highlight": false
           },
           {
             "rank": 21,
-            "team": "Watford",
-            "points": 11,
-            "played": 12,
+            "team": "Norwich",
+            "points": 12,
+            "played": 13,
             "highlight": false
           },
           {
@@ -600,8 +600,8 @@
           {
             "rank": 24,
             "team": "Preston",
-            "points": 5,
-            "played": 12,
+            "points": 6,
+            "played": 13,
             "highlight": true
           }
         ]
@@ -909,51 +909,51 @@
           },
           {
             "rank": 8,
+            "team": "Bukovyna Chernivtsi",
+            "points": 12,
+            "played": 11,
+            "highlight": false
+          },
+          {
+            "rank": 9,
             "team": "FC Kolos Kovalivka",
             "points": 11,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 9,
-            "team": "Epitsentr Kamianets-Podilskyi",
-            "points": 9,
-            "played": 10,
-            "highlight": false
-          },
-          {
             "rank": 10,
-            "team": "Bukovyna Chernivtsi",
+            "team": "Chornomorets Odesa",
             "points": 9,
             "played": 10,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Veres Rivne",
+            "team": "Epitsentr Kamianets-Podilskyi",
             "points": 9,
             "played": 10,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Liviy Bereh",
-            "points": 8,
-            "played": 9,
+            "team": "Veres Rivne",
+            "points": 9,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 13,
-            "team": "Obolon Kyiv",
-            "points": 7,
+            "team": "Liviy Bereh",
+            "points": 8,
             "played": 10,
             "highlight": false
           },
           {
             "rank": 14,
-            "team": "Chornomorets Odesa",
-            "points": 6,
-            "played": 9,
+            "team": "Obolon Kyiv",
+            "points": 7,
+            "played": 10,
             "highlight": false
           },
           {
