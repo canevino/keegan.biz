@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-01T17:59:09.129Z",
+  "updatedAt": "2026-11-01T22:11:55.467Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -50,15 +50,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "5795501",
-          "date": "2026-11-01T16:30:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Liverpool",
-          "away": "Arsenal",
-          "competition": "Premier League"
-        },
-        {
           "id": "6106330",
           "date": "2026-11-04T17:45:00.000Z",
           "when": "Wed, Nov 4 · 12:45 PM ET",
@@ -93,6 +84,15 @@
           "home": "Club Brugge",
           "away": "Liverpool",
           "competition": "Champions League"
+        },
+        {
+          "id": "5795528",
+          "date": "2026-11-29T12:00:00.000Z",
+          "when": "Sun, Nov 29 · 7:00 AM ET",
+          "status": "scheduled",
+          "home": "Everton",
+          "away": "Liverpool",
+          "competition": "Premier League"
         }
       ],
       "standings": {
@@ -705,23 +705,23 @@
           },
           {
             "rank": 7,
-            "team": "Napoli",
-            "points": 14,
-            "played": 9,
+            "team": "Juventus",
+            "points": 17,
+            "played": 10,
             "highlight": false
           },
           {
             "rank": 8,
-            "team": "Bologna",
+            "team": "Napoli",
             "points": 14,
             "played": 10,
             "highlight": false
           },
           {
             "rank": 9,
-            "team": "Juventus",
+            "team": "Bologna",
             "points": 14,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
