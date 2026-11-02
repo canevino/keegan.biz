@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-02T20:23:25.149Z",
+  "updatedAt": "2026-11-02T21:48:52.235Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -142,58 +142,58 @@
           },
           {
             "rank": 7,
+            "team": "Everton",
+            "points": 13,
+            "played": 9,
+            "highlight": false
+          },
+          {
+            "rank": 8,
             "team": "Bournemouth",
             "points": 12,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 8,
+            "rank": 9,
             "team": "Tottenham",
             "points": 12,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 9,
+            "rank": 10,
             "team": "Aston Villa",
             "points": 12,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 10,
+            "rank": 11,
             "team": "Hull",
             "points": 11,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 11,
+            "rank": 12,
             "team": "Leeds",
             "points": 11,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 12,
-            "team": "Newcastle",
-            "points": 11,
-            "played": 8,
-            "highlight": false
-          },
-          {
             "rank": 13,
-            "team": "Ipswich",
+            "team": "Newcastle",
             "points": 11,
             "played": 9,
             "highlight": false
           },
           {
             "rank": 14,
-            "team": "Everton",
-            "points": 10,
-            "played": 8,
+            "team": "Ipswich",
+            "points": 11,
+            "played": 9,
             "highlight": false
           },
           {
@@ -613,15 +613,6 @@
       "shortName": "Fiorentina",
       "upcoming": [
         {
-          "id": "5749738",
-          "date": "2026-11-02T17:30:00.000Z",
-          "when": "today · Mon, Nov 2 · 12:30 PM ET",
-          "status": "scheduled",
-          "home": "Sassuolo",
-          "away": "Fiorentina",
-          "competition": "Serie A"
-        },
-        {
           "id": "5749742",
           "date": "2026-11-08T19:45:00.000Z",
           "when": "Sun, Nov 8 · 2:45 PM ET",
@@ -655,6 +646,15 @@
           "status": "scheduled",
           "home": "Fiorentina",
           "away": "Cagliari",
+          "competition": "Serie A"
+        },
+        {
+          "id": "5749788",
+          "date": "2026-12-13T17:00:00.000Z",
+          "when": "Sun, Dec 13 · 12:00 PM ET",
+          "status": "scheduled",
+          "home": "Parma",
+          "away": "Fiorentina",
           "competition": "Serie A"
         }
       ],
@@ -749,7 +749,7 @@
             "rank": 13,
             "team": "Atalanta",
             "points": 11,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
@@ -761,30 +761,30 @@
           },
           {
             "rank": 15,
-            "team": "Sassuolo",
+            "team": "Parma",
             "points": 8,
-            "played": 9,
-            "highlight": false
-          },
-          {
-            "rank": 16,
-            "team": "Monza",
-            "points": 7,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 17,
+            "rank": 16,
             "team": "Fiorentina",
-            "points": 5,
-            "played": 9,
+            "points": 8,
+            "played": 10,
             "highlight": true
           },
           {
+            "rank": 17,
+            "team": "Sassuolo",
+            "points": 8,
+            "played": 10,
+            "highlight": false
+          },
+          {
             "rank": 18,
-            "team": "Parma",
-            "points": 5,
-            "played": 9,
+            "team": "Monza",
+            "points": 7,
+            "played": 10,
             "highlight": false
           },
           {
@@ -874,35 +874,35 @@
           },
           {
             "rank": 3,
+            "team": "Dynamo Kyiv",
+            "points": 22,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 4,
             "team": "FC Kharkiv",
             "points": 21,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 4,
-            "team": "Dynamo Kyiv",
-            "points": 19,
-            "played": 9,
-            "highlight": false
-          },
-          {
             "rank": 5,
             "team": "Karpaty",
-            "points": 16,
-            "played": 10,
+            "points": 19,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 6,
-            "team": "LNZ Cherkasy",
-            "points": 15,
-            "played": 10,
+            "team": "Zorya",
+            "points": 18,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "Zorya",
+            "team": "LNZ Cherkasy",
             "points": 15,
             "played": 10,
             "highlight": false
@@ -925,7 +925,7 @@
             "rank": 10,
             "team": "Epitsentr Kamianets-Podilskyi",
             "points": 9,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
@@ -960,21 +960,21 @@
             "rank": 15,
             "team": "Kryvbas",
             "points": 6,
-            "played": 8,
+            "played": 9,
             "highlight": false
           },
           {
             "rank": 16,
             "team": "Kudrivka",
             "points": 5,
-            "played": 10,
+            "played": 11,
             "highlight": false
           }
         ]
       }
     },
     "lithuania": {
-      "active": false,
+      "active": true,
       "team": "Lithuania",
       "shortName": "Lithuania",
       "upcoming": [
