@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-01T22:11:55.467Z",
+  "updatedAt": "2026-11-02T06:27:17.820Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -390,7 +390,7 @@
         {
           "id": "5836914",
           "date": "2026-11-03T19:45:00.000Z",
-          "when": "Tue, Nov 3 · 2:45 PM ET",
+          "when": "tomorrow · Tue, Nov 3 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Preston",
           "away": "Sheff Utd",
@@ -615,7 +615,7 @@
         {
           "id": "5749738",
           "date": "2026-11-02T17:30:00.000Z",
-          "when": "tomorrow · Mon, Nov 2 · 12:30 PM ET",
+          "when": "today · Mon, Nov 2 · 12:30 PM ET",
           "status": "scheduled",
           "home": "Sassuolo",
           "away": "Fiorentina",
@@ -812,7 +812,7 @@
         {
           "id": "6106335",
           "date": "2026-11-03T17:45:00.000Z",
-          "when": "Tue, Nov 3 · 12:45 PM ET",
+          "when": "tomorrow · Tue, Nov 3 · 12:45 PM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "Sporting CP",
