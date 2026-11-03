@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-03T17:52:41.409Z",
+  "updatedAt": "2026-11-03T19:38:14.337Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -812,8 +812,8 @@
         {
           "id": "6106335",
           "date": "2026-11-03T17:45:00.000Z",
-          "when": "today · Tue, Nov 3 · 12:45 PM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Shakhtar Donetsk",
           "away": "Sporting CP",
           "competition": "Champions League"
