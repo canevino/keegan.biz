@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-04T17:59:28.910Z",
+  "updatedAt": "2026-11-04T19:54:41.145Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -50,15 +50,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "6106330",
-          "date": "2026-11-04T17:45:00.000Z",
-          "when": "today · Wed, Nov 4 · 12:45 PM ET",
-          "status": "scheduled",
-          "home": "Fenerbahçe",
-          "away": "Liverpool",
-          "competition": "Champions League"
-        },
-        {
           "id": "5795507",
           "date": "2026-11-08T14:00:00.000Z",
           "when": "Sun, Nov 8 · 9:00 AM ET",
@@ -92,6 +83,15 @@
           "status": "scheduled",
           "home": "Everton",
           "away": "Liverpool",
+          "competition": "Premier League"
+        },
+        {
+          "id": "5795541",
+          "date": "2026-12-02T19:30:00.000Z",
+          "when": "Wed, Dec 2 · 2:30 PM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Sunderland",
           "competition": "Premier League"
         }
       ],
@@ -439,8 +439,8 @@
           {
             "rank": 1,
             "team": "Middlesbrough",
-            "points": 28,
-            "played": 13,
+            "points": 29,
+            "played": 14,
             "highlight": false
           },
           {
@@ -488,8 +488,8 @@
           {
             "rank": 8,
             "team": "West Ham",
-            "points": 22,
-            "played": 13,
+            "points": 23,
+            "played": 14,
             "highlight": false
           },
           {
@@ -550,23 +550,23 @@
           },
           {
             "rank": 17,
-            "team": "Lincoln",
+            "team": "Cardiff",
             "points": 15,
             "played": 14,
             "highlight": false
           },
           {
             "rank": 18,
-            "team": "Cardiff",
-            "points": 14,
-            "played": 13,
+            "team": "Wrexham",
+            "points": 15,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 19,
-            "team": "Wrexham",
-            "points": 14,
-            "played": 13,
+            "team": "Lincoln",
+            "points": 15,
+            "played": 14,
             "highlight": false
           },
           {
