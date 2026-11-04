@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-03T19:38:14.337Z",
+  "updatedAt": "2026-11-04T06:42:23.315Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -52,7 +52,7 @@
         {
           "id": "6106330",
           "date": "2026-11-04T17:45:00.000Z",
-          "when": "tomorrow · Wed, Nov 4 · 12:45 PM ET",
+          "when": "today · Wed, Nov 4 · 12:45 PM ET",
           "status": "scheduled",
           "home": "Fenerbahçe",
           "away": "Liverpool",
@@ -249,7 +249,7 @@
         {
           "id": "6112539",
           "date": "2026-11-05T17:45:00.000Z",
-          "when": "Thu, Nov 5 · 12:45 PM ET",
+          "when": "tomorrow · Thu, Nov 5 · 12:45 PM ET",
           "status": "scheduled",
           "home": "Thun",
           "away": "Hearts",
@@ -388,15 +388,6 @@
       "shortName": "Preston",
       "upcoming": [
         {
-          "id": "5836914",
-          "date": "2026-11-03T19:45:00.000Z",
-          "when": "today · Tue, Nov 3 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Preston",
-          "away": "Sheff Utd",
-          "competition": "Championship"
-        },
-        {
           "id": "5836929",
           "date": "2026-11-07T15:00:00.000Z",
           "when": "Sat, Nov 7 · 10:00 AM ET",
@@ -431,6 +422,15 @@
           "home": "Preston",
           "away": "Norwich",
           "competition": "Championship"
+        },
+        {
+          "id": "5836972",
+          "date": "2026-12-06T12:00:00.000Z",
+          "when": "Sun, Dec 6 · 7:00 AM ET",
+          "status": "scheduled",
+          "home": "Burnley",
+          "away": "Preston",
+          "competition": "Championship"
         }
       ],
       "standings": {
@@ -445,43 +445,43 @@
           },
           {
             "rank": 2,
-            "team": "Swansea",
+            "team": "Birmingham",
             "points": 26,
-            "played": 13,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 3,
-            "team": "Wolves",
-            "points": 24,
-            "played": 13,
+            "team": "Stoke",
+            "points": 26,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 4,
-            "team": "West Brom",
-            "points": 24,
-            "played": 13,
+            "team": "Swansea",
+            "points": 26,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 5,
-            "team": "Southampton",
-            "points": 23,
-            "played": 13,
+            "team": "West Brom",
+            "points": 25,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 6,
-            "team": "Birmingham",
-            "points": 23,
-            "played": 13,
+            "team": "Southampton",
+            "points": 24,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "Stoke",
-            "points": 23,
+            "team": "Wolves",
+            "points": 24,
             "played": 13,
             "highlight": false
           },
@@ -494,114 +494,114 @@
           },
           {
             "rank": 9,
-            "team": "QPR",
-            "points": 20,
-            "played": 13,
+            "team": "Sheff Utd",
+            "points": 22,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 10,
-            "team": "Sheff Utd",
-            "points": 19,
-            "played": 13,
+            "team": "Portsmouth",
+            "points": 22,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Portsmouth",
-            "points": 19,
-            "played": 13,
+            "team": "QPR",
+            "points": 21,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Millwall",
+            "team": "Norwich",
             "points": 18,
-            "played": 13,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 13,
-            "team": "Blackburn",
+            "team": "Millwall",
             "points": 18,
-            "played": 13,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 14,
+            "team": "Blackburn",
+            "points": 18,
+            "played": 14,
+            "highlight": false
+          },
+          {
+            "rank": 15,
             "team": "Bristol City",
             "points": 18,
             "played": 13,
             "highlight": false
           },
           {
-            "rank": 15,
-            "team": "Norwich",
-            "points": 15,
-            "played": 13,
-            "highlight": false
-          },
-          {
             "rank": 16,
-            "team": "Lincoln",
-            "points": 15,
-            "played": 13,
+            "team": "Bolton",
+            "points": 17,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 17,
+            "team": "Lincoln",
+            "points": 15,
+            "played": 14,
+            "highlight": false
+          },
+          {
+            "rank": 18,
             "team": "Cardiff",
             "points": 14,
             "played": 13,
             "highlight": false
           },
           {
-            "rank": 18,
+            "rank": 19,
             "team": "Wrexham",
             "points": 14,
             "played": 13,
             "highlight": false
           },
           {
-            "rank": 19,
-            "team": "Bolton",
-            "points": 14,
-            "played": 13,
-            "highlight": false
-          },
-          {
             "rank": 20,
-            "team": "Charlton",
+            "team": "Watford",
             "points": 14,
-            "played": 13,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 21,
-            "team": "Watford",
-            "points": 11,
-            "played": 13,
+            "team": "Charlton",
+            "points": 14,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 22,
             "team": "Burnley",
-            "points": 9,
-            "played": 13,
+            "points": 10,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 23,
             "team": "Derby",
             "points": 7,
-            "played": 13,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 24,
             "team": "Preston",
             "points": 5,
-            "played": 13,
+            "played": 14,
             "highlight": true
           }
         ]
@@ -810,15 +810,6 @@
       "shortName": "Shakhtar",
       "upcoming": [
         {
-          "id": "6106335",
-          "date": "2026-11-03T17:45:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Shakhtar Donetsk",
-          "away": "Sporting CP",
-          "competition": "Champions League"
-        },
-        {
           "id": "5909208",
           "date": "2026-11-08T16:00:00.000Z",
           "when": "Sun, Nov 8 · 11:00 AM ET",
@@ -852,6 +843,15 @@
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "Bukovyna Chernivtsi",
+          "competition": "Premier League"
+        },
+        {
+          "id": "5909231",
+          "date": "2026-12-05T16:00:00.000Z",
+          "when": "Sat, Dec 5 · 11:00 AM ET",
+          "status": "scheduled",
+          "home": "Shakhtar Donetsk",
+          "away": "Kryvbas",
           "competition": "Premier League"
         }
       ],
@@ -979,6 +979,15 @@
       "shortName": "Lithuania",
       "upcoming": [
         {
+          "id": "6555093",
+          "date": "2026-11-12T11:00:00.000Z",
+          "when": "Thu, Nov 12 · 6:00 AM ET",
+          "status": "scheduled",
+          "home": "Lithuania",
+          "away": "Suriname",
+          "competition": "Friendlies"
+        },
+        {
           "id": "5181885",
           "date": "2026-11-16T17:00:00.000Z",
           "when": "Mon, Nov 16 · 12:00 PM ET",
@@ -989,7 +998,7 @@
         }
       ],
       "standings": {
-        "title": "UEFA Nations League D Grp. 2",
+        "title": "Friendlies",
         "rows": []
       }
     },
