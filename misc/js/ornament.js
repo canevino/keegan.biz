@@ -53,7 +53,7 @@ window.MS=window.MS||{};
  M.ornamentColorPatch=(sp,len,pal,r,s)=>{
    const lev=M.ornamentInfluence(sp,s);
    const future=s.palette==='future';
-   if(lev<(future?.32:.58)||len<15||!r.chance(future?(.14+.28*lev):((lev-.45)*.31)))return '';
+   if(lev<(future?.24:.58)||len<15||!r.chance(future?(.22+.34*lev):((lev-.45)*.31)))return '';
    // Contemporary heraldic panes are intentional blocks of vermilion,
    // electric lapis and gilt, not random RGB blotches or low-res pixels.
    const col=future?r.choose([pal.lapis,pal.vermillion,pal.ochre]):
@@ -62,7 +62,7 @@ window.MS=window.MS||{};
    const side=r.sign(),h=side*len*r.between(.09,.14);
    const d=`M${V(start,0)}Q${V(start+length*.38,h*.64)} ${V(start+length,h)}`+
      `Q${V(start+length*.81,h*.26)} ${V(start+length*.18,0)}Z`;
-   return M.shape(d,col,`opacity="${n(future?.35+.16*lev:(lev-.3)*.24)}"`);
+   return M.shape(d,col,`opacity="${n(future?.46+.18*lev:(lev-.3)*.24)}"`);
  };
  const stemCol=(pal)=>M.mix(pal.ink,pal.green,.56);
  const path=(a,b,c)=>`M${V(a.x,a.y)}Q${V(b.x,b.y)} ${V(c.x,c.y)}`;

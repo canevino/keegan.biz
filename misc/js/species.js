@@ -26,18 +26,19 @@ window.MS=window.MS||{};
  M.wood=(sp,pal,age,r)=>{const a=mix(sp.bark,pal.ink,r.between(.06,.20)); return age==='new'?mix(a,sp.tint,.35):a;};
  M.leafPigment=(sp,season,pal,r,s={})=>{
    const ornament=M.clamp(Number(s.ornament||0)/100,0,1);
+   const future=s?.palette==='future';
    // Each blade is a distinct painted impression: green remains dominant,
    // but species lean cool/warm and pick up slightly different mineral stains.
    const variation=r.random();
    const familyBias={holly:'cool',ivy:'cool',honeysuckle:'light',hazel:'warm',oak:'earth',hawthorn:'light',dogrose:'warm',bramble:'cool',fern:'light',acanthus:'earth'}[sp.leaf]||'earth';
-   let col=mix(sp.tint,pal.green,.10+r.between(0,.18));
-   if(familyBias==='cool')col=mix(col,pal.lapis,r.between(.05,.16));
-   if(familyBias==='warm')col=mix(col,pal.ochre,r.between(.05,.16));
-   if(familyBias==='light')col=mix(col,pal.light,r.between(.06,.15));
-   if(familyBias==='earth')col=mix(col,pal.ink,r.between(.03,.10));
-   if(variation<.14)col=mix(col,pal.ochre,r.between(.08,.19));
-   else if(variation>.85)col=mix(col,pal.lapis,r.between(.11,.23));
-   else if(variation>.56)col=mix(col,pal.light,r.between(.06,.16));
+   let col=mix(sp.tint,pal.green,future?.18+r.between(.02,.22):.10+r.between(0,.18));
+   if(familyBias==='cool')col=mix(col,pal.lapis,r.between(future?.11:.05,future?.24:.16));
+   if(familyBias==='warm')col=mix(col,pal.ochre,r.between(future?.08:.05,future?.22:.16));
+   if(familyBias==='light')col=mix(col,pal.light,r.between(.06,future?.18:.15));
+   if(familyBias==='earth')col=mix(col,pal.ink,r.between(.03,future?.14:.10));
+   if(variation<.14)col=mix(col,pal.ochre,r.between(future?.13:.08,future?.28:.19));
+   else if(variation>.85)col=mix(col,pal.lapis,r.between(future?.16:.11,future?.31:.23));
+   else if(variation>.56)col=mix(col,pal.light,r.between(.06,future?.21:.16));
    if(season==='spring'){
      col=mix(col,pal.light,r.between(.16,.30));
      if(!sp.evergreen)col=mix(col,pal.ochre,r.between(.02,.10));
@@ -56,9 +57,10 @@ window.MS=window.MS||{};
    if(season==='winter'){
      col=sp.evergreen ? mix(col,pal.ink,.13) : mix(col,pal.ochre,.56);
    }
-   if(ornament>.55 && r.chance(Math.pow((ornament-.55)/.45,1.5)*(sp.leaf==='acanthus'?.18:.075))){
-     col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(.10,.24));
+   if((future||ornament>.55) && r.chance((future?.09:0)+Math.pow((ornament-.55)/.45,1.5)*(sp.leaf==='acanthus'?.26:.12))){
+     col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(future?.16:.10,future?.32:.24));
    }
+   if(future && r.chance(.18+.18*ornament)) col=M.mix(col,pal.ink,r.between(.05,.14));
    return col;
  };
  // Anatomical leaf atlas. Every closed contour has one continuous edge.
@@ -333,10 +335,10 @@ window.MS=window.MS||{};
    const petiole=Math.min(9,Math.max(2.2,size*.11));
    const stem=M.path(`M0 0 L${V(petiole,0)}`,M.wood(sp,pal,'new',r),Math.max(.46,size*.033));
    const magnify=1+ornamental*.08;
-   const delay=-r.between(0,13),duration=r.between(8.5,15.5),flutter=r.between(.42,1);
-   // Only a few blades make their own tiny gesture; all other leaves already
-   // participate in the parent shoot's motion. Keep painted SVG performant.
-   const flexes=r.chance(.34);
+   const delay=-r.between(0,18),duration=r.between(14,24),flutter=r.between(.16,.42);
+   // Only a minority of blades make their own tiny gesture; all other leaves already
+   // participate in the parent shoot's motion. Keep painted SVG performant and natural.
+   const flexes=r.chance(.22);
    return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">`+
      `<g ${flexes?`class="leaf-breath" style="--leaf-delay:${n(delay)}s;--leaf-duration:${n(duration)}s;--leaf-amplitude:${n(flutter)}deg"`:''}>`+
      `${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})">${leaf}</g></g></g>`;

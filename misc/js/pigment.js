@@ -9,6 +9,18 @@ window.MS=window.MS||{};
  const toRGB=c=>(String(c).replace('#','').match(/../g)||['00','00','00']).map(x=>parseInt(x,16)/255);
  const toHEX=a=>'#'+a.map(x=>Math.round(clamp(x,0,1)*255).toString(16).padStart(2,'0')).join('');
  const cache=new Map();let sourceAvailable=-1;
+ function futureFragments(bounds,pal,r,intensity=1){
+   let z='';
+   const count=Math.max(1,Math.round(1+intensity*3));
+   for(let i=0;i<count;i++){
+     const x=r.between(bounds.x+bounds.w*.12,bounds.x+bounds.w*.84), y=r.between(bounds.y+bounds.h*.12,bounds.y+bounds.h*.84);
+     const w=bounds.w*r.between(.06,.16), h=bounds.h*r.between(.01,.05), slant=r.between(-2.1,2.1);
+     const col=r.choose([pal.vermillion,pal.lapis,pal.ochre]);
+     const d=`M${vec(x,y)}l${vec(w,slant)}l${vec(0,h)}l${vec(-w,-slant)}Z`;
+     z+=M.shape(d,col,`opacity="${n(r.between(.08,.16)*intensity)}"`);
+   }
+   return z;
+ }
  function hash(str){let h=2166136261;for(const ch of String(str))h=Math.imul(h^ch.charCodeAt(0),16777619);return h>>>0;}
  function materialRng(s,id){return M.rng(M.childSeed(Number(s.seed)>>>0||1,hash(id)));}
  const spectral=()=>globalThis.spectral;
@@ -49,18 +61,20 @@ window.MS=window.MS||{};
  M.paintStop=k=>`url(#wash-${k})`;
  M.offsetPrint=(d,color,s,r,{opacity=.18,scale=1}={})=>{
    const level=F(s,'registration');if(level<.015)return '';
-   const theta=r.between(-Math.PI,Math.PI),dist=scale*(.14+1.85*level)*r.between(.67,1.0);
+   const future=s?.palette==='future';
+   const theta=r.between(-Math.PI,Math.PI),dist=scale*(.14+(future?2.35:1.85)*level)*r.between(.67,1.0);
    // Misregistration is selective, subdued, and never a broad second silhouette.
-   return `<path d="${d}" fill="${color}" opacity="${n(opacity*level*.41)}" transform="translate(${n(Math.cos(theta)*dist)} ${n(Math.sin(theta)*dist)})"/>`;
+   return `<path d="${d}" fill="${color}" opacity="${n(opacity*level*(future?.58:.41))}" transform="translate(${n(Math.cos(theta)*dist)} ${n(Math.sin(theta)*dist)})"/>`;
  };
  // Page-scale patterns: separate grain (fine), scratches (directional), and
  // pigment pooling (large). None places color on unpainted background.
  M.pigmentDefs=(s,r)=>{
    const pal=s.pal,colors={leaf:pal.green,blue:pal.lapis,red:pal.vermillion,ochre:pal.ochre,black:pal.ink,bark:'#765039'};
    const {variation,wear,spread}=M.materialStrength(s);
+   const future=s.palette==='future';
    let z='';
    for(const [key,col] of Object.entries(colors)){
-     const light=M.mix(col,pal.light,.14+variation*.20),dark=M.mix(col,pal.ink,.16+variation*.22);
+     const light=M.mix(col,pal.light,(future?.18:.14)+variation*(future?.24:.20)),dark=M.mix(col,pal.ink,(future?.22:.16)+variation*(future?.26:.22));
      z+=`<linearGradient id="wash-${key}" x1=".09" y1=".04" x2=".84" y2=".97" objectBoundingBox="true">`+
        `<stop offset="0" stop-color="${light}"/><stop offset=".38" stop-color="${col}"/>`+
        `<stop offset=".71" stop-color="${M.mix(col,pal.ochre,variation*.11)}"/><stop offset="1" stop-color="${dark}"/></linearGradient>`;
@@ -68,17 +82,17 @@ window.MS=window.MS||{};
    // Three restrained overprints: isolated paper pores, skipped pigment
    // and nearly parallel hand-applied brush fibres. No checkerboard effect.
    let dust='',chips='',hatches='';
-   for(let i=0;i<116;i++){
+   for(let i=0;i<(future?150:116);i++){
      const x=r.between(0,83),y=r.between(0,79),rad=r.between(.06,.27);
      const col=r.chance(.60)?pal.light:M.mix(pal.ink,pal.ochre,.25);
      dust+=M.circle(x,y,rad,col,`opacity="${n(r.between(.14,.37))}"`);
    }
-   for(let i=0;i<27;i++){
+   for(let i=0;i<(future?36:27);i++){
      const x=r.between(0,77),y=r.between(0,73),width=r.between(.3,2.0);
      const dy=r.between(-.33,.33);
      chips+=M.path(`M${vec(x,y)}l${vec(width,dy)}`,pal.light,r.between(.10,.34),`opacity="${n(r.between(.23,.49))}"`);
    }
-   for(let i=0;i<43;i++){
+   for(let i=0;i<(future?60:43);i++){
      const x=r.between(0,64),y=r.between(0,71),length=r.between(.7,4.4);
      const dark=r.chance(.42);
      hatches+=M.path(`M${vec(x,y)}l${vec(length,r.between(-.32,.32))}`,
@@ -92,11 +106,11 @@ window.MS=window.MS||{};
    // entire filter under an explicit clipPath avoids the previous gray halo.
    z+=`<filter id="pooled-ink" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">`+
       `<feTurbulence type="fractalNoise" baseFrequency=".12 .14" numOctaves="2" seed="${r.int(1,9999)}" result="fibers"/>`+
-      `<feDisplacementMap in="SourceGraphic" in2="fibers" scale="${n(.12+spread*.48)}" xChannelSelector="R" yChannelSelector="G"/>`+
+      `<feDisplacementMap in="SourceGraphic" in2="fibers" scale="${n((future?.20:.12)+spread*(future?.62:.48))}" xChannelSelector="R" yChannelSelector="G"/>`+
       `</filter>`;
    z+=`<filter id="print-fiber" x="-1%" y="-1%" width="102%" height="102%" color-interpolation-filters="sRGB">`+
       `<feTurbulence type="fractalNoise" baseFrequency=".11 .17" numOctaves="2" seed="${r.int(1,9999)}" result="fibers"/>`+
-      `<feDisplacementMap in="SourceGraphic" in2="fibers" scale="${n(.06+wear*.36)}" xChannelSelector="R" yChannelSelector="G"/>`+
+      `<feDisplacementMap in="SourceGraphic" in2="fibers" scale="${n((future?.11:.06)+wear*(future?.42:.36))}" xChannelSelector="R" yChannelSelector="G"/>`+
       `</filter>`;
    return z;
  };
@@ -153,7 +167,8 @@ window.MS=window.MS||{};
    const maskRef=mask?` mask="url(#wear-${id})"`:'';
    const low=M.mix(color,pal.light,.18+variation*.14),high=M.mix(color,pal.ink,.22+variation*.15);
    const grad=`paint-wash-${id}`;
-   let out=M.offsetPrint(d,M.mix(color,pal.ochre,.20),s,r,{opacity:.18,scale:.43});
+   const future=s.palette==='future';
+   let out=M.offsetPrint(d,M.mix(color,pal.ochre,.20),s,r,{opacity:future?.24:.18,scale:future?.55:.43});
    out+=`<defs><clipPath id="${clip}"><path d="${d}"/></clipPath>${mask}`+
      `<linearGradient id="${grad}" x1="0%" y1="0%" x2="100%" y2="78%">`+
      `<stop stop-color="${low}" offset="0"/><stop stop-color="${color}" offset=".38"/>`+
@@ -164,6 +179,7 @@ window.MS=window.MS||{};
    out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.18+wear*.30)}"`);
    if(wear>.03)out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.10+wear*.48)}"`);
    out+=tonalIslands(bounds,color,pal,s,r,true);
+   if(future)out+=futureFragments(bounds,pal,r,.85+.75*variation);
    if(wear>.22){
      const streaks=Math.floor(3+wear*5);
      const pale=M.mix(color,pal.light,.70);
@@ -174,17 +190,19 @@ window.MS=window.MS||{};
      }
    }
    out+=pooledContour(d,id,pal,s,r,clip,true);
+   if(future)out+=`<path d="${d}" fill="none" stroke="${M.mix(pal.ink,pal.vermillion,.22)}" stroke-width="${n(.18+wear*.26)}" opacity="${n(.14+wear*.18)}" clip-path="url(#${clip})"/>`;
    out+='</g></g>';
    return out;
  };
  M.leafFinish=(id,d,size,color,pal,s,unused)=>{
    const r=materialRng(s,`leaf-${id}`),{variation,wear,spread}=M.materialStrength(s);
+   const future=s.palette==='future';
    const bounds={x:-size*.06,y:-size*.52,w:size*1.13,h:size*1.04};
    const clip=`leaf-clip-${id}`,mask=wornMask(`leaf-${id}`,bounds,s,r,true),maskRef=mask?` mask="url(#wear-leaf-${id})"`:'';
    const grad=`leaf-wash-${id}`;
    const pale=M.mix(color,pal.light,.27+.19*variation),deep=M.mix(color,pal.ink,.11+.25*variation),mid=M.mix(color,pal.ochre,.08+.11*variation);
    const angle=n(r.between(-20,20));
-   let out=M.offsetPrint(d,M.mix(color,pal.ochre,.30),s,r,{opacity:.15,scale:.55});
+   let out=M.offsetPrint(d,M.mix(color,pal.ochre,.30),s,r,{opacity:future?.22:.15,scale:future?.72:.55});
    out+=`<defs><clipPath id="${clip}"><path d="${d}"/></clipPath>${mask}`+
        `<linearGradient id="${grad}" x1="0%" y1="0%" x2="96%" y2="100%" gradientTransform="rotate(${angle} .5 .5)">`+
        `<stop offset="0" stop-color="${pale}"/><stop offset=".30" stop-color="${color}"/>`+
@@ -219,6 +237,7 @@ window.MS=window.MS||{};
    out+=M.shape(d,'url(#micro-grain)' ,`opacity="${n(.23+.38*variation)}" data-pixel-pigment="1"`);
    out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.16+.50*wear)}" data-pixel-pigment="1"`);
    out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.12+.49*wear)}" data-pixel-pigment="1"`);
+   if(future)out+=futureFragments(bounds,pal,r,1.0+variation);
    if(wear>.14){
      // Translucent irregular underpainting exposes the paper beneath. These
      // are washes, not low-resolution missing-pixel blocks.
@@ -232,6 +251,10 @@ window.MS=window.MS||{};
         `Q${vec(x-rx*.65,y+ry*.6)} ${vec(x-rx,y)}Z`;
        out+=M.shape(da,fade,`opacity="${n((wear-.08)*r.between(.18,.38))}"`);
      }
+   }
+   if(future){
+     const scorch=M.mix(pal.ink,pal.vermillion,.16);
+     out+=M.shape(d,'none',`stroke="${scorch}" stroke-width="${n(Math.max(.18,size*.006))}" stroke-linejoin="round" opacity="${n(.15+.16*wear)}"`);
    }
    if(size>14){
      const glaze=`M${vec(size*.08,size*.02)}Q${vec(size*.32,-size*.22)} ${vec(size*.62,-size*.14)}Q${vec(size*.40,-size*.03)} ${vec(size*.12,size*.06)}Z`;
