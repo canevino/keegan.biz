@@ -15,7 +15,8 @@ window.MS=window.MS||{};
  M.ornamentWidth=(kind,t,w,amount,phase=0)=>{
    const e=Math.sin(Math.PI*t)**.88;
    const lobes=kind==='acanthus'?5:kind==='ivy'?3:kind==='oak'?4:2;
-   return w*(1+.12*amount)*(1+.14*amount*e*Math.sin(2*Math.PI*lobes*t+phase));
+   // Keep source anatomy authoritative: no repeated serration added by the slider.
+  return w*(1+.045*amount)*(1+.025*amount*e*Math.sin(2*Math.PI*lobes*t+phase));
  };
  M.ornamentPoint=(x,y,t,amount,len,phase)=>P(
    x+amount*len*.023*Math.sin(Math.PI*t)*Math.sin(t*5.2+phase),
@@ -51,13 +52,17 @@ window.MS=window.MS||{};
  // Chromatic under-painting follows a band of the leaf, not an isolated badge.
  M.ornamentColorPatch=(sp,len,pal,r,s)=>{
    const lev=M.ornamentInfluence(sp,s);
-   if(lev<.58||len<15||!r.chance((lev-.45)*.31))return '';
-   const col=M.mix(pal.green,r.choose([pal.ochre,pal.lapis,pal.vermillion]),r.between(.35,.58));
+   const future=s.palette==='future';
+   if(lev<(future?.32:.58)||len<15||!r.chance(future?(.14+.28*lev):((lev-.45)*.31)))return '';
+   // Contemporary heraldic panes are intentional blocks of vermilion,
+   // electric lapis and gilt, not random RGB blotches or low-res pixels.
+   const col=future?r.choose([pal.lapis,pal.vermillion,pal.ochre]):
+     M.mix(pal.green,r.choose([pal.ochre,pal.lapis,pal.vermillion]),r.between(.35,.58));
    const start=len*r.between(.28,.49),length=len*r.between(.16,.29);
    const side=r.sign(),h=side*len*r.between(.09,.14);
    const d=`M${V(start,0)}Q${V(start+length*.38,h*.64)} ${V(start+length,h)}`+
      `Q${V(start+length*.81,h*.26)} ${V(start+length*.18,0)}Z`;
-   return M.shape(d,col,`opacity="${n((lev-.3)*.24)}"`);
+   return M.shape(d,col,`opacity="${n(future?.35+.16*lev:(lev-.3)*.24)}"`);
  };
  const stemCol=(pal)=>M.mix(pal.ink,pal.green,.56);
  const path=(a,b,c)=>`M${V(a.x,a.y)}Q${V(b.x,b.y)} ${V(c.x,c.y)}`;

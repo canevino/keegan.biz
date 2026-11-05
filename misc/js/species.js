@@ -35,8 +35,8 @@ window.MS=window.MS||{};
    if(familyBias==='warm')col=mix(col,pal.ochre,r.between(.05,.16));
    if(familyBias==='light')col=mix(col,pal.light,r.between(.06,.15));
    if(familyBias==='earth')col=mix(col,pal.ink,r.between(.03,.10));
-   if(variation<.16)col=mix(col,pal.ochre,r.between(.10,.24));
-   else if(variation>.82)col=mix(col,pal.lapis,r.between(.08,.18));
+   if(variation<.14)col=mix(col,pal.ochre,r.between(.08,.19));
+   else if(variation>.85)col=mix(col,pal.lapis,r.between(.11,.23));
    else if(variation>.56)col=mix(col,pal.light,r.between(.06,.16));
    if(season==='spring'){
      col=mix(col,pal.light,r.between(.16,.30));
@@ -56,87 +56,104 @@ window.MS=window.MS||{};
    if(season==='winter'){
      col=sp.evergreen ? mix(col,pal.ink,.13) : mix(col,pal.ochre,.56);
    }
-   if(ornament>.35 && r.chance(Math.pow((ornament-.35)/.65,1.5)*(sp.leaf==='acanthus'?.24:.14))){
-     col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(.22,.42));
+   if(ornament>.55 && r.chance(Math.pow((ornament-.55)/.45,1.5)*(sp.leaf==='acanthus'?.18:.075))){
+     col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(.10,.24));
    }
    return col;
  };
- // Pass 1 / leaf atlas. Each shape is a variation of its species, not an
- // interchangeable decorative glyph. Variation changes lobes, taper, asymmetry
- // and minor insect/printing irregularities, never botanical identity.
+ // Anatomical leaf atlas. Every closed contour has one continuous edge.
+ // Earlier Gaussian "teeth" produced needle-like artificial lobes, and the
+ // Catmull spline overshot sharp sinuses to form the white loops seen in SVG.
+ // These profiles keep the primary axis monotone and deliberately control
+ // every lobe, sinus and tooth rather than perturbing arbitrary vertices.
  const S=(x,y)=>M.vec(x,y);
- const smoothClose=(pts,sharp=false)=>{
-   const N=pts.length; let d=`M${S(pts[0].x,pts[0].y)}`;
-   for(let i=0;i<N;i++){
-     const prev=pts[(i+N-1)%N],from=pts[i],to=pts[(i+1)%N],next=pts[(i+2)%N];
-     // Smoother historical-plate contours; angular hollies retain true spines.
-     if(sharp){d+=`L${S(to.x,to.y)}`;continue;}
-     const k=.135;
-     d+=`C${S(from.x+(to.x-prev.x)*k,from.y+(to.y-prev.y)*k)} `+
-       `${S(to.x-(next.x-from.x)*k,to.y-(next.y-from.y)*k)} ${S(to.x,to.y)}`;
-   }
-   return d+'Z';
- };
- // A blade is constructed from its species' own anatomical landmarks.
- // Slow variation follows an entire contour; only saw-toothed species get
- // high-frequency changes. Avoid the interchangeable oval / angular stamp.
- const bell=(t,p=.76)=>Math.pow(Math.max(0,Math.sin(Math.PI*t)),p);
+ const bell=(t,p=.75)=>Math.pow(Math.max(0,Math.sin(Math.PI*t)),p);
  const bump=(t,c,w)=>Math.exp(-Math.pow((t-c)/w,2));
- const L=(x,y)=>({x,y});
+ const teeth=(t,count,phase)=>Math.pow(Math.max(0,Math.sin(Math.PI*(t*count+phase))),7);
+ const pathPoints=pts=>pts.map((p,i)=>`${i?'L':'M'}${S(p.x,p.y)}`).join('')+'Z';
  function blade(kind,len,r,s){
-   const ornament=M.ornamentInfluence?.({leaf:kind},s)||0;
-   const phase=r.between(0,Math.PI*2),hand=r.between(-.15,.15);
-   const asym=r.between(-.18,.18),round=r.between(.84,1.18);
-   const scratch=r.between(.015,.042),serratePhase=r.between(-.45,.45);
-   const teeth=(t,f)=>Math.pow(Math.abs(Math.sin(Math.PI*(t*f+serratePhase))),5);
-   const lobes=(t,centres,w)=>centres.reduce((acc,c)=>acc+bump(t,c,w),0);
-   const shape=(t,side)=>{
-     let width=0,x=t;
-     switch(kind){
-       case 'ivy': // Palmate lobes have a narrow waist and a long lanceolate tip.
-         width=.30*bell(t,.49)+.61*bump(t,.31,.105)+.22*bump(t,.61,.12)-.15*bump(t,.48,.055);
-         x=t*.97+.025*bump(t,.33,.1);break;
-       case 'holly': // Broad leathery blade with offset spine points.
-         width=.24*bell(t,.55)+.16*bump(t,.42,.32)+
-           .20*lobes(t,[.17,.38,.61,.81].map(c=>c+side*.022),.022);
-         width-=.075*lobes(t,[.26,.50,.72],.035);break;
-       case 'hazel': // Cordate base, serrated circumference, blunt tip.
-         width=.45*bell(t,.49)*(1.30-.53*t)+.13*bump(t,.13,.085);
-         width-=.17*bump(t,.045,.03);
-         width+=.036*bell(t,.53)*teeth(t,12);break;
-       case 'oak': // Broad rounded lobes, recessed sinuses and a narrow stalk.
-         width=.20*bell(t,.56)+.39*lobes(t,[.21,.44,.69,.86].map(c=>c+side*.022),.073);
-         width-=.038*lobes(t,[.33,.57,.78],.028);break;
-       case 'hawthorn': // Three deep, tapering cuts; small teeth at lobe tips.
-         width=.17*bell(t,.62)+.32*lobes(t,[.20,.46,.72].map(c=>c+side*.018),.075);
-         width+=.020*bell(t,.72)*teeth(t,12);break;
-       case 'acanthus': // Deep incisions between leaf divisions, not an oak clone.
-         width=.15*bell(t,.45)+.40*lobes(t,[.16,.32,.51,.70,.86].map(c=>c+side*.016),.063);
-         width-=.09*lobes(t,[.24,.42,.61,.80],.030);break;
-       case 'dogrose': // Slender pointed rose leaflet with fine serration.
-         width=.30*bell(t,.83)*(1.03+.21*t)+.020*bell(t,.7)*teeth(t,15);break;
-       case 'bramble': // Plumper toothed leaflet with uneven opposing margins.
-         width=.36*bell(t,.67)*(1.12-.23*t)+.041*bell(t,.64)*teeth(t,11);break;
-       case 'honeysuckle': // Smooth ovate blade; tip drawn out and slightly bent.
-         width=.34*bell(t,.84)*(1.15-.18*t);x=t+.016*Math.sin(Math.PI*t);break;
-       case 'fern': width=.14*bell(t,.92);break;
-       default: width=.31*bell(t,.70);
-     }
-     width=Math.max(0,width)*round;
-     // Distort whole lobes, not every contour vertex.
-     width*=1+side*asym*(.55+.35*t)+scratch*(Math.sin(8*t+phase+side*.65)+.31*Math.sin(21*t+phase*1.7));
-     if(ornament>.16 && M.ornamentWidth)width=M.ornamentWidth(kind,t,width,ornament,phase);
-     return {x:x*len,y:side*Math.max(0,width)*len + len*(hand*.17*Math.sin(Math.PI*t)+.045*Math.sin(Math.PI*t)*Math.sin(phase+t*3))};
-   };
-   const count=kind==='holly'?90:kind==='acanthus'?92:kind==='hazel'||kind==='bramble'?92:74;
-   const upper=[],lower=[];
-   for(let i=0;i<=count;i++){
-     const t=i/count;
-     upper.push(shape(t,-1));lower.push(shape(t,1));
+   const orn=M.ornamentInfluence?.({leaf:kind},s)||0;
+   const asym=r.between(-.07,.07),phase=r.between(0,Math.PI*2);
+   const proportion=r.between(.96,1.05),lean=r.between(-.018,.018);
+
+   // Ivy is a palmate, three-to-five-lobed leaf, not an angular serrated oval.
+   // Explicit curved connections prevent intersections and flying spear points.
+   if(kind==='ivy'){
+     // Illuminated ivy: three pointed principal lobes and two minor basal horns.
+     // Curved shoulders resolve into deliberate Gothic cusps; no repeated star polygons.
+     const point=(x,y)=>S(x*len,(y*proportion*(y<0?1+asym:1-asym)+lean*Math.sin(Math.PI*x))*len);
+     const P=point;
+     return `M${P(0,0)}`+
+       `C${P(.06,-.045)} ${P(.105,-.145)} ${P(.115,-.237)}`+
+       `C${P(.15,-.245)} ${P(.197,-.216)} ${P(.247,-.179)}`+
+       `C${P(.29,-.246)} ${P(.37,-.341)} ${P(.45,-.462)}`+
+       `C${P(.515,-.423)} ${P(.535,-.335)} ${P(.548,-.238)}`+
+       `C${P(.65,-.252)} ${P(.785,-.161)} ${P(1,0)}`+
+       `C${P(.785,.161)} ${P(.65,.252)} ${P(.548,.238)}`+
+       `C${P(.535,.335)} ${P(.515,.423)} ${P(.45,.462)}`+
+       `C${P(.37,.341)} ${P(.29,.246)} ${P(.247,.179)}`+
+       `C${P(.197,.216)} ${P(.15,.245)} ${P(.115,.237)}`+
+       `C${P(.105,.145)} ${P(.06,.045)} ${P(0,0)}Z`;
    }
-   // Smooth curves for oval/lobed leaves; teeth and holly spines stay crisp.
-   return smoothClose([...upper,...lower.slice(1,-1).reverse()],
-     kind==='holly'||kind==='hazel'||kind==='dogrose'||kind==='bramble');
+
+   const sample=(t,side)=>{
+     const e=bell(t,.77),uneven=1+side*asym;
+     let w=0;
+     switch(kind){
+       case 'holly':{
+         // Leathery elliptical leaf with three to four small true spines.
+         const nodes=side<0?[.28,.51,.74]:[.25,.49,.73];
+         w=.285*bell(t,.71)+(.075+.060*orn)*nodes.reduce((z,c)=>z+bump(t,c,.018),0);
+         w-=.040*[.37,.62].reduce((z,c)=>z+bump(t,c,.047),0);
+         break;
+       }
+       case 'hazel':{
+         // Round heart-like base, shallow regular serrations.
+         w=.40*bell(t,.51)*(1.19-.26*t)+.074*bump(t,.10,.085);
+         w+=.012*bell(t,.58)*teeth(t,13,phase*.05);
+         break;
+       }
+       case 'oak':{
+         // Rounded oak lobes, recessed but not spiky sinuses.
+         w=.135*e+(.17+.075*orn)*[.23,.46,.67,.83].reduce((z,c,i)=>
+           z+[.82,1.05,.98,.70][i]*bump(t,c+side*asym*.16,.086),0);
+         w-=.055*[.35,.57,.76].reduce((z,c)=>z+bump(t,c,.055),0);
+         break;
+       }
+       case 'hawthorn':{
+         w=.15*e+(.16+.065*orn)*[.27,.52,.75].reduce((z,c,i)=>
+           z+[1,.88,.72][i]*bump(t,c+side*asym*.2,.085),0);
+         w+=.006*e*teeth(t,10,.15);break;
+       }
+       case 'acanthus':{
+         // Acanthus lobes are soft scallops, not a serrated five-point star.
+         w=.12*e+(.195+.075*orn)*[.20,.42,.63,.79].reduce((z,c,i)=>
+           z+[.67,1.09,.91,.75][i]*bump(t,c+side*asym*.16,.083),0);
+         w-=.061*[.31,.52,.72].reduce((z,c)=>z+bump(t,c,.051),0);
+         break;
+       }
+       case 'dogrose':w=.285*bell(t,.77)*(1.08-.12*t)+.009*e*teeth(t,15,.23);break;
+       case 'bramble':w=.33*bell(t,.69)*(1.14-.17*t)+.015*e*teeth(t,12,.18);break;
+       case 'honeysuckle':w=.325*bell(t,.84)*(1.13-.12*t);break;
+       case 'fern':w=.12*bell(t,.90);break;
+       default:w=.31*e;
+     }
+     // Ornament changes the paintwork more than the silhouette. It can
+     // gently swell the lobe masses but never create new serrations.
+     w*=1+.016*orn*Math.sin(Math.PI*t*3+phase);
+     w=Math.max(0,w*proportion*uneven);
+     const tremor=(.002+.001*orn)*e*Math.sin(t*14+phase+side*.37);
+     return {x:len*t,y:len*(side*(w+tremor)+lean*Math.sin(Math.PI*t))};
+   };
+   const N=kind==='holly'?160:kind==='hazel'||kind==='bramble'?144:112;
+   const upper=[],lower=[];
+   for(let i=0;i<=N;i++){
+     const t=i/N;
+     upper.push(sample(t,-1));lower.push(sample(t,1));
+   }
+   // Dense, monotone polylines avoid Bézier overshoot at the sinus. The
+   // rendered contour is smooth at normal scale; holly retains visible spines.
+   return pathPoints([...upper,...lower.slice(1,-1).reverse()]);
  }
  function leafVeins(kind,size,color,pal,r,s={}){
    const ink=M.mix(color,pal.ink,.57),ochre=M.mix(color,pal.ochre,.38);
@@ -156,6 +173,21 @@ window.MS=window.MS||{};
      fern:{nodes:[.25,.45,.65,.80],reach:.11,tip:.94,dx:.10}
    }[kind]||{nodes:[.23,.4,.62,.78],reach:.23,tip:.95,dx:.11};
    let out='';
+   // Ivy's veins radiate from the petiole into the two lateral lobes rather
+   // than borrowing the generic pinnate/fishbone vein diagram.
+   if(kind==='ivy'){
+     let z=M.path(`M${S(size*.055,0)}Q${S(size*.50,-size*.005)} ${S(size*.91,0)}`,
+       deep,Math.max(.35,size*.024),'opacity=".60"');
+     for(const sg of [-1,1]){
+       z+=M.path(`M${S(size*.075,0)}Q${S(size*.25,sg*size*.17)} ${S(size*.485,sg*size*.445)}`,
+         ink,Math.max(.28,size*.016),'opacity=".52"');
+       z+=M.path(`M${S(size*.085,0)}Q${S(size*.135,sg*size*.15)} ${S(size*.17,sg*size*.245)}`,
+         ink,Math.max(.23,size*.011),'opacity=".39"');
+       z+=M.path(`M${S(size*.28,sg*size*.22)}Q${S(size*.38,sg*size*.25)} ${S(size*.49,sg*size*.32)}`,
+         ochre,Math.max(.20,size*.009),'opacity=".42"');
+     }
+     return z;
+   }
    // Engraved center vein is weighted at the base, with a fine dry echo.
    out+=M.path(`M${S(size*.055,0)}C${S(size*.27,size*.012)} ${S(size*.60,-size*.013)} ${S(size*anatomy.tip,0)}`,
       deep,Math.max(.33,size*.026),`opacity="${M.n(.55+.10*ornamental)}"`);
@@ -199,6 +231,37 @@ window.MS=window.MS||{};
    const veins=leafVeins(kind,size,color,pal,r,s);
    const ornament=M.ornamentLeafInterior?M.ornamentLeafInterior(sp,size,color,pal,r,s):'';
    const patch=M.ornamentColorPatch?M.ornamentColorPatch(sp,size,pal,r,s):'';
+   // Future-medieval inlay. Small heraldic geometry belongs to the leaf itself:
+   // crisp pointed arches, lozenge seals and stained-ink hatching. These appear
+   // selectively, rather than turning every leaf into a repeated digital icon.
+   const level=M.clamp(Number(s.ornament||0)/100,0,1);
+   let medievalInlay='';
+   if(size>15 && level>.26 && r.chance(.13 + .36*level)){
+     const sign=r.sign();
+     const x=size*r.between(.35,.48),h=size*(kind==='ivy'?.082:.048);
+     const height=size*(kind==='ivy'?.082:.071);
+     const motif=r.int(0,2);
+     const cobalt=M.mix(pal.lapis,pal.ink,.16),cinnabar=M.mix(pal.vermillion,pal.ink,.10);
+     const accent=r.chance(.60)?pal.ochre:(r.chance(.5)?cinnabar:cobalt);
+     if(motif===0){
+       // A tiny pointed window inset, never a sharp protrusion outside the edge.
+       medievalInlay+=M.shape(`M${S(x-size*.07,sign*h)}Q${S(x-size*.035,sign*(h+height*.55))} ${S(x,sign*(h+height))}`+
+         `Q${S(x+size*.035,sign*(h+height*.55))} ${S(x+size*.07,sign*h)}Z`,
+         accent,`opacity="${n(.65+.22*level)}"`);
+       medievalInlay+=M.path(`M${S(x,sign*h)}L${S(x,sign*(h+height*.73))}`,pal.ink,.24,'opacity=".5"');
+     }else if(motif===1){
+       const dx=size*.055,dy=size*.068;
+       medievalInlay+=M.shape(`M${S(x-dx,sign*h)}L${S(x,sign*(h+dy))}L${S(x+dx,sign*h)}L${S(x,sign*(h-dy))}Z`,
+         'none',`stroke="${accent}" stroke-width="${n(Math.max(.44,size*.017))}" opacity=".78"`);
+       medievalInlay+=M.circle(x,sign*h,Math.max(.34,size*.017),accent);
+     }else{
+       for(let j=0;j<3;j++){
+         const xx=x-size*.075+j*size*.056;
+         medievalInlay+=M.path(`M${S(xx,sign*(h-size*.025))}l${S(size*.033,sign*size*.05)}`,
+           accent,Math.max(.3,size*.012),`opacity="${n(.54+.23*level)}"`);
+       }
+     }
+   }
    let plateMarks='';
    if(size>15){
      // The botanical-plate effect is deliberate pen hatchwork, not random
@@ -227,7 +290,7 @@ window.MS=window.MS||{};
          side>0?dark:light,Math.max(.23,size*.012),`opacity=".35"`);
      }
    }
-   art+=`<g clip-path="url(#${clipId})">${veins}${plateMarks}${patch}${ornament}</g>`;
+   art+=`<g clip-path="url(#${clipId})">${veins}${plateMarks}${patch}${ornament}${medievalInlay}</g>`;
    return art;
  }
  function compound(sp,size,season,pal,r,s){
@@ -270,7 +333,13 @@ window.MS=window.MS||{};
    const petiole=Math.min(9,Math.max(2.2,size*.11));
    const stem=M.path(`M0 0 L${V(petiole,0)}`,M.wood(sp,pal,'new',r),Math.max(.46,size*.033));
    const magnify=1+ornamental*.08;
-   return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})">${leaf}</g></g>`;
+   const delay=-r.between(0,13),duration=r.between(8.5,15.5),flutter=r.between(.42,1);
+   // Only a few blades make their own tiny gesture; all other leaves already
+   // participate in the parent shoot's motion. Keep painted SVG performant.
+   const flexes=r.chance(.34);
+   return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">`+
+     `<g ${flexes?`class="leaf-breath" style="--leaf-delay:${n(delay)}s;--leaf-duration:${n(duration)}s;--leaf-amplitude:${n(flutter)}deg"`:''}>`+
+     `${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})">${leaf}</g></g></g>`;
  };
  // Species organs use illustrated morphology: a five-petalled rose is not a
  // colored dot, a blackberry consists of individual drupelets, and acorns have

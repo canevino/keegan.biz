@@ -41,6 +41,7 @@ window.MS = window.MS || {};
     jewel:{ink:'#302a2b',vermillion:'#ac4050',lapis:'#325e92',green:'#547b70',ochre:'#c29a51',light:'#eee0c7'},
     earth:{ink:'#3c3229',vermillion:'#9b5844',lapis:'#677483',green:'#687b55',ochre:'#b79565',light:'#e8d8c0'},
     site:{ink:'#252322',vermillion:'#c1272d',lapis:'#245c91',green:'#126b4d',ochre:'#dfac3f',light:'#efe3c4'},
+    future:{ink:'#25222a',vermillion:'#d12d48',lapis:'#2859a2',green:'#326d5d',ochre:'#caa342',light:'#eee0bd'},
     monochrome:{ink:'#2e2924',vermillion:'#675448',lapis:'#6e6962',green:'#747565',ochre:'#ad9d7f',light:'#e7dbbe'}
   };
   M.palette=(id)=>M.palettes[id]||M.palettes.kells;

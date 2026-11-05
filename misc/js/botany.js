@@ -304,10 +304,16 @@ window.MS=window.MS||{};
    // Decorative split-tip hooks removed: they looked disconnected.
    plan.activeShoot=prevShoot;
    const axis=M.strokePath(points);
+   const swayPhase=-r.between(0,8),swayDuration=r.between(8.5,14);
+   // Localize coordinates at the *real* shoot origin before applying movement.
+   // All offspring, petioles and organs follow the parent; no disconnected wiggle.
    return `<g class="growth-shoot" data-root-t="${n(s._branchT??.4)}" data-growpath="${axis}">`+
+       `<g transform="translate(${V(start)})">`+
+       `<g class="shoot-sway" style="--shoot-delay:${n(swayPhase)}s;--shoot-duration:${n(swayDuration)}s">`+
+       `<g transform="translate(${n(-start.x)} ${n(-start.y)})">`+
        `<g class="shoot-wood" data-grow-width="${n(Math.max(4,base*3.1))}">${woodArt}</g>`+
        `<g class="shoot-foliage">${foliageArt}</g>`+
-       `<g class="shoot-details">${organArt}</g></g>`;
+       `<g class="shoot-details">${organArt}</g></g></g></g></g>`;
  }
  function fernStem(points,sp,season,pal,r,plan,s){
    // A frond is one complete plant organ, not a woody cane carrying small
@@ -425,9 +431,12 @@ window.MS=window.MS||{};
      }
 
      const axis=M.strokePath(points);
+     const origin=points[0];
      sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}">`+
+       `<g transform="translate(${V(origin)})"><g class="stem-sway" style="--stem-delay:${n(-r.between(0,9))}s;--stem-duration:${n(r.between(11.5,17.5))}s">`+
+       `<g transform="translate(${n(-origin.x)} ${n(-origin.y)})">`+
        `<g class="growth-primary" data-grow-width="${n(Math.max(8,base*2.7))}" data-growpath="${axis}">${woodArt}</g>`+
-       `<g class="growth-secondary">${growth}</g></g>`);
+       `<g class="growth-secondary">${growth}</g></g></g></g></g>`);
    }
    // Whole-plant painter's order: one branch and its leaves are composed as a
    // unit, rather than putting *every* woody stem behind *every* leaf.

@@ -8,7 +8,7 @@
 
  const defaultSettings={
    geometry:'random',conform:28,ornament:55,
-   pattern:'random',species:'random',season:'summer',palette:'kells',seed:20261104,
+   pattern:'random',species:'random',season:'summer',palette:'future',seed:20261104,
    foliage:78,finishLevel:27
  };
  const s={...defaultSettings};
