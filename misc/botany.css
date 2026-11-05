@@ -44,3 +44,35 @@ button,input,select{font:inherit}
 :where(button,select,input,summary,a):focus-visible{outline:2px solid var(--misc-red);outline-offset:2px}
 @media(max-width:600px){.botany-workspace{grid-template-columns:1fr;gap:9px}.drawing-stage{height:clamp(270px,85vw,380px)}.drawing-side{order:0}.drawing-controls{order:1}.botany-basic-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.botany-secondary-row{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px}.fine-tune-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.drawing-controls{padding:9px}.drawing-actions{gap:8px 12px}.action-spacer{flex:1}}
 @media(max-width:390px){.botany-basic-grid{grid-template-columns:1fr 1fr}.botany-basic-grid>label:first-child{grid-column:1/-1}.action{font-size:11px}}
+
+/* Ambient botanical life, not a growth reveal. Only coherent attached groups
+   move: entire stems around the root, shoots around their junction, blades
+   around their petiole. The specimen and exported SVG remain full-resolution. */
+.drawing .stem-sway,.drawing .shoot-sway,.drawing .leaf-breath{
+  transform-box:view-box;
+  transform-origin:0 0;
+}
+.drawing .stem-sway{
+  animation: botanical-stem-breath var(--stem-duration,14s) ease-in-out var(--stem-delay,0s) infinite alternate;
+}
+.drawing .shoot-sway{
+  animation: botanical-shoot-breath var(--shoot-duration,11s) ease-in-out var(--shoot-delay,0s) infinite alternate;
+}
+.drawing .leaf-breath{
+  animation: botanical-leaf-breath var(--leaf-duration,11s) ease-in-out var(--leaf-delay,0s) infinite alternate;
+}
+@keyframes botanical-stem-breath{
+  0%,100%{transform:rotate(-.58deg) translateX(-.6px)}
+  50%{transform:rotate(.58deg) translateX(.6px)}
+}
+@keyframes botanical-shoot-breath{
+  0%,100%{transform:rotate(-.50deg)}
+  50%{transform:rotate(.65deg)}
+}
+@keyframes botanical-leaf-breath{
+  0%,100%{transform:rotate(calc(0deg - var(--leaf-amplitude,.7deg)))}
+  50%{transform:rotate(var(--leaf-amplitude,.7deg))}
+}
+@media (prefers-reduced-motion:reduce){
+  .drawing .stem-sway,.drawing .shoot-sway,.drawing .leaf-breath{animation:none!important}
+}
