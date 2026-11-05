@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-04T19:54:41.145Z",
+  "updatedAt": "2026-11-05T07:01:40.012Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -249,7 +249,7 @@
         {
           "id": "6112539",
           "date": "2026-11-05T17:45:00.000Z",
-          "when": "tomorrow · Thu, Nov 5 · 12:45 PM ET",
+          "when": "today · Thu, Nov 5 · 12:45 PM ET",
           "status": "scheduled",
           "home": "Thun",
           "away": "Hearts",
@@ -439,50 +439,50 @@
           {
             "rank": 1,
             "team": "Middlesbrough",
-            "points": 29,
+            "points": 28,
             "played": 14,
             "highlight": false
           },
           {
             "rank": 2,
+            "team": "Wolves",
+            "points": 27,
+            "played": 14,
+            "highlight": false
+          },
+          {
+            "rank": 3,
             "team": "Birmingham",
             "points": 26,
             "played": 14,
             "highlight": false
           },
           {
-            "rank": 3,
+            "rank": 4,
             "team": "Stoke",
             "points": 26,
             "played": 14,
             "highlight": false
           },
           {
-            "rank": 4,
+            "rank": 5,
             "team": "Swansea",
             "points": 26,
             "played": 14,
             "highlight": false
           },
           {
-            "rank": 5,
+            "rank": 6,
             "team": "West Brom",
             "points": 25,
             "played": 14,
             "highlight": false
           },
           {
-            "rank": 6,
+            "rank": 7,
             "team": "Southampton",
             "points": 24,
             "played": 14,
-            "highlight": false
-          },
-          {
-            "rank": 7,
-            "team": "Wolves",
-            "points": 24,
-            "played": 13,
             "highlight": false
           },
           {
@@ -538,26 +538,26 @@
             "rank": 15,
             "team": "Bristol City",
             "points": 18,
-            "played": 13,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 16,
-            "team": "Bolton",
+            "team": "Wrexham",
             "points": 17,
             "played": 14,
             "highlight": false
           },
           {
             "rank": 17,
-            "team": "Cardiff",
-            "points": 15,
+            "team": "Bolton",
+            "points": 17,
             "played": 14,
             "highlight": false
           },
           {
             "rank": 18,
-            "team": "Wrexham",
+            "team": "Cardiff",
             "points": 15,
             "played": 14,
             "highlight": false
