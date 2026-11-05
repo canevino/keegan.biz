@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-05T18:02:20.231Z",
+  "updatedAt": "2026-11-05T20:07:03.789Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -247,15 +247,6 @@
       "shortName": "Hearts",
       "upcoming": [
         {
-          "id": "6112539",
-          "date": "2026-11-05T17:45:00.000Z",
-          "when": "today · Thu, Nov 5 · 12:45 PM ET",
-          "status": "scheduled",
-          "home": "Thun",
-          "away": "Hearts",
-          "competition": "Conference League"
-        },
-        {
           "id": "5793975",
           "date": "2026-11-08T15:00:00.000Z",
           "when": "Sun, Nov 8 · 10:00 AM ET",
@@ -289,6 +280,15 @@
           "status": "scheduled",
           "home": "Hearts",
           "away": "Celtic",
+          "competition": "Premiership"
+        },
+        {
+          "id": "5793990",
+          "date": "2026-12-02T19:45:00.000Z",
+          "when": "Wed, Dec 2 · 2:45 PM ET",
+          "status": "scheduled",
+          "home": "Hearts",
+          "away": "Aberdeen",
           "competition": "Premiership"
         }
       ],
@@ -980,8 +980,8 @@
       "upcoming": [
         {
           "id": "6555093",
-          "date": "2026-11-12T11:00:00.000Z",
-          "when": "Thu, Nov 12 · 6:00 AM ET",
+          "date": "2026-11-12T17:00:00.000Z",
+          "when": "Thu, Nov 12 · 12:00 PM ET",
           "status": "scheduled",
           "home": "Lithuania",
           "away": "Suriname",
