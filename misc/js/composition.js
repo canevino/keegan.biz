@@ -109,25 +109,66 @@ window.MS=window.MS||{};
     if(layout==='single')return [stems.find(st=>st.major)||stems[0]].filter(Boolean);
     return stems.slice(0,limits[layout]||stems.length);
   }
-  function stemLayoutScore(stems){
-    if(!stems||!stems.length)return -1e9;
-    const all=[];
-    stems.forEach(st=>{ (M.wave(st.a,st.b,st.c,st.d,26)||[]).forEach(p=>all.push(p)); });
-    const xs=all.map(p=>p.x), ys=all.map(p=>p.y);
-    const minX=Math.min(...xs), maxX=Math.max(...xs), minY=Math.min(...ys), maxY=Math.max(...ys);
-    const w=maxX-minX, h=maxY-minY, cx=(minX+maxX)/2, cy=(minY+maxY)/2;
-    const area=(w*h)/(STAGE.w*STAGE.h);
-    const centerPenalty=Math.abs(cx-(STAGE.x+STAGE.w/2))/STAGE.w + Math.abs(cy-(STAGE.y+STAGE.h*0.48))/STAGE.h;
-    const targetArea=.22;
-    const areaPenalty=Math.abs(area-targetArea)*2.8;
-    const aspectPenalty=Math.abs((h/Math.max(1,w))-1.55)*.22;
-    const spreadBonus=Math.min(1.1,w/430)+Math.min(1.0,h/710);
-    // Avoid preferring an ostensibly broad crown made of axes that will be
-    // discarded by the chosen growth mode. Distinct trunks get a small bonus.
-    const breadthPenalty=Math.max(0,320-w)/220;
-    const majorBonus=stems.filter(st=>st.major).length*.12;
-    const activeBonus=Math.min(3,stems.length-1)*.23;
-    return spreadBonus + majorBonus + activeBonus - centerPenalty - areaPenalty - aspectPenalty - breadthPenalty;
+  // Screen-space silhouette evaluation, before expensive leaves are painted.
+  // Score only the axes that actually survive the selected growth pattern;
+  // favor one legible gesture and supporting growth, not the widest tangle.
+  function stemLayoutScore(stems, species, layout){
+    if(!stems?.length)return -1e9;
+    const samples=stems.map(st=>M.wave(st.a,st.b,st.c,st.d,32));
+    const pts=samples.flat();
+    const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
+    const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+    const w=maxX-minX,h=maxY-minY,cx=(minX+maxX)/2,cy=(minY+maxY)/2;
+    const ratio=w/Math.max(h,1);
+    const desiredRatio=['ivy','honeysuckle','bramble','dogrose','fern'].includes(species)?.77:.59;
+    const targetWidth=layout==='single'?235:layout==='meander'?425:layout==='cluster'?540:470;
+    const targetHeight=layout==='single'?690:layout==='radiating'?600:675;
+    const coverage=Math.abs(w-targetWidth)/targetWidth + Math.abs(h-targetHeight)/targetHeight;
+    const center=(Math.abs(cx-425)/415)*.62 + (Math.abs(cy-510)/490)*.47;
+    const shape=Math.abs(ratio-desiredRatio)*.53;
+    const areaPenalty=Math.max(0,.13-(w*h)/(M.W*M.H))*2.4;
+    // A branch silhouette needs a strong continuous hero. Unrooted tiny
+    // fragments and near-identical parallel canes feel like accidental drafts.
+    const length=p=>p.slice(1).reduce((sum,v,i)=>sum+M.distance(v,p[i]),0);
+    const lengths=samples.map(length);
+    const main=stems.map((st,i)=>st.major?lengths[i]:0);
+    const hero=Math.max(...main,0);
+    const hierarchy=hero>0 ? Math.max(0,.49-hero/(lengths.reduce((a,b)=>a+b,0)||1))*1.1 : .4;
+    let crossings=0,parallel=0;
+    const lineHit=(a,b,c,d)=>{
+      const cross=(u,v)=>u.x*v.y-u.y*v.x;
+      const ab={x:b.x-a.x,y:b.y-a.y},cd={x:d.x-c.x,y:d.y-c.y};
+      const den=cross(ab,cd);if(Math.abs(den)<.001)return false;
+      const ac={x:c.x-a.x,y:c.y-a.y},t=cross(ac,cd)/den,u=cross(ac,ab)/den;
+      return t>.07&&t<.93&&u>.07&&u<.93;
+    };
+    for(let i=0;i<samples.length;i++)for(let j=i+1;j<samples.length;j++){
+      const a=samples[i],b=samples[j];
+      // Intersections very close to shared roots are botanically plausible.
+      for(let x=5;x<a.length-1;x+=2)for(let y=5;y<b.length-1;y+=2){
+        if(lineHit(a[x],a[x+1],b[y],b[y+1]))crossings++;
+      }
+      let paired=0;
+      for(let k=8;k<29;k+=4){
+        const q=a[k];let closest=Infinity;
+        for(let m=8;m<29;m+=3)closest=Math.min(closest,M.distance(q,b[m]));
+        if(closest<29)paired++;
+      }
+      parallel+=paired;
+    }
+    const crossingsWeight=['ivy','honeysuckle','bramble'].includes(species)?.04:.15;
+    const overlap=crossings*crossingsWeight + parallel*.115;
+    // A disconnected woody side-branch receives a large penalty. This only
+    // applies to named lateral limbs; shrubs can grow from several close roots.
+    let disconnect=0;
+    for(let i=0;i<stems.length;i++)if(stems[i].role==='lateral'){
+      const closest=samples.some((line,j)=>i!==j&&line.some(p=>M.distance(p,stems[i].a)<19));
+      if(!closest)disconnect+=.7;
+    }
+    const borderPenalty=Math.max(0,90-minX)/100+Math.max(0,maxX-760)/100+
+      Math.max(0,78-minY)/95+Math.max(0,maxY-944)/95;
+    return 5 - coverage*.95 - center - shape - areaPenalty - hierarchy -
+      overlap - disconnect - borderPenalty*.5;
   }
   function pickNaturals(s,selection,architectureSpecies){
     const list=Object.keys(designs);
@@ -136,15 +177,20 @@ window.MS=window.MS||{};
     const layouts=explicit ? [selection] : [...new Set([selection,...preferred])].slice(0,4);
     const candidates=[];
     layouts.forEach((layout,layoutIndex)=>{
-      for(let i=0;i<3;i++){
+      for(let i=0;i<5;i++){
         const rr=M.rng(M.childSeed(Number(s.seed)>>>0||1,0x71f200 + layoutIndex*37 + i*101));
         const natural=(M.makeSpeciesAxes && M.makeSpeciesAxes(architectureSpecies,layout,rr)) || designs[layout](rr);
         const actual=displayedStems(natural,layout);
-        candidates.push({layout,stems:natural,score:stemLayoutScore(actual)});
+        candidates.push({layout,stems:natural,score:stemLayoutScore(actual,architectureSpecies,layout)});
       }
     });
+    // Preserve deterministic variation: rank good candidates, then let the
+    // seed choose among genuinely viable top silhouettes rather than locking
+    // every species to one maximally-wide template.
     candidates.sort((a,b)=>b.score-a.score);
-    return candidates[0] || {layout:selection,stems:designs[selection](M.rng(M.childSeed(Number(s.seed)>>>0||1,1901)))};
+    const top=candidates.filter(c=>c.score>=candidates[0].score-.07).slice(0,3);
+    const selectR=M.rng(M.childSeed(Number(s.seed)>>>0||1,0x5c0a7d13));
+    return top.length>1?selectR.choose(top):candidates[0] || {layout:selection,stems:designs[selection](M.rng(M.childSeed(Number(s.seed)>>>0||1,1901)))};
   }
 
   M.plan=(s,r)=>{
@@ -195,7 +241,7 @@ window.MS=window.MS||{};
       guideAmount:amount,
       guideIndex:i
     }));
-    return {mode:'botanical',layout:selectionResolved,structure:construction.name,construction,conform:amount,
+    return {mode:'botanical',layout:selectionResolved,structure:construction.name,construction,conform:amount,architectureSpecies,
       bounds:box(54,58,742,894),focal:{x:-10000,y:-10000,rx:1,ry:1},
       stems,knots:[],compartments:[],weaveStem:-1};
   };

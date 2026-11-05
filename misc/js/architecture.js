@@ -17,9 +17,9 @@ window.MS=window.MS||{};
    const root=crown(r,baseX,922),out=[];
    for(let i=0;i<count;i++){
      const k=count===1?0:(i/(count-1)*2-1),end=P(root.x+k*spread+rand(r,49),endY+rand(r,80)+Math.abs(k)*70);
-     const a=move(root,k*62+rand(r,10),rand(r,10));
-     const b=P(root.x+k*spread*.33+rand(r,24),root.y-255+rand(r,28));
-     const c=P(end.x-k*spread*bend+rand(r,50),end.y+235+rand(r,46));
+     const a=move(root,k*7+rand(r,2),rand(r,2));
+     const b=P(root.x+k*spread*.24+rand(r,16),root.y-220+rand(r,24));
+     const c=P(end.x-k*spread*bend*.55+rand(r,28),end.y+194+rand(r,32));
      out.push(make(a,b,c,end,width*(i===Math.floor(count/2)?1.2:r.between(.72,.96)),i===0||i===Math.floor(count/2)?'main':'lateral',habit));
    }
    return out;
@@ -107,23 +107,51 @@ window.MS=window.MS||{};
    return axes.map((stem,i)=>{
      const mod=(p)=>{
        const rel=P(p.x-pivot.x,p.y-pivot.y);let x=rel.x,y=rel.y;
-       if(layout==='diagonal')x+=(555-p.y)*.21;
-       if(layout==='crescent')x+=Math.sign(x||((i%2)*2-1))*Math.sin(Math.max(0,Math.min(1,(940-p.y)/950))*Math.PI)*33;
-       if(layout==='meander')x+=Math.sin((p.y/1000)*Math.PI*2.1+i*.55)*50;
-       if(layout==='radiating')x*=1.13;
-       if(layout==='cluster')x*=.82;
-       if(layout==='single')x*=.91;
+       // Layout gestures grow out of the SAME root. Earlier versions applied
+       // different offsets even at the base, making paired botanical shoots
+       // appear to be floating independently of each other.
+       const maturity=Math.pow(M.clamp((960-p.y)/825,0,1),.9);
+       if(layout==='diagonal')x+=(555-p.y)*.21*maturity;
+       if(layout==='crescent')x+=Math.sign(x||((i%2)*2-1))*Math.sin(maturity*Math.PI*.87)*33*maturity;
+       if(layout==='meander')x+=Math.sin((p.y/1000)*Math.PI*2.1+i*.55)*50*maturity;
+       if(layout==='radiating')x+=rel.x*.13*maturity;
+       if(layout==='cluster')x-=rel.x*.18*maturity;
+       if(layout==='single')x-=rel.x*.09*maturity;
        return P(M.clamp(pivot.x+x+rand(r,2.8),24,826),M.clamp(pivot.y+y+rand(r,2.8),24,970));
      };
      const a=mod(stem.a),b=mod(stem.b),c=mod(stem.c),d=mod(stem.d);
      return {...stem,a,b,c,d};
    });
  }
+ // Side branches on trees and climbers share the actual parent centerline.
+ // The former hand-entered coordinates were only approximate: after the layout
+ // deformation they could miss their trunk completely. Reattach the socket and
+ // ease the first two controls instead of teleporting the entire branch.
+ function connectLaterals(axes,species){
+   if(!['oak','hawthorn','ivy'].includes(species))return axes;
+   const main=axes.find(st=>st.role==='main');
+   if(!main)return axes;
+   const pts=M.wave(main.a,main.b,main.c,main.d,100).slice(10,94);
+   return axes.map(st=>{
+     if(st===main||st.role!=='lateral')return st;
+     let closest=pts[0],best=Infinity;
+     for(const p of pts){
+       const d=(p.x-st.a.x)**2+(p.y-st.a.y)**2;
+       if(d<best){best=d;closest=p;}
+     }
+     // Lateral origins are inside the parent stroke. The joined tangents are
+     // eased, retaining the much more important natural endpoint gesture.
+     const dx=closest.x-st.a.x,dy=closest.y-st.a.y;
+     if(Math.hypot(dx,dy)>260)return st;
+     const moved=(p,f)=>P(p.x+dx*f,p.y+dy*f);
+     return {...st,a:moved(st.a,1),b:moved(st.b,.72),c:moved(st.c,.18)};
+   });
+ }
  M.makeSpeciesAxes=(species,layout,r)=>{
    const key=species==='hybrid'?'acanthus':species;
    const form=forms[key];
    if(!form)return null;
-   return arrange(form(r),layout,r).map((st,i)=>{
+   return connectLaterals(arrange(form(r),layout,r),key).map((st,i)=>{
      const pts=M.wave(st.a,st.b,st.c,st.d,30),xs=pts.map(p=>p.x),ys=pts.map(p=>p.y),pad=85;
      const area=box(Math.min(...xs)-pad,Math.min(...ys)-pad,Math.max(...xs)-Math.min(...xs)+2*pad,Math.max(...ys)-Math.min(...ys)+2*pad);
      return {...st,id:i+1,side:i%2?-1:1,box:area};

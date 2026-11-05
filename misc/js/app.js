@@ -1,4 +1,4 @@
-/* Pass 4: simplified botanical controls, stronger print finish, and randomize. */
+/* Botanical controls, deterministic regeneration, and vector exports. */
 (()=>{
  'use strict';
  const M=window.MS;
@@ -7,16 +7,16 @@
  const on=(id,event,handler)=>{const node=el(id);if(node)node.addEventListener(event,handler);};
 
  const defaultSettings={
-   geometry:'random',conform:50,ornament:26,
-   pattern:'random',species:'random',season:'summer',palette:'kells',seed:472818,
-   foliage:66,finishLevel:30
+   geometry:'random',conform:28,ornament:55,
+   pattern:'random',species:'random',season:'summer',palette:'kells',seed:20261104,
+   foliage:78,finishLevel:27
  };
  const s={...defaultSettings};
  const textFields=['pattern','geometry','species','season','palette'];
  const numberFields=['seed','conform','ornament','foliage','finishLevel'];
  const controlIds=[...textFields,...numberFields];
  const stage=el('drawing-stage');
- let paintTimer=null,svg='',framedViewBox=null,paintRevision=0;
+ let paintTimer=null,svg='',framedViewBox=null;
 
  function read(){
    controlIds.forEach(id=>{
@@ -33,7 +33,7 @@
    s.spread=Math.round(10+f*82);
    s.registration=Math.round(f*24);
    s.printWarp=Math.round(3+f*28);
-   s.distortion=10;
+   s.distortion=32;
    s.bleed=s.spread>0;
    s.transparent=true;
    s.guideOverlay=false; // guides remain internal construction only
@@ -53,76 +53,42 @@
    stage?.setAttribute('aria-label','Botanical ornament, seed '+s.seed);
  }
 
+ // Fit the complete illustrated specimen, including trunk, fruit and fine
+ // terminal twigs. Never crop woody endpoints to make the foliage look larger.
+ // The same viewBox is carried to PNG/SVG export.
  function fitDrawing(){
    const art=el('drawing')?.querySelector('svg');
-   const plant=art?.querySelector('#botanical-plants') || art?.querySelector('#artwork-layers');
-   if(!art||!plant)return;
-   const unionBBox=(nodes)=>{
-     let box=null;
-     for(const node of nodes){
-       if(!node || typeof node.getBBox!=='function') continue;
-       let b;
-       try{ b=node.getBBox(); }catch(_){ continue; }
-       if(!b || ![b.x,b.y,b.width,b.height].every(Number.isFinite) || b.width<=0 || b.height<=0) continue;
-       box=box ? {
-         x:Math.min(box.x,b.x),
-         y:Math.min(box.y,b.y),
-         width:Math.max(box.x+box.width,b.x+b.width)-Math.min(box.x,b.x),
-         height:Math.max(box.y+box.height,b.y+b.height)-Math.min(box.y,b.y)
-       } : {x:b.x,y:b.y,width:b.width,height:b.height};
-     }
-     return box;
-   };
+   const plant=art?.querySelector('#botanical-plants')||art?.querySelector('#artwork-layers');
+   if(!art||!plant||!stage)return;
    try{
-     const structureBBox=plant.getBBox();
-     const focusNodes=[
-       ...plant.querySelectorAll('.growth-leaf,[data-pixel-organ],[data-pixel-pigment],.shoot-details,.shoot-foliage')
-     ];
-     let b=unionBBox(focusNodes) || structureBBox;
-     if(structureBBox && structureBBox.width>0 && structureBBox.height>0 && b){
-       const sx=structureBBox.x+structureBBox.width*.5, sy=structureBBox.y+structureBBox.height*.5;
-       const bx=b.x+b.width*.5, by=b.y+b.height*.5;
-       b={
-         x:Math.min(b.x, bx + (sx-bx)*.16 - b.width*.06),
-         y:Math.min(b.y, by + (sy-by)*.12 - b.height*.06),
-         width:Math.max(b.width, (Math.max(b.x+b.width,structureBBox.x+structureBBox.width)-Math.min(b.x,structureBBox.x))*0.9),
-         height:Math.max(b.height, (Math.max(b.y+b.height,structureBBox.y+structureBBox.height)-Math.min(b.y,structureBBox.y))*0.88)
-       };
-     }
+     const b=plant.getBBox();
      if(!b||![b.x,b.y,b.width,b.height].every(Number.isFinite)||b.width<1||b.height<1)return;
-     const aspect=M.W/M.H;
-     const density=(b.width*b.height)/(M.W*M.H);
-     const margin=density<.10?1.16:density<.18?1.20:1.24;
-     let w=Math.max(260,b.width*margin),h=Math.max(360,b.height*margin);
-     if(w/h<aspect)w=h*aspect;else h=w/aspect;
-     const midX=b.x+b.width*.5,midY=b.y+b.height*.5;
-     const x=Math.max(0,Math.min(M.W-w,midX-w*.5));
-     const y=Math.max(0,Math.min(M.H-h,midY-h*.5));
-     framedViewBox=[x,y,w,h].map(n=>Math.round(n*100)/100).join(' ');
+     // Frame the actual plant against the DISPLAY window, not the old portrait
+     // drawing coordinates. This is what allows the whole panel to fit beside
+     // its settings without turning into an enormous scrolling document.
+     const rect=stage.getBoundingClientRect(),ratio=Math.max(.35,rect.width/Math.max(1,rect.height));
+     let width=Math.max(120,b.width*1.20),height=Math.max(170,b.height*1.17);
+     if(width/height<ratio)width=height*ratio;
+     else height=width/ratio;
+     const cx=b.x+b.width/2,cy=b.y+b.height/2;
+     framedViewBox=[cx-width/2,cy-height/2,width,height]
+       .map(v=>Math.round(v*100)/100).join(' ');
      art.setAttribute('viewBox',framedViewBox);
+     art.setAttribute('preserveAspectRatio','xMidYMid meet');
    }catch(err){console.warn('Art frame fallback:',err);}
  }
-
- function makePixelPlate(art,settings,revision){
-   return M.applyPixelPlate(art,settings).then(()=>{
-     if(revision!==paintRevision||!art.isConnected)return;
-     // The completed print plate is displayed immediately; no animation layer.
-   }).catch(error=>console.warn('Vector finish retained',error));
+ if(stage && 'ResizeObserver' in window){
+   new ResizeObserver(()=>fitDrawing()).observe(stage);
  }
 
  function paint(){
    clearTimeout(paintTimer);
    read();
-   const revision=++paintRevision;
    numberFields.slice(1).forEach(id=>{if(has(id+'-value'))el(id+'-value').textContent=s[id];});
    svg=M.render(s);
    if(has('drawing'))el('drawing').innerHTML=svg;
    fitDrawing();
    meta();
-   const art=el('drawing')?.querySelector('svg');
-   if(!art)return;
-   const settings={...s};
-   makePixelPlate(art,settings,revision);
  }
 
  function delayedPaint(){clearTimeout(paintTimer);paintTimer=setTimeout(()=>paint(),80);}
@@ -169,7 +135,6 @@
    const data=M.render({...s,guideOverlay:false,drawnPaths:[]});
    const parsed=new DOMParser().parseFromString(data,'image/svg+xml');
    const root=parsed.documentElement;
-   await M.applyPixelPlate(root,{...s});
    if(framedViewBox)root.setAttribute('viewBox',framedViewBox);
    return new XMLSerializer().serializeToString(root);
  }
@@ -197,7 +162,8 @@
      const image=new Image();
      await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=reject;image.src=url;});
      const canvas=document.createElement('canvas');
-     canvas.width=3200;canvas.height=Math.round(3200*M.H/M.W);
+     const frame=framedViewBox?.split(/\s+/).map(Number);
+     canvas.width=2600;canvas.height=frame?.length===4 ? Math.round(2600*frame[3]/frame[2]) : Math.round(2600*M.H/M.W);
      const ctx=canvas.getContext('2d'); if(!ctx) throw Error('canvas unavailable');
      ctx.drawImage(image,0,0,canvas.width,canvas.height);
      const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));

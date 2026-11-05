@@ -6,7 +6,12 @@ window.MS=window.MS||{};
  const P=(x,y)=>({x,y}), add=(a,b,k=1)=>P(a.x+b.x*k,a.y+b.y*k), polar=(a,d)=>P(Math.cos(a)*d,Math.sin(a)*d), V=p=>M.vec(p.x,p.y), n=M.n;
  const angle=p=>Math.atan2(p.y,p.x), norm=p=>M.normal(p), clamp=M.clamp;
  function allowed(p,plan,margin=0){return M.inBounds(p,plan.bounds,margin);}
- function widthAt(w,t,tip=.35){return tip+(w-tip)*(1-t)**1.22;}
+ function widthAt(w,t,tip=.18){
+   t=clamp(t,0,1);
+   const taper=Math.pow(1-t,.82)*(1-.13*Math.sin(Math.PI*t));
+   const shoulder=.075*w*Math.exp(-Math.pow((t-.115)/.105,2));
+   return tip+(w-tip)*taper+shoulder;
+ }
  function wavy(samples,r,motion,habit){
    // Curves should feel hand-led rather than mathematically clean. A slow body
    // sway carries the plant, while a finer hand tremor only appears away from
@@ -32,34 +37,41 @@ window.MS=window.MS||{};
    return out;
  }
  function silhouette(points,base,tip=.12,rooted=false){
-   // The root of a side shoot emerges from inside its parent instead of
-   // producing a hard-edged socket. Subtle sidedness keeps the resulting wood
-   // from reading like a perfectly mirrored vector ribbon.
-   const left=[],right=[];
-   const handed=Math.sin(base*.34)*.06;
+   const left=[],right=[],seed=base*.711;
    for(const p of points){
-     const normal=norm(p.tng),t=clamp(p.t,0,1);
-     const entry=rooted?1:(.24+.76*Math.min(1,t/.09));
-     const width=widthAt(base,t,tip)*entry;
-     const irregular=1+.018*Math.sin(t*19+base*1.3)+.010*Math.sin(t*47+.7)+.012*Math.sin((t+.15)*9)*(1-Math.abs(t-.5)*1.4);
-     const bias=.07*Math.sin(Math.PI*t*1.3)*(handed+(rooted?0:.04));
-     left.push(add(p,normal,.5*width*irregular*(1+bias)));
-     right.push(add(p,normal,-.5*width*(1-.05*Math.sin(t*13+1.7))*(1-bias)));
+     const t=clamp(p.t,0,1),v=norm(p.tng);
+     const joint=rooted?1:(.64+.36*Math.min(1,t/.085));
+     const width=widthAt(base,t,tip)*joint;
+     // Different ink edges, shared centerline. Gentle fluctuations are not
+     // block noise and become smaller at the branch end.
+     const slow=Math.sin(t*9.4+seed)*.035+Math.sin(t*19.2+seed*1.31)*.016;
+     const thin=Math.sin(t*29.4+seed*2.1)*.006;
+     left.push(add(p,v,width*.5*(1+slow+thin)));
+     right.push(add(p,v,-width*.5*(1-slow*.55+thin*.6)));
    }
-   const outline=[...left,...right.reverse()];
-   let d=`M${V(outline[0])}`;
-   for(let i=0;i<outline.length;i++){
-     const prev=outline[(i+outline.length-1)%outline.length],p=outline[i],q=outline[(i+1)%outline.length],nxt=outline[(i+2)%outline.length];
-     const k=.16;
-     d+=`C${V(P(p.x+(q.x-prev.x)*k,p.y+(q.y-prev.y)*k))} ${V(P(q.x-(nxt.x-p.x)*k,q.y-(nxt.y-p.y)*k))} ${V(q)}`;
-   }
-   return d+'Z';
+   // Each outline is interpolated independently. A single closed spline
+   // across both margins used to bulge at terminal joins.
+   const trace=(arr,starting=true)=>{
+     let d=starting?`M${V(arr[0])}`:'';
+     for(let i=0;i<arr.length-1;i++){
+       const p0=arr[Math.max(0,i-1)],a=arr[i],b=arr[i+1],p3=arr[Math.min(arr.length-1,i+2)];
+       d+=`C${V(P(a.x+(b.x-p0.x)/6,a.y+(b.y-p0.y)/6))} `+
+         `${V(P(b.x-(p3.x-a.x)/6,b.y-(p3.y-a.y)/6))} ${V(b)}`;
+     }
+     return d;
+   };
+   const rev=[...right].reverse();
+   return trace(left)+`L${V(rev[0])}`+trace(rev,false)+`Z`;
  }
  function spine(a,b,c,d,count,r,motion,habit){return wavy(M.wave(a,b,c,d,count),r,motion,habit);}
  function guidedSpine(stem,sp,r,motion,s){
    const raw=stem.naturalPoints||M.wave(stem.a,stem.b,stem.c,stem.d,100);
    if(stem.userDrawn)return raw;
-   const guide=stem.guidePoints,conform=clamp(Number(s.conform||0)/100,0,1);
+   const guide=stem.guidePoints,rawConform=clamp(Number(s.conform||0)/100,0,1);
+   // Historically, dragging a rail toward 50 warped entire stems into hard
+   // loops. Even at 100 the hidden rail is a compositional influence, not a
+   // mechanical substitute for the plant's own growing direction.
+   const conform=Math.pow(rawConform,1.6)*(sp.habit==='twining'||sp.habit==='climbing'?.58:.43);
    if(!guide||conform<=0)return wavy(raw,r,motion*.48,sp.habit);
    // 100% means the entire axis lies on its guide. Partial values interpolate
    // the entire curve rather than attracting isolated vertices to nearest
@@ -146,7 +158,7 @@ window.MS=window.MS||{};
    // tiny circle, which produced impossible stacks of foliage.
    const max={holly:39,hazel:44,ivy:40,hawthorn:32,oak:48,dogrose:39,
       honeysuckle:37,bramble:39,acanthus:46,fern:31}[sp.leaf]||36;
-   size=clamp(size*1.16,11,max)*r.between(.86,1.13);
+   size=clamp(size*1.43,16,max*1.26)*r.between(.83,1.17);
    const variants=[
      [0,1,0],[.24,.94,0],[-.25,.91,0],[.39,.81,0],[-.40,.80,0],
      [.13,.78,3],[-.17,.76,-3],[.48,.67,0],[-.50,.67,0]
@@ -173,6 +185,19 @@ window.MS=window.MS||{};
    }
    return '';
  }
+ // Reproductive organs are deliberate accent marks. Keep separate berry
+ // and flower heads readable rather than allowing adjacent terminals to stack.
+ function accentOrgan(sp,p,a,season,pal,r,scale,plan,s){
+   const result=M.plantOrgan(sp,p,a,season,pal,r,scale,s);
+   if(!result)return '';
+   plan.accents=plan.accents||[];
+   const radius=scale*(['dogrose','honeysuckle','bramble'].includes(sp.leaf)?1.9:1.18);
+   const tip=add(p,polar(a,scale*.8));
+   if(plan.accents.some(old=>M.distance(old.p,tip)<old.radius+radius+2))return '';
+   if(!allowed(tip,plan,Math.min(12,scale*.75)))return '';
+   plan.accents.push({p:tip,radius});
+   return result;
+ }
  function twigDetails(samples,sp,season,pal,r,plan,s){
    const kind=sp.leaf,tip=samples[samples.length-1],a=angle(tip.tng);
    let out='';
@@ -189,7 +214,7 @@ window.MS=window.MS||{};
      const q=samples[Math.round(samples.length*.56)],p=anchored(q,1,.7,0);
      if(['bramble','hawthorn','dogrose'].includes(kind))out+=M.path(`M${V(p)}l${M.vec(r.between(-4,4),-r.between(3,7))}`,M.wood(sp,pal,'mature',r),1.1);
    }
-   if(r.chance(.52))out+=M.plantOrgan(sp,tip,a,season,pal,r,r.between(8,11));
+   if(r.chance(.62))out+=accentOrgan(sp,tip,a,season,pal,r,r.between(13,20),plan,s);
    // Terminal ornament is a continuation of the twig, never free-floating.
 
    return out;
@@ -199,9 +224,19 @@ window.MS=window.MS||{};
    const theta=angle(tng),turn=(sp.habit==='upright'?.68:sp.habit==='arching'?1.25:sp.habit==='twining'?1.38:sp.habit==='heavy'?.82:.98)*(1-M.clamp(s.conform||0,0,100)*.0015);
    const outAngle=theta+side*r.between(turn*.7,turn*1.3);
    let end=add(start,polar(outAngle,len));
+   // Keep new terminal sprays from collapsing into the same visual knot.
+   // Seeded and structural, not a post-hoc random deletion of branches.
+   plan.shootTips=plan.shootTips||[];
+   const near=plan.shootTips.some(q=>M.distance(q,end)<Math.min(36,12+len*.24));
+   if(near){
+     const redirect=theta-side*r.between(turn*.65,turn*.95);
+     const alt=add(start,polar(redirect,len*.78));
+     if(allowed(alt,plan,18)&&!plan.shootTips.some(q=>M.distance(q,alt)<Math.min(34,10+len*.2)))end=alt;
+   }
    const attracted=M.attractShoot?M.attractShoot(start,end,plan.construction,s.conform||0,sp.habit):end;
    if(allowed(attracted,plan,7))end=attracted;
    if(!allowed(end,plan,7))return '';
+   plan.shootTips.push(end);
    // A new shoot begins tangent to the parent, then gradually leans into
    // its own direction. This replaces the sharp wedge-shaped T junction.
    const parentDirection=norm(tng),sideVec=polar(theta+side*Math.PI/2,1);
@@ -216,19 +251,28 @@ window.MS=window.MS||{};
    // Alternate or opposite leaves reflect species, not an evenly spaced
    // computational ladder. Variation happens at the node, not by rotating a
    // detached sprite away from its own stalk.
-   const opposite=['honeysuckle'].includes(sp.leaf);
-   const whorled=sp.leaf==='ivy',cluster=sp.leaf==='holly'||sp.leaf==='hawthorn';
-   const seasonalBoost=season==='winter'?.90:season==='spring'?1.05:1;
-   const leafCount=clamp(Math.round((sub?2.8:4.7)*sp.frequency*(.56+s.foliage/98)*seasonalBoost*r.between(.86,1.18)),2,sub?5:8);
+   const kind=sp.leaf;
+   const opposite=kind==='honeysuckle';
+   const evergreenCluster=kind==='holly'||kind==='ivy';
+   const leafFactor={holly:.95,ivy:1.12,hazel:.76,hawthorn:1.15,
+     oak:.73,dogrose:.85,bramble:.84,honeysuckle:.92,acanthus:.64}[kind]||1;
+   const winterLeaf=season==='winter'&&!sp.evergreen;
+   const seasonalBoost=winterLeaf?.67:season==='spring'?.86:1;
+   const leafCount=clamp(Math.round((sub?2.6:4.3)*sp.frequency*leafFactor*
+     (.64+s.foliage/120)*seasonalBoost*r.between(.91,1.12)),2,sub?5:9);
+   const lengthCurve=kind==='ivy'?.22:kind==='hazel'?.35:kind==='dogrose'?.32:.26;
    for(let i=0;i<leafCount;i++){
-     const t=clamp(.14+(i+.38)*.78/leafCount+r.between(-.027,.027),.12,.93),p=points[Math.round(t*30)],sign=i%2?1:-1;
-     const a=angle(p.tng)+sign*r.between(.76,1.09)*sp.angle;
-     const size=len*(sub?r.between(.18,.32):r.between(.19,.38))*sp.scale*(sp.leafScale||1)*(1-.33*t);
-     const attachment=add(p,norm(p.tng),sign*widthAt(base,t,.25)*.10);
+     const rhythm=(i+.46)/leafCount;
+     const spread=kind==='holly'?.72:kind==='ivy'?.82:kind==='oak'?.67:.78;
+     const t=clamp(.12+rhythm*spread+r.between(-.013,.013),.11,.94);
+     const p=points[Math.round(t*30)],sign=i%2?1:-1;
+     const a=angle(p.tng)+sign*r.between(.76,1.07)*sp.angle;
+     const size=len*(sub?r.between(.19,.35):r.between(.23,.41))*sp.scale*(sp.leafScale||1)*(1-lengthCurve*t);
+     const attachment=add(p,norm(p.tng),sign*widthAt(base,t,.18)*.12);
      foliageArt+=petioleLeaf(attachment,a,size,sp,season,pal,r,plan,s,t);
-     if(opposite || (whorled&&r.chance(.24)) || (cluster&&r.chance(.23))){
-       const aa=angle(p.tng)-sign*r.between(.72,.99)*sp.angle;
-       foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.25),.5),aa,size*r.between(.83,.97),sp,season,pal,r,plan,s,t);
+     if(opposite || (evergreenCluster&&r.chance(kind==='holly'?.31:.15))){
+       const aa=angle(p.tng)-sign*r.between(.75,.95)*sp.angle;
+       foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.18),.6),aa,size*r.between(.79,.95),sp,season,pal,r,plan,s,t);
      }
    }
    if(sp.habit==='climbing' && r.chance(.46)){
@@ -246,7 +290,7 @@ window.MS=window.MS||{};
      organArt+=shoot(anchored(p,sign,widthAt(base,p.t,.25)),p.tng,sign,len*r.between(.32,.55)*sp.twigs,sp,season,pal,r,plan,s,true);
    }
    if(sp.habit==='fronds' || r.chance(.12))organArt+=twigDetails(points,sp,season,pal,r,plan,s);
-   else if(r.chance(season==='winter'?.92:season==='spring'?.84:.76))organArt+=M.plantOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(10,16));
+   else if(r.chance(season==='winter'?.92:season==='spring'?.84:.76))organArt+=accentOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(18,27),plan,s);
    // Add restrained foliate ornament at true branch nodes, not loose symbols.
    if(M.ornamentJunction && !sub){
      const i=Math.round(r.between(.35,.72)*30),p=points[i],a=angle(p.tng)+r.sign()*r.between(.74,1.18);
@@ -254,7 +298,7 @@ window.MS=window.MS||{};
    }
    if(M.ornamentTerminal){
      const tipPoint=points[30],tipAngle=angle(points[30].tng);
-     organArt+=M.ornamentTerminal(sp,tipPoint,tipAngle,Math.max(6,len*.12),pal,r,s,sub&&r.chance(.22));
+     organArt+=M.ornamentTerminal(sp,tipPoint,tipAngle,Math.max(6,len*.12),pal,r,s,sub&&r.chance(.22),plan);
    }
 
    // Decorative split-tip hooks removed: they looked disconnected.
@@ -305,7 +349,7 @@ window.MS=window.MS||{};
        foliage+='</g></g>';
      }
    }
-   if(season==='spring'&&r.chance(.34))foliage+=M.plantOrgan(sp,points[94],angle(points[94].tng),season,pal,r,9);
+   if(season==='spring'&&r.chance(.34))foliage+=accentOrgan(sp,points[94],angle(points[94].tng),season,pal,r,9,plan,s);
    return {wood,foliage};
  }
  function stemSpecies(s,r,index){
@@ -325,12 +369,13 @@ window.MS=window.MS||{};
      ['honeysuckle','ivy'],['honeysuckle','dogrose'],['bramble','ivy'],
      ['holly','ivy'],['hazel','hawthorn'],['oak','hazel']
    ];
-   const folio=r.choose(illustratedFamilies);
+   const seedProfile=plan.architectureSpecies || r.choose(['dogrose','hawthorn','hazel','ivy','holly']);
+   const folio=illustratedFamilies.find(f=>f.includes(seedProfile)) || r.choose(illustratedFamilies);
    for(let k=0;k<stems.length;k++){
      const stem=stems[k],sp=(s.species==='random'
-       ? M.chooseSpecies(folio[k%folio.length],r)
+       ? M.chooseSpecies(k===0?seedProfile:folio[k%folio.length],r)
        : stemSpecies(s,r,k));
-     const motion=(.40+clamp(s.distortion/100,0,1)*.95)*r.between(7,19);
+     const motion=(.44+clamp(s.distortion/100,0,1)*1.25)*r.between(6,13);
      plan.activeStem='stem-'+stem.id;
      const points=guidedSpine(stem,sp,r,motion,s);
      stem.drawnPoints=points;
@@ -341,24 +386,25 @@ window.MS=window.MS||{};
      }
      // Lower stem mass: the earlier heavy brown ribbons overwhelmed the leaf plates.
      const emphasis=stem.emphasis||1;
-     const base=stem.width*.72*emphasis*(sp.habit==='heavy'?1.07:sp.habit==='climbing'?.88:sp.habit==='twining'?.87:1.0);
+     const base=stem.width*.86*emphasis*(sp.habit==='heavy'?1.09:sp.habit==='climbing'?.66:sp.habit==='twining'?.67:sp.habit==='arching'?.82:1.0);
      const wood=M.wood(sp,pal,'mature',r);
      plan.spatial?.addWood?.(points,base,plan.activeStem);
      let woodArt=stemInk(points,base,wood,pal,r,s,true,sp);
      let growth='';
-     let count=clamp(Math.round((stem.major?6.5:4.4)*sp.frequency*(.40+fol*.82)*(sp.shootDensity||1)*emphasis),2,13);
+     let count=clamp(Math.round((stem.major?7.0:4.4)*sp.frequency*(.48+fol*.84)*(sp.shootDensity||1)*emphasis),2,13);
      if(season==='winter'&&!sp.evergreen)count=Math.max(2,Math.round(count*.74));
      // Slightly irregular spacing instead of evenly-spaced identical twigs.
      const lowerBias=sp.habit==='heavy'||sp.leaf==='oak'||sp.leaf==='hazel';
      const positions=Array.from({length:count},(_,i)=>{
-       const raw=.09+(i+.4)*.79/count+r.between(-.038,.038);
+       const raw=.09+(i+.35)*.80/count+r.between(-.017,.017);
        const t=clamp(raw,.06,.92);
        return lowerBias ? Math.pow(t,.90) : t;
      });
      for(let i=0;i<count;i++){
        const t=positions[i],idx=Math.round(t*100),p=points[idx];
        const side=((i%2===0?stem.side:-stem.side)||1)*(r.chance(.12)?-1:1);
-       const length=r.between(stem.major?62:50,stem.major?150:118)*sp.scale*(sp.shootScale||1)*(1-.14*t)*(1+.06*(emphasis-1));
+       const habitShoot=sp.habit==='heavy'?.88:sp.habit==='angular'?.89:sp.habit==='twining'?1.04:1;
+       const length=r.between(stem.major?88:61,stem.major?161:124)*habitShoot*sp.scale*(sp.shootScale||1)*(1-.20*t)*(1+.04*(emphasis-1));
        const identity=s.species==='hybrid'?M.chooseSpecies(r.choose(['holly','ivy','dogrose','hazel','oak','acanthus']),r):sp;
        // Start each lateral well inside the parent silhouette; no floating joins.
        const launch=add(p,norm(p.tng),side*widthAt(base,t,.1)*.08);
@@ -375,13 +421,13 @@ window.MS=window.MS||{};
      }
      if(r.chance(.68)){
        const tip=points[100],ang=angle(tip.tng);
-       growth+=M.plantOrgan(sp,tip,ang,season,pal,r,r.between(11,16));
+       growth+=accentOrgan(sp,tip,ang,season,pal,r,r.between(22,32),plan,s);
      }
 
      const axis=M.strokePath(points);
      sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}">`+
-       `<g class="growth-secondary">${growth}</g>`+
-       `<g class="growth-primary" data-grow-width="${n(Math.max(8,base*2.7))}" data-growpath="${axis}">${woodArt}</g></g>`);
+       `<g class="growth-primary" data-grow-width="${n(Math.max(8,base*2.7))}" data-growpath="${axis}">${woodArt}</g>`+
+       `<g class="growth-secondary">${growth}</g></g>`);
    }
    // Whole-plant painter's order: one branch and its leaves are composed as a
    // unit, rather than putting *every* woody stem behind *every* leaf.
