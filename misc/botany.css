@@ -47,31 +47,38 @@ button,input,select{font:inherit}
 
 /* Ambient botanical life, not a growth reveal. Only coherent attached groups
    move: entire stems around the root, shoots around their junction, blades
-   around their petiole. The specimen and exported SVG remain full-resolution. */
+   around their petiole. Motion should feel like a quiet draft, not a looped wiggle. */
 .drawing .stem-sway,.drawing .shoot-sway,.drawing .leaf-breath{
-  transform-box:view-box;
+  transform-box:fill-box;
   transform-origin:0 0;
+  will-change:transform;
 }
 .drawing .stem-sway{
-  animation: botanical-stem-breath var(--stem-duration,14s) ease-in-out var(--stem-delay,0s) infinite alternate;
+  animation: botanical-stem-breath var(--stem-duration,22s) cubic-bezier(.45,.05,.55,.95) var(--stem-delay,0s) infinite;
 }
 .drawing .shoot-sway{
-  animation: botanical-shoot-breath var(--shoot-duration,11s) ease-in-out var(--shoot-delay,0s) infinite alternate;
+  animation: botanical-shoot-breath var(--shoot-duration,18s) cubic-bezier(.45,.05,.55,.95) var(--shoot-delay,0s) infinite;
 }
 .drawing .leaf-breath{
-  animation: botanical-leaf-breath var(--leaf-duration,11s) ease-in-out var(--leaf-delay,0s) infinite alternate;
+  animation: botanical-leaf-breath var(--leaf-duration,18s) ease-in-out var(--leaf-delay,0s) infinite;
 }
 @keyframes botanical-stem-breath{
-  0%,100%{transform:rotate(-.58deg) translateX(-.6px)}
-  50%{transform:rotate(.58deg) translateX(.6px)}
+  0%{transform:rotate(calc(-1 * var(--stem-angle-a,.12deg))) translateX(calc(-1 * var(--stem-drift,.12px)))}
+  28%{transform:rotate(var(--stem-angle-b,.22deg)) translateX(var(--stem-drift,.12px)) translateY(.15px)}
+  57%{transform:rotate(calc(var(--stem-angle-a,.12deg) * .35)) translateX(calc(var(--stem-drift,.12px) * .3)) translateY(-.1px)}
+  100%{transform:rotate(calc(-1 * var(--stem-angle-a,.12deg))) translateX(calc(-1 * var(--stem-drift,.12px)))}
 }
 @keyframes botanical-shoot-breath{
-  0%,100%{transform:rotate(-.50deg)}
-  50%{transform:rotate(.65deg)}
+  0%{transform:rotate(calc(-1 * var(--shoot-angle-a,.15deg)))}
+  30%{transform:rotate(var(--shoot-angle-b,.28deg)) translateX(var(--shoot-drift,.14px))}
+  62%{transform:rotate(calc(var(--shoot-angle-a,.15deg) * .25)) translateX(calc(var(--shoot-drift,.14px) * -.25))}
+  100%{transform:rotate(calc(-1 * var(--shoot-angle-a,.15deg)))}
 }
 @keyframes botanical-leaf-breath{
-  0%,100%{transform:rotate(calc(0deg - var(--leaf-amplitude,.7deg)))}
-  50%{transform:rotate(var(--leaf-amplitude,.7deg))}
+  0%{transform:rotate(calc(-1 * var(--leaf-amplitude,.26deg)))}
+  36%{transform:rotate(calc(var(--leaf-amplitude,.26deg) * .75)) translateY(.08px)}
+  68%{transform:rotate(calc(var(--leaf-amplitude,.26deg) * -.2))}
+  100%{transform:rotate(calc(-1 * var(--leaf-amplitude,.26deg)))}
 }
 @media (prefers-reduced-motion:reduce){
   .drawing .stem-sway,.drawing .shoot-sway,.drawing .leaf-breath{animation:none!important}
