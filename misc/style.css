@@ -563,11 +563,11 @@
   line-height:.75;
   cursor:pointer;
 }
-.home .botany-close:hover {transform:rotate(4deg)}
+.home .botany-close:hover, .home .botany-close:focus-visible {transform:none; text-decoration:none}
 .home .botany-frame {
   display:block;
   width:100%;
-  min-height:600px;
+  min-height:0;
   border:0;
   background:transparent;
   overflow:hidden;
@@ -593,3 +593,8 @@
   .home .sports-launcher { top: calc(50% + 42px); }
   .home .botany-launcher { top: calc(50% + 84px); }
 }
+
+/* Botany behaves exactly like the chess and sports panels on hover. */
+.home .botany-close{flex:0 0 52px;display:grid;place-items:center;width:52px;height:52px;margin-top:-5px;line-height:1;transform:none;transition:none}
+.home .botany-close:hover,.home .botany-close:focus-visible{transform:none;transition:none}
+@media(max-width:700px){.home .botany-close{flex-basis:44px;width:44px;height:44px}}

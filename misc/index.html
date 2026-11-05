@@ -11,7 +11,7 @@
   <title>misc | keegan.biz</title>
 
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="/misc/style.css?v=20261027-botany-pass-d-1">
+  <link rel="stylesheet" href="/misc/style.css?v=20261104-botany-redraw-v1">
   <link rel="stylesheet" href="/assets/sports/sports.css">
 
   <style>
@@ -2729,7 +2729,7 @@
             id="botany-frame"
             class="botany-frame"
             title="Botanical ornament generator"
-            data-src="/misc/botany.html?v=20261027-botany-pass-d-1"
+            data-src="/misc/botany.html?v=20261104-botany-redraw-v1"
             loading="lazy"
           ></iframe>
           <button
@@ -2861,9 +2861,10 @@
         "The site keeps a lightweight saved copy of the data too, so normal browsing does not need to constantly call the feeds."
       ],
       botany: [
-        "The drawing is generated in your browser. Plant chooses the leaf and flower forms, growth decides how the branches develop, and shape gives them an underlying geometric pattern.",
-        "Season and ink change the appearance. Fine tune lets you adjust how closely the stems follow the shape, the amount of ornament and foliage, and the worn-print finish.",
-        "New drawing changes the seed but keeps your settings. Randomize changes the settings too. A seed can reproduce a drawing, and you can save the result as SVG or PNG."
+        "Every illustration is made in your browser from a numbered seed. A plant profile determines the stems, leaf anatomy, flowers and berries. The growth setting arranges the main stems, while shape offers a quiet geometric influence rather than a visible guide.",
+        "The leaf forms are built individually, then given veins, occasional folds and print impressions. Season affects foliage and fruit; ink changes the pigment family. Fine tune controls structure, ornament, leaf density and wear.",
+        "New drawing changes the seed without changing your settings. Randomize changes everything. You can re-enter a seed to reproduce an illustration, or export a transparent SVG or PNG.",
+        "Original work for keegan.biz, drawing on insular manuscript ornament, historic herbals and printmaking. Related tools and techniques: <a href=\"https://github.com/rvanwijnen/spectral.js\" target=\"_blank\" rel=\"noopener noreferrer\">Spectral.js</a> pigment mixing, <a href=\"https://andyjakubowski.com/ink-bleed-effect-with-svg-filters/\" target=\"_blank\" rel=\"noopener noreferrer\">SVG ink bleed</a>, <a href=\"https://github.com/achrefelouafi/VegetationGeneratorThreeJS\" target=\"_blank\" rel=\"noopener noreferrer\">Vegetation Generator</a>, <a href=\"https://github.com/millerthegorilla/vinejs\" target=\"_blank\" rel=\"noopener noreferrer\">VineJS</a>, and <a href=\"https://github.com/dengshu2/illustrated-manuscript\" target=\"_blank\" rel=\"noopener noreferrer\">Illustrated Manuscript</a>. No artwork copied."
       ]
     };
 
@@ -8061,7 +8062,7 @@
     const botanyPanel = document.getElementById("botany-panel");
     const botanyClose = document.getElementById("botany-close");
     const botanyFrame = document.getElementById("botany-frame");
-    const botanyFallbackHeight = 1110;
+    const botanyFallbackHeight = 650;
 
     function closeBotany() {
       home.classList.remove("botany-open");
