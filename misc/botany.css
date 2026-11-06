@@ -13,10 +13,20 @@ button{cursor:pointer}
 .drawing-stage{height:clamp(295px,68vw,429px);width:100%;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid var(--red);background:#f1e9d9}
 .drawing{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .drawing svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%}
-/* One connected silhouette moves, the printed frame/registration never sways. */
-.drawing #plant-drift{transform-box:view-box;transform-origin:49% 93%;animation:living-herbal 19s ease-in-out infinite;will-change:transform}
-@keyframes living-herbal{0%,100%{transform:rotate(-.35deg) translateX(-.35px)}42%{transform:rotate(.5deg) translateX(.45px)}72%{transform:rotate(.1deg) translateY(-.4px)}}
-@media(prefers-reduced-motion:reduce){.drawing #plant-drift{animation:none!important}}
+/* The plant breathes subtly: whole silhouette plus slight counter-movement in branches. */
+.drawing #plant-drift,.drawing .branch,.drawing .sigil{transform-box:fill-box;transform-origin:50% 92%;will-change:transform}
+.drawing #plant-drift{animation:living-herbal 18s ease-in-out infinite}
+.drawing .branch-0{animation:branch-a 12s ease-in-out infinite}
+.drawing .branch-1{animation:branch-b 14s ease-in-out infinite}
+.drawing .branch-2{animation:branch-c 10.5s ease-in-out infinite}
+.drawing .branch-3{animation:branch-d 16s ease-in-out infinite}
+.drawing .sigil{animation:branch-c 13s ease-in-out infinite reverse}
+@keyframes living-herbal{0%,100%{transform:rotate(-.32deg) translateX(-.25px)}42%{transform:rotate(.48deg) translateX(.42px)}72%{transform:rotate(.08deg) translateY(-.4px)}}
+@keyframes branch-a{0%,100%{transform:rotate(0deg)}50%{transform:rotate(.45deg)}}
+@keyframes branch-b{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-.38deg)}}
+@keyframes branch-c{0%,100%{transform:translateY(0)}50%{transform:translateY(-.45px) rotate(.2deg)}}
+@keyframes branch-d{0%,100%{transform:rotate(0deg)}50%{transform:rotate(.28deg) translateX(.32px)}}
+@media(prefers-reduced-motion:reduce){.drawing #plant-drift,.drawing .branch,.drawing .sigil{animation:none!important}}
 .drawing-actions{display:flex;align-items:center;gap:8px 12px;min-height:36px;padding:8px 0;border-bottom:1px solid var(--rule);flex-wrap:wrap}
 .action-spacer{flex:1 1 auto}
 .action{padding:0;margin:0;border:0;border-radius:0;background:none;color:var(--red);font-size:12px;font-weight:700;white-space:nowrap;text-align:left}
