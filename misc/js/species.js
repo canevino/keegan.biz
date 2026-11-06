@@ -31,7 +31,7 @@ window.MS=window.MS||{};
    // but species lean cool/warm and pick up slightly different mineral stains.
    const variation=r.random();
    const familyBias={holly:'cool',ivy:'cool',honeysuckle:'light',hazel:'warm',oak:'earth',hawthorn:'light',dogrose:'warm',bramble:'cool',fern:'light',acanthus:'earth'}[sp.leaf]||'earth';
-   let col=mix(sp.tint,pal.green,future?.18+r.between(.02,.22):.10+r.between(0,.18));
+   let col=mix(sp.tint,pal.green,future?.24+r.between(.04,.28):.10+r.between(0,.18));
    if(familyBias==='cool')col=mix(col,pal.lapis,r.between(future?.11:.05,future?.24:.16));
    if(familyBias==='warm')col=mix(col,pal.ochre,r.between(future?.08:.05,future?.22:.16));
    if(familyBias==='light')col=mix(col,pal.light,r.between(.06,future?.18:.15));
@@ -60,7 +60,7 @@ window.MS=window.MS||{};
    if((future||ornament>.55) && r.chance((future?.09:0)+Math.pow((ornament-.55)/.45,1.5)*(sp.leaf==='acanthus'?.26:.12))){
      col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(future?.16:.10,future?.32:.24));
    }
-   if(future && r.chance(.18+.18*ornament)) col=M.mix(col,pal.ink,r.between(.05,.14));
+   if(future && r.chance(.26+.24*ornament)) col=M.mix(col,pal.ink,r.between(.06,.18));
    return col;
  };
  // Anatomical leaf atlas. Every closed contour has one continuous edge.
@@ -238,13 +238,14 @@ window.MS=window.MS||{};
    // selectively, rather than turning every leaf into a repeated digital icon.
    const level=M.clamp(Number(s.ornament||0)/100,0,1);
    let medievalInlay='';
-   if(size>15 && level>.26 && r.chance(.13 + .36*level)){
+   const future=s.palette==='future';
+   if(size>15 && level>.20 && r.chance((future?.36:.13) + .42*level)){
      const sign=r.sign();
      const x=size*r.between(.35,.48),h=size*(kind==='ivy'?.082:.048);
      const height=size*(kind==='ivy'?.082:.071);
      const motif=r.int(0,2);
      const cobalt=M.mix(pal.lapis,pal.ink,.16),cinnabar=M.mix(pal.vermillion,pal.ink,.10);
-     const accent=r.chance(.60)?pal.ochre:(r.chance(.5)?cinnabar:cobalt);
+     const accent=r.chance(.34)?pal.ochre:(r.chance(.5)?cinnabar:cobalt);
      if(motif===0){
        // A tiny pointed window inset, never a sharp protrusion outside the edge.
        medievalInlay+=M.shape(`M${S(x-size*.07,sign*h)}Q${S(x-size*.035,sign*(h+height*.55))} ${S(x,sign*(h+height))}`+
@@ -262,6 +263,22 @@ window.MS=window.MS||{};
          medievalInlay+=M.path(`M${S(xx,sign*(h-size*.025))}l${S(size*.033,sign*size*.05)}`,
            accent,Math.max(.3,size*.012),`opacity="${n(.54+.23*level)}"`);
        }
+     }
+   }
+   if(future && size>16 && level>.38 && r.chance(.52)){
+     const xx=size*r.between(.28,.68), yy=(r.sign())*size*r.between(.03,.11);
+     const crest=r.int(0,2);
+     if(crest===0){
+       medievalInlay+=M.shape(`M${S(xx-size*.042,yy)}L${S(xx,yy-size*.055)}L${S(xx+size*.042,yy)}L${S(xx,yy+size*.055)}Z`, accent, `opacity="${n(.58+.22*level)}"`);
+       medievalInlay+=M.path(`M${S(xx-size*.018,yy)}L${S(xx+size*.018,yy)}M${S(xx,yy-size*.018)}L${S(xx,yy+size*.018)}`, pal.ink, Math.max(.22,size*.01), `opacity="${n(.46+.18*level)}"`);
+     }else if(crest===1){
+       for(let step=0;step<4;step++){
+         const sx=xx-size*.05+step*size*.022;
+         medievalInlay+=M.shape(`M${S(sx,yy-size*.012)}L${S(sx+size*.016,yy-size*.012)}L${S(sx+size*.016,yy+size*.012)}L${S(sx,yy+size*.012)}Z`, step%2?cobalt:cinnabar, `opacity="${n(.42+.18*level)}"`);
+       }
+     }else{
+       medievalInlay+=M.path(`M${S(xx-size*.055,yy+size*.022)}Q${S(xx,yy-size*.048)} ${S(xx+size*.055,yy+size*.022)}`, accent, Math.max(.28,size*.012), `opacity="${n(.52+.18*level)}"`);
+       medievalInlay+=M.path(`M${S(xx-size*.028,yy+size*.006)}L${S(xx+size*.028,yy+size*.006)}`, pal.ink, Math.max(.18,size*.009), `opacity="${n(.40+.15*level)}"`);
      }
    }
    let plateMarks='';

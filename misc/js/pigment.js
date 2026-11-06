@@ -21,6 +21,20 @@ window.MS=window.MS||{};
    }
    return z;
  }
+ function futurePixels(bounds,pal,r,intensity=1){
+   let z='';
+   const count=Math.max(2,Math.round(2+intensity*6));
+   for(let i=0;i<count;i++){
+     const sz=Math.max(.6,Math.min(bounds.w,bounds.h)*r.between(.035,.08));
+     const x=r.between(bounds.x+bounds.w*.14,bounds.x+bounds.w*.82), y=r.between(bounds.y+bounds.h*.14,bounds.y+bounds.h*.82);
+     const col=r.choose([pal.vermillion,pal.lapis,pal.ochre,M.mix(pal.light,pal.lapis,.35)]);
+     z+=M.shape(`M${vec(x,y)}L${vec(x+sz,y)}L${vec(x+sz,y+sz)}L${vec(x,y+sz)}Z`,col,`opacity="${n(r.between(.12,.24)*intensity)}"`);
+   }
+   return z;
+ }
+ function smearStroke(d,color,opacity,width,extra=''){
+   return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${n(width)}" stroke-linejoin="round" stroke-linecap="round" opacity="${n(opacity)}" ${extra}/>`;
+ }
  function hash(str){let h=2166136261;for(const ch of String(str))h=Math.imul(h^ch.charCodeAt(0),16777619);return h>>>0;}
  function materialRng(s,id){return M.rng(M.childSeed(Number(s.seed)>>>0||1,hash(id)));}
  const spectral=()=>globalThis.spectral;
@@ -82,17 +96,17 @@ window.MS=window.MS||{};
    // Three restrained overprints: isolated paper pores, skipped pigment
    // and nearly parallel hand-applied brush fibres. No checkerboard effect.
    let dust='',chips='',hatches='';
-   for(let i=0;i<(future?150:116);i++){
+   for(let i=0;i<(future?190:116);i++){
      const x=r.between(0,83),y=r.between(0,79),rad=r.between(.06,.27);
      const col=r.chance(.60)?pal.light:M.mix(pal.ink,pal.ochre,.25);
      dust+=M.circle(x,y,rad,col,`opacity="${n(r.between(.14,.37))}"`);
    }
-   for(let i=0;i<(future?36:27);i++){
+   for(let i=0;i<(future?52:27);i++){
      const x=r.between(0,77),y=r.between(0,73),width=r.between(.3,2.0);
      const dy=r.between(-.33,.33);
      chips+=M.path(`M${vec(x,y)}l${vec(width,dy)}`,pal.light,r.between(.10,.34),`opacity="${n(r.between(.23,.49))}"`);
    }
-   for(let i=0;i<(future?60:43);i++){
+   for(let i=0;i<(future?88:43);i++){
      const x=r.between(0,64),y=r.between(0,71),length=r.between(.7,4.4);
      const dark=r.chance(.42);
      hatches+=M.path(`M${vec(x,y)}l${vec(length,r.between(-.32,.32))}`,
@@ -111,6 +125,12 @@ window.MS=window.MS||{};
    z+=`<filter id="print-fiber" x="-1%" y="-1%" width="102%" height="102%" color-interpolation-filters="sRGB">`+
       `<feTurbulence type="fractalNoise" baseFrequency=".11 .17" numOctaves="2" seed="${r.int(1,9999)}" result="fibers"/>`+
       `<feDisplacementMap in="SourceGraphic" in2="fibers" scale="${n((future?.11:.06)+wear*(future?.42:.36))}" xChannelSelector="R" yChannelSelector="G"/>`+
+      `</filter>`;
+   z+=`<filter id="ink-smudge" x="-6%" y="-6%" width="112%" height="112%" color-interpolation-filters="sRGB">`+
+      `<feGaussianBlur stdDeviation="${n((future?.22:.10)+wear*(future?.55:.26))}"/>`+
+      `</filter>`;
+   z+=`<filter id="ink-bleed" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">`+
+      `<feGaussianBlur stdDeviation="${n((future?.16:.08)+spread*(future?.46:.20))}"/>`+
       `</filter>`;
    return z;
  };
@@ -175,11 +195,13 @@ window.MS=window.MS||{};
      `<stop stop-color="${high}" offset="1"/></linearGradient></defs>`;
    out+=`<g${maskRef}>${M.shape(d,`url(#${grad})`,`stroke="${M.mix(color,pal.ink,.50)}" stroke-width="${n(opts.stroke??.6)}" stroke-linejoin="round"`)}`;
    out+=`<g clip-path="url(#${clip})">`;
-   out+=M.shape(d,'url(#micro-grain)',`opacity="${n(.15+variation*.32)}"`);
-   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.18+wear*.30)}"`);
-   if(wear>.03)out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.10+wear*.48)}"`);
+   out+=M.shape(d,'url(#micro-grain)',`opacity="${n(.18+variation*.36)}"`);
+   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.22+wear*.34)}"`);
+   if(wear>.03)out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.14+wear*.52)}"`);
+   if(wear>.08)out+=smearStroke(d,M.mix(color,pal.ink,.58),.06+.11*wear,.45+wear*.65,`filter="url(#ink-smudge)"`);
+   if(spread>.08)out+=smearStroke(d,M.mix(color,pal.ink,.66),.05+.09*spread,.30+spread*.52,`filter="url(#ink-bleed)"`);
    out+=tonalIslands(bounds,color,pal,s,r,true);
-   if(future)out+=futureFragments(bounds,pal,r,.85+.75*variation);
+   if(future){out+=futureFragments(bounds,pal,r,.95+.85*variation);out+=futurePixels(bounds,pal,r,.70+.60*variation);}
    if(wear>.22){
      const streaks=Math.floor(3+wear*5);
      const pale=M.mix(color,pal.light,.70);
@@ -234,10 +256,13 @@ window.MS=window.MS||{};
        }
      }
    }
-   out+=M.shape(d,'url(#micro-grain)' ,`opacity="${n(.23+.38*variation)}" data-pixel-pigment="1"`);
-   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.16+.50*wear)}" data-pixel-pigment="1"`);
-   out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.12+.49*wear)}" data-pixel-pigment="1"`);
-   if(future)out+=futureFragments(bounds,pal,r,1.0+variation);
+   out+=M.shape(d,'url(#micro-grain)' ,`opacity="${n(.28+.42*variation)}" data-pixel-pigment="1"`);
+   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.22+.54*wear)}" data-pixel-pigment="1"`);
+   out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.18+.54*wear)}" data-pixel-pigment="1"`);
+   if(wear>.06)out+=smearStroke(d,M.mix(color,pal.ink,.60),.07+.14*wear,Math.max(.24,size*.008)+wear*.45,`filter="url(#ink-smudge)"`);
+   if(spread>.06)out+=smearStroke(d,M.mix(color,pal.ink,.72),.05+.11*spread,Math.max(.18,size*.006)+spread*.32,`filter="url(#ink-bleed)"`);
+   if(future){out+=futureFragments(bounds,pal,r,1.15+variation);out+=futurePixels(bounds,pal,r,.85+variation);}
+
    if(wear>.14){
      // Translucent irregular underpainting exposes the paper beneath. These
      // are washes, not low-resolution missing-pixel blocks.
@@ -254,7 +279,8 @@ window.MS=window.MS||{};
    }
    if(future){
      const scorch=M.mix(pal.ink,pal.vermillion,.16);
-     out+=M.shape(d,'none',`stroke="${scorch}" stroke-width="${n(Math.max(.18,size*.006))}" stroke-linejoin="round" opacity="${n(.15+.16*wear)}"`);
+     out+=M.shape(d,'none',`stroke="${scorch}" stroke-width="${n(Math.max(.22,size*.007))}" stroke-linejoin="round" opacity="${n(.20+.18*wear)}"`);
+     out+=smearStroke(d,M.mix(pal.vermillion,pal.ink,.30),.08+.10*wear,Math.max(.18,size*.005),`stroke-dasharray="${n(size*.03)} ${n(size*.02)}"`);
    }
    if(size>14){
      const glaze=`M${vec(size*.08,size*.02)}Q${vec(size*.32,-size*.22)} ${vec(size*.62,-size*.14)}Q${vec(size*.40,-size*.03)} ${vec(size*.12,size*.06)}Z`;

@@ -26,25 +26,49 @@ window.MS=window.MS||{};
  // terminal points. All drawing is clipped to the leaf silhouette upstream.
  M.ornamentLeafInterior=(sp,len,col,pal,r,s)=>{
    const lev=M.ornamentInfluence(sp,s);
+   const future=s.palette==='future';
    if(lev<.13||len<13)return '';
    const contrast=M.mix(pal.ink,pal.ochre,.28+.35*lev);
    const gold=M.mix(pal.ochre,pal.light,.09);
+   const cobalt=M.mix(pal.lapis,pal.ink,.12);
+   const cinnabar=M.mix(pal.vermillion,pal.ink,.10);
    let z=M.path(`M${V(len*.11,0)}Q${V(len*.55,-len*.012)} ${V(len*.91,0)}`,
-      contrast,Math.max(.28,len*.019),`opacity="${n(.15+.48*lev)}"`);
+      contrast,Math.max(.30,len*.020),`opacity="${n((future?.24:.15)+.48*lev)}"`);
    const veins=lev>.35?(lev>.73?4:3):2;
    for(const side of [-1,1])for(let k=0;k<veins;k++){
      const t=.20+k*(.57/Math.max(veins-1,1)),x=len*t;
      const rise=side*len*(.085+.042*lev)*Math.sin(Math.PI*t);
      z+=M.path(`M${V(x,0)}Q${V(x+len*.043,rise*.45)} ${V(x+len*.105,rise)}`,
-        k%2?gold:contrast,Math.max(.25,len*.008),`opacity="${n(.15+.40*lev)}"`);
+        k%2?gold:contrast,Math.max(.25,len*.008),`opacity="${n((future?.18:.15)+.40*lev)}"`);
    }
-   if(lev>.58){
+   if(lev>.30){
+     const arches=future?3:2;
+     for(let i=0;i<arches;i++){
+       const x=len*(.28+i*.16),y=(i%2?-1:1)*len*(.040+.025*lev),w=len*.040,h=len*(.050+.025*lev);
+       z+=M.shape(`M${V(x-w,y)}Q${V(x,y-h)} ${V(x+w,y)}Q${V(x,y-h*.38)} ${V(x-w,y)}Z`,
+         i%2?cobalt:gold,`opacity="${n((future?.30:.18)+.26*lev)}"`);
+     }
+   }
+   if(lev>.48){
      const count=lev>.89?4:2;
      for(let k=0;k<count;k++){
        const t=.29+k*.47/Math.max(1,count-1),x=len*t;
        const side=k%2?-1:1,y=side*len*(.061+.017*(k%2))*Math.sin(Math.PI*t);
        const rad=Math.max(.31,len*.014);
-       z+=M.circle(x,y,rad,gold,`stroke="${contrast}" stroke-width=".25" opacity="${n((lev-.49)*.7)}"`);
+       z+=M.circle(x,y,rad,gold,`stroke="${contrast}" stroke-width=".25" opacity="${n((future?.12:0)+(lev-.40)*.7)}"`);
+       if(future&&lev>.66){
+         z+=M.shape(`M${V(x-rad*1.7,y)}L${V(x,y-rad*1.9)}L${V(x+rad*1.7,y)}L${V(x,y+rad*1.9)}Z`, k%2?cinnabar:cobalt, `opacity="${n(.20+.22*lev)}"`);
+       }
+     }
+   }
+   if(future&&lev>.56){
+     const pxCount=2+(lev>.82?2:1);
+     for(let i=0;i<pxCount;i++){
+       const x=len*(.34+i*.08), y=(i%2?-1:1)*len*(.016+.01*i);
+       for(let j=0;j<3;j++){
+         const s2=len*.015;
+         z+=M.shape(`M${V(x+j*s2*1.2,y-s2)}L${V(x+j*s2*1.2+s2,y-s2)}L${V(x+j*s2*1.2+s2,y)}L${V(x+j*s2*1.2,y)}Z`, j%2?cinnabar:cobalt, `opacity="${n(.22+.22*lev)}"`);
+       }
      }
    }
    return z;
@@ -53,16 +77,22 @@ window.MS=window.MS||{};
  M.ornamentColorPatch=(sp,len,pal,r,s)=>{
    const lev=M.ornamentInfluence(sp,s);
    const future=s.palette==='future';
-   if(lev<(future?.24:.58)||len<15||!r.chance(future?(.22+.34*lev):((lev-.45)*.31)))return '';
-   // Contemporary heraldic panes are intentional blocks of vermilion,
-   // electric lapis and gilt, not random RGB blotches or low-res pixels.
+   if(lev<(future?.18:.58)||len<15||!r.chance(future?(.34+.38*lev):((lev-.45)*.31)))return '';
    const col=future?r.choose([pal.lapis,pal.vermillion,pal.ochre]):
      M.mix(pal.green,r.choose([pal.ochre,pal.lapis,pal.vermillion]),r.between(.35,.58));
-   const start=len*r.between(.28,.49),length=len*r.between(.16,.29);
-   const side=r.sign(),h=side*len*r.between(.09,.14);
+   const start=len*r.between(.24,.50),length=len*r.between(.16,.29);
+   const side=r.sign(),h=side*len*r.between(.09,.15);
+   if(future){
+     const step=length*.16, y0=0;
+     const d=`M${V(start,y0)}L${V(start+step,y0)}L${V(start+step,h*.38)}L${V(start+step*2,h*.38)}L${V(start+step*2,h*.72)}L${V(start+step*3,h*.72)}L${V(start+step*4,h)}L${V(start+step*3.3,h*.38)}L${V(start+step*1.5,0)}Z`;
+     let z=M.shape(d,col,`opacity="${n(.56+.22*lev)}"`);
+     const accent=M.mix(col,pal.light,.28);
+     z+=M.shape(`M${V(start+step*.25,h*.08)}L${V(start+step*.95,h*.08)}L${V(start+step*.95,h*.22)}L${V(start+step*.25,h*.22)}Z`,accent,`opacity="${n(.28+.14*lev)}"`);
+     return z;
+   }
    const d=`M${V(start,0)}Q${V(start+length*.38,h*.64)} ${V(start+length,h)}`+
      `Q${V(start+length*.81,h*.26)} ${V(start+length*.18,0)}Z`;
-   return M.shape(d,col,`opacity="${n(future?.46+.18*lev:(lev-.3)*.24)}"`);
+   return M.shape(d,col,`opacity="${n((lev-.3)*.24)}"`);
  };
  const stemCol=(pal)=>M.mix(pal.ink,pal.green,.56);
  const path=(a,b,c)=>`M${V(a.x,a.y)}Q${V(b.x,b.y)} ${V(c.x,c.y)}`;

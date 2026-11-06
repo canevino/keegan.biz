@@ -7,9 +7,9 @@
  const on=(id,event,handler)=>{const node=el(id);if(node)node.addEventListener(event,handler);};
 
  const defaultSettings={
-   geometry:'random',conform:26,ornament:72,
+   geometry:'random',conform:32,ornament:86,
    pattern:'random',species:'random',season:'summer',palette:'future',seed:20261104,
-   foliage:78,finishLevel:58
+   foliage:80,finishLevel:76
  };
  const s={...defaultSettings};
  const textFields=['pattern','geometry','species','season','palette'];
@@ -27,14 +27,14 @@
    s.seed=Number.isFinite(s.seed)?(s.seed>>>0)||1:1;
    const f=M.clamp((s.finishLevel??0)/100,0,1);
    // Make wear clearly legible, while keeping the drawing itself continuous.
-   s.detail=84;
+   s.detail=88;
    const future=s.palette==='future';
-   s.pigment=Math.round((future?42:34)+f*(future?52:46));
-   s.wear=Math.round((future?12:6)+f*(future?86:84));
-   s.spread=Math.round((future?18:10)+f*(future?80:82));
-   s.registration=Math.round((future?4:0)+f*(future?32:24));
-   s.printWarp=Math.round((future?5:3)+f*(future?32:28));
-   s.distortion=future?38:32;
+   s.pigment=Math.round((future?50:34)+f*(future?46:46));
+   s.wear=Math.round((future?18:6)+f*(future?82:84));
+   s.spread=Math.round((future?24:10)+f*(future?74:82));
+   s.registration=Math.round((future?10:0)+f*(future?34:24));
+   s.printWarp=Math.round((future?8:3)+f*(future?34:28));
+   s.distortion=future?44:32;
    s.bleed=s.spread>0;
    s.transparent=true;
    s.guideOverlay=false; // guides remain internal construction only
