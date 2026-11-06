@@ -1,85 +1,45 @@
-/* Botany: compact companion to the site's chess panel. */
-:root{--misc-paper:var(--paper,#ece7d7);--misc-red:var(--red,#c1272d);--misc-green:var(--green,#006a44);--misc-ink:var(--ink,#11110f);--misc-rule:rgba(17,17,15,.24)}
+/* Botany panel uses the same unembellished controls as chess; artwork is the focus. */
+:root{--paper:#ece7d7;--ink:#11110f;--red:#c1272d;--green:#006a44;--rule:rgba(17,17,15,.22)}
 *,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;padding:0;overflow-x:hidden;background:var(--misc-paper);color:var(--misc-ink);font:13px/1.25 Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-button,input,select{font:inherit}
-.misc-shell{width:100%;max-width:100%;margin:0;padding:0 0 3px}
-.machine{width:100%;min-width:0}
-.botany-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,32%);align-items:start;gap:12px}
-.drawing-side{min-width:0;display:flex;flex-direction:column}
-.drawing-meta{display:flex;justify-content:space-between;gap:7px;align-items:center;min-height:26px;padding:5px 1px;color:#5e5a53;font-size:10px;line-height:1.2;border-top:1px solid var(--misc-red)}
-.drawing-meta span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.drawing-meta span:last-child{color:var(--misc-green);white-space:nowrap}
-.drawing-stage{width:100%;height:clamp(340px,69vw,475px);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid var(--misc-red);background:rgba(255,253,246,.09)}
-.drawing{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center}
-.drawing svg{display:block;width:100%;height:100%;overflow:hidden}
-.drawing .life-bud,.drawing .life-bloom{display:none}
-.drawing-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 11px;min-height:35px;padding:9px 1px 7px;border-bottom:1px solid var(--misc-rule)}
-.action-spacer{flex:1 0 0;min-width:1px}
-.action{display:inline-block;appearance:none;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:var(--misc-red);font-size:12px;font-weight:700;line-height:1.2;text-align:left;cursor:pointer}
-.action.primary{color:var(--misc-green)}
+html,body{width:100%;margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:1.3;overflow-x:hidden}
+button,select,input{font:inherit}
+button{cursor:pointer}
+.botany-root{width:100%;margin:0;padding:0}
+.botany-workspace{display:grid;grid-template-columns:minmax(0,2.08fr) minmax(176px,1fr);gap:11px;align-items:start;width:100%}
+.drawing-side,.drawing-controls{min-width:0}
+.drawing-meta{display:flex;justify-content:space-between;align-items:center;gap:5px;height:24px;padding:4px 1px;border-top:1px solid var(--red);color:#5d5950;font-size:10px}
+.drawing-meta span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drawing-meta span:last-child{flex:none;color:var(--green)}
+.drawing-stage{height:clamp(295px,68vw,429px);width:100%;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid var(--red);background:#f1e9d9}
+.drawing{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.drawing svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%}
+/* One connected silhouette moves, the printed frame/registration never sways. */
+.drawing #plant-drift{transform-box:view-box;transform-origin:49% 93%;animation:living-herbal 19s ease-in-out infinite;will-change:transform}
+@keyframes living-herbal{0%,100%{transform:rotate(-.35deg) translateX(-.35px)}42%{transform:rotate(.5deg) translateX(.45px)}72%{transform:rotate(.1deg) translateY(-.4px)}}
+@media(prefers-reduced-motion:reduce){.drawing #plant-drift{animation:none!important}}
+.drawing-actions{display:flex;align-items:center;gap:8px 12px;min-height:36px;padding:8px 0;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.action-spacer{flex:1 1 auto}
+.action{padding:0;margin:0;border:0;border-radius:0;background:none;color:var(--red);font-size:12px;font-weight:700;white-space:nowrap;text-align:left}
+.action.primary{color:var(--green)}
 .action:hover,.action:focus-visible{text-decoration:underline;text-underline-offset:3px}
-.action:disabled{opacity:.35;cursor:default}
-.drawing-controls{min-width:0;margin:0;padding:9px 10px 12px;border:1px solid var(--misc-red);background:rgba(255,253,246,.06)}
-.botany-settings-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px}
-.botany-settings-label{color:var(--misc-red);font-weight:700;font-size:13px}
-.botany-basic-grid{display:grid;grid-template-columns:1fr;gap:9px}
-.drawing-controls label{display:block;min-width:0;color:var(--misc-red);font-size:11px;line-height:1.2;font-weight:700}
-.drawing-controls select,.drawing-controls input[type=number]{display:block;width:100%;min-width:0;height:27px;padding:4px 17px 3px 0;margin-top:3px;border:0;border-bottom:1px solid var(--misc-red);border-radius:0;box-shadow:none;background:transparent;color:var(--misc-ink);font-size:12px;font-weight:400;cursor:pointer}
-.drawing-controls select{appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7"%3E%3Cpath d="M1 1l5 5 5-5" stroke="%23c1272d" fill="none" stroke-width="1.2"/%3E%3C/svg%3E');background-position:right 3px center;background-repeat:no-repeat;background-size:11px 7px}
-.botany-secondary-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px}
-.advanced-settings{margin-top:10px;padding-top:9px;border-top:1px solid var(--misc-rule)}
-.advanced-settings summary,.machine-credits summary{display:list-item;color:var(--misc-red);list-style:none;cursor:pointer;font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:2px}
-.advanced-settings summary::-webkit-details-marker,.machine-credits summary::-webkit-details-marker{display:none}
-.fine-tune-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
-.drawing-controls label.sliding{display:grid;grid-template-columns:1fr auto;align-items:center;gap:3px;color:var(--misc-ink)}
-.sliding output{font-size:11px;font-weight:400;color:var(--misc-red);font-variant-numeric:tabular-nums}
-.drawing-controls input[type=range]{grid-column:1/-1;width:100%;margin:0;height:14px;accent-color:var(--misc-red);cursor:pointer}
-.seed-setting{max-width:100%}
-.seed-setting input{font-variant-numeric:tabular-nums}
-.machine-credits{font-size:11px;line-height:1.4;max-width:100%;margin:8px 0 0}
-.machine-credits summary{font-size:11px}
-.machine-credits p{max-width:650px;margin:9px 0;color:#504b43}
-.machine-credits a{color:var(--misc-green)}
-:where(button,select,input,summary,a):focus-visible{outline:2px solid var(--misc-red);outline-offset:2px}
-@media(max-width:600px){.botany-workspace{grid-template-columns:1fr;gap:9px}.drawing-stage{height:clamp(270px,85vw,380px)}.drawing-side{order:0}.drawing-controls{order:1}.botany-basic-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.botany-secondary-row{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px}.fine-tune-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.drawing-controls{padding:9px}.drawing-actions{gap:8px 12px}.action-spacer{flex:1}}
-@media(max-width:390px){.botany-basic-grid{grid-template-columns:1fr 1fr}.botany-basic-grid>label:first-child{grid-column:1/-1}.action{font-size:11px}}
-
-/* Ambient botanical life, not a growth reveal. Only coherent attached groups
-   move: entire stems around the root, shoots around their junction, blades
-   around their petiole. Motion should feel like a quiet draft, not a looped wiggle. */
-.drawing .stem-sway,.drawing .shoot-sway,.drawing .leaf-breath{
-  transform-box:fill-box;
-  transform-origin:0 0;
-  will-change:transform;
-}
-.drawing .stem-sway{
-  animation: botanical-stem-breath var(--stem-duration,22s) cubic-bezier(.45,.05,.55,.95) var(--stem-delay,0s) infinite;
-}
-.drawing .shoot-sway{
-  animation: botanical-shoot-breath var(--shoot-duration,18s) cubic-bezier(.45,.05,.55,.95) var(--shoot-delay,0s) infinite;
-}
-.drawing .leaf-breath{
-  animation: botanical-leaf-breath var(--leaf-duration,18s) ease-in-out var(--leaf-delay,0s) infinite;
-}
-@keyframes botanical-stem-breath{
-  0%{transform:rotate(calc(-1 * var(--stem-angle-a,.12deg))) translateX(calc(-1 * var(--stem-drift,.12px)))}
-  28%{transform:rotate(var(--stem-angle-b,.22deg)) translateX(var(--stem-drift,.12px)) translateY(.15px)}
-  57%{transform:rotate(calc(var(--stem-angle-a,.12deg) * .35)) translateX(calc(var(--stem-drift,.12px) * .3)) translateY(-.1px)}
-  100%{transform:rotate(calc(-1 * var(--stem-angle-a,.12deg))) translateX(calc(-1 * var(--stem-drift,.12px)))}
-}
-@keyframes botanical-shoot-breath{
-  0%{transform:rotate(calc(-1 * var(--shoot-angle-a,.15deg)))}
-  30%{transform:rotate(var(--shoot-angle-b,.28deg)) translateX(var(--shoot-drift,.14px))}
-  62%{transform:rotate(calc(var(--shoot-angle-a,.15deg) * .25)) translateX(calc(var(--shoot-drift,.14px) * -.25))}
-  100%{transform:rotate(calc(-1 * var(--shoot-angle-a,.15deg)))}
-}
-@keyframes botanical-leaf-breath{
-  0%{transform:rotate(calc(-1 * var(--leaf-amplitude,.26deg)))}
-  36%{transform:rotate(calc(var(--leaf-amplitude,.26deg) * .75)) translateY(.08px)}
-  68%{transform:rotate(calc(var(--leaf-amplitude,.26deg) * -.2))}
-  100%{transform:rotate(calc(-1 * var(--leaf-amplitude,.26deg)))}
-}
-@media (prefers-reduced-motion:reduce){
-  .drawing .stem-sway,.drawing .shoot-sway,.drawing .leaf-breath{animation:none!important}
-}
+.action:disabled{opacity:.5;cursor:default}
+.drawing-controls{border:1px solid var(--red);padding:9px 9px 10px;background:transparent}
+.settings-header{display:flex;align-items:center;justify-content:space-between;margin:0 0 9px;color:var(--red);font-size:12px}
+.fields{display:grid;grid-template-columns:1fr;gap:8px}
+.drawing-controls label{display:block;min-width:0;color:var(--red);font-size:11px;font-weight:700}
+.drawing-controls select,.drawing-controls input[type=number]{display:block;width:100%;height:26px;margin-top:3px;border:0;border-bottom:1px solid var(--red);border-radius:0;background:transparent;color:var(--ink);padding:3px 14px 3px 0;box-shadow:none;font-size:12px;font-weight:400;min-width:0}
+.drawing-controls select{appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"%3E%3Cpath d="M1 1l5 5 5-5" stroke="%23c1272d" stroke-width="1.3" fill="none"/%3E%3C/svg%3E');background-position:right 2px center;background-size:11px 7px;background-repeat:no-repeat}
+.short-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.fine-tune{margin-top:9px;padding-top:8px;border-top:1px solid var(--rule)}
+.fine-tune summary{color:var(--red);font-size:11px;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:2px;list-style:none}
+.fine-tune summary::-webkit-details-marker{display:none}
+.fine-tune-content{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.drawing-controls label.slider-row{display:grid;grid-template-columns:1fr auto;gap:3px;color:var(--ink)}
+.slider-row output{font-size:10px;font-weight:400;color:var(--red)}
+.drawing-controls input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--red);height:15px;margin:0}
+.seed-label input{font-variant-numeric:tabular-nums}
+.drawing-controls label.transparent-label{display:flex;align-items:center;gap:6px;color:var(--ink);font-size:10px;font-weight:400;align-self:end;min-height:27px}
+.transparent-label input{accent-color:var(--red);margin:0}
+:where(button,select,input,summary):focus-visible{outline:2px solid var(--red);outline-offset:2px}
+@media(max-width:500px){.botany-workspace{grid-template-columns:1fr;gap:10px}.drawing-stage{height:clamp(270px,100vw,435px)}.drawing-controls{padding:9px}.fields{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.short-fields{grid-column:1/-1}.fine-tune-content{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:345px){.fields{grid-template-columns:repeat(2,minmax(0,1fr))}.fields>label:first-child{grid-column:1/-1}.drawing-actions{gap:7px 10px}.action{font-size:11px}}
