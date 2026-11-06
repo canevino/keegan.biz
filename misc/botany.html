@@ -5,15 +5,103 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>botanical ornament | keegan.biz</title>
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="/misc/botany.css?v=20261106-restored-anatomy">
 
+<style id="botany-recovery-style">
+/* Botany: compact companion to the site's chess panel. */
+:root{--misc-paper:var(--paper,#ece7d7);--misc-red:var(--red,#c1272d);--misc-green:var(--green,#006a44);--misc-ink:var(--ink,#11110f);--misc-rule:rgba(17,17,15,.24)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;overflow-x:hidden;background:var(--misc-paper);color:var(--misc-ink);font:13px/1.25 Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}
+.misc-shell{width:100%;max-width:100%;margin:0;padding:0 0 3px}
+.machine{width:100%;min-width:0}
+.botany-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,32%);align-items:start;gap:12px}
+.drawing-side{min-width:0;display:flex;flex-direction:column}
+.drawing-meta{display:flex;justify-content:space-between;gap:7px;align-items:center;min-height:26px;padding:5px 1px;color:#5e5a53;font-size:10px;line-height:1.2;border-top:1px solid var(--misc-red)}
+.drawing-meta span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drawing-meta span:last-child{color:var(--misc-green);white-space:nowrap}
+.drawing-stage{width:100%;height:clamp(340px,69vw,475px);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid var(--misc-red);background:rgba(255,253,246,.09)}
+.drawing{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center}
+.drawing svg{display:block;width:100%;height:100%;overflow:hidden}
+.drawing .life-bud,.drawing .life-bloom{display:none}
+.drawing-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 11px;min-height:35px;padding:9px 1px 7px;border-bottom:1px solid var(--misc-rule)}
+.action-spacer{flex:1 0 0;min-width:1px}
+.action{display:inline-block;appearance:none;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:var(--misc-red);font-size:12px;font-weight:700;line-height:1.2;text-align:left;cursor:pointer}
+.action.primary{color:var(--misc-green)}
+.action:hover,.action:focus-visible{text-decoration:underline;text-underline-offset:3px}
+.action:disabled{opacity:.35;cursor:default}
+.drawing-controls{min-width:0;margin:0;padding:9px 10px 12px;border:1px solid var(--misc-red);background:rgba(255,253,246,.06)}
+.botany-settings-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px}
+.botany-settings-label{color:var(--misc-red);font-weight:700;font-size:13px}
+.botany-basic-grid{display:grid;grid-template-columns:1fr;gap:9px}
+.drawing-controls label{display:block;min-width:0;color:var(--misc-red);font-size:11px;line-height:1.2;font-weight:700}
+.drawing-controls select,.drawing-controls input[type=number]{display:block;width:100%;min-width:0;height:27px;padding:4px 17px 3px 0;margin-top:3px;border:0;border-bottom:1px solid var(--misc-red);border-radius:0;box-shadow:none;background:transparent;color:var(--misc-ink);font-size:12px;font-weight:400;cursor:pointer}
+.drawing-controls select{appearance:none;background-image:url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7"%3E%3Cpath d="M1 1l5 5 5-5" stroke="%23c1272d" fill="none" stroke-width="1.2"/%3E%3C/svg%3E');background-position:right 3px center;background-repeat:no-repeat;background-size:11px 7px}
+.botany-secondary-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px}
+.advanced-settings{margin-top:10px;padding-top:9px;border-top:1px solid var(--misc-rule)}
+.advanced-settings summary,.machine-credits summary{display:list-item;color:var(--misc-red);list-style:none;cursor:pointer;font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.advanced-settings summary::-webkit-details-marker,.machine-credits summary::-webkit-details-marker{display:none}
+.fine-tune-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+.drawing-controls label.sliding{display:grid;grid-template-columns:1fr auto;align-items:center;gap:3px;color:var(--misc-ink)}
+.sliding output{font-size:11px;font-weight:400;color:var(--misc-red);font-variant-numeric:tabular-nums}
+.drawing-controls input[type=range]{grid-column:1/-1;width:100%;margin:0;height:14px;accent-color:var(--misc-red);cursor:pointer}
+.seed-setting{max-width:100%}
+.seed-setting input{font-variant-numeric:tabular-nums}
+.machine-credits{font-size:11px;line-height:1.4;max-width:100%;margin:8px 0 0}
+.machine-credits summary{font-size:11px}
+.machine-credits p{max-width:650px;margin:9px 0;color:#504b43}
+.machine-credits a{color:var(--misc-green)}
+:where(button,select,input,summary,a):focus-visible{outline:2px solid var(--misc-red);outline-offset:2px}
+@media(max-width:600px){.botany-workspace{grid-template-columns:1fr;gap:9px}.drawing-stage{height:clamp(270px,85vw,380px)}.drawing-side{order:0}.drawing-controls{order:1}.botany-basic-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.botany-secondary-row{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px}.fine-tune-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.drawing-controls{padding:9px}.drawing-actions{gap:8px 12px}.action-spacer{flex:1}}
+@media(max-width:390px){.botany-basic-grid{grid-template-columns:1fr 1fr}.botany-basic-grid>label:first-child{grid-column:1/-1}.action{font-size:11px}}
+
+/* Ambient botanical life, not a growth reveal. Only coherent attached groups
+   move: entire stems around the root, shoots around their junction, blades
+   around their petiole. Motion should feel like a quiet draft, not a looped wiggle. */
+.drawing .stem-sway,.drawing .shoot-sway,.drawing .leaf-breath{
+  transform-box:fill-box;
+  transform-origin:0 0;
+  will-change:transform;
+}
+.drawing .stem-sway{
+  animation: botanical-stem-breath var(--stem-duration,22s) cubic-bezier(.45,.05,.55,.95) var(--stem-delay,0s) infinite;
+}
+.drawing .shoot-sway{
+  animation: botanical-shoot-breath var(--shoot-duration,18s) cubic-bezier(.45,.05,.55,.95) var(--shoot-delay,0s) infinite;
+}
+.drawing .leaf-breath{
+  animation: botanical-leaf-breath var(--leaf-duration,18s) ease-in-out var(--leaf-delay,0s) infinite;
+}
+@keyframes botanical-stem-breath{
+  0%{transform:rotate(calc(-1 * var(--stem-angle-a,.12deg))) translateX(calc(-1 * var(--stem-drift,.12px)))}
+  28%{transform:rotate(var(--stem-angle-b,.22deg)) translateX(var(--stem-drift,.12px)) translateY(.15px)}
+  57%{transform:rotate(calc(var(--stem-angle-a,.12deg) * .35)) translateX(calc(var(--stem-drift,.12px) * .3)) translateY(-.1px)}
+  100%{transform:rotate(calc(-1 * var(--stem-angle-a,.12deg))) translateX(calc(-1 * var(--stem-drift,.12px)))}
+}
+@keyframes botanical-shoot-breath{
+  0%{transform:rotate(calc(-1 * var(--shoot-angle-a,.15deg)))}
+  30%{transform:rotate(var(--shoot-angle-b,.28deg)) translateX(var(--shoot-drift,.14px))}
+  62%{transform:rotate(calc(var(--shoot-angle-a,.15deg) * .25)) translateX(calc(var(--shoot-drift,.14px) * -.25))}
+  100%{transform:rotate(calc(-1 * var(--shoot-angle-a,.15deg)))}
+}
+@keyframes botanical-leaf-breath{
+  0%{transform:rotate(calc(-1 * var(--leaf-amplitude,.26deg)))}
+  36%{transform:rotate(calc(var(--leaf-amplitude,.26deg) * .75)) translateY(.08px)}
+  68%{transform:rotate(calc(var(--leaf-amplitude,.26deg) * -.2))}
+  100%{transform:rotate(calc(-1 * var(--leaf-amplitude,.26deg)))}
+}
+@media (prefers-reduced-motion:reduce){
+  .drawing .stem-sway,.drawing .shoot-sway,.drawing .leaf-breath{animation:none!important}
+}
+
+.botany-build-meta{display:flex;align-items:center;gap:9px;white-space:nowrap}.botany-build-label{font-size:9px;color:var(--misc-green);border:1px solid currentColor;padding:1px 3px;font-weight:700;letter-spacing:.02em}
+</style>
 </head>
-<body>
+<body data-botany-build="20261106-form-first-r2">
   <main class="misc-shell" id="main-content">
     <section class="machine" id="botanical" aria-label="Botanical drawing generator">
       <div class="botany-workspace">
         <div class="drawing-side">
-          <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span id="seed-label">seed 472818</span></div>
+          <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span class="botany-build-meta"><span id="seed-label">seed 20261104</span><span class="botany-build-label">r2</span></span></div>
           <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
             <div id="drawing" class="drawing"></div>
           </div>
@@ -69,19 +157,19 @@
             <summary>fine tune</summary>
             <div class="fine-tune-grid">
               <label class="sliding">follow shape <output for="conform" id="conform-value">28</output>
-                <input type="range" id="conform" min="0" max="100" value="25">
+                <input type="range" id="conform" min="0" max="100" value="28">
               </label>
               <label class="sliding">ornament <output for="ornament" id="ornament-value">55</output>
-                <input type="range" id="ornament" min="0" max="100" value="47">
+                <input type="range" id="ornament" min="0" max="100" value="55">
               </label>
               <label class="sliding">foliage <output for="foliage" id="foliage-value">78</output>
-                <input type="range" id="foliage" min="10" max="100" value="72">
+                <input type="range" id="foliage" min="10" max="100" value="78">
               </label>
               <label class="sliding">print wear <output for="finishLevel" id="finishLevel-value">27</output>
-                <input type="range" id="finishLevel" min="0" max="100" value="28">
+                <input type="range" id="finishLevel" min="0" max="100" value="27">
               </label>
               <label class="seed-setting">seed
-                <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818">
+                <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="20261104">
               </label>
             </div>
           </details>
@@ -106,19 +194,2571 @@
     }
   })();
   </script>
-<script src="/misc/js/core.js?v=20261106-restored-anatomy" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" async onload="window.dispatchEvent(new Event('spectral-ready'))"></script>
-<script src="/misc/js/pigment.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/finish.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/geometry.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/spatial.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/drawing.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/architecture.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/composition.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/species.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/ornament.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/botany.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/render.js?v=20261106-restored-anatomy" defer></script>
-<script src="/misc/js/app.js?v=20261106-restored-anatomy" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script data-engine-module="core">
+/* Pure drawing primitives shared by every generator. */
+window.MS = window.MS || {};
+((M)=>{
+  'use strict';
+  M.W = 850; M.H = 1000;
+  M.n = v => Number(v.toFixed(2));
+  M.clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+  M.escape = v => String(v).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[ch]));
+  M.rng = seed => {
+    let x=Number(seed)>>>0 || 672113;
+    const rand=()=>{ x ^= x << 13; x ^= x >>> 17; x ^= x << 5; return (x>>>0)/4294967296; };
+    const api={random:rand, between:(a,b)=>a+(b-a)*rand(), int:(a,b)=>Math.floor(a+(b-a+1)*rand()), chance:p=>rand()<p,
+      choose:a=>a[Math.min(a.length-1,Math.floor(a.length*rand()))], sign:()=>rand()<.5?-1:1,
+      shuffled:a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}};
+    api.n=api.between; api.pick=api.choose; api.shuffle=api.shuffled;
+    return api;
+  };
+  M.childSeed=(seed,salt)=>{let x=(Number(seed)>>>0)^salt; x=Math.imul(x^x>>>16,0x7feb352d);x=Math.imul(x^x>>>15,0x846ca68b);return (x^x>>>16)>>>0;};
+  M.vec=(x,y)=>`${M.n(x)} ${M.n(y)}`;
+  M.move=(x,y)=>`M${M.vec(x,y)}`;
+  M.path=(d,color,width=1,extras='')=>`<path d="${d}" fill="none" stroke="${color}" stroke-width="${M.n(width)}" stroke-linecap="round" stroke-linejoin="round" ${extras}/>`;
+  M.shape=(d,color,extras='')=>`<path d="${d}" fill="${color}" ${extras}/>`;
+  M.circle=(x,y,r,fill,more='')=>`<circle cx="${M.n(x)}" cy="${M.n(y)}" r="${M.n(r)}" fill="${fill}" ${more}/>`;
+  M.group=(inner,attrs='')=>`<g ${attrs}>${inner}</g>`;
+  M.pt=(a,b,t)=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
+  M.distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+  M.unit=v=>{const l=Math.hypot(v.x,v.y)||1;return {x:v.x/l,y:v.y/l};};
+  M.bezier=(a,b,c,d,t)=>{
+    const q=1-t;return {x:q*q*q*a.x+3*q*q*t*b.x+3*q*t*t*c.x+t*t*t*d.x,
+      y:q*q*q*a.y+3*q*q*t*b.y+3*q*t*t*c.y+t*t*t*d.y};
+  };
+  M.tangent=(a,b,c,d,t)=>{const q=1-t;return M.unit({x:3*q*q*(b.x-a.x)+6*q*t*(c.x-b.x)+3*t*t*(d.x-c.x),y:3*q*q*(b.y-a.y)+6*q*t*(c.y-b.y)+3*t*t*(d.y-c.y)});};
+  M.normal=t=>({x:-t.y,y:t.x});
+  M.curveD=(a,b,c,d)=>`M${M.vec(a.x,a.y)}C${M.vec(b.x,b.y)} ${M.vec(c.x,c.y)} ${M.vec(d.x,d.y)}`;
+  M.wave=(a,b,c,d,samples=60)=>Array.from({length:samples+1},(_,i)=>{const t=i/samples,p=M.bezier(a,b,c,d,t),tng=M.tangent(a,b,c,d,t);return {...p,tng,t};});
+  M.poly=(pts)=>pts.map((p,i)=>`${i?'L':'M'}${M.vec(p.x,p.y)}`).join('')+'Z';
+  // Curated historic-pigment harmonies, not a randomly saturated RGB palette.
+  // Leaf and wood profiles remain species-specific; these are the shared inks.
+  M.palettes={
+    kells:{ink:'#352d24',vermillion:'#a64b3e',lapis:'#375a82',green:'#607b57',ochre:'#be9954',light:'#ebdfbb'},
+    jewel:{ink:'#302a2b',vermillion:'#ac4050',lapis:'#325e92',green:'#547b70',ochre:'#c29a51',light:'#eee0c7'},
+    earth:{ink:'#3c3229',vermillion:'#9b5844',lapis:'#677483',green:'#687b55',ochre:'#b79565',light:'#e8d8c0'},
+    site:{ink:'#252322',vermillion:'#c1272d',lapis:'#245c91',green:'#126b4d',ochre:'#dfac3f',light:'#efe3c4'},
+    future:{ink:'#171419',vermillion:'#d31f3d',lapis:'#214bd6',green:'#0d775b',ochre:'#d4a22a',light:'#f1e8d0'},
+    monochrome:{ink:'#2e2924',vermillion:'#675448',lapis:'#6e6962',green:'#747565',ochre:'#ad9d7f',light:'#e7dbbe'}
+  };
+  M.palette=(id)=>M.palettes[id]||M.palettes.kells;
+  // Bounding boxes determine where secondary ornament is allowed to grow.
+  M.inBounds=(p,b,pad=0)=>p.x>=b.x+pad&&p.x<=b.x+b.w-pad&&p.y>=b.y+pad&&p.y<=b.y+b.h-pad;
+  M.insideEllipse=(p,c,margin=1)=>((p.x-c.x)/(c.rx*margin))**2+((p.y-c.y)/(c.ry*margin))**2 < 1;
+})(window.MS);
+
+</script>
+<script data-engine-module="pigment">
+/* PASS B / impression materials
+   Botanical geometry is authoritative. All pigment, drybrush, and ink-pooling
+   are CLIPPED TO THE SOURCE SILHOUETTE; registration is a separate faint plate.
+   Material randomness is independent from structure/seed randomness. */
+window.MS=window.MS||{};
+((M)=>{
+ 'use strict';
+ const n=M.n, clamp=M.clamp, vec=M.vec;
+ const toRGB=c=>(String(c).replace('#','').match(/../g)||['00','00','00']).map(x=>parseInt(x,16)/255);
+ const toHEX=a=>'#'+a.map(x=>Math.round(clamp(x,0,1)*255).toString(16).padStart(2,'0')).join('');
+ const cache=new Map();let sourceAvailable=-1;
+ function futureFragments(bounds,pal,r,intensity=1){
+   let z='';
+   const count=Math.max(1,Math.round(1+intensity*3));
+   for(let i=0;i<count;i++){
+     const x=r.between(bounds.x+bounds.w*.12,bounds.x+bounds.w*.84), y=r.between(bounds.y+bounds.h*.12,bounds.y+bounds.h*.84);
+     const w=bounds.w*r.between(.06,.16), h=bounds.h*r.between(.01,.05), slant=r.between(-2.1,2.1);
+     const col=r.choose([pal.vermillion,pal.lapis,pal.ochre]);
+     const d=`M${vec(x,y)}l${vec(w,slant)}l${vec(0,h)}l${vec(-w,-slant)}Z`;
+     z+=M.shape(d,col,`opacity="${n(r.between(.08,.16)*intensity)}"`);
+   }
+   return z;
+ }
+ function futurePixels(bounds,pal,r,intensity=1){
+   let z='';
+   const count=Math.max(2,Math.round(2+intensity*6));
+   for(let i=0;i<count;i++){
+     const sz=Math.max(.6,Math.min(bounds.w,bounds.h)*r.between(.035,.08));
+     const x=r.between(bounds.x+bounds.w*.14,bounds.x+bounds.w*.82), y=r.between(bounds.y+bounds.h*.14,bounds.y+bounds.h*.82);
+     const col=r.choose([pal.vermillion,pal.lapis,pal.ochre,M.mix(pal.light,pal.lapis,.35)]);
+     z+=M.shape(`M${vec(x,y)}L${vec(x+sz,y)}L${vec(x+sz,y+sz)}L${vec(x,y+sz)}Z`,col,`opacity="${n(r.between(.12,.24)*intensity)}"`);
+   }
+   return z;
+ }
+ function smearStroke(d,color,opacity,width,extra=''){
+   return `<path d="${d}" fill="none" stroke="${color}" stroke-width="${n(width)}" stroke-linejoin="round" stroke-linecap="round" opacity="${n(opacity)}" ${extra}/>`;
+ }
+ function hash(str){let h=2166136261;for(const ch of String(str))h=Math.imul(h^ch.charCodeAt(0),16777619);return h>>>0;}
+ function materialRng(s,id){return M.rng(M.childSeed(Number(s.seed)>>>0||1,hash(id)));}
+ const spectral=()=>globalThis.spectral;
+ M.spectralAvailable=()=>!!(spectral() && typeof spectral().Color==='function' && typeof spectral().mix==='function');
+ M.spectralStatus=()=>M.spectralAvailable()?'spectral.js 3':'offline pigment approximation';
+ M.verifySpectral=()=>{
+   if(!M.spectralAvailable())return {available:false,working:false};
+   try{
+     const c=spectral().mix([new (spectral().Color)('#002185'),.5],[new (spectral().Color)('#FCD200'),.5]).toString();
+     return {available:true,working:/^#[0-9a-f]{6}$/i.test(c),sample:c,referenceMatch:c.toLowerCase()==='#3d933e'};
+   }catch(error){return {available:true,working:false,error:String(error)};}
+ };
+ // Intrinsic pigment mixing with Spectral.js v3 when reachable. Offline fallback
+ // is reflectance-based rather than additive RGB; neither path uses Math.random.
+ M.mix=(a,b,t)=>{
+   t=clamp(t,0,1);
+   if(t<=0)return a;if(t>=1)return b;
+   const ready=M.spectralAvailable();
+   if(Number(ready)!==sourceAvailable){cache.clear();sourceAvailable=Number(ready);}
+   const q=Math.round(t*256)/256,key=`${a}|${b}|${q}`;
+   if(cache.has(key))return cache.get(key);
+   let col=null;
+   if(ready){try{col=spectral().mix([new (spectral().Color)(a),1-q],[new (spectral().Color)(b),q]).toString();}catch(_){}}
+   if(!col){
+     const A=toRGB(a),B=toRGB(b),K=x=>(1-x)**2/(2*Math.max(.003,x)),R=k=>1+k-Math.sqrt(k*k+2*k);
+     col=toHEX(A.map((x,i)=>R(K(x)*(1-q)+K(B[i])*q)));
+   }
+   if(cache.size>4500)cache.clear();cache.set(key,col);return col;
+ };
+ const P=(x,y)=>({x,y});
+ const F=(s,key,def=0)=>clamp(Number(s[key]??def)/100,0,1);
+ M.materialStrength=s=>({variation:F(s,'pigment',50),wear:F(s,'wear',20),spread:F(s,'spread',35),registration:F(s,'registration',12)});
+ M.paintFamily=(color,pal)=>{
+   const tones={leaf:pal.green,blue:pal.lapis,red:pal.vermillion,ochre:pal.ochre,black:pal.ink,bark:'#765039'};
+   const a=toRGB(color),delta=k=>toRGB(tones[k]).reduce((z,c,i)=>z+(a[i]-c)**2,0);
+   return Object.keys(tones).reduce((best,k)=>delta(k)<delta(best)?k:best,'leaf');
+ };
+ M.paintStop=k=>`url(#wash-${k})`;
+ M.offsetPrint=(d,color,s,r,{opacity=.18,scale=1}={})=>{
+   const level=F(s,'registration');if(level<.015)return '';
+   const future=s?.palette==='future';
+   const theta=r.between(-Math.PI,Math.PI),dist=scale*(.14+(future?2.35:1.85)*level)*r.between(.67,1.0);
+   // Misregistration is selective, subdued, and never a broad second silhouette.
+   return `<path d="${d}" fill="${color}" opacity="${n(opacity*level*(future?.58:.41))}" transform="translate(${n(Math.cos(theta)*dist)} ${n(Math.sin(theta)*dist)})"/>`;
+ };
+ // Page-scale patterns: separate grain (fine), scratches (directional), and
+ // pigment pooling (large). None places color on unpainted background.
+ M.pigmentDefs=(s,r)=>{
+   const pal=s.pal,colors={leaf:pal.green,blue:pal.lapis,red:pal.vermillion,ochre:pal.ochre,black:pal.ink,bark:'#765039'};
+   const {variation,wear,spread}=M.materialStrength(s);
+   const future=s.palette==='future';
+   let z='';
+   for(const [key,col] of Object.entries(colors)){
+     const light=M.mix(col,pal.light,(future?.18:.14)+variation*(future?.24:.20)),dark=M.mix(col,pal.ink,(future?.22:.16)+variation*(future?.26:.22));
+     z+=`<linearGradient id="wash-${key}" x1=".09" y1=".04" x2=".84" y2=".97" objectBoundingBox="true">`+
+       `<stop offset="0" stop-color="${light}"/><stop offset=".38" stop-color="${col}"/>`+
+       `<stop offset=".71" stop-color="${M.mix(col,pal.ochre,variation*.11)}"/><stop offset="1" stop-color="${dark}"/></linearGradient>`;
+   }
+   // Three restrained overprints: isolated paper pores, skipped pigment
+   // and nearly parallel hand-applied brush fibres. No checkerboard effect.
+   let dust='',chips='',hatches='';
+   for(let i=0;i<(future?190:116);i++){
+     const x=r.between(0,83),y=r.between(0,79),rad=r.between(.06,.27);
+     const col=r.chance(.60)?pal.light:M.mix(pal.ink,pal.ochre,.25);
+     dust+=M.circle(x,y,rad,col,`opacity="${n(r.between(.14,.37))}"`);
+   }
+   for(let i=0;i<(future?52:27);i++){
+     const x=r.between(0,77),y=r.between(0,73),width=r.between(.3,2.0);
+     const dy=r.between(-.33,.33);
+     chips+=M.path(`M${vec(x,y)}l${vec(width,dy)}`,pal.light,r.between(.10,.34),`opacity="${n(r.between(.23,.49))}"`);
+   }
+   for(let i=0;i<(future?88:43);i++){
+     const x=r.between(0,64),y=r.between(0,71),length=r.between(.7,4.4);
+     const dark=r.chance(.42);
+     hatches+=M.path(`M${vec(x,y)}l${vec(length,r.between(-.32,.32))}`,
+       dark?M.mix(pal.ink,pal.ochre,.35):pal.light,r.between(.10,.27),
+       `opacity="${n(r.between(.16,.43))}"`);
+   }
+   z+=`<pattern id="micro-grain" patternUnits="userSpaceOnUse" width="83" height="79">${dust}</pattern>`+
+      `<pattern id="dry-grain" patternUnits="userSpaceOnUse" width="77" height="73">${chips}</pattern>`+
+      `<pattern id="brush-fiber" patternUnits="userSpaceOnUse" width="64" height="71">${hatches}</pattern>`;
+   // Diffuse wet ink accumulates inward from a shape's own edge. Keeping this
+   // entire filter under an explicit clipPath avoids the previous gray halo.
+   z+=`<filter id="pooled-ink" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">`+
+      `<feTurbulence type="fractalNoise" baseFrequency=".12 .14" numOctaves="2" seed="${r.int(1,9999)}" result="fibers"/>`+
+      `<feDisplacementMap in="SourceGraphic" in2="fibers" scale="${n((future?.20:.12)+spread*(future?.62:.48))}" xChannelSelector="R" yChannelSelector="G"/>`+
+      `</filter>`;
+   z+=`<filter id="print-fiber" x="-1%" y="-1%" width="102%" height="102%" color-interpolation-filters="sRGB">`+
+      `<feTurbulence type="fractalNoise" baseFrequency=".11 .17" numOctaves="2" seed="${r.int(1,9999)}" result="fibers"/>`+
+      `<feDisplacementMap in="SourceGraphic" in2="fibers" scale="${n((future?.11:.06)+wear*(future?.42:.36))}" xChannelSelector="R" yChannelSelector="G"/>`+
+      `</filter>`;
+   z+=`<filter id="ink-smudge" x="-6%" y="-6%" width="112%" height="112%" color-interpolation-filters="sRGB">`+
+      `<feGaussianBlur stdDeviation="${n((future?.22:.10)+wear*(future?.55:.26))}"/>`+
+      `</filter>`;
+   z+=`<filter id="ink-bleed" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">`+
+      `<feGaussianBlur stdDeviation="${n((future?.16:.08)+spread*(future?.46:.20))}"/>`+
+      `</filter>`;
+   return z;
+ };
+ // Gaps are literal mask transparency, NOT cream-colored flecks. Every region
+ // uses a private seeded RNG so varying materials cannot change branching.
+ function wornMask(id,bounds,s,r,light=false){
+   const wear=F(s,'wear');if(wear<.045)return '';
+   const {x,y,w,h}=bounds,pad=4;
+   const count=Math.round((light?8:11)+(light?24:17)*wear);
+   let scratches='';
+   for(let i=0;i<count;i++){
+     const u=r.between(.12,.91),v=light?r.between(-.16,.16):r.between(.17,.83);
+     const xx=x+w*u,yy=light?(y+h*.50+v*h):y+h*v;
+     const dx=r.between(.25,1.8)*(light?1.0:1.5),dy=r.between(-.65,.65);
+     const alpha=n((.23+.52*wear)*r.between(.48,.95));
+     scratches+=`<path d="M${vec(xx,yy)}l${vec(dx,dy)}" fill="none" stroke="#000" stroke-width="${n(r.between(.12,.38)*(1+.65*wear))}" stroke-linecap="round" opacity="${alpha}"/>`;
+   }
+   // Only a few tiny lifted specks; the material is faded, not destroyed.
+   const flecks=Math.round((light?3:5)*wear);
+   for(let i=0;i<flecks;i++){
+     const xx=x+w*r.between(.22,.80),yy=light?y+h*r.between(.42,.58):y+h*r.between(.23,.78);
+     scratches+=M.circle(xx,yy,r.between(.08,.24),'#000',`opacity="${n(.20+.35*wear)}"`);
+   }
+   return `<mask id="wear-${id}" maskUnits="userSpaceOnUse" x="${n(x-pad)}" y="${n(y-pad)}" width="${n(w+pad*2)}" height="${n(h+pad*2)}">`+
+      `<rect x="${n(x-pad)}" y="${n(y-pad)}" width="${n(w+pad*2)}" height="${n(h+pad*2)}" fill="white"/>${scratches}</mask>`;
+ }
+ const boundsOk=b=>b&&[b.x,b.y,b.w,b.h].every(Number.isFinite)&&b.w>0&&b.h>0;
+ // Intentionally sparse washes: a larger uneven underpainting and a few
+ // darker pools instead of a thousand identical polka-dot 'texture' marks.
+ function tonalIslands(bounds,color,pal,s,r,light=false){
+   const {variation,spread}=M.materialStrength(s),total=Math.ceil((light?2:4)*variation);
+   let z='';
+   for(let i=0;i<total;i++){
+     const x=r.between(bounds.x,bounds.x+bounds.w),y=r.between(bounds.y,bounds.y+bounds.h);
+     const radius=(light?1:2)*r.between(1.8,5.0),a=r.between(0,6.28),p=r.between(.60,1.27);
+     const blob=`M${vec(x-radius,y)}C${vec(x-radius*.8,y-radius*p)} ${vec(x+radius*.8,y-radius*.5)} ${vec(x+radius,y)}`+
+       `C${vec(x+radius*.7,y+radius*.80)} ${vec(x-radius*.65,y+radius*.9)} ${vec(x-radius,y)}Z`;
+     const col=M.mix(color,r.chance(.65)?pal.ink:pal.ochre,r.between(.11,.27));
+     z+=M.shape(blob,col,`opacity="${n(r.between(.11,.25)*variation)}" transform="rotate(${n(a*57.2958)} ${n(x)} ${n(y)})"`);
+   }
+   return z;
+ }
+ function pooledContour(d,id,pal,s,r,clipId,bark=false){
+   const spread=F(s,'spread');if(spread<.025)return '';
+   // Entirely INSIDE the illustrated edge; no external gray silhouette.
+   const col=bark?M.mix('#765039',pal.ink,.43):M.mix(pal.green,pal.ink,.48);
+   return `<path d="${d}" fill="none" stroke="${col}" stroke-width="${n((bark?.55:.60)+spread*(bark?1.25:2.2))}"`+
+      ` stroke-linejoin="round" opacity="${n(.11+.47*spread)}" clip-path="url(#${clipId})"/>`;
+ }
+ M.painted=(id,d,color,bounds,s,unused,opts={})=>{
+   if(!boundsOk(bounds))return M.shape(d,color);
+   const r=materialRng(s,`bark-${id}`),pal=s.pal,{variation,wear,spread}=M.materialStrength(s);
+   const clip=`paint-clip-${id}`,mask=wornMask(id,bounds,s,r,!!opts.lightweight);
+   const maskRef=mask?` mask="url(#wear-${id})"`:'';
+   const low=M.mix(color,pal.light,.18+variation*.14),high=M.mix(color,pal.ink,.22+variation*.15);
+   const grad=`paint-wash-${id}`;
+   const future=s.palette==='future';
+   let out=M.offsetPrint(d,M.mix(color,pal.ochre,.20),s,r,{opacity:future?.24:.18,scale:future?.55:.43});
+   out+=`<defs><clipPath id="${clip}"><path d="${d}"/></clipPath>${mask}`+
+     `<linearGradient id="${grad}" x1="0%" y1="0%" x2="100%" y2="78%">`+
+     `<stop stop-color="${low}" offset="0"/><stop stop-color="${color}" offset=".38"/>`+
+     `<stop stop-color="${high}" offset="1"/></linearGradient></defs>`;
+   out+=`<g${maskRef}>${M.shape(d,`url(#${grad})`,`stroke="${M.mix(color,pal.ink,.50)}" stroke-width="${n(opts.stroke??.6)}" stroke-linejoin="round"`)}`;
+   out+=`<g clip-path="url(#${clip})">`;
+   out+=M.shape(d,'url(#micro-grain)',`opacity="${n(.18+variation*.36)}"`);
+   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.22+wear*.34)}"`);
+   if(wear>.03)out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.14+wear*.52)}"`);
+   if(wear>.08)out+=smearStroke(d,M.mix(color,pal.ink,.58),.06+.11*wear,.45+wear*.65,`filter="url(#ink-smudge)"`);
+   if(spread>.08)out+=smearStroke(d,M.mix(color,pal.ink,.66),.05+.09*spread,.30+spread*.52,`filter="url(#ink-bleed)"`);
+   out+=tonalIslands(bounds,color,pal,s,r,true);
+   if(future){out+=futureFragments(bounds,pal,r,.95+.85*variation);out+=futurePixels(bounds,pal,r,.70+.60*variation);}
+   if(wear>.22){
+     const streaks=Math.floor(3+wear*5);
+     const pale=M.mix(color,pal.light,.70);
+     for(let i=0;i<streaks;i++){
+       const px=r.between(bounds.x,bounds.x+bounds.w),py=r.between(bounds.y,bounds.y+bounds.h);
+       out+=M.path(`M${vec(px,py)}l${vec(r.between(-1.2,1.2),r.between(1.4,6.0))}`,
+         pale,r.between(.17,.43),`opacity="${n((wear-.15)*r.between(.23,.58))}"`);
+     }
+   }
+   out+=pooledContour(d,id,pal,s,r,clip,true);
+   if(future)out+=`<path d="${d}" fill="none" stroke="${M.mix(pal.ink,pal.vermillion,.22)}" stroke-width="${n(.18+wear*.26)}" opacity="${n(.14+wear*.18)}" clip-path="url(#${clip})"/>`;
+   out+='</g></g>';
+   return out;
+ };
+ M.leafFinish=(id,d,size,color,pal,s,unused)=>{
+   const r=materialRng(s,`leaf-${id}`),{variation,wear,spread}=M.materialStrength(s);
+   const future=s.palette==='future';
+   const bounds={x:-size*.06,y:-size*.52,w:size*1.13,h:size*1.04};
+   const clip=`leaf-clip-${id}`,mask=wornMask(`leaf-${id}`,bounds,s,r,true),maskRef=mask?` mask="url(#wear-leaf-${id})"`:'';
+   const grad=`leaf-wash-${id}`;
+   const pale=M.mix(color,pal.light,.27+.19*variation),deep=M.mix(color,pal.ink,.11+.25*variation),mid=M.mix(color,pal.ochre,.08+.11*variation);
+   const angle=n(r.between(-20,20));
+   let out=M.offsetPrint(d,M.mix(color,pal.ochre,.30),s,r,{opacity:future?.22:.15,scale:future?.72:.55});
+   out+=`<defs><clipPath id="${clip}"><path d="${d}"/></clipPath>${mask}`+
+       `<linearGradient id="${grad}" x1="0%" y1="0%" x2="96%" y2="100%" gradientTransform="rotate(${angle} .5 .5)">`+
+       `<stop offset="0" stop-color="${pale}"/><stop offset=".30" stop-color="${color}"/>`+
+       `<stop offset=".71" stop-color="${mid}"/><stop offset="1" stop-color="${deep}"/></linearGradient></defs>`;
+   out+=`<g${maskRef}>`;
+   out+=M.shape(d,`url(#${grad})`,`fill-opacity="${n(1-.32*Math.pow(wear,1.24))}" data-pixel-pigment="1"`);
+   out+=`<g clip-path="url(#${clip})">`;
+   // Full-size tonal marks, small side-by-side pigment irregularities and
+   // interrupted brush marks—not a low-res pixel effect over the whole leaf.
+   // Hand-laid pigment islands follow the midrib; patches actually land on
+   // the leaf rather than disappearing outside the tiny bounding rectangle.
+   if(size>10){
+     const ink=M.mix(color,pal.ink,.38),mineral=M.mix(color,pal.ochre,.48);
+     const marks=2+Math.round(variation*3);
+     for(let i=0;i<marks;i++){
+       const t=r.between(.16,.79),x=size*t,y=size*r.between(-.075,.075);
+       const rx=size*r.between(.07,.17),ry=size*r.between(.025,.062);
+       const d2=`M${vec(x-rx,y)}C${vec(x-rx*.45,y-ry)} ${vec(x+rx*.63,y-ry*.81)} ${vec(x+rx,y)}`+
+         `Q${vec(x+rx*.21,y+ry)} ${vec(x-rx,y)}Z`;
+       out+=M.shape(d2,i%3===0?mineral:ink,
+         `opacity="${n(r.between(.09,.17)*(.32+1.05*variation))}"`);
+     }
+     if(wear>.10){
+       for(let i=0;i<Math.round(2+wear*8);i++){
+         const x=size*r.between(.19,.87),y=size*r.between(-.12,.12);
+         const x2=x+size*r.between(.018,.08);
+         out+=M.path(`M${vec(x,y)}L${vec(x2,y+r.between(-.5,.5))}`,pal.light,
+           r.between(.14,.32),`opacity="${n((.12+.60*wear)*r.between(.40,.80))}"`);
+       }
+     }
+   }
+   out+=M.shape(d,'url(#micro-grain)' ,`opacity="${n(.28+.42*variation)}" data-pixel-pigment="1"`);
+   out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.22+.54*wear)}" data-pixel-pigment="1"`);
+   out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.18+.54*wear)}" data-pixel-pigment="1"`);
+   if(wear>.06)out+=smearStroke(d,M.mix(color,pal.ink,.60),.07+.14*wear,Math.max(.24,size*.008)+wear*.45,`filter="url(#ink-smudge)"`);
+   if(spread>.06)out+=smearStroke(d,M.mix(color,pal.ink,.72),.05+.11*spread,Math.max(.18,size*.006)+spread*.32,`filter="url(#ink-bleed)"`);
+   if(future){out+=futureFragments(bounds,pal,r,1.15+variation);out+=futurePixels(bounds,pal,r,.85+variation);}
+
+   if(wear>.14){
+     // Translucent irregular underpainting exposes the paper beneath. These
+     // are washes, not low-resolution missing-pixel blocks.
+     const fade=M.mix(color,pal.light,.78);
+     const missing=2+Math.round(wear*3);
+     for(let i=0;i<missing;i++){
+       const x=size*r.between(.19,.81),y=size*r.between(-.11,.11);
+       const rx=size*r.between(.09,.25),ry=size*r.between(.024,.090);
+       const da=`M${vec(x-rx,y)}Q${vec(x-rx*.63,y-ry)} ${vec(x+rx*.6,y-ry*.83)}`+
+        `Q${vec(x+rx,y)} ${vec(x+rx*.17,y+ry)}`+
+        `Q${vec(x-rx*.65,y+ry*.6)} ${vec(x-rx,y)}Z`;
+       out+=M.shape(da,fade,`opacity="${n((wear-.08)*r.between(.18,.38))}"`);
+     }
+   }
+   if(future){
+     const scorch=M.mix(pal.ink,pal.vermillion,.16);
+     out+=M.shape(d,'none',`stroke="${scorch}" stroke-width="${n(Math.max(.22,size*.007))}" stroke-linejoin="round" opacity="${n(.20+.18*wear)}"`);
+     out+=smearStroke(d,M.mix(pal.vermillion,pal.ink,.30),.08+.10*wear,Math.max(.18,size*.005),`stroke-dasharray="${n(size*.03)} ${n(size*.02)}"`);
+   }
+   if(size>14){
+     const glaze=`M${vec(size*.08,size*.02)}Q${vec(size*.32,-size*.22)} ${vec(size*.62,-size*.14)}Q${vec(size*.40,-size*.03)} ${vec(size*.12,size*.06)}Z`;
+     out+=M.shape(glaze,M.mix(color,pal.light,.46),`opacity="${n(.08+.15*variation)}"`);
+   }
+   out+=pooledContour(d,id,pal,s,r,clip,false);
+   out+='</g></g>';
+   // The outline is hand-inked, but subtle; at high wear break up pigment
+   // BELOW the contour without making the drawing itself disappear.
+   out+=M.shape(d,'none',`stroke="${M.mix(pal.ink,color,.27)}" stroke-width="${n(Math.max(.45,size*.015))}" stroke-linejoin="round"`);
+   return out;
+ };
+})(window.MS);
+
+</script>
+<script data-engine-module="finish">
+/* Pass B — native vector printmaking finish.
+   The earlier embedded canvas plate softened the whole drawing and made SVG
+   exports effectively raster images. Pigment wear now lives in the SVG paths,
+   and all stems, hatchwork, veins and export paths remain editable vectors. */
+window.MS=window.MS||{};
+((M)=>{
+ 'use strict';
+ const n=M.n,clamp=M.clamp;
+ M.finishDefs=(s,r)=>{
+   const wear=clamp(Number(s.wear||0)/100,0,1);
+   const seed=r.int(1,99999);
+   // Only sparse added penwork is textured; the botanical silhouettes stay native vectors.
+   return `<filter id="dry-print" x="-1%" y="-1%" width="102%" height="102%" color-interpolation-filters="sRGB">`+
+      `<feTurbulence type="fractalNoise" baseFrequency=".15 .21" numOctaves="2" seed="${seed+11}" result="fiber"/>`+
+      `<feDisplacementMap in="SourceGraphic" in2="fiber" scale="${n(.08+.36*wear)}" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+ };
+})(window.MS);
+
+</script>
+<script data-engine-module="geometry">
+/* Invisible construction geometry for botanical compositions.
+   These are growth trajectories, not visible knotwork or borders. The named
+   shapes are intentionally stable so choosing one feels like choosing a real
+   construction grammar rather than a random surprise. */
+window.MS=window.MS||{};
+((M)=>{
+ 'use strict';
+ const P=(x,y)=>({x,y}), W=M.W, H=M.H, cx=W*.5, cy=H*.53;
+ const sample=(fn,n=100)=>Array.from({length:n+1},(_,i)=>fn(i/n));
+ const cubic=(a,b,c,d,n=100)=>sample(t=>M.bezier(a,b,c,d,t),n);
+ const scaled=(x,y)=>P(cx+x,cy+y);
+ const reverse=a=>a.slice().reverse();
+ const path=(points)=>points.map((p,i)=>(i?'L':'M')+M.vec(p.x,p.y)).join('');
+ const fromPoints=(anchors,steps=100)=>{
+   const n=anchors.length-1;
+   const bezierSeg=(a,b,c,d,t)=>M.bezier(a,b,c,d,t);
+   const tension=.52;
+   return sample(t=>{
+     const v=Math.min(n-.00001,t*n),i=Math.floor(v),u=v-i;
+     const a=anchors[Math.max(0,i-1)],b=anchors[i],c=anchors[i+1],d=anchors[Math.min(n,i+2)];
+     const c1=P(b.x+(c.x-a.x)*tension/3,b.y+(c.y-a.y)*tension/3);
+     const c2=P(c.x-(d.x-b.x)*tension/3,c.y-(d.y-b.y)*tension/3);
+     return bezierSeg(b,c1,c2,c,u);
+   },steps);
+ };
+ const ellipse=(rx,ry,start,end,rot=0)=>sample(t=>{
+   const a=start+(end-start)*t;
+   const x=rx*Math.cos(a),y=ry*Math.sin(a),co=Math.cos(rot),si=Math.sin(rot);
+   return scaled(x*co-y*si,x*si+y*co);
+ });
+ const styles={
+  'gothic-pointed':r=>{
+    const peak=scaled(r.between(-20,20),-350), left=scaled(-280,385),right=scaled(280,385);
+    return [
+      cubic(left,scaled(-305,92),scaled(-182,-285),peak),
+      cubic(right,scaled(315,80),scaled(185,-285),peak),
+      cubic(scaled(-55,390),scaled(-40,154),scaled(-65,-110),scaled(-4,-283))
+    ];
+  },
+  'gothic-quatrefoil':r=>{
+    const rot=r.between(-.08,.08);
+    const loop=(shift,end)=>sample(t=>{
+      const a=shift+(end-shift)*t+rot,rad=227*(1+.20*Math.cos(4*a));
+      return scaled(rad*Math.cos(a),rad*1.30*Math.sin(a));
+    });
+    return [loop(Math.PI*.5,Math.PI*2.03),loop(-Math.PI*.5,Math.PI*1.04),
+      cubic(scaled(-165,338),scaled(-210,65),scaled(145,-80),scaled(180,-319))];
+  },
+  'gothic-radial':r=>{
+    const center=scaled(r.between(-26,26),r.between(36,132)),n=r.int(4,5);
+    return Array.from({length:n},(_,i)=>{
+      const angle=(-Math.PI*.90)+i*(Math.PI*1.8/Math.max(1,n-1));
+      const end=scaled(Math.cos(angle)*r.between(235,320),Math.sin(angle)*r.between(285,360));
+      const tangent=P(Math.cos(angle),Math.sin(angle));
+      return cubic(center,
+        P(center.x+tangent.x*65-tangent.y*r.between(18,44),center.y+tangent.y*65+tangent.x*r.between(18,44)),
+        P(end.x-tangent.x*100+tangent.y*r.between(-36,36),end.y-tangent.y*100-tangent.x*r.between(-36,36)),end);
+    });
+  },
+  'anglo-lozenge':r=>{
+    const a=r.between(190,238),b=r.between(255,310);
+    return [
+      fromPoints([scaled(-a,390),scaled(-45,b*.6),scaled(a,-45),scaled(15,-b),scaled(-a,-110)]),
+      fromPoints([scaled(a,392),scaled(58,b*.48),scaled(-a,30),scaled(-12,-b),scaled(a,-80)]),
+      cubic(scaled(-95,380),scaled(95,250),scaled(-85,-215),scaled(102,-350))
+    ];
+  },
+  'anglo-fret':r=>{
+    const x=r.between(150,188);
+    return [
+      fromPoints([scaled(-300,350),scaled(-x,350),scaled(-x,135),scaled(-25,135),scaled(-25,-90),scaled(x,-90),scaled(x,-337)]),
+      fromPoints([scaled(280,384),scaled(x,200),scaled(x,80),scaled(20,80),scaled(20,-200),scaled(-x,-200),scaled(-x,-348)]),
+      cubic(scaled(-275,60),scaled(-85,175),scaled(165,-185),scaled(277,-45))
+    ];
+  },
+  'celtic-triskele':r=>{
+    const rot=r.between(-.16,.16),origin=scaled(0,60);
+    return Array.from({length:3},(_,i)=>sample(t=>{
+      const a=rot+i*Math.PI*2/3 + .44 + t*Math.PI*2.05;
+      const d=18+294*Math.pow(t,.9);
+      return P(origin.x+d*Math.cos(a),origin.y+d*Math.sin(a)*1.16);
+    }));
+  },
+  'celtic-double-spiral':r=>{
+    const arms=[];
+    for(const sign of [-1,1]){
+      const origin=scaled(sign*55,18);
+      arms.push(sample(t=>{
+        const a=(sign===1 ? 0:Math.PI)+sign*t*Math.PI*3.0;
+        const rr=18+260*t;
+        return P(origin.x+Math.cos(a)*rr,origin.y+Math.sin(a)*rr*1.10);
+      }));
+    }
+    arms.push(cubic(scaled(-180,398),scaled(225,305),scaled(-190,-270),scaled(190,-350)));
+    return arms;
+  },
+  'celtic-scroll':r=>[
+    cubic(scaled(-285,390),scaled(240,220),scaled(-240,-45),scaled(250,-360)),
+    cubic(scaled(275,380),scaled(-270,185),scaled(250,-130),scaled(-220,-340)),
+    cubic(scaled(-75,410),scaled(250,165),scaled(-290,-210),scaled(70,-345))
+  ],
+  'insular-vesica':r=>{
+    const top=scaled(0,-250),bottom=scaled(0,345),left=scaled(-170,48),right=scaled(170,48);
+    return [
+      cubic(bottom,scaled(-210,210),scaled(-215,-120),top),
+      cubic(bottom,scaled(210,210),scaled(215,-120),top),
+      cubic(left,scaled(-55,48),scaled(55,48),right)
+    ];
+  },
+  'roundel':r=>[
+    ellipse(250,325,-Math.PI*.56,Math.PI*1.44,.04),
+    ellipse(160,218,-Math.PI*.30,Math.PI*1.70,-.05),
+    cubic(scaled(-25,365),scaled(40,170),scaled(-55,-55),scaled(14,-305))
+  ]
+ };
+ const curated=[
+  'gothic-pointed','gothic-quatrefoil','gothic-radial',
+  'anglo-lozenge','anglo-fret',
+  'celtic-triskele','celtic-double-spiral','celtic-scroll',
+  'insular-vesica','roundel'
+ ];
+ M.geometryStyles=curated;
+ M.geometryNames={
+  'gothic-pointed':'pointed arch',
+  'gothic-quatrefoil':'quatrefoil',
+  'gothic-radial':'radial tracery',
+  'anglo-lozenge':'lozenge',
+  'anglo-fret':'stepped fret',
+  'celtic-triskele':'triskele',
+  'celtic-double-spiral':'double spiral',
+  'celtic-scroll':'scrollwork',
+  'insular-vesica':'vesica',
+  'roundel':'roundel'
+ };
+ M.constructGuides=(selected,r)=>{
+   const locked=!!styles[selected];
+   // Most spontaneous drawings favour open branching guides. More radical
+   // spirals, frets and closed roundels remain available when selected.
+   const naturalGuides=['gothic-pointed','gothic-pointed','gothic-radial',
+       'gothic-radial','insular-vesica','anglo-lozenge','celtic-scroll'];
+   const name=locked?selected:r.choose(naturalGuides);
+   let rails=styles[name](r);
+   const rotation=locked?r.between(-.04,.04):r.between(-.12,.12);
+   const mirror=locked?1:(r.chance(.28)?-1:1);
+   const dx=r.between(locked?-10:-20,locked?10:20);
+   const dy=r.between(locked?-10:-16,locked?10:16);
+   const co=Math.cos(rotation),si=Math.sin(rotation);
+   rails=rails.map((arr,i)=>{
+     const transformed=arr.map(p=>{
+       const x=(p.x-cx)*mirror,y=p.y-cy;
+       return P(cx+x*co-y*si+dx,cy+x*si+y*co+dy);
+     });
+     return (!locked && i===0 && r.chance(.16))?reverse(transformed):transformed;
+   });
+   const bounds={x:55,y:60,w:740,h:880};
+   rails=rails.map(arr=>arr.map(p=>P(M.clamp(p.x,bounds.x,bounds.x+bounds.w),M.clamp(p.y,bounds.y,bounds.y+bounds.h))));
+   return {name,rails,paths:rails.map(path),bounds};
+ };
+ M.attractShoot=(start,target,construction,conform,habit)=>{
+   if(!construction || conform<=0)return target;
+   const v=P(target.x-start.x,target.y-start.y),length=Math.hypot(v.x,v.y)||1;
+   let best=null,score=Infinity;
+   for(const line of construction.rails){
+     for(let i=5;i<line.length;i+=4){
+       const q=line[i],dx=q.x-target.x,dy=q.y-target.y;
+       const distance2=dx*dx+dy*dy;
+       if(distance2>150*150)continue;
+       const forward=((q.x-start.x)*v.x+(q.y-start.y)*v.y)/length;
+       if(forward<length*.55)continue;
+       const weight=distance2+(forward-length)**2*.15;
+       if(weight<score){score=weight;best=q;}
+     }
+   }
+   if(!best)return target;
+   const bias=habit==='climbing'?.24:habit==='twining'?.19:habit==='heavy'?.11:.16;
+   const power=M.clamp(conform/100,0,1)*bias;
+   const dx=best.x-target.x,dy=best.y-target.y,dist=Math.hypot(dx,dy);
+   const move=Math.min(18*power,dist*power);
+   return P(target.x+dx/(dist||1)*move,target.y+dy/(dist||1)*move);
+ };
+ M.drawGuides=(construction)=>{
+   if(!construction)return '';
+   let z='';
+   for(const rail of construction.rails){
+     z+=M.path(path(rail),'#8e5c44',1.35,'stroke-dasharray="6 7" opacity=".67"');
+     for(const i of [0,25,50,75,100]){
+       const p=rail[i];
+       z+=M.circle(p.x,p.y, i===0?3.8:2.2,'#d8a933','stroke="#8e5c44" stroke-width=".55" opacity=".8"');
+     }
+   }
+   return `<g id="construction-guides" pointer-events="none">${z}</g>`;
+ };
+})(window.MS);
+
+</script>
+<script data-engine-module="spatial">
+/* Botanical spacing in real leaf units; no loose foliage sprites.
+   Uses deterministic spatial hashing, broad-phase circles and distances from
+   woody axes. A small contact overlap is allowed, dense collisions are not. */
+window.MS=window.MS||{};
+((M)=>{
+ 'use strict';
+ M.makeSpatialField=()=>{
+   const size=48,buckets=new Map(),axes=[];
+   const ix=x=>Math.floor(x/size),key=(x,y)=>x+','+y;
+   const register=(p,r,group)=>{
+     const k=key(ix(p.x),ix(p.y));
+     if(!buckets.has(k))buckets.set(k,[]);
+     buckets.get(k).push({x:p.x,y:p.y,r,group});
+   };
+   const dist2=(p,a,b)=>{
+     const dx=b.x-a.x,dy=b.y-a.y,ll=dx*dx+dy*dy||1;
+     const t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/ll));
+     return (p.x-a.x-t*dx)**2+(p.y-a.y-t*dy)**2;
+   };
+   return {
+     register,
+     addWood(points,width,group){
+       if(!points?.length)return;
+       for(let i=0;i<points.length-3;i+=3){
+         axes.push({a:points[i],b:points[Math.min(i+3,points.length-1)],
+           r:Math.max(.7,width*.3),group});
+       }
+     },
+     accept(p,r,{group='',density=50,anchor=null}={}){
+       const near=Math.ceil((r+60)/size),x=ix(p.x),y=ix(p.y);
+       const crowdFactor=1.04-M.clamp((Number(density)-35)/100,0,.45)*.08;
+       for(let a=x-near;a<=x+near;a++)for(let b=y-near;b<=y+near;b++){
+         for(const old of buckets.get(key(a,b))||[]){
+           const dx=p.x-old.x,dy=p.y-old.y;
+           const threshold=(r+old.r)*crowdFactor*(old.group===group?.92:1.04);
+           if(dx*dx+dy*dy < threshold*threshold)return false;
+         }
+       }
+       // Blade centers cannot sit on a large woody axis; stems and leaves
+       // may touch around their authentic attachment points.
+       for(const axis of axes){
+         const reach=Math.min(18,axis.r+Math.max(6,r*.42));
+         if(dist2(p,axis.a,axis.b)<reach*reach){
+           if(anchor&&axis.group===group&&dist2(anchor,axis.a,axis.b)<14*14){
+             // Leaf genuinely begins on this branch; do not falsely reject it
+             // because the petiole intersects the branch at its socket.
+             if(dist2(p,axis.a,axis.b)<(axis.r+2.5)**2)return false;
+           } else return false;
+         }
+       }
+       register(p,r,group);
+       return true;
+     }
+   };
+ };
+})(window.MS);
+
+</script>
+<script data-engine-module="drawing">
+/* Pass 5: user-defined growth paths. Coordinates stay in SVG's 850x1000 viewBox.
+   The tool is inert until drawing is explicitly enabled. No external libraries. */
+window.MS=window.MS||{};
+((M)=>{
+  'use strict';
+  const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+  const linear=(a,b,t)=>({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
+  // Distinct captured strokes represent separate main stems. Each becomes 101
+  // evenly spaced samples, with continuous tangents and t from 0 to 1.
+  M.resampleStroke=(raw,count=100)=>{
+    if(!Array.isArray(raw)||raw.length<2)return [];
+    const finite=raw.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)).map(p=>({x:M.clamp(p.x,4,M.W-4),y:M.clamp(p.y,4,M.H-4)}));
+    if(finite.length<2)return [];
+    const unique=[finite[0]];
+    for(const p of finite.slice(1)) if(dist(p,unique[unique.length-1])>1.5)unique.push(p);
+    if(unique.length<2)return [];
+    // Chaikin corner cutting gives a calm, brushlike line while respecting the
+    // initial and final roots. Softening is applied only once per generation.
+    let smooth=unique;
+    for(let pass=0;pass<2;pass++){
+      const next=[smooth[0]];
+      for(let i=0;i<smooth.length-1;i++){
+        next.push(linear(smooth[i],smooth[i+1],.25),linear(smooth[i],smooth[i+1],.75));
+      }
+      next.push(smooth[smooth.length-1]);smooth=next;
+    }
+    const distance=[0];
+    for(let i=1;i<smooth.length;i++)distance.push(distance[i-1]+dist(smooth[i-1],smooth[i]));
+    const total=distance[distance.length-1];
+    if(total<55)return [];
+    let k=1;
+    const result=Array.from({length:count+1},(_,i)=>{
+      const goal=total*i/count;
+      while(k<distance.length-1&&distance[k]<goal)k++;
+      const section=Math.max(1e-7,distance[k]-distance[k-1]);
+      return {...linear(smooth[k-1],smooth[k],M.clamp((goal-distance[k-1])/section,0,1)),t:i/count};
+    });
+    for(let i=0;i<result.length;i++){
+      const a=result[Math.max(0,i-1)],b=result[Math.min(result.length-1,i+1)];
+      result[i].tng=M.unit({x:b.x-a.x,y:b.y-a.y});
+    }
+    return result;
+  };
+  M.drawnStems=(strokes,r)=>{
+    const bounds={x:36,y:36,w:M.W-72,h:M.H-72};
+    return (strokes||[]).slice(0,4).map((raw,i)=>{
+      const naturalPoints=M.resampleStroke(raw,100);
+      if(!naturalPoints.length)return null;
+      const a=naturalPoints[0],d=naturalPoints[100];
+      const b=naturalPoints[33],c=naturalPoints[66];
+      const xs=naturalPoints.map(p=>p.x),ys=naturalPoints.map(p=>p.y),pad=70;
+      return {id:i+1,a,b,c,d,major:i<2,side:i%2?-1:1,
+        width:r.between(i<2?12:8,i<2?19:12),
+        box:{x:Math.min(...xs)-pad,y:Math.min(...ys)-pad,w:Math.max(...xs)-Math.min(...xs)+pad*2,h:Math.max(...ys)-Math.min(...ys)+pad*2},
+        guideAmount:0,guidePoints:null,naturalPoints,
+        userDrawn:true};
+    }).filter(Boolean).map(s=>({...s,bounds}));
+  };
+  M.strokePath=points=>points.map((p,i)=>(i?'L':'M')+M.vec(p.x,p.y)).join('');
+})(window.MS);
+
+</script>
+<script data-engine-module="architecture">
+/* Species-led growth architecture — each organism has its own stem topology.
+   The chosen layout can bias the silhouette, but it must not replace the
+   species' habit with a generic pair of upright branches. */
+window.MS=window.MS||{};
+((M)=>{
+ 'use strict';
+ const P=(x,y)=>({x,y}),box=(x,y,w,h)=>({x,y,w,h});
+ const sum=(a,b)=>P(a.x+b.x,a.y+b.y);
+ const move=(p,dx=0,dy=0)=>P(p.x+dx,p.y+dy);
+ const stems=[];
+ function make(a,b,c,d,width,role='main',habit='branch'){
+   return {a,b,c,d,width,major:role==='main',role,character:habit};
+ }
+ const rand=(r,a)=>r.between(-a,a);
+ function crown(r,x=425,y=895){return P(x+rand(r,32),y+rand(r,23));}
+ const shrub=(r,{baseX=420,count=3,spread=245,endY=210,width=12,bend=.26,habit='shrub'})=>{
+   const root=crown(r,baseX,922),out=[];
+   for(let i=0;i<count;i++){
+     const k=count===1?0:(i/(count-1)*2-1),end=P(root.x+k*spread+rand(r,49),endY+rand(r,80)+Math.abs(k)*70);
+     const a=move(root,k*7+rand(r,2),rand(r,2));
+     const b=P(root.x+k*spread*.24+rand(r,16),root.y-220+rand(r,24));
+     const c=P(end.x-k*spread*bend*.55+rand(r,28),end.y+194+rand(r,32));
+     out.push(make(a,b,c,end,width*(i===Math.floor(count/2)?1.2:r.between(.72,.96)),i===0||i===Math.floor(count/2)?'main':'lateral',habit));
+   }
+   return out;
+ };
+ const forms={
+   holly(r){
+     return shrub(r,{count:3,spread:190,endY:215,width:12.5,bend:.18,habit:'dense-woody'});
+   },
+   hazel(r){
+     return shrub(r,{count:r.int(4,5),spread:290,endY:160,width:7.7,bend:.32,habit:'arching-coppice'});
+   },
+   hawthorn(r){
+     const root=crown(r,415,931),middle=P(423+rand(r,50),160+rand(r,40));
+     return [
+       make(root,P(325,680),P(475,375),middle,15,'main','thorn-tree'),
+       make(P(386,625),P(225,560),P(180,390),P(105+rand(r,40),315),6.2,'lateral','thorn-tree'),
+       make(P(442,510),P(580,470),P(645,335),P(720+rand(r,32),277),5.7,'lateral','thorn-tree')
+     ];
+   },
+   oak(r){
+     const root=crown(r,390,948),tip=P(410+rand(r,40),145+rand(r,40));
+     return [
+       make(root,P(root.x-10,690),P(460,335),tip,26,'main','oak-trunk'),
+       make(P(396,620),P(270,575),P(170,368),P(120+rand(r,40),295),12,'lateral','oak-limb'),
+       make(P(431,495),P(580,435),P(670,265),P(722+rand(r,25),225),11,'lateral','oak-limb'),
+       make(P(409,380),P(280,280),P(245,205),P(210+rand(r,45),140),7,'lateral','oak-limb')
+     ];
+   },
+   ivy(r){
+     const root=P(160+rand(r,45),900+rand(r,25));
+     return [
+       make(root,P(60,580),P(530,565),P(560+rand(r,50),132),5.3,'main','creeper'),
+       make(P(290,615),P(575,790),P(785,430),P(738,200+rand(r,55)),3.4,'lateral','trailing'),
+       make(P(320,575),P(175,420),P(55,255),P(130+rand(r,50),135),3.1,'lateral','climbing')
+     ];
+   },
+   honeysuckle(r){
+     const root=crown(r,420,934);
+     return [
+       make(root,P(160,660),P(690,530),P(376+rand(r,50),145),5.4,'main','twining'),
+       make(root,P(675,680),P(180,415),P(477+rand(r,32),127),4.4,'main','twining'),
+       make(P(362,560),P(230,460),P(200,280),P(150+rand(r,55),234),2.3,'lateral','twining')
+     ];
+   },
+   bramble(r){
+     const root=crown(r,415,910);
+     return [
+       make(root,P(90,625),P(170,250),P(70+rand(r,55),460+rand(r,65)),7.5,'main','arching-cane'),
+       make(root,P(565,400),P(740,260),P(730+rand(r,42),545+rand(r,55)),7,'main','arching-cane'),
+       make(root,P(300,410),P(525,220),P(520+rand(r,60),280),4.8,'lateral','arching-cane')
+     ];
+   },
+   dogrose(r){
+     const root=crown(r,412,918);
+     return [
+       make(root,P(175,645),P(145,345),P(65+rand(r,65),470),6.5,'main','rose-cane'),
+       make(root,P(655,615),P(705,295),P(755+rand(r,32),470),6.0,'main','rose-cane'),
+       make(root,P(270,515),P(375,255),P(450+rand(r,70),185),4.4,'lateral','rose-cane')
+     ];
+   },
+   acanthus(r){
+     const root=crown(r,425,915);
+     return [
+       make(root,P(275,610),P(250,325),P(310+rand(r,50),168),9,'main','acanthus'),
+       make(root,P(550,615),P(600,290),P(605+rand(r,50),150),8,'main','acanthus'),
+       make(root,P(190,710),P(120,570),P(115+rand(r,45),380),4.5,'lateral','acanthus')
+     ];
+   },
+   fern(r){
+     const root=crown(r,420,882),N=r.int(7,9),out=[];
+     for(let i=0;i<N;i++){
+       const a=-Math.PI+.18+i*(Math.PI-.36)/(N-1),distance=r.between(295,455);
+       const end=P(root.x+Math.cos(a)*distance,root.y+Math.sin(a)*distance*1.75);
+       const b=P(root.x+Math.cos(a)*distance*.24,root.y-150+Math.sin(a)*36);
+       const c=P(root.x+Math.cos(a)*distance*.82,root.y+Math.sin(a)*distance*1.25-80);
+       out.push(make(root,b,c,end,1.6,'frond','frond'));
+     }
+     return out;
+   }
+ };
+ // The form selection stays meaningful, but acts as a global gesture rather
+ // than replacing every species with the exact same skeletal arrangement.
+ function arrange(axes,layout,r){
+   const pivot=P(425,555);
+   return axes.map((stem,i)=>{
+     const mod=(p)=>{
+       const rel=P(p.x-pivot.x,p.y-pivot.y);let x=rel.x,y=rel.y;
+       // Layout gestures grow out of the SAME root. Earlier versions applied
+       // different offsets even at the base, making paired botanical shoots
+       // appear to be floating independently of each other.
+       const maturity=Math.pow(M.clamp((960-p.y)/825,0,1),.9);
+       if(layout==='diagonal')x+=(555-p.y)*.21*maturity;
+       if(layout==='crescent')x+=Math.sign(x||((i%2)*2-1))*Math.sin(maturity*Math.PI*.87)*33*maturity;
+       if(layout==='meander')x+=Math.sin((p.y/1000)*Math.PI*2.1+i*.55)*50*maturity;
+       if(layout==='radiating')x+=rel.x*.13*maturity;
+       if(layout==='cluster')x-=rel.x*.18*maturity;
+       if(layout==='single')x-=rel.x*.09*maturity;
+       return P(M.clamp(pivot.x+x+rand(r,2.8),24,826),M.clamp(pivot.y+y+rand(r,2.8),24,970));
+     };
+     const a=mod(stem.a),b=mod(stem.b),c=mod(stem.c),d=mod(stem.d);
+     return {...stem,a,b,c,d};
+   });
+ }
+ // Side branches on trees and climbers share the actual parent centerline.
+ // The former hand-entered coordinates were only approximate: after the layout
+ // deformation they could miss their trunk completely. Reattach the socket and
+ // ease the first two controls instead of teleporting the entire branch.
+ function connectLaterals(axes,species){
+   if(!['oak','hawthorn','ivy'].includes(species))return axes;
+   const main=axes.find(st=>st.role==='main');
+   if(!main)return axes;
+   const pts=M.wave(main.a,main.b,main.c,main.d,100).slice(10,94);
+   return axes.map(st=>{
+     if(st===main||st.role!=='lateral')return st;
+     let closest=pts[0],best=Infinity;
+     for(const p of pts){
+       const d=(p.x-st.a.x)**2+(p.y-st.a.y)**2;
+       if(d<best){best=d;closest=p;}
+     }
+     // Lateral origins are inside the parent stroke. The joined tangents are
+     // eased, retaining the much more important natural endpoint gesture.
+     const dx=closest.x-st.a.x,dy=closest.y-st.a.y;
+     if(Math.hypot(dx,dy)>260)return st;
+     const moved=(p,f)=>P(p.x+dx*f,p.y+dy*f);
+     return {...st,a:moved(st.a,1),b:moved(st.b,.72),c:moved(st.c,.18)};
+   });
+ }
+ M.makeSpeciesAxes=(species,layout,r)=>{
+   const key=species==='hybrid'?'acanthus':species;
+   const form=forms[key];
+   if(!form)return null;
+   return connectLaterals(arrange(form(r),layout,r),key).map((st,i)=>{
+     const pts=M.wave(st.a,st.b,st.c,st.d,30),xs=pts.map(p=>p.x),ys=pts.map(p=>p.y),pad=85;
+     const area=box(Math.min(...xs)-pad,Math.min(...ys)-pad,Math.max(...xs)-Math.min(...xs)+2*pad,Math.max(...ys)-Math.min(...ys)+2*pad);
+     return {...st,id:i+1,side:i%2?-1:1,box:area};
+   });
+ };
+})(window.MS);
+
+</script>
+<script data-engine-module="composition">
+/* Botanical-only composition planner. Every layout changes the actual growth
+   axes, root count and curve structure; nothing reserves room for letters.
+   Pass 5: stronger specimen hierarchy, cleaner framing, and more authored
+   silhouettes so outputs feel composed rather than merely procedural. */
+window.MS=window.MS||{};
+((M)=>{
+  'use strict';
+  const P=(x,y)=>({x,y}),box=(x,y,w,h)=>({x,y,w,h});
+  const clampPt=(p,b)=>P(M.clamp(p.x,b.x,b.x+b.w),M.clamp(p.y,b.y,b.y+b.h));
+  const STAGE=box(62,54,726,888);
+  function curveBox(a,b,c,d){
+    const pts=M.wave(a,b,c,d,34),x=pts.map(p=>p.x),y=pts.map(p=>p.y),padding=78;
+    return box(Math.min(...x)-padding,Math.min(...y)-padding,Math.max(...x)-Math.min(...x)+padding*2,Math.max(...y)-Math.min(...y)+padding*2);
+  }
+  function axis(a,d,side,id,r,opts={}){
+    const dx=d.x-a.x,dy=d.y-a.y,normal=M.normal(M.unit({x:dx,y:dy}));
+    const bend=opts.bend??r.between(72,154);
+    const sign=side;
+    const first=(opts.first??.66)*bend*sign;
+    const second=(opts.second??r.choose([-.82,.62,1.07]))*bend*sign;
+    const b=clampPt(P(a.x+dx*.27+normal.x*first,a.y+dy*.26+normal.y*first),STAGE);
+    const c=clampPt(P(a.x+dx*.73+normal.x*second,a.y+dy*.74+normal.y*second),STAGE);
+    return {
+      id,a,b,c,d,side,
+      major:opts.major!==false,
+      width:opts.major===false?r.between(7,11):r.between(12,20),
+      box:curveBox(a,b,c,d),
+      character:opts.character||'wandering',
+      emphasis:opts.emphasis||1
+    };
+  }
+  const designs={
+    single(r){
+      const root=P(r.between(290,405),r.between(900,946));
+      const tip=P(r.between(395,565),r.between(104,198));
+      return [
+        axis(root,tip,r.chance(.55)?1:-1,1,r,{bend:r.between(134,212),first:r.between(.88,1.18),second:r.between(-1.02,-.62),character:'hero',emphasis:1.35})
+      ];
+    },
+    crescent(r){
+      const leftRoot=P(r.between(130,210),r.between(892,944));
+      const rightRoot=P(r.between(618,710),r.between(900,952));
+      return [
+        axis(leftRoot,P(r.between(300,420),r.between(144,268)),1,1,r,{first:1.07,second:-.54,bend:r.between(106,172),character:'hero',emphasis:1.18}),
+        axis(rightRoot,P(r.between(500,672),r.between(152,294)),-1,2,r,{first:.82,second:-.94,bend:r.between(96,162),character:'support',emphasis:.94})
+      ];
+    },
+    diagonal(r){
+      return [
+        axis(P(r.between(126,210),r.between(858,938)),P(r.between(612,740),r.between(114,194)),1,1,r,{first:.92,second:-.82,bend:r.between(98,164),character:'sweep',emphasis:1.16}),
+        axis(P(r.between(644,734),r.between(904,960)),P(r.between(272,400),r.between(310,468)),-1,2,r,{major:false,first:.92,second:-1.02,bend:r.between(92,152),character:'echo',emphasis:.78})
+      ];
+    },
+    radiating(r){
+      const root=P(r.between(350,446),r.between(792,910));
+      const destinations=[[126,256],[332,124],[560,146],[734,334]];
+      return Array.from({length:4},(_,i)=>{
+        const [tx,ty]=destinations[i];
+        return axis(
+          P(root.x+r.between(-28,28),root.y+r.between(-20,20)),
+          P(tx+r.between(-44,44),ty+r.between(-44,44)),
+          i<2?-1:1,
+          i+1,
+          r,
+          {major:i<2,bend:r.between(66,122),first:r.between(.92,1.12),second:r.between(-.92,-.58),character:i===1?'hero':'crown',emphasis:i===1?1.2:.92}
+        );
+      });
+    },
+    meander(r){
+      return [
+        axis(P(r.between(108,190),r.between(864,946)),P(r.between(528,684),r.between(138,224)),1,1,r,{first:1.42,second:-1.22,bend:r.between(138,220),character:'meander',emphasis:1.18}),
+        axis(P(r.between(636,728),r.between(914,968)),P(r.between(392,566),r.between(256,418)),-1,2,r,{major:false,first:-1.28,second:1.14,bend:r.between(98,172),character:'counter',emphasis:.82})
+      ];
+    },
+    cluster(r){
+      const center=P(r.between(350,462),r.between(782,890));
+      const tips=[[150,276],[344,126],[532,166],[706,378]];
+      return Array.from({length:4},(_,i)=>{
+        const [x,y]=tips[i];
+        return axis(
+          P(center.x+r.between(-54,54),center.y+r.between(-34,38)),
+          P(x+r.between(-50,50),y+r.between(-48,48)),
+          i%2?1:-1,
+          i+1,
+          r,
+          {major:i<2,bend:r.between(78,136),first:r.between(.96,1.15),second:r.between(-.86,-.46),character:i===0?'hero':'thicket',emphasis:i===0?1.18:.88}
+        );
+      });
+    }
+  };
+
+  const speciesAffinities={
+    holly:['single','crescent','radiating'],
+    hazel:['crescent','cluster','single'],
+    ivy:['meander','diagonal','crescent'],
+    hawthorn:['radiating','cluster','crescent'],
+    oak:['single','radiating','cluster'],
+    dogrose:['crescent','single','cluster'],
+    honeysuckle:['meander','diagonal','crescent'],
+    bramble:['cluster','crescent','diagonal'],
+    fern:['radiating','single','crescent'],
+    acanthus:['single','radiating','meander'],
+    hybrid:['single','crescent','meander']
+  };
+  const surpriseLayouts=['single','crescent','single','meander','radiating','single','cluster','crescent','diagonal'];
+
+  function displayedStems(stems,layout){
+    const limits={single:1,crescent:2,diagonal:2,meander:2,radiating:4,cluster:4};
+    if(layout==='single')return [stems.find(st=>st.major)||stems[0]].filter(Boolean);
+    return stems.slice(0,limits[layout]||stems.length);
+  }
+  // Screen-space silhouette evaluation, before expensive leaves are painted.
+  // Score only the axes that actually survive the selected growth pattern;
+  // favor one legible gesture and supporting growth, not the widest tangle.
+  function stemLayoutScore(stems, species, layout){
+    if(!stems?.length)return -1e9;
+    const samples=stems.map(st=>M.wave(st.a,st.b,st.c,st.d,32));
+    const pts=samples.flat();
+    const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
+    const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+    const w=maxX-minX,h=maxY-minY,cx=(minX+maxX)/2,cy=(minY+maxY)/2;
+    const ratio=w/Math.max(h,1);
+    const desiredRatio=['ivy','honeysuckle','bramble','dogrose','fern'].includes(species)?.77:.59;
+    const targetWidth=layout==='single'?235:layout==='meander'?425:layout==='cluster'?540:470;
+    const targetHeight=layout==='single'?690:layout==='radiating'?600:675;
+    const coverage=Math.abs(w-targetWidth)/targetWidth + Math.abs(h-targetHeight)/targetHeight;
+    const center=(Math.abs(cx-425)/415)*.62 + (Math.abs(cy-510)/490)*.47;
+    const shape=Math.abs(ratio-desiredRatio)*.53;
+    const areaPenalty=Math.max(0,.13-(w*h)/(M.W*M.H))*2.4;
+    // A branch silhouette needs a strong continuous hero. Unrooted tiny
+    // fragments and near-identical parallel canes feel like accidental drafts.
+    const length=p=>p.slice(1).reduce((sum,v,i)=>sum+M.distance(v,p[i]),0);
+    const lengths=samples.map(length);
+    const main=stems.map((st,i)=>st.major?lengths[i]:0);
+    const hero=Math.max(...main,0);
+    const hierarchy=hero>0 ? Math.max(0,.49-hero/(lengths.reduce((a,b)=>a+b,0)||1))*1.1 : .4;
+    let crossings=0,parallel=0;
+    const lineHit=(a,b,c,d)=>{
+      const cross=(u,v)=>u.x*v.y-u.y*v.x;
+      const ab={x:b.x-a.x,y:b.y-a.y},cd={x:d.x-c.x,y:d.y-c.y};
+      const den=cross(ab,cd);if(Math.abs(den)<.001)return false;
+      const ac={x:c.x-a.x,y:c.y-a.y},t=cross(ac,cd)/den,u=cross(ac,ab)/den;
+      return t>.07&&t<.93&&u>.07&&u<.93;
+    };
+    for(let i=0;i<samples.length;i++)for(let j=i+1;j<samples.length;j++){
+      const a=samples[i],b=samples[j];
+      // Intersections very close to shared roots are botanically plausible.
+      for(let x=5;x<a.length-1;x+=2)for(let y=5;y<b.length-1;y+=2){
+        if(lineHit(a[x],a[x+1],b[y],b[y+1]))crossings++;
+      }
+      let paired=0;
+      for(let k=8;k<29;k+=4){
+        const q=a[k];let closest=Infinity;
+        for(let m=8;m<29;m+=3)closest=Math.min(closest,M.distance(q,b[m]));
+        if(closest<29)paired++;
+      }
+      parallel+=paired;
+    }
+    const crossingsWeight=['ivy','honeysuckle','bramble'].includes(species)?.04:.15;
+    const overlap=crossings*crossingsWeight + parallel*.115;
+    // A disconnected woody side-branch receives a large penalty. This only
+    // applies to named lateral limbs; shrubs can grow from several close roots.
+    let disconnect=0;
+    for(let i=0;i<stems.length;i++)if(stems[i].role==='lateral'){
+      const closest=samples.some((line,j)=>i!==j&&line.some(p=>M.distance(p,stems[i].a)<19));
+      if(!closest)disconnect+=.7;
+    }
+    const borderPenalty=Math.max(0,90-minX)/100+Math.max(0,maxX-760)/100+
+      Math.max(0,78-minY)/95+Math.max(0,maxY-944)/95;
+    return 5 - coverage*.95 - center - shape - areaPenalty - hierarchy -
+      overlap - disconnect - borderPenalty*.5;
+  }
+  function pickNaturals(s,selection,architectureSpecies){
+    const list=Object.keys(designs);
+    const preferred=(speciesAffinities[s.species]||surpriseLayouts).filter(v=>list.includes(v));
+    const explicit=list.includes(s.pattern)&&s.pattern!=='random';
+    const layouts=explicit ? [selection] : [...new Set([selection,...preferred])].slice(0,4);
+    const candidates=[];
+    layouts.forEach((layout,layoutIndex)=>{
+      for(let i=0;i<5;i++){
+        const rr=M.rng(M.childSeed(Number(s.seed)>>>0||1,0x71f200 + layoutIndex*37 + i*101));
+        const natural=(M.makeSpeciesAxes && M.makeSpeciesAxes(architectureSpecies,layout,rr)) || designs[layout](rr);
+        const actual=displayedStems(natural,layout);
+        candidates.push({layout,stems:natural,score:stemLayoutScore(actual,architectureSpecies,layout)});
+      }
+    });
+    // Preserve deterministic variation: rank good candidates, then let the
+    // seed choose among genuinely viable top silhouettes rather than locking
+    // every species to one maximally-wide template.
+    candidates.sort((a,b)=>b.score-a.score);
+    const top=candidates.filter(c=>c.score>=candidates[0].score-.07).slice(0,3);
+    const selectR=M.rng(M.childSeed(Number(s.seed)>>>0||1,0x5c0a7d13));
+    return top.length>1?selectR.choose(top):candidates[0] || {layout:selection,stems:designs[selection](M.rng(M.childSeed(Number(s.seed)>>>0||1,1901)))};
+  }
+
+  M.plan=(s,r)=>{
+    if(s.drawnPaths?.length){
+      const stems=M.drawnStems(s.drawnPaths,r);
+      if(stems.length)return {mode:'botanical',layout:'hand-drawn',structure:'hand-drawn',
+        construction:null,conform:0,bounds:box(8,8,M.W-16,M.H-16),
+        focal:{x:-10000,y:-10000,rx:1,ry:1},stems,knots:[],compartments:[],weaveStem:-1};
+    }
+    const list=Object.keys(designs);
+    const preferred=speciesAffinities[s.species]||surpriseLayouts;
+    const selection=list.includes(s.pattern)&&s.pattern!=='random'
+      ? s.pattern
+      : r.choose([...preferred,...surpriseLayouts]);
+
+    const architectureSpecies=s.species==='random'
+      ? r.choose(['dogrose','honeysuckle','hazel','bramble','hawthorn','ivy','holly'])
+      : s.species;
+    const best=pickNaturals(s,selection,architectureSpecies);
+    const selectionResolved=best.layout||selection;
+    const natural=best.stems;
+    const construction=M.constructGuides(s.geometry||'random',r);
+    const amount=M.clamp(Number(s.conform??55)/100,0,1);
+    const chosen=displayedStems(natural,selectionResolved);
+    const topologyRails={
+      single:[0], crescent:[0,1], diagonal:[0,2],
+      meander:[2,0], radiating:[0,1,2,3,4], cluster:[2,0,1,4,3]
+    };
+    const route=topologyRails[selectionResolved]||topologyRails.single;
+    const guideRails=chosen.map((source,i)=>{
+      const sourceRail=construction.rails[route[i%route.length]%construction.rails.length];
+      const copy=Math.floor(i/construction.rails.length);
+      const sway=source.side||((i%2)?-1:1);
+      return sourceRail.map((p,j)=>{
+        const t=j/(Math.max(1,sourceRail.length-1));
+        const xOffset=copy*18*sway + (selectionResolved==='cluster'?sway*10*Math.sin(Math.PI*t):0);
+        const yOffset=copy*14 + (selectionResolved==='single'?-18*Math.max(0,.35-t):0);
+        return {x:M.clamp(p.x+xOffset,70,780),y:M.clamp(p.y+yOffset,66,938)};
+      });
+    });
+    construction.rails=guideRails;
+    const stems=chosen.map((source,i)=>({
+      ...source,
+      id:i+1,
+      side:source.side||((i%2)?-1:1),
+      guidePoints:guideRails[i],
+      naturalPoints:M.wave(source.a,source.b,source.c,source.d,100),
+      guideAmount:amount,
+      guideIndex:i
+    }));
+    return {mode:'botanical',layout:selectionResolved,structure:construction.name,construction,conform:amount,architectureSpecies,
+      bounds:box(54,58,742,894),focal:{x:-10000,y:-10000,rx:1,ry:1},
+      stems,knots:[],compartments:[],weaveStem:-1};
+  };
+})(window.MS);
+
+</script>
+<script data-engine-module="species">
+/* Species atlas: morphology and reproductive motifs, not independently chosen leaves.
+   Each stem receives ONE profile. Hybrid mode switches profiles only between whole
+   side-shoots; random mode switches only between independent primary stems. */
+window.MS=window.MS||{};
+((M)=>{
+ 'use strict';
+ const V=M.vec, n=M.n, P=(x,y)=>({x,y});
+ const Q=(a,d)=>P(Math.cos(a)*d,Math.sin(a)*d);
+ const sum=(a,b)=>P(a.x+b.x,a.y+b.y);
+ const close=pts=>M.poly(pts);
+ const mix=(a,b,t)=>M.mix(a,b,t);
+ M.speciesProfiles={
+   holly:{name:'holly',habit:'upright',leaf:'holly',bark:'#67503c',tint:'#52744d',scale:1.02,leafScale:1.25,frequency:1.14,shootDensity:1.24,shootScale:.82,tertiary:.73,angle:.80,twigs:1.1,evergreen:true,fruit:'holly'},
+   hazel:{name:'hazel',habit:'arching',leaf:'hazel',bark:'#80634b',tint:'#7b885d',scale:1.12,leafScale:1.09,frequency:1.0,shootDensity:.92,shootScale:1.04,tertiary:.70,angle:1.16,twigs:1.22,evergreen:false,fruit:'hazel'},
+   ivy:{name:'ivy',habit:'climbing',leaf:'ivy',bark:'#69563d',tint:'#426f5d',scale:1.03,leafScale:1.05,frequency:1.16,shootDensity:1.15,shootScale:1.15,tertiary:.63,angle:1.0,twigs:.85,evergreen:true,fruit:'ivy'},
+   hawthorn:{name:'hawthorn',habit:'angular',leaf:'hawthorn',bark:'#6d5242',tint:'#63815c',scale:.97,leafScale:1.13,frequency:1.20,shootDensity:1.35,shootScale:.88,tertiary:.80,angle:1.05,twigs:1.14,evergreen:false,fruit:'hawthorn'},
+   oak:{name:'oak',habit:'heavy',leaf:'oak',bark:'#68513c',tint:'#687c4d',scale:1.22,leafScale:1.30,frequency:.88,shootDensity:.95,shootScale:1.04,tertiary:.52,angle:.92,twigs:.82,evergreen:false,fruit:'oak'},
+   dogrose:{name:'dog rose',habit:'arching',leaf:'dogrose',bark:'#765743',tint:'#63845d',scale:1.12,leafScale:1.20,frequency:1.04,shootDensity:1.0,shootScale:1.10,tertiary:.8,angle:1.2,twigs:1.16,evergreen:false,fruit:'dogrose'},
+   honeysuckle:{name:'honeysuckle',habit:'twining',leaf:'honeysuckle',bark:'#695445',tint:'#648c70',scale:1.05,leafScale:1.1,frequency:1.08,shootDensity:1.16,shootScale:.9,tertiary:.76,angle:1.12,twigs:1.06,evergreen:false,fruit:'honeysuckle'},
+   bramble:{name:'bramble',habit:'arching',leaf:'bramble',bark:'#725640',tint:'#52795a',scale:1.11,leafScale:1.1,frequency:1.05,shootDensity:1.2,shootScale:1.11,tertiary:.94,angle:1.20,twigs:1.25,evergreen:false,fruit:'bramble'},
+   fern:{name:'fern',habit:'fronds',leaf:'fern',bark:'#65513d',tint:'#668263',scale:1.25,leafScale:1.0,frequency:1.0,shootDensity:1.0,shootScale:1.0,tertiary:0,angle:.94,twigs:0,evergreen:false,fruit:'fern'},
+   acanthus:{name:'acanthus',habit:'ornamental',leaf:'acanthus',bark:'#765b45',tint:'#73815e',scale:1.24,leafScale:1.25,frequency:.90,shootDensity:.78,shootScale:1.14,tertiary:.5,angle:1.06,twigs:.93,evergreen:true,fruit:'acanthus'}
+ };
+ M.speciesNames=Object.keys(M.speciesProfiles);
+ M.chooseSpecies=(selected,r)=>M.speciesProfiles[selected]||M.speciesProfiles[r.choose(M.speciesNames)];
+ M.wood=(sp,pal,age,r)=>{const a=mix(sp.bark,pal.ink,r.between(.06,.20)); return age==='new'?mix(a,sp.tint,.35):a;};
+ M.leafPigment=(sp,season,pal,r,s={})=>{
+   const ornament=M.clamp(Number(s.ornament||0)/100,0,1);
+   const future=s?.palette==='future';
+   // Each blade is a distinct painted impression: green remains dominant,
+   // but species lean cool/warm and pick up slightly different mineral stains.
+   const variation=r.random();
+   const familyBias={holly:'cool',ivy:'cool',honeysuckle:'light',hazel:'warm',oak:'earth',hawthorn:'light',dogrose:'warm',bramble:'cool',fern:'light',acanthus:'earth'}[sp.leaf]||'earth';
+   let col=mix(sp.tint,pal.green,future?.24+r.between(.04,.28):.10+r.between(0,.18));
+   if(familyBias==='cool')col=mix(col,pal.lapis,r.between(future?.11:.05,future?.24:.16));
+   if(familyBias==='warm')col=mix(col,pal.ochre,r.between(future?.08:.05,future?.22:.16));
+   if(familyBias==='light')col=mix(col,pal.light,r.between(.06,future?.18:.15));
+   if(familyBias==='earth')col=mix(col,pal.ink,r.between(.03,future?.14:.10));
+   if(variation<.14)col=mix(col,pal.ochre,r.between(future?.13:.08,future?.28:.19));
+   else if(variation>.85)col=mix(col,pal.lapis,r.between(future?.16:.11,future?.31:.23));
+   else if(variation>.56)col=mix(col,pal.light,r.between(.06,future?.21:.16));
+   if(season==='spring'){
+     col=mix(col,pal.light,r.between(.16,.30));
+     if(!sp.evergreen)col=mix(col,pal.ochre,r.between(.02,.10));
+   }
+   if(season==='summer'){
+     col=mix(col,pal.ink,r.between(.01,.05));
+   }
+   if(season==='autumn'&&!sp.evergreen){
+     col=r.choose([
+       mix(col,pal.ochre,.52),
+       mix(col,pal.vermillion,.26),
+       mix(mix(col,pal.ochre,.38),pal.vermillion,.16),
+       mix(col,pal.ochre,.28)
+     ]);
+   }
+   if(season==='winter'){
+     col=sp.evergreen ? mix(col,pal.ink,.13) : mix(col,pal.ochre,.56);
+   }
+   if((future||ornament>.55) && r.chance((future?.09:0)+Math.pow((ornament-.55)/.45,1.5)*(sp.leaf==='acanthus'?.26:.12))){
+     col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(future?.16:.10,future?.32:.24));
+   }
+   if(future && r.chance(.26+.24*ornament)) col=M.mix(col,pal.ink,r.between(.06,.18));
+   return col;
+ };
+ // Anatomical leaf atlas. Every closed contour has one continuous edge.
+ // Earlier Gaussian "teeth" produced needle-like artificial lobes, and the
+ // Catmull spline overshot sharp sinuses to form the white loops seen in SVG.
+ // These profiles keep the primary axis monotone and deliberately control
+ // every lobe, sinus and tooth rather than perturbing arbitrary vertices.
+ const S=(x,y)=>M.vec(x,y);
+ const bell=(t,p=.75)=>Math.pow(Math.max(0,Math.sin(Math.PI*t)),p);
+ const bump=(t,c,w)=>Math.exp(-Math.pow((t-c)/w,2));
+ const teeth=(t,count,phase)=>Math.pow(Math.max(0,Math.sin(Math.PI*(t*count+phase))),7);
+ const pathPoints=pts=>pts.map((p,i)=>`${i?'L':'M'}${S(p.x,p.y)}`).join('')+'Z';
+ function blade(kind,len,r,s){
+   const orn=M.ornamentInfluence?.({leaf:kind},s)||0;
+   const asym=r.between(-.07,.07),phase=r.between(0,Math.PI*2);
+   const proportion=r.between(.96,1.05),lean=r.between(-.018,.018);
+
+   // Ivy is a palmate, three-to-five-lobed leaf, not an angular serrated oval.
+   // Explicit curved connections prevent intersections and flying spear points.
+   if(kind==='ivy'){
+     // Illuminated ivy: three pointed principal lobes and two minor basal horns.
+     // Curved shoulders resolve into deliberate Gothic cusps; no repeated star polygons.
+     const point=(x,y)=>S(x*len,(y*proportion*(y<0?1+asym:1-asym)+lean*Math.sin(Math.PI*x))*len);
+     const P=point;
+     return `M${P(0,0)}`+
+       `C${P(.06,-.045)} ${P(.105,-.145)} ${P(.115,-.237)}`+
+       `C${P(.15,-.245)} ${P(.197,-.216)} ${P(.247,-.179)}`+
+       `C${P(.29,-.246)} ${P(.37,-.341)} ${P(.45,-.462)}`+
+       `C${P(.515,-.423)} ${P(.535,-.335)} ${P(.548,-.238)}`+
+       `C${P(.65,-.252)} ${P(.785,-.161)} ${P(1,0)}`+
+       `C${P(.785,.161)} ${P(.65,.252)} ${P(.548,.238)}`+
+       `C${P(.535,.335)} ${P(.515,.423)} ${P(.45,.462)}`+
+       `C${P(.37,.341)} ${P(.29,.246)} ${P(.247,.179)}`+
+       `C${P(.197,.216)} ${P(.15,.245)} ${P(.115,.237)}`+
+       `C${P(.105,.145)} ${P(.06,.045)} ${P(0,0)}Z`;
+   }
+
+   const sample=(t,side)=>{
+     const e=bell(t,.77),uneven=1+side*asym;
+     let w=0;
+     switch(kind){
+       case 'holly':{
+         // Leathery elliptical leaf with three to four small true spines.
+         const nodes=side<0?[.28,.51,.74]:[.25,.49,.73];
+         w=.285*bell(t,.71)+(.075+.060*orn)*nodes.reduce((z,c)=>z+bump(t,c,.018),0);
+         w-=.040*[.37,.62].reduce((z,c)=>z+bump(t,c,.047),0);
+         break;
+       }
+       case 'hazel':{
+         // Round heart-like base, shallow regular serrations.
+         w=.40*bell(t,.51)*(1.19-.26*t)+.074*bump(t,.10,.085);
+         w+=.012*bell(t,.58)*teeth(t,13,phase*.05);
+         break;
+       }
+       case 'oak':{
+         // Rounded oak lobes, recessed but not spiky sinuses.
+         w=.135*e+(.17+.075*orn)*[.23,.46,.67,.83].reduce((z,c,i)=>
+           z+[.82,1.05,.98,.70][i]*bump(t,c+side*asym*.16,.086),0);
+         w-=.055*[.35,.57,.76].reduce((z,c)=>z+bump(t,c,.055),0);
+         break;
+       }
+       case 'hawthorn':{
+         w=.15*e+(.16+.065*orn)*[.27,.52,.75].reduce((z,c,i)=>
+           z+[1,.88,.72][i]*bump(t,c+side*asym*.2,.085),0);
+         w+=.006*e*teeth(t,10,.15);break;
+       }
+       case 'acanthus':{
+         // Acanthus lobes are soft scallops, not a serrated five-point star.
+         w=.12*e+(.195+.075*orn)*[.20,.42,.63,.79].reduce((z,c,i)=>
+           z+[.67,1.09,.91,.75][i]*bump(t,c+side*asym*.16,.083),0);
+         w-=.061*[.31,.52,.72].reduce((z,c)=>z+bump(t,c,.051),0);
+         break;
+       }
+       case 'dogrose':w=.285*bell(t,.77)*(1.08-.12*t)+.009*e*teeth(t,15,.23);break;
+       case 'bramble':w=.33*bell(t,.69)*(1.14-.17*t)+.015*e*teeth(t,12,.18);break;
+       case 'honeysuckle':w=.325*bell(t,.84)*(1.13-.12*t);break;
+       case 'fern':w=.12*bell(t,.90);break;
+       default:w=.31*e;
+     }
+     // Ornament changes the paintwork more than the silhouette. It can
+     // gently swell the lobe masses but never create new serrations.
+     w*=1+.016*orn*Math.sin(Math.PI*t*3+phase);
+     w=Math.max(0,w*proportion*uneven);
+     const tremor=(.002+.001*orn)*e*Math.sin(t*14+phase+side*.37);
+     return {x:len*t,y:len*(side*(w+tremor)+lean*Math.sin(Math.PI*t))};
+   };
+   const N=kind==='holly'?160:kind==='hazel'||kind==='bramble'?144:112;
+   const upper=[],lower=[];
+   for(let i=0;i<=N;i++){
+     const t=i/N;
+     upper.push(sample(t,-1));lower.push(sample(t,1));
+   }
+   // Dense, monotone polylines avoid Bézier overshoot at the sinus. The
+   // rendered contour is smooth at normal scale; holly retains visible spines.
+   return pathPoints([...upper,...lower.slice(1,-1).reverse()]);
+ }
+ function leafVeins(kind,size,color,pal,r,s={}){
+   const ink=M.mix(color,pal.ink,.57),ochre=M.mix(color,pal.ochre,.38);
+   const deep=M.mix(color,pal.ink,.70),lit=M.mix(color,pal.light,.33);
+   const ornamental=M.ornamentInfluence?.({leaf:kind},s)||0;
+   // Direction and branching respond to each family's morphology.
+   const anatomy={
+     ivy:{nodes:[.22,.37,.57],reach:.28,tip:.93,dx:.11},
+     holly:{nodes:[.18,.39,.61,.80],reach:.21,tip:.96,dx:.08},
+     hazel:{nodes:[.16,.29,.42,.55,.69,.81],reach:.32,tip:.91,dx:.12},
+     oak:{nodes:[.19,.43,.67,.84],reach:.34,tip:.94,dx:.09},
+     hawthorn:{nodes:[.19,.44,.69],reach:.28,tip:.95,dx:.09},
+     acanthus:{nodes:[.15,.31,.50,.70,.85],reach:.35,tip:.94,dx:.05},
+     dogrose:{nodes:[.17,.31,.45,.59,.72,.83],reach:.21,tip:.96,dx:.13},
+     bramble:{nodes:[.16,.29,.43,.56,.69,.81],reach:.28,tip:.93,dx:.10},
+     honeysuckle:{nodes:[.23,.38,.53,.69,.82],reach:.24,tip:.94,dx:.12},
+     fern:{nodes:[.25,.45,.65,.80],reach:.11,tip:.94,dx:.10}
+   }[kind]||{nodes:[.23,.4,.62,.78],reach:.23,tip:.95,dx:.11};
+   let out='';
+   // Ivy's veins radiate from the petiole into the two lateral lobes rather
+   // than borrowing the generic pinnate/fishbone vein diagram.
+   if(kind==='ivy'){
+     let z=M.path(`M${S(size*.055,0)}Q${S(size*.50,-size*.005)} ${S(size*.91,0)}`,
+       deep,Math.max(.35,size*.024),'opacity=".60"');
+     for(const sg of [-1,1]){
+       z+=M.path(`M${S(size*.075,0)}Q${S(size*.25,sg*size*.17)} ${S(size*.485,sg*size*.445)}`,
+         ink,Math.max(.28,size*.016),'opacity=".52"');
+       z+=M.path(`M${S(size*.085,0)}Q${S(size*.135,sg*size*.15)} ${S(size*.17,sg*size*.245)}`,
+         ink,Math.max(.23,size*.011),'opacity=".39"');
+       z+=M.path(`M${S(size*.28,sg*size*.22)}Q${S(size*.38,sg*size*.25)} ${S(size*.49,sg*size*.32)}`,
+         ochre,Math.max(.20,size*.009),'opacity=".42"');
+     }
+     return z;
+   }
+   // Engraved center vein is weighted at the base, with a fine dry echo.
+   out+=M.path(`M${S(size*.055,0)}C${S(size*.27,size*.012)} ${S(size*.60,-size*.013)} ${S(size*anatomy.tip,0)}`,
+      deep,Math.max(.33,size*.026),`opacity="${M.n(.55+.10*ornamental)}"`);
+   out+=M.path(`M${S(size*.075,-size*.010)}Q${S(size*.35,-size*.013)} ${S(size*.76,0)}`,
+      ochre,Math.max(.20,size*.009),`opacity=".55"`);
+   anatomy.nodes.forEach((t,i)=>{
+     for(const side of [-1,1]){
+       const stagger=side===1?(i%2===0?.024:-.018):0;
+       const x=size*(t+stagger),swell=Math.sin(Math.PI*t)**.65;
+       const reach=size*anatomy.reach*swell*r.between(.78,1.02);
+       const tipX=x+size*(anatomy.dx+r.between(-.014,.014));
+       const tipY=side*reach;
+       const d=`M${S(x,0)}Q${S(x+size*.034,side*reach*.36)} ${S(tipX,tipY)}`;
+       out+=M.path(d,i%4===1?ochre:ink,Math.max(.22,size*.013),
+         `opacity="${M.n(r.between(.36,.62))}"`);
+       if(size>19 && i%2===0){
+         const jx=x+(tipX-x)*.55,jy=tipY*.55;
+         out+=M.path(`M${S(jx,jy)}q${S(size*.030,side*size*.016)} ${S(size*.053,side*size*.04)}`,
+           deep,Math.max(.14,size*.005),`opacity="${M.n(r.between(.20,.34))}"`);
+       }
+     }
+   });
+   // Fine hatch, resembling thin coloured penwork on historic herbals.
+   if(size>20){
+     const count=Math.round(size*.38);
+     for(let i=0;i<count;i++){
+       const t=r.between(.18,.86),side=r.sign();
+       const y=side*size*r.between(.035,.12)*Math.sin(Math.PI*t);
+       out+=M.path(`M${S(size*t,y)}l${S(size*.024,-side*size*.013)}`,
+         i%3===0?lit:deep,.20,`opacity="${M.n(r.between(.11,.29))}"`);
+     }
+   }
+   return out;
+ }
+
+ function simpleLeaf(sp,size,season,pal,r,kindOverride,s={registration:0,pigment:40,wear:20}){
+   const kind=kindOverride||sp.leaf,d=blade(kind,size,r,s),
+     color=M.leafPigment(sp,season,pal,r,s),id=`leaf-${r.int(10000,999999999)}`;
+   let art=M.leafFinish(id,d,size,color,pal,s,r);
+   const clipId=`leaf-clip-${id}`;
+   const veins=leafVeins(kind,size,color,pal,r,s);
+   const ornament=M.ornamentLeafInterior?M.ornamentLeafInterior(sp,size,color,pal,r,s):'';
+   const patch=M.ornamentColorPatch?M.ornamentColorPatch(sp,size,pal,r,s):'';
+   // Future-medieval inlay. Small heraldic geometry belongs to the leaf itself:
+   // crisp pointed arches, lozenge seals and stained-ink hatching. These appear
+   // selectively, rather than turning every leaf into a repeated digital icon.
+   const level=M.clamp(Number(s.ornament||0)/100,0,1);
+   let medievalInlay='';
+   // Shared pigment accents must be in scope for both manuscript inlay passes.
+   const cobalt=M.mix(pal.lapis,pal.ink,.16),cinnabar=M.mix(pal.vermillion,pal.ink,.10);
+   const accent=r.chance(.34)?pal.ochre:(r.chance(.5)?cinnabar:cobalt);
+   const future=s.palette==='future';
+   if(size>15 && level>.20 && r.chance((future?.36:.13) + .42*level)){
+     const sign=r.sign();
+     const x=size*r.between(.35,.48),h=size*(kind==='ivy'?.082:.048);
+     const height=size*(kind==='ivy'?.082:.071);
+     const motif=r.int(0,2);
+     if(motif===0){
+       // A tiny pointed window inset, never a sharp protrusion outside the edge.
+       medievalInlay+=M.shape(`M${S(x-size*.07,sign*h)}Q${S(x-size*.035,sign*(h+height*.55))} ${S(x,sign*(h+height))}`+
+         `Q${S(x+size*.035,sign*(h+height*.55))} ${S(x+size*.07,sign*h)}Z`,
+         accent,`opacity="${n(.65+.22*level)}"`);
+       medievalInlay+=M.path(`M${S(x,sign*h)}L${S(x,sign*(h+height*.73))}`,pal.ink,.24,'opacity=".5"');
+     }else if(motif===1){
+       const dx=size*.055,dy=size*.068;
+       medievalInlay+=M.shape(`M${S(x-dx,sign*h)}L${S(x,sign*(h+dy))}L${S(x+dx,sign*h)}L${S(x,sign*(h-dy))}Z`,
+         'none',`stroke="${accent}" stroke-width="${n(Math.max(.44,size*.017))}" opacity=".78"`);
+       medievalInlay+=M.circle(x,sign*h,Math.max(.34,size*.017),accent);
+     }else{
+       for(let j=0;j<3;j++){
+         const xx=x-size*.075+j*size*.056;
+         medievalInlay+=M.path(`M${S(xx,sign*(h-size*.025))}l${S(size*.033,sign*size*.05)}`,
+           accent,Math.max(.3,size*.012),`opacity="${n(.54+.23*level)}"`);
+       }
+     }
+   }
+   if(future && size>16 && level>.38 && r.chance(.52)){
+     const xx=size*r.between(.28,.68), yy=(r.sign())*size*r.between(.03,.11);
+     const crest=r.int(0,2);
+     if(crest===0){
+       medievalInlay+=M.shape(`M${S(xx-size*.042,yy)}L${S(xx,yy-size*.055)}L${S(xx+size*.042,yy)}L${S(xx,yy+size*.055)}Z`, accent, `opacity="${n(.58+.22*level)}"`);
+       medievalInlay+=M.path(`M${S(xx-size*.018,yy)}L${S(xx+size*.018,yy)}M${S(xx,yy-size*.018)}L${S(xx,yy+size*.018)}`, pal.ink, Math.max(.22,size*.01), `opacity="${n(.46+.18*level)}"`);
+     }else if(crest===1){
+       for(let step=0;step<4;step++){
+         const sx=xx-size*.05+step*size*.022;
+         medievalInlay+=M.shape(`M${S(sx,yy-size*.012)}L${S(sx+size*.016,yy-size*.012)}L${S(sx+size*.016,yy+size*.012)}L${S(sx,yy+size*.012)}Z`, step%2?cobalt:cinnabar, `opacity="${n(.42+.18*level)}"`);
+       }
+     }else{
+       medievalInlay+=M.path(`M${S(xx-size*.055,yy+size*.022)}Q${S(xx,yy-size*.048)} ${S(xx+size*.055,yy+size*.022)}`, accent, Math.max(.28,size*.012), `opacity="${n(.52+.18*level)}"`);
+       medievalInlay+=M.path(`M${S(xx-size*.028,yy+size*.006)}L${S(xx+size*.028,yy+size*.006)}`, pal.ink, Math.max(.18,size*.009), `opacity="${n(.40+.15*level)}"`);
+     }
+   }
+   let plateMarks='';
+   if(size>15){
+     // The botanical-plate effect is deliberate pen hatchwork, not random
+     // circular pixel noise. Each narrow stroke follows the leaf's midrib.
+     const dark=M.mix(color,pal.ink,.58);
+     const warm=M.mix(color,pal.ochre,.52);
+     const light=M.mix(color,pal.light,.68);
+     const lines=Math.max(5,Math.round(size*.31));
+     const bias=r.sign();
+     for(let i=0;i<lines;i++){
+       const t=.15+(i+.3)/lines*.70+r.between(-.012,.012);
+       const side=i%3===0?-bias:bias;
+       const y=side*size*(.045+.070*Math.sin(Math.PI*t));
+       const len=size*r.between(.032,.082);
+       plateMarks+=M.path(`M${S(t*size,y)}q${S(len*.55,side*len*.32)} ${S(len,side*len*.22)}`,
+         i%4===0?warm:dark,Math.max(.18,size*.007),`opacity="${n(r.between(.17,.39))}"`);
+     }
+     // A small softly printed folded plane. Its edge follows a curved vein,
+     // so it reads as one leaf buckling rather than a geometric overlay.
+     if(size>23 && r.chance(.53)){
+       const side=r.sign();
+       const d2=`M${S(size*.20,0)}Q${S(size*.42,side*size*.115)} ${S(size*.72,side*size*.105)}`+
+         `Q${S(size*.48,side*size*.045)} ${S(size*.20,0)}Z`;
+       plateMarks+=M.shape(d2,side>0?dark:light,`opacity="${n(r.between(.10,.20))}"`);
+       plateMarks+=M.path(`M${S(size*.21,0)}Q${S(size*.45,side*size*.10)} ${S(size*.71,side*size*.103)}`,
+         side>0?dark:light,Math.max(.23,size*.012),`opacity=".35"`);
+     }
+   }
+   art+=`<g clip-path="url(#${clipId})">${veins}${plateMarks}${patch}${ornament}${medievalInlay}</g>`;
+   return art;
+ }
+ function compound(sp,size,season,pal,r,s){
+   const rose=sp.leaf==='dogrose',pairs=rose?(r.chance(.58)?3:2):(r.chance(.65)?2:1);
+   const shaft=M.mix(sp.bark,sp.tint,.28),last=.70;
+   let z=M.path(`M0 0 Q${S(size*.35,-size*.025)} ${S(size*.98,0)}`,shaft,Math.max(.48,size*.022));
+   for(let i=0;i<pairs;i++){
+     const t=.19+i*(pairs===3?.22:.31),x=size*t;
+     for(const side of [-1,1]){
+       const len=size*(rose?.47:.48)*r.between(.85,1.16)*(1-.035*i);
+       const a=side*(rose?1.02:.99)+r.between(-.09,.09);
+       z+=`<g transform="translate(${S(x,0)}) rotate(${M.n(a*180/Math.PI)})">`+
+         simpleLeaf(sp,len,season,pal,r,sp.leaf,s)+'</g>';
+     }
+   }
+   z+=`<g transform="translate(${S(size*last,0)})">`+
+     simpleLeaf(sp,size*(rose?.44:.43),season,pal,r,sp.leaf,s)+'</g>';
+   return z;
+ }
+ function fernFrond(sp,size,season,pal,r,s){
+   const shaft=M.mix(sp.tint,pal.ink,.34);
+   let z=M.path(`M0 0 Q${S(size*.44,-size*.075)} ${S(size*.99,0)}`,shaft,Math.max(.65,size*.023));
+   const pairs=Math.max(7,Math.round(size/7));
+   for(let i=0;i<pairs;i++){
+     const t=.10+i*.82/pairs,span=size*.24*Math.pow(Math.sin(Math.PI*t),.92)*(1-.25*t),x=size*t;
+     for(const side of [-1,1]){
+       const len=span*(1+r.between(-.07,.07));
+       const a=side*(.95+.18*t);
+       z+=`<g transform="translate(${S(x,0)}) rotate(${M.n(a*180/Math.PI)})">`+
+          simpleLeaf(sp,len,season,pal,r,'honeysuckle',s)+'</g>';
+     }
+   }
+   return z;
+ }
+ M.plantLeaf=(sp,at,angle,size,season,pal,r,s={registration:0,pigment:40,wear:20})=>{
+   if(season==='winter'&&!sp.evergreen && r.chance(sp.leaf==='fern'?.96:.95))return '';
+   const leaf=sp.leaf==='fern'?fernFrond(sp,size,season,pal,r,s):['dogrose','bramble'].includes(sp.leaf)?compound(sp,size,season,pal,r,s):simpleLeaf(sp,size,season,pal,r,undefined,s);
+   // Larger illuminated leaves appear as the transformation increases.
+   const ornamental=M.ornamentInfluence?M.ornamentInfluence(sp,s):0;
+   const petiole=Math.min(9,Math.max(2.2,size*.11));
+   const stem=M.path(`M0 0 L${V(petiole,0)}`,M.wood(sp,pal,'new',r),Math.max(.46,size*.033));
+   const magnify=1+ornamental*.08;
+   const delay=-r.between(0,18),duration=r.between(14,24),flutter=r.between(.16,.42);
+   // Only a minority of blades make their own tiny gesture; all other leaves already
+   // participate in the parent shoot's motion. Keep painted SVG performant and natural.
+   const flexes=r.chance(.22);
+   return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">`+
+     `<g ${flexes?`class="leaf-breath" style="--leaf-delay:${n(delay)}s;--leaf-duration:${n(duration)}s;--leaf-amplitude:${n(flutter)}deg"`:''}>`+
+     `${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})">${leaf}</g></g></g>`;
+ };
+ // Species organs use illustrated morphology: a five-petalled rose is not a
+ // colored dot, a blackberry consists of individual drupelets, and acorns have
+ // visible cups. Motifs attach at a real shoot terminal.
+ const pt=(at,a,d)=>({x:at.x+Math.cos(a)*d,y:at.y+Math.sin(a)*d});
+ function blossom(at,scale,pal,r,kind='hawthorn'){
+   let z='',petals=kind==='honeysuckle'?4:5;
+   const flowerPhase=r.between(-.20,.20),petalVariance=Array.from({length:5},()=>r.between(.80,1.17));
+   const blossomColor=kind==='dogrose'?M.mix('#e6a4b3',pal.light,.21):
+     kind==='acanthus'?pal.lapis:M.mix(pal.light,'#ffffff',.73);
+   const center=at;
+   for(let i=0;i<petals;i++){
+     const a=(i+(.035*r.random()))*2*Math.PI/petals+flowerPhase+r.between(-.08,.08),
+        extent=petalVariance[i]*scale,edge=pt(center,a,extent*.51),left=pt(center,a-.51,extent*.32),right=pt(center,a+.51,extent*.34),
+        tip1=pt(center,a-.17,extent*.68),tip2=pt(center,a+.16,extent*.66);
+     const d=`M${S(center.x,center.y)}C${S(left.x,left.y)} ${S(tip1.x,tip1.y)} ${S(edge.x,edge.y)}`+
+       `C${S(tip2.x,tip2.y)} ${S(right.x,right.y)} ${S(center.x,center.y)}Z`;
+     z+=M.shape(d,blossomColor,`stroke="${pal.ink}" stroke-width=".56"`)+M.shape(d,'url(#brush-fiber)',`opacity=".46"`)+M.shape(d,'url(#micro-grain)',`opacity=".33"`);
+     z+=M.path(`M${S(center.x,center.y)}Q${S(edge.x,edge.y)} ${S(tip1.x,tip1.y)}`,
+       M.mix(blossomColor,pal.vermillion,.59),.47,'opacity=".62"');
+     const shadow=pt(center,a,extent*.31);
+     z+=M.circle(shadow.x,shadow.y,extent*.09,M.mix(blossomColor,pal.vermillion,.40),'opacity=".22"');
+     // Historical botanical-plate shading: curved veins, a narrow fold in
+     // every other petal, and dilute pigment near the throat.
+     const fold=pt(center,a+((i%2)?-.12:.11),extent*.48);
+     const rim=pt(center,a,extent*.57);
+     z+=M.path(`M${S(center.x,center.y)}Q${S(shadow.x,shadow.y)} ${S(fold.x,fold.y)}`,
+       M.mix(blossomColor,pal.ink,.43),Math.max(.28,scale*.023),'opacity=".48"');
+     if(i%2===0){
+       z+=M.path(`M${S(fold.x,fold.y)}Q${S(rim.x,rim.y)} ${S(edge.x,edge.y)}`,
+         M.mix(blossomColor,pal.light,.34),Math.max(.22,scale*.018),'opacity=".61"');
+     }
+   }
+   z+=M.circle(center.x,center.y,Math.max(1.2,scale*.17),pal.ochre,`stroke="${pal.ink}" stroke-width=".35"`);
+   const stamens=kind==='dogrose'?7:kind==='hawthorn'?5:3;
+   for(let i=0;i<stamens;i++){
+     const ang=i*2.4,a=pt(center,ang,scale*.28),b=pt(center,ang,scale*.36);
+     z+=M.path(`M${S(a.x,a.y)}L${S(b.x,b.y)}`,pal.ochre,.36);
+     z+=M.circle(b.x,b.y,.48,pal.vermillion);
+   }
+   return z;
+ }
+ function berry(sp,at,size,pal,r,type){
+   const shadow=M.mix(pal.ink,type==='blackberry'?'#532d50':pal.vermillion,.47);
+   if(type==='blackberry'){
+     let z='';
+     // Blackberry cross-section: small dark drupelets taper into a cone.
+     for(let row=0;row<3;row++){
+       const count=4-row;
+       for(let j=0;j<count;j++){
+         const x=at.x+(j-(count-1)/2)*size*.34,y=at.y+(row-1)*size*.30;
+         const col=r.choose(['#302333','#4b2e47','#673449','#261e29']);
+         z+=M.circle(x,y,size*.19,col,`stroke="${pal.ink}" stroke-width=".38" data-pixel-organ="1"`);
+         z+=M.circle(x-size*.05,y-size*.05,Math.max(.26,size*.045),M.mix(col,pal.light,.36),'opacity=".66"');
+       }
+     }
+     z+=M.path(`M${S(at.x-size*.43,at.y-size*.45)}Q${S(at.x,at.y-size*.65)} ${S(at.x+size*.43,at.y-size*.45)}`,sp.tint,.6);
+     return z;
+   }
+   if(type==='hip'){
+     const d=`M${S(at.x-size*.20,at.y-size*.45)}Q${S(at.x-size*.65,at.y)} ${S(at.x-size*.19,at.y+size*.65)}Q${S(at.x+size*.22,at.y+size*.72)} ${S(at.x+size*.40,at.y)}Q${S(at.x+size*.28,at.y-size*.42)} ${S(at.x-size*.20,at.y-size*.45)}Z`;
+     return M.shape(d,pal.vermillion,`stroke="${pal.ink}" stroke-width=".56" data-pixel-organ="1"`)+
+       M.path(`M${S(at.x,at.y-size*.52)}l${S(-size*.14,-size*.22)}m${S(size*.14,size*.22)}l${S(size*.17,-size*.20)}`,sp.tint,.59);
+   }
+   if(type==='acorn'){
+     const d=`M${S(at.x-size*.35,at.y-size*.22)}Q${S(at.x-size*.46,at.y+size*.36)} ${S(at.x,at.y+size*.78)}Q${S(at.x+size*.46,at.y+size*.36)} ${S(at.x+size*.35,at.y-size*.22)}Z`;
+     const cap=`M${S(at.x-size*.45,at.y)}Q${S(at.x,at.y-size*.61)} ${S(at.x+size*.45,at.y)}Q${S(at.x,at.y+size*.18)} ${S(at.x-size*.45,at.y)}Z`;
+     return M.shape(d,M.mix(pal.ochre,sp.bark,.36),`stroke="${pal.ink}" stroke-width=".56" data-pixel-organ="1"`)+
+       M.shape(cap,M.mix(sp.tint,sp.bark,.46),`stroke="${pal.ink}" stroke-width=".46"`)+
+       M.path(`M${S(at.x-size*.25,at.y-.8)}l${S(size*.5,.3)}`,pal.ochre,.45);
+   }
+   const color=type==='ivy'?'#283e55':pal.vermillion;
+   return M.circle(at.x,at.y,size*.49,color,`stroke="${pal.ink}" stroke-width=".55" data-pixel-organ="1"`)+
+     M.circle(at.x,at.y,size*.47,'url(#micro-grain)',`opacity=".50" data-pixel-organ="1"`)+
+     M.circle(at.x-size*.14,at.y-size*.16,size*.12,M.mix(color,pal.light,.38),'opacity=".54"');
+ }
+ function fruitCluster(sp,at,a,scale,pal,r,type,count){
+   let z='';const L=Math.max(6,scale);
+   for(let i=0;i<count;i++){
+     const dir=a+(i-(count-1)/2)*.43+r.between(-.07,.07),tip=pt(at,dir,L*(.58+r.between(.05,.28)));
+     z+=M.path(`M${S(at.x,at.y)}Q${S(at.x+(tip.x-at.x)*.42,at.y+(tip.y-at.y)*.36)} ${S(tip.x,tip.y)}`,
+        M.mix(sp.tint,sp.bark,.42),Math.max(.52,scale*.075));
+     z+=berry(sp,tip,scale*(type==='blackberry'?.79:type==='hip'?.65:type==='acorn'?.72:.47),pal,r,type);
+   }
+   return z;
+ }
+ function rawOrgan(sp,at,angle,season,pal,r,scale=8){
+   const name=sp.leaf,tip=pt(at,angle,scale*.65);
+   if(name==='holly')return ['winter','autumn'].includes(season)?fruitCluster(sp,tip,angle,scale,pal,r,'red',3):season==='spring'?blossom(tip,scale*.53,pal,r,name):'';
+   if(name==='hazel'){
+     if(season==='winter'||season==='spring'){
+       let z='';for(let i=0;i<2;i++){
+         const p=pt(tip,angle+(i?-.42:.32),scale*.40);
+         z+=M.path(`M${S(tip.x,tip.y)}Q${S(p.x,p.y+scale*.50)} ${S(p.x+scale*.24,p.y+scale*1.2)}`,sp.bark,.68);
+         for(let j=0;j<5;j++){
+           const q={x:p.x+scale*.14+Math.sin(j*1.2)*scale*.05,y:p.y+scale*.36+j*scale*.17};
+           z+=M.shape(`M${S(q.x-scale*.23,q.y-scale*.10)}Q${S(q.x,q.y-scale*.26)} ${S(q.x+scale*.23,q.y-scale*.10)}Q${S(q.x,q.y+scale*.20)} ${S(q.x-scale*.23,q.y-scale*.10)}Z`,pal.ochre,`stroke="${pal.ink}" stroke-width=".34"`);
+         }
+       }return z;
+     }
+     return season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'acorn',2):'';
+   }
+   if(name==='ivy')return season==='winter'?fruitCluster(sp,tip,angle,scale,pal,r,'ivy',4):'';
+   if(name==='hawthorn')return season==='spring'?blossom(tip,scale*1.12,pal,r,name):season==='autumn'||season==='winter'?fruitCluster(sp,tip,angle,scale,pal,r,'red',3):'';
+   if(name==='oak')return season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'acorn',2):'';
+   if(name==='dogrose')return season==='spring'||season==='summer'?blossom(tip,scale*2.15,pal,r,name):fruitCluster(sp,tip,angle,scale,pal,r,'hip',1);
+   if(name==='honeysuckle'){
+     if(season==='spring'||season==='summer'){
+       let z='';for(let i=0;i<4;i++){
+         const dir=angle+(i-1.5)*.23,base=pt(tip,dir,scale*.32),head=pt(base,dir,scale*.88);
+         const tube=`M${S(tip.x,tip.y)}Q${S(base.x+scale*.06,base.y-scale*.10)} ${S(head.x,head.y)}`;
+         const corolla=i%3===0 ? M.mix(pal.vermillion,pal.light,.34)
+           : i%3===1 ? M.mix(pal.ochre,pal.light,.26) : M.mix(pal.vermillion,pal.ochre,.30);
+         z+=M.path(tube,corolla,Math.max(1.2,scale*.22));
+         const lip1=pt(head,dir-.66,scale*.49),lip2=pt(head,dir+.61,scale*.47);
+         const sideA=pt(head,dir-.85,scale*.17),sideB=pt(head,dir+.84,scale*.17);
+         z+=M.shape(`M${S(head.x,head.y)}Q${S(sideA.x,sideA.y)} ${S(lip1.x,lip1.y)}Q${S(head.x+Math.cos(dir)*scale*.38,head.y+Math.sin(dir)*scale*.38)} ${S(head.x,head.y)}Z`,corolla,`stroke="${M.mix(pal.ink,corolla,.40)}" stroke-width=".35"`);
+         z+=M.shape(`M${S(head.x,head.y)}Q${S(sideB.x,sideB.y)} ${S(lip2.x,lip2.y)}Q${S(head.x+Math.cos(dir)*scale*.34,head.y+Math.sin(dir)*scale*.34)} ${S(head.x,head.y)}Z`,M.mix(corolla,pal.light,.25),`stroke="${M.mix(pal.ink,corolla,.47)}" stroke-width=".34"`);
+         for(let k=0;k<3;k++){const st=pt(head,dir+(k-1)*.24,scale*.69);z+=M.path(`M${S(head.x,head.y)}L${S(st.x,st.y)}`,pal.ochre,.42);z+=M.circle(st.x,st.y,.54,pal.vermillion);}
+       }return z;
+     }
+     return season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'red',2):'';
+   }
+   if(name==='bramble')return season==='spring'?blossom(tip,scale*1.55,pal,r,name):season==='summer'||season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'blackberry',1):'';
+   if(name==='fern')return season==='spring'?M.path(`M${S(at.x,at.y)}q${S(scale,-scale)} ${S(scale*.4,-scale*1.1)}`,sp.tint,1.2):'';
+   if(name==='acanthus'){
+     if(season==='winter')return '';
+     // Acanthus makes a bracted flower spike, not a rose-like open blossom.
+     // Two ranks of small hooded flowers attach to one shared rachis.
+     let z='',axis=angle-.05;
+     const spikeTip=pt(tip,axis,scale*1.48);
+     z+=M.path(`M${S(tip.x,tip.y)}Q${S(pt(tip,axis+.10,scale*.65).x,pt(tip,axis+.10,scale*.65).y)} ${S(spikeTip.x,spikeTip.y)}`,
+       M.mix(sp.tint,pal.ink,.28),Math.max(.75,scale*.078));
+     for(let i=0;i<5;i++){
+       const t=.16+i*.165,origin=pt(tip,axis,scale*1.48*t),side=i%2?1:-1;
+       const a=axis+side*1.09,end=pt(origin,a,scale*(.36+.13*(1-t)));
+       const p1=pt(origin,a-side*.47,scale*.20),p2=pt(origin,a+side*.43,scale*.19);
+       const d=`M${S(origin.x,origin.y)}Q${S(p1.x,p1.y)} ${S(end.x,end.y)}`+
+         `Q${S(p2.x,p2.y)} ${S(origin.x,origin.y)}Z`;
+       z+=M.shape(d,i%3===0?M.mix(sp.tint,pal.ochre,.23):sp.tint,
+         `stroke="${pal.ink}" stroke-width=".44"`);
+       if(season==='summer'){
+         const flower=pt(origin,a,scale*.31);
+         z+=M.shape(`M${S(flower.x,flower.y)}l${S(side*scale*.17,-scale*.10)} `+
+            `l${S(side*scale*.12,scale*.16)}Z`,
+           i%3===0?pal.lapis:M.mix(pal.light,pal.vermillion,.30),
+           `stroke="${pal.ink}" stroke-width=".32"`);
+       }
+     }
+     return z;
+   }
+   return '';
+ }
+ // Layered life-cycle states. Only the selected-season final is exported or
+ // shown when still; preview animation reveals a stalk-attached bud, then a
+ // blossom, and finally the season's organ (berries, hips, nut, catkin, etc.).
+ M.plantOrgan=(sp,at,angle,season,pal,r,scale=8,s={ornament:0})=>{
+   const snapshot=(stage)=>M.rng(M.childSeed((Math.round(at.x*111+at.y*331+scale*17)>>>0),stage));
+   const final=rawOrgan(sp,at,angle,season,pal,snapshot(43),scale);
+   if(!final)return '';
+   const tip=sum(at,Q(angle,scale*.7));
+   const base=M.path(`M${V(at.x,at.y)} Q${V(at.x+Math.cos(angle-.14)*scale*.44,at.y+Math.sin(angle-.14)*scale*.44)} ${V(tip.x,tip.y)}`,
+     M.wood(sp,pal,'new',snapshot(15)),Math.max(.55,scale*.095));
+   const budTip=sum(tip,Q(angle,scale*.32)),v=(p)=>V(p.x,p.y);
+   const bloom=rawOrgan(sp,at,angle,'spring',pal,snapshot(23),scale)||blossom(tip,scale*.79,pal,snapshot(25));
+   const bud=M.path(`M${V(tip.x,tip.y)}L${v(budTip)}`,M.mix(sp.tint,pal.ink,.3),.65)+
+     `<ellipse cx="${n(budTip.x)}" cy="${n(budTip.y)}" rx="${n(scale*.24)}" ry="${n(scale*.37)}" transform="rotate(${n(angle*180/Math.PI+90)} ${v(budTip)})" fill="${M.mix(sp.tint,pal.ochre,.28)}" stroke="${pal.ink}" stroke-width=".46"/>`;
+   // The life-cycle stages share a single attachment. During playback they
+   // change by geometry/scale (not crossfading); the permanent image only
+   // displays the appropriate final season's organ.
+   const finalStage = (season==='spring'||season==='summer') &&
+     ['dogrose','honeysuckle','acanthus'].includes(sp.leaf) ||
+     season==='spring' && ['holly','hawthorn','bramble'].includes(sp.leaf)
+       ? 'flower' :
+     ['fern','hazel'].includes(sp.leaf) && (season==='winter'||season==='spring')
+       ? 'catkin' : 'fruit';
+   const calyx=M.manuscriptCalyx ? M.manuscriptCalyx(sp,tip,angle,scale,pal,snapshot(77),s,season) : '';
+   return `<g class="growth-organ" data-life="${M.escape(sp.leaf)}" data-final-stage="${finalStage}" data-life-origin="${V(tip.x,tip.y)}">${base}`+
+     `<g class="life-bud">${bud}</g>`+
+     `<g class="life-bloom">${bloom}</g>`+
+     `<g class="life-final">${final}${calyx}</g></g>`;
+ };
+})(window.MS);
+</script>
+<script data-engine-module="ornament">
+/* Pass D: manuscript inflection grown from real plant anatomy.
+   Every accent is attached to a node, petiole, or stem. Neither detached
+   filigree nor a decorative border is added to the botanical illustration. */
+window.MS=window.MS||{};
+((M)=>{
+ 'use strict';
+ const V=M.vec,n=M.n,clamp=M.clamp;
+ const P=(x,y)=>({x,y});
+ const q=(at,a,d)=>P(at.x+Math.cos(a)*d,at.y+Math.sin(a)*d);
+ const bias={acanthus:1.13,ivy:1.04,honeysuckle:1.05,fern:.71,holly:.91,
+   oak:.77,hazel:.91,bramble:.96,hawthorn:.94,dogrose:1.01};
+ M.ornamentLevel=s=>clamp(Number(s?.ornament||0)/100,0,1);
+ M.ornamentInfluence=(sp,s)=>clamp(Math.pow(M.ornamentLevel(s),1.05)*(bias[sp?.leaf]||1),0,1);
+ // Botanically recognisable outlines are maintained even at 100 ornament.
+ M.ornamentWidth=(kind,t,w,amount,phase=0)=>{
+   const e=Math.sin(Math.PI*t)**.88;
+   const lobes=kind==='acanthus'?5:kind==='ivy'?3:kind==='oak'?4:2;
+   // Keep source anatomy authoritative: no repeated serration added by the slider.
+  return w*(1+.045*amount)*(1+.025*amount*e*Math.sin(2*Math.PI*lobes*t+phase));
+ };
+ M.ornamentPoint=(x,y,t,amount,len,phase)=>P(
+   x+amount*len*.023*Math.sin(Math.PI*t)*Math.sin(t*5.2+phase),
+   y+amount*len*.035*Math.sin(Math.PI*t)*Math.sin(t*4+phase*.4));
+
+ // Fine engraved midrib, paired foliate penwork and occasional shell-gold
+ // terminal points. All drawing is clipped to the leaf silhouette upstream.
+ M.ornamentLeafInterior=(sp,len,col,pal,r,s)=>{
+   const lev=M.ornamentInfluence(sp,s);
+   const future=s.palette==='future';
+   if(lev<.13||len<13)return '';
+   const contrast=M.mix(pal.ink,pal.ochre,.28+.35*lev);
+   const gold=M.mix(pal.ochre,pal.light,.09);
+   const cobalt=M.mix(pal.lapis,pal.ink,.12);
+   const cinnabar=M.mix(pal.vermillion,pal.ink,.10);
+   let z=M.path(`M${V(len*.11,0)}Q${V(len*.55,-len*.012)} ${V(len*.91,0)}`,
+      contrast,Math.max(.30,len*.020),`opacity="${n((future?.24:.15)+.48*lev)}"`);
+   const veins=lev>.35?(lev>.73?4:3):2;
+   for(const side of [-1,1])for(let k=0;k<veins;k++){
+     const t=.20+k*(.57/Math.max(veins-1,1)),x=len*t;
+     const rise=side*len*(.085+.042*lev)*Math.sin(Math.PI*t);
+     z+=M.path(`M${V(x,0)}Q${V(x+len*.043,rise*.45)} ${V(x+len*.105,rise)}`,
+        k%2?gold:contrast,Math.max(.25,len*.008),`opacity="${n((future?.18:.15)+.40*lev)}"`);
+   }
+   if(lev>.30){
+     const arches=future?3:2;
+     for(let i=0;i<arches;i++){
+       const x=len*(.28+i*.16),y=(i%2?-1:1)*len*(.040+.025*lev),w=len*.040,h=len*(.050+.025*lev);
+       z+=M.shape(`M${V(x-w,y)}Q${V(x,y-h)} ${V(x+w,y)}Q${V(x,y-h*.38)} ${V(x-w,y)}Z`,
+         i%2?cobalt:gold,`opacity="${n((future?.30:.18)+.26*lev)}"`);
+     }
+   }
+   if(lev>.48){
+     const count=lev>.89?4:2;
+     for(let k=0;k<count;k++){
+       const t=.29+k*.47/Math.max(1,count-1),x=len*t;
+       const side=k%2?-1:1,y=side*len*(.061+.017*(k%2))*Math.sin(Math.PI*t);
+       const rad=Math.max(.31,len*.014);
+       z+=M.circle(x,y,rad,gold,`stroke="${contrast}" stroke-width=".25" opacity="${n((future?.12:0)+(lev-.40)*.7)}"`);
+       if(future&&lev>.66){
+         z+=M.shape(`M${V(x-rad*1.7,y)}L${V(x,y-rad*1.9)}L${V(x+rad*1.7,y)}L${V(x,y+rad*1.9)}Z`, k%2?cinnabar:cobalt, `opacity="${n(.20+.22*lev)}"`);
+       }
+     }
+   }
+   if(future&&lev>.56){
+     const pxCount=2+(lev>.82?2:1);
+     for(let i=0;i<pxCount;i++){
+       const x=len*(.34+i*.08), y=(i%2?-1:1)*len*(.016+.01*i);
+       for(let j=0;j<3;j++){
+         const s2=len*.015;
+         z+=M.shape(`M${V(x+j*s2*1.2,y-s2)}L${V(x+j*s2*1.2+s2,y-s2)}L${V(x+j*s2*1.2+s2,y)}L${V(x+j*s2*1.2,y)}Z`, j%2?cinnabar:cobalt, `opacity="${n(.22+.22*lev)}"`);
+       }
+     }
+   }
+   return z;
+ };
+ // Chromatic under-painting follows a band of the leaf, not an isolated badge.
+ M.ornamentColorPatch=(sp,len,pal,r,s)=>{
+   const lev=M.ornamentInfluence(sp,s);
+   const future=s.palette==='future';
+   if(lev<(future?.18:.58)||len<15||!r.chance(future?(.34+.38*lev):((lev-.45)*.31)))return '';
+   const col=future?r.choose([pal.lapis,pal.vermillion,pal.ochre]):
+     M.mix(pal.green,r.choose([pal.ochre,pal.lapis,pal.vermillion]),r.between(.35,.58));
+   const start=len*r.between(.24,.50),length=len*r.between(.16,.29);
+   const side=r.sign(),h=side*len*r.between(.09,.15);
+   if(future){
+     const step=length*.16, y0=0;
+     const d=`M${V(start,y0)}L${V(start+step,y0)}L${V(start+step,h*.38)}L${V(start+step*2,h*.38)}L${V(start+step*2,h*.72)}L${V(start+step*3,h*.72)}L${V(start+step*4,h)}L${V(start+step*3.3,h*.38)}L${V(start+step*1.5,0)}Z`;
+     let z=M.shape(d,col,`opacity="${n(.56+.22*lev)}"`);
+     const accent=M.mix(col,pal.light,.28);
+     z+=M.shape(`M${V(start+step*.25,h*.08)}L${V(start+step*.95,h*.08)}L${V(start+step*.95,h*.22)}L${V(start+step*.25,h*.22)}Z`,accent,`opacity="${n(.28+.14*lev)}"`);
+     return z;
+   }
+   const d=`M${V(start,0)}Q${V(start+length*.38,h*.64)} ${V(start+length,h)}`+
+     `Q${V(start+length*.81,h*.26)} ${V(start+length*.18,0)}Z`;
+   return M.shape(d,col,`opacity="${n((lev-.3)*.24)}"`);
+ };
+ const stemCol=(pal)=>M.mix(pal.ink,pal.green,.56);
+ const path=(a,b,c)=>`M${V(a.x,a.y)}Q${V(b.x,b.y)} ${V(c.x,c.y)}`;
+ function sepalBud(at,angle,size,pal,r){
+   const tip=q(at,angle,size*1.03),base=q(at,angle,size*.30);
+   const left=q(base,angle-.58,size*.46),right=q(base,angle+.57,size*.41);
+   const leaf=`M${V(at.x,at.y)}Q${V(left.x,left.y)} ${V(tip.x,tip.y)}`+
+     `Q${V(right.x,right.y)} ${V(at.x,at.y)}Z`;
+   let z=M.path(path(at,q(at,angle+.09,size*.21),base),stemCol(pal),.65);
+   z+=M.shape(leaf,M.mix(pal.green,pal.ochre,.18),`stroke="${pal.ink}" stroke-width=".42"`);
+   z+=M.path(path(base,q(base,angle,size*.42),tip),pal.ochre,.40,'opacity=".65"');
+   return z;
+ }
+ function manuscriptFlower(at,angle,size,pal,r,lev){
+   const center=q(at,angle,size*.54),color=r.choose([pal.vermillion,pal.lapis,pal.ochre]);
+   const other=M.mix(color,pal.light,.51),count=r.choose([5,5,6]);
+   let z=M.path(path(at,q(at,angle+.10,size*.3),center),stemCol(pal),.72);
+   for(let i=0;i<count;i++){
+     const a=angle*.10+i*2*Math.PI/count+r.between(-.055,.055);
+     const near=q(center,a,size*.14),outer=q(center,a,size*r.between(.32,.44));
+     const l=q(near,a-.62,size*.16),rr=q(near,a+.62,size*.16);
+     const d=`M${V(center.x,center.y)}Q${V(l.x,l.y)} ${V(outer.x,outer.y)}`+
+         `Q${V(rr.x,rr.y)} ${V(center.x,center.y)}Z`;
+     z+=M.shape(d,i%3===0?other:color,`stroke="${pal.ink}" stroke-width=".43"`);
+     const mid=q(center,a,size*.31);
+     z+=M.path(`M${V(center.x,center.y)}L${V(mid.x,mid.y)}`,pal.ochre,.32,'opacity=".68"');
+   }
+   z+=M.circle(center.x,center.y,Math.max(.9,size*.095),pal.ochre,`stroke="${pal.ink}" stroke-width=".4"`);
+   return z;
+ }
+ // A rare foliate seed-case with two engraved seed chambers. At reading
+ // size it suggests a manuscript grotesque without inserting a loose face.
+ function foliateSeedCase(at,angle,size,pal,r){
+   const center=q(at,angle,size*.65);
+   const edge=q(center,angle,size*.54);
+   let z=M.path(path(at,q(at,angle+.10,size*.37),center),stemCol(pal),.79);
+   const tip=q(center,angle,size*.52),left=q(center,angle-1.6,size*.44),right=q(center,angle+1.6,size*.44);
+   const d=`M${V(center.x,center.y)}Q${V(left.x,left.y)} ${V(tip.x,tip.y)}`+
+     `Q${V(right.x,right.y)} ${V(center.x,center.y)}Z`;
+   z+=M.shape(d,M.mix(pal.green,pal.lapis,.36),`stroke="${pal.ink}" stroke-width=".58"`);
+   for(const side of [-1,1]){
+     const dot=q(center,angle+side*.57,size*.22);
+     z+=M.circle(dot.x,dot.y,Math.max(.49,size*.06),pal.ochre,
+         `stroke="${pal.ink}" stroke-width=".25"`);
+   }
+   z+=M.path(path(q(center,angle+Math.PI/2,size*.15),q(center,angle,size*.32),q(center,angle-Math.PI/2,size*.15)),
+        pal.ochre,.42,'opacity=".7"');
+   return z;
+ }
+ function seedhead(at,angle,size,pal,r){
+   const center=q(at,angle,size*.52);
+   let z=M.path(path(at,q(at,angle+.09,size*.31),center),stemCol(pal),.70);
+   // Three to five attached seed capsules, with short calyces and dry stipple.
+   const count=r.int(3,5);
+   for(let i=0;i<count;i++){
+     const a=angle+(i-(count-1)/2)*.31,tip=q(center,a,size*.27);
+     z+=M.path(`M${V(center.x,center.y)}L${V(tip.x,tip.y)}`,stemCol(pal),.43);
+     z+=M.circle(tip.x,tip.y,size*.088,pal.ochre,`stroke="${pal.ink}" stroke-width=".40"`);
+     z+=M.circle(tip.x-size*.023,tip.y-size*.016,size*.024,pal.ink,'opacity=".5"');
+   }
+   return z;
+ }
+ // A fixed budget of rare ornaments per entire specimen. No uncontrolled
+ // repeated curls, floating symbol fields or bloom clusters in winter.
+ function permit(plan,at,size){
+   if(!plan)return true;
+   plan.manuscriptMarks=plan.manuscriptMarks||[];
+   const maximum=plan.stems?.length>2?5:3;
+   if(plan.manuscriptMarks.length>=maximum)return false;
+   if(!M.inBounds(at,plan.bounds,Math.max(14,size)))return false;
+   if(plan.manuscriptMarks.some(p=>M.distance(p,at)<size*3.3))return false;
+   plan.manuscriptMarks.push(at);
+   return true;
+ }
+ function motif(sp,at,angle,size,pal,r,season,lev,layout='single'){
+   const woody=['oak','hazel','holly','hawthorn'].includes(sp.leaf);
+   if(season==='winter'||(woody&&season==='autumn'))return seedhead(at,angle,size,pal,r);
+   // The composition selects a restrained family of terminal marks:
+   // foliate buds on upright forms, coronals on radiating forms, and more
+   // unusual capsules along winding manuscript growth.
+   if(lev>.83 && ['acanthus','ivy','honeysuckle'].includes(sp.leaf) &&
+       ['meander','diagonal','crescent'].includes(layout) && r.chance(.32))
+     return foliateSeedCase(at,angle,size,pal,r);
+   const flowerLikelihood=['radiating','cluster'].includes(layout)?.80:
+     layout==='single'?.38:.63;
+   if(lev>.72 && r.chance(flowerLikelihood))return manuscriptFlower(at,angle,size,pal,r,lev);
+   return sepalBud(at,angle,size,pal,r);
+ }
+ M.ornamentJunction=(sp,at,angle,size,pal,r,s,plan,role='joint')=>{
+   const lev=M.ornamentInfluence(sp,s);
+   if(lev<.52||!r.chance((lev-.44)*.38))return '';
+   const length=clamp(size*r.between(.84,1.19),7,17);
+   const direction=angle+r.between(-.17,.17);
+   const center=q(at,direction,length*.48);
+   if(!permit(plan,center,length))return '';
+   return `<g class="growth-manuscript" data-manuscript="junction">`+
+     motif(sp,at,direction,length,pal,r,s.season,lev,plan?.layout)+'</g>';
+ };
+ M.ornamentTerminal=(sp,at,angle,size,pal,r,s,force=false,plan=null)=>{
+   const lev=M.ornamentInfluence(sp,s);
+   if(lev<.66||!r.chance((lev-.55)*(force?.35:.22)))return '';
+   const length=clamp(size*r.between(.72,.96),5,13),center=q(at,angle,length*.55);
+   if(!permit(plan,center,length))return '';
+   return `<g class="growth-manuscript" data-manuscript="terminal">`+
+     motif(sp,at,angle,length,pal,r,s.season,lev,plan?.layout)+'</g>';
+ };
+ // An especially high transformation subtly engraves bracts at the base of
+ // an existing flowering terminal. One botanical connection, not an icon.
+ M.manuscriptCalyx=(sp,at,angle,size,pal,r,s,season)=>{
+   const lev=M.ornamentInfluence(sp,s);
+   if(lev<.38)return '';
+   const green=M.mix(sp.tint,pal.ochre,.28);
+   let z='';
+   for(const side of [-1,1]){
+     const a=angle+side*(.67+.19*lev),tip=q(at,a,size*(.25+.15*lev));
+     const c=q(at,a+side*.21,size*.16);
+     const d=`M${V(at.x,at.y)}Q${V(c.x,c.y)} ${V(tip.x,tip.y)}`+
+        `Q${V(q(at,a-side*.29,size*.16).x,q(at,a-side*.29,size*.16).y)} ${V(at.x,at.y)}Z`;
+     z+=M.shape(d,green,`stroke="${pal.ink}" stroke-width=".32"`);
+   }
+   return z;
+ };
+})(window.MS);
+
+</script>
+<script data-engine-module="botany">
+/* Pass 1 visual anatomy: species-specific woody gesture, phyllotaxis and organs.
+   Keeps all existing geometry, seed, export and growth interactions. */
+window.MS=window.MS||{};
+((M)=>{
+ 'use strict';
+ const P=(x,y)=>({x,y}), add=(a,b,k=1)=>P(a.x+b.x*k,a.y+b.y*k), polar=(a,d)=>P(Math.cos(a)*d,Math.sin(a)*d), V=p=>M.vec(p.x,p.y), n=M.n;
+ const angle=p=>Math.atan2(p.y,p.x), norm=p=>M.normal(p), clamp=M.clamp;
+ function allowed(p,plan,margin=0){return M.inBounds(p,plan.bounds,margin);}
+ function widthAt(w,t,tip=.18){
+   t=clamp(t,0,1);
+   const taper=Math.pow(1-t,.82)*(1-.13*Math.sin(Math.PI*t));
+   const shoulder=.075*w*Math.exp(-Math.pow((t-.115)/.105,2));
+   return tip+(w-tip)*taper+shoulder;
+ }
+ function wavy(samples,r,motion,habit){
+   // Curves should feel hand-led rather than mathematically clean. A slow body
+   // sway carries the plant, while a finer hand tremor only appears away from
+   // the root. This keeps the silhouette authored instead of clip-art smooth.
+   const amp=Math.max(0,motion)*(habit==='heavy'?.42:habit==='climbing'?.66:habit==='twining'?.62:.56);
+   const phaseA=r.between(-Math.PI,Math.PI),phaseB=r.between(-Math.PI,Math.PI),phaseC=r.between(-Math.PI,Math.PI);
+   const hand=r.between(.18,.42),lean=r.between(-.22,.22);
+   const out=samples.map(v=>{
+     const normal=norm(v.tng),t=v.t;
+     const body=Math.pow(Math.sin(Math.PI*t),1.25);
+     const rootHold=Math.pow(Math.min(1,t/.14),1.12);
+     const tipFlex=.82+.18*Math.sin(Math.PI*t*.95+.4);
+     const macro=.74*Math.sin(Math.PI*t*1.16+phaseA)+.24*Math.sin(Math.PI*t*2.18-phaseB*.45);
+     const micro=.46*Math.sin(t*7.6+phaseC)+.21*Math.sin(t*16.2+phaseA*.6);
+     const delta=amp*body*(macro*tipFlex + micro*hand)*rootHold;
+     const drift=amp*.10*body*(t-.5)*lean;
+     return {...v,x:v.x+normal.x*delta+v.tng.x*drift,y:v.y+normal.y*delta+v.tng.y*drift};
+   });
+   for(let i=0;i<out.length;i++){
+     const a=out[Math.max(0,i-2)],b=out[Math.min(out.length-1,i+2)];
+     out[i].tng=M.unit(P(b.x-a.x,b.y-a.y));
+   }
+   return out;
+ }
+ function silhouette(points,base,tip=.12,rooted=false){
+   const left=[],right=[],seed=base*.711;
+   for(const p of points){
+     const t=clamp(p.t,0,1),v=norm(p.tng);
+     const joint=rooted?1:(.64+.36*Math.min(1,t/.085));
+     const width=widthAt(base,t,tip)*joint;
+     // Different ink edges, shared centerline. Gentle fluctuations are not
+     // block noise and become smaller at the branch end.
+     const slow=Math.sin(t*9.4+seed)*.035+Math.sin(t*19.2+seed*1.31)*.016;
+     const thin=Math.sin(t*29.4+seed*2.1)*.006;
+     left.push(add(p,v,width*.5*(1+slow+thin)));
+     right.push(add(p,v,-width*.5*(1-slow*.55+thin*.6)));
+   }
+   // Each outline is interpolated independently. A single closed spline
+   // across both margins used to bulge at terminal joins.
+   const trace=(arr,starting=true)=>{
+     let d=starting?`M${V(arr[0])}`:'';
+     for(let i=0;i<arr.length-1;i++){
+       const p0=arr[Math.max(0,i-1)],a=arr[i],b=arr[i+1],p3=arr[Math.min(arr.length-1,i+2)];
+       d+=`C${V(P(a.x+(b.x-p0.x)/6,a.y+(b.y-p0.y)/6))} `+
+         `${V(P(b.x-(p3.x-a.x)/6,b.y-(p3.y-a.y)/6))} ${V(b)}`;
+     }
+     return d;
+   };
+   const rev=[...right].reverse();
+   return trace(left)+`L${V(rev[0])}`+trace(rev,false)+`Z`;
+ }
+ function spine(a,b,c,d,count,r,motion,habit){return wavy(M.wave(a,b,c,d,count),r,motion,habit);}
+ function guidedSpine(stem,sp,r,motion,s){
+   const raw=stem.naturalPoints||M.wave(stem.a,stem.b,stem.c,stem.d,100);
+   if(stem.userDrawn)return raw;
+   const guide=stem.guidePoints,rawConform=clamp(Number(s.conform||0)/100,0,1);
+   // Historically, dragging a rail toward 50 warped entire stems into hard
+   // loops. Even at 100 the hidden rail is a compositional influence, not a
+   // mechanical substitute for the plant's own growing direction.
+   const conform=Math.pow(rawConform,1.6)*(sp.habit==='twining'||sp.habit==='climbing'?.58:.43);
+   if(!guide||conform<=0)return wavy(raw,r,motion*.48,sp.habit);
+   // 100% means the entire axis lies on its guide. Partial values interpolate
+   // the entire curve rather than attracting isolated vertices to nearest
+   // segments (which caused sharp corners and unpredictable changes).
+   const backwards=M.distance(raw[0],guide[guide.length-1])+M.distance(raw[raw.length-1],guide[0])
+     < M.distance(raw[0],guide[0])+M.distance(raw[raw.length-1],guide[guide.length-1]);
+   const guided=raw.map((p,i)=>{
+     const u=i/(raw.length-1)*(guide.length-1),j=Math.floor(u),fraction=u-j;
+     const lo=guide[backwards?guide.length-1-j:j];
+     const hi=guide[backwards?Math.max(0,guide.length-2-j):Math.min(guide.length-1,j+1)];
+     const target=M.pt(lo,hi,fraction);
+     // Intermediate conformity preserves real root attachment and the plant's
+     // outward growing tip. Full conformity alone traces the complete guide.
+     const span=i/(raw.length-1);
+     const pull=conform>=.999?1:conform*Math.pow(Math.sin(Math.PI*span),.72);
+     return {...p,x:p.x*(1-pull)+target.x*pull,
+       y:p.y*(1-pull)+target.y*pull};
+   });
+   for(let i=0;i<guided.length;i++){
+     const a=guided[Math.max(0,i-2)],b=guided[Math.min(guided.length-1,i+2)];
+     guided[i].tng=M.unit(P(b.x-a.x,b.y-a.y));
+   }
+   return conform>=.999 ? guided : wavy(guided,r,motion*.40*(1-conform),sp.habit);
+ }
+ function stemInk(points,w,color,pal,r,s,major=false,sp=null){
+   const d=silhouette(points,w,major?.09:.16,major);
+   const trace=major?`stem-${r.int(1000,999999999)}`:`shoot-${r.int(1000,999999999)}`;
+   const xs=points.map(p=>p.x),ys=points.map(p=>p.y),pad=w+8;
+   const bounds={x:Math.min(...xs)-pad,y:Math.min(...ys)-pad,w:Math.max(...xs)-Math.min(...xs)+2*pad,h:Math.max(...ys)-Math.min(...ys)+2*pad};
+   let out=M.painted(trace,d,color,bounds,s,r,{stroke:major?.65:.45,lightweight:true,bark:true});
+   // Pass 2: bark has its own ink, not the same grain as leaves. Interrupted
+   // lengthwise mineral deposits follow the actual wood axis and are clipped
+   // to the illustrated trunk so they never float into the paper.
+   if(w>1.5){
+     const uid=`wood-grain-${trace}`;
+     const salt=(Number(trace.match(/\d+/)?.[0])||7181)^0x6f3a71;
+     const grainR=M.rng(M.childSeed(Number(s.seed)>>>0||1,salt));
+     let strokes='';
+     for(let i=5;i<points.length-3;i+=major?5:7){
+       const pt=points[i],t=pt.t,tan=pt.tng,perp=norm(tan);
+       const current=Math.max(.3,widthAt(w,t,.15));
+       const offset=grainR.between(-.32,.32)*current;
+       const a=add(pt,perp,offset),len=Math.min(8,current*grainR.between(.8,1.8));
+       const b=add(a,tan,len),c=add(b,perp,grainR.between(-.33,.33));
+       const shade=grainR.chance(.53)?M.mix(color,pal.ink,.48):M.mix(color,pal.light,.43);
+       strokes+=M.path(`M${V(a)}Q${V(b)} ${V(c)}`,shade,
+         Math.max(.22,Math.min(.69,current*.16)),`opacity="${n(grainR.between(.22,.50))}"`);
+     }
+     if(strokes)out+=`<defs><clipPath id="${uid}"><path d="${d}"/></clipPath></defs><g clip-path="url(#${uid})">${strokes}</g>`;
+   }
+   if(major){
+     const stroke=points.filter((_,i)=>i%3===0).map((p,i)=>{
+       const off=norm(p.tng),vv=add(p,off,w*.09);return `${i?'L':'M'}${V(vv)}`;
+     }).join('');
+     out+=M.path(stroke,M.mix(color,pal.light,.27),.52,'opacity=".43"');
+     // Bark is illustrated *on the plant*: interrupted fissures on oak,
+     // fine lenticels on hazel, sparse rings on ivy. No random floating marks.
+     if(sp){
+       const step=sp.leaf==='oak'?6:sp.leaf==='hazel'?9:sp.leaf==='holly'?12:15;
+       for(let i=step;i<points.length-step;i+=step){
+         const p=points[i],t=p.t,normal=norm(p.tng),radius=widthAt(w,t,.09)*.39;
+         const offset=r.between(-.28,.28)*radius;
+         const start=add(p,normal,offset),direction=r.sign();
+         const q=add(start,normal,direction*r.between(1.5,Math.max(2,radius*.62)));
+         const col=M.mix(color,r.chance(.72)?pal.ink:pal.light,r.between(.22,.4));
+         out+=M.path(`M${V(start)}Q${V(add(start,p.tng,r.between(1,3)))} ${V(q)}`,
+           col,sp.leaf==='oak'?.76:.43,`opacity="${n(r.between(.26,.55))}"`);
+       }
+     }
+   } else if(w>2.3){
+     // A single interrupted highlight helps the lateral taper read as wood
+     // instead of a mathematically perfect filled ribbon.
+     const stripe=points.filter((_,i)=>i%3===0).slice(2,-2).map((p,i)=>{
+       const q=add(p,norm(p.tng),widthAt(w,p.t,.16)*.13);return `${i?'L':'M'}${V(q)}`;
+     }).join('');
+     if(stripe)out+=M.path(stripe,M.mix(color,pal.light,.28),.38,'opacity=".31"');
+   }
+   return out;
+ }
+ function anchored(point,side,width,advance=.8){return add(add(point,norm(point.tng),side*width*.29),point.tng,advance);}
+ function petioleLeaf(p,a,size,sp,season,pal,r,plan,s,t=.5){
+   // Keep real petiole attachment and reduce the finished blade size BEFORE
+   // collision testing. Previously a giant compound leaf was checked as a
+   // tiny circle, which produced impossible stacks of foliage.
+   const max={holly:39,hazel:44,ivy:40,hawthorn:32,oak:48,dogrose:39,
+      honeysuckle:37,bramble:39,acanthus:46,fern:31}[sp.leaf]||36;
+   size=clamp(size*1.43,16,max*1.26)*r.between(.83,1.17);
+   const variants=[
+     [0,1,0],[.24,.94,0],[-.25,.91,0],[.39,.81,0],[-.40,.80,0],
+     [.13,.78,3],[-.17,.76,-3],[.48,.67,0],[-.50,.67,0]
+   ];
+   for(const [rotation,scale,shift] of variants){
+     const aa=a+rotation,sz=size*scale;
+     const at=add(p,polar(a+Math.PI/2,shift));
+     const center=add(at,polar(aa,sz*.60+Math.min(8,sz*.12)));
+     const far=add(at,polar(aa,sz*1.15));
+     if(!allowed(center,plan,13)||!allowed(far,plan,9))continue;
+     const broad={holly:.59,hazel:.57,ivy:.62,hawthorn:.58,oak:.60,
+         dogrose:.64,honeysuckle:.56,bramble:.64,acanthus:.61,fern:.45};
+     const footprint=sz*(broad[sp.leaf]||.63);
+     if(plan.spatial&&!plan.spatial.accept(center,footprint,{
+         group:plan.activeShoot||plan.activeStem||'spray',density:s.foliage||50,
+         anchor:p,angle:aa}))continue;
+     const leaf=M.plantLeaf(sp,at,aa,sz,season,pal,r,s);
+     if(!leaf)continue;
+     // The petiole connects to the structural branch; avoid ghost connectors
+     // extending across surrounding leaves.
+     const stalk=M.distance(p,at)>.7 ? M.path(`M${V(p)}L${V(at)}`,
+         M.wood(sp,pal,'new',r),.65):'';
+     return `<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(aa)}" data-grow-t="${n(t)}">${stalk}${leaf}</g>`;
+   }
+   return '';
+ }
+ // Reproductive organs are deliberate accent marks. Keep separate berry
+ // and flower heads readable rather than allowing adjacent terminals to stack.
+ function accentOrgan(sp,p,a,season,pal,r,scale,plan,s){
+   const result=M.plantOrgan(sp,p,a,season,pal,r,scale,s);
+   if(!result)return '';
+   plan.accents=plan.accents||[];
+   const radius=scale*(['dogrose','honeysuckle','bramble'].includes(sp.leaf)?1.9:1.18);
+   const tip=add(p,polar(a,scale*.8));
+   if(plan.accents.some(old=>M.distance(old.p,tip)<old.radius+radius+2))return '';
+   if(!allowed(tip,plan,Math.min(12,scale*.75)))return '';
+   plan.accents.push({p:tip,radius});
+   return result;
+ }
+ function twigDetails(samples,sp,season,pal,r,plan,s){
+   const kind=sp.leaf,tip=samples[samples.length-1],a=angle(tip.tng);
+   let out='';
+   const ts=sp.habit==='fronds'?[.22,.61]:sp.habit==='climbing'?[.25,.48,.70,.90]:[.26,.53,.79];
+   const count=s.foliage<28?2:ts.length;
+   for(let i=0;i<count;i++){
+     const p=samples[Math.round(ts[i]* (samples.length-1))],side=i%2?1:-1;
+     const phi=angle(p.tng)+side*(kind==='honeysuckle'?.86:kind==='fern'?.88:1.0);
+     const len=r.between(kind==='holly'?17:15,kind==='oak'?32:27)*sp.scale*(sp.leafScale||1);
+     out+=petioleLeaf(anchored(p,side,1.3,1),phi,len,sp,season,pal,r,plan,s);
+     if(kind==='honeysuckle')out+=petioleLeaf(anchored(p,-side,1.3,1),angle(p.tng)-side*.90,len*.95,sp,season,pal,r,plan,s);
+   }
+   if(r.chance(.28) || ['bramble','hawthorn'].includes(kind)){
+     const q=samples[Math.round(samples.length*.56)],p=anchored(q,1,.7,0);
+     if(['bramble','hawthorn','dogrose'].includes(kind))out+=M.path(`M${V(p)}l${M.vec(r.between(-4,4),-r.between(3,7))}`,M.wood(sp,pal,'mature',r),1.1);
+   }
+   if(r.chance(.62))out+=accentOrgan(sp,tip,a,season,pal,r,r.between(13,20),plan,s);
+   // Terminal ornament is a continuation of the twig, never free-floating.
+
+   return out;
+ }
+ function shoot(start,tng,side,len,sp,season,pal,r,plan,s,sub=false){
+   if(len<16)return '';
+   const theta=angle(tng),turn=(sp.habit==='upright'?.68:sp.habit==='arching'?1.25:sp.habit==='twining'?1.38:sp.habit==='heavy'?.82:.98)*(1-M.clamp(s.conform||0,0,100)*.0015);
+   const outAngle=theta+side*r.between(turn*.7,turn*1.3);
+   let end=add(start,polar(outAngle,len));
+   // Keep new terminal sprays from collapsing into the same visual knot.
+   // Seeded and structural, not a post-hoc random deletion of branches.
+   plan.shootTips=plan.shootTips||[];
+   const near=plan.shootTips.some(q=>M.distance(q,end)<Math.min(36,12+len*.24));
+   if(near){
+     const redirect=theta-side*r.between(turn*.65,turn*.95);
+     const alt=add(start,polar(redirect,len*.78));
+     if(allowed(alt,plan,18)&&!plan.shootTips.some(q=>M.distance(q,alt)<Math.min(34,10+len*.2)))end=alt;
+   }
+   const attracted=M.attractShoot?M.attractShoot(start,end,plan.construction,s.conform||0,sp.habit):end;
+   if(allowed(attracted,plan,7))end=attracted;
+   if(!allowed(end,plan,7))return '';
+   plan.shootTips.push(end);
+   // A new shoot begins tangent to the parent, then gradually leans into
+   // its own direction. This replaces the sharp wedge-shaped T junction.
+   const parentDirection=norm(tng),sideVec=polar(theta+side*Math.PI/2,1);
+   const b=add(add(start,tng,len*.24),sideVec,len*.025);
+   const c=add(end,polar(outAngle+Math.PI-side*.28,len*.34));
+   const points=spine(start,b,c,end,30,r,Math.min(8,len*.085)*(s.distortion/100+.42),sp.habit);
+   const wood=M.wood(sp,pal,sub?'new':'mature',r),base=sub?r.between(1.0,1.7):r.between(2.1,4.4);
+   const prevShoot=plan.activeShoot;plan.activeShoot='spray-'+r.int(10000,99999999);
+   let woodArt=stemInk(points,base,wood,pal,r,s,false,sp);
+   plan.spatial?.addWood?.(points,base,plan.activeStem);
+   let foliageArt='',organArt='';
+   // Alternate or opposite leaves reflect species, not an evenly spaced
+   // computational ladder. Variation happens at the node, not by rotating a
+   // detached sprite away from its own stalk.
+   const kind=sp.leaf;
+   const opposite=kind==='honeysuckle';
+   const evergreenCluster=kind==='holly'||kind==='ivy';
+   const leafFactor={holly:.95,ivy:1.12,hazel:.76,hawthorn:1.15,
+     oak:.73,dogrose:.85,bramble:.84,honeysuckle:.92,acanthus:.64}[kind]||1;
+   const winterLeaf=season==='winter'&&!sp.evergreen;
+   const seasonalBoost=winterLeaf?.67:season==='spring'?.86:1;
+   const leafCount=clamp(Math.round((sub?2.6:4.3)*sp.frequency*leafFactor*
+     (.64+s.foliage/120)*seasonalBoost*r.between(.91,1.12)),2,sub?5:9);
+   const lengthCurve=kind==='ivy'?.22:kind==='hazel'?.35:kind==='dogrose'?.32:.26;
+   for(let i=0;i<leafCount;i++){
+     const rhythm=(i+.46)/leafCount;
+     const spread=kind==='holly'?.72:kind==='ivy'?.82:kind==='oak'?.67:.78;
+     const t=clamp(.12+rhythm*spread+r.between(-.013,.013),.11,.94);
+     const p=points[Math.round(t*30)],sign=i%2?1:-1;
+     const a=angle(p.tng)+sign*r.between(.76,1.07)*sp.angle;
+     const size=len*(sub?r.between(.19,.35):r.between(.23,.41))*sp.scale*(sp.leafScale||1)*(1-lengthCurve*t);
+     const attachment=add(p,norm(p.tng),sign*widthAt(base,t,.18)*.12);
+     foliageArt+=petioleLeaf(attachment,a,size,sp,season,pal,r,plan,s,t);
+     if(opposite || (evergreenCluster&&r.chance(kind==='holly'?.31:.15))){
+       const aa=angle(p.tng)-sign*r.between(.75,.95)*sp.angle;
+       foliageArt+=petioleLeaf(anchored(p,-sign,widthAt(base,t,.18),.6),aa,size*r.between(.79,.95),sp,season,pal,r,plan,s,t);
+     }
+   }
+   if(sp.habit==='climbing' && r.chance(.46)){
+     const p=points[Math.round(r.between(.3,.66)*30)];
+     for(const side of [-1,1])woodArt+=M.path(`M${V(p)}q${M.vec(side*4,2)} ${M.vec(side*8,6)}`,M.wood(sp,pal,'new',r),.65,'opacity=".74"');
+   }
+   if(['bramble','hawthorn','dogrose'].includes(sp.leaf)){
+     for(let i=0;i<2;i++){
+       const p=points[Math.round((.27+i*.33)*30)],dir=angle(p.tng)+ (i%2?1:-1)*1.55;
+       woodArt+=M.path(`M${V(p)}l${M.vec(Math.cos(dir)*r.between(3,6),Math.sin(dir)*r.between(3,6))}`,wood,.72);
+     }
+   }
+   if(!sub && sp.habit!=='fronds' && r.chance((sp.tertiary||.68)*(.12+s.foliage/100))){
+     const j=Math.round(r.between(.43,.65)*30),p=points[j],sign=r.sign();
+     organArt+=shoot(anchored(p,sign,widthAt(base,p.t,.25)),p.tng,sign,len*r.between(.32,.55)*sp.twigs,sp,season,pal,r,plan,s,true);
+   }
+   if(sp.habit==='fronds' || r.chance(.12))organArt+=twigDetails(points,sp,season,pal,r,plan,s);
+   else if(r.chance(season==='winter'?.92:season==='spring'?.84:.76))organArt+=accentOrgan(sp,points[30],angle(points[30].tng),season,pal,r,r.between(18,27),plan,s);
+   // Add restrained foliate ornament at true branch nodes, not loose symbols.
+   if(M.ornamentJunction && !sub){
+     const i=Math.round(r.between(.35,.72)*30),p=points[i],a=angle(p.tng)+r.sign()*r.between(.74,1.18);
+     organArt+=M.ornamentJunction(sp,p,a,r.between(9,17),pal,r,s,plan,'joint');
+   }
+   if(M.ornamentTerminal){
+     const tipPoint=points[30],tipAngle=angle(points[30].tng);
+     organArt+=M.ornamentTerminal(sp,tipPoint,tipAngle,Math.max(6,len*.12),pal,r,s,sub&&r.chance(.22),plan);
+   }
+
+   // Decorative split-tip hooks removed: they looked disconnected.
+   plan.activeShoot=prevShoot;
+   const axis=M.strokePath(points);
+   const swayPhase=-r.between(0,14),swayDuration=r.between(15,25);
+   // Localize coordinates at the *real* shoot origin before applying movement.
+   // All offspring, petioles and organs follow the parent; no disconnected wiggle.
+   return `<g class="growth-shoot" data-root-t="${n(s._branchT??.4)}" data-growpath="${axis}">`+
+       `<g transform="translate(${V(start)})">`+
+       `<g class="shoot-sway" style="--shoot-delay:${n(swayPhase)}s;--shoot-duration:${n(swayDuration)}s;--shoot-angle-a:${n(r.between(.10,.22))}deg;--shoot-angle-b:${n(r.between(.18,.34))}deg;--shoot-drift:${n(r.between(.08,.26))}px">`+
+       `<g transform="translate(${n(-start.x)} ${n(-start.y)})">`+
+       `<g class="shoot-wood" data-grow-width="${n(Math.max(4,base*3.1))}">${woodArt}</g>`+
+       `<g class="shoot-foliage">${foliageArt}</g>`+
+       `<g class="shoot-details">${organArt}</g></g></g></g></g>`;
+ }
+ function fernStem(points,sp,season,pal,r,plan,s){
+   // A frond is one complete plant organ, not a woody cane carrying small
+   // copies of another frond. All pinnae attach to a green rachis and narrow
+   // progressively toward the tip. Fronds share a rhizome/crown.
+   const amount=clamp(s.foliage/100,0,1),detail=clamp(s.detail/100,0,1);
+   const frame=points.filter((_,i)=>i%2===0);
+   const midrib=frame.map((p,i)=>(i?'L':'M')+V(p)).join('');
+   let wood=M.path(midrib,M.mix(sp.tint,pal.ink,.30),1.65,'opacity=".95"'),foliage='';
+   const pairs=Math.round(13+detail*8+amount*5);
+   for(let i=1;i<=pairs;i++){
+     const t=.065+i*.88/(pairs+1),p=points[Math.round(t*100)];
+     const span=47*(.43+.8*amount)*Math.sin(Math.PI*t)**.69*(1-.30*t);
+     for(const side of [-1,1]){
+       // Deciduous fern fronds wither through autumn and retain only a few
+       // ragged pinnules in winter; spring fronds remain smaller and tender.
+       if(season==='winter' && r.chance(.92))continue;
+       const normal=norm(p.tng),ang=angle(p.tng)+side*(1.00+.16*t),len=span*r.between(.82,1.15)*(season==='spring'?.76:1);
+       const at=add(p,normal,side*1.2);
+       const spA=P(Math.cos(ang),Math.sin(ang)),end=add(at,spA,len);
+       if(!allowed(end,plan,-8))continue;
+       const color=M.leafPigment(sp,season,pal,r,s);
+       // Each pinna has a thin rachis and pairs of tapering pinnules.
+       // Lightweight colored shapes avoid thousands of individual SVG masks.
+       let pinnules=M.path(`M0 0Q${M.vec(len*.43,-len*.08)} ${M.vec(len,0)}`,
+         M.mix(sp.tint,pal.ink,.34),Math.max(.35,len*.037));
+       const smallPairs=Math.max(3,Math.min(6,Math.round(len/6)));
+       for(let k=0;k<smallPairs;k++){
+         const u=.12+(k+.27)*.76/smallPairs,xx=len*u,
+           length=len*.23*Math.pow(Math.sin(Math.PI*u),.8)*(1-.20*u);
+         for(const sign of [-1,1]){
+           const endx=xx+length*.73,endy=sign*length*.76;
+           const d=`M${M.vec(xx,0)}Q${M.vec(xx+length*.11,endy*.92)} ${M.vec(endx,endy)}`+
+             `Q${M.vec(xx+length*.81,endy*.46)} ${M.vec(xx,0)}Z`;
+           pinnules+=M.shape(d,color,`stroke="${pal.ink}" stroke-width="${n(Math.max(.25,len*.016))}"`);
+         }
+       }
+       foliage+=`<g class="growth-leaf" data-attachment="${V(p)}" data-leaf-angle="${n(ang)}" data-grow-t="${n(t)}"><g transform="translate(${V(at)}) rotate(${n(ang*180/Math.PI)})">${pinnules}`;
+       foliage+='</g></g>';
+     }
+   }
+   if(season==='spring'&&r.chance(.34))foliage+=accentOrgan(sp,points[94],angle(points[94].tng),season,pal,r,9,plan,s);
+   return {wood,foliage};
+ }
+ function stemSpecies(s,r,index){
+   if(s.species==='hybrid')return M.chooseSpecies('acanthus',r); // main stem is acanthus; named hybrids chosen per shoots
+   return M.chooseSpecies(s.species,r);
+ }
+ M.botanical=(plan,s,r)=>{
+   if(s.foliage<=0)return '';
+   const pal=s.pal,season=s.season||'summer',fol=s.foliage/100;
+   const sections=[];
+   plan.spatial=M.makeSpatialField?M.makeSpatialField():null;
+   const stems=plan.stems.slice(0,fol<.09?1:plan.stems.length);
+   // Mixed means a coherent folio, not a lottery of unrelated silhouettes.
+   // Families retain variation through leaf shape, seasonal organs and seed.
+   const illustratedFamilies=[
+     ['dogrose','hawthorn'],['bramble','dogrose'],['dogrose','hazel'],
+     ['honeysuckle','ivy'],['honeysuckle','dogrose'],['bramble','ivy'],
+     ['holly','ivy'],['hazel','hawthorn'],['oak','hazel']
+   ];
+   const seedProfile=plan.architectureSpecies || r.choose(['dogrose','hawthorn','hazel','ivy','holly']);
+   const folio=illustratedFamilies.find(f=>f.includes(seedProfile)) || r.choose(illustratedFamilies);
+   for(let k=0;k<stems.length;k++){
+     const stem=stems[k],sp=(s.species==='random'
+       ? M.chooseSpecies(k===0?seedProfile:folio[k%folio.length],r)
+       : stemSpecies(s,r,k));
+     const motion=(.44+clamp(s.distortion/100,0,1)*1.25)*r.between(6,13);
+     plan.activeStem='stem-'+stem.id;
+     const points=guidedSpine(stem,sp,r,motion,s);
+     stem.drawnPoints=points;
+     if(sp.habit==='fronds'){
+       const fern=fernStem(points,sp,season,pal,r,plan,s);
+       sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}"><g class="growth-primary" data-grow-width="10" data-growpath="${M.strokePath(points)}">${fern.wood}</g><g class="growth-secondary">${fern.foliage}</g></g>`);
+       continue;
+     }
+     // Lower stem mass: the earlier heavy brown ribbons overwhelmed the leaf plates.
+     const emphasis=stem.emphasis||1;
+     const base=stem.width*.86*emphasis*(sp.habit==='heavy'?1.09:sp.habit==='climbing'?.66:sp.habit==='twining'?.67:sp.habit==='arching'?.82:1.0);
+     const wood=M.wood(sp,pal,'mature',r);
+     plan.spatial?.addWood?.(points,base,plan.activeStem);
+     let woodArt=stemInk(points,base,wood,pal,r,s,true,sp);
+     let growth='';
+     let count=clamp(Math.round((stem.major?7.0:4.4)*sp.frequency*(.48+fol*.84)*(sp.shootDensity||1)*emphasis),2,13);
+     if(season==='winter'&&!sp.evergreen)count=Math.max(2,Math.round(count*.74));
+     // Slightly irregular spacing instead of evenly-spaced identical twigs.
+     const lowerBias=sp.habit==='heavy'||sp.leaf==='oak'||sp.leaf==='hazel';
+     const positions=Array.from({length:count},(_,i)=>{
+       const raw=.09+(i+.35)*.80/count+r.between(-.017,.017);
+       const t=clamp(raw,.06,.92);
+       return lowerBias ? Math.pow(t,.90) : t;
+     });
+     for(let i=0;i<count;i++){
+       const t=positions[i],idx=Math.round(t*100),p=points[idx];
+       const side=((i%2===0?stem.side:-stem.side)||1)*(r.chance(.12)?-1:1);
+       const habitShoot=sp.habit==='heavy'?.88:sp.habit==='angular'?.89:sp.habit==='twining'?1.04:1;
+       const length=r.between(stem.major?88:61,stem.major?161:124)*habitShoot*sp.scale*(sp.shootScale||1)*(1-.20*t)*(1+.04*(emphasis-1));
+       const identity=s.species==='hybrid'?M.chooseSpecies(r.choose(['holly','ivy','dogrose','hazel','oak','acanthus']),r):sp;
+       // Start each lateral well inside the parent silhouette; no floating joins.
+       const launch=add(p,norm(p.tng),side*widthAt(base,t,.1)*.08);
+       s._branchT=t;
+       growth+=shoot(launch,p.tng,side,length,identity,season,pal,r,plan,s);
+     }
+     // Substantial lower foliage and coherent secondary branch scale.
+     if(!['twining','climbing'].includes(sp.habit)){
+       for(let i=0;i<2;i++){
+         const t=.08+i*.09,p=points[Math.round(t*100)],side=i%2?1:-1;
+         const a=angle(p.tng)+side*r.between(.8,1.3),len=r.between(20,34)*sp.scale*(sp.leafScale||1);
+         growth+=petioleLeaf(add(p,norm(p.tng),side*widthAt(base,t,.1)*.08),a,len,sp,season,pal,r,plan,s,t);
+       }
+     }
+     if(r.chance(.68)){
+       const tip=points[100],ang=angle(tip.tng);
+       growth+=accentOrgan(sp,tip,ang,season,pal,r,r.between(22,32),plan,s);
+     }
+
+     const axis=M.strokePath(points);
+     const origin=points[0];
+     sections.push(`<g class="growth-plant" data-trunk="${sp.name}" data-plant="${sp.name}">`+
+       `<g transform="translate(${V(origin)})"><g class="stem-sway" style="--stem-delay:${n(-r.between(0,14))}s;--stem-duration:${n(r.between(18,28))}s;--stem-angle-a:${n(r.between(.09,.18))}deg;--stem-angle-b:${n(r.between(.16,.28))}deg;--stem-drift:${n(r.between(.08,.22))}px">`+
+       `<g transform="translate(${n(-origin.x)} ${n(-origin.y)})">`+
+       `<g class="growth-primary" data-grow-width="${n(Math.max(8,base*2.7))}" data-growpath="${axis}">${woodArt}</g>`+
+       `<g class="growth-secondary">${growth}</g></g></g></g></g>`);
+   }
+   // Whole-plant painter's order: one branch and its leaves are composed as a
+   // unit, rather than putting *every* woody stem behind *every* leaf.
+   return `<g id="botanical-plants">${sections.join('')}</g>`;
+ };
+})(window.MS);
+
+</script>
+<script data-engine-module="render">
+/* Botanical-only layer compositor.
+   Letters, ivy grids, and detached knot compartments are intentionally removed. */
+window.MS=window.MS||{};
+((M)=>{
+ 'use strict';
+ const N=M.n;
+ function attachedPenwork(plan,s,r){
+   if(s.detail<18||!plan.stems.length)return '';
+   const pal=s.pal,amount=Math.round(s.detail/31),parts=[];
+   for(let i=0;i<Math.min(amount,4);i++){
+     const stem=plan.stems[i%plan.stems.length],t=r.between(.26,.77),point=stem.drawnPoints?.[Math.round(t*100)],base=point||M.bezier(stem.a,stem.b,stem.c,stem.d,t),tan=point?.tng||M.tangent(stem.a,stem.b,stem.c,stem.d,t);
+     const side=i%2?-1:1,normal=M.normal(tan),reach=r.between(7,14),lead={x:base.x+normal.x*side*3.6,y:base.y+normal.y*side*3.6};
+     const c1={x:lead.x+normal.x*side*reach*.58+tan.x*reach*.24,y:lead.y+normal.y*side*reach*.58+tan.y*reach*.24};
+     const tip={x:lead.x+normal.x*side*reach+tan.x*reach*.10,y:lead.y+normal.y*side*reach+tan.y*reach*.10};
+     const back={x:tip.x-tan.x*reach*.22+normal.x*side*reach*.16,y:tip.y-tan.y*reach*.22+normal.y*side*reach*.16};
+     const color=r.choose([pal.vermillion,pal.ochre,pal.green]);
+     let d=`M${M.vec(base.x,base.y)}Q${M.vec(c1.x,c1.y)} ${M.vec(tip.x,tip.y)}`;
+     d+=`Q${M.vec(back.x,back.y)} ${M.vec(lead.x,lead.y)}`;
+     parts.push(M.path(d,color,r.between(.52,.92),`opacity="${N(r.between(.24,.46))}"`));
+     if(r.chance(.55)){
+       const side2=-side,tip2={x:lead.x+normal.x*side2*reach*.74+tan.x*reach*.08,y:lead.y+normal.y*side2*reach*.74+tan.y*reach*.08};
+       const c2={x:lead.x+normal.x*side2*reach*.44+tan.x*reach*.16,y:lead.y+normal.y*side2*reach*.44+tan.y*reach*.16};
+       parts.push(M.path(`M${M.vec(base.x,base.y)}Q${M.vec(c2.x,c2.y)} ${M.vec(tip2.x,tip2.y)}`,
+         M.mix(color,pal.ink,.16),r.between(.42,.72),`opacity="${N(r.between(.18,.34))}"`));
+     }
+   }
+   return `<g filter="url(#dry-print)">${parts.join('')}</g>`;
+ }
+ M.render=(settings)=>{
+   const s={...settings,pal:M.palette(settings.palette)},root=Number(s.seed)>>>0||1;
+   const plan=M.plan(s,M.rng(M.childSeed(root,0xaced0081)));
+   M.lastConstruction=plan.construction;
+   const pigmentR=M.rng(M.childSeed(root,17)),finishR=M.rng(M.childSeed(root,29));
+   let body='';
+   const drawR=M.rng(M.childSeed(root,43));
+   body+=M.botanical(plan,s,drawR);
+   if((Number(s.ornament||0)>18 || Number(s.detail||0)>62) && plan.stems?.length){
+     body+=attachedPenwork(plan,s,M.rng(M.childSeed(root,61)));
+   }
+   M.lastGrowthPaths=plan.stems.filter(v=>v.drawnPoints?.length).map(v=>v.drawnPoints.map(p=>({x:p.x,y:p.y})));
+   // Small-details control now affects plant veins, leaflets, bark and organs;
+   // it no longer scatters independent scrolls across the composition.
+   const defs=M.pigmentDefs(s,pigmentR)+M.finishDefs(s,finishR);
+   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${M.W} ${M.H}" width="${M.W}" height="${M.H}" role="img" aria-label="Generated botanical ornament"><defs>${defs}</defs><g id="artwork-layers">${body}</g></svg>`;
+ };
+})(window.MS);
+
+</script>
+<script data-engine-module="app">
+/* Botanical controls, deterministic regeneration, and vector exports. */
+(()=>{
+ 'use strict';
+ const M=window.MS;
+ const el=id=>document.getElementById(id);
+ const has=id=>!!el(id);
+ const on=(id,event,handler)=>{const node=el(id);if(node)node.addEventListener(event,handler);};
+
+ const defaultSettings={
+   geometry:'random',conform:32,ornament:86,
+   pattern:'random',species:'random',season:'summer',palette:'future',seed:20261104,
+   foliage:80,finishLevel:76
+ };
+ const s={...defaultSettings};
+ const textFields=['pattern','geometry','species','season','palette'];
+ const numberFields=['seed','conform','ornament','foliage','finishLevel'];
+ const controlIds=[...textFields,...numberFields];
+ const stage=el('drawing-stage');
+ let paintTimer=null,svg='',framedViewBox=null;
+
+ function read(){
+   controlIds.forEach(id=>{
+     const node=el(id);
+     if(!node)return;
+     s[id]=numberFields.includes(id)?Number(node.value):node.value;
+   });
+   s.seed=Number.isFinite(s.seed)?(s.seed>>>0)||1:1;
+   const f=M.clamp((s.finishLevel??0)/100,0,1);
+   // Make wear clearly legible, while keeping the drawing itself continuous.
+   s.detail=88;
+   const future=s.palette==='future';
+   s.pigment=Math.round((future?50:34)+f*(future?46:46));
+   s.wear=Math.round((future?18:6)+f*(future?82:84));
+   s.spread=Math.round((future?24:10)+f*(future?74:82));
+   s.registration=Math.round((future?10:0)+f*(future?34:24));
+   s.printWarp=Math.round((future?8:3)+f*(future?34:28));
+   s.distortion=future?44:32;
+   s.bleed=s.spread>0;
+   s.transparent=true;
+   s.guideOverlay=false; // guides remain internal construction only
+   s.drawnPaths=[];
+ }
+
+
+ function meta(){
+   if(has('seed-label'))el('seed-label').textContent='seed '+s.seed;
+   const species=s.species==='random'
+     ? 'mixed botanical growth'
+     : s.species==='hybrid'
+       ? 'ornamental hybrid'
+       : s.species+' / '+s.season;
+   const construction=M.geometryNames[M.lastConstruction?.name]||'free growth';
+   if(has('mode-description'))el('mode-description').textContent=species+' · '+construction;
+   stage?.setAttribute('aria-label','Botanical ornament, seed '+s.seed);
+ }
+
+ // Fit the complete illustrated specimen, including trunk, fruit and fine
+ // terminal twigs. Never crop woody endpoints to make the foliage look larger.
+ // The same viewBox is carried to PNG/SVG export.
+ function fitDrawing(){
+   const art=el('drawing')?.querySelector('svg');
+   const plant=art?.querySelector('#botanical-plants')||art?.querySelector('#artwork-layers');
+   if(!art||!plant||!stage)return;
+   try{
+     const b=plant.getBBox();
+     if(!b||![b.x,b.y,b.width,b.height].every(Number.isFinite)||b.width<1||b.height<1)return;
+     // Frame the actual plant against the DISPLAY window, not the old portrait
+     // drawing coordinates. This is what allows the whole panel to fit beside
+     // its settings without turning into an enormous scrolling document.
+     const rect=stage.getBoundingClientRect(),ratio=Math.max(.35,rect.width/Math.max(1,rect.height));
+     let width=Math.max(120,b.width*1.20),height=Math.max(170,b.height*1.17);
+     if(width/height<ratio)width=height*ratio;
+     else height=width/ratio;
+     const cx=b.x+b.width/2,cy=b.y+b.height/2;
+     framedViewBox=[cx-width/2,cy-height/2,width,height]
+       .map(v=>Math.round(v*100)/100).join(' ');
+     art.setAttribute('viewBox',framedViewBox);
+     art.setAttribute('preserveAspectRatio','xMidYMid meet');
+   }catch(err){console.warn('Art frame fallback:',err);}
+ }
+ if(stage && 'ResizeObserver' in window){
+   new ResizeObserver(()=>fitDrawing()).observe(stage);
+ }
+
+ function paint(){
+   clearTimeout(paintTimer);
+   read();
+   numberFields.slice(1).forEach(id=>{if(has(id+'-value'))el(id+'-value').textContent=s[id];});
+   svg=M.render(s);
+   if(has('drawing'))el('drawing').innerHTML=svg;
+   fitDrawing();
+   meta();
+ }
+
+ function delayedPaint(){clearTimeout(paintTimer);paintTimer=setTimeout(()=>paint(),80);}
+ controlIds.forEach(id=>on(id,id==='seed'?'change':'input',delayedPaint));
+
+ const newSeed=()=>{
+   const a=new Uint32Array(1);
+   if(window.crypto?.getRandomValues)window.crypto.getRandomValues(a);
+   else a[0]=Math.floor(Math.random()*0xffffffff);
+   return a[0]||1;
+ };
+
+ function pick(selectId,{avoidRandom=false}={}){
+   const select=el(selectId); if(!select) return null;
+   const opts=[...select.options].map(o=>o.value).filter(Boolean);
+   const pool=avoidRandom?opts.filter(v=>v!=='random'):opts;
+   return pool[Math.floor(Math.random()*pool.length)] || opts[0] || null;
+ }
+
+ on('regenerate','click',()=>{ if(has('seed')) el('seed').value=newSeed(); paint(); });
+ on('randomize','click',()=>{
+   if(has('species')) el('species').value=pick('species',{avoidRandom:true});
+   if(has('pattern')) el('pattern').value=pick('pattern',{avoidRandom:true});
+   if(has('geometry')) el('geometry').value=pick('geometry',{avoidRandom:true});
+   if(has('season')) el('season').value=pick('season');
+   if(has('palette')) el('palette').value=pick('palette');
+   if(has('conform')) el('conform').value=String(Math.floor(12+Math.random()*89));
+   if(has('ornament')) el('ornament').value=String(Math.floor(Math.random()*101));
+   if(has('foliage')) el('foliage').value=String(Math.floor(18+Math.random()*83));
+   if(has('finishLevel')) el('finishLevel').value=String(Math.floor(Math.random()*101));
+   if(has('seed')) el('seed').value=String(newSeed());
+   paint();
+ });
+
+ function reset(){
+   controlIds.forEach(id=>{if(has(id))el(id).value=defaultSettings[id];});
+   paint();
+ }
+ on('reset','click',reset);
+
+
+ async function cleanSVG(){
+   read();
+   const data=M.render({...s,guideOverlay:false,drawnPaths:[]});
+   const parsed=new DOMParser().parseFromString(data,'image/svg+xml');
+   const root=parsed.documentElement;
+   if(framedViewBox)root.setAttribute('viewBox',framedViewBox);
+   return new XMLSerializer().serializeToString(root);
+ }
+ function download(blob,filename){
+   const url=URL.createObjectURL(blob),a=document.createElement('a');
+   a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
+   setTimeout(()=>URL.revokeObjectURL(url),3500);
+ }
+ on('export-svg','click',async()=>{
+   const button=el('export-svg'); if(!button)return;
+   button.disabled=true;
+   try{
+     const data=await cleanSVG();
+     download(new Blob([data],{type:'image/svg+xml;charset=utf-8'}),`ornament-${s.seed}.svg`);
+   }catch(error){console.error(error);alert('SVG export failed.');}
+   finally{button.disabled=false;}
+ });
+ on('export-png','click',async()=>{
+   const btn=el('export-png'); if(!btn)return;
+   btn.disabled=true;btn.textContent='rendering…';
+   let url='';
+   try{
+     const data=await cleanSVG();
+     url=URL.createObjectURL(new Blob([data],{type:'image/svg+xml;charset=utf-8'}));
+     const image=new Image();
+     await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=reject;image.src=url;});
+     const canvas=document.createElement('canvas');
+     const frame=framedViewBox?.split(/\s+/).map(Number);
+     canvas.width=2600;canvas.height=frame?.length===4 ? Math.round(2600*frame[3]/frame[2]) : Math.round(2600*M.H/M.W);
+     const ctx=canvas.getContext('2d'); if(!ctx) throw Error('canvas unavailable');
+     ctx.drawImage(image,0,0,canvas.width,canvas.height);
+     const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+     if(!blob) throw Error('PNG export failed');
+     download(blob,`ornament-${s.seed}.png`);
+   }catch(error){console.error(error);alert('PNG export failed. Try saving the SVG instead.');}
+   finally{ if(url)URL.revokeObjectURL(url); btn.disabled=false;btn.textContent='save png'; }
+ });
+
+ window.addEventListener('spectral-ready',()=>{if(M.verifySpectral?.().working)paint();});
+ paint();
+})();
+
+</script>
 </body>
 </html>
