@@ -201,7 +201,7 @@ window.MS=window.MS||{};
    if(wear>.08)out+=smearStroke(d,M.mix(color,pal.ink,.58),.06+.11*wear,.45+wear*.65,`filter="url(#ink-smudge)"`);
    if(spread>.08)out+=smearStroke(d,M.mix(color,pal.ink,.66),.05+.09*spread,.30+spread*.52,`filter="url(#ink-bleed)"`);
    out+=tonalIslands(bounds,color,pal,s,r,true);
-   if(future){out+=futureFragments(bounds,pal,r,.95+.85*variation);out+=futurePixels(bounds,pal,r,.70+.60*variation);}
+   if(future && r.chance(.20)){out+=futureFragments(bounds,pal,r,.38+.23*variation);out+=futurePixels(bounds,pal,r,.20+.28*variation);}
    if(wear>.22){
      const streaks=Math.floor(3+wear*5);
      const pale=M.mix(color,pal.light,.70);
@@ -261,7 +261,7 @@ window.MS=window.MS||{};
    out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.18+.54*wear)}" data-pixel-pigment="1"`);
    if(wear>.06)out+=smearStroke(d,M.mix(color,pal.ink,.60),.07+.14*wear,Math.max(.24,size*.008)+wear*.45,`filter="url(#ink-smudge)"`);
    if(spread>.06)out+=smearStroke(d,M.mix(color,pal.ink,.72),.05+.11*spread,Math.max(.18,size*.006)+spread*.32,`filter="url(#ink-bleed)"`);
-   if(future){out+=futureFragments(bounds,pal,r,1.15+variation);out+=futurePixels(bounds,pal,r,.85+variation);}
+   if(future && r.chance(.16)){out+=futureFragments(bounds,pal,r,.3+.30*variation);out+=futurePixels(bounds,pal,r,.18+.18*variation);}
 
    if(wear>.14){
      // Translucent irregular underpainting exposes the paper beneath. These

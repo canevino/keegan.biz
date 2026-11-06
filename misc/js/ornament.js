@@ -41,7 +41,7 @@ window.MS=window.MS||{};
      z+=M.path(`M${V(x,0)}Q${V(x+len*.043,rise*.45)} ${V(x+len*.105,rise)}`,
         k%2?gold:contrast,Math.max(.25,len*.008),`opacity="${n((future?.18:.15)+.40*lev)}"`);
    }
-   if(lev>.30){
+   if(lev>.55 && r.chance(.48)){
      const arches=future?3:2;
      for(let i=0;i<arches;i++){
        const x=len*(.28+i*.16),y=(i%2?-1:1)*len*(.040+.025*lev),w=len*.040,h=len*(.050+.025*lev);
@@ -61,7 +61,7 @@ window.MS=window.MS||{};
        }
      }
    }
-   if(future&&lev>.56){
+   if(future&&lev>.73 && r.chance(.24)){
      const pxCount=2+(lev>.82?2:1);
      for(let i=0;i<pxCount;i++){
        const x=len*(.34+i*.08), y=(i%2?-1:1)*len*(.016+.01*i);
@@ -77,7 +77,7 @@ window.MS=window.MS||{};
  M.ornamentColorPatch=(sp,len,pal,r,s)=>{
    const lev=M.ornamentInfluence(sp,s);
    const future=s.palette==='future';
-   if(lev<(future?.18:.58)||len<15||!r.chance(future?(.34+.38*lev):((lev-.45)*.31)))return '';
+   if(lev<(future?.18:.58)||len<15||!r.chance(future?(.08+.15*lev):((lev-.45)*.20)))return '';
    const col=future?r.choose([pal.lapis,pal.vermillion,pal.ochre]):
      M.mix(pal.green,r.choose([pal.ochre,pal.lapis,pal.vermillion]),r.between(.35,.58));
    const start=len*r.between(.24,.50),length=len*r.between(.16,.29);
@@ -85,7 +85,7 @@ window.MS=window.MS||{};
    if(future){
      const step=length*.16, y0=0;
      const d=`M${V(start,y0)}L${V(start+step,y0)}L${V(start+step,h*.38)}L${V(start+step*2,h*.38)}L${V(start+step*2,h*.72)}L${V(start+step*3,h*.72)}L${V(start+step*4,h)}L${V(start+step*3.3,h*.38)}L${V(start+step*1.5,0)}Z`;
-     let z=M.shape(d,col,`opacity="${n(.56+.22*lev)}"`);
+     let z=M.shape(d,col,`opacity="${n(.22+.14*lev)}"`);
      const accent=M.mix(col,pal.light,.28);
      z+=M.shape(`M${V(start+step*.25,h*.08)}L${V(start+step*.95,h*.08)}L${V(start+step*.95,h*.22)}L${V(start+step*.25,h*.22)}Z`,accent,`opacity="${n(.28+.14*lev)}"`);
      return z;

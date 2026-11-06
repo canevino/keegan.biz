@@ -57,10 +57,10 @@ window.MS=window.MS||{};
    if(season==='winter'){
      col=sp.evergreen ? mix(col,pal.ink,.13) : mix(col,pal.ochre,.56);
    }
-   if((future||ornament>.55) && r.chance((future?.09:0)+Math.pow((ornament-.55)/.45,1.5)*(sp.leaf==='acanthus'?.26:.12))){
+   if((future||ornament>.55) && r.chance((future?.03:0)+Math.pow((ornament-.55)/.45,1.5)*(sp.leaf==='acanthus'?.26:.12))){
      col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(future?.16:.10,future?.32:.24));
    }
-   if(future && r.chance(.26+.24*ornament)) col=M.mix(col,pal.ink,r.between(.06,.18));
+   if(future && r.chance(.13+.14*ornament)) col=M.mix(col,pal.ink,r.between(.06,.18));
    return col;
  };
  // Anatomical leaf atlas. Every closed contour has one continuous edge.
@@ -239,7 +239,7 @@ window.MS=window.MS||{};
    const level=M.clamp(Number(s.ornament||0)/100,0,1);
    let medievalInlay='';
    const future=s.palette==='future';
-   if(size>15 && level>.20 && r.chance((future?.36:.13) + .42*level)){
+   if(size>15 && level>.20 && r.chance((future?.13:.10) + .20*level)){
      const sign=r.sign();
      const x=size*r.between(.35,.48),h=size*(kind==='ivy'?.082:.048);
      const height=size*(kind==='ivy'?.082:.071);
@@ -265,19 +265,22 @@ window.MS=window.MS||{};
        }
      }
    }
-   if(future && size>16 && level>.38 && r.chance(.52)){
+   // Shared ink accent must exist independently of the preceding optional inlay.
+   const futureAccent=M.mix(pal.ochre,pal.ink,.17);
+   const futureCobalt=M.mix(pal.lapis,pal.ink,.16), futureCinnabar=M.mix(pal.vermillion,pal.ink,.10);
+   if(future && size>19 && level>.55 && r.chance(.12)){
      const xx=size*r.between(.28,.68), yy=(r.sign())*size*r.between(.03,.11);
      const crest=r.int(0,2);
      if(crest===0){
-       medievalInlay+=M.shape(`M${S(xx-size*.042,yy)}L${S(xx,yy-size*.055)}L${S(xx+size*.042,yy)}L${S(xx,yy+size*.055)}Z`, accent, `opacity="${n(.58+.22*level)}"`);
+       medievalInlay+=M.shape(`M${S(xx-size*.042,yy)}L${S(xx,yy-size*.055)}L${S(xx+size*.042,yy)}L${S(xx,yy+size*.055)}Z`, futureAccent, `opacity="${n(.58+.22*level)}"`);
        medievalInlay+=M.path(`M${S(xx-size*.018,yy)}L${S(xx+size*.018,yy)}M${S(xx,yy-size*.018)}L${S(xx,yy+size*.018)}`, pal.ink, Math.max(.22,size*.01), `opacity="${n(.46+.18*level)}"`);
      }else if(crest===1){
        for(let step=0;step<4;step++){
          const sx=xx-size*.05+step*size*.022;
-         medievalInlay+=M.shape(`M${S(sx,yy-size*.012)}L${S(sx+size*.016,yy-size*.012)}L${S(sx+size*.016,yy+size*.012)}L${S(sx,yy+size*.012)}Z`, step%2?cobalt:cinnabar, `opacity="${n(.42+.18*level)}"`);
+         medievalInlay+=M.shape(`M${S(sx,yy-size*.012)}L${S(sx+size*.016,yy-size*.012)}L${S(sx+size*.016,yy+size*.012)}L${S(sx,yy+size*.012)}Z`, step%2?futureCobalt:futureCinnabar, `opacity="${n(.42+.18*level)}"`);
        }
      }else{
-       medievalInlay+=M.path(`M${S(xx-size*.055,yy+size*.022)}Q${S(xx,yy-size*.048)} ${S(xx+size*.055,yy+size*.022)}`, accent, Math.max(.28,size*.012), `opacity="${n(.52+.18*level)}"`);
+       medievalInlay+=M.path(`M${S(xx-size*.055,yy+size*.022)}Q${S(xx,yy-size*.048)} ${S(xx+size*.055,yy+size*.022)}`, futureAccent, Math.max(.28,size*.012), `opacity="${n(.52+.18*level)}"`);
        medievalInlay+=M.path(`M${S(xx-size*.028,yy+size*.006)}L${S(xx+size*.028,yy+size*.006)}`, pal.ink, Math.max(.18,size*.009), `opacity="${n(.40+.15*level)}"`);
      }
    }
@@ -355,7 +358,7 @@ window.MS=window.MS||{};
    const delay=-r.between(0,18),duration=r.between(14,24),flutter=r.between(.16,.42);
    // Only a minority of blades make their own tiny gesture; all other leaves already
    // participate in the parent shoot's motion. Keep painted SVG performant and natural.
-   const flexes=r.chance(.22);
+   const flexes=false;
    return `<g data-species="${sp.name}" transform="translate(${V(at.x,at.y)}) rotate(${n(angle*180/Math.PI)})">`+
      `<g ${flexes?`class="leaf-breath" style="--leaf-delay:${n(delay)}s;--leaf-duration:${n(duration)}s;--leaf-amplitude:${n(flutter)}deg"`:''}>`+
      `${stem}<g transform="translate(${V(petiole,0)}) scale(${n(magnify)})">${leaf}</g></g></g>`;
