@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-06T17:31:01.128Z",
+  "updatedAt": "2026-11-06T19:33:18.223Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -860,17 +860,17 @@
         "rows": [
           {
             "rank": 1,
+            "team": "Polissya Zhytomyr",
+            "points": 28,
+            "played": 11,
+            "highlight": false
+          },
+          {
+            "rank": 2,
             "team": "Shakhtar Donetsk",
             "points": 28,
             "played": 11,
             "highlight": true
-          },
-          {
-            "rank": 2,
-            "team": "Polissya Zhytomyr",
-            "points": 25,
-            "played": 10,
-            "highlight": false
           },
           {
             "rank": 3,
@@ -923,37 +923,37 @@
           },
           {
             "rank": 10,
+            "team": "Liviy Bereh",
+            "points": 9,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 11,
             "team": "Epitsentr Kamianets-Podilskyi",
             "points": 9,
             "played": 11,
             "highlight": false
           },
           {
-            "rank": 11,
+            "rank": 12,
             "team": "Bukovyna Chernivtsi",
             "points": 9,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 12,
+            "rank": 13,
             "team": "Veres Rivne",
             "points": 9,
-            "played": 11,
-            "highlight": false
-          },
-          {
-            "rank": 13,
-            "team": "Liviy Bereh",
-            "points": 8,
-            "played": 9,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 14,
             "team": "Obolon Kyiv",
-            "points": 7,
-            "played": 10,
+            "points": 8,
+            "played": 11,
             "highlight": false
           },
           {
