@@ -2,88 +2,123 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <title>botany | keegan.biz</title>
-  <link rel="stylesheet" href="/misc/botany.css?v=20261106-future-medieval-variation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>botanical ornament | keegan.biz</title>
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/misc/botany.css?v=20261106-restored-anatomy">
+
 </head>
 <body>
-<main class="botany-root" id="main-content">
-  <div class="botany-workspace">
-    <section class="drawing-side" aria-label="Botanical illustration">
-      <div class="drawing-meta"><span id="mode-description">future-medieval specimen</span><span id="seed-label">seed 472818</span></div>
-      <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Original botanical print, generated in the browser">
-        <div class="drawing" id="drawing"></div>
-      </div>
-      <div class="drawing-actions" aria-label="Drawing actions">
-        <button id="regenerate" type="button" class="action primary">new drawing</button>
-        <button id="randomize" type="button" class="action">randomize</button>
-        <span class="action-spacer"></span>
-        <button id="export-svg" type="button" class="action">save svg</button>
-        <button id="export-png" type="button" class="action">save png</button>
+  <main class="misc-shell" id="main-content">
+    <section class="machine" id="botanical" aria-label="Botanical drawing generator">
+      <div class="botany-workspace">
+        <div class="drawing-side">
+          <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span id="seed-label">seed 472818</span></div>
+          <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
+            <div id="drawing" class="drawing"></div>
+          </div>
+          <div class="drawing-actions" aria-label="Drawing actions">
+            <button id="regenerate" type="button" class="action primary">new drawing</button>
+            <button id="randomize" type="button" class="action">randomize</button>
+            <span class="action-spacer"></span>
+            <button id="export-svg" type="button" class="action">save svg</button>
+            <button id="export-png" type="button" class="action">save png</button>
+          </div>
+        </div>
+        <form class="drawing-controls" id="controls" novalidate>
+          <div class="botany-settings-head"><span class="botany-settings-label">settings</span><button type="button" class="action reset" id="reset">reset</button></div>
+          <div class="botany-basic-grid">
+            <label>plant
+              <select id="species">
+                <option value="random">mixed plants</option><option value="holly">holly</option>
+                <option value="hazel">hazel</option><option value="ivy">ivy</option>
+                <option value="hawthorn">hawthorn</option><option value="oak">oak</option>
+                <option value="dogrose">dog rose</option><option value="honeysuckle">honeysuckle</option>
+                <option value="bramble">bramble</option><option value="fern">fern</option>
+                <option value="acanthus">acanthus</option><option value="hybrid">ornamental hybrid</option>
+              </select>
+            </label>
+            <label>growth
+              <select id="pattern">
+                <option value="random">surprise</option><option value="single">upright</option>
+                <option value="crescent">paired</option><option value="diagonal">diagonal</option>
+                <option value="radiating">radiating</option><option value="meander">wandering</option>
+                <option value="cluster">thicket</option>
+              </select>
+            </label>
+            <label>shape
+              <select id="geometry">
+                <option value="random">surprise</option><option value="gothic-pointed">pointed arch</option>
+                <option value="gothic-quatrefoil">quatrefoil</option><option value="gothic-radial">radial tracery</option>
+                <option value="anglo-lozenge">lozenge</option><option value="anglo-fret">stepped fret</option>
+                <option value="celtic-triskele">triskele</option><option value="celtic-double-spiral">double spiral</option>
+                <option value="celtic-scroll">scrollwork</option><option value="insular-vesica">vesica</option>
+                <option value="roundel">roundel</option>
+              </select>
+            </label>
+            <div class="botany-secondary-row">
+              <label>season
+                <select id="season"><option value="spring">spring</option><option value="summer" selected>summer</option><option value="autumn">autumn</option><option value="winter">winter</option></select>
+              </label>
+              <label>ink
+                <select id="palette"><option value="future" selected>future medieval</option><option value="kells">mineral</option><option value="jewel">lapis / red</option><option value="earth">iron / earth</option><option value="site">site colors</option><option value="monochrome">sepia</option></select>
+              </label>
+            </div>
+          </div>
+          <details class="advanced-settings" id="botany-fine-tune">
+            <summary>fine tune</summary>
+            <div class="fine-tune-grid">
+              <label class="sliding">follow shape <output for="conform" id="conform-value">28</output>
+                <input type="range" id="conform" min="0" max="100" value="25">
+              </label>
+              <label class="sliding">ornament <output for="ornament" id="ornament-value">55</output>
+                <input type="range" id="ornament" min="0" max="100" value="47">
+              </label>
+              <label class="sliding">foliage <output for="foliage" id="foliage-value">78</output>
+                <input type="range" id="foliage" min="10" max="100" value="72">
+              </label>
+              <label class="sliding">print wear <output for="finishLevel" id="finishLevel-value">27</output>
+                <input type="range" id="finishLevel" min="0" max="100" value="28">
+              </label>
+              <label class="seed-setting">seed
+                <input type="number" id="seed" min="1" max="4294967295" inputmode="numeric" value="472818">
+              </label>
+            </div>
+          </details>
+        </form>
       </div>
     </section>
-    <form class="drawing-controls" id="controls" novalidate>
-      <div class="settings-header"><strong>settings</strong><button type="button" id="reset" class="action">reset</button></div>
-      <div class="fields">
-        <label>plant
-          <select id="species">
-            <option value="random">mixed plants</option>
-            <option value="holly">holly</option><option value="ivy">ivy</option>
-            <option value="oak">oak</option><option value="hazel">hazel</option>
-            <option value="hawthorn">hawthorn</option><option value="dogrose">dog rose</option>
-            <option value="honeysuckle">honeysuckle</option><option value="bramble">bramble</option>
-            <option value="fern">fern</option><option value="acanthus">acanthus</option>
-            <option value="hybrid">ornamental hybrid</option>
-          </select>
-        </label>
-        <label>growth
-          <select id="pattern"><option value="random">surprise</option><option value="single">upright</option>
-            <option value="diagonal">diagonal</option><option value="crescent">paired</option>
-            <option value="meander">wandering</option><option value="radiating">radiating</option><option value="cluster">thicket</option>
-          </select>
-        </label>
-        <label>ornament
-          <select id="geometry"><option value="random">surprise</option><option value="gothic-pointed">pointed arch</option>
-            <option value="gothic-quatrefoil">quatrefoil</option><option value="celtic-double-spiral">double spiral</option>
-            <option value="roundel">roundel</option><option value="celtic-scroll">scrollwork</option>
-          </select>
-        </label>
-        <div class="short-fields">
-          <label>season<select id="season"><option value="spring">spring</option><option value="summer" selected>summer</option><option value="autumn">autumn</option><option value="winter">winter</option></select></label>
-          <label>ink<select id="palette"><option value="future" selected>future medieval</option><option value="kells">mineral</option><option value="jewel">lapis / red</option><option value="earth">iron / earth</option><option value="site">site colors</option><option value="monochrome">sepia</option></select></label>
-        </div>
-      </div>
-      <details id="fine-tune" class="fine-tune">
-        <summary>fine tune</summary>
-        <div class="fine-tune-content">
-          <label class="slider-row">foliage <output id="foliage-value">77</output><input id="foliage" type="range" min="25" max="100" value="77"></label>
-          <label class="slider-row">distress <output id="distress-value">76</output><input id="distress" type="range" min="0" max="100" value="76"></label>
-          <label class="slider-row">pixel breaks <output id="glitch-value">56</output><input id="glitch" type="range" min="0" max="100" value="56"></label>
-          <label class="slider-row">ornament <output id="ornament-value">78</output><input id="ornament" type="range" min="0" max="100" value="78"></label>
-          <label class="seed-label">seed<input id="seed" type="number" min="1" max="4294967295" inputmode="numeric" value="472818"></label>
-          <label class="transparent-label"><input id="transparent" type="checkbox"> transparent export</label>
-        </div>
-      </details>
-    </form>
-  </div>
-</main>
-<script>
-(()=>{
-  const main=document.getElementById('main-content');
-  if(window.parent===window)return;
-  const send=()=>{
-    const height=Math.ceil(main.getBoundingClientRect().height+3);
-    window.parent.postMessage({type:'keegan-botany-height',height},window.location.origin);
-  };
-  window.addEventListener('load',send);
-  window.addEventListener('resize',send);
-  if('ResizeObserver' in window)new ResizeObserver(send).observe(main);
-})();
-</script>
-<script src="/misc/js/core.js?v=20261106-future-medieval-variation" defer></script>
-<script src="/misc/js/botany.js?v=20261106-future-medieval-variation" defer></script>
-<script src="/misc/js/finish.js?v=20261106-future-medieval-variation" defer></script>
-<script src="/misc/js/app.js?v=20261106-future-medieval-variation" defer></script>
+  </main>
+  <script>
+  (() => {
+    const notifyHeight = () => {
+      if (window.parent === window) return;
+      const box = document.getElementById('main-content');
+      if (!box) return;
+      const h = box.getBoundingClientRect().height + 8;
+      window.parent.postMessage({ type: 'keegan-botany-height', height: h }, window.location.origin);
+    };
+    window.addEventListener('load', notifyHeight);
+    window.addEventListener('resize', notifyHeight);
+    if ('ResizeObserver' in window) {
+      const box = document.getElementById('main-content');
+      new ResizeObserver(notifyHeight).observe(box);
+    }
+  })();
+  </script>
+<script src="/misc/js/core.js?v=20261106-restored-anatomy" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/rvanwijnen/spectral.js@3.0.0/spectral.min.js" async onload="window.dispatchEvent(new Event('spectral-ready'))"></script>
+<script src="/misc/js/pigment.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/finish.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/geometry.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/spatial.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/drawing.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/architecture.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/composition.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/species.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/ornament.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/botany.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/render.js?v=20261106-restored-anatomy" defer></script>
+<script src="/misc/js/app.js?v=20261106-restored-anatomy" defer></script>
 </body>
 </html>
