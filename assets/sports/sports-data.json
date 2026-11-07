@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-07T06:14:07.113Z",
+  "updatedAt": "2026-11-07T13:18:07.797Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -149,35 +149,35 @@
           },
           {
             "rank": 8,
+            "team": "Tottenham",
+            "points": 13,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 9,
             "team": "Bournemouth",
             "points": 12,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 9,
-            "team": "Tottenham",
+            "rank": 10,
+            "team": "Leeds",
             "points": 12,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
-            "rank": 10,
+            "rank": 11,
             "team": "Aston Villa",
             "points": 12,
             "played": 9,
             "highlight": false
           },
           {
-            "rank": 11,
-            "team": "Hull",
-            "points": 11,
-            "played": 9,
-            "highlight": false
-          },
-          {
             "rank": 12,
-            "team": "Leeds",
+            "team": "Hull",
             "points": 11,
             "played": 9,
             "highlight": false
@@ -446,8 +446,8 @@
           {
             "rank": 2,
             "team": "Wolves",
-            "points": 27,
-            "played": 14,
+            "points": 28,
+            "played": 15,
             "highlight": false
           },
           {
@@ -459,16 +459,16 @@
           },
           {
             "rank": 4,
-            "team": "Stoke",
+            "team": "Swansea",
             "points": 26,
             "played": 14,
             "highlight": false
           },
           {
             "rank": 5,
-            "team": "Swansea",
+            "team": "Stoke",
             "points": 26,
-            "played": 14,
+            "played": 15,
             "highlight": false
           },
           {
@@ -480,28 +480,28 @@
           },
           {
             "rank": 7,
+            "team": "Portsmouth",
+            "points": 25,
+            "played": 15,
+            "highlight": false
+          },
+          {
+            "rank": 8,
             "team": "Southampton",
             "points": 24,
             "played": 14,
             "highlight": false
           },
           {
-            "rank": 8,
+            "rank": 9,
             "team": "West Ham",
             "points": 23,
             "played": 14,
             "highlight": false
           },
           {
-            "rank": 9,
-            "team": "Sheff Utd",
-            "points": 22,
-            "played": 14,
-            "highlight": false
-          },
-          {
             "rank": 10,
-            "team": "Portsmouth",
+            "team": "Sheff Utd",
             "points": 22,
             "played": 14,
             "highlight": false
@@ -516,8 +516,8 @@
           {
             "rank": 12,
             "team": "Norwich",
-            "points": 18,
-            "played": 14,
+            "points": 21,
+            "played": 15,
             "highlight": false
           },
           {
@@ -536,16 +536,16 @@
           },
           {
             "rank": 15,
-            "team": "Bristol City",
+            "team": "Wrexham",
             "points": 18,
-            "played": 14,
+            "played": 15,
             "highlight": false
           },
           {
             "rank": 16,
-            "team": "Wrexham",
-            "points": 17,
-            "played": 14,
+            "team": "Bristol City",
+            "points": 18,
+            "played": 15,
             "highlight": false
           },
           {
@@ -916,23 +916,23 @@
           },
           {
             "rank": 9,
-            "team": "Chornomorets Odesa",
-            "points": 9,
-            "played": 10,
+            "team": "Epitsentr Kamianets-Podilskyi",
+            "points": 10,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 10,
-            "team": "Liviy Bereh",
+            "team": "Chornomorets Odesa",
             "points": 9,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Epitsentr Kamianets-Podilskyi",
+            "team": "Liviy Bereh",
             "points": 9,
-            "played": 11,
+            "played": 10,
             "highlight": false
           },
           {
@@ -958,16 +958,16 @@
           },
           {
             "rank": 15,
-            "team": "Kryvbas",
-            "points": 6,
-            "played": 9,
+            "team": "Kudrivka",
+            "points": 8,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 16,
-            "team": "Kudrivka",
-            "points": 5,
-            "played": 11,
+            "team": "Kryvbas",
+            "points": 7,
+            "played": 10,
             "highlight": false
           }
         ]
