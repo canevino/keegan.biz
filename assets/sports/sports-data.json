@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-06T19:33:18.223Z",
+  "updatedAt": "2026-11-07T06:14:07.113Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -52,7 +52,7 @@
         {
           "id": "5795507",
           "date": "2026-11-08T14:00:00.000Z",
-          "when": "Sun, Nov 8 · 9:00 AM ET",
+          "when": "tomorrow · Sun, Nov 8 · 9:00 AM ET",
           "status": "scheduled",
           "home": "Crystal Palace",
           "away": "Liverpool",
@@ -128,22 +128,22 @@
           },
           {
             "rank": 5,
+            "team": "Everton",
+            "points": 16,
+            "played": 10,
+            "highlight": false
+          },
+          {
+            "rank": 6,
             "team": "Liverpool",
             "points": 15,
             "played": 9,
             "highlight": true
           },
           {
-            "rank": 6,
+            "rank": 7,
             "team": "Brentford",
             "points": 14,
-            "played": 9,
-            "highlight": false
-          },
-          {
-            "rank": 7,
-            "team": "Everton",
-            "points": 13,
             "played": 9,
             "highlight": false
           },
@@ -207,7 +207,7 @@
             "rank": 16,
             "team": "Coventry",
             "points": 9,
-            "played": 9,
+            "played": 10,
             "highlight": false
           },
           {
@@ -249,7 +249,7 @@
         {
           "id": "5793975",
           "date": "2026-11-08T15:00:00.000Z",
-          "when": "Sun, Nov 8 · 10:00 AM ET",
+          "when": "tomorrow · Sun, Nov 8 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Hearts",
           "away": "Falkirk",
@@ -390,7 +390,7 @@
         {
           "id": "5836929",
           "date": "2026-11-07T15:00:00.000Z",
-          "when": "tomorrow · Sat, Nov 7 · 10:00 AM ET",
+          "when": "today · Sat, Nov 7 · 10:00 AM ET",
           "status": "scheduled",
           "home": "Preston",
           "away": "Southampton",
@@ -552,7 +552,7 @@
             "rank": 17,
             "team": "Bolton",
             "points": 17,
-            "played": 14,
+            "played": 15,
             "highlight": false
           },
           {
@@ -593,8 +593,8 @@
           {
             "rank": 23,
             "team": "Derby",
-            "points": 7,
-            "played": 14,
+            "points": 10,
+            "played": 15,
             "highlight": false
           },
           {
@@ -615,7 +615,7 @@
         {
           "id": "5749742",
           "date": "2026-11-08T19:45:00.000Z",
-          "when": "Sun, Nov 8 · 2:45 PM ET",
+          "when": "tomorrow · Sun, Nov 8 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Fiorentina",
           "away": "Juventus",
@@ -789,16 +789,16 @@
           },
           {
             "rank": 19,
-            "team": "Udinese",
-            "points": 5,
-            "played": 10,
+            "team": "Venezia",
+            "points": 6,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 20,
-            "team": "Venezia",
-            "points": 3,
-            "played": 10,
+            "team": "Udinese",
+            "points": 5,
+            "played": 11,
             "highlight": false
           }
         ]
@@ -812,19 +812,19 @@
         {
           "id": "5909208",
           "date": "2026-11-08T16:00:00.000Z",
-          "when": "Sun, Nov 8 · 11:00 AM ET",
+          "when": "tomorrow · Sun, Nov 8 · 11:00 AM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "Dynamo Kyiv",
           "competition": "Premier League"
         },
         {
-          "id": "5909214",
-          "date": "2026-11-21T16:00:00.000Z",
-          "when": "Sat, Nov 21 · 11:00 AM ET",
+          "id": "5909336",
+          "date": "2026-11-20T16:00:00.000Z",
+          "when": "Fri, Nov 20 · 11:00 AM ET",
           "status": "scheduled",
-          "home": "Liviy Bereh",
-          "away": "Shakhtar Donetsk",
+          "home": "Shakhtar Donetsk",
+          "away": "Liviy Bereh",
           "competition": "Premier League"
         },
         {
