@@ -96,12 +96,12 @@ button,input,select{font:inherit}
 .botany-build-meta{display:flex;align-items:center;gap:9px;white-space:nowrap}.botany-build-label{font-size:9px;color:var(--misc-green);border:1px solid currentColor;padding:1px 3px;font-weight:700;letter-spacing:.02em}
 </style>
 </head>
-<body data-botany-build="20261106-future-plate-r3">
+<body data-botany-build="20261109-engraved-plant-r4">
   <main class="misc-shell" id="main-content">
     <section class="machine" id="botanical" aria-label="Botanical drawing generator">
       <div class="botany-workspace">
         <div class="drawing-side">
-          <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span class="botany-build-meta"><span id="seed-label">seed 20261104</span><span class="botany-build-label">r3</span></span></div>
+          <div class="drawing-meta"><span id="mode-description">botanical ornament</span><span class="botany-build-meta"><span id="seed-label">seed 20261104</span><span class="botany-build-label">r4</span></span></div>
           <div class="drawing-stage" id="drawing-stage" role="img" aria-label="Procedurally generated botanical ornament">
             <div id="drawing" class="drawing"></div>
           </div>
@@ -252,7 +252,7 @@ window.MS = window.MS || {};
     jewel:{ink:'#302a2b',vermillion:'#ac4050',lapis:'#325e92',green:'#547b70',ochre:'#c29a51',light:'#eee0c7'},
     earth:{ink:'#3c3229',vermillion:'#9b5844',lapis:'#677483',green:'#687b55',ochre:'#b79565',light:'#e8d8c0'},
     site:{ink:'#252322',vermillion:'#c1272d',lapis:'#245c91',green:'#126b4d',ochre:'#dfac3f',light:'#efe3c4'},
-    future:{ink:'#171419',vermillion:'#d31f3d',lapis:'#214bd6',green:'#0d775b',ochre:'#d4a22a',light:'#f1e8d0'},
+    future:{ink:'#282321',vermillion:'#bd243e',lapis:'#2f4870',green:'#496e52',ochre:'#c49b46',light:'#ede3cc'},
     monochrome:{ink:'#2e2924',vermillion:'#675448',lapis:'#6e6962',green:'#747565',ochre:'#ad9d7f',light:'#e7dbbe'}
   };
   M.palette=(id)=>M.palettes[id]||M.palettes.kells;
@@ -466,7 +466,7 @@ window.MS=window.MS||{};
    if(wear>.08)out+=smearStroke(d,M.mix(color,pal.ink,.58),.06+.11*wear,.45+wear*.65,`filter="url(#ink-smudge)"`);
    if(spread>.08)out+=smearStroke(d,M.mix(color,pal.ink,.66),.05+.09*spread,.30+spread*.52,`filter="url(#ink-bleed)"`);
    out+=tonalIslands(bounds,color,pal,s,r,true);
-   if(future){out+=futureFragments(bounds,pal,r,.95+.85*variation);out+=futurePixels(bounds,pal,r,.70+.60*variation);}
+   /* Removed detached mosaic chips: print effects must attach to plants. */
    if(wear>.22){
      const streaks=Math.floor(3+wear*5);
      const pale=M.mix(color,pal.light,.70);
@@ -495,7 +495,7 @@ window.MS=window.MS||{};
        `<stop offset="0" stop-color="${pale}"/><stop offset=".30" stop-color="${color}"/>`+
        `<stop offset=".71" stop-color="${mid}"/><stop offset="1" stop-color="${deep}"/></linearGradient></defs>`;
    out+=`<g${maskRef}>`;
-   out+=M.shape(d,`url(#${grad})`,`fill-opacity="${n(1-.32*Math.pow(wear,1.24))}" data-pixel-pigment="1"`);
+   out+=M.shape(d,`url(#${grad})`,`fill-opacity="${n(1-.13*Math.pow(wear,1.24))}" data-pixel-pigment="1"`);
    out+=`<g clip-path="url(#${clip})">`;
    // Full-size tonal marks, small side-by-side pigment irregularities and
    // interrupted brush marks—not a low-res pixel effect over the whole leaf.
@@ -525,8 +525,8 @@ window.MS=window.MS||{};
    out+=M.shape(d,'url(#brush-fiber)',`opacity="${n(.22+.54*wear)}" data-pixel-pigment="1"`);
    out+=M.shape(d,'url(#dry-grain)',`opacity="${n(.18+.54*wear)}" data-pixel-pigment="1"`);
    if(wear>.06)out+=smearStroke(d,M.mix(color,pal.ink,.60),.07+.14*wear,Math.max(.24,size*.008)+wear*.45,`filter="url(#ink-smudge)"`);
-   if(spread>.06)out+=smearStroke(d,M.mix(color,pal.ink,.72),.05+.11*spread,Math.max(.18,size*.006)+spread*.32,`filter="url(#ink-bleed)"`);
-   if(future){out+=futureFragments(bounds,pal,r,1.15+variation);out+=futurePixels(bounds,pal,r,.85+variation);}
+   if(spread>.06)out+=smearStroke(d,M.mix(color,pal.ink,.74),.08+.16*spread,Math.max(.23,size*.013)+spread*.50,`filter="url(#ink-bleed)"`);
+   /* No artificial color-confetti layer on leaves. */
 
    if(wear>.14){
      // Translucent irregular underpainting exposes the paper beneath. These
@@ -555,7 +555,7 @@ window.MS=window.MS||{};
    out+='</g></g>';
    // The outline is hand-inked, but subtle; at high wear break up pigment
    // BELOW the contour without making the drawing itself disappear.
-   out+=M.shape(d,'none',`stroke="${M.mix(pal.ink,color,.27)}" stroke-width="${n(Math.max(.45,size*.015))}" stroke-linejoin="round"`);
+   out+=M.shape(d,'none',`stroke="${M.mix(pal.ink,color,.27)}" stroke-width="${n(Math.max(.65,size*.022))}" stroke-linejoin="round"`);
    return out;
  };
 })(window.MS);
@@ -1103,17 +1103,18 @@ window.MS=window.MS||{};
       ];
     },
     crescent(r){
-      const leftRoot=P(r.between(130,210),r.between(892,944));
-      const rightRoot=P(r.between(618,710),r.between(900,952));
+      const crown=P(r.between(350,460),r.between(868,926));
+      const leftRoot=P(crown.x-r.between(5,26),crown.y+r.between(-8,8));
+      const rightRoot=P(crown.x+r.between(5,26),crown.y+r.between(-8,8));
       return [
-        axis(leftRoot,P(r.between(300,420),r.between(144,268)),1,1,r,{first:1.07,second:-.54,bend:r.between(106,172),character:'hero',emphasis:1.18}),
-        axis(rightRoot,P(r.between(500,672),r.between(152,294)),-1,2,r,{first:.82,second:-.94,bend:r.between(96,162),character:'support',emphasis:.94})
+        axis(leftRoot,P(r.between(188,322),r.between(144,268)),1,1,r,{first:1.07,second:-.54,bend:r.between(106,172),character:'hero',emphasis:1.18}),
+        axis(rightRoot,P(r.between(544,708),r.between(152,294)),-1,2,r,{first:.82,second:-.94,bend:r.between(96,162),character:'support',emphasis:.94})
       ];
     },
     diagonal(r){
       return [
         axis(P(r.between(126,210),r.between(858,938)),P(r.between(612,740),r.between(114,194)),1,1,r,{first:.92,second:-.82,bend:r.between(98,164),character:'sweep',emphasis:1.16}),
-        axis(P(r.between(644,734),r.between(904,960)),P(r.between(272,400),r.between(310,468)),-1,2,r,{major:false,first:.92,second:-1.02,bend:r.between(92,152),character:'echo',emphasis:.78})
+        axis(P(r.between(310,408),r.between(860,934)),P(r.between(250,370),r.between(310,468)),-1,2,r,{major:false,first:.92,second:-1.02,bend:r.between(92,152),character:'echo',emphasis:.78})
       ];
     },
     radiating(r){
@@ -1134,7 +1135,7 @@ window.MS=window.MS||{};
     meander(r){
       return [
         axis(P(r.between(108,190),r.between(864,946)),P(r.between(528,684),r.between(138,224)),1,1,r,{first:1.42,second:-1.22,bend:r.between(138,220),character:'meander',emphasis:1.18}),
-        axis(P(r.between(636,728),r.between(914,968)),P(r.between(392,566),r.between(256,418)),-1,2,r,{major:false,first:-1.28,second:1.14,bend:r.between(98,172),character:'counter',emphasis:.82})
+        axis(P(r.between(346,424),r.between(850,920)),P(r.between(532,690),r.between(256,418)),-1,2,r,{major:false,first:-1.28,second:1.14,bend:r.between(98,172),character:'counter',emphasis:.82})
       ];
     },
     cluster(r){
@@ -1167,7 +1168,7 @@ window.MS=window.MS||{};
     acanthus:['single','radiating','meander'],
     hybrid:['single','crescent','meander']
   };
-  const surpriseLayouts=['single','crescent','single','meander','radiating','single','cluster','crescent','diagonal'];
+  const surpriseLayouts=['single','crescent','meander','radiating','cluster','crescent','diagonal','radiating','crescent'];
 
   function displayedStems(stems,layout){
     const limits={single:1,crescent:2,diagonal:2,meander:2,radiating:4,cluster:4};
@@ -1185,9 +1186,9 @@ window.MS=window.MS||{};
     const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
     const w=maxX-minX,h=maxY-minY,cx=(minX+maxX)/2,cy=(minY+maxY)/2;
     const ratio=w/Math.max(h,1);
-    const desiredRatio=['ivy','honeysuckle','bramble','dogrose','fern'].includes(species)?.77:.59;
-    const targetWidth=layout==='single'?235:layout==='meander'?425:layout==='cluster'?540:470;
-    const targetHeight=layout==='single'?690:layout==='radiating'?600:675;
+    const desiredRatio=['ivy','honeysuckle','bramble','dogrose','fern'].includes(species)?.79:.67;
+    const targetWidth=layout==='single'?258:layout==='meander'?500:layout==='cluster'?540:515;
+    const targetHeight=layout==='single'?690:layout==='radiating'?615:660;
     const coverage=Math.abs(w-targetWidth)/targetWidth + Math.abs(h-targetHeight)/targetHeight;
     const center=(Math.abs(cx-425)/415)*.62 + (Math.abs(cy-510)/490)*.47;
     const shape=Math.abs(ratio-desiredRatio)*.53;
@@ -1352,8 +1353,8 @@ window.MS=window.MS||{};
    if(familyBias==='warm')col=mix(col,pal.ochre,r.between(future?.08:.05,future?.22:.16));
    if(familyBias==='light')col=mix(col,pal.light,r.between(.06,future?.18:.15));
    if(familyBias==='earth')col=mix(col,pal.ink,r.between(.03,future?.14:.10));
-   if(variation<.14)col=mix(col,pal.ochre,r.between(future?.13:.08,future?.28:.19));
-   else if(variation>.85)col=mix(col,pal.lapis,r.between(future?.16:.11,future?.31:.23));
+   if(variation<.21)col=mix(col,pal.ochre,r.between(future?.23:.08,future?.42:.19));
+   else if(variation>.90)col=mix(col,pal.lapis,r.between(future?.14:.11,future?.30:.23));
    else if(variation>.56)col=mix(col,pal.light,r.between(.06,future?.21:.16));
    if(season==='spring'){
      col=mix(col,pal.light,r.between(.16,.30));
@@ -1373,10 +1374,10 @@ window.MS=window.MS||{};
    if(season==='winter'){
      col=sp.evergreen ? mix(col,pal.ink,.13) : mix(col,pal.ochre,.56);
    }
-   if((future||ornament>.55) && r.chance((future?.09:0)+Math.pow((ornament-.55)/.45,1.5)*(sp.leaf==='acanthus'?.26:.12))){
-     col=M.mix(col,r.choose([pal.lapis,pal.vermillion,pal.ochre]),r.between(future?.16:.10,future?.32:.24));
+   if((future||ornament>.55) && r.chance((future?.08:0)+Math.pow(Math.max(0,ornament-.55)/.45,1.5)*.10)){
+     col=M.mix(col,r.choose([pal.lapis,pal.ochre]),r.between(.07,.17));
    }
-   if(future && r.chance(.26+.24*ornament)) col=M.mix(col,pal.ink,r.between(.06,.18));
+   if(future) col=M.mix(col,pal.ink,r.chance(.11)?r.between(.39,.58):r.between(.04,.17));
    return col;
  };
  // Anatomical leaf atlas. Every closed contour has one continuous edge.
@@ -1391,8 +1392,9 @@ window.MS=window.MS||{};
  const pathPoints=pts=>pts.map((p,i)=>`${i?'L':'M'}${S(p.x,p.y)}`).join('')+'Z';
  function blade(kind,len,r,s){
    const orn=M.ornamentInfluence?.({leaf:kind},s)||0;
-   const asym=r.between(-.07,.07),phase=r.between(0,Math.PI*2);
-   const proportion=r.between(.96,1.05),lean=r.between(-.018,.018);
+   const asym=r.between(-.18,.18),phase=r.between(0,Math.PI*2);
+   const proportion=r.between(.88,1.13),lean=r.between(-.052,.052);
+   const edgeRhythm=r.between(.75,1.36),edgePhase=r.between(-2,2),curl=r.between(-.070,.070);
 
    // Ivy is a palmate, three-to-five-lobed leaf, not an angular serrated oval.
    // Explicit curved connections prevent intersections and flying spear points.
@@ -1458,10 +1460,10 @@ window.MS=window.MS||{};
      }
      // Ornament changes the paintwork more than the silhouette. It can
      // gently swell the lobe masses but never create new serrations.
-     w*=1+.016*orn*Math.sin(Math.PI*t*3+phase);
-     w=Math.max(0,w*proportion*uneven);
-     const tremor=(.002+.001*orn)*e*Math.sin(t*14+phase+side*.37);
-     return {x:len*t,y:len*(side*(w+tremor)+lean*Math.sin(Math.PI*t))};
+     w*=1+(.035+.025*orn)*Math.sin(Math.PI*t*edgeRhythm*2.1+phase);
+     w=Math.max(0,w*proportion*uneven*(1+.065*Math.sin(11.3*t+edgePhase+side*.8)));
+     const tremor=(.005+.003*orn)*e*(Math.sin(t*18+phase+side*.37)+.35*Math.sin(t*43+edgePhase));
+     return {x:len*(t+curl*Math.sin(Math.PI*t)**2),y:len*(side*(w+tremor)+lean*Math.sin(Math.PI*t))};
    };
    const N=kind==='holly'?160:kind==='hazel'||kind==='bramble'?144:112;
    const upper=[],lower=[];
@@ -1530,7 +1532,7 @@ window.MS=window.MS||{};
    });
    // Fine hatch, resembling thin coloured penwork on historic herbals.
    if(size>20){
-     const count=Math.round(size*.38);
+     const count=Math.round(size*.21);
      for(let i=0;i<count;i++){
        const t=r.between(.18,.86),side=r.sign();
        const y=side*size*r.between(.035,.12)*Math.sin(Math.PI*t);
@@ -1544,86 +1546,72 @@ window.MS=window.MS||{};
  function simpleLeaf(sp,size,season,pal,r,kindOverride,s={registration:0,pigment:40,wear:20}){
    const kind=kindOverride||sp.leaf,d=blade(kind,size,r,s),
      color=M.leafPigment(sp,season,pal,r,s),id=`leaf-${r.int(10000,999999999)}`;
+   // A printmaker does not engrave every background leaflet as a full plate.
+   // Distant/compound leaflets use a single ink impression. This drastically
+   // reduces SVG filters, makes the foreground leaves read, and keeps mobile fast.
+   if(size < 27){
+     const dark=M.mix(color,pal.ink,.58);
+     let small=M.shape(d,color,`stroke="${dark}" stroke-width="${n(Math.max(.55,size*.025))}" stroke-linejoin="round"`);
+     small+=M.shape(d,'url(#micro-grain)',`opacity=".43"`);
+     small+=M.path(`M${S(size*.09,0)}Q${S(size*.47,size*.01)} ${S(size*.91,0)}`,
+       dark,Math.max(.22,size*.018),`opacity=".69"`);
+     if(size>19){
+       const side=r.sign();
+       small+=M.path(`M${S(size*.29,side*size*.024)}q${S(size*.12,side*size*.075)} ${S(size*.25,side*size*.095)}`,
+         M.mix(color,pal.ochre,.43),Math.max(.21,size*.012),`opacity=".53"`);
+     }
+     return small;
+   }
    let art=M.leafFinish(id,d,size,color,pal,s,r);
    const clipId=`leaf-clip-${id}`;
    const veins=leafVeins(kind,size,color,pal,r,s);
    const ornament=M.ornamentLeafInterior?M.ornamentLeafInterior(sp,size,color,pal,r,s):'';
    const patch=M.ornamentColorPatch?M.ornamentColorPatch(sp,size,pal,r,s):'';
-   // Future-medieval inlay. Small heraldic geometry belongs to the leaf itself:
-   // crisp pointed arches, lozenge seals and stained-ink hatching. These appear
-   // selectively, rather than turning every leaf into a repeated digital icon.
+   // Plate-maker's restraint: use the natural leaf as the ornament.
+   // No tiny printed diamonds, shields or pasted heraldic glyphs on each blade.
    const level=M.clamp(Number(s.ornament||0)/100,0,1);
-   let medievalInlay='';
-   // Shared pigment accents must be in scope for both manuscript inlay passes.
-   const cobalt=M.mix(pal.lapis,pal.ink,.16),cinnabar=M.mix(pal.vermillion,pal.ink,.10);
-   const accent=r.chance(.34)?pal.ochre:(r.chance(.5)?cinnabar:cobalt);
    const future=s.palette==='future';
-   if(size>15 && level>.20 && r.chance((future?.36:.13) + .42*level)){
-     const sign=r.sign();
-     const x=size*r.between(.35,.48),h=size*(kind==='ivy'?.082:.048);
-     const height=size*(kind==='ivy'?.082:.071);
-     const motif=r.int(0,2);
-     if(motif===0){
-       // A tiny pointed window inset, never a sharp protrusion outside the edge.
-       medievalInlay+=M.shape(`M${S(x-size*.07,sign*h)}Q${S(x-size*.035,sign*(h+height*.55))} ${S(x,sign*(h+height))}`+
-         `Q${S(x+size*.035,sign*(h+height*.55))} ${S(x+size*.07,sign*h)}Z`,
-         accent,`opacity="${n(.65+.22*level)}"`);
-       medievalInlay+=M.path(`M${S(x,sign*h)}L${S(x,sign*(h+height*.73))}`,pal.ink,.24,'opacity=".5"');
-     }else if(motif===1){
-       const dx=size*.055,dy=size*.068;
-       medievalInlay+=M.shape(`M${S(x-dx,sign*h)}L${S(x,sign*(h+dy))}L${S(x+dx,sign*h)}L${S(x,sign*(h-dy))}Z`,
-         'none',`stroke="${accent}" stroke-width="${n(Math.max(.44,size*.017))}" opacity=".78"`);
-       medievalInlay+=M.circle(x,sign*h,Math.max(.34,size*.017),accent);
-     }else{
-       for(let j=0;j<3;j++){
-         const xx=x-size*.075+j*size*.056;
-         medievalInlay+=M.path(`M${S(xx,sign*(h-size*.025))}l${S(size*.033,sign*size*.05)}`,
-           accent,Math.max(.3,size*.012),`opacity="${n(.54+.23*level)}"`);
-       }
-     }
-   }
-   if(future && size>16 && level>.38 && r.chance(.52)){
-     const xx=size*r.between(.28,.68), yy=(r.sign())*size*r.between(.03,.11);
-     const crest=r.int(0,2);
-     if(crest===0){
-       medievalInlay+=M.shape(`M${S(xx-size*.042,yy)}L${S(xx,yy-size*.055)}L${S(xx+size*.042,yy)}L${S(xx,yy+size*.055)}Z`, accent, `opacity="${n(.58+.22*level)}"`);
-       medievalInlay+=M.path(`M${S(xx-size*.018,yy)}L${S(xx+size*.018,yy)}M${S(xx,yy-size*.018)}L${S(xx,yy+size*.018)}`, pal.ink, Math.max(.22,size*.01), `opacity="${n(.46+.18*level)}"`);
-     }else if(crest===1){
-       for(let step=0;step<4;step++){
-         const sx=xx-size*.05+step*size*.022;
-         medievalInlay+=M.shape(`M${S(sx,yy-size*.012)}L${S(sx+size*.016,yy-size*.012)}L${S(sx+size*.016,yy+size*.012)}L${S(sx,yy+size*.012)}Z`, step%2?cobalt:cinnabar, `opacity="${n(.42+.18*level)}"`);
-       }
-     }else{
-       medievalInlay+=M.path(`M${S(xx-size*.055,yy+size*.022)}Q${S(xx,yy-size*.048)} ${S(xx+size*.055,yy+size*.022)}`, accent, Math.max(.28,size*.012), `opacity="${n(.52+.18*level)}"`);
-       medievalInlay+=M.path(`M${S(xx-size*.028,yy+size*.006)}L${S(xx+size*.028,yy+size*.006)}`, pal.ink, Math.max(.18,size*.009), `opacity="${n(.40+.15*level)}"`);
-     }
+   let medievalInlay='';
+   const ink=M.mix(color,pal.ink,.66);
+   const faded=M.mix(color,pal.light,.65);
+   // Half-tone wash sits INSIDE the leaf, like an uneven hand-coloured woodcut.
+   if(size>14){
+     const side=r.sign(),depth=.10+r.between(0,.15);
+     const wash=`M${S(size*.08,0)}Q${S(size*.29,side*size*.26)} ${S(size*.65,side*size*.25)}`+
+       `Q${S(size*.88,side*size*.12)} ${S(size*.97,0)}`+
+       `Q${S(size*.55,side*size*.055)} ${S(size*.08,0)}Z`;
+     medievalInlay+=M.shape(wash,ink,`opacity="${n(depth)}"`);
+     const narrow=`M${S(size*.12,0)}Q${S(size*.49,side*size*.075)} ${S(size*.86,side*size*.03)}`;
+     medievalInlay+=M.path(narrow,faded,Math.max(.22,size*.014),`opacity="${n(r.between(.40,.73))}"`);
    }
    let plateMarks='';
    if(size>15){
-     // The botanical-plate effect is deliberate pen hatchwork, not random
-     // circular pixel noise. Each narrow stroke follows the leaf's midrib.
-     const dark=M.mix(color,pal.ink,.58);
-     const warm=M.mix(color,pal.ochre,.52);
-     const light=M.mix(color,pal.light,.68);
-     const lines=Math.max(5,Math.round(size*.31));
-     const bias=r.sign();
-     for(let i=0;i<lines;i++){
-       const t=.15+(i+.3)/lines*.70+r.between(-.012,.012);
-       const side=i%3===0?-bias:bias;
-       const y=side*size*(.045+.070*Math.sin(Math.PI*t));
-       const len=size*r.between(.032,.082);
-       plateMarks+=M.path(`M${S(t*size,y)}q${S(len*.55,side*len*.32)} ${S(len,side*len*.22)}`,
-         i%4===0?warm:dark,Math.max(.18,size*.007),`opacity="${n(r.between(.17,.39))}"`);
+     const charcoal=M.mix(color,pal.ink,.79);
+     const oxide=M.mix(color,pal.ochre,.55);
+     const frost=M.mix(color,pal.light,.82);
+     const b=r.sign(),count=Math.max(7,Math.round(size*.39));
+     // Two families of burin cuts: every mark is held by the leaf's clipping path.
+     // Both spacing and blade pressure vary, avoiding computer-perfect patterns.
+     for(let i=0;i<count;i++){
+       const t=.10+(i+r.between(-.13,.16))/count*.82;
+       const side=i%6<4?b:-b;
+       const h=size*(.03+.075*Math.pow(Math.sin(Math.PI*t),.85));
+       const x=size*t+r.between(-.35,.35);
+       const y=side*h;
+       const inc=size*r.between(.035,.10),dy=side*size*r.between(.033,.091);
+       const d2=`M${S(x,y)}Q${S(x+inc*.3,y+dy*.15)} ${S(x+inc,y+dy)}`;
+       plateMarks+=M.path(d2,i%8===0?oxide:charcoal,Math.max(.15,size*r.between(.006,.016)),
+         `opacity="${n(r.between(.23,.56))}"`);
+       if(i%5===0){
+         plateMarks+=M.path(`M${S(x+inc*.20,y-side*.012*size)}l${S(inc*.44,side*size*.018)}`,
+           frost,Math.max(.18,size*.007),`opacity="${n(r.between(.21,.50))}"`);
+       }
      }
-     // A small softly printed folded plane. Its edge follows a curved vein,
-     // so it reads as one leaf buckling rather than a geometric overlay.
-     if(size>23 && r.chance(.53)){
-       const side=r.sign();
-       const d2=`M${S(size*.20,0)}Q${S(size*.42,side*size*.115)} ${S(size*.72,side*size*.105)}`+
-         `Q${S(size*.48,side*size*.045)} ${S(size*.20,0)}Z`;
-       plateMarks+=M.shape(d2,side>0?dark:light,`opacity="${n(r.between(.10,.20))}"`);
-       plateMarks+=M.path(`M${S(size*.21,0)}Q${S(size*.45,side*size*.10)} ${S(size*.71,side*size*.103)}`,
-         side>0?dark:light,Math.max(.23,size*.012),`opacity=".35"`);
+     // Occasional visible fibrous split, interrupted deliberately like a poor press.
+     if(r.chance(.36)){
+       const side=r.sign(),x=size*r.between(.22,.61);
+       const tear=`M${S(x,side*size*.03)}q${S(size*.06,-side*size*.04)} ${S(size*.08,side*size*.02)}`;
+       plateMarks+=M.path(tear,pal.light,Math.max(.4,size*.03),`opacity="${n(r.between(.45,.78))}"`);
      }
    }
    art+=`<g clip-path="url(#${clipId})">${veins}${plateMarks}${patch}${ornament}${medievalInlay}</g>`;
@@ -1682,9 +1670,9 @@ window.MS=window.MS||{};
  // visible cups. Motifs attach at a real shoot terminal.
  const pt=(at,a,d)=>({x:at.x+Math.cos(a)*d,y:at.y+Math.sin(a)*d});
  function blossom(at,scale,pal,r,kind='hawthorn'){
-   let z='',petals=kind==='honeysuckle'?4:5;
-   const flowerPhase=r.between(-.20,.20),petalVariance=Array.from({length:5},()=>r.between(.80,1.17));
-   const blossomColor=kind==='dogrose'?M.mix('#e6a4b3',pal.light,.21):
+   let z='',petals=kind==='honeysuckle'?4:r.chance(.18)?6:5;
+   const flowerPhase=r.between(-.29,.29),petalVariance=Array.from({length:7},()=>r.between(.69,1.28));
+   const blossomColor=kind==='dogrose'?M.mix(r.chance(.48)?'#9b2b43':'#d95d75',pal.light,r.between(.08,.25)):
      kind==='acanthus'?pal.lapis:M.mix(pal.light,'#ffffff',.73);
    const center=at;
    for(let i=0;i<petals;i++){
@@ -1693,7 +1681,18 @@ window.MS=window.MS||{};
         tip1=pt(center,a-.17,extent*.68),tip2=pt(center,a+.16,extent*.66);
      const d=`M${S(center.x,center.y)}C${S(left.x,left.y)} ${S(tip1.x,tip1.y)} ${S(edge.x,edge.y)}`+
        `C${S(tip2.x,tip2.y)} ${S(right.x,right.y)} ${S(center.x,center.y)}Z`;
-     z+=M.shape(d,blossomColor,`stroke="${pal.ink}" stroke-width=".56"`)+M.shape(d,'url(#brush-fiber)',`opacity=".46"`)+M.shape(d,'url(#micro-grain)',`opacity=".33"`);
+     const oxide=M.mix(blossomColor,pal.vermillion,r.between(.32,.67));
+     const petalFill=i%3===0?M.mix(blossomColor,oxide,.35):M.mix(blossomColor,pal.light,r.between(.02,.13));
+     z+=M.shape(d,petalFill,`stroke="${M.mix(pal.ink,oxide,.15)}" stroke-width=".72"`)+
+       M.shape(d,'url(#brush-fiber)',`opacity=".64"`)+M.shape(d,'url(#micro-grain)',`opacity=".48"`);
+     const throat=pt(center,a,extent*.13),torn=pt(center,a+.11,extent*.42);
+     z+=M.path(`M${S(throat.x,throat.y)}Q${S(torn.x,torn.y)} ${S(edge.x,edge.y)}`,
+       oxide,r.between(.30,.86),`opacity="${M.n(r.between(.33,.59))}"`);
+     for(let h=0;h<5;h++){
+       const x=r.between(.26,.69)*extent,base=pt(center,a,x),other=pt(base,a+r.between(-.23,.23),r.between(.6,2.6));
+       z+=M.path(`M${S(base.x,base.y)}L${S(other.x,other.y)}`,
+          i%2?oxide:pal.ink,r.between(.20,.35),`opacity="${M.n(r.between(.18,.34))}"`);
+     }
      z+=M.path(`M${S(center.x,center.y)}Q${S(edge.x,edge.y)} ${S(tip1.x,tip1.y)}`,
        M.mix(blossomColor,pal.vermillion,.59),.47,'opacity=".62"');
      const shadow=pt(center,a,extent*.31);
@@ -1781,7 +1780,7 @@ window.MS=window.MS||{};
    if(name==='ivy')return season==='winter'?fruitCluster(sp,tip,angle,scale,pal,r,'ivy',4):'';
    if(name==='hawthorn')return season==='spring'?blossom(tip,scale*1.12,pal,r,name):season==='autumn'||season==='winter'?fruitCluster(sp,tip,angle,scale,pal,r,'red',3):'';
    if(name==='oak')return season==='autumn'?fruitCluster(sp,tip,angle,scale,pal,r,'acorn',2):'';
-   if(name==='dogrose')return season==='spring'||season==='summer'?blossom(tip,scale*2.15,pal,r,name):fruitCluster(sp,tip,angle,scale,pal,r,'hip',1);
+   if(name==='dogrose')return season==='spring'||season==='summer'?blossom(tip,scale*2.38,pal,r,name):fruitCluster(sp,tip,angle,scale,pal,r,'hip',1);
    if(name==='honeysuckle'){
      if(season==='spring'||season==='summer'){
        let z='';for(let i=0;i<4;i++){
@@ -2233,6 +2232,22 @@ window.MS=window.MS||{};
      }).join('');
      if(stripe)out+=M.path(stripe,M.mix(color,pal.light,.28),.38,'opacity=".31"');
    }
+   // Burin-like cuts and discontinuous bark shadows. Unlike random pixel bars,
+   // each impression follows the tangent and stays physically on a wooden axis.
+   if(w>1.7){
+     const burin=M.rng(M.childSeed(Number(s.seed)>>>0||1,Math.round(points[0].x*7+points[0].y*11+w*100)));
+     const dark=M.mix(color,pal.ink,.67),pale=M.mix(color,pal.light,.65);
+     for(let i=7;i<points.length-5;i+=major?3:5){
+       const pt=points[i];if(!burin.chance(major?.70:.43))continue;
+       const radius=widthAt(w,pt.t,major?.09:.16)*.46;
+       const per=norm(pt.tng),off=burin.between(-.68,.68)*radius;
+       const a=add(pt,per,off),length=burin.between(1.4,major?5.8:3.6);
+       const tip=add(add(a,pt.tng,length),per,burin.between(-.5,.5));
+       out+=M.path(`M${V(a)}Q${V(add(a,pt.tng,length*.4))} ${V(tip)}`,
+         burin.chance(.63)?dark:pale,Math.max(.19,major?.53:.32),
+         `opacity="${n(burin.between(.22,.65))}"`);
+     }
+   }
    return out;
  }
  function anchored(point,side,width,advance=.8){return add(add(point,norm(point.tng),side*width*.29),point.tng,advance);}
@@ -2242,7 +2257,7 @@ window.MS=window.MS||{};
    // tiny circle, which produced impossible stacks of foliage.
    const max={holly:39,hazel:44,ivy:40,hawthorn:32,oak:48,dogrose:39,
       honeysuckle:37,bramble:39,acanthus:46,fern:31}[sp.leaf]||36;
-   size=clamp(size*1.43,16,max*1.26)*r.between(.83,1.17);
+   size=clamp(size*1.60,18,max*1.42)*r.between(.78,1.23);
    const variants=[
      [0,1,0],[.24,.94,0],[-.25,.91,0],[.39,.81,0],[-.40,.80,0],
      [.13,.78,3],[-.17,.76,-3],[.48,.67,0],[-.50,.67,0]
@@ -2275,9 +2290,10 @@ window.MS=window.MS||{};
    const result=M.plantOrgan(sp,p,a,season,pal,r,scale,s);
    if(!result)return '';
    plan.accents=plan.accents||[];
-   const radius=scale*(['dogrose','honeysuckle','bramble'].includes(sp.leaf)?1.9:1.18);
+   const radius=scale*(['dogrose','honeysuckle','bramble'].includes(sp.leaf)?2.2:1.18);
    const tip=add(p,polar(a,scale*.8));
    if(plan.accents.some(old=>M.distance(old.p,tip)<old.radius+radius+2))return '';
+   if(['dogrose','bramble','honeysuckle'].includes(sp.leaf) && plan.accents.length>=7)return '';
    if(!allowed(tip,plan,Math.min(12,scale*.75)))return '';
    plan.accents.push({p:tip,radius});
    return result;
@@ -2342,7 +2358,7 @@ window.MS=window.MS||{};
      oak:.73,dogrose:.85,bramble:.84,honeysuckle:.92,acanthus:.64}[kind]||1;
    const winterLeaf=season==='winter'&&!sp.evergreen;
    const seasonalBoost=winterLeaf?.67:season==='spring'?.86:1;
-   const leafCount=clamp(Math.round((sub?2.6:4.3)*sp.frequency*leafFactor*
+   const leafCount=clamp(Math.round((sub?2.3:3.65)*sp.frequency*leafFactor*
      (.64+s.foliage/120)*seasonalBoost*r.between(.91,1.12)),2,sub?5:9);
    const lengthCurve=kind==='ivy'?.22:kind==='hazel'?.35:kind==='dogrose'?.32:.26;
    for(let i=0;i<leafCount;i++){
@@ -2481,7 +2497,7 @@ window.MS=window.MS||{};
      plan.spatial?.addWood?.(points,base,plan.activeStem);
      let woodArt=stemInk(points,base,wood,pal,r,s,true,sp);
      let growth='';
-     let count=clamp(Math.round((stem.major?7.0:4.4)*sp.frequency*(.48+fol*.84)*(sp.shootDensity||1)*emphasis),2,13);
+     let count=clamp(Math.round((stem.major?6.4:4.1)*sp.frequency*(.48+fol*.84)*(sp.shootDensity||1)*emphasis),2,13);
      if(season==='winter'&&!sp.evergreen)count=Math.max(2,Math.round(count*.74));
      // Slightly irregular spacing instead of evenly-spaced identical twigs.
      const lowerBias=sp.habit==='heavy'||sp.leaf==='oak'||sp.leaf==='hazel';
@@ -2530,137 +2546,32 @@ window.MS=window.MS||{};
 
 </script>
 <script data-engine-module="future-plate">
-/* FUTURE MEDIEVAL / R3
-   These are independent, seed-reproducible plates ON TOP of the intact
-   botanical renderer. Nothing modifies nodes, species anatomy or silhouette.
-   Damage follows growth coordinates, not random points across the page.
-   The SVG itself contains all of the effects, including PNG/SVG exports. */
+/* R4: registration and abrading are functions of the growth axes.
+   No shields, free stars, circles, glyphs or synthetic scan lines. */
 window.MS=window.MS||{};
 ((M)=>{
   'use strict';
-  const n=M.n, v=M.vec;
-  const line=(x,y,x2,y2,color,width=.6,opacity=.3,dash='')=>
-    `<path d="M${v(x,y)}L${v(x2,y2)}" stroke="${color}" stroke-width="${n(width)}" opacity="${n(opacity)}" fill="none"${dash?` stroke-dasharray="${dash}"`:''}/>`;
-  const rect=(x,y,w,h,color,o)=>`<rect x="${n(x)}" y="${n(y)}" width="${n(w)}" height="${n(h)}" fill="${color}" opacity="${n(o)}"/>`;
-  const star=(x,y,sz,color,o)=>{
-    const pts=[[x,y-sz],[x+sz*.16,y-sz*.16],[x+sz,y],[x+sz*.16,y+sz*.16],[x,y+sz],[x-sz*.16,y+sz*.16],[x-sz,y],[x-sz*.16,y-sz*.16]];
-    return `<path d="${M.poly(pts.map(([x,y])=>({x,y})))}" fill="${color}" opacity="${n(o)}"/>`;
-  };
-  const safe=(x,a,b)=>M.clamp(x,a,b);
-  // The plant is already rendered when this is called, so drawnPoints track
-  // the REAL hand-inked branches (including the composition's geometry).
   M.futurePlate=(s,plan)=>{
-    const f=safe(Number(s.finishLevel||0)/100,0,1);
-    if(f<.04)return {defs:'',under:'',over:''};
-    const r=M.rng(M.childSeed((Number(s.seed)>>>0)||1,0x7f10a33));
-    const future=s.palette==='future',pal=s.pal||M.palette(s.palette);
-    const red=future?'#e1203b':pal.vermillion;
-    const cyan=future?'#008b7e':M.mix(pal.lapis,pal.green,.45);
-    const gold=future?'#cd8b28':pal.ochre;
-    const black=pal.ink;
-    const spines=(plan?.stems||[]).map(st=>st.drawnPoints?.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y))||[]).filter(points=>points.length>3);
-    const points=spines.flat();
-    if(!points.length)return {defs:'',under:'',over:''};
-    const xs=points.map(p=>p.x),ys=points.map(p=>p.y);
-    const bx=Math.min(...xs),by=Math.min(...ys),bw=Math.max(...xs)-bx,bh=Math.max(...ys)-by;
-    // Effects are added with breathing space but NOT included in the fit bbox.
-    const bounds={x:safe(bx-45,5,M.W-5),y:safe(by-45,5,M.H-5),w:Math.min(bw+90,M.W-10),h:Math.min(bh+90,M.H-10)};
-    const sample=()=>{
-      const candidates=spines.filter(a=>a.length>=25);
-      const group=r.choose(candidates.length?candidates:spines);
-      return group[r.int(4,Math.max(4,group.length-5))];
-    };
-    const shortX=(x)=>safe(x,8,M.W-8),shortY=(y)=>safe(y,8,M.H-8);
-    let defs='',under='',over='';
-    const strength=Math.pow(f,1.18);
-    // Broken antique paper, from many tiny warm translucent ink deposits,
-    // not a blurred brown blob or a fake burnt corner.
-    const speckleCount=Math.round(190+380*strength);
-    for(let i=0;i<speckleCount;i++){
-      const a=sample(),x=shortX(a.x+r.between(-64,64)),y=shortY(a.y+r.between(-58,58));
-      const size=r.between(.18,1.18)*(r.chance(.08)?2.3:1);
-      const col=r.chance(.75)?gold:black;
-      under+=`<circle cx="${n(x)}" cy="${n(y)}" r="${n(size)}" fill="${col}" opacity="${n(strength*r.between(.045,.21))}"/>`;
-    }
-    // Irregular ghosted strike marks: exactly 1-3 per composition.
-    const ghosts=Math.round(2+strength*3);
-    for(let i=0;i<ghosts;i++){
-      const p=sample(),dx=r.between(-19,19),dy=r.between(-16,16),len=r.between(18,50);
-      const op=strength*r.between(.12,.24);
-      under+=line(shortX(p.x+dx),shortY(p.y+dy),shortX(p.x+dx+len),shortY(p.y+dy-2.6),r.chance(.5)?red:black,r.between(.55,1.25),op,r.chance(.7)?'10 4 1.5 3':'');
-    }
-    // Small architectural diagrams: never full-page rings or unrelated
-    // Gothic emblems. One fractured compass arc sometimes anchors a bloom.
-    if(r.chance(.69+.18*strength)){
-      const p={x:bx+bw*.52,y:by+bh*.46};
-      const radius=r.between(175,230),start=r.between(-2.7,1.2),sweep=r.between(2.4,3.1);
-      const sx=p.x+Math.cos(start)*radius,sy=p.y+Math.sin(start)*radius;
-      const ex=p.x+Math.cos(start+sweep)*radius,ey=p.y+Math.sin(start+sweep)*radius;
-      under+=`<path d="M${v(sx,sy)}A${n(radius)} ${n(radius)} 0 0 1 ${v(ex,ey)}" fill="none" stroke="${red}" stroke-width="1.15" opacity="${n(.52*strength)}" stroke-dasharray="${n(r.between(13,30))} ${n(r.between(4,10))}"/>`;
-      if(r.chance(.48))under+=line(p.x-radius*.30,p.y,p.x+radius*.24,p.y,red,.55,.22*strength);
-    }
-    // One small, deliberately broken heraldic seal adds manuscript character.
-    // It is placed in existing negative space and printed at low contrast.
-    if(future || r.chance(.42+.34*strength)){
-      const x=bx+bw+r.between(85,145);
-      const y=by+bh*r.between(.14,.31);
-      const w=r.between(78,112),h=w*1.18;
-      const d=`M${v(x,y)}L${v(x+w,y)}L${v(x+w,y+h*.65)}Q${v(x+w*.84,y+h*.86)} ${v(x+w*.5,y+h)}Q${v(x+w*.16,y+h*.86)} ${v(x,y+h*.65)}Z`;
-      under+=`<path d="${d}" stroke="${red}" stroke-width="${n(r.between(1,1.8))}" opacity="${n(.43*strength)}" fill="none" stroke-dasharray="${n(w*.55)} 1.5 2.5 1"/>`;
-      under+=`<path d="M${v(x+w*.25,y+h*.40)}Q${v(x+w*.50,y+h*.02)} ${v(x+w*.75,y+h*.40)}Q${v(x+w*.50,y+h*.86)} ${v(x+w*.25,y+h*.40)}Z" stroke="${red}" stroke-width=".7" fill="none" opacity="${n(.32*strength)}"/>`;
-      under+=star(x+w*.5,y+h*.44,w*.13,red,.32*strength);
-    }
-    // Occasional damaged drop-cap, a printed object rather than an imported
-    // illustration. It never appears in every seed or at wear = 0.
-    if(future&&r.chance(.58)){
-      const x=bx-r.between(200,280),y=by+bh*r.between(.38,.62);
-      const cap=`<text x="${n(x)}" y="${n(y)}" font-family="Old English Text MT, UnifrakturMaguntia, Georgia, serif" font-size="105" font-weight="900" fill="${black}" opacity="${n(.24*strength)}">B</text>`;
-      under+=cap;
-      under+=line(x-2,y+4,x+65,y+4,red,.9,.29*strength,'8 7');
-    }
-    // Incomplete printing: short horizontal bars aligned with REAL plant
-    // coordinates and displaced, sometimes paired with colored misregistration.
-    const numberOfBands=Math.round(5+13*strength),plates=[];
-    for(let i=0;i<numberOfBands;i++){
-      const p=sample(),row=shortY(p.y+r.between(-8,8)),left=shortX(p.x+r.between(-17,5));
-      const width=r.between(20,56),height=r.between(1.2,4.2),offset=r.between(2.6,7.5)*(r.chance(.5)?-1:1);
-      const base=r.chance(.61)?red:cyan;
-      const x=safe(left,3,M.W-width-5),w=Math.min(width,M.W-x-3);
-      // Print-slip echo: a short offset of the original branch tangent.
-      // Unlike a full <use> of the 6MB botanical artwork, these bounded
-      // strokes keep repeated regeneration and PNG export responsive.
-      const tang=p.tng||{x:0,y:-1},run=r.between(5,22);
-      plates.push(line(p.x+offset-tang.x*run,p.y+offset*.12-tang.y*run,
-        p.x+offset+tang.x*run,p.y+offset*.12+tang.y*run,
-        base,r.between(.6,1.8),strength*r.between(.25,.53)));
-      over+=rect(x,row,w,height,base,strength*r.between(.48,.85));
-      if(r.chance(.72)){
-        const wipe=r.between(6,18);
-        // printing abrasion cuts into the colored plate without clearing
-        // or damaging the source botanical ink.
-        over+=rect(x+r.between(2,6),row-.36,Math.min(wipe,w-5),height*.42,pal.light,strength*.65);
-      }
-      if(r.chance(.42))over+=rect(x+r.between(0,8),row+height+r.between(1.4,4.2),r.between(3,7),.85,cyan,strength*.50);
-    }
-    // Short secondary strokes provide a clipped-plate feel without duplication.
-    // Controlled off-register microblocks: 1-2 tiny clusters, not pixelating
-    // the entire source illustration into low resolution.
-    const clusters=Math.round(2+4*strength);
-    for(let i=0;i<clusters;i++){
-      const p=sample(),x=shortX(p.x+r.between(-15,15)),y=shortY(p.y+r.between(-9,9));
-      for(let j=0;j<r.int(3,7);j++){
-        const w=r.between(1.1,3.2),h=r.between(.7,2.2),dx=j*(w+.6)+r.between(-1,1),dy=r.between(-2.6,2.6);
-        over+=rect(x+dx,y+dy,w,h,r.chance(.63)?red:cyan,strength*r.between(.34,.70));
+    const f=M.clamp(Number(s.finishLevel||0)/100,0,1);
+    if(f<.12)return {defs:'',under:'',over:''};
+    const r=M.rng(M.childSeed(Number(s.seed)>>>0||1,0x7f10a33));
+    const stems=(plan.stems||[]).map(st=>st.drawnPoints||[]).filter(q=>q.length>=50);
+    const pal=s.pal;let under='',over='';
+    // Fine off-register impressions are explicitly tied to a segment of the real stem.
+    for(const points of stems){
+      const count=Math.floor(f*r.between(3,8));
+      for(let j=0;j<count;j++){
+        const i=r.int(8,points.length-13),end=Math.min(points.length-2,i+r.int(2,6));
+        const first=points[i],second=points[end],t=first.tng||{x:0,y:-1};
+        const normal={x:-t.y,y:t.x},drift=r.between(.7,2.1)*(r.chance(.5)?-1:1);
+        const a={x:first.x+normal.x*drift,y:first.y+normal.y*drift};
+        const b={x:second.x+normal.x*drift,y:second.y+normal.y*drift};
+        const c=r.chance(.8)?M.mix(pal.vermillion,pal.ink,.32):M.mix(pal.lapis,pal.ink,.40);
+        under+=M.path(`M${M.vec(a.x,a.y)}Q${M.vec((a.x+b.x)/2,(a.y+b.y)/2)} ${M.vec(b.x,b.y)}`,
+          c,r.between(.35,1.2),`opacity="${M.n(r.between(.14,.32)*f)}"`);
       }
     }
-    // Four-point woodcut stars are tied to the terminal zone, rare and small.
-    if(r.chance(.72)){
-      const st=r.choose(spines),p=st[Math.round(st.length*.8)];
-      const x=p.x+r.between(95,155)*(r.chance(.5)?-1:1),y=p.y+r.between(-45,45);
-      over+=star(x,y,r.between(10,17),red,.56*strength);
-    }
-    return {defs,under:`<g id="r3-paper-impression" pointer-events="none">${under}</g>`,
-      over:`<g id="r3-print-interference" pointer-events="none">${plates.join('')}${over}</g>`};
+    return {defs:'',under:`<g id="plant-registration-impression" pointer-events="none">${under}</g>`,over};
   };
 })(window.MS);
 </script>
@@ -2725,9 +2636,9 @@ window.MS=window.MS||{};
  const on=(id,event,handler)=>{const node=el(id);if(node)node.addEventListener(event,handler);};
 
  const defaultSettings={
-   geometry:'random',conform:32,ornament:86,
+   geometry:'random',conform:22,ornament:60,
    pattern:'random',species:'random',season:'summer',palette:'future',seed:20261104,
-   foliage:80,finishLevel:57
+   foliage:75,finishLevel:52
  };
  const s={...defaultSettings};
  const textFields=['pattern','geometry','species','season','palette'];
@@ -2747,12 +2658,12 @@ window.MS=window.MS||{};
    // Make wear clearly legible, while keeping the drawing itself continuous.
    s.detail=88;
    const future=s.palette==='future';
-   s.pigment=Math.round((future?50:34)+f*(future?46:46));
-   s.wear=Math.round((future?18:6)+f*(future?82:84));
-   s.spread=Math.round((future?24:10)+f*(future?74:82));
-   s.registration=Math.round((future?10:0)+f*(future?34:24));
-   s.printWarp=Math.round((future?8:3)+f*(future?34:28));
-   s.distortion=future?44:32;
+   s.pigment=Math.round((future?68:45)+f*(future?24:35));
+   s.wear=Math.round((future?18:12)+f*(future?46:64));
+   s.spread=Math.round((future?29:15)+f*(future?50:65));
+   s.registration=Math.round((future?16:3)+f*(future?34:20));
+   s.printWarp=Math.round((future?14:5)+f*(future?35:25));
+   s.distortion=future?35:26;
    s.bleed=s.spread>0;
    s.transparent=true;
    s.guideOverlay=false; // guides remain internal construction only
