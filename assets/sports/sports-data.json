@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-12T18:21:09.279Z",
+  "updatedAt": "2026-11-12T20:08:12.510Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -979,15 +979,6 @@
       "shortName": "Lithuania",
       "upcoming": [
         {
-          "id": "6555093",
-          "date": "2026-11-12T17:00:00.000Z",
-          "when": "today · Thu, Nov 12 · 12:00 PM ET",
-          "status": "scheduled",
-          "home": "Lithuania",
-          "away": "Suriname",
-          "competition": "Friendlies"
-        },
-        {
           "id": "5181885",
           "date": "2026-11-16T17:00:00.000Z",
           "when": "Mon, Nov 16 · 12:00 PM ET",
@@ -998,7 +989,7 @@
         }
       ],
       "standings": {
-        "title": "Friendlies",
+        "title": "UEFA Nations League D Grp. 2",
         "rows": []
       }
     },
@@ -1039,8 +1030,8 @@
         {
           "id": "5181858",
           "date": "2026-11-12T19:45:00.000Z",
-          "when": "today · Thu, Nov 12 · 2:45 PM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "England",
           "away": "Croatia",
           "competition": "UEFA Nations League A Grp. 3"
