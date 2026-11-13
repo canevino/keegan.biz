@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-13T17:45:47.237Z",
+  "updatedAt": "2026-11-13T19:53:15.860Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -829,8 +829,8 @@
         },
         {
           "id": "5909224",
-          "date": "2026-11-28T16:00:00.000Z",
-          "when": "Sat, Nov 28 · 11:00 AM ET",
+          "date": "2026-11-30T16:00:00.000Z",
+          "when": "Mon, Nov 30 · 11:00 AM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "Bukovyna Chernivtsi",
