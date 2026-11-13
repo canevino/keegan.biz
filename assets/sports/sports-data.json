@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-12T20:08:12.510Z",
+  "updatedAt": "2026-11-13T06:57:41.757Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -1001,7 +1001,7 @@
         {
           "id": "5181809",
           "date": "2026-11-14T19:45:00.000Z",
-          "when": "Sat, Nov 14 · 2:45 PM ET",
+          "when": "tomorrow · Sat, Nov 14 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Northern Ireland",
           "away": "Ukraine",
@@ -1028,15 +1028,6 @@
       "shortName": "England",
       "upcoming": [
         {
-          "id": "5181858",
-          "date": "2026-11-12T19:45:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "England",
-          "away": "Croatia",
-          "competition": "UEFA Nations League A Grp. 3"
-        },
-        {
           "id": "5181860",
           "date": "2026-11-15T19:45:00.000Z",
           "when": "Sun, Nov 15 · 2:45 PM ET",
@@ -1059,7 +1050,7 @@
         {
           "id": "5181821",
           "date": "2026-11-14T19:45:00.000Z",
-          "when": "Sat, Nov 14 · 2:45 PM ET",
+          "when": "tomorrow · Sat, Nov 14 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Austria",
           "away": "Ireland",
