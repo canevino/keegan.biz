@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-14T16:37:18.421Z",
+  "updatedAt": "2026-11-14T18:18:49.082Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -909,23 +909,23 @@
           },
           {
             "rank": 8,
+            "team": "Bukovyna Chernivtsi",
+            "points": 13,
+            "played": 12,
+            "highlight": false
+          },
+          {
+            "rank": 9,
             "team": "FC Kolos Kovalivka",
             "points": 12,
             "played": 10,
             "highlight": false
           },
           {
-            "rank": 9,
+            "rank": 10,
             "team": "Epitsentr Kamianets-Podilskyi",
             "points": 10,
             "played": 12,
-            "highlight": false
-          },
-          {
-            "rank": 10,
-            "team": "Bukovyna Chernivtsi",
-            "points": 10,
-            "played": 11,
             "highlight": false
           },
           {
@@ -939,7 +939,7 @@
             "rank": 12,
             "team": "Liviy Bereh",
             "points": 9,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
