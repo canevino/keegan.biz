@@ -1,314 +1,24 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
 <title>design | keegan.biz</title>
-<link href="/assets/site.css" rel="stylesheet"/>
-<link href="design.css" rel="stylesheet"/>
-<script defer="" src="design.js"></script>
+<link href="/assets/site.css" rel="stylesheet">
+<link href="design.css" rel="stylesheet">
+<script defer src="design.js"></script>
 </head>
 <body class="design-page">
-<svg aria-hidden="true" class="print-filter-defs" focusable="false" height="0" width="0">
-<defs>
-<filter color-interpolation-filters="sRGB" height="188%" id="ink-display-v41" width="154%" x="-27%" y="-44%">
-  <feGaussianBlur in="SourceAlpha" result="softAlpha" stdDeviation="1.20"/>
-  <feComponentTransfer in="softAlpha" result="thresholdAlpha">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1"/>
-  </feComponentTransfer>
-  <feMorphology in="thresholdAlpha" operator="dilate" radius="0.54" result="spreadAlpha"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.017 0.20" numOctaves="2" seed="29" result="edgeNoise"/>
-  <feDisplacementMap in="spreadAlpha" in2="edgeNoise" scale="2.35" xChannelSelector="R" yChannelSelector="G" result="roughAlpha"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.38 0.54" numOctaves="2" seed="11" result="paperNoise"/>
-  <feColorMatrix in="paperNoise" type="luminanceToAlpha" result="paperAlpha"/>
-  <feComponentTransfer in="paperAlpha" result="lightTooth"><feFuncA type="linear" slope="0.13"/></feComponentTransfer>
-  <feComposite in="roughAlpha" in2="lightTooth" operator="out" result="texturedAlpha"/>
-  <feComposite in="SourceGraphic" in2="texturedAlpha" operator="in" result="coreInk"/>
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.52" result="bleedInk"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.013 0.092" numOctaves="2" seed="43" result="bleedNoise"/>
-  <feDisplacementMap in="bleedInk" in2="bleedNoise" scale="1.85" xChannelSelector="R" yChannelSelector="G" result="organicBleed"/>
-  <feComponentTransfer in="organicBleed" result="fadedBleed"><feFuncA type="linear" slope="0.30"/></feComponentTransfer>
-  <feMerge><feMergeNode in="fadedBleed"/><feMergeNode in="coreInk"/></feMerge>
-</filter>
-<filter color-interpolation-filters="sRGB" height="144%" id="ink-small-v34" width="128%" x="-14%" y="-22%">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="0.18" result="soft"/>
-  <feComponentTransfer in="soft" result="thresholded"><feFuncA type="discrete" tableValues="0 0 0.92 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.11 0.42" numOctaves="2" seed="29" result="noise"/>
-  <feDisplacementMap in="thresholded" in2="noise" scale="0.62" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="1" seed="7" result="grain"/>
-  <feColorMatrix in="grain" type="luminanceToAlpha" result="grainAlpha"/>
-  <feComponentTransfer in="grainAlpha" result="grainCut"><feFuncA type="linear" slope="0.075"/></feComponentTransfer>
-  <feComposite in="rough" in2="grainCut" operator="out"/>
-</filter>
-<filter color-interpolation-filters="sRGB" height="176%" id="ink-knot-v41" width="146%" x="-23%" y="-38%">
-  <feGaussianBlur in="SourceAlpha" result="softAlpha" stdDeviation="1.02"/>
-  <feComponentTransfer in="softAlpha" result="thresholdAlpha"><feFuncA type="discrete" tableValues="0 0 0 1 1 1"/></feComponentTransfer>
-  <feMorphology in="thresholdAlpha" operator="dilate" radius="0.44" result="spreadAlpha"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.021 0.30" numOctaves="2" seed="37" result="edgeNoise"/>
-  <feDisplacementMap in="spreadAlpha" in2="edgeNoise" scale="2.8" xChannelSelector="R" yChannelSelector="G" result="roughAlpha"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.42 0.58" numOctaves="1" seed="7" result="grainNoise"/>
-  <feColorMatrix in="grainNoise" type="luminanceToAlpha" result="grainAlpha"/>
-  <feComponentTransfer in="grainAlpha" result="knotGrain"><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
-  <feComposite in="roughAlpha" in2="knotGrain" operator="out" result="texturedAlpha"/>
-  <feComposite in="SourceGraphic" in2="texturedAlpha" operator="in" result="core"/>
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.48" result="bleed"/>
-  <feComponentTransfer in="bleed"><feFuncA type="linear" slope="0.21"/></feComponentTransfer>
-  <feMerge><feMergeNode in="bleed"/><feMergeNode in="core"/></feMerge>
-</filter>
-
-<filter id="ink-threshold-v46" x="-16%" y="-26%" width="132%" height="160%" color-interpolation-filters="sRGB">
-  <feComponentTransfer result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1"/>
-  </feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.19" numOctaves="2" seed="17" result="noise"/>
-  <feDisplacementMap in="thresholded" in2="noise" scale="1.15" xChannelSelector="R" yChannelSelector="G"/>
-</filter>
-<filter id="ink-press-v46" x="-18%" y="-28%" width="136%" height="164%" color-interpolation-filters="sRGB">
-  <feMorphology in="SourceGraphic" operator="dilate" radius="0.68" result="spread"/>
-  <feGaussianBlur in="spread" stdDeviation="0.40" result="softSpread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.017 0.22" numOctaves="2" seed="41" result="edgeNoise"/>
-  <feDisplacementMap in="softSpread" in2="edgeNoise" scale="1.65" xChannelSelector="R" yChannelSelector="G" result="roughCore"/>
-  <feGaussianBlur in="spread" stdDeviation="1.30" result="outerBleed"/>
-  <feComponentTransfer in="outerBleed" result="fadedBleed"><feFuncA type="linear" slope="0.28"/></feComponentTransfer>
-  <feMerge><feMergeNode in="fadedBleed"/><feMergeNode in="roughCore"/></feMerge>
-</filter>
-
-<filter id="ink-display-v47" x="-28%" y="-44%" width="156%" height="188%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="1.06" result="softAlpha"/>
-  <feComponentTransfer in="softAlpha" result="thresholdAlpha">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1"/>
-  </feComponentTransfer>
-  <feMorphology in="thresholdAlpha" operator="dilate" radius="0.62" result="spreadAlpha"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.010 0.072" numOctaves="3" seed="29" result="edgeFibers"/>
-  <feDisplacementMap in="spreadAlpha" in2="edgeFibers" scale="2.45" xChannelSelector="R" yChannelSelector="G" result="roughAlpha"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.021 0.095" numOctaves="2" seed="61" result="pressVariation"/>
-  <feColorMatrix in="pressVariation" values="0.34 0 0 0 0.54  0 0.34 0 0 0.54  0 0 0.34 0 0.54  0 0 0 .10 0" result="pressTone"/>
-  <feComposite in="pressTone" in2="roughAlpha" operator="in" result="pressInside"/>
-  <feComposite in="SourceGraphic" in2="roughAlpha" operator="in" result="coreInk"/>
-  <feBlend in="coreInk" in2="pressInside" mode="multiply" result="texturedCore"/>
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.78" result="bleedInk"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.012 0.085" numOctaves="2" seed="43" result="bleedNoise"/>
-  <feDisplacementMap in="bleedInk" in2="bleedNoise" scale="2.15" xChannelSelector="R" yChannelSelector="G" result="organicBleed"/>
-  <feComponentTransfer in="organicBleed" result="fadedBleed"><feFuncA type="linear" slope="0.38"/></feComponentTransfer>
-  <feMerge><feMergeNode in="fadedBleed"/><feMergeNode in="texturedCore"/></feMerge>
-</filter>
-<filter id="ink-knot-v47" x="-34%" y="-52%" width="168%" height="204%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="0.70" result="softAlpha"/>
-  <feComponentTransfer in="softAlpha" result="thresholdAlpha"><feFuncA type="discrete" tableValues="0 0 0 1 1 1"/></feComponentTransfer>
-  <feMorphology in="thresholdAlpha" operator="dilate" radius="0.38" result="spreadAlpha"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.011 0.074" numOctaves="3" seed="83" result="fibers"/>
-  <feDisplacementMap in="spreadAlpha" in2="fibers" scale="2.20" xChannelSelector="R" yChannelSelector="G" result="roughAlpha"/>
-  <feComposite in="SourceGraphic" in2="roughAlpha" operator="in" result="core"/>
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.50" result="bleed"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.012 0.10" numOctaves="2" seed="31" result="bleedFibers"/>
-  <feDisplacementMap in="bleed" in2="bleedFibers" scale="1.65" xChannelSelector="R" yChannelSelector="G" result="roughBleed"/>
-  <feComponentTransfer in="roughBleed" result="fadedBleed"><feFuncA type="linear" slope="0.30"/></feComponentTransfer>
-  <feMerge><feMergeNode in="fadedBleed"/><feMergeNode in="core"/></feMerge>
-</filter>
-
-<filter id="ink-display-v49" x="-24%" y="-36%" width="148%" height="172%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.22" result="blurred"/>
-  <feComponentTransfer in="blurred" result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
-  </feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.16" numOctaves="2" seed="37" result="edgeNoise"/>
-  <feDisplacementMap in="thresholded" in2="edgeNoise" scale="1.15" xChannelSelector="R" yChannelSelector="G" result="roughened"/>
-  <feGaussianBlur in="roughened" stdDeviation="0.10" result="microSoft"/>
-  <feComponentTransfer in="microSoft">
-    <feFuncA type="discrete" tableValues="0 0 1 1 1 1"/>
-  </feComponentTransfer>
-</filter>
-
-<filter id="ink-knot-v49" x="-30%" y="-46%" width="160%" height="192%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.08" result="blurred"/>
-  <feComponentTransfer in="blurred" result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
-  </feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.022 0.19" numOctaves="3" seed="83" result="edgeNoise"/>
-  <feDisplacementMap in="thresholded" in2="edgeNoise" scale="2.15" xChannelSelector="R" yChannelSelector="G" result="roughened"/>
-  <feGaussianBlur in="roughened" stdDeviation="0.12" result="microSoft"/>
-  <feComponentTransfer in="microSoft">
-    <feFuncA type="discrete" tableValues="0 0 1 1 1 1"/>
-  </feComponentTransfer>
-</filter>
-<filter id="ink-display-v50" x="-26%" y="-40%" width="152%" height="180%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.34" result="blurred"/>
-  <feComponentTransfer in="blurred" result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
-  </feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.18" result="expanded"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.016 0.13" numOctaves="2" seed="37" result="edgeNoise"/>
-  <feDisplacementMap in="expanded" in2="edgeNoise" scale="1.35" xChannelSelector="R" yChannelSelector="G" result="roughened"/>
-  <feGaussianBlur in="roughened" stdDeviation="0.10" result="coreSoft"/>
-  <feComponentTransfer in="coreSoft" result="core">
-    <feFuncA type="discrete" tableValues="0 0 1 1 1 1"/>
-  </feComponentTransfer>
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.86" result="bleedBlur"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.011 0.085" numOctaves="3" seed="63" result="bleedNoise"/>
-  <feDisplacementMap in="bleedBlur" in2="bleedNoise" scale="1.95" xChannelSelector="R" yChannelSelector="G" result="bleedRough"/>
-  <feComponentTransfer in="bleedRough" result="bleedTone">
-    <feFuncA type="linear" slope="0.46"/>
-  </feComponentTransfer>
-  <feMerge><feMergeNode in="bleedTone"/><feMergeNode in="core"/></feMerge>
-</filter>
-<filter id="ink-knot-v50" x="-34%" y="-52%" width="168%" height="206%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.16" result="blurred"/>
-  <feComponentTransfer in="blurred" result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
-  </feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.24" result="expanded"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.020 0.16" numOctaves="3" seed="83" result="edgeNoise"/>
-  <feDisplacementMap in="expanded" in2="edgeNoise" scale="2.15" xChannelSelector="R" yChannelSelector="G" result="roughened"/>
-  <feGaussianBlur in="roughened" stdDeviation="0.12" result="coreSoft"/>
-  <feComponentTransfer in="coreSoft" result="core">
-    <feFuncA type="discrete" tableValues="0 0 1 1 1 1"/>
-  </feComponentTransfer>
-  <feGaussianBlur in="SourceGraphic" stdDeviation="2.18" result="bleedBlur"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.013 0.092" numOctaves="3" seed="31" result="bleedNoise"/>
-  <feDisplacementMap in="bleedBlur" in2="bleedNoise" scale="2.42" xChannelSelector="R" yChannelSelector="G" result="bleedRough"/>
-  <feComponentTransfer in="bleedRough" result="bleedTone">
-    <feFuncA type="linear" slope="0.56"/>
-  </feComponentTransfer>
-  <feMerge><feMergeNode in="bleedTone"/><feMergeNode in="core"/></feMerge>
-</filter>
-
-<filter id="ink-knot-v51" x="-36%" y="-56%" width="172%" height="212%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.18" result="blurred"/>
-  <feComponentTransfer in="blurred" result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
-  </feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.22" result="expanded"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.15" numOctaves="3" seed="83" result="edgeNoise"/>
-  <feDisplacementMap in="expanded" in2="edgeNoise" scale="2.35" xChannelSelector="R" yChannelSelector="G" result="roughCore"/>
-
-  <feTurbulence type="fractalNoise" baseFrequency="0.055 0.22" numOctaves="3" seed="117" result="toothNoise"/>
-  <feColorMatrix in="toothNoise" type="saturate" values="0" result="toothGray"/>
-  <feComponentTransfer in="toothGray" result="toothTone">
-    <feFuncR type="linear" slope="0.16" intercept="0.84"/>
-    <feFuncG type="linear" slope="0.16" intercept="0.84"/>
-    <feFuncB type="linear" slope="0.16" intercept="0.84"/>
-    <feFuncA type="linear" slope="0.20"/>
-  </feComponentTransfer>
-  <feComposite in="toothTone" in2="roughCore" operator="in" result="toothInside"/>
-  <feBlend in="roughCore" in2="toothInside" mode="multiply" result="texturedCore"/>
-
-  <feGaussianBlur in="SourceGraphic" stdDeviation="2.25" result="bleedBlur"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.012 0.090" numOctaves="3" seed="31" result="bleedNoise"/>
-  <feDisplacementMap in="bleedBlur" in2="bleedNoise" scale="2.55" xChannelSelector="R" yChannelSelector="G" result="bleedRough"/>
-  <feComponentTransfer in="bleedRough" result="bleedTone">
-    <feFuncA type="linear" slope="0.54"/>
-  </feComponentTransfer>
-  <feMerge><feMergeNode in="bleedTone"/><feMergeNode in="texturedCore"/></feMerge>
-</filter>
-
-<filter id="ink-run-v53" x="-32%" y="-58%" width="164%" height="216%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="3.25" result="runBlur"/>
-  <feComponentTransfer in="runBlur" result="runThreshold">
-    <feFuncA type="discrete" tableValues="0 0 1 1 1 1 1 1 1 1"/>
-  </feComponentTransfer>
-  <feMorphology in="runThreshold" operator="dilate" radius="1.15 0.58" result="runSpread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.010 0.065" numOctaves="3" seed="153" result="runFibres"/>
-  <feDisplacementMap in="runSpread" in2="runFibres" scale="4.4" xChannelSelector="R" yChannelSelector="G" result="runRough"/>
-  <feGaussianBlur in="SourceGraphic" stdDeviation="5.1" result="runHalo"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.008 0.040" numOctaves="2" seed="79" result="haloNoise"/>
-  <feDisplacementMap in="runHalo" in2="haloNoise" scale="5.6" xChannelSelector="R" yChannelSelector="G" result="haloRough"/>
-  <feComponentTransfer in="haloRough" result="haloFade"><feFuncA type="linear" slope="0.34"/></feComponentTransfer>
-  <feMerge><feMergeNode in="haloFade"/><feMergeNode in="runRough"/></feMerge>
-</filter>
-<filter id="ink-run-v54" x="-42%" y="-68%" width="184%" height="236%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="4.65" result="runBlur"/>
-  <feComponentTransfer in="runBlur" result="lowThreshold">
-    <feFuncA type="discrete" tableValues="0 1 1 1 1 1 1 1 1 1"/>
-  </feComponentTransfer>
-  <feMorphology in="lowThreshold" operator="dilate" radius="0.95 0.48" result="spread"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.008 0.052" numOctaves="3" seed="211" result="fibres"/>
-  <feDisplacementMap in="spread" in2="fibres" scale="5.2" xChannelSelector="R" yChannelSelector="G" result="runRough"/>
-  <feGaussianBlur in="SourceGraphic" stdDeviation="6.2" result="wetHalo"/>
-  <feComponentTransfer in="wetHalo" result="wetHaloFade"><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
-  <feMerge><feMergeNode in="wetHaloFade"/><feMergeNode in="runRough"/></feMerge>
-</filter>
-
-
-<!-- v74: dedicated hero-word ink system.
-     Blur + alpha threshold produces real edge expansion; turbulence/displacement
-     roughens the perimeter. Red remains the primary ink. Yellow is a secondary
-     misregistration/contamination plate. These filters are for #design-title only. -->
-<filter id="design-red-a-v74" x="-22%" y="-34%" width="144%" height="168%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="1.55" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.115" numOctaves="2" seed="19" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="1.55" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.14" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#d71d31" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-<filter id="design-red-b-v74" x="-24%" y="-36%" width="148%" height="172%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="1.95" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.014 0.092" numOctaves="3" seed="43" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="2.15" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.16" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#d51b2f" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-<filter id="design-red-c-v74" x="-23%" y="-35%" width="146%" height="170%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="1.72" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.021 0.135" numOctaves="2" seed="71" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="1.95" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.12" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#da2033" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-
-<filter id="design-yellow-a-v74" x="-26%" y="-40%" width="152%" height="180%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="2.05" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 1 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.017 0.105" numOctaves="2" seed="31" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="1.65" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.15" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#f2b426" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-<filter id="design-yellow-b-v74" x="-27%" y="-42%" width="154%" height="184%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="2.35" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.013 0.084" numOctaves="3" seed="59" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="2.05" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.15" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#efad1c" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-<filter id="design-yellow-c-v74" x="-26%" y="-40%" width="152%" height="180%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="1.90" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 1 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.023 0.128" numOctaves="2" seed="83" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="1.80" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.13" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#f4bc31" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-
-</defs>
-</svg>
-<!-- Work-in-progress welcome notice -->
 <dialog class="wip-dialog" id="wip-dialog" aria-label="Work in progress notice" aria-describedby="wip-dialog-message">
   <div class="wip-dialog__inner">
-    <button type="button" class="wip-dialog__close" data-wip-dismiss aria-label="Close notice" autofocus>&times;</button>
+    <button type="button" class="wip-dialog__close" data-wip-dismiss aria-label="Close notice" autofocus>×</button>
     <p class="wip-dialog__message" id="wip-dialog-message">Thanks for visiting, this page is a work in progress. Please forgive the appearance.</p>
   </div>
 </dialog>
 <div class="page-shell">
 <header class="design-site-header">
 <a aria-label="keegan.biz home" class="design-home-scarf" href="/">
-<img alt="keegan.biz" src="/assets/home/home-scarf-update.png"/>
+<img alt="keegan.biz" src="/assets/home/home-scarf-update.png">
 </a>
 <nav aria-label="Portfolio sections" class="design-text-nav">
 <a href="/illustration/">illustration</a>
@@ -321,24 +31,12 @@
 <main class="design-main">
 <section aria-labelledby="design-title" class="portfolio-masthead">
 <div class="portfolio-masthead__main">
-<h1 aria-multiline="false" contenteditable="true" id="design-title" spellcheck="false"><span class="design-letter design-letter--d design-letter--a" data-char="d">d</span><span class="design-letter design-letter--e design-letter--b" data-char="e">e</span><span class="design-letter design-letter--s design-letter--c" data-char="s">s</span><span class="design-letter design-letter--i design-letter--a" data-char="i">i</span><span class="design-letter design-letter--g design-letter--c" data-char="g">g</span><span class="design-letter design-letter--n design-letter--b" data-char="n">n</span></h1>
+<h1 contenteditable="true" id="design-title" spellcheck="false" aria-label="Editable design heading">design</h1>
 </div>
-<div class="portfolio-masthead__rail">
-<div aria-hidden="true" class="portfolio-masthead__ornament knot-flash knot-flash--black" data-knot-flash="">
-<img alt="" class="knot-flash__bleed" src="/assets/home/knot_smooth_svg1.svg"/>
-<img alt="" class="knot-flash__ink" src="/assets/home/knot_smooth_svg1.svg"/>
-<img alt="" class="knot-flash__register" src="/assets/home/knot_smooth_svg1.svg"/></div>
-</div>
-</section>
-<section aria-labelledby="triennial-family-title" class="project-family-heading">
-<h2 id="triennial-family-title">Boston Public Art Triennial</h2>
 </section>
 <section aria-label="Project list" class="work-stack">
 <article class="project project--triennial" data-project="" id="project-triennial">
 <div class="project-summary">
-<div class="project-summary__rail">
-<span class="project-number">01</span>
-</div>
 <div class="project-summary__copy">
 <h2 class="project-title">Triennial 2025: The Exchange</h2>
 <button aria-controls="project-triennial-content" aria-expanded="false" class="project-toggle" type="button">
@@ -346,25 +44,25 @@
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--triennial"><img alt="More Belonging campaign poster" src="/design/assets/more belonging.png"/></figure>
+<figure class="project-key project-key--triennial"><img alt="More Belonging campaign poster" src="/design/assets/more%20belonging.png"></figure>
 </div>
 <div class="project-content" hidden="" id="project-triennial-content">
 <section class="case-section case-section--lead">
 <div class="case-section__header">
-<span class="case-section__number">01</span>
 <div>
-<h3>Triennial 2025: The Exchange</h3>
-<p class="case-lede">One visual identity across a citywide public art exhibition. Working from Siena Scarff Design's brand guidelines, I adapted the More ___ system for bus wraps, digital kiosks, A-frames, window posters, and a map keying twenty artist locations across nine neighborhoods. Formats reused or rebuilt the system according to viewing distance and information load. After the Triennial closed, I updated the window poster shown here to keep directing visitors to Swoon's installation.</p><p class="case-credit">Design and production: Keegan Andrulis. Brand guidelines by Siena Scarff Design. Produced in-house at the Boston Public Art Triennial, 2025.</p></div>
+<h3>Campaign identity</h3>
+<p class="case-lede">One visual identity across a citywide public art exhibition. Working from Siena Scarff Design's brand guidelines, I adapted the More ___ system for bus wraps, digital kiosks, A-frames, window posters, and a map keying twenty artist locations across nine neighborhoods. Formats reused or rebuilt the system according to viewing distance and information load. After the Triennial closed, I updated the window poster shown here to keep directing visitors to Swoon's installation.</p>
+<p class="case-credit">Design and production: Keegan Andrulis. Brand guidelines by Siena Scarff Design. Produced in-house at the Boston Public Art Triennial, 2025.</p>
+</div>
 </div>
 <div class="feature-slab feature-slab--triennial">
 <figure class="feature-slab__hero">
-<img alt="More Connection campaign poster with Swoon artwork" src="/design/assets/more connection.png" loading="lazy" decoding="async"/>
+<img alt="More Connection campaign poster with Swoon artwork" src="/design/assets/more%20connection.png" loading="lazy" decoding="async">
 </figure>
 </div>
 </section>
 <section class="case-section">
 <div class="case-section__header">
-<span class="case-section__number">02</span>
 <div>
 <h3>Across formats</h3>
 </div>
@@ -378,8 +76,8 @@
 <button aria-pressed="false" class="image-switcher__button" type="button">in use</button>
 </div>
 <div aria-label="Switch between artwork and installed view" class="image-switcher__stage image-switcher__stage--portrait" role="button" tabindex="0">
-<img alt="More Connection Lyrik artwork" class="state-primary" src="/design/assets/more connection lyric.png" loading="lazy" decoding="async"/>
-<img alt="More Connection Lyrik A-frame installed outdoors" class="state-secondary" src="/design/assets/more connection lyric photo.png" loading="lazy" decoding="async"/>
+<img alt="More Connection Lyrik artwork" class="state-primary" src="/design/assets/more%20connection%20lyric.png" loading="lazy" decoding="async">
+<img alt="More Connection Lyrik A-frame installed outdoors" class="state-secondary" src="/design/assets/more%20connection%20lyric%20photo.png" loading="lazy" decoding="async">
 </div>
 </article>
 <article class="image-switcher" data-switcher="">
@@ -390,8 +88,8 @@
 <button aria-pressed="false" class="image-switcher__button" type="button">in use</button>
 </div>
 <div aria-label="Switch between artwork and installed view" class="image-switcher__stage image-switcher__stage--portrait" role="button" tabindex="0">
-<img alt="More Depth campaign artwork" class="state-primary" src="/design/assets/more depth.png" loading="lazy" decoding="async"/>
-<img alt="More Depth campaign displayed on a digital kiosk" class="state-secondary" src="/design/assets/more depth image.png" loading="lazy" decoding="async"/>
+<img alt="More Depth campaign artwork" class="state-primary" src="/design/assets/more%20depth.png" loading="lazy" decoding="async">
+<img alt="More Depth campaign displayed on a digital kiosk" class="state-secondary" src="/design/assets/more%20depth%20image.png" loading="lazy" decoding="async">
 </div>
 </article>
 <article class="image-switcher image-switcher--bus" data-switcher="">
@@ -402,63 +100,87 @@
 <button aria-pressed="false" class="image-switcher__button" type="button">in use</button>
 </div>
 <div aria-label="Switch between artwork and installed view" class="image-switcher__stage image-switcher__stage--wide" role="button" tabindex="0">
-<img alt="More fun is here campaign banner artwork" class="state-primary" src="/design/assets/more fun bus.png" loading="lazy" decoding="async"/>
-<img alt="More fun is here campaign installed on a bus" class="state-secondary" src="/design/assets/more fun bus image.png" loading="lazy" decoding="async"/>
+<img alt="More fun is here campaign banner artwork" class="state-primary" src="/design/assets/more%20fun%20bus.png" loading="lazy" decoding="async">
+<img alt="More fun is here campaign installed on a bus" class="state-secondary" src="/design/assets/more%20fun%20bus%20image.png" loading="lazy" decoding="async">
 </div>
 </article>
 </div>
 </section>
 <section class="case-section case-section--extensions">
 <div class="case-section__header">
-<span class="case-section__number">03</span>
 <div>
 <h3>Extensions</h3>
-<p class="case-lede">Beyond the core campaign, I adapted the Triennial identity for individual events and exhibitions. Art + Stroll uses an edited Boston skyline in the house color and type system, with an animated version for social. Public Processes applies the same system to a co-presented exhibition with Boston Cyberarts.</p></div>
+<p class="case-lede">Beyond the core campaign, I adapted the Triennial identity for individual events and exhibitions. Art + Stroll uses an edited Boston skyline in the house color and type system, with an animated version for social. Public Processes applies the same system to a co-presented exhibition with Boston Cyberarts.</p>
 </div>
-<div class="extension-layout"><figure class="extension-card extension-card--gif"><div class="extension-meta"><span>Art + Stroll / event flyer + animation</span></div><div class="extension-stage"><img alt="Art + Stroll animated event graphic" src="/design/assets/art and stroll gif.gif" loading="lazy" decoding="async"/></div></figure><article class="extension-card extension-card--public-processes flip-card flip-card--landscape" data-flip-card=""><div class="extension-meta"><span>Public Processes / exhibition poster</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div><div aria-label="Flip Public Processes poster" class="flip-card__scene extension-stage" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Public Processes line drawing poster" src="/design/assets/public processes v2.png" loading="lazy" decoding="async"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Public Processes architectural model poster" src="/design/assets/public processes.png" loading="lazy" decoding="async"/></figure></div></div></article></div>
+</div>
+<div class="extension-layout">
+<figure class="extension-card extension-card--gif"><div class="extension-meta"><span>Art + Stroll / event flyer + animation</span></div>
+<div class="extension-stage"><img alt="Art + Stroll animated event graphic" src="/design/assets/art%20and%20stroll%20gif.gif" loading="lazy" decoding="async"></div></figure><article class="extension-card extension-card--public-processes flip-card flip-card--landscape" data-flip-card=""><div class="extension-meta">
+<span>Public Processes / exhibition poster</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button>
+</div>
+<div aria-label="Flip Public Processes poster" class="flip-card__scene extension-stage" role="button" tabindex="0"><div class="flip-card__inner">
+<figure class="flip-card__face flip-card__face--front"><img alt="Public Processes line drawing poster" src="/design/assets/public%20processes%20v2.png" loading="lazy" decoding="async"></figure><figure class="flip-card__face flip-card__face--back"><img alt="Public Processes architectural model poster" src="/design/assets/public%20processes.png" loading="lazy" decoding="async"></figure>
+</div></div></article>
+</div>
 
-</section><section class="case-section case-section--making-public"><div class="case-section__header"><div><h3>Making Public</h3><p>Print and digital collateral for Making Public, the Triennial’s October 2025 convening at Roxbury Community College. Source imagery came from a youth workshop led by Ñ Press with NUBE East Boston for Gabriel Sosa’s Triennial project. I adapted it across posters, wayfinding, a program handout, QR flyer, newsletter ad, and event banner.</p><p class="case-credit">Design: Keegan Andrulis. Source imagery created at a youth workshop with Ñ Press and NUBE East Boston, part of Gabriel Sosa’s project Ñ Press. Event photography: Annielly Camargo. Produced in-house at the Boston Public Art Triennial, 2025.</p></div></div><figure class="mp-banner"><div class="asset-meta"><span>Event banner</span></div><img alt="Making Public event banner" src="/design/assets/making public banner 1.png" loading="lazy" decoding="async"/></figure><div class="making-public-grid">
+</section><section class="case-section case-section--making-public"><div class="case-section__header"><div>
+<h3>Making Public</h3>
+<p>Print and digital collateral for Making Public, the Triennial’s October 2025 convening at Roxbury Community College. Source imagery came from a youth workshop led by Ñ Press with NUBE East Boston for Gabriel Sosa’s Triennial project. I adapted it across posters, wayfinding, a program handout, QR flyer, newsletter ad, and event banner.</p>
+<p class="case-credit">Design: Keegan Andrulis. Source imagery created at a youth workshop with Ñ Press and NUBE East Boston, part of Gabriel Sosa’s project Ñ Press. Event photography: Annielly Camargo. Produced in-house at the Boston Public Art Triennial, 2025.</p>
+</div></div>
+<figure class="mp-banner"><div class="asset-meta"><span>Event banner</span></div>
+<img alt="Making Public event banner" src="/design/assets/making%20public%20banner%201.png" loading="lazy" decoding="async"></figure><div class="making-public-grid">
 <article class="flip-card making-public-card" data-flip-card="">
-<div class="asset-meta"><span>Program handout</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div>
-<div aria-label="Flip Making Public handout" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public program handout" src="/design/assets/making public program front.png" loading="lazy" decoding="async"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public program handout reverse" src="/design/assets/making public flyer back.png" loading="lazy" decoding="async"/></figure></div></div>
+<div class="asset-meta">
+<span>Program handout</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button>
+</div>
+<div aria-label="Flip Making Public handout" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner">
+<figure class="flip-card__face flip-card__face--front"><img alt="Making Public program handout" src="/design/assets/making%20public%20program%20front.png" loading="lazy" decoding="async"></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public program handout reverse" src="/design/assets/making%20public%20flyer%20back.png" loading="lazy" decoding="async"></figure>
+</div></div>
 </article>
 <article class="flip-card flip-card--social making-public-card" data-flip-card="">
-<div class="asset-meta"><span>Social graphics</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button></div>
-<div aria-label="Flip Making Public social graphics" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner"><figure class="flip-card__face flip-card__face--front"><img alt="Making Public social graphic" src="/design/assets/making public social 1.png" loading="lazy" decoding="async"/></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public alternate social graphic" src="/design/assets/making public social 2.png" loading="lazy" decoding="async"/></figure></div></div>
+<div class="asset-meta">
+<span>Social graphics</span><button aria-pressed="false" class="flip-card__button flip-card__button--overlay" type="button">flip</button>
+</div>
+<div aria-label="Flip Making Public social graphics" class="flip-card__scene" role="button" tabindex="0"><div class="flip-card__inner">
+<figure class="flip-card__face flip-card__face--front"><img alt="Making Public social graphic" src="/design/assets/making%20public%20social%201.png" loading="lazy" decoding="async"></figure><figure class="flip-card__face flip-card__face--back"><img alt="Making Public alternate social graphic" src="/design/assets/making%20public%20social%202.png" loading="lazy" decoding="async"></figure>
+</div></div>
 </article>
-<figure class="mp-event-photo making-public-card"><div class="asset-meta"><span>Event documentation</span></div><img alt="Making Public event photograph" src="/design/assets/making public event photo.jpg" loading="lazy" decoding="async"/></figure>
+<figure class="mp-event-photo making-public-card"><div class="asset-meta"><span>Event documentation</span></div>
+<img alt="Making Public event photograph" src="/design/assets/making%20public%20event%20photo.jpg" loading="lazy" decoding="async"></figure>
 </div></section>
 </div>
 </article>
 <article class="project project--angels" data-project="" id="project-angels">
 <div class="project-summary">
-<div class="project-summary__rail">
-<span class="project-number">02</span>
-</div>
 <div class="project-summary__copy">
-<p class="project-client">Heather Kapplow</p>
-<h2 class="project-title"><em>Better Angels</em></h2>
+<h2 class="project-title">Better Angels</h2>
 <button aria-controls="project-angels-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--angels"><img alt="Better Angels takeaway in use" decoding="async" loading="lazy" src="/design/assets/better angels fold out in use.jpg"/></figure>
+<figure class="project-key project-key--angels"><img alt="Better Angels takeaway in use" decoding="async" loading="lazy" src="/design/assets/better%20angels%20fold%20out%20in%20use.jpg"></figure>
 </div>
 <div class="project-content" hidden="" id="project-angels-content">
 <section aria-label="Better Angels project overview" class="angels-overview">
-<div class="angels-overview__grid"><div class="angels-editorial-copy"><p class="angels-overview__lede"><em>Better Angels</em> is a participatory pop-up installation by Boston artist Heather Kapplow, commissioned by the Boston Public Art Triennial: inflatable clouds, a set of heavenly gates, and a cast of angels who invite visitors to pause, connect, and reflect. I worked with the artist to build the visual identity, and with fabricators to produce the physical takeaways and signage.</p><div class="angels-overview__body">
+<div class="angels-overview__grid">
+<div class="angels-editorial-copy">
+<p class="angels-overview__lede"><em>Better Angels</em> is a participatory pop-up installation by Boston artist Heather Kapplow, commissioned by the Boston Public Art Triennial: inflatable clouds, a set of heavenly gates, and a cast of angels who invite visitors to pause, connect, and reflect. I worked with the artist to build the visual identity, and with fabricators to produce the physical takeaways and signage.</p>
+<div class="angels-overview__body">
 <p>The identity runs across event flyers, rack cards, interpretive and directional signage, a t-shirt, and a preview render. Some of it carries a custom map illustration I drew to locate the installation, along with a clip-art-style illustration of the <em>Better Angels</em> inflatables. The t-shirts I designed were hand tie-dyed by Triennial staff from my designs. The preview render started as a 3D model from the fabrication company Pneuhaus, which I edited into a preview image so the installation could be promoted before it was built.</p>
 <p>The takeaways are the centerpiece of the collateral. The Heaven Membership Card is a working paper whistle that visitors use to “call the angels,” with a fill-in-the-blank interaction printed on it. It pairs with a separate foldout card that holds the whistle, folds up to stand on its own like a set of gates, and carries the project's information and the instructions for using the whistle. Both had to cut, fold, and function as objects, not just print flat.</p>
-</div></div><figure class="angels-editorial-specimen"><img alt="Better Angels takeaway, photographed as a printed and folded object" decoding="async" loading="lazy" src="/design/assets/better angels takeaway.jpg"/><figcaption><strong>Foldout takeaway</strong><span>Printed, folded, and assembled for the installation</span></figcaption></figure>
+</div>
+</div>
+<figure class="angels-editorial-specimen"><img alt="Better Angels takeaway, photographed as a printed and folded object" decoding="async" loading="lazy" src="/design/assets/better%20angels%20takeaway.jpg"><figcaption><strong>Foldout takeaway</strong><span>Printed, folded, and assembled for the installation</span></figcaption></figure>
 
 
 
-<p class="angels-overview__credits"><strong>Credits:</strong> Identity, collateral, and map illustration by Keegan Andrulis. Installation by Heather Kapplow. Flyer illustration by Heather Kapplow. Foldout takeaway illustration by Bithiah Holton. Foldout sky background photograph by Chris Blake. Preview render from a Pneuhaus 3D model, edited by Keegan Andrulis. T-shirts designed by Keegan Andrulis, hand tie-dyed by Triennial staff. Documentation photography by Mel Taing. Commissioned by the Boston Public Art Triennial.</p></div>
+<p class="angels-overview__credits"><strong>Credits:</strong> Identity, collateral, and map illustration by Keegan Andrulis. Installation by Heather Kapplow. Flyer illustration by Heather Kapplow. Foldout takeaway illustration by Bithiah Holton. Foldout sky background photograph by Chris Blake. Preview render from a Pneuhaus 3D model, edited by Keegan Andrulis. T-shirts designed by Keegan Andrulis, hand tie-dyed by Triennial staff. Documentation photography by Mel Taing. Commissioned by the Boston Public Art Triennial.</p>
+</div>
 </section>
 <section class="case-section case-section--takeaway">
 <div class="case-section__header">
-<span class="case-section__number">01</span>
 <div>
 <h3>Takeaway system</h3>
 </div>
@@ -492,7 +214,7 @@
 </div>
 </div>
 </div>
-<p class="folder-note">bottom tongue first · side leaves second · slow paper fold</p>
+<p class="folder-note">Click the model to fold or unfold it</p>
 </article>
 <div class="angels-takeaway-side">
 
@@ -504,10 +226,10 @@
 <div aria-label="Flip the Better Angels flyer" class="flip-card__scene" role="button" tabindex="0">
 <div class="flip-card__inner">
 <figure class="flip-card__face flip-card__face--front">
-<img alt="Better Angels flyer front" decoding="async" loading="lazy" src="/design/assets/better angels flyer front.png"/>
+<img alt="Better Angels flyer front" decoding="async" loading="lazy" src="/design/assets/better%20angels%20flyer%20front.png">
 </figure>
 <figure class="flip-card__face flip-card__face--back">
-<img alt="Better Angels flyer reverse" decoding="async" loading="lazy" src="/design/assets/better angels flyer revers.png"/>
+<img alt="Better Angels flyer reverse" decoding="async" loading="lazy" src="/design/assets/better%20angels%20flyer%20revers.png">
 </figure>
 </div>
 </div>
@@ -517,46 +239,44 @@
 </section>
 <section class="case-section case-section--script">
 <div class="case-section__header">
-<span class="case-section__number">02</span>
 <div>
 <h3>Script + whistle</h3>
 </div>
 </div>
 <div class="angels-script-layout">
 <figure class="angels-script-feature">
-<img alt="Better Angels script and whistle file" decoding="async" loading="lazy" src="/design/assets/better angels script and whistle file.png"/>
+<img alt="Better Angels script and whistle file" decoding="async" loading="lazy" src="/design/assets/better%20angels%20script%20and%20whistle%20file.png">
 <figcaption><strong>Script + whistle file</strong><span>Instructional print object</span></figcaption>
 </figure>
 <div class="angels-script-gallery">
-<figure><img alt="Better Angels paper whistle in use" decoding="async" loading="lazy" src="/design/assets/better angels whistle.jpg"/></figure>
-<figure><img alt="Better Angels visitor using the whistle" decoding="async" loading="lazy" src="/design/assets/better angels whistle 2.jpg"/></figure>
-<figure><img alt="Better Angels whistle photographed close-up" decoding="async" loading="lazy" src="/design/assets/better angels whistle 3.jpg"/></figure>
-<figure><img alt="Better Angels staff shirt and script" decoding="async" loading="lazy" src="/design/assets/better angels t shirt and script.jpg"/></figure>
+<figure><img alt="Better Angels paper whistle in use" decoding="async" loading="lazy" src="/design/assets/better%20angels%20whistle.jpg"></figure>
+<figure><img alt="Better Angels visitor using the whistle" decoding="async" loading="lazy" src="/design/assets/better%20angels%20whistle%202.jpg"></figure>
+<figure><img alt="Better Angels whistle photographed close-up" decoding="async" loading="lazy" src="/design/assets/better%20angels%20whistle%203.jpg"></figure>
+<figure><img alt="Better Angels staff shirt and script" decoding="async" loading="lazy" src="/design/assets/better%20angels%20t%20shirt%20and%20script.jpg"></figure>
 </div>
 </div>
 </section>
 <section class="case-section case-section--signage">
 <div class="case-section__header">
-<span class="case-section__number">03</span>
 <div>
 <h3>Signage + activation</h3>
 </div>
 </div>
 <div class="angels-signage-layout">
 <figure class="angels-signage-lead">
-<img alt="Better Angels interpretive signage installed" decoding="async" loading="lazy" src="/design/assets/better angels signage.jpg"/>
+<img alt="Better Angels interpretive signage installed" decoding="async" loading="lazy" src="/design/assets/better%20angels%20signage.jpg">
 <figcaption><strong>Installation signage</strong><span>Waterfront Park</span></figcaption>
 </figure>
 <div class="angels-signage-system">
 <div class="angels-signage-art-row">
-<figure><img alt="Better Angels signage artwork 1" decoding="async" loading="lazy" src="/design/assets/better angels signage 1.png"/><figcaption>Interpretive signage · front</figcaption></figure>
-<figure><img alt="Better Angels signage artwork 2" decoding="async" loading="lazy" src="/design/assets/better angels signage 2.png"/><figcaption>Artist information</figcaption></figure>
-<figure><img alt="Better Angels signage artwork 3" decoding="async" loading="lazy" src="/design/assets/better angels signage 3.png"/><figcaption>Visitor participation</figcaption></figure>
-<figure><img alt="Better Angels signage artwork 4" decoding="async" loading="lazy" src="/design/assets/better angels signage 4.png"/><figcaption>Donation and QR panel</figcaption></figure>
+<figure><img alt="Better Angels signage artwork 1" decoding="async" loading="lazy" src="/design/assets/better%20angels%20signage%201.png"><figcaption>Interpretive signage · front</figcaption></figure>
+<figure><img alt="Better Angels signage artwork 2" decoding="async" loading="lazy" src="/design/assets/better%20angels%20signage%202.png"><figcaption>Artist information</figcaption></figure>
+<figure><img alt="Better Angels signage artwork 3" decoding="async" loading="lazy" src="/design/assets/better%20angels%20signage%203.png"><figcaption>Visitor participation</figcaption></figure>
+<figure><img alt="Better Angels signage artwork 4" decoding="async" loading="lazy" src="/design/assets/better%20angels%20signage%204.png"><figcaption>Donation and QR panel</figcaption></figure>
 </div>
 <div class="angels-signage-photo-row">
-<figure><img alt="Better Angels signage installed" decoding="async" loading="lazy" src="/design/assets/better angels signage 3.jpg"/><figcaption>Visitor responses in use</figcaption></figure>
-<figure><img alt="Better Angels staff shirt and activation" decoding="async" loading="lazy" src="/design/assets/better angels t shirt and activation.jpg"/><figcaption>Activation and staff shirts</figcaption></figure>
+<figure><img alt="Better Angels signage installed" decoding="async" loading="lazy" src="/design/assets/better%20angels%20signage%203.jpg"><figcaption>Visitor responses in use</figcaption></figure>
+<figure><img alt="Better Angels staff shirt and activation" decoding="async" loading="lazy" src="/design/assets/better%20angels%20t%20shirt%20and%20activation.jpg"><figcaption>Activation and staff shirts</figcaption></figure>
 </div>
 </div>
 </div>
@@ -565,44 +285,40 @@
 </article>
 <article class="project project--winter" data-project="" id="project-winter">
 <div class="project-summary">
-<div class="project-summary__rail">
-<span class="project-number">03</span>
-</div>
 <div class="project-summary__copy">
-<p class="project-client">Paul Winter Consort</p>
 <h2 class="project-title">Concert posters</h2>
 <button aria-controls="project-winter-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--winter"><img alt="This Glorious Earth concert poster" decoding="async" loading="lazy" src="/design/assets/this glorious earth.png"/></figure>
+<figure class="project-key project-key--winter"><img alt="This Glorious Earth concert poster" decoding="async" loading="lazy" src="/design/assets/this%20glorious%20earth.png"></figure>
 </div>
 <div class="project-content" hidden="" id="project-winter-content">
 <section class="case-section case-section--dark">
 <div class="case-section__header">
-<span class="case-section__number">01</span>
 <div>
-<h3>Poster suite</h3>
-<p class="case-section__intro">Three concert posters developed for the Paul Winter Consort. Each uses imagery connected to its program, with a different typographic treatment.</p></div>
+<h3>Three concerts</h3>
+<p class="case-section__intro">Three concert posters developed for the Paul Winter Consort. Each uses imagery connected to its program, with a different typographic treatment.</p>
+</div>
 </div>
 <div class="winter-gallery">
 <figure class="winter-poster-card">
-<img alt="Adventures in the Universe poster" decoding="async" loading="lazy" src="/design/assets/adventures in the universe.png"/>
+<img alt="Adventures in the Universe poster" decoding="async" loading="lazy" src="/design/assets/adventures%20in%20the%20universe.png">
 <figcaption>
 <h4>Adventures in the Universe</h4>
 <p>A concert at Yale’s Woolsey Hall built around Charles Ives, marking his 150th birthday and drawing on his unfinished <em>Universe Symphony</em>. The Hubble Ultra Deep Field creates a quiet, small patch of sky filled with depth.</p>
 </figcaption>
 </figure>
 <figure class="winter-poster-card">
-<img alt="Spring Equinox Celebration poster" decoding="async" loading="lazy" src="/design/assets/spring equinox.png"/>
+<img alt="Spring Equinox Celebration poster" decoding="async" loading="lazy" src="/design/assets/spring%20equinox.png">
 <figcaption>
 <h4>Spring Equinox Celebration</h4>
 <p>A NOAA satellite image of the Earth at the vernal equinox. I treated the image and type with a looser, late-60s / 70s-inflected serif to connect the concert to the period when the Consort formed.</p>
 </figcaption>
 </figure>
 <figure class="winter-poster-card">
-<img alt="This Glorious Earth poster" decoding="async" loading="lazy" src="/design/assets/this glorious earth.png"/>
+<img alt="This Glorious Earth poster" decoding="async" loading="lazy" src="/design/assets/this%20glorious%20earth.png">
 <figcaption>
 <h4>This Glorious Earth</h4>
 <p>An Earth Day concert at the Cathedral of St. John the Divine. The landscape image comes from the Consort’s archive of Crestone, Colorado, tying the poster directly to the concert’s 2007 album of the same name.</p>
@@ -614,49 +330,45 @@
 </article>
 <article class="project project--prx" data-project="" id="project-prx">
 <div class="project-summary">
-<div class="project-summary__rail">
-<span class="project-number">04</span>
-</div>
 <div class="project-summary__copy">
-<p class="project-client">PRX / Radiotopia</p>
 <h2 class="project-title">Ear Hustle, In the Queue, and Radiotopia</h2>
 <button aria-controls="project-prx-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--prx"><img alt="Ear Hustle election episode artwork" decoding="async" loading="lazy" src="/design/assets/ear hustle.png"/></figure>
+<figure class="project-key project-key--prx"><img alt="Ear Hustle election episode artwork" decoding="async" loading="lazy" src="/design/assets/ear%20hustle.png"></figure>
 </div>
 <div class="project-content" hidden="" id="project-prx-content">
 <section class="case-section">
 <div class="case-section__header">
-<span class="case-section__number">01</span>
 <div>
 <h3>Ear Hustle</h3>
-<p class="case-section__intro">Episode artwork for Ear Hustle, combining illustration by Damien Linnane with a custom graphic treatment.</p></div>
+<p class="case-section__intro">Episode artwork for Ear Hustle, combining illustration by Damien Linnane with a custom graphic treatment.</p>
+</div>
 </div>
 <figure class="prx-hero-figure prx-hero-figure--featured">
-<img alt="Ear Hustle hero art showing an illustrated figure writing beside a custom stars-and-stripes wordmark" decoding="async" loading="lazy" src="/design/assets/ear hustle.png"/>
+<img alt="Ear Hustle hero art showing an illustrated figure writing beside a custom stars-and-stripes wordmark" decoding="async" loading="lazy" src="/design/assets/ear%20hustle.png">
 <figcaption>Design by Keegan Andrulis, illustration by Damien Linnane · produced at PRX, 2024</figcaption>
 </figure>
 </section>
 <section class="case-section">
 <div class="case-section__header">
-<span class="case-section__number">02</span>
 <div>
 <h3>Newsletter + social campaign</h3>
-<p class="case-section__intro">Identity and campaign graphics produced for PRX and Radiotopia.</p></div>
+<p class="case-section__intro">Identity and campaign graphics produced for PRX and Radiotopia.</p>
+</div>
 </div>
 <div class="prx-pairing">
 <figure class="prx-card prx-card--logo">
-<img alt="In the Queue logo from PRX" class="logo-lift" decoding="async" loading="lazy" src="/design/assets/in the queue.png"/>
+<img alt="In the Queue logo from PRX" class="logo-lift" decoding="async" loading="lazy" src="/design/assets/in%20the%20queue.png">
 <figcaption>
 <h4>In the Queue</h4>
 <p>The refreshed name and logo for PRX’s monthly newsletter, previously Storytime. The mark builds a play button from stacked list lines, tying the listening and lineup ideas together in one form.</p>
 </figcaption>
 </figure>
 <figure class="prx-card prx-card--campaign">
-<img alt="Radiotopia Apple Podcasts social media graphic" decoding="async" loading="lazy" src="/design/assets/radiotopia apple.png"/>
+<img alt="Radiotopia Apple Podcasts social media graphic" decoding="async" loading="lazy" src="/design/assets/radiotopia%20apple.png">
 <figcaption>
 <h4>Radiotopia</h4>
 <p>A social media graphic bringing four shows together to promote ad‑free subscriptions on Apple Podcasts.</p>
@@ -668,70 +380,66 @@
 </article>
 <article class="project project--college" data-project="" id="project-college">
 <div class="project-summary">
-<div class="project-summary__rail">
-<span class="project-number">05</span>
-</div>
 <div class="project-summary__copy">
-<p class="project-client">Trinity College Dublin</p>
 <h2 class="project-title">Trinity FM, Fullam Campaign, and Cane Vino</h2>
 <button aria-controls="project-college-content" aria-expanded="false" class="project-toggle" type="button">
 <span class="when-closed">explore</span>
 <span class="when-open">close</span>
 </button>
 </div>
-<figure class="project-key project-key--college"><img alt="Trinity FM Arts Block Bash poster" decoding="async" loading="lazy" src="/design/assets/tfm arts block bash.png"/></figure>
+<figure class="project-key project-key--college"><img alt="Trinity FM Arts Block Bash poster" decoding="async" loading="lazy" src="/design/assets/tfm%20arts%20block%20bash.png"></figure>
 </div>
 <div class="project-content" hidden="" id="project-college-content">
 <section class="case-section">
 <div class="case-section__header">
-<span class="case-section__number">01</span>
 <div>
 <h3>Trinity FM</h3>
-<p class="case-section__intro">Identity and event graphics for Trinity College Dublin’s student radio station.</p></div>
+<p class="case-section__intro">Identity and event graphics for Trinity College Dublin’s student radio station.</p>
+</div>
 </div>
 <div class="college-showcase college-showcase--tfm">
 <figure class="tfm-logo-block">
-<img alt="TFM logo with a wave motif" decoding="async" loading="lazy" src="/design/assets/tfm logo.png"/>
+<img alt="TFM logo with a wave motif" decoding="async" loading="lazy" src="/design/assets/tfm%20logo.png">
 <figcaption><strong>TFM logo</strong><span>Sound wave + broadcast signal</span></figcaption>
 </figure>
 <figure class="tfm-poster-block">
-<img alt="TFM AGM poster" decoding="async" loading="lazy" src="/design/assets/tfm agm.png"/>
+<img alt="TFM AGM poster" decoding="async" loading="lazy" src="/design/assets/tfm%20agm.png">
 <figcaption><strong>AGM</strong><span>Social-first event graphic</span></figcaption>
 </figure>
 <figure class="tfm-poster-block">
-<img alt="TFM Arts Block Bash poster" decoding="async" loading="lazy" src="/design/assets/tfm arts block bash.png"/>
+<img alt="TFM Arts Block Bash poster" decoding="async" loading="lazy" src="/design/assets/tfm%20arts%20block%20bash.png">
 <figcaption><strong>Arts Block Bash</strong><span>Live music night poster</span></figcaption>
 </figure>
 </div>
 </section>
 <section class="case-section">
 <div class="case-section__header">
-<span class="case-section__number">02</span>
 <div>
 <h3>Fullam Campaign</h3>
-<p class="case-section__intro">Campaign materials developed as a coordinated graphic series.</p></div>
+<p class="case-section__intro">Campaign materials developed as a coordinated graphic series.</p>
+</div>
 </div>
 <div class="college-showcase college-showcase--fullam">
-<figure><img alt="Fullam campaign social graphic reading #ImForFullam" decoding="async" loading="lazy" src="/design/assets/fullam campaign.png"/><figcaption>Campaign graphic</figcaption>
+<figure><img alt="Fullam campaign social graphic reading #ImForFullam" decoding="async" loading="lazy" src="/design/assets/fullam%20campaign.png"><figcaption>Campaign graphic</figcaption>
 </figure>
-<figure><img alt="Fullam campaign poster reading a vote for Fullam is a vote for Justice" decoding="async" loading="lazy" src="/design/assets/fullam campaign2.png"/><figcaption>Campaign poster</figcaption>
+<figure><img alt="Fullam campaign poster reading a vote for Fullam is a vote for Justice" decoding="async" loading="lazy" src="/design/assets/fullam%20campaign2.png"><figcaption>Campaign poster</figcaption>
 </figure>
-<figure><img alt="Fullam campaign manifesto card" decoding="async" loading="lazy" src="/design/assets/fullam campaign3.png"/><figcaption>Campaign manifesto</figcaption>
+<figure><img alt="Fullam campaign manifesto card" decoding="async" loading="lazy" src="/design/assets/fullam%20campaign3.png"><figcaption>Campaign manifesto</figcaption>
 </figure>
 </div>
 </section>
 <section class="case-section">
 <div class="case-section__header">
-<span class="case-section__number">03</span>
 <div>
 <h3>Cane Vino</h3>
-<p class="case-section__intro">Four wine-label designs shown together as a single family.</p></div>
+<p class="case-section__intro">Four wine-label designs shown together as a single family.</p>
+</div>
 </div>
 <div class="wine-grid">
-<figure><img alt="Cane Vino Cabernet Sauvignon bottle" decoding="async" loading="lazy" src="/design/assets/wine label cab.png"/><figcaption>Cabernet Sauvignon</figcaption></figure>
-<figure><img alt="Cane Vino Pinot Noir bottle" decoding="async" loading="lazy" src="/design/assets/wine label pinot noir.png"/><figcaption>Pinot Noir</figcaption></figure>
-<figure><img alt="Cane Vino Gewürztraminer bottle" decoding="async" loading="lazy" src="/design/assets/wine label gewurztraminer.png"/><figcaption>Gewürztraminer</figcaption></figure>
-<figure><img alt="Cane Vino Grenache Rosé bottle" decoding="async" loading="lazy" src="/design/assets/wine label grenache.png"/><figcaption>Grenache Rosé</figcaption></figure>
+<figure><img alt="Cane Vino Cabernet Sauvignon bottle" decoding="async" loading="lazy" src="/design/assets/wine%20label%20cab.png"><figcaption>Cabernet Sauvignon</figcaption></figure>
+<figure><img alt="Cane Vino Pinot Noir bottle" decoding="async" loading="lazy" src="/design/assets/wine%20label%20pinot%20noir.png"><figcaption>Pinot Noir</figcaption></figure>
+<figure><img alt="Cane Vino Gewürztraminer bottle" decoding="async" loading="lazy" src="/design/assets/wine%20label%20gewurztraminer.png"><figcaption>Gewürztraminer</figcaption></figure>
+<figure><img alt="Cane Vino Grenache Rosé bottle" decoding="async" loading="lazy" src="/design/assets/wine%20label%20grenache.png"><figcaption>Grenache Rosé</figcaption></figure>
 </div>
 </section>
 </div>
