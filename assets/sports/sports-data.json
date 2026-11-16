@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-16T20:30:22.977Z",
+  "updatedAt": "2026-11-16T22:20:19.459Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -974,22 +974,12 @@
       }
     },
     "lithuania": {
-      "active": true,
+      "active": false,
       "team": "Lithuania",
       "shortName": "Lithuania",
-      "upcoming": [
-        {
-          "id": "5181885",
-          "date": "2026-11-16T17:00:00.000Z",
-          "when": "today · Mon, Nov 16 · 12:00 PM ET",
-          "status": "scheduled",
-          "home": "Lithuania",
-          "away": "Liechtenstein",
-          "competition": "UEFA Nations League D Grp. 2"
-        }
-      ],
+      "upcoming": [],
       "standings": {
-        "title": "UEFA Nations League D Grp. 2",
+        "title": "",
         "rows": []
       }
     },
