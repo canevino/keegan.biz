@@ -263,8 +263,8 @@ window.DESIGN_PORTFOLIO = [
   },
   {
     "id": "winter",
-    "name": "Concert posters",
-    "title": "Concert posters",
+    "name": "Paul Winter Concert Posters",
+    "title": "Paul Winter Concert Posters",
     "tagline": "Concert identities for the Paul Winter Consort",
     "cover": "/design/assets/this%20glorious%20earth.png",
     "chapters": [
