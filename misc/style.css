@@ -502,99 +502,13 @@
 
 }
 
-
-/* /misc additions only. The rest of this file is the copied homepage CSS. */
-.home .botany-launcher {
-  position:absolute;
-  top:calc(50% + 92px);
-  left:var(--home-left);
-  margin:0;
-  padding:0;
-  background:none;
-  border:0;
-  color:var(--red);
-  font-size:20px;
-  line-height:1;
-  font-weight:700;
-  text-decoration:underline;
-  text-underline-offset:3px;
-  cursor:pointer;
-}
-.home .botany-launcher[hidden],
-.home .botany-panel[hidden] {display:none !important;}
-.home.chess-open .botany-launcher,
-.home.sports-open .botany-launcher,
-.home.botany-open .botany-launcher,
-.home.botany-open .chess-launcher,
-.home.botany-open .sports-launcher {display:none;}
-.home .botany-panel {
-  display:none;
-  width:min(100%, 700px);
-  margin:clamp(72px,10vh,126px) auto 0;
-  min-width:0;
-}
-.home .botany-panel.is-open {display:block;}
-.home .botany-panel-head {
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:20px;
-  margin-bottom:12px;
-}
-.home .botany-panel-title {
-  margin:0;
-  color:var(--green);
-  font-size:clamp(60px,6.4vw,96px);
-  line-height:.88;
-  letter-spacing:-.06em;
-  font-weight:700;
-}
-.home .botany-close {
-  flex:0 0 auto;
-  width:auto;
-  height:auto;
-  margin:-5px 0 0;
-  padding:0;
-  border:0;
-  background:transparent;
-  color:var(--red);
-  font-family:Helvetica,Arial,sans-serif;
-  font-size:clamp(42px,4vw,62px);
-  line-height:.75;
-  cursor:pointer;
-}
-.home .botany-close:hover, .home .botany-close:focus-visible {transform:none; text-decoration:none}
-.home .botany-frame {
-  display:block;
-  width:100%;
-  min-height:0;
-  border:0;
-  background:transparent;
-  overflow:hidden;
-}
-@media(max-width:700px) {
-  .home .botany-launcher {top:calc(50% + 76px);font-size:17px;}
-  .home .botany-panel {width:100%;margin:22px 0 0;}
-  .home .botany-panel-title {font-size:clamp(52px,15vw,72px);}
-  .home .botany-close {flex-basis:44px;width:44px;height:44px;font-size:44px;}
-}
-
-/* Precisely spaced homepage-style launcher list; no site-wide changes.
-   Chess is vertically centered; the following two controls share its anchor. */
+/* Chess and sports launchers, evenly spaced. */
 .home .chess-launcher,
-.home .sports-launcher,
-.home .botany-launcher {
+.home .sports-launcher {
   line-height: 1;
   transform: translateY(-50%);
 }
 .home .sports-launcher { top: calc(50% + 46px); }
-.home .botany-launcher { top: calc(50% + 92px); }
-@media(max-width:700px) {
+@media (max-width: 700px) {
   .home .sports-launcher { top: calc(50% + 42px); }
-  .home .botany-launcher { top: calc(50% + 84px); }
 }
-
-/* Botany behaves exactly like the chess and sports panels on hover. */
-.home .botany-close{flex:0 0 52px;display:grid;place-items:center;width:52px;height:52px;margin-top:-5px;line-height:1;transform:none;transition:none}
-.home .botany-close:hover,.home .botany-close:focus-visible{transform:none;transition:none}
-@media(max-width:700px){.home .botany-close{flex-basis:44px;width:44px;height:44px}}
