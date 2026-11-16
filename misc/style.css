@@ -51,7 +51,7 @@
 
   line-height: .95;
 
-  letter-spacing: -.065em;
+  letter-spacing: 0;
 
   opacity: 1;
 }
@@ -74,7 +74,7 @@
 
   line-height: 1;
 
-  letter-spacing: -.055em;
+  letter-spacing: 0;
 }
 
 
@@ -203,7 +203,7 @@
 
   line-height: 1;
 
-  letter-spacing: -.045em;
+  letter-spacing: 0;
 }
 
 
