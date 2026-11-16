@@ -22,15 +22,11 @@
     return el;
   };
 
-  function previewSrc(project, chapter, slide, side, original) {
-    if (!original || /\.gif(?:\?|$)/i.test(original)) return original;
-    return `/design/assets/gallery/${project.id}-${chapter}-${slide}-${side}.webp`;
-  }
 
   function showPreview(next) {
     previewIndex = next;
     const project = projects[next];
-    featureImage.src = `/design/assets/gallery/cover-${project.id}.webp`;
+    featureImage.src = project.cover;
     featureImage.alt = project.tagline;
     featureDescription.textContent = project.tagline;
     $('feature-open').setAttribute('aria-label', `Open ${project.name}`);
@@ -51,7 +47,7 @@
     button.addEventListener('click', () => openProject(idx));
     index.append(button);
   });
-  projects.forEach((project) => { const img = new Image(); img.src = `/design/assets/gallery/cover-${project.id}.webp`; });
+  projects.forEach((project) => { const img = new Image(); img.src = project.cover; });
   $('feature-open').addEventListener('click', () => openProject(previewIndex));
   $('feature-action').addEventListener('click', () => openProject(previewIndex));
 
@@ -125,18 +121,18 @@
       const button = create('button', 'art-image');
       button.type = 'button';
       button.setAttribute('aria-label', `Enlarge ${item.title}`);
-      button.append(image(previewSrc(project,ci,si,'main',item.src),item.alt));
+      button.append(image(item.src,item.alt));
       button.addEventListener('click', () => enlarge(item.src, item.alt));
       media.append(button);
     } else if (item.type === 'switch') {
       let back = false;
       const button = create('button', 'art-image');
       button.type = 'button';
-      const img = image(previewSrc(project,ci,si,'front',item.front), item.alt);
+      const img = image(item.front, item.alt);
       button.append(img);
       const toggle = control('in use', () => {
         back = !back;
-        img.src = previewSrc(project,ci,si,back?'back':'front',back?item.back:item.front);
+        img.src = (back ? item.back : item.front);
         img.alt = back ? `${item.title} in use` : item.alt;
         toggle.textContent = back ? 'artwork' : 'in use';
         toggle.setAttribute('aria-pressed', String(back));
@@ -153,8 +149,8 @@
       const inner = create('div', 'flip-inner');
       const front = create('div', 'flip-face front');
       const back = create('div', 'flip-face back');
-      front.append(image(previewSrc(project,ci,si,'front',item.front),item.alt));
-      back.append(image(previewSrc(project,ci,si,'back',item.back),`${item.title} reverse side`));
+      front.append(image(item.front,item.alt));
+      back.append(image(item.back,`${item.title} reverse side`));
       inner.append(front,back);
       button.append(inner);
       const toggle = control('flip', () => {

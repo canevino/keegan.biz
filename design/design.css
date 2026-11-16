@@ -71,7 +71,7 @@ body.design-page [hidden] { display: none !important; }
 .gallery-item { width: 100%; max-width: 100%; margin: 0; min-width: 0; }
 .gallery-item-media { max-width: 100%; }
 .gallery-item-media button { display: block; width: 100%; }
-.gallery-item-media img { display: block; width: 100%; height: auto; max-height: 365px; object-fit: contain; object-position: top left; }
+.gallery-item-media img { display: block; width: 100%; height: auto; max-height: none; object-fit: contain; object-position: top left; }
 .gallery-item-caption { margin: 9px 0 0; font-size: 13px; line-height: 1.25; }
 .gallery-item-caption strong { display: block; font-weight: 700; }
 .art-description { display: block; font-size: 12px; line-height: 1.4; margin-top: 5px; }
