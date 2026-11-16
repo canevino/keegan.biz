@@ -191,12 +191,12 @@
   -webkit-text-fill-color:transparent !important;
   background:
     radial-gradient(ellipse at 42% 15%, rgba(255,111,123,.34) 0 7%, rgba(255,111,123,0) 32%),
-    linear-gradient(180deg, color-mix(in srgb, var(--wordmark-face) 82%, white 18%) 0%, var(--wordmark-face) 34%, color-mix(in srgb, var(--wordmark-face) 88%, black 12%) 100%) !important;
+    linear-gradient(180deg, color-mix(in srgb, var(--lp-ink-main, var(--wordmark-face)) 82%, white 18%) 0%, var(--lp-ink-main, var(--wordmark-face)) 34%, color-mix(in srgb, var(--lp-ink-main, var(--wordmark-face)) 88%, black 12%) 100%) !important;
   -webkit-background-clip:text !important;
   background-clip:text !important;
 
   margin-right:var(--design-join,-.095em) !important;
-  transform:translate(var(--design-x,0),var(--design-y,0)) scaleX(var(--design-sx,1)) !important;
+  transform:translate(var(--design-x,0),var(--design-y,0)) rotate(var(--lp-rotation,0deg)) scaleX(var(--design-sx,1)) scaleY(var(--lp-scale-y,1)) !important;
   filter:none !important;
   text-shadow:none !important;
 }
@@ -490,3 +490,27 @@
   .letterpress-fx-grid { column-gap:16px; row-gap:12px; }
   .letterpress-fx label { font-size:11px; }
 }
+
+/* Per-character dry-print losses. The untreated wordmark has no mask. */
+#letterpress-editor .design-letter {
+  -webkit-mask-repeat:repeat;
+  mask-repeat:repeat;
+  -webkit-mask-size:220px 220px;
+  mask-size:220px 220px;
+}
+#letterpress-editor .design-letter--punctuation {
+  letter-spacing:0 !important;
+}
+.letterpress-fx-actions {
+  display:flex; gap:18px; flex-wrap:wrap; align-items:center;
+  margin:13px 0 0; padding:12px 0 1px;
+  border-top:1px solid rgba(17,17,15,.16);
+}
+.letterpress-fx-actions button {
+  cursor:pointer; border:0; background:none; padding:0;
+  font:700 12px/1.3 Helvetica,Arial,sans-serif;
+  text-decoration:underline; text-underline-offset:3px;
+  color:var(--red,#c1272d);
+}
+.letterpress-fx-actions button:focus-visible {outline:2px solid var(--red,#c1272d); outline-offset:4px;}
+@media(max-width:440px){.letterpress-fx-grid{grid-template-columns:1fr 1fr;} .letterpress-fx-actions{gap:12px;}}

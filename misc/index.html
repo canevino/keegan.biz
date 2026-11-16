@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/misc/style.css?v=20261116-misc-cleanup">
   <link rel="stylesheet" href="/assets/sports/sports.css">
-  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r3-tuning">
+  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r4-ink">
 
   <style>
     .home {
@@ -2807,7 +2807,7 @@
                 aria-multiline="false"
                 spellcheck="false"
                 tabindex="0"
-              >design</h3>
+              >keegan.biz</h3>
             </div>
 
             <div class="letterpress-controls" aria-label="Print controls">
@@ -2852,6 +2852,26 @@
                   <label for="letterpress-underprint-strength">underprint strength <output id="letterpress-underprint-strength-value" for="letterpress-underprint-strength">50</output></label>
                   <input id="letterpress-underprint-strength" type="range" min="0" max="100" value="50" step="1">
                 </div>
+                <div class="letterpress-fx">
+                  <label for="letterpress-wear">print wear <output id="letterpress-wear-value" for="letterpress-wear">0</output></label>
+                  <input id="letterpress-wear" type="range" min="0" max="100" value="0" step="1">
+                </div>
+                <div class="letterpress-fx">
+                  <label for="letterpress-variation">letter variation <output id="letterpress-variation-value" for="letterpress-variation">50</output></label>
+                  <input id="letterpress-variation" type="range" min="0" max="100" value="50" step="1">
+                </div>
+                <div class="letterpress-fx">
+                  <label for="letterpress-pressure">ink pressure <output id="letterpress-pressure-value" for="letterpress-pressure">50</output></label>
+                  <input id="letterpress-pressure" type="range" min="0" max="100" value="50" step="1">
+                </div>
+                <div class="letterpress-fx">
+                  <label for="letterpress-pooling">join pooling <output id="letterpress-pooling-value" for="letterpress-pooling">0</output></label>
+                  <input id="letterpress-pooling" type="range" min="0" max="100" value="0" step="1">
+                </div>
+              </div>
+              <div class="letterpress-fx-actions">
+                <button id="letterpress-randomize" type="button" aria-label="Randomize print effects without changing lettering or colors">randomize effects</button>
+                <button id="letterpress-default-effects" type="button">restore effects</button>
               </div>
             </details>
 
@@ -12786,7 +12806,7 @@
 
   <script src="/assets/sports/sports.js" defer></script>
   <script src="/assets/site-nav.js" defer></script>
-  <script src="/misc/letterpress.js?v=20261116-r3-tuning" defer></script>
+  <script src="/misc/letterpress.js?v=20261116-r4-ink" defer></script>
 
 </body>
 </html>
