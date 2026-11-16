@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-15T18:58:17.737Z",
+  "updatedAt": "2026-11-16T06:49:49.719Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -981,7 +981,7 @@
         {
           "id": "5181885",
           "date": "2026-11-16T17:00:00.000Z",
-          "when": "tomorrow · Mon, Nov 16 · 12:00 PM ET",
+          "when": "today · Mon, Nov 16 · 12:00 PM ET",
           "status": "scheduled",
           "home": "Lithuania",
           "away": "Liechtenstein",
@@ -1001,7 +1001,7 @@
         {
           "id": "5181811",
           "date": "2026-11-17T19:45:00.000Z",
-          "when": "Tue, Nov 17 · 2:45 PM ET",
+          "when": "tomorrow · Tue, Nov 17 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Ukraine",
           "away": "Georgia",
@@ -1014,22 +1014,12 @@
       }
     },
     "england": {
-      "active": true,
+      "active": false,
       "team": "England",
       "shortName": "England",
-      "upcoming": [
-        {
-          "id": "5181860",
-          "date": "2026-11-15T19:45:00.000Z",
-          "when": "today · Sun, Nov 15 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Spain",
-          "away": "England",
-          "competition": "UEFA Nations League A Grp. 3"
-        }
-      ],
+      "upcoming": [],
       "standings": {
-        "title": "UEFA Nations League A Grp. 3",
+        "title": "",
         "rows": []
       }
     },
@@ -1041,7 +1031,7 @@
         {
           "id": "5181823",
           "date": "2026-11-17T19:45:00.000Z",
-          "when": "Tue, Nov 17 · 2:45 PM ET",
+          "when": "tomorrow · Tue, Nov 17 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Ireland",
           "away": "Kosovo",
