@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/misc/style.css?v=20261116-misc-cleanup">
   <link rel="stylesheet" href="/assets/sports/sports.css">
-  <link rel="stylesheet" href="/misc/effects.css?v=20261116">
+  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r1">
 
   <style>
     .home {
@@ -97,7 +97,7 @@
 
       font-size: clamp(60px, 6.4vw, 96px);
       line-height: .88;
-      letter-spacing: 0;
+      letter-spacing: -.06em;
       font-weight: 700;
     }
 
@@ -943,7 +943,7 @@
       line-height: 1.18;
       font-weight: 500;
 
-      letter-spacing: 0;
+      letter-spacing: -.015em;
 
       text-align: left;
     }
@@ -965,7 +965,7 @@
       text-align: center;
       font-size: clamp(30px, 4vw, 52px);
       line-height: .92;
-      letter-spacing: 0;
+      letter-spacing: -.055em;
       font-weight: 700;
       box-shadow: 6px 6px 0 rgba(193, 39, 45, .72);
 
@@ -1209,7 +1209,7 @@
       font-size: clamp(60px, 6.4vw, 96px);
       font-weight: 700;
       line-height: .9;
-      letter-spacing: 0;
+      letter-spacing: -.065em;
     }
 
 
@@ -1681,7 +1681,7 @@
       margin: 0;
       font-size: clamp(60px, 6.4vw, 96px);
       line-height: .88;
-      letter-spacing: 0;
+      letter-spacing: -.06em;
       font-weight: 700;
     }
 
@@ -2125,7 +2125,7 @@
       color: var(--red, #c1272d);
       font-size: 26px;
       line-height: .95;
-      letter-spacing: 0;
+      letter-spacing: -.04em;
     }
 
     .how-card p {
@@ -2192,99 +2192,6 @@
 
 
 <body>
-  <svg class="misc-effect-filters" xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false">
-    <defs>
-<filter id="ink-knot-v51" x="-36%" y="-56%" width="172%" height="212%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceGraphic" stdDeviation="1.18" result="blurred"/>
-  <feComponentTransfer in="blurred" result="thresholded">
-    <feFuncA type="discrete" tableValues="0 0 0 1 1 1 1 1 1 1"/>
-  </feComponentTransfer>
-  <feMorphology in="thresholded" operator="dilate" radius="0.22" result="expanded"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.15" numOctaves="3" seed="83" result="edgeNoise"/>
-  <feDisplacementMap in="expanded" in2="edgeNoise" scale="2.35" xChannelSelector="R" yChannelSelector="G" result="roughCore"/>
-
-  <feTurbulence type="fractalNoise" baseFrequency="0.055 0.22" numOctaves="3" seed="117" result="toothNoise"/>
-  <feColorMatrix in="toothNoise" type="saturate" values="0" result="toothGray"/>
-  <feComponentTransfer in="toothGray" result="toothTone">
-    <feFuncR type="linear" slope="0.16" intercept="0.84"/>
-    <feFuncG type="linear" slope="0.16" intercept="0.84"/>
-    <feFuncB type="linear" slope="0.16" intercept="0.84"/>
-    <feFuncA type="linear" slope="0.20"/>
-  </feComponentTransfer>
-  <feComposite in="toothTone" in2="roughCore" operator="in" result="toothInside"/>
-  <feBlend in="roughCore" in2="toothInside" mode="multiply" result="texturedCore"/>
-
-  <feGaussianBlur in="SourceGraphic" stdDeviation="2.25" result="bleedBlur"/>
-  <feTurbulence type="fractalNoise" baseFrequency="0.012 0.090" numOctaves="3" seed="31" result="bleedNoise"/>
-  <feDisplacementMap in="bleedBlur" in2="bleedNoise" scale="2.55" xChannelSelector="R" yChannelSelector="G" result="bleedRough"/>
-  <feComponentTransfer in="bleedRough" result="bleedTone">
-    <feFuncA type="linear" slope="0.54"/>
-  </feComponentTransfer>
-  <feMerge><feMergeNode in="bleedTone"/><feMergeNode in="texturedCore"/></feMerge>
-</filter>
-<filter id="design-red-a-v74" x="-22%" y="-34%" width="144%" height="168%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="1.55" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.115" numOctaves="2" seed="19" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="1.55" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.14" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#d71d31" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-<filter id="design-red-b-v74" x="-24%" y="-36%" width="148%" height="172%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="1.95" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.014 0.092" numOctaves="3" seed="43" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="2.15" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.16" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#d51b2f" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-<filter id="design-red-c-v74" x="-23%" y="-35%" width="146%" height="170%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="1.72" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.021 0.135" numOctaves="2" seed="71" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="1.95" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.12" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#da2033" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-<filter id="design-yellow-a-v74" x="-26%" y="-40%" width="152%" height="180%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="2.05" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 1 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.017 0.105" numOctaves="2" seed="31" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="1.65" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.15" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#f2b426" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-<filter id="design-yellow-b-v74" x="-27%" y="-42%" width="154%" height="184%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="2.35" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.013 0.084" numOctaves="3" seed="59" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="2.05" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.15" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#efad1c" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-<filter id="design-yellow-c-v74" x="-26%" y="-40%" width="152%" height="180%" color-interpolation-filters="sRGB">
-  <feGaussianBlur in="SourceAlpha" stdDeviation="1.90" result="blurred"/>
-  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 1 1 1 1"/></feComponentTransfer>
-  <feTurbulence type="fractalNoise" baseFrequency="0.023 0.128" numOctaves="2" seed="83" result="noise"/>
-  <feDisplacementMap in="spread" in2="noise" scale="1.80" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-  <feGaussianBlur in="rough" stdDeviation="0.13" result="micro"/>
-  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
-  <feFlood flood-color="#f4bc31" result="ink"/>
-  <feComposite in="ink" in2="crisp" operator="in"/>
-</filter>
-    </defs>
-  </svg>
-
 
   <div
     class="page-shell"
@@ -2749,35 +2656,6 @@
 
         </div>
 
-        <!-- Standalone experiments migrated from the original design page -->
-        <button class="misc-experiment-launcher misc-experiment-launcher--type" id="type-launcher"
-          type="button" aria-expanded="false" aria-controls="type-panel">type?</button>
-        <button class="misc-experiment-launcher misc-experiment-launcher--knots" id="knots-launcher"
-          type="button" aria-expanded="false" aria-controls="knots-panel">knots?</button>
-
-        <section class="misc-experiment-panel" id="type-panel" aria-labelledby="type-panel-title" hidden>
-          <div class="misc-experiment-panel-head">
-            <h2 class="misc-experiment-panel-title" id="type-panel-title">type</h2>
-            <button class="misc-experiment-panel-close" id="type-close" type="button" aria-label="Close type">×</button>
-          </div>
-          <div class="misc-type-word" id="misc-type-word" contenteditable="true" role="textbox"
-            aria-label="Editable ink typography" aria-multiline="false" spellcheck="false">design</div>
-          <button class="misc-experiment-action" id="misc-type-reset" type="button">reset</button>
-        </section>
-
-        <section class="misc-experiment-panel" id="knots-panel" aria-labelledby="knots-panel-title" hidden>
-          <div class="misc-experiment-panel-head">
-            <h2 class="misc-experiment-panel-title" id="knots-panel-title">knots</h2>
-            <button class="misc-experiment-panel-close" id="knots-close" type="button" aria-label="Close knots">×</button>
-          </div>
-          <div class="misc-knot" id="misc-knot" role="img" aria-label="Changing Celtic-knot artwork">
-            <img class="misc-knot__bleed" src="/assets/home/knot_smooth_svg1.svg" alt="">
-            <img class="misc-knot__ink" src="/assets/home/knot_smooth_svg1.svg" alt="">
-            <img class="misc-knot__register" src="/assets/home/knot_smooth_svg1.svg" alt="">
-          </div>
-          <button class="misc-experiment-action" id="misc-knot-randomize" type="button">randomize</button>
-        </section>
-
         <button
           class="sports-launcher"
           id="sports-launcher"
@@ -2829,6 +2707,73 @@
             how it works
           </button>
 
+        </div>
+
+        <button
+          class="letterpress-launcher"
+          id="letterpress-launcher"
+          type="button"
+          aria-expanded="false"
+          aria-controls="letterpress-panel"
+        >letters?</button>
+
+        <div
+          class="letterpress-panel"
+          id="letterpress-panel"
+          hidden
+        >
+          <div class="letterpress-panel-head">
+            <h2 class="letterpress-title">letters</h2>
+            <button
+              class="letterpress-close"
+              id="letterpress-close"
+              type="button"
+              aria-label="Close letters"
+            >×</button>
+          </div>
+
+          <section class="letterpress-workshop" aria-label="Editable ink lettering">
+            <div class="letterpress-preview" id="letterpress-preview">
+              <canvas id="letterpress-canvas" aria-hidden="true"></canvas>
+              <h3
+                class="letterpress-editor"
+                id="letterpress-editor"
+                contenteditable="true"
+                role="textbox"
+                aria-label="Lettering text. Click here to type a new word."
+                aria-multiline="false"
+                spellcheck="false"
+                tabindex="0"
+              >design</h3>
+            </div>
+
+            <div class="letterpress-controls" aria-label="Print controls">
+              <label class="letterpress-color">
+                <span>ink</span>
+                <input id="letterpress-ink" type="color" value="#d71d31" aria-label="Ink color">
+              </label>
+              <label class="letterpress-color">
+                <span>underprint</span>
+                <input id="letterpress-underprint" type="color" value="#f2b426" aria-label="Underprint color">
+              </label>
+              <label class="letterpress-color">
+                <span>paper</span>
+                <input id="letterpress-paper" type="color" value="#ece7d7" aria-label="Paper color">
+              </label>
+              <label class="letterpress-transparency">
+                <input id="letterpress-transparent" type="checkbox">
+                <span>transparent png</span>
+              </label>
+            </div>
+
+            <div class="letterpress-actions">
+              <button id="letterpress-reset" type="button">reset</button>
+              <button id="letterpress-export" type="button">save png</button>
+            </div>
+            <p class="letterpress-note" id="letterpress-note" aria-live="polite">click the word to edit it.</p>
+          </section>
+
+          <button class="how-link" type="button" data-how="letters">how it works</button>
         </div>
       </section>
 
@@ -2948,6 +2893,10 @@
         "Football schedules, results and tables come from FotMob match data and are refreshed automatically in the background.",
         "Yankees scores and postseason information come from MLB’s public StatsAPI. During a live game, the page checks MLB directly while the Sports panel is open.",
         "The site keeps a lightweight saved copy of the data too, so normal browsing does not need to constantly call the feeds."
+      ],
+      letters: [
+        "Click the word to type. Each letter is printed as a separate plate, while the ink spreads and overlaps across the whole word.",
+        "Change the ink, underprint and paper colors, then save a high-resolution PNG. Check transparent png to export without the paper."
       ]
     };
 
@@ -3381,6 +3330,8 @@
 
         if (
           !link ||
+          link.hasAttribute("download") ||
+          link.protocol === "blob:" ||
           link.hasAttribute(
             "data-live-link"
           )
@@ -12750,8 +12701,8 @@
   </script>
 
   <script src="/assets/sports/sports.js" defer></script>
-  <script src="/misc/effects.js?v=20261116" defer></script>
   <script src="/assets/site-nav.js" defer></script>
+  <script src="/misc/letterpress.js?v=20261116-r1" defer></script>
 
 </body>
 </html>

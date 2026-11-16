@@ -1,0 +1,206 @@
+/* Misc letters workshop. Scoped to the new panel only. */
+.home .letterpress-launcher {
+  position: absolute;
+  top: calc(50% + 92px);
+  left: var(--home-left);
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--green, #006a44);
+  font: inherit;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.home .letterpress-launcher[hidden] { display:none !important; }
+.home:is(.chess-open, .sports-open, .letterpress-open) :is(.chess-launcher, .sports-launcher, .letterpress-launcher) {
+  display: none !important;
+}
+.letterpress-panel {
+  display: none;
+  width: min(100%, 700px);
+  margin: clamp(72px, 10vh, 126px) auto 0;
+  min-width: 0;
+}
+.letterpress-panel.is-open { display: block; }
+.letterpress-panel[hidden] { display: none !important; }
+.letterpress-panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.letterpress-title {
+  margin: 0;
+  font-size: clamp(60px, 6.4vw, 96px);
+  line-height: .88;
+  letter-spacing: -.06em;
+  font-weight: 700;
+  color: var(--green, #006a44);
+}
+.letterpress-close {
+  flex: 0 0 52px;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: -5px 0 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--red, #c1272d);
+  font: 400 52px / 1 Helvetica, Arial, sans-serif;
+  cursor: pointer;
+}
+.letterpress-workshop { width: 100%; min-width: 0; }
+.letterpress-preview {
+  --lp-paper:#ece7d7;
+  --lp-ink:#d71d31;
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  aspect-ratio: 1.94 / 1;
+  background: var(--lp-paper);
+  border: 1px solid var(--red, #c1272d);
+  overflow: hidden;
+  isolation: isolate;
+}
+.letterpress-preview.is-transparent {
+  background-color: var(--paper, #ece7d7);
+  background-image: linear-gradient(45deg,#d8d2c1 25%,transparent 25%),
+    linear-gradient(-45deg,#d8d2c1 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#d8d2c1 75%),
+    linear-gradient(-45deg,transparent 75%,#d8d2c1 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+#letterpress-canvas {
+  position:absolute;
+  inset:0;
+  z-index:1;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+.letterpress-editor {
+  position:absolute;
+  z-index:2;
+  top:50%;
+  left:20px;
+  width:calc(100% - 40px);
+  margin:0;
+  transform:translateY(-50%);
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  caret-color:var(--lp-ink);
+  font-family:Helvetica,Arial,sans-serif;
+  font-size:120px;
+  font-weight:700;
+  line-height:1.03;
+  letter-spacing:0;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  text-align:center;
+  outline:0;
+  cursor:text;
+  touch-action:manipulation;
+}
+.letterpress-editor .lp-character {
+  display:inline-block;
+  position:relative;
+  margin-right:-.095em;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  text-decoration:none;
+  letter-spacing:0;
+}
+.letterpress-editor .lp-character:last-child { margin-right:0; }
+.letterpress-editor .lp-character.lp-space { min-width:.20em; margin-right:0; }
+.letterpress-editor::selection, .letterpress-editor *::selection {
+  background:rgba(0,106,68,.25);
+  color:transparent;
+}
+.letterpress-editor:empty::before {
+  content:'type here';
+  color:var(--green, #006a44);
+  -webkit-text-fill-color:var(--green, #006a44);
+  opacity:.4;
+}
+.letterpress-controls {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:end;
+  gap:16px 22px;
+  padding:16px 0;
+  border-bottom:1px solid rgba(17,17,15,.2);
+}
+.letterpress-color { display:flex; gap:10px; align-items:center; }
+.letterpress-color span,
+.letterpress-transparency span {
+  color:var(--red, #c1272d);
+  font-size:13px;
+  font-weight:700;
+  line-height:1;
+}
+.letterpress-color input[type=color] {
+  width:32px;
+  height:32px;
+  padding:0;
+  border:1px solid var(--red, #c1272d);
+  border-radius:0;
+  background:transparent;
+  cursor:pointer;
+}
+.letterpress-transparency {
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  cursor:pointer;
+}
+.letterpress-transparency input { accent-color:var(--green, #006a44); width:15px; height:15px; margin:0; }
+.letterpress-actions { display:flex; gap:18px; justify-content:space-between; padding-top:12px; }
+.letterpress-actions button {
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--red, #c1272d);
+  font:700 14px / 1 Helvetica, Arial, sans-serif;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  cursor:pointer;
+}
+.letterpress-actions #letterpress-export { color:var(--green, #006a44); }
+.letterpress-note { margin:8px 0 0; font:400 12px / 1.3 Helvetica, Arial, sans-serif; color:var(--ink, #11110f); }
+.letterpress-panel > .how-link { display:inline-block; margin-top:18px; }
+.letterpress-workshop :is(input,button):focus-visible,
+.letterpress-close:focus-visible,
+.letterpress-launcher:focus-visible,
+.letterpress-editor:focus-visible {
+  outline:2px solid var(--green, #006a44);
+  outline-offset:3px;
+}
+@media (max-width: 700px) {
+  .home .letterpress-launcher { top:calc(50% + 84px); font-size:17px; }
+  .letterpress-panel { width:100%; margin:22px 0 0; }
+  .letterpress-panel-head { gap:12px; margin-bottom:14px; }
+  .letterpress-title { font-size:clamp(52px,15vw,72px); }
+  .letterpress-close { flex-basis:44px; width:44px; height:44px; margin-top:-3px; font-size:44px; }
+  .letterpress-preview { aspect-ratio:1.55 / 1; min-height:176px; }
+  .letterpress-editor { left:12px; width:calc(100% - 24px); }
+  .letterpress-controls { gap:13px 17px; }
+  .letterpress-color span,.letterpress-transparency span { font-size:12px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .letterpress-close { transition:none; }
+}
+
+/* Editing should look like a printing plate rather than a form field. */
+.letterpress-editor:focus-visible { outline: none; }
+.letterpress-preview:has(.letterpress-editor:focus-visible) { border-color: var(--green, #006a44); }
