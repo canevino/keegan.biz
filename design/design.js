@@ -8,6 +8,7 @@
   function activate(element, action) {
     if (!element) return;
     element.addEventListener("click", action);
+    if (element.matches("button, a")) return;
     element.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
@@ -37,10 +38,6 @@
             { duration: 220, easing: "ease-out" }
           );
         }
-        project.scrollIntoView({
-          behavior: reducedMotion.matches ? "auto" : "smooth",
-          block: "start"
-        });
       }
     }
 
