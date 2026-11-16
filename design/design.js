@@ -26,6 +26,8 @@
       project.classList.toggle("is-open", open);
       content.hidden = !open;
       toggle.setAttribute("aria-expanded", String(open));
+      const symbol = toggle.querySelector(".project-toggle__symbol");
+      if (symbol) symbol.textContent = open ? "−" : "+";
 
       if (open) {
         if (!reducedMotion.matches) {
@@ -127,44 +129,6 @@
     sync();
   });
 
-  // The editable heading retains a single-line, plain-text caret.
-  const title = document.getElementById("design-title");
-  function focusTitle() {
-    if (!title || document.getElementById("wip-dialog")?.open) return;
-    title.focus({ preventScroll: true });
-    const selection = window.getSelection();
-    if (!selection) return;
-    const range = document.createRange();
-    range.selectNodeContents(title);
-    range.collapse(false);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-
-  if (title) {
-    title.addEventListener("beforeinput", (event) => {
-      if (["insertParagraph", "insertLineBreak"].includes(event.inputType)) event.preventDefault();
-    });
-    title.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") event.preventDefault();
-    });
-    title.addEventListener("paste", (event) => {
-      event.preventDefault();
-      const text = (event.clipboardData?.getData("text/plain") || "").replace(/[\r\n]+/g, " ");
-      const selection = window.getSelection();
-      if (!selection?.rangeCount) return;
-      const range = selection.getRangeAt(0);
-      if (!title.contains(range.commonAncestorContainer)) return;
-      range.deleteContents();
-      const node = document.createTextNode(text);
-      range.insertNode(node);
-      range.setStartAfter(node);
-      range.collapse(true);
-      selection.removeAllRanges();
-      selection.addRange(range);
-    });
-  }
-
   // Show the work-in-progress notice once per tab/session.
   const dialog = document.getElementById("wip-dialog");
   const storageKey = "keegan-biz-design-wip-dismissed";
@@ -178,10 +142,8 @@
     });
     dialog.addEventListener("close", () => {
       try { sessionStorage.setItem(storageKey, "1"); } catch (_) {}
-      focusTitle();
+
     });
     dialog.showModal();
-  } else {
-    requestAnimationFrame(focusTitle);
   }
 })();
