@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/misc/style.css?v=20261116-misc-cleanup">
   <link rel="stylesheet" href="/assets/sports/sports.css">
-  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r1">
+  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r2-design">
 
   <style>
     .home {
@@ -2734,7 +2734,70 @@
 
           <section class="letterpress-workshop" aria-label="Editable ink lettering">
             <div class="letterpress-preview" id="letterpress-preview">
-              <canvas id="letterpress-canvas" aria-hidden="true"></canvas>
+              <svg class="letterpress-svg-filters" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="0" height="0"><defs>
+<filter id="letterpress-red-a-v74" x="-22%" y="-34%" width="144%" height="168%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.55" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.018 0.115" numOctaves="2" seed="19" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="1.55" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.14" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#d71d31" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+<filter id="letterpress-red-b-v74" x="-24%" y="-36%" width="148%" height="172%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.95" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.014 0.092" numOctaves="3" seed="43" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="2.15" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.16" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#d51b2f" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+<filter id="letterpress-red-c-v74" x="-23%" y="-35%" width="146%" height="170%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.72" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.021 0.135" numOctaves="2" seed="71" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="1.95" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.12" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#da2033" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+
+<filter id="letterpress-yellow-a-v74" x="-26%" y="-40%" width="152%" height="180%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="2.05" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 1 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.017 0.105" numOctaves="2" seed="31" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="1.65" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.15" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#f2b426" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+<filter id="letterpress-yellow-b-v74" x="-27%" y="-42%" width="154%" height="184%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="2.35" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.013 0.084" numOctaves="3" seed="59" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="2.05" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.15" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#efad1c" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+<filter id="letterpress-yellow-c-v74" x="-26%" y="-40%" width="152%" height="180%" color-interpolation-filters="sRGB">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.90" result="blurred"/>
+  <feComponentTransfer in="blurred" result="spread"><feFuncA type="discrete" tableValues="0 1 1 1 1"/></feComponentTransfer>
+  <feTurbulence type="fractalNoise" baseFrequency="0.023 0.128" numOctaves="2" seed="83" result="noise"/>
+  <feDisplacementMap in="spread" in2="noise" scale="1.80" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feGaussianBlur in="rough" stdDeviation="0.13" result="micro"/>
+  <feComponentTransfer in="micro" result="crisp"><feFuncA type="discrete" tableValues="0 0 1 1 1"/></feComponentTransfer>
+  <feFlood flood-color="#f4bc31" result="ink"/>
+  <feComposite in="ink" in2="crisp" operator="in"/>
+</filter>
+
+</defs></svg>
               <h3
                 class="letterpress-editor"
                 id="letterpress-editor"
@@ -12702,7 +12765,7 @@
 
   <script src="/assets/sports/sports.js" defer></script>
   <script src="/assets/site-nav.js" defer></script>
-  <script src="/misc/letterpress.js?v=20261116-r1" defer></script>
+  <script src="/misc/letterpress.js?v=20261116-r2-design" defer></script>
 
 </body>
 </html>

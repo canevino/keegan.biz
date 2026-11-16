@@ -7,7 +7,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--green, #006a44);
+  color: var(--red, #c1272d);
   font: inherit;
   font-size: 20px;
   line-height: 1;
@@ -81,58 +81,6 @@
   background-size: 20px 20px;
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
-#letterpress-canvas {
-  position:absolute;
-  inset:0;
-  z-index:1;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-}
-.letterpress-editor {
-  position:absolute;
-  z-index:2;
-  top:50%;
-  left:20px;
-  width:calc(100% - 40px);
-  margin:0;
-  transform:translateY(-50%);
-  color:transparent;
-  -webkit-text-fill-color:transparent;
-  caret-color:var(--lp-ink);
-  font-family:Helvetica,Arial,sans-serif;
-  font-size:120px;
-  font-weight:700;
-  line-height:1.03;
-  letter-spacing:0;
-  white-space:normal;
-  overflow-wrap:anywhere;
-  text-align:center;
-  outline:0;
-  cursor:text;
-  touch-action:manipulation;
-}
-.letterpress-editor .lp-character {
-  display:inline-block;
-  position:relative;
-  margin-right:-.095em;
-  color:transparent;
-  -webkit-text-fill-color:transparent;
-  text-decoration:none;
-  letter-spacing:0;
-}
-.letterpress-editor .lp-character:last-child { margin-right:0; }
-.letterpress-editor .lp-character.lp-space { min-width:.20em; margin-right:0; }
-.letterpress-editor::selection, .letterpress-editor *::selection {
-  background:rgba(0,106,68,.25);
-  color:transparent;
-}
-.letterpress-editor:empty::before {
-  content:'type here';
-  color:var(--green, #006a44);
-  -webkit-text-fill-color:var(--green, #006a44);
-  opacity:.4;
-}
 .letterpress-controls {
   display:flex;
   flex-wrap:wrap;
@@ -182,10 +130,7 @@
 .letterpress-workshop :is(input,button):focus-visible,
 .letterpress-close:focus-visible,
 .letterpress-launcher:focus-visible,
-.letterpress-editor:focus-visible {
-  outline:2px solid var(--green, #006a44);
-  outline-offset:3px;
-}
+
 @media (max-width: 700px) {
   .home .letterpress-launcher { top:calc(50% + 84px); font-size:17px; }
   .letterpress-panel { width:100%; margin:22px 0 0; }
@@ -202,5 +147,286 @@
 }
 
 /* Editing should look like a printing plate rather than a form field. */
-.letterpress-editor:focus-visible { outline: none; }
+
 .letterpress-preview:has(.letterpress-editor:focus-visible) { border-color: var(--green, #006a44); }
+
+#letterpress-editor {
+  position:relative !important;
+  display:inline-flex !important;
+  align-items:baseline !important;
+  isolation:isolate !important;
+  overflow:visible !important;
+  white-space:nowrap !important;
+  color:inherit !important;
+  -webkit-text-fill-color:initial !important;
+  background:none !important;
+  filter:none !important;
+  text-shadow:none !important;
+  letter-spacing:0 !important;
+}
+
+#letterpress-editor::before,
+#letterpress-editor::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+/* Each letter has its own ink plates. The deliberately different joins,
+   offsets and filter seeds create minor natural variation without allowing a
+   completely random layout to destroy readability from one load to another. */
+#letterpress-editor .design-letter {
+  position:relative !important;
+  display:inline-block !important;
+  flex:0 0 auto !important;
+  isolation:isolate !important;
+  overflow:visible !important;
+  vertical-align:baseline !important;
+
+  color:transparent !important;
+  -webkit-text-fill-color:transparent !important;
+  background:
+    radial-gradient(ellipse at 42% 15%, rgba(255,111,123,.34) 0 7%, rgba(255,111,123,0) 32%),
+    linear-gradient(180deg, color-mix(in srgb, var(--wordmark-face) 82%, white 18%) 0%, var(--wordmark-face) 34%, color-mix(in srgb, var(--wordmark-face) 88%, black 12%) 100%) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+
+  margin-right:var(--design-join,-.095em) !important;
+  transform:translate(var(--design-x,0),var(--design-y,0)) scaleX(var(--design-sx,1)) !important;
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+/* Yellow plate: not an outline. It is an independently thresholded ink spread,
+   slightly misregistered per letter so it pools selectively at edges/joins. */
+#letterpress-editor .design-letter::before {
+  content:attr(data-char) !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:-2 !important;
+  pointer-events:none !important;
+
+  color:var(--wordmark-bleed) !important;
+  -webkit-text-fill-color:var(--wordmark-bleed) !important;
+  background:none !important;
+  font:inherit !important;
+  line-height:inherit !important;
+  letter-spacing:0 !important;
+  white-space:nowrap !important;
+
+  opacity:var(--yellow-opacity,.72) !important;
+  transform:translate(var(--yellow-x,.012em),var(--yellow-y,.012em)) scaleX(var(--yellow-sx,1.018)) scaleY(var(--yellow-sy,1.018)) !important;
+  text-shadow:none !important;
+  mix-blend-mode:normal !important;
+}
+
+/* Red bleed: same ink colour family as the face, expanded with blur+threshold.
+   This is what makes occasional joins genuinely swell/fuse instead of looking
+   like an offset drop shadow. */
+#letterpress-editor .design-letter::after {
+  content:attr(data-char) !important;
+  position:absolute !important;
+  inset:0 !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+
+  color:var(--wordmark-shadow) !important;
+  -webkit-text-fill-color:var(--wordmark-shadow) !important;
+  background:none !important;
+  font:inherit !important;
+  line-height:inherit !important;
+  letter-spacing:0 !important;
+  white-space:nowrap !important;
+
+  opacity:var(--red-bleed-opacity,.94) !important;
+  transform:translate(var(--red-x,0),var(--red-y,.002em)) scaleX(var(--red-sx,1.016)) scaleY(var(--red-sy,1.010)) !important;
+  text-shadow:none !important;
+  mix-blend-mode:normal !important;
+}
+
+/* Three real blur/threshold variants; the six letters alternate between them. */
+#letterpress-editor .design-letter--a::after { filter:url(#letterpress-red-a-v74) !important; }
+#letterpress-editor .design-letter--b::after { filter:url(#letterpress-red-b-v74) !important; }
+#letterpress-editor .design-letter--c::after { filter:url(#letterpress-red-c-v74) !important; }
+#letterpress-editor .design-letter--a::before { filter:url(#letterpress-yellow-a-v74) !important; }
+#letterpress-editor .design-letter--b::before { filter:url(#letterpress-yellow-b-v74) !important; }
+#letterpress-editor .design-letter--c::before { filter:url(#letterpress-yellow-c-v74) !important; }
+
+/* Fixed irregular profile: intentionally uneven joins/registration. */
+#letterpress-editor .design-letter--d {
+  --design-join:-.090em;
+  --design-x:0;
+  --design-y:.002em;
+  --design-sx:1.006;
+  --yellow-x:.018em;
+  --yellow-y:.012em;
+  --yellow-opacity:.72;
+  --yellow-sx:1.022;
+  --red-sx:1.014;
+}
+#letterpress-editor .design-letter--e {
+  --design-join:-.132em;
+  --design-x:-.002em;
+  --design-y:.004em;
+  --design-sx:1.014;
+  --yellow-x:-.004em;
+  --yellow-y:.018em;
+  --yellow-opacity:.82;
+  --yellow-sx:1.028;
+  --red-sx:1.032;
+  --red-bleed-opacity:.98;
+}
+#letterpress-editor .design-letter--s {
+  --design-join:-.086em;
+  --design-x:-.004em;
+  --design-y:-.002em;
+  --design-sx:1.018;
+  --yellow-x:.020em;
+  --yellow-y:-.002em;
+  --yellow-opacity:.76;
+  --yellow-sx:1.024;
+  --red-sx:1.028;
+  --red-sy:1.016;
+}
+#letterpress-editor .design-letter--i {
+  --design-join:-.116em;
+  --design-x:.002em;
+  --design-y:0;
+  --design-sx:1.008;
+  --yellow-x:.010em;
+  --yellow-y:.022em;
+  --yellow-opacity:.66;
+  --yellow-sx:1.018;
+  --red-sx:1.020;
+}
+#letterpress-editor .design-letter--g {
+  --design-join:-.110em;
+  --design-x:-.004em;
+  --design-y:.006em;
+  --design-sx:1.018;
+  --yellow-x:-.010em;
+  --yellow-y:.014em;
+  --yellow-opacity:.86;
+  --yellow-sx:1.032;
+  --red-x:-.003em;
+  --red-sx:1.034;
+  --red-sy:1.020;
+  --red-bleed-opacity:1;
+}
+#letterpress-editor .design-letter--n {
+  --design-join:0em;
+  --design-x:-.004em;
+  --design-y:.002em;
+  --design-sx:1.010;
+  --yellow-x:.018em;
+  --yellow-y:.006em;
+  --yellow-opacity:.72;
+  --yellow-sx:1.020;
+  --red-sx:1.016;
+}
+
+/* No hover/smudge on design. Keep the resting print object stable. */
+#letterpress-editor:hover,
+#letterpress-editor:focus,
+#letterpress-editor:focus-visible,
+#letterpress-editor:hover .design-letter,
+#letterpress-editor:focus .design-letter,
+#letterpress-editor:focus-visible .design-letter {
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+/* Existing knot treatment is intentionally untouched and remains the only
+   other allowed print/bleed system on the page. */
+
+
+/* =====================================================
+   v75 — LIVE EDITABLE DESIGN WORDMARK
+   HARD LOCK:
+   - The approved v74 red/yellow blur→threshold ink treatment is unchanged.
+   - Ink/print effects remain scoped ONLY to #letterpress-editor and the knot system.
+   - No paper texture is reintroduced.
+   - All other typography remains clean.
+   ===================================================== */
+
+#letterpress-editor[contenteditable="true"] {
+  cursor:text !important;
+  caret-color:var(--wordmark-shadow) !important;
+  min-width:.6ch !important;
+  min-height:1em !important;
+  outline:none !important;
+  -webkit-user-select:text !important;
+  user-select:text !important;
+}
+
+#letterpress-editor[contenteditable="true"]:focus,
+#letterpress-editor[contenteditable="true"]:focus-visible {
+  outline:none !important;
+}
+
+#letterpress-editor[contenteditable="true"] .design-letter {
+  cursor:text !important;
+}
+
+#letterpress-editor[contenteditable="true"] .design-letter::selection {
+  background:rgba(242,180,38,.28);
+}
+
+#letterpress-editor .design-letter--space {
+  min-width:.30em !important;
+  margin-right:0 !important;
+  transform:none !important;
+}
+
+#letterpress-editor .design-letter--space::before,
+#letterpress-editor .design-letter--space::after {
+  content:none !important;
+  display:none !important;
+}
+
+
+
+
+
+/* The original /design/ artwork, not a canvas approximation. */
+.letterpress-preview {
+  --wordmark-face:#d71d31;
+  --wordmark-shadow:#bb1728;
+  --wordmark-bleed:#f2b426;
+  --wordmark-paper:#ece7d7;
+  background:var(--wordmark-paper);
+}
+.letterpress-svg-filters { position:absolute; width:0; height:0; overflow:hidden; pointer-events:none; }
+#letterpress-editor {
+  position:absolute !important;
+  z-index:2;
+  top:50%;left:50%;
+  width:max-content;
+  max-width:none;
+  min-height:1em;
+  margin:0 !important;
+  padding:0 .05em !important;
+  transform:translate(-50%,-50%);
+  font-family:Helvetica,Arial,sans-serif;
+  font-size:148px;
+  font-weight:700;
+  line-height:.80;
+  text-transform:none;
+  text-align:left;
+  caret-color:var(--wordmark-shadow) !important;
+  user-select:text;
+}
+#letterpress-editor .design-letter { font-weight:700; }
+.letterpress-preview:has(#letterpress-editor:focus-visible) { border-color:var(--red,#c1272d); }
+/* All three workshops share the same masthead color. Controls remain red. */
+.home .chess-panel .chess-panel-title,
+.home .sports-panel-shell .sports-panel-title,
+.home .letterpress-panel .letterpress-title { color:var(--green,#006a44) !important; }
+.home .chess-launcher,
+.home .sports-launcher,
+.home .letterpress-launcher { color:var(--red,#c1272d) !important; }
+@media (max-width:700px) {
+ #letterpress-editor { font-size:86px; }
+}
