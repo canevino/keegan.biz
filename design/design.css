@@ -4347,3 +4347,318 @@ body.design-page .project .project-key--triennial img {object-position:center bo
 @media (prefers-reduced-motion:reduce) {
   body.design-page *,body.design-page *::before,body.design-page *::after {scroll-behavior:auto !important;animation-duration:.01ms !important;transition-duration:.01ms !important;}
 }
+
+
+/* Portfolio proportions — remove inherited artificial heights and implicit grid rows */
+body.design-page {
+  --section-gap:clamp(35px,3.6vw,54px);
+  --design-gutter:clamp(24px,4.2vw,68px);
+}
+body.design-page .design-site-header {padding-top:14px;padding-bottom:12px;}
+body.design-page .design-main {max-width:1500px !important;}
+body.design-page .portfolio-masthead {
+  padding:clamp(22px,3vw,42px) 0 clamp(30px,3.5vw,49px) !important;
+}
+body.design-page #design-title {
+  font-size:clamp(50px,5.4vw,80px) !important;
+  line-height:1 !important;
+}
+body.design-page .project .project-summary {
+  grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr) !important;
+  gap:clamp(26px,3.4vw,52px) !important;
+  height:auto !important;
+  min-height:0 !important;
+  align-items:start !important;
+}
+body.design-page .project .project-title {
+  font-size:clamp(29px,3.05vw,43px) !important;
+  line-height:1.12 !important;
+}
+body.design-page .project .project-toggle__symbol {line-height:1.18;}
+body.design-page .project .project-key {
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  overflow:visible !important;
+}
+body.design-page .project .project-key img,
+body.design-page .project :is(.project-key--triennial,.project-key--angels) img,
+body.design-page .project .project-key--triennial img {
+  display:block !important;
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:clamp(200px,22vw,310px) !important;
+  object-fit:contain !important;
+  object-position:left top !important;
+}
+body.design-page .project .project-content {
+  padding:clamp(23px,3vw,38px) 0 0 !important;
+}
+body.design-page .project .case-section {
+  grid-template-columns:minmax(0,.37fr) minmax(0,.63fr) !important;
+  grid-template-rows:auto !important;
+  grid-auto-rows:auto !important;
+  gap:clamp(16px,2.8vw,38px) !important;
+  align-items:start !important;
+  margin-bottom:clamp(30px,3.6vw,52px) !important;
+  padding:0 !important;
+}
+/* The previous ten-row heading span generated nine empty grid rows in each section. */
+body.design-page .project .case-section__header {
+  grid-column:1 !important;
+  grid-row:1 !important;
+  align-self:start !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+body.design-page .project .case-section > :not(.case-section__header) {
+  grid-column:2 !important;
+  grid-row:auto !important;
+  min-width:0 !important;
+  width:100% !important;
+  margin:0 !important;
+}
+body.design-page .project .case-section__header h3,
+body.design-page #project-triennial .case-section--making-public .case-section__header h3 {
+  font-size:clamp(23px,2.05vw,29px) !important;
+  line-height:1.17 !important;
+  margin:0 0 13px !important;
+}
+body.design-page .project .case-section__header p,
+body.design-page .project .case-lede,
+body.design-page .project .case-section__intro,
+body.design-page .project .case-section--overview .case-section__header p {
+  font-size:clamp(14px,1.06vw,16px) !important;
+  line-height:1.48 !important;
+  margin:0 0 13px !important;
+  max-width:56ch !important;
+}
+body.design-page .project .case-credit {font-size:12px !important;line-height:1.42 !important;}
+body.design-page .project .case-section figcaption {font-size:12px !important;line-height:1.35 !important;}
+/* Full campaign poster at natural proportions, rather than an 801×660 forced image box. */
+body.design-page .project .case-section--lead .feature-slab,
+body.design-page .project .case-section--lead .feature-slab__hero {
+  display:block !important;
+  width:100% !important;
+  max-width:none !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+body.design-page .project .case-section--lead .feature-slab__hero img {
+  display:block !important;
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:clamp(380px,40vw,540px) !important;
+  object-fit:contain !important;
+  object-position:left top !important;
+}
+/* Switching artwork has preserved aspect ratios; installed photographs are never cropped. */
+body.design-page #project-triennial .switcher-grid--three {
+  column-gap:clamp(20px,3vw,40px) !important;
+  row-gap:clamp(20px,2.6vw,34px) !important;
+}
+body.design-page #project-triennial .switcher-grid--three .image-switcher__stage--portrait {
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:3 / 4 !important;
+}
+body.design-page #project-triennial .switcher-grid--three > .image-switcher:first-child .image-switcher__stage--portrait > .state-secondary {
+  object-fit:contain !important;
+}
+body.design-page #project-triennial .switcher-grid--three .image-switcher__stage--wide {
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:3.5 / 1 !important;
+}
+body.design-page #project-triennial .switcher-grid--three .image-switcher__stage--wide > img {object-fit:contain !important;}
+/* Keep installation-photo switcher large enough to read without clipping. */
+body.design-page #project-triennial .switcher-grid--three .image-switcher--bus.is-secondary .image-switcher__stage--wide {
+  aspect-ratio:2 / 1 !important;
+}
+body.design-page #project-triennial .case-section--extensions .extension-layout {
+  gap:clamp(18px,3vw,36px) !important;
+}
+body.design-page #project-triennial .case-section--extensions .extension-card--gif .extension-stage,
+body.design-page #project-triennial .case-section--extensions .extension-card--public-processes .flip-card__scene.extension-stage {
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+body.design-page #project-triennial .case-section--extensions .extension-card--gif .extension-stage {aspect-ratio:1000 / 1294 !important;}
+body.design-page #project-triennial .case-section--extensions .extension-card--public-processes .flip-card__scene.extension-stage {aspect-ratio:1 / 1 !important;}
+body.design-page #project-triennial .case-section--extensions .extension-card--gif .extension-stage img,
+body.design-page #project-triennial .case-section--extensions .extension-card--public-processes .flip-card__face img {
+  object-fit:contain !important;
+  max-height:100% !important;
+}
+/* Banner + printed pieces share the same artwork column as every other case study. */
+body.design-page .project .case-section--making-public {
+  grid-template-areas:"header banner" "header objects" !important;
+  row-gap:18px !important;
+}
+body.design-page .project .case-section--making-public .case-section__header {
+  grid-area:header !important;
+  grid-column:1 !important;
+  grid-row:1 / span 2 !important;
+}
+body.design-page .project .case-section--making-public > .mp-banner {
+  grid-area:banner !important;
+  grid-column:2 !important;
+  grid-row:1 !important;
+  height:auto !important;
+  min-height:0 !important;
+  padding:0 !important;
+  margin:0 !important;
+}
+body.design-page .project .case-section--making-public > .mp-banner img {
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  object-fit:contain !important;
+}
+body.design-page .project .case-section--making-public > .making-public-grid {
+  grid-area:objects !important;
+  grid-column:2 !important;
+  grid-row:2 !important;
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:clamp(16px,2vw,28px) !important;
+}
+body.design-page .project .case-section__header > div {position:static !important;transform:none !important;}
+/* No gradient effects, decorative strokes, or ornamental outlines. */
+body.design-page .project .case-section :is(.asset-meta,.extension-meta,.image-switcher__meta) {
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  letter-spacing:0 !important;
+}
+@media (max-width:900px) {
+  body.design-page .project .case-section {grid-template-columns:minmax(0,1fr) !important;gap:17px !important;}
+  body.design-page .project .case-section__header {grid-column:1 !important;grid-row:auto !important;}
+  body.design-page .project .case-section > :not(.case-section__header) {grid-column:1 !important;grid-row:auto !important;}
+  body.design-page .project .case-section--making-public {grid-template-areas:"header" "banner" "objects" !important;}
+  body.design-page .project .case-section--making-public .case-section__header {grid-area:header !important;grid-column:1 !important;grid-row:1 !important;}
+  body.design-page .project .case-section--making-public > .mp-banner {grid-area:banner !important;grid-column:1 !important;grid-row:2 !important;}
+  body.design-page .project .case-section--making-public > .making-public-grid {grid-area:objects !important;grid-column:1 !important;grid-row:3 !important;}
+  body.design-page .project .case-section--lead .feature-slab__hero img {max-height:420px !important;}
+}
+@media (max-width:680px) {
+  body.design-page {--section-gap:35px;--design-gutter:clamp(18px,5vw,26px);}
+  body.design-page .portfolio-masthead {padding:22px 0 26px !important;}
+  body.design-page #design-title {font-size:clamp(49px,11.6vw,69px) !important;}
+  body.design-page .project .project-summary {grid-template-columns:minmax(0,1fr) !important;gap:14px !important;}
+  body.design-page .project .project-title {font-size:clamp(29px,7.6vw,40px) !important;}
+  body.design-page .project .project-key {height:auto !important;max-height:none !important;}
+  body.design-page .project .project-key img,
+  body.design-page .project :is(.project-key--triennial,.project-key--angels) img,
+  body.design-page .project .project-key--triennial img {
+    width:auto !important;
+    height:auto !important;
+    max-width:100% !important;
+    max-height:260px !important;
+    object-fit:contain !important;
+    object-position:left top !important;
+  }
+  body.design-page .project .case-section {margin-bottom:30px !important;}
+  body.design-page .project .case-section__header h3 {font-size:clamp(23px,6.1vw,29px) !important;}
+  body.design-page #project-triennial .case-section--extensions .extension-layout {grid-template-columns:1fr !important;}
+  body.design-page .project .case-section--making-public > .making-public-grid {grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+  body.design-page .project .case-section--lead .feature-slab__hero img {max-height:360px !important;}
+  body.design-page #project-triennial .switcher-grid--three {grid-template-columns:1fr !important;}
+  body.design-page #project-triennial .switcher-grid--three > .image-switcher:nth-child(3) {grid-column:1 !important;}
+}
+@media (max-width:420px) {
+  body.design-page .project .case-section--making-public > .making-public-grid {grid-template-columns:1fr !important;}
+}
+
+/* Match the art grid to the case-study column instead of the page width. */
+@media (min-width:901px) {
+  body.design-page #project-triennial .case-section--making-public {
+    grid-template-columns:minmax(0,.37fr) minmax(0,.63fr) !important;
+    grid-template-areas:"header banner" "header objects" !important;
+  }
+  body.design-page #project-triennial .case-section--making-public > .case-section__header {
+    grid-area:header !important;
+    grid-column:1 !important;
+    grid-row:1 / span 2 !important;
+  }
+  body.design-page #project-triennial .case-section--making-public > .mp-banner {
+    grid-area:banner !important;
+    grid-column:2 !important;
+    grid-row:1 !important;
+    max-width:100% !important;
+  }
+  body.design-page #project-triennial .case-section--making-public > .making-public-grid {
+    grid-area:objects !important;
+    grid-column:2 !important;
+    grid-row:2 !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:clamp(16px,2vw,27px) !important;
+  }
+}
+@media (max-width:900px) {
+  body.design-page #project-triennial .case-section--making-public {
+    grid-template-columns:minmax(0,1fr) !important;
+    grid-template-areas:"header" "banner" "objects" !important;
+  }
+  body.design-page #project-triennial .case-section--making-public > .case-section__header {
+    grid-area:header !important;grid-column:1 !important;grid-row:1 !important;
+  }
+  body.design-page #project-triennial .case-section--making-public > .mp-banner {
+    grid-area:banner !important;grid-column:1 !important;grid-row:2 !important;
+  }
+  body.design-page #project-triennial .case-section--making-public > .making-public-grid {
+    grid-area:objects !important;grid-column:1 !important;grid-row:3 !important;
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+@media (max-width:420px) {
+  body.design-page #project-triennial .case-section--making-public > .making-public-grid {
+    grid-template-columns:minmax(0,1fr) !important;
+  }
+}
+/* Keep the printed pieces at their actual proportions, including the event photograph. */
+body.design-page #project-triennial .case-section--making-public .making-public-card .flip-card__scene,
+body.design-page #project-triennial .case-section--making-public .making-public-card .flip-card__inner,
+body.design-page #project-triennial .case-section--making-public .making-public-card .flip-card__face {
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:600 / 776 !important;
+}
+body.design-page #project-triennial .case-section--making-public .making-public-card.flip-card--social .flip-card__scene,
+body.design-page #project-triennial .case-section--making-public .making-public-card.flip-card--social .flip-card__inner,
+body.design-page #project-triennial .case-section--making-public .making-public-card.flip-card--social .flip-card__face {
+  aspect-ratio:600 / 1067 !important;
+}
+body.design-page #project-triennial .case-section--making-public .mp-event-photo img {
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:2800 / 1867 !important;
+  object-fit:contain !important;
+}
+
+/* Documentation photos retain their full composition. */
+body.design-page #project-angels .angels-script-gallery img,
+body.design-page #project-angels .angels-signage-system img {
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:none !important;
+  aspect-ratio:auto !important;
+  object-fit:contain !important;
+  object-position:left top !important;
+}
