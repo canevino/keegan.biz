@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/misc/style.css?v=20261116-misc-cleanup">
   <link rel="stylesheet" href="/assets/sports/sports.css">
-  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r4-ink">
+  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r5-clean">
 
   <style>
     .home {
@@ -2810,76 +2810,47 @@
               >keegan.biz</h3>
             </div>
 
-            <div class="letterpress-controls" aria-label="Print controls">
-              <label class="letterpress-color">
-                <span>ink</span>
-                <input id="letterpress-ink" type="color" value="#d71d31" aria-label="Ink color">
+            <p class="letterpress-note" id="letterpress-note" aria-live="polite">click the word to edit</p>
+
+            <div class="letterpress-controls" aria-label="Print colors">
+              <label class="letterpress-color" for="letterpress-ink">
+                ink
+                <input id="letterpress-ink" type="color" value="#c1272d" aria-label="Ink color">
               </label>
-              <label class="letterpress-color">
-                <span>underprint</span>
-                <input id="letterpress-underprint" type="color" value="#f2b426" aria-label="Underprint color">
+              <label class="letterpress-color" for="letterpress-underprint">
+                second ink
+                <input id="letterpress-underprint" type="color" value="#fdb913" aria-label="Second ink color">
               </label>
-              <label class="letterpress-color">
-                <span>paper</span>
+              <label class="letterpress-color" for="letterpress-paper">
+                paper
                 <input id="letterpress-paper" type="color" value="#ece7d7" aria-label="Paper color">
               </label>
-              <label class="letterpress-transparency">
+              <label class="letterpress-transparency" for="letterpress-transparent">
                 <input id="letterpress-transparent" type="checkbox">
-                <span>transparent png</span>
+                transparent PNG
               </label>
             </div>
 
-            <details class="letterpress-finetune" id="letterpress-finetune">
-              <summary>fine tune</summary>
-              <div class="letterpress-fx-grid" aria-label="Lettering effect adjustments">
-                <div class="letterpress-fx">
-                  <label for="letterpress-overlap">overlap <output id="letterpress-overlap-value" for="letterpress-overlap">50</output></label>
-                  <input id="letterpress-overlap" type="range" min="0" max="100" value="50" step="1">
-                </div>
-                <div class="letterpress-fx">
-                  <label for="letterpress-spread">ink bleed <output id="letterpress-spread-value" for="letterpress-spread">50</output></label>
-                  <input id="letterpress-spread" type="range" min="0" max="100" value="50" step="1">
-                </div>
-                <div class="letterpress-fx">
-                  <label for="letterpress-register">registration <output id="letterpress-register-value" for="letterpress-register">50</output></label>
-                  <input id="letterpress-register" type="range" min="0" max="100" value="50" step="1">
-                </div>
-                <div class="letterpress-fx">
-                  <label for="letterpress-roughness">edge distortion <output id="letterpress-roughness-value" for="letterpress-roughness">50</output></label>
-                  <input id="letterpress-roughness" type="range" min="0" max="100" value="50" step="1">
-                </div>
-                <div class="letterpress-fx">
-                  <label for="letterpress-underprint-strength">underprint strength <output id="letterpress-underprint-strength-value" for="letterpress-underprint-strength">50</output></label>
-                  <input id="letterpress-underprint-strength" type="range" min="0" max="100" value="50" step="1">
-                </div>
-                <div class="letterpress-fx">
-                  <label for="letterpress-wear">print wear <output id="letterpress-wear-value" for="letterpress-wear">0</output></label>
-                  <input id="letterpress-wear" type="range" min="0" max="100" value="0" step="1">
-                </div>
-                <div class="letterpress-fx">
-                  <label for="letterpress-variation">letter variation <output id="letterpress-variation-value" for="letterpress-variation">50</output></label>
-                  <input id="letterpress-variation" type="range" min="0" max="100" value="50" step="1">
-                </div>
-                <div class="letterpress-fx">
-                  <label for="letterpress-pressure">ink pressure <output id="letterpress-pressure-value" for="letterpress-pressure">50</output></label>
-                  <input id="letterpress-pressure" type="range" min="0" max="100" value="50" step="1">
-                </div>
-                <div class="letterpress-fx">
-                  <label for="letterpress-pooling">join pooling <output id="letterpress-pooling-value" for="letterpress-pooling">0</output></label>
-                  <input id="letterpress-pooling" type="range" min="0" max="100" value="0" step="1">
-                </div>
-              </div>
-              <div class="letterpress-fx-actions">
-                <button id="letterpress-randomize" type="button" aria-label="Randomize print effects without changing lettering or colors">randomize effects</button>
-                <button id="letterpress-default-effects" type="button">restore effects</button>
-              </div>
-            </details>
+            <div class="letterpress-effects" aria-label="Print adjustments">
+              <label class="letterpress-fx" for="letterpress-spread">
+                ink bleed
+                <input id="letterpress-spread" type="range" min="0" max="100" value="50" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-register">
+                registration
+                <input id="letterpress-register" type="range" min="0" max="100" value="50" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-variation">
+                irregularity
+                <input id="letterpress-variation" type="range" min="0" max="100" value="50" step="1">
+              </label>
+            </div>
 
             <div class="letterpress-actions">
+              <button id="letterpress-randomize" type="button">randomize</button>
               <button id="letterpress-reset" type="button">reset</button>
               <button id="letterpress-export" type="button">save png</button>
             </div>
-            <p class="letterpress-note" id="letterpress-note" aria-live="polite">click the word to edit it.</p>
           </section>
 
         </div>
@@ -12860,7 +12831,7 @@
 
   <script src="/assets/sports/sports.js" defer></script>
   <script src="/assets/site-nav.js" defer></script>
-  <script src="/misc/letterpress.js?v=20261116-r4-ink" defer></script>
+  <script src="/misc/letterpress.js?v=20261116-r5-clean" defer></script>
 
 </body>
 </html>
