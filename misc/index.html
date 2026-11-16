@@ -10738,6 +10738,57 @@
 
         src:
           "https://upload.wikimedia.org/wikipedia/commons/1/1c/NMSLewisChessmen28.jpg"
+      },
+
+      {
+        title:
+          "Chess Players",
+
+        info:
+          "Jacob Lawrence, 1970. Lithograph. Harvard Art Museums/Fogg Museum.",
+
+        winTitleY:
+          -72,
+
+        winTitleYMobile:
+          -42,
+
+        src:
+          "https://images.harvardartmuseums.org/urn-3:HUAM:807534:IMAGE/full/!3000,3000/0/default.jpg"
+      },
+
+      {
+        title:
+          "Set of 32 Chess Pieces",
+
+        info:
+          "Josef Hartwig, 1922. Wood and felt. Harvard Art Museums/Busch-Reisinger Museum.",
+
+        winTitleY:
+          -72,
+
+        winTitleYMobile:
+          -42,
+
+        src:
+          "https://images.harvardartmuseums.org/urn-3:HUAM:DDC107927_dynmc:IMAGE/full/!3000,3000/0/default.jpg"
+      },
+
+      {
+        title:
+          "Checkmate, Gentlemen",
+
+        info:
+          "Boardman Robinson, 1920. Lithograph. Harvard Art Museums/Fogg Museum.",
+
+        winTitleY:
+          -72,
+
+        winTitleYMobile:
+          -42,
+
+        src:
+          "https://images.harvardartmuseums.org/urn-3:HUAM:INV159891_dynmc:IMAGE/full/!3000,3000/0/default.jpg"
       }
     ];
 
@@ -10824,6 +10875,9 @@
 
       winImage.src =
         currentWinImage.src;
+
+      winImage.alt =
+        `${currentWinImage.title}. ${currentWinImage.info}`;
 
       winArtTitle.innerHTML =
         `<strong>${currentWinImage.title}</strong><br>${currentWinImage.info}`;
