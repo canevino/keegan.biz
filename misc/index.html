@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/misc/style.css?v=20261116-misc-cleanup">
   <link rel="stylesheet" href="/assets/sports/sports.css">
-  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r2-design">
+  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r3-tuning">
 
   <style>
     .home {
@@ -2829,6 +2829,32 @@
               </label>
             </div>
 
+            <details class="letterpress-finetune" id="letterpress-finetune">
+              <summary>fine tune</summary>
+              <div class="letterpress-fx-grid" aria-label="Lettering effect adjustments">
+                <div class="letterpress-fx">
+                  <label for="letterpress-overlap">overlap <output id="letterpress-overlap-value" for="letterpress-overlap">50</output></label>
+                  <input id="letterpress-overlap" type="range" min="0" max="100" value="50" step="1">
+                </div>
+                <div class="letterpress-fx">
+                  <label for="letterpress-spread">ink bleed <output id="letterpress-spread-value" for="letterpress-spread">50</output></label>
+                  <input id="letterpress-spread" type="range" min="0" max="100" value="50" step="1">
+                </div>
+                <div class="letterpress-fx">
+                  <label for="letterpress-register">registration <output id="letterpress-register-value" for="letterpress-register">50</output></label>
+                  <input id="letterpress-register" type="range" min="0" max="100" value="50" step="1">
+                </div>
+                <div class="letterpress-fx">
+                  <label for="letterpress-roughness">edge distortion <output id="letterpress-roughness-value" for="letterpress-roughness">50</output></label>
+                  <input id="letterpress-roughness" type="range" min="0" max="100" value="50" step="1">
+                </div>
+                <div class="letterpress-fx">
+                  <label for="letterpress-underprint-strength">underprint strength <output id="letterpress-underprint-strength-value" for="letterpress-underprint-strength">50</output></label>
+                  <input id="letterpress-underprint-strength" type="range" min="0" max="100" value="50" step="1">
+                </div>
+              </div>
+            </details>
+
             <div class="letterpress-actions">
               <button id="letterpress-reset" type="button">reset</button>
               <button id="letterpress-export" type="button">save png</button>
@@ -2836,7 +2862,6 @@
             <p class="letterpress-note" id="letterpress-note" aria-live="polite">click the word to edit it.</p>
           </section>
 
-          <button class="how-link" type="button" data-how="letters">how it works</button>
         </div>
       </section>
 
@@ -2956,10 +2981,6 @@
         "Football schedules, results and tables come from FotMob match data and are refreshed automatically in the background.",
         "Yankees scores and postseason information come from MLB’s public StatsAPI. During a live game, the page checks MLB directly while the Sports panel is open.",
         "The site keeps a lightweight saved copy of the data too, so normal browsing does not need to constantly call the feeds."
-      ],
-      letters: [
-        "Click the word to type. Each letter is printed as a separate plate, while the ink spreads and overlaps across the whole word.",
-        "Change the ink, underprint and paper colors, then save a high-resolution PNG. Check transparent png to export without the paper."
       ]
     };
 
@@ -12765,7 +12786,7 @@
 
   <script src="/assets/sports/sports.js" defer></script>
   <script src="/assets/site-nav.js" defer></script>
-  <script src="/misc/letterpress.js?v=20261116-r2-design" defer></script>
+  <script src="/misc/letterpress.js?v=20261116-r3-tuning" defer></script>
 
 </body>
 </html>

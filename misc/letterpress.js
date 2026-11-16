@@ -7,8 +7,22 @@
   const stage=$('letterpress-preview'), title=$('letterpress-editor');
   const ink=$('letterpress-ink'), bleed=$('letterpress-underprint'), paper=$('letterpress-paper');
   const transparent=$('letterpress-transparent'), resetButton=$('letterpress-reset'), exportButton=$('letterpress-export');
+  const effects = {
+    overlap: $('letterpress-overlap'),
+    spread: $('letterpress-spread'),
+    register: $('letterpress-register'),
+    roughness: $('letterpress-roughness'),
+    underprint: $('letterpress-underprint-strength')
+  };
+  const effectOutputs = {
+    overlap: $('letterpress-overlap-value'),
+    spread: $('letterpress-spread-value'),
+    register: $('letterpress-register-value'),
+    roughness: $('letterpress-roughness-value'),
+    underprint: $('letterpress-underprint-strength-value')
+  };
   const note=$('letterpress-note');
-  if(![home,launcher,panel,close,stage,title,ink,bleed,paper,transparent,resetButton,exportButton,note].every(Boolean)) return;
+  if(![home,launcher,panel,close,stage,title,ink,bleed,paper,transparent,resetButton,exportButton,note,...Object.values(effects),...Object.values(effectOutputs)].every(Boolean)) return;
   const defaults={text:'design',ink:'#d71d31',bleed:'#f2b426',paper:'#ece7d7'};
   let scheduled=false, composing=false;
   const cleanText=value=>String(value||'').replace(/\u00a0/g,' ').replace(/[\r\n]+/g,' ').slice(0,32);
@@ -100,6 +114,69 @@
     if(keepCaret&&document.activeElement===title)restoreCaret(Math.min(offset,cleanText(value).length));
     requestPaint();
   }
+  // Capture each original CSS plate setting once per character/filter.
+  // Sliders always compute from those immutable values, so moving them back
+  // to 50 restores the original /design/ artwork exactly, without drift.
+  const readVar=(style,name,fallback)=>{
+    const n=parseFloat(style.getPropertyValue(name));
+    return Number.isFinite(n)?n:fallback;
+  };
+  const factorFrom50=(value,below,above)=>{
+    const n=Number(value);
+    return n<=50?below+(1-below)*n/50:1+(above-1)*(n-50)/50;
+  };
+  const effectLevel=(name)=>Number(effects[name].value);
+  function updateEffects(){
+    for(const [name,input] of Object.entries(effects)){
+      effectOutputs[name].textContent=input.value;
+      input.setAttribute('aria-valuetext',input.value+' of 100');
+    }
+    const overlapFactor=effectLevel('overlap')/50;
+    const bleedFactor=factorFrom50(effectLevel('spread'),.22,3);
+    const registerFactor=factorFrom50(effectLevel('register'),0,3.1);
+    const roughnessFactor=factorFrom50(effectLevel('roughness'),0,4.1);
+    const underprintFactor=effectLevel('underprint')/50;
+
+    title.querySelectorAll('.design-letter:not(.design-letter--space)').forEach(span=>{
+      if(!span._originalPlates){
+        const style=getComputedStyle(span);
+        span._originalPlates={
+          join:readVar(style,'--design-join',-.095),
+          yellowX:readVar(style,'--yellow-x',.012),
+          yellowY:readVar(style,'--yellow-y',.012),
+          yellowOpacity:readVar(style,'--yellow-opacity',.72),
+          redX:readVar(style,'--red-x',0),
+          redY:readVar(style,'--red-y',.002),
+          redSX:readVar(style,'--red-sx',1.016),
+          redSY:readVar(style,'--red-sy',1.010)
+        };
+      }
+      const b=span._originalPlates;
+      span.style.setProperty('--design-join',(b.join*overlapFactor).toFixed(5)+'em');
+      span.style.setProperty('--yellow-x',(b.yellowX*registerFactor).toFixed(5)+'em');
+      span.style.setProperty('--yellow-y',(b.yellowY*registerFactor).toFixed(5)+'em');
+      span.style.setProperty('--red-x',(b.redX*registerFactor).toFixed(5)+'em');
+      span.style.setProperty('--red-y',(b.redY*registerFactor).toFixed(5)+'em');
+      span.style.setProperty('--red-sx',(1+(b.redSX-1)*bleedFactor).toFixed(5));
+      span.style.setProperty('--red-sy',(1+(b.redSY-1)*bleedFactor).toFixed(5));
+      span.style.setProperty('--yellow-opacity',Math.min(1,b.yellowOpacity*underprintFactor).toFixed(5));
+    });
+
+    stage.querySelectorAll('filter[id^="letterpress-"]').forEach(filter=>{
+      const blur=filter.querySelector('feGaussianBlur[in="SourceAlpha"]');
+      const displacement=filter.querySelector('feDisplacementMap');
+      if(blur){
+        if(!blur.hasAttribute('data-lp-original'))blur.setAttribute('data-lp-original',blur.getAttribute('stdDeviation'));
+        const base=Number(blur.getAttribute('data-lp-original'));
+        const isRed=filter.id.includes('-red-');
+        blur.setAttribute('stdDeviation',(base*(isRed?bleedFactor:factorFrom50(effectLevel('spread'),.5,1.7))).toFixed(3));
+      }
+      if(displacement){
+        if(!displacement.hasAttribute('data-lp-original'))displacement.setAttribute('data-lp-original',displacement.getAttribute('scale'));
+        displacement.setAttribute('scale',(Number(displacement.getAttribute('data-lp-original'))*roughnessFactor).toFixed(3));
+      }
+    });
+  }
   function fitType(){
     if(stage.clientWidth<30)return;
     const available=stage.clientWidth-(matchMedia('(max-width:700px)').matches?24:54);
@@ -125,7 +202,7 @@
     stage.querySelectorAll('filter[id^="letterpress-red-"] feFlood').forEach(el=>el.setAttribute('flood-color',darker(ink.value)));
     stage.querySelectorAll('filter[id^="letterpress-yellow-"] feFlood').forEach(el=>el.setAttribute('flood-color',bleed.value));
   }
-  function requestPaint(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;if(panel.hidden)return;fitType();applyColors();});}
+  function requestPaint(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;if(panel.hidden)return;updateEffects();fitType();applyColors();});}
   function closePanel(){
     if(panel.hidden)return;
     panel.hidden=true;panel.classList.remove('is-open');launcher.hidden=false;
@@ -144,6 +221,7 @@
   function reset(){
     ink.value=defaults.ink;bleed.value=defaults.bleed;paper.value=defaults.paper;
     transparent.checked=false;
+    Object.values(effects).forEach(input=>{input.value='50';});
     buildLetters(defaults.text);note.textContent='click the word to edit it.';
     applyColors();requestPaint();
   }
@@ -230,6 +308,10 @@
   launcher.addEventListener('click',openPanel);close.addEventListener('click',closePanel);
   resetButton.addEventListener('click',reset);exportButton.addEventListener('click',savePng);
   [ink,bleed,paper,transparent].forEach(el=>{el.addEventListener('input',applyColors);el.addEventListener('change',applyColors);});
+  Object.values(effects).forEach(input=>{
+    input.addEventListener('input',requestPaint);
+    input.addEventListener('change',requestPaint);
+  });
   title.addEventListener('beforeinput',e=>{if(e.inputType==='insertParagraph'||e.inputType==='insertLineBreak'||e.inputType?.startsWith('format'))e.preventDefault();});
   title.addEventListener('keydown',e=>{if(e.key==='Enter')e.preventDefault();});
   title.addEventListener('paste',e=>{
@@ -244,5 +326,5 @@
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden&&!document.querySelector('.how-overlay.is-visible'))closePanel();});
   if('ResizeObserver'in window)new ResizeObserver(requestPaint).observe(stage);
   else window.addEventListener('resize',requestPaint);
-  buildLetters(defaults.text);applyColors();
+  buildLetters(defaults.text);updateEffects();applyColors();
 })();
