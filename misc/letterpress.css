@@ -134,7 +134,8 @@
   letter-spacing: 0;
   white-space: pre;
   isolation: isolate;
-  color: var(--letter-face, var(--lp-face));
+  color: var(--lp-face);
+  opacity: var(--print-opacity, 1);
   transform: translate(var(--jitter-x, 0), var(--jitter-y, 0))
              rotate(var(--jitter-angle, 0deg));
 }
@@ -163,7 +164,7 @@
 #letterpress-editor .design-letter::after {
   z-index: -1;
   color: var(--lp-face);
-  opacity: var(--red-opacity, .92);
+  opacity: 1;
   transform: scaleX(var(--red-scale, 1.018)) scaleY(var(--red-scale-y, 1.018));
 }
 #letterpress-editor .design-letter--a::before { filter: url(#letterpress-yellow-a-v74); }
@@ -186,6 +187,30 @@
   flex-wrap: wrap;
   gap: 14px 28px;
   margin: 0 0 26px;
+}
+/* Font choice is part of the same unframed control system. */
+.letterpress-font {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 100%;
+  color: var(--red, #c1272d);
+  font: 700 13px/1.2 Helvetica, Arial, sans-serif;
+}
+.letterpress-font select {
+  min-width: 152px;
+  padding: 4px 22px 5px 2px;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--red, #c1272d);
+  font: 700 13px/1.2 Helvetica, Arial, sans-serif;
+  cursor: pointer;
+}
+.letterpress-font select:focus-visible {
+  outline: 2px solid var(--green, #006a44);
+  outline-offset: 3px;
 }
 .letterpress-color,
 .letterpress-transparency {
@@ -290,7 +315,8 @@
   .letterpress-preview { height: clamp(176px, 52vw, 236px); }
   .letterpress-note { margin: 6px 0 22px; }
   .letterpress-controls { gap: 14px 19px; margin-bottom: 22px; }
-  .letterpress-color, .letterpress-transparency { font-size: 12px; }
+  .letterpress-color, .letterpress-transparency, .letterpress-font,
+  .letterpress-font select { font-size: 12px; }
   .letterpress-effects { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; margin-bottom: 25px; }
   .letterpress-fx { font-size: 12px; }
 }

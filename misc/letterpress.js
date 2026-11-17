@@ -9,6 +9,7 @@
   const closeButton = $('letterpress-close');
   const stage = $('letterpress-preview');
   const editor = $('letterpress-editor');
+  const fontSelect = $('letterpress-font');
   const ink = $('letterpress-ink');
   const underprint = $('letterpress-underprint');
   const paper = $('letterpress-paper');
@@ -30,18 +31,34 @@
   const exportButton = $('letterpress-export');
   const note = $('letterpress-note');
 
-  const required = [home, launcher, panel, closeButton, stage, editor, ink,
+  const required = [home, launcher, panel, closeButton, stage, editor, fontSelect, ink,
     underprint, paper, transparent, ...Object.values(effects),
     ...Object.values(effectOutputs), randomButton, resetButton, exportButton, note];
   if (!required.every(Boolean)) return;
 
   const defaults = {
-    text: 'keegan.biz', ink: '#c1272d', underprint: '#fdb913',
+    text: 'keegan.biz', font: 'helvetica', ink: '#c1272d', underprint: '#fdb913',
     paper: '#ece7d7', effects: {
       overlap: 50, spread: 50, register: 50, roughness: 50,
       underprintStrength: 50, variation: 50, pressure: 50, pooling: 0
     }
   };
+
+  // Rely on widely available system faces, without an external font download.
+  // The declared stack also carries through into exported SVG and canvas PNGs.
+  const fontChoices = {
+    helvetica: { family: 'Helvetica, Arial, sans-serif', weight: 700 },
+    georgia: { family: 'Georgia, "Times New Roman", serif', weight: 700 },
+    baskerville: { family: 'Baskerville, "Palatino Linotype", Georgia, serif', weight: 700 },
+    impact: { family: 'Impact, "Arial Narrow", sans-serif', weight: 400 },
+    trebuchet: { family: '"Trebuchet MS", "Lucida Grande", Arial, sans-serif', weight: 700 },
+    bodoni: { family: '"Bodoni 72", "Bodoni MT", "Times New Roman", serif', weight: 700 }
+  };
+  function applyFont() {
+    const selected = fontChoices[fontSelect.value] || fontChoices.helvetica;
+    editor.style.fontFamily = selected.family;
+    editor.style.fontWeight = String(selected.weight);
+  }
 
   let seed = 0;
   let composing = false;
@@ -129,20 +146,19 @@
   // that pair-specific spacing before applying the visitor's overlap setting.
   const kerningContext = document.createElement('canvas').getContext('2d');
   const kerningCache = new Map();
-  if (kerningContext) {
-    kerningContext.font = '700 1000px Helvetica, Arial, sans-serif';
-    kerningContext.fontKerning = 'normal';
-  }
+  if (kerningContext) kerningContext.fontKerning = 'normal';
   function pairKerning(a, b) {
     if (!kerningContext) return 0;
-    const pair = a + b;
-    if (!kerningCache.has(pair)) {
-      const amount = (kerningContext.measureText(pair).width
+    const face = fontChoices[fontSelect.value] || fontChoices.helvetica;
+    kerningContext.font = `${face.weight} 1000px ${face.family}`;
+    const key = `${fontSelect.value}:${a}${b}`;
+    if (!kerningCache.has(key)) {
+      const amount = (kerningContext.measureText(a + b).width
         - kerningContext.measureText(a).width
         - kerningContext.measureText(b).width) / 1000;
-      kerningCache.set(pair, amount);
+      kerningCache.set(key, amount);
     }
-    return kerningCache.get(pair);
+    return kerningCache.get(key);
   }
 
   // Left side of the slider opens up spacing; right side brings letters together.
@@ -151,14 +167,6 @@
     const value = level('overlap');
     return value <= 50 ? (50 - value) / 50 * .10
       : -(value - 50) / 50 * .14;
-  }
-
-  function mixHex(a, b, amount) {
-    const t = clamp(amount, 0, 1);
-    const rgb = value => [1, 3, 5].map(i => parseInt(value.slice(i, i + 2), 16));
-    const x = rgb(a), y = rgb(b);
-    return '#' + x.map((v, i) => Math.round(v * (1 - t) + y[i] * t)
-      .toString(16).padStart(2, '0')).join('');
   }
 
   function updateEffects() {
@@ -187,7 +195,11 @@
     const roughness = level('roughness') / 50;
     const secondStrength = level('underprintStrength') / 50;
     const variation = level('variation') / 50;
-    const pressure = (level('pressure') - 50) / 50;
+    const pressure = level('pressure');
+    // At 50 the print is fully opaque. Lower pressure makes both plates
+    // lighter together, rather than exposing a differently-colored outline.
+    const coverage = pressure < 50 ? .42 + .58 * pressure / 50 : 1;
+    const extraDeposit = Math.max(0, pressure - 50) / 50;
     const pooling = level('pooling') / 100;
 
     editor.querySelectorAll('.design-letter:not(.design-letter--space)')
@@ -202,15 +214,14 @@
         span.style.setProperty('--yellow-x', (shift * (.012 + wiggle() * .006)).toFixed(4) + 'em');
         span.style.setProperty('--yellow-y', (shift * (.016 + wiggle() * .006)).toFixed(4) + 'em');
         span.style.setProperty('--yellow-scale', (1 + shift * .010 + pool * .025).toFixed(4));
-        span.style.setProperty('--red-scale', (1 + bleed * .009 + pool * .055).toFixed(4));
-        span.style.setProperty('--red-scale-y', (1 + bleed * .009 + pool * .032).toFixed(4));
-        span.style.setProperty('--red-opacity', clamp(.92 + pressure * .055, .75, 1).toFixed(3));
+        span.style.setProperty('--red-scale', (1 + bleed * .009 + pool * .055 + extraDeposit * .014).toFixed(4));
+        span.style.setProperty('--red-scale-y', (1 + bleed * .009 + pool * .032 + extraDeposit * .010).toFixed(4));
+        span.style.setProperty('--print-opacity', coverage.toFixed(3));
         span.style.setProperty('--underprint-opacity',
-          clamp((.77 + wiggle() * .08) * secondStrength * (1 + pressure * .10), 0, 1).toFixed(3));
-        const face = pressure < 0
-          ? mixHex(ink.value, paper.value, -pressure * .58)
-          : mixHex(ink.value, '#190d0b', pressure * .27);
-        span.style.setProperty('--letter-face', face);
+          clamp((.77 + wiggle() * .08) * secondStrength, 0, 1).toFixed(3));
+        // Never tint the face independently of its red ink plate.
+        span.style.removeProperty('--letter-face');
+        span.style.removeProperty('--red-opacity');
       });
 
     stage.querySelectorAll('filter[id^="letterpress-"]').forEach(filter => {
@@ -258,6 +269,7 @@
   function paint() {
     paintScheduled = false;
     if (panel.hidden) return;
+    applyFont();
     applyColors();
     updateEffects();
     fitType();
@@ -287,6 +299,7 @@
     launcher.hidden = true;
     launcher.setAttribute('aria-expanded', 'true');
     requestPaint();
+    void refillWords();
     requestAnimationFrame(() => {
       editor.focus({ preventScroll: true });
       restoreSelection(getText().length);
@@ -295,6 +308,7 @@
 
   function reset() {
     seed = 0;
+    fontSelect.value = defaults.font;
     ink.value = defaults.ink;
     underprint.value = defaults.underprint;
     paper.value = defaults.paper;
@@ -307,6 +321,78 @@
     requestPaint();
   }
 
+  // Short, legible words are still available when the optional API is offline.
+  const fallbackWords = [
+    'afterglow', 'apparition', 'atlas', 'bloom', 'bramble', 'cobalt',
+    'current', 'echo', 'fable', 'flicker', 'folklore', 'fossil', 'garden',
+    'glimmer', 'hollow', 'horizon', 'inkling', 'lantern', 'marble',
+    'meadow', 'mosaic', 'murmur', 'orbit', 'pattern', 'raven', 'riddle',
+    'ripple', 'signal', 'spiral', 'static', 'tangent', 'thicket',
+    'thread', 'tremor', 'velvet', 'weather'
+  ];
+  const inkPalettes = [
+    ['#c1272d', '#fdb913'], ['#006a44', '#e46b32'],
+    ['#164b8a', '#f2ad31'], ['#612c70', '#e4a73b'],
+    ['#a72a43', '#5aaf91'], ['#1e584e', '#df6d35'],
+    ['#272525', '#e0aa1c'], ['#a4313d', '#4f93bd'],
+    ['#563e88', '#e5a43b'], ['#1e4165', '#ea7c49'],
+    ['#a62660', '#44a389'], ['#a84c24', '#367e9d']
+  ];
+  let lastPalette = 0;
+  let lastRandomWord = '';
+  let wordPool = [];
+  let fetchingWords = false;
+  let nextFetchAfter = 0;
+
+  // Prefetch up to five common words per request. This API is optional;
+  // a failed request never prevents Randomize from working immediately.
+  async function refillWords() {
+    if (fetchingWords || wordPool.length >= 3 || Date.now() < nextFetchAfter) return;
+    fetchingWords = true;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2400);
+    try {
+      const length = random(4, 9);
+      const response = await fetch(
+        `https://random-word-api.herokuapp.com/word?number=5&length=${length}&diff=2`,
+        { mode: 'cors', signal: controller.signal, cache: 'no-store' }
+      );
+      if (!response.ok) throw new Error('Word service unavailable');
+      const result = await response.json();
+      if (!Array.isArray(result)) throw new Error('Unexpected word response');
+      const fresh = result.filter(word => typeof word === 'string'
+        && /^[a-z]{4,10}$/i.test(word))
+        .map(word => word.toLowerCase())
+        .filter(word => !wordPool.includes(word) && word !== lastRandomWord);
+      if (!fresh.length) throw new Error('No suitable words');
+      wordPool.push(...fresh);
+    } catch (error) {
+      // Network failure, rate limiting, and blocked cross-origin requests
+      // all use the built-in word list. Try the service again later.
+      nextFetchAfter = Date.now() + 60000;
+    } finally {
+      clearTimeout(timeout);
+      fetchingWords = false;
+    }
+  }
+
+  function nextWord() {
+    let word;
+    if (wordPool.length) {
+      const options = wordPool.filter(item => item !== lastRandomWord);
+      word = (options.length ? options : wordPool)[random(0,
+        (options.length ? options : wordPool).length - 1)];
+      wordPool = wordPool.filter(item => item !== word);
+    } else {
+      const options = fallbackWords.filter(item =>
+        item !== lastRandomWord && item !== getText().toLowerCase());
+      word = options[random(0, options.length - 1)];
+    }
+    lastRandomWord = word;
+    void refillWords();
+    return word;
+  }
+
   function randomize() {
     seed = (seed + 1 + random(1, 999999)) >>> 0;
     const ranges = {
@@ -317,6 +403,15 @@
     for (const [key, input] of Object.entries(effects)) {
       input.value = String(random(...ranges[key]));
     }
+    // Each new random print also selects a different typeface.
+    const otherFonts = Object.keys(fontChoices).filter(name => name !== fontSelect.value);
+    fontSelect.value = otherFonts[random(0, otherFonts.length - 1)];
+    // Choose a distinct, readable two-ink combination. Paper is untouched.
+    const next = (lastPalette + 1 + random(0, inkPalettes.length - 2)) % inkPalettes.length;
+    lastPalette = next;
+    [ink.value, underprint.value] = inkPalettes[next];
+    buildLetters(nextWord());
+    note.textContent = 'click the word to edit';
     requestPaint();
   }
 
@@ -392,7 +487,8 @@
         const v = parseFloat(css.getPropertyValue(name));
         return Number.isFinite(v) ? v : fallback;
       };
-      ctx.font = `700 ${size}px Helvetica, Arial, sans-serif`;
+      const selectedFont = fontChoices[fontSelect.value] || fontChoices.helvetica;
+      ctx.font = `${selectedFont.weight} ${size}px ${selectedFont.family}`;
       ctx.textBaseline = 'alphabetic';
       const draw = (color, alpha, dx, dy, blur) => {
         ctx.save();
@@ -403,12 +499,11 @@
         ctx.fillText(char, x + dx, y + dy);
         ctx.restore();
       };
-      draw(underprint.value, num('--underprint-opacity', .78),
+      const coverage = num('--print-opacity', 1);
+      draw(underprint.value, num('--underprint-opacity', .78) * coverage,
         num('--yellow-x', .014) * size, num('--yellow-y', .015) * size, size * .018);
-      const face = css.getPropertyValue('--letter-face').trim() || ink.value;
-      draw(ink.value, num('--red-opacity', .92), 0, 0,
-        size * .022 * level('spread') / 50);
-      draw(face, 1, 0, 0, 0);
+      draw(ink.value, coverage, 0, 0, size * .022 * level('spread') / 50);
+      draw(ink.value, coverage, 0, 0, 0);
     });
     return canvas;
   }
@@ -450,6 +545,7 @@
   closeButton.addEventListener('click', closePanel);
   resetButton.addEventListener('click', reset);
   randomButton.addEventListener('click', randomize);
+  fontSelect.addEventListener('change', requestPaint);
   exportButton.addEventListener('click', savePng);
   [ink, underprint, paper, transparent, ...Object.values(effects)]
     .forEach(input => {
