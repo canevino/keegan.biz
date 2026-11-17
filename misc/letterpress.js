@@ -255,6 +255,34 @@
     return (rand() < 0.5 ? -1 : 1) * magnitude;
   }
 
+  // Randomize picks the SLIDER level here, rather than uniformly sampling a
+  // middle-heavy range and only tapering the effect per letter. Zero is the
+  // single most likely value; 1..10 form an equally likely flat band, followed
+  // by an exponentially declining tail. A small outlier branch occasionally
+  // produces a genuinely strong print. No value above 100 can occur.
+  const lowBiasProfiles = Object.freeze({
+    variation: { decay: .045, rare: .013 },
+    size:      { decay: .051, rare: .012 },
+    skew:      { decay: .057, rare: .010 },
+    stretch:   { decay: .050, rare: .012 },
+    warp:      { decay: .064, rare: .009 },
+    noise:     { decay: .061, rare: .009 },
+    texture:   { decay: .060, rare: .009 }
+  });
+  function lowBiasedSetting(name, rng = Math.random) {
+    const { decay, rare } = lowBiasProfiles[name];
+    const roll = rng();
+    if (roll < .11) return 0;
+    if (roll < .60) return 1 + Math.floor(rng() * 10);
+    if (roll > 1 - rare) return 70 + Math.floor(rng() * 31);
+    // A truncated exponential across 11..100. This gives a smooth falling
+    // probability instead of accidentally clustering around 50.
+    const r = rng();
+    const limit = 1 - Math.exp(-decay * 90);
+    const value = 11 + Math.floor(-Math.log(1 - r * limit) / decay);
+    return clamp(value, 11, 100);
+  }
+
   function selectionOffset() {
     const selection = window.getSelection();
     if (!selection || !selection.rangeCount) return getText().length;
@@ -380,7 +408,6 @@
     const variationValue = level('variation');
     const variation = variationValue <= 50 ? variationValue / 50
       : 1 + 8 * ((variationValue - 50) / 50) ** 1.35;
-    const variationLevel = variationValue / 100;
     const sizeLevel = level('size') / 100;
     const skewLevel = level('skew') / 100;
     const stretchLevel = level('stretch') / 100;
@@ -394,17 +421,29 @@
     const extraDeposit = Math.max(0, pressure - 50) / 50;
     const pooling = level('pooling') / 100;
 
-    // Each effect uses its own stable PRNG stream. Moving the noise slider does
-    // not change a letter's size/skew, and returning to a slider value restores
-    // exactly the same print. High values increase the upper tail without
-    // forcing every letter to be heavily distorted.
-    const targetDefs = stage.querySelector('.letterpress-svg-filters defs');
-    const existingFinish = Array.from(targetDefs?.querySelectorAll('filter[data-letter-finish]') || []);
-    existingFinish.forEach(node => node.remove());
-    const filterTemplates = {};
-    for (const variant of ['a', 'b', 'c']) {
-      filterTemplates[variant] = document.getElementById(`letterpress-finish-${variant}-v1`);
-    }
+    // Word-wide effects should look like ONE print. Noise, texture, warp,
+    // skew and stretch share an intensity across every glyph. Letter variation
+    // and size variation are the two controls intended to vary individuals.
+    const wordRng = seeded((seed ^ 0x8492d3f7) >>> 0);
+    const stretchDirection = wordRng() < .5 ? -1 : 1;
+    const skewDirection = wordRng() < .5 ? -1 : 1;
+    const wordStretch = clamp(1 + stretchDirection * (.40 + wordRng() * .28) * stretchLevel, .46, 1.75);
+    const wordSkewX = skewDirection * (23 + wordRng() * 9) * skewLevel;
+    const wordSkewY = (wordRng() < .5 ? -1 : 1) * (3 + wordRng() * 4) * skewLevel;
+    // Shared finish-filter strength, NOT a hit/miss lottery for each glyph.
+    // Different glyphs can have different turbulence patterns, but all receive
+    // the same degree of distortion, noise and texture.
+    const hasFinish = warpLevel > 0 || noiseLevel > 0 || textureLevel > 0;
+    stage.querySelectorAll('filter[id^="letterpress-finish-"]').forEach(filter => {
+      filter.querySelector('[data-effect="warp"]')?.setAttribute('scale', (warpLevel * 22).toFixed(2));
+      filter.querySelector('[data-effect="noise"]')?.setAttribute('scale', (noiseLevel * 9).toFixed(2));
+      filter.querySelector('[data-effect="texture"]')?.setAttribute('slope', (textureLevel * .72).toFixed(3));
+    });
+    // Apply the finish ONCE to the entire word. This produces continuous
+    // texture and deformation across every glyph rather than separate islands.
+    editor.style.filter = hasFinish ? 'url(#letterpress-finish-a-v1)' : '';
+    // Clear per-letter filters from older renders when recalculating.
+    stage.querySelectorAll('filter[data-letter-finish]').forEach(node => node.remove());
     editor.querySelectorAll('.design-letter:not(.design-letter--space)')
       .forEach((span, index) => {
         const char = span.dataset.char || ' ';
@@ -412,59 +451,36 @@
         const forEffect = name => seeded((letterHash ^ hash(name, index) ^ 0x9e3779b9) >>> 0);
         const wiggle = forEffect('plates');
         const signed = (name, options = {}) => signedWeighted(forEffect(name), 1, options);
-        const weighted = (name, options = {}) => weightedMagnitude(forEffect(name), 1, options);
         const pool = pooling * (.55 + wiggle() * .45);
-
-        // Small shifts dominate; rare letters receive large displacements.
-        // We sample with intensity 1 and apply the slider exactly once; the
-        // previous version multiplied variation twice, making it unresponsive.
         const variationOptions = {
           flatBand: .09, flatChance: .34, tailPower: 3.1,
-          outlierChance: .115, outlierPower: .25, zeroChance: .09
+          outlierChance: .105, outlierPower: .25, zeroChance: .18
         };
-        span.style.setProperty('--jitter-x', (signed('variation-x', variationOptions) * variation * .026).toFixed(4) + 'em');
-        span.style.setProperty('--jitter-y', (signed('variation-y', variationOptions) * variation * .030).toFixed(4) + 'em');
-        span.style.setProperty('--jitter-angle', (signed('variation-angle', variationOptions) * variation * 2.2).toFixed(3) + 'deg');
+        span.style.setProperty('--jitter-x', (signed('variation-x', variationOptions) * variation * .019).toFixed(4) + 'em');
+        span.style.setProperty('--jitter-y', (signed('variation-y', variationOptions) * variation * .023).toFixed(4) + 'em');
+        span.style.setProperty('--jitter-angle', (signed('variation-angle', variationOptions) * variation * 1.8).toFixed(3) + 'deg');
+        // Size variation preserves a glyph's proportions. Stretch is a separate
+        // word-level treatment; independent x/y sizes had made words fragment.
         const sizeOptions = {
-          flatBand: .10, flatChance: .35, tailPower: 3.0,
-          outlierChance: .115, outlierPower: .23, zeroChance: .10
+          flatBand: .11, flatChance: .37, tailPower: 3.0,
+          outlierChance: .095, outlierPower: .23, zeroChance: .17
         };
-        const letterSize = sizeLevel * signed('size-x', sizeOptions) * .58;
-        const heightSize = sizeLevel * signed('size-y', sizeOptions) * .55;
-        const stretchX = stretchLevel * signed('stretch-x', sizeOptions) * .80;
-        const stretchY = stretchLevel * signed('stretch-y', sizeOptions) * .60;
-        span.style.setProperty('--letter-scale-x', clamp(1 + letterSize + stretchX, .28, 2.25).toFixed(4));
-        span.style.setProperty('--letter-scale-y', clamp(1 + heightSize + stretchY, .28, 2.10).toFixed(4));
-        span.style.setProperty('--letter-skew-x', (skewLevel * signed('skew-x', sizeOptions) * 39).toFixed(2) + 'deg');
-        span.style.setProperty('--letter-skew-y', (skewLevel * signed('skew-y', sizeOptions) * 16).toFixed(2) + 'deg');
-
-        const finishOptions = {
-          flatBand: .10, flatChance: .35, tailPower: 3.0,
-          outlierChance: .125, outlierPower: .21, zeroChance: .12
-        };
-        const warpHit = warpLevel * weighted('warp', finishOptions);
-        const noiseHit = noiseLevel * weighted('noise', finishOptions);
-        const textureHit = textureLevel * weighted('texture', finishOptions);
-        const activeFinish = warpHit > .025 || noiseHit > .025 || textureHit > .025;
-        span.classList.toggle('has-finish', activeFinish);
-        if (activeFinish && targetDefs) {
-          const variant = span.classList.contains('design-letter--a') ? 'a'
-            : span.classList.contains('design-letter--b') ? 'b' : 'c';
-          const template = filterTemplates[variant];
-          if (template) {
-            const ownFilter = template.cloneNode(true);
-            const id = `letterpress-personal-${index}`;
-            ownFilter.id = id;
-            ownFilter.setAttribute('data-letter-finish', '');
-            ownFilter.querySelector('[data-effect="warp"]')?.setAttribute('scale', (warpHit * 26).toFixed(2));
-            ownFilter.querySelector('[data-effect="noise"]')?.setAttribute('scale', (noiseHit * 11).toFixed(2));
-            ownFilter.querySelector('[data-effect="texture"]')?.setAttribute('slope', (textureHit * .86).toFixed(3));
-            targetDefs.appendChild(ownFilter);
-            span.style.filter = `url(#${id})`;
-          }
-        } else {
-          span.style.removeProperty('filter');
-        }
+        const sizeRatio = clamp(1 + sizeLevel * signed('size', sizeOptions) * .52, .50, 1.53);
+        const scaleX = clamp(sizeRatio * wordStretch, .26, 2.45);
+        const scaleY = sizeRatio;
+        span.style.setProperty('--letter-scale-x', scaleX.toFixed(4));
+        span.style.setProperty('--letter-scale-y', scaleY.toFixed(4));
+        span.style.setProperty('--letter-skew-x', wordSkewX.toFixed(2) + 'deg');
+        span.style.setProperty('--letter-skew-y', wordSkewY.toFixed(2) + 'deg');
+        // The transform is visual only. Add sidebearings to compensate for the
+        // scaled advance width so small letters don't leave huge blank gaps.
+        // Each side gets half the change in advance from the natural glyph.
+        const fontSize = parseFloat(getComputedStyle(editor).fontSize) || 100;
+        const naturalWidth = span.offsetWidth;
+        const sidebearing = (scaleX - 1) * (naturalWidth / fontSize) * .5;
+        span.style.setProperty('--letter-sidebearing', sidebearing.toFixed(5) + 'em');
+        span.classList.remove('has-finish');
+        span.style.removeProperty('filter');
         span.style.setProperty('--yellow-x', (shift * (.012 + (wiggle() * 2 - 1) * .006)).toFixed(4) + 'em');
         span.style.setProperty('--yellow-y', (shift * (.016 + (wiggle() * 2 - 1) * .006)).toFixed(4) + 'em');
         span.style.setProperty('--yellow-scale', (1 + shift * .010 + pool * .025).toFixed(4));
@@ -723,7 +739,8 @@
       pressure: [28, 82], pooling: [0, 75]
     };
     for (const [key, input] of Object.entries(effects)) {
-      input.value = String(random(...ranges[key]));
+      input.value = String(lowBiasProfiles[key]
+        ? lowBiasedSetting(key) : random(...ranges[key]));
     }
     // Each new random print also selects a different typeface.
     const otherFonts = Object.keys(fontChoices).filter(key =>

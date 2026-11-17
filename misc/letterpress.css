@@ -127,6 +127,8 @@
   display: inline-block;
   flex: 0 0 auto;
   margin: 0;
+  margin-left: var(--letter-sidebearing, 0em);
+  margin-right: var(--letter-sidebearing, 0em);
   padding: 0;
   font: inherit;
   line-height: inherit;
@@ -143,7 +145,7 @@
 }
 /* True inter-letter spacing. The character's width and print plates stay fixed. */
 #letterpress-editor .design-letter--join {
-  margin-right: calc(var(--letter-kern, 0em) + var(--letter-gap, 0em));
+  margin-right: calc(var(--letter-sidebearing, 0em) + var(--letter-kern, 0em) + var(--letter-gap, 0em));
 }
 #letterpress-editor .design-letter::before,
 #letterpress-editor .design-letter::after {
