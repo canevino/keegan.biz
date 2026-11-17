@@ -347,3 +347,6 @@
     animation: none !important;
   }
 }
+
+/* Export actions share the same unframed treatment. */
+.letterpress-actions #letterpress-export-svg { color: var(--green, #006a44); }

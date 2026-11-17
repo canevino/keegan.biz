@@ -17,7 +17,8 @@
   let previewIndex = 0;
   let projectIndex = -1;
   let slideIndex = 0;
-  let activeSlides = [];
+  let activeGroups = [];
+  let groupSize = 2;
   let lightboxIndex = -1;
   let lightboxItems = [];
   let scrollTick = null;
@@ -84,7 +85,7 @@
     dialogImage.alt = item.alt || item.title;
     dialogCaption.textContent = item.title;
     const syncSize = () => {
-      if (dialogImage.src !== new URL(item.src, location.href).href) return;
+      if (dialogImage.src !== new URL(item.src, document.baseURI).href) return;
       if (!dialogImage.naturalWidth) return;
       dialogImage.style.maxWidth = `${dialogImage.naturalWidth}px`;
       dialogImage.style.maxHeight = `${dialogImage.naturalHeight}px`;
@@ -158,29 +159,27 @@
     return {node: view, actions};
   }
 
-  function renderSlide(slide, i) {
-    const item = slide.item;
-    const figure = el('figure', 'viewer-slide');
-    figure.dataset.index = String(i);
-    figure.setAttribute('aria-label', `${i + 1} of ${activeSlides.length}, ${item.title}`);
-    const media = el('div', 'viewer-media');
-    const actionArea = el('div', 'slide-actions');
+  // Each carousel stop is a group of related works. The next group stays
+  // partly visible to indicate horizontal browsing.
+  function renderArtwork(entry, i) {
+    const item = entry.item;
+    const figure = el('figure', 'viewer-artwork');
     const frame = el('div', 'viewer-image-frame');
+    const actions = el('div', 'slide-actions');
     const alt = item.alt || item.title;
 
     if (item.type === 'image') {
-      const image = picture(item.src, alt, i === 0);
-      frame.append(image);
+      frame.append(picture(item.src, alt, i < 2));
       registerLightbox(item.src, alt, item.title);
-      actionArea.append(button('enlarge', () => openLarge(item.src, alt, item.title), 'text-action'));
+      actions.append(button('enlarge', () => openLarge(item.src, alt, item.title), 'text-action'));
     } else if (item.type === 'switch' || item.type === 'flip') {
       let pinned = false;
       frame.classList.add('has-reverse', `has-reverse--${item.type}`);
       registerLightbox(item.front, alt, item.title);
       registerLightbox(item.back, `${item.title}, reverse or in use`, item.title);
       if (item.type === 'switch') {
-        const front = picture(item.front, alt, i === 0);
-        const back = picture(item.back, `${item.title} in use`);
+        const front = picture(item.front, alt, i < 2);
+        const back = picture(item.back, `${item.title}, in use`);
         front.className = 'state-primary';
         back.className = 'state-secondary';
         frame.append(front, back);
@@ -188,7 +187,7 @@
         const inner = el('div', 'flip-inner');
         const front = el('div', 'flip-face front');
         const back = el('div', 'flip-face back');
-        front.append(picture(item.front, alt));
+        front.append(picture(item.front, alt, i < 2));
         back.append(picture(item.back, `${item.title}, reverse side`));
         inner.append(front, back);
         frame.append(inner);
@@ -202,20 +201,26 @@
       toggle.setAttribute('aria-pressed', 'false');
       const large = button('enlarge', () => {
         const hovered = matchMedia('(hover: hover) and (pointer: fine)').matches && frame.matches(':hover');
-        const reverse = pinned || (hovered && !pinned);
-        openLarge(reverse ? item.back : item.front, alt, item.title);
+        openLarge(pinned || hovered ? item.back : item.front, alt, item.title);
       }, 'text-action');
-      actionArea.append(toggle, large);
+      actions.append(toggle, large);
     } else if (item.type === 'folder') {
       const foldout = makeFoldout();
+      frame.classList.add('viewer-image-frame--folder');
       frame.append(foldout.node);
-      actionArea.append(...foldout.actions.children);
-      registerLightbox('/design/assets/better%20angels%20takeaway%20outside.png', alt, item.title);
+      actions.append(...foldout.actions.children);
+      const outside = '/design/assets/better%20angels%20takeaway%20outside.png';
+      registerLightbox(outside, alt, item.title);
       registerLightbox('/design/assets/better%20angels%20takeaway%20inside.png', alt, item.title);
-      actionArea.append(button('enlarge', () => openLarge('/design/assets/better%20angels%20takeaway%20outside.png', alt, item.title), 'text-action'));
+      actions.append(button('enlarge', () => openLarge(outside, alt, item.title), 'text-action'));
     }
-    media.append(frame, actionArea);
-    figure.append(media);
+
+    const caption = el('figcaption', 'viewer-caption');
+    const copy = el('div', 'viewer-caption-copy');
+    copy.append(el('h4', '', item.title));
+    if (item.description) copy.append(el('p', '', item.description));
+    caption.append(copy, actions);
+    figure.append(frame, caption);
     return figure;
   }
 
@@ -242,51 +247,51 @@
     notes.hidden = false;
   }
 
-  function updateSlideFrames() {
-    const track = byId('viewer-track');
-    if (!track) return;
-    const maxHeight = matchMedia('(max-width: 700px)').matches ? Math.min(430, window.innerWidth * 1.10) :
-      matchMedia('(max-width: 980px)').matches ? 450 : 470;
-    [...track.children].forEach(slide => {
-      const frame = slide.querySelector('.viewer-image-frame');
-      const image = frame?.querySelector('img');
-      if (!image?.naturalWidth || !image.naturalHeight) return;
-      const displayWidth = Math.min(track.clientWidth, image.naturalWidth);
-      const fitted = image.naturalHeight * Math.min(displayWidth / image.naturalWidth, maxHeight / image.naturalHeight);
-      const desired = Math.max(165, Math.min(maxHeight, Math.round(fitted + 20)));
-      frame.style.height = `${desired}px`;
-    });
-    const current = track.children[slideIndex];
-    const media = current?.querySelector('.viewer-media');
-    if (media) track.style.height = `${Math.ceil(media.getBoundingClientRect().height)}px`;
+  // Three-piece editorial compositions on desktop and two-piece groups
+  // on small screens. A remainder is redistributed to avoid isolated images.
+  function groupSlides(project) {
+    const entries = project.chapters.flatMap((chapter, chapterIndex) =>
+      chapter.slides.map(item => ({chapter, chapterIndex, item})));
+    groupSize = matchMedia('(max-width: 700px)').matches ? 2 : 3;
+    const groups = [];
+    let cursor = 0;
+    while (cursor < entries.length) {
+      const left = entries.length - cursor;
+      let count = Math.min(groupSize, left);
+      if (groupSize === 3 && left === 4) count = 2;
+      if (groupSize === 2 && left === 3) count = 3;
+      groups.push(entries.slice(cursor, cursor + count));
+      cursor += count;
+    }
+    return groups;
   }
+
   function showCurrentInfo() {
-    const entry = activeSlides[slideIndex];
-    if (!entry) return;
-    const chapter = entry.chapter;
-    byId('viewer-chapter').textContent = chapter.title;
-    byId('viewer-summary').textContent = chapter.summary || '';
-    byId('viewer-art-title').textContent = entry.item.title;
-    byId('viewer-art-title').hidden = entry.item.title.trim().toLowerCase() === chapter.title.trim().toLowerCase();
-    byId('viewer-description').textContent = entry.item.description || '';
-    byId('viewer-description').hidden = !entry.item.description;
-    byId('viewer-count').textContent = `${slideIndex + 1} of ${activeSlides.length}`;
+    const group = activeGroups[slideIndex];
+    if (!group) return;
+    byId('viewer-track')?.querySelectorAll('.viewer-cluster').forEach((node, i) => node.classList.toggle('is-current', i === slideIndex));
+    const chapter = group[0].chapter;
+    byId('viewer-chapter').textContent = activeGroups.length === 1 && projectIndex >= 0 && projects[projectIndex].id === 'prx'
+      ? 'Identity and promotion' : chapter.title;
+    byId('viewer-summary').textContent = activeGroups.length === 1 && projectIndex >= 0 && projects[projectIndex].id === 'prx'
+      ? 'Cover art, newsletter design, and social graphics.' : chapter.summary || '';
+    byId('viewer-count').textContent = `${slideIndex + 1} / ${activeGroups.length}`;
     byId('viewer-prev').disabled = slideIndex === 0;
-    byId('viewer-next').disabled = slideIndex === activeSlides.length - 1;
-    requestAnimationFrame(updateSlideFrames);
+    byId('viewer-next').disabled = slideIndex === activeGroups.length - 1;
   }
+
   function moveSlide(index, smooth = true) {
-    const next = Math.max(0, Math.min(activeSlides.length - 1, index));
-    slideIndex = next;
+    slideIndex = Math.max(0, Math.min(activeGroups.length - 1, index));
     showCurrentInfo();
     const track = byId('viewer-track');
-    const width = track.clientWidth;
-    track.scrollTo({left: next * width, behavior: smooth && !matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'instant'});
+    const target = track.children[slideIndex];
+    if (!target) return;
+    track.scrollTo({
+      left: target.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft,
+      behavior: smooth && !matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'instant'
+    });
   }
-  function flattenSlides(project) {
-    return project.chapters.flatMap((chapter, chapterIndex) =>
-      chapter.slides.map(item => ({chapter, chapterIndex, item})));
-  }
+
   function renderProject() {
     const project = projects[projectIndex];
     study.dataset.project = project.id;
@@ -294,7 +299,7 @@
     byId('study-tagline').textContent = project.tagline;
     renderStory(project);
     lightboxItems = [];
-    activeSlides = flattenSlides(project);
+    activeGroups = groupSlides(project);
     slideIndex = 0;
     gallery.replaceChildren();
 
@@ -302,56 +307,70 @@
     const context = el('div', 'viewer-context');
     const chapter = el('h3', '', ''); chapter.id = 'viewer-chapter';
     const summary = el('p', '', ''); summary.id = 'viewer-summary';
-    context.append(chapter, summary);
-
-    const visual = el('div', 'viewer-visual');
-    const track = el('div', 'viewer-track');
-    track.id = 'viewer-track';
-    track.tabIndex = 0;
-    track.setAttribute('role', 'region');
-    track.setAttribute('aria-label', `${project.name} artwork. Scroll horizontally or use previous and next.`);
-    activeSlides.forEach((item, i) => {
-      const slide = renderSlide(item, i);
-      track.append(slide);
-      const image = slide.querySelector('.viewer-image-frame img');
-      if (image && !image.complete) image.addEventListener('load', updateSlideFrames, {once: true});
-    });
-
-    const detailRow = el('div', 'viewer-detail');
-    const assetText = el('div', 'viewer-asset-text');
-    const title = el('h4', '', ''); title.id = 'viewer-art-title';
-    const description = el('p', '', ''); description.id = 'viewer-description';
-    assetText.append(title, description);
-
     const controls = el('div', 'viewer-controls');
     const count = el('span', 'viewer-count', ''); count.id = 'viewer-count';
     count.setAttribute('aria-live', 'polite');
     const previous = button('previous', () => moveSlide(slideIndex - 1), 'text-action'); previous.id = 'viewer-prev';
     const next = button('next', () => moveSlide(slideIndex + 1), 'text-action'); next.id = 'viewer-next';
-    controls.append(count, previous, next);
-    detailRow.append(assetText, controls);
-    visual.append(track, detailRow);
+    controls.append(previous, next, count);
+    controls.hidden = activeGroups.length <= 1;
+    context.append(chapter, summary, controls);
+
+    const visual = el('div', 'viewer-visual');
+    const track = el('div', 'viewer-track');
+    track.id = 'viewer-track';
+    track.classList.toggle('is-single', activeGroups.length <= 1);
+    track.tabIndex = activeGroups.length > 1 ? 0 : -1;
+    track.setAttribute('role', 'region');
+    track.setAttribute('aria-roledescription', 'carousel');
+    track.setAttribute('aria-label', `${project.name} artwork. Scroll sideways or use previous and next.`);
+
+    let artworkIndex = 0;
+    activeGroups.forEach((entries, groupIndex) => {
+      const cluster = el('div', 'viewer-cluster');
+      cluster.dataset.index = String(groupIndex);
+      cluster.dataset.size = String(entries.length);
+      cluster.setAttribute('role', 'group');
+      cluster.setAttribute('aria-roledescription', 'slide');
+      cluster.setAttribute('aria-label', `Artwork group ${groupIndex + 1} of ${activeGroups.length}`);
+      entries.forEach(entry => {
+        cluster.append(renderArtwork(entry, artworkIndex++));
+      });
+      track.append(cluster);
+    });
+
+    visual.append(track);
     viewer.append(context, visual);
     gallery.append(viewer);
     showCurrentInfo();
 
-    // A single scrollable track holds the entire project. Swipe/trackpad, buttons,
-    // and keyboard all operate on the same index, with no nested galleries.
-    window.addEventListener('resize', updateSlideFrames, {passive: true});
+    // The track's real slide offsets are used, rather than assuming full-width
+    // slides. This keeps snapping accurate after resize and on mobile.
     track.addEventListener('scroll', () => {
       if (scrollTick) cancelAnimationFrame(scrollTick);
       scrollTick = requestAnimationFrame(() => {
-        const nextIndex = Math.min(activeSlides.length - 1, Math.max(0, Math.round(track.scrollLeft / Math.max(track.clientWidth, 1))));
-        if (nextIndex !== slideIndex) { slideIndex = nextIndex; showCurrentInfo(); }
+        const offset = track.scrollLeft;
+        let closest = 0;
+        let distance = Infinity;
+        [...track.children].forEach((node, i) => {
+          const delta = Math.abs(node.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft - offset);
+          if (delta < distance) { distance = delta; closest = i; }
+        });
+        if (closest !== slideIndex) { slideIndex = closest; showCurrentInfo(); }
       });
     }, {passive: true});
     track.addEventListener('keydown', event => {
       if (event.key === 'ArrowRight') { event.preventDefault(); moveSlide(slideIndex + 1); }
       if (event.key === 'ArrowLeft') { event.preventDefault(); moveSlide(slideIndex - 1); }
     });
-    requestAnimationFrame(updateSlideFrames);
     byId('study-next-project').onclick = () => openProject((projectIndex + 1) % projects.length);
   }
+
+  window.addEventListener('resize', () => {
+    if (projectIndex < 0) return;
+    const needed = matchMedia('(max-width: 700px)').matches ? 2 : 3;
+    if (needed !== groupSize) renderProject();
+  }, {passive: true});
 
   function updateUrl() {
     history.pushState(null, '', projectIndex < 0 ? '/design/' : `/design/#${projects[projectIndex].id}`);
