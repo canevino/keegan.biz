@@ -7,9 +7,9 @@
   <meta name="description" content="Graphic design, public art identities, printed matter, and digital work by Keegan Andrulis.">
   <title>Design portfolio | keegan.biz</title>
   <link rel="stylesheet" href="/assets/site.css">
-  <link rel="stylesheet" href="/design/design.css?v=20261116-gallery-edit">
-  <script defer src="/design/portfolio-data.js?v=20261116-gallery-edit"></script>
-  <script defer src="/design/design.js?v=20261116-gallery-edit"></script>
+  <link rel="stylesheet" href="/design/design.css?v=20261117-carousel">
+  <script defer src="/design/portfolio-data.js?v=20261117-carousel"></script>
+  <script defer src="/design/design.js?v=20261117-carousel"></script>
 </head>
 <body class="design-page">
   <div class="page-shell">
@@ -47,7 +47,7 @@
       </section>
 
       <section id="study" class="study" aria-labelledby="study-title" hidden>
-        <button type="button" class="text-action return-link" id="all-work">all projects</button>
+        <div class="study-utility"><button type="button" class="text-action return-link" id="all-work">all projects</button></div>
         <div class="study-intro">
           <div class="study-heading">
             <h2 id="study-title"></h2>
@@ -65,7 +65,8 @@
 
   <dialog id="art-dialog" class="art-dialog" aria-label="Larger artwork view">
     <button class="art-dialog-close" type="button" id="art-dialog-close" aria-label="Close enlarged artwork">×</button>
-    <img alt="" id="art-dialog-image">
+    <div class="art-dialog-stage"><img alt="" id="art-dialog-image"></div>
+    <div class="art-dialog-footer"><button type="button" class="text-action" id="art-dialog-prev">previous</button><p id="art-dialog-caption"></p><button type="button" class="text-action" id="art-dialog-next">next</button></div>
   </dialog>
 
   <dialog id="wip-dialog" class="wip-dialog" aria-label="Work in progress notice">
