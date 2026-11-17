@@ -3,248 +3,278 @@
   const projects = window.DESIGN_PORTFOLIO || [];
   if (!projects.length) return;
 
-  const $ = (id) => document.getElementById(id);
-  const overview = $('overview');
-  const study = $('study');
-  const index = $('work-index');
-  const featureImage = $('feature-image');
-  const featureDescription = $('feature-description');
-  const gallery = $('project-gallery');
-  const artDialog = $('art-dialog');
-  const artDialogImage = $('art-dialog-image');
-
+  const byId = (id) => document.getElementById(id);
+  const overview = byId('overview');
+  const study = byId('study');
+  const index = byId('work-index');
+  const gallery = byId('project-gallery');
+  const artDialog = byId('art-dialog');
+  const artDialogImage = byId('art-dialog-image');
+  const featureImage = byId('feature-image');
+  const featureDescription = byId('feature-description');
   let previewIndex = 0;
   let projectIndex = -1;
-  const create = (tag, className = '', value) => {
-    const el = document.createElement(tag);
-    if (className) el.className = className;
-    if (value !== undefined) el.textContent = value;
-    return el;
-  };
 
-
-  function showPreview(next) {
-    previewIndex = next;
-    const project = projects[next];
+  function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function button(label, action, className = '') {
+    const node = el('button', className, label);
+    node.type = 'button';
+    node.addEventListener('click', action);
+    return node;
+  }
+  function picture(src, alt) {
+    const node = el('img');
+    node.src = src;
+    node.alt = alt || '';
+    node.decoding = 'async';
+    node.loading = 'lazy';
+    return node;
+  }
+  function showPreview(i) {
+    previewIndex = i;
+    const project = projects[i];
     featureImage.src = project.cover;
     featureImage.alt = project.tagline;
     featureDescription.textContent = project.tagline;
-    $('feature-open').setAttribute('aria-label', `Open ${project.name}`);
-    index.querySelectorAll('.work-item').forEach((button, idx) => {
-      button.classList.toggle('is-active', idx === next);
-      if (idx === next) button.setAttribute('aria-current', 'true');
-      else button.removeAttribute('aria-current');
+    byId('feature-open').setAttribute('aria-label', `Open ${project.name}`);
+    index.querySelectorAll('.work-item').forEach((node, j) => {
+      node.classList.toggle('is-active', j === i);
+      if (j === i) node.setAttribute('aria-current', 'true');
+      else node.removeAttribute('aria-current');
     });
   }
-
-  projects.forEach((project, idx) => {
-    const button = create('button', 'work-item');
-    button.type = 'button';
-    button.append(create('span', '', project.name), create('span', 'work-mark', '+'));
-    button.querySelector('.work-mark').setAttribute('aria-hidden', 'true');
-    button.addEventListener('mouseenter', () => { if (window.innerWidth > 720) showPreview(idx); });
-    button.addEventListener('focus', () => showPreview(idx));
-    button.addEventListener('click', () => openProject(idx));
-    index.append(button);
+  projects.forEach((project, i) => {
+    const node = button('', () => openProject(i), 'work-item');
+    node.append(el('span', '', project.name), el('span', 'work-mark', '+'));
+    node.querySelector('.work-mark').setAttribute('aria-hidden', 'true');
+    node.addEventListener('mouseenter', () => {
+      if (matchMedia('(hover: hover) and (pointer: fine)').matches) showPreview(i);
+    });
+    node.addEventListener('focus', () => showPreview(i));
+    index.append(node);
   });
-  projects.forEach((project) => { const img = new Image(); img.src = project.cover; });
-  $('feature-open').addEventListener('click', () => openProject(previewIndex));
-  $('feature-action').addEventListener('click', () => openProject(previewIndex));
-
-  function image(src, alt) {
-    const img = create('img');
-    img.src = src;
-    img.alt = alt || '';
-    img.decoding = 'async';
-    img.loading = 'eager';
-    return img;
-  }
+  byId('feature-open').addEventListener('click', () => openProject(previewIndex));
+  byId('feature-action').addEventListener('click', () => openProject(previewIndex));
 
   function openLarge(src, alt) {
     if (!src || !artDialog?.showModal) return;
     artDialogImage.src = src;
-    artDialogImage.alt = alt || 'Enlarged artwork';
+    artDialogImage.alt = alt || 'Artwork';
     artDialog.showModal();
   }
-  $('art-dialog-close').addEventListener('click', () => artDialog.close());
-  artDialog.addEventListener('click', (event) => { if (event.target === artDialog) artDialog.close(); });
+  byId('art-dialog-close').addEventListener('click', () => artDialog.close());
+  artDialog.addEventListener('click', (event) => {
+    if (event.target === artDialog) artDialog.close();
+  });
   artDialog.addEventListener('close', () => artDialogImage.removeAttribute('src'));
 
-  function control(label, action) {
-    const button = create('button', '', label);
-    button.type = 'button';
-    button.addEventListener('click', action);
-    return button;
-  }
-
-  function folderMedia() {
+  function makeFoldout() {
+    const outside = '/design/assets/better%20angels%20takeaway%20outside.png';
+    const inside = '/design/assets/better%20angels%20takeaway%20inside.png';
     let folded = false;
     let flipped = false;
-    const view = create('div', 'folder-view');
-    const stage = create('button', 'folder-stage');
+    const view = el('div', 'folder-view');
+    const stage = el('button', 'folder-stage');
     stage.type = 'button';
-    const model = create('div', 'paper-folder');
+    const flat = picture(outside, 'Better Angels foldout, laid flat');
+    flat.className = 'folder-flat';
+    const model = el('div', 'paper-folder');
+    model.setAttribute('aria-hidden', 'true');
     for (const part of ['center', 'tongue', 'left', 'right']) {
-      const panel = create('div', `folder-panel folder-panel--${part}`);
-      panel.append(create('div', 'folder-panel__face folder-panel__face--front folder-art--outside'), create('div', 'folder-panel__face folder-panel__face--back folder-art--inside'));
-      model.append(panel);
+      const pane = el('div', `folder-panel folder-panel--${part}`);
+      pane.append(
+        el('div', 'folder-panel__face folder-panel__face--front folder-art--outside'),
+        el('div', 'folder-panel__face folder-panel__face--back folder-art--inside')
+      );
+      model.append(pane);
     }
-    stage.append(model);
-    const actions = create('div', 'item-actions');
-    const flip = control('flip', () => { flipped = !flipped; sync(); });
-    const fold = control('fold', () => { folded = !folded; sync(); });
+    stage.append(flat, model);
+    const actions = el('div', 'item-actions');
+    const fold = button('fold', () => { folded = !folded; sync(); });
+    const flip = button('flip', () => { flipped = !flipped; sync(); });
     actions.append(fold, flip);
     function sync() {
       view.classList.toggle('is-folded', folded);
       view.classList.toggle('is-flipped', flipped);
-      stage.setAttribute('aria-label', `${folded ? 'Unfold' : 'Fold'} Better Angels paper model`);
-      stage.setAttribute('aria-pressed', String(folded));
+      flat.src = flipped ? inside : outside;
+      flat.alt = `Better Angels foldout, ${flipped ? 'inside' : 'outside'}`;
       fold.textContent = folded ? 'unfold' : 'fold';
-      flip.textContent = flipped ? 'outside' : 'flip';
+      flip.textContent = flipped ? 'outside' : 'inside';
+      fold.setAttribute('aria-pressed', String(folded));
+      flip.setAttribute('aria-pressed', String(flipped));
+      stage.setAttribute('aria-pressed', String(folded));
+      stage.setAttribute('aria-label', `${folded ? 'Unfold' : 'Fold'} the Better Angels paper takeaway`);
     }
     stage.addEventListener('click', () => { folded = !folded; sync(); });
     sync();
     view.append(stage);
-    return {media: view, actions};
+    return { node: view, actions };
   }
 
-  function renderArtwork(item, project, ci, si) {
-    const figure = create('figure', 'gallery-item');
-    const media = create('div', 'gallery-item-media');
-    const heading = create('figcaption', 'gallery-item-caption');
-    heading.append(create('strong', '', item.title || project.chapters[ci].title));
-    if (item.description) heading.append(create('span', 'art-description', item.description));
-    let actions = create('div', 'item-actions');
-    const enlarge = (src, alt) => openLarge(src, alt);
+  function renderArtwork(item) {
+    const figure = el('figure', `gallery-item gallery-item--${item.type}`);
+    const media = el('div', 'gallery-item-media');
+    const caption = el('figcaption', 'gallery-item-caption');
+    caption.append(el('strong', '', item.title));
+    if (item.description) caption.append(el('span', 'art-description', item.description));
+    const actions = el('div', 'item-actions');
 
     if (item.type === 'image') {
-      const button = create('button', 'art-image');
-      button.type = 'button';
-      button.setAttribute('aria-label', `Enlarge ${item.title}`);
-      button.append(image(item.src,item.alt));
-      button.addEventListener('click', () => enlarge(item.src, item.alt));
-      media.append(button);
+      const zoom = button('', () => openLarge(item.src, item.alt), 'art-image');
+      zoom.setAttribute('aria-label', `Enlarge ${item.title}`);
+      zoom.append(picture(item.src, item.alt));
+      media.append(zoom);
     } else if (item.type === 'switch') {
-      let back = false;
-      const button = create('button', 'art-image');
-      button.type = 'button';
-      const img = image(item.front, item.alt);
-      button.append(img);
-      const toggle = control('in use', () => {
-        back = !back;
-        img.src = (back ? item.back : item.front);
-        img.alt = back ? `${item.title} in use` : item.alt;
-        toggle.textContent = back ? 'artwork' : 'in use';
-        toggle.setAttribute('aria-pressed', String(back));
-      });
+      let showingUse = false;
+      const zoom = el('button', 'art-image');
+      zoom.type = 'button';
+      const img = picture(item.front, item.alt);
+      zoom.append(img);
+      function setInUse(value) {
+        showingUse = value;
+        img.src = showingUse ? item.back : item.front;
+        img.alt = showingUse ? `${item.title} photographed in use` : item.alt;
+        toggle.textContent = showingUse ? 'artwork' : 'in use';
+        toggle.setAttribute('aria-pressed', String(showingUse));
+      }
+      const toggle = button('in use', () => setInUse(!showingUse));
       toggle.setAttribute('aria-pressed', 'false');
-      button.setAttribute('aria-label', `Switch views of ${item.title}`);
-      button.addEventListener('click', () => toggle.click());
-      actions.append(toggle,control('enlarge', () => enlarge(back?item.back:item.front,img.alt)));
-      media.append(button);
+      // Desktop visitors can compare the installed piece simply by hovering.
+      // On touch screens, the same view is available by tapping the artwork or button.
+      media.addEventListener('mouseenter', () => {
+        if (matchMedia('(hover: hover) and (pointer: fine)').matches) setInUse(true);
+      });
+      media.addEventListener('mouseleave', () => {
+        if (matchMedia('(hover: hover) and (pointer: fine)').matches) setInUse(false);
+      });
+      zoom.setAttribute('aria-label', `Switch the artwork and in-use photographs for ${item.title}`);
+      zoom.addEventListener('click', () => toggle.click());
+      actions.append(toggle, button('enlarge', () => openLarge(showingUse ? item.back : item.front, img.alt)));
+      media.append(zoom);
     } else if (item.type === 'flip') {
       let flipped = false;
-      const button = create('button', 'art-image flip-image');
-      button.type = 'button';
-      const inner = create('div', 'flip-inner');
-      const front = create('div', 'flip-face front');
-      const back = create('div', 'flip-face back');
-      front.append(image(item.front,item.alt));
-      back.append(image(item.back,`${item.title} reverse side`));
-      inner.append(front,back);
-      button.append(inner);
-      const toggle = control('flip', () => {
+      const zoom = el('button', 'art-image flip-image');
+      zoom.type = 'button';
+      const inner = el('div', 'flip-inner');
+      const front = el('div', 'flip-face front');
+      const back = el('div', 'flip-face back');
+      front.append(picture(item.front, item.alt));
+      back.append(picture(item.back, `${item.title}, reverse side`));
+      inner.append(front, back);
+      zoom.append(inner);
+      const toggle = button('flip', () => {
         flipped = !flipped;
-        inner.classList.toggle('is-flipped',flipped);
+        inner.classList.toggle('is-flipped', flipped);
         toggle.textContent = flipped ? 'front' : 'flip';
-        toggle.setAttribute('aria-pressed',String(flipped));
+        toggle.setAttribute('aria-pressed', String(flipped));
       });
-      toggle.setAttribute('aria-pressed','false');
-      button.setAttribute('aria-label', `Flip ${item.title}`);
-      button.addEventListener('click', () => toggle.click());
-      actions.append(toggle,control('enlarge', () => enlarge(flipped?item.back:item.front,flipped?`${item.title} reverse side`:item.alt)));
-      media.append(button);
+      toggle.setAttribute('aria-pressed', 'false');
+      zoom.setAttribute('aria-label', `Flip ${item.title}`);
+      zoom.addEventListener('click', () => toggle.click());
+      actions.append(toggle, button('enlarge', () => openLarge(flipped ? item.back : item.front, item.alt)));
+      media.append(zoom);
     } else if (item.type === 'folder') {
-      const folder = folderMedia();
-      media.append(folder.media);
-      actions = folder.actions;
+      const foldout = makeFoldout();
+      media.append(foldout.node);
+      actions.append(...foldout.actions.children);
     }
-
-    figure.append(media,heading);
-    if (actions.children.length) figure.append(actions);
+    if (actions.childElementCount) media.append(actions);
+    figure.append(media, caption);
     return figure;
+  }
+
+  function renderStory(project) {
+    const notes = byId('project-notes');
+    const container = byId('project-notes-copy');
+    notes.open = false;
+    container.replaceChildren();
+    if (project.story) {
+      const story = el('div', 'project-story');
+      const intro = el('section', 'project-story-section');
+      intro.append(el('p', '', project.story.intro));
+      story.append(intro);
+      project.story.sections.forEach((section) => {
+        const article = el('section', 'project-story-section');
+        article.append(el('h3', '', section.heading));
+        section.paragraphs.forEach((para) => article.append(el('p', '', para)));
+        story.append(article);
+      });
+      const credits = el('section', 'project-story-section project-story-credits');
+      credits.append(el('h3', '', 'Credits'), el('p', '', project.story.credit));
+      story.append(credits);
+      container.append(story);
+      notes.hidden = false;
+    } else {
+      notes.hidden = true;
+    }
   }
 
   function renderProject() {
     const project = projects[projectIndex];
-    $('study-title').textContent = project.title;
-    $('study-tagline').textContent = project.tagline;
+    study.dataset.project = project.id;
+    byId('study-title').textContent = project.title;
+    byId('study-tagline').textContent = project.tagline;
     gallery.replaceChildren();
-    const detail = $('project-notes');
-    detail.open = false;
-    const detailContent = $('project-notes-copy');
-    detailContent.replaceChildren();
-    let haveDetails = false;
-    for (const chapter of project.chapters) {
-      if (!chapter.notes && !chapter.credits) continue;
-      haveDetails = true;
-      if (project.chapters.length > 1) detailContent.append(create('h3','',chapter.title));
-      const copy = create('div','notes-copy');
-      copy.innerHTML = [chapter.notes,chapter.credits].filter(Boolean).join('');
-      detailContent.append(copy);
-    }
-    detail.hidden = !haveDetails;
-    project.chapters.forEach((chapter, ci) => {
-      const section = create('section', 'gallery-section');
-      const titleSide = create('div', 'gallery-section-copy');
-      if (project.chapters.length > 1) titleSide.append(create('h3', '', chapter.title));
-      if (chapter.summary && chapter.summary !== project.tagline) titleSide.append(create('p','',chapter.summary));
-      const items = create('div','gallery-items');
-      chapter.slides.forEach((slide,si) => items.append(renderArtwork(slide,project,ci,si)));
-      section.append(titleSide,items);
+    renderStory(project);
+    project.chapters.forEach((chapter, chapterIndex) => {
+      const section = el('section', 'gallery-section');
+      section.dataset.chapter = String(chapterIndex);
+      const copy = el('div', 'gallery-section-copy');
+      copy.append(el('h3', '', chapter.title));
+      if (chapter.summary && chapter.summary !== project.tagline) copy.append(el('p', '', chapter.summary));
+      const items = el('div', 'gallery-items');
+      chapter.slides.forEach((item) => items.append(renderArtwork(item)));
+      section.append(copy, items);
       gallery.append(section);
     });
   }
 
-  function navigateUrl(replace) {
-    const url = projectIndex < 0 ? '/design/' : `/design/#${projects[projectIndex].id}`;
-    history[replace ? 'replaceState' : 'pushState'](null,'',url);
+  function updateUrl() {
+    history.pushState(null, '', projectIndex === -1 ? '/design/' : `/design/#${projects[projectIndex].id}`);
   }
-  function openProject(idx,fromUrl=false) {
-    projectIndex = idx;
+  function openProject(index, fromUrl = false) {
+    projectIndex = index;
     overview.hidden = true;
     study.hidden = false;
     renderProject();
-    if (!fromUrl) navigateUrl(false);
-    window.scrollTo({top:0,behavior:'instant'});
+    if (!fromUrl) updateUrl();
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
-  function closeProject(fromUrl=false) {
+  function closeProject(fromUrl = false) {
     projectIndex = -1;
     study.hidden = true;
     overview.hidden = false;
-    if (!fromUrl) navigateUrl(false);
-    window.scrollTo({top:0,behavior:'instant'});
+    if (!fromUrl) updateUrl();
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
-  $('all-work').addEventListener('click',() => closeProject());
-  document.addEventListener('keydown',(event) => { if (event.key === 'Escape' && !study.hidden && !artDialog.open) closeProject(); });
+  byId('all-work').addEventListener('click', () => closeProject());
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !study.hidden && !artDialog.open) closeProject();
+  });
   function readHash() {
     const slug = location.hash.slice(1).split('/')[0];
-    const idx = projects.findIndex((p) => p.id === slug);
-    if (idx >= 0) openProject(idx,true);
+    const index = projects.findIndex((project) => project.id === slug);
+    if (index >= 0) openProject(index, true);
     else if (projectIndex >= 0) closeProject(true);
   }
-  window.addEventListener('popstate',readHash);
+  window.addEventListener('popstate', readHash);
+  window.addEventListener('hashchange', readHash);
   showPreview(0);
   readHash();
 
-  const wip = $('wip-dialog');
+  const wip = byId('wip-dialog');
   let dismissed = false;
   try { dismissed = sessionStorage.getItem('keegan-biz-design-wip-dismissed') === '1'; } catch (_) {}
   if (wip && !dismissed && wip.showModal) {
-    wip.querySelector('[data-wip-dismiss]')?.addEventListener('click',() => wip.close());
-    wip.addEventListener('click',(event) => { if (event.target === wip) wip.close(); });
-    wip.addEventListener('close',() => {
-      try { sessionStorage.setItem('keegan-biz-design-wip-dismissed','1'); } catch (_) {}
+    wip.querySelector('[data-wip-dismiss]')?.addEventListener('click', () => wip.close());
+    wip.addEventListener('click', (event) => { if (event.target === wip) wip.close(); });
+    wip.addEventListener('close', () => {
+      try { sessionStorage.setItem('keegan-biz-design-wip-dismissed', '1'); } catch (_) {}
     });
     wip.showModal();
   }
