@@ -46,9 +46,8 @@
   font-weight: 700;
   line-height: .88;
   letter-spacing: 0;
-  /* Visually match the compact Chess and Sports titles without negative tracking. */
-  transform: scaleX(.86);
-  transform-origin: left center;
+  /* Preserve natural letter proportions. */
+  transform: none;
 }
 .letterpress-close {
   flex: 0 0 52px;
