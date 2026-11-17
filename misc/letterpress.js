@@ -10,6 +10,7 @@
   const stage = $('letterpress-preview');
   const editor = $('letterpress-editor');
   const fontSelect = $('letterpress-font');
+  const fontSearch = $('letterpress-font-search');
   const ink = $('letterpress-ink');
   const underprint = $('letterpress-underprint');
   const paper = $('letterpress-paper');
@@ -31,7 +32,7 @@
   const exportButton = $('letterpress-export');
   const note = $('letterpress-note');
 
-  const required = [home, launcher, panel, closeButton, stage, editor, fontSelect, ink,
+  const required = [home, launcher, panel, closeButton, stage, editor, fontSelect, fontSearch, ink,
     underprint, paper, transparent, ...Object.values(effects),
     ...Object.values(effectOutputs), randomButton, resetButton, exportButton, note];
   if (!required.every(Boolean)) return;
@@ -44,21 +45,165 @@
     }
   };
 
-  // Rely on widely available system faces, without an external font download.
-  // The declared stack also carries through into exported SVG and canvas PNGs.
+  // All Latin-compatible open-source families served by Fontsource are
+  // discoverable from the live catalogue. The six original system faces are
+  // always available, including when a visitor is offline.
   const fontChoices = {
-    helvetica: { family: 'Helvetica, Arial, sans-serif', weight: 700 },
-    georgia: { family: 'Georgia, "Times New Roman", serif', weight: 700 },
-    baskerville: { family: 'Baskerville, "Palatino Linotype", Georgia, serif', weight: 700 },
-    impact: { family: 'Impact, "Arial Narrow", sans-serif', weight: 400 },
-    trebuchet: { family: '"Trebuchet MS", "Lucida Grande", Arial, sans-serif', weight: 700 },
-    bodoni: { family: '"Bodoni 72", "Bodoni MT", "Times New Roman", serif', weight: 700 }
+    helvetica: { family: 'Helvetica, Arial, sans-serif', weight: 700, label: 'Helvetica' },
+    georgia: { family: 'Georgia, "Times New Roman", serif', weight: 700, label: 'Georgia' },
+    baskerville: { family: 'Baskerville, "Palatino Linotype", Georgia, serif', weight: 700, label: 'Baskerville' },
+    impact: { family: 'Impact, "Arial Narrow", sans-serif', weight: 400, label: 'Impact' },
+    trebuchet: { family: '"Trebuchet MS", "Lucida Grande", Arial, sans-serif', weight: 700, label: 'Trebuchet' },
+    bodoni: { family: '"Bodoni 72", "Bodoni MT", "Times New Roman", serif', weight: 700, label: 'Bodoni' }
   };
+  const starterFonts = [
+    'Alegreya', 'Archivo', 'Archivo Black', 'Arimo', 'Barlow', 'Bebas Neue',
+    'Bitter', 'Bodoni Moda', 'Cabin', 'Cardo', 'Caveat', 'Cinzel', 'Cormorant Garamond',
+    'DM Sans', 'DM Serif Display', 'Dosis', 'EB Garamond', 'Exo 2', 'Figtree',
+    'Fira Sans', 'Fraunces', 'Gabarito', 'Gelasio', 'Great Vibes', 'IBM Plex Mono',
+    'IBM Plex Sans', 'IBM Plex Serif', 'Inconsolata', 'Inter', 'Josefin Sans',
+    'Karla', 'Lato', 'Libre Baskerville', 'Libre Franklin', 'Lobster', 'Lora',
+    'Manrope', 'Merriweather', 'Montserrat', 'Mulish', 'Nanum Gothic',
+    'Noto Sans', 'Noto Serif', 'Nunito Sans', 'Old Standard TT', 'Oswald',
+    'Outfit', 'Overpass', 'Pacifico', 'Permanent Marker', 'Playfair Display',
+    'Plus Jakarta Sans', 'Poppins', 'PT Sans', 'PT Serif', 'Quicksand',
+    'Raleway', 'Roboto', 'Roboto Condensed', 'Roboto Slab', 'Rubik',
+    'Satisfy', 'Source Sans 3', 'Space Grotesk', 'Space Mono', 'Spectral',
+    'Syne', 'Teko', 'Ubuntu', 'Urbanist', 'Work Sans', 'Zilla Slab'
+  ];
+  function fontId(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+  for (const name of starterFonts) {
+    const id = fontId(name);
+    fontChoices['web:' + id] = { web: true, id, label: name, weight: 700, category: 'sans-serif' };
+  }
+  // No unsupported typography gets introduced into the letterpress tool.
+  const excludedFontIds = new Set(['instrument-serif']);
+  let fontCatalogPromise = null;
+  function rebuildFontList() {
+    const selected = fontSelect.value || defaults.font;
+    const term = fontSearch.value.trim().toLocaleLowerCase();
+    const systemGroup = document.createElement('optgroup');
+    systemGroup.label = 'System';
+    const libraryGroup = document.createElement('optgroup');
+    libraryGroup.label = 'Font library';
+    for (const [key, face] of Object.entries(fontChoices)) {
+      if (face.web && excludedFontIds.has(face.id)) continue;
+      if (term && !face.label.toLocaleLowerCase().includes(term) && key !== selected) continue;
+      const option = document.createElement('option');
+      option.value = key;
+      option.textContent = face.label;
+      (face.web ? libraryGroup : systemGroup).append(option);
+    }
+    const sorter = (a,b) => a.label.localeCompare(b.label, 'en', {sensitivity:'base'});
+    // Recreate in alphabetical order for efficient browser type-to-jump.
+    for (const group of [systemGroup, libraryGroup]) {
+      const options = Array.from(group.children).sort((a,b) => sorter({label:a.textContent},{label:b.textContent}));
+      group.replaceChildren(...options);
+    }
+    fontSelect.replaceChildren(systemGroup, libraryGroup);
+    fontSelect.value = selected;
+    if (!fontSelect.value) fontSelect.value = defaults.font;
+  }
+  async function loadFontCatalog() {
+    if (fontCatalogPromise) return fontCatalogPromise;
+    fontCatalogPromise = (async () => {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 12000);
+      try {
+        const response = await fetch('https://api.fontsource.org/v1/fonts?subsets=latin',
+          { signal: controller.signal, mode:'cors', cache:'force-cache' });
+        if (!response.ok) throw Error('Font catalogue unavailable');
+        const catalog = await response.json();
+        if (!Array.isArray(catalog)) throw Error('Invalid font catalogue');
+        for (const record of catalog) {
+          if (!record || !/^[a-z0-9-]+$/.test(record.id || '') ||
+              !record.family || excludedFontIds.has(record.id)) continue;
+          if (!record.subsets?.includes('latin')) continue;
+          const key = 'web:' + record.id;
+          const weights = Array.isArray(record.weights) ? record.weights.map(Number) : [];
+          const preferredWeight = weights.length
+            ? weights.slice().sort((a,b) => Math.abs(a-700)-Math.abs(b-700))[0] : 400;
+          fontChoices[key] = {
+            ...fontChoices[key], web:true, id: record.id, label: record.family,
+            weight:preferredWeight, category:record.category || 'sans-serif'
+          };
+        }
+        rebuildFontList();
+      } catch (error) {
+        // A readable, usable font picker is still present offline.
+        console.info('Using the available font list:', error);
+      } finally { clearTimeout(timeout); }
+    })();
+    return fontCatalogPromise;
+  }
+
+  const fontPromises = new Map();
+  function chosenFont() { return fontChoices[fontSelect.value] || fontChoices.helvetica; }
+  function renderedFont() {
+    const face = chosenFont();
+    if (face.web) return face.loaded
+      ? { family: '"' + face.alias + '", Arial, sans-serif', weight: face.weight }
+      : { family: 'Helvetica, Arial, sans-serif', weight: 700 };
+    return face;
+  }
+  function closestVariant(details, wanted) {
+    const variants = details.variants || {};
+    const weights = Object.keys(variants).map(Number).filter(Number.isFinite)
+      .sort((a,b) => Math.abs(a-wanted)-Math.abs(b-wanted));
+    for (const weight of weights) {
+      const styles = variants[String(weight)] || {};
+      const normal = styles.normal || Object.values(styles)[0] || {};
+      const section = normal.latin || normal['latin-ext'] || Object.values(normal)[0];
+      const url = section?.url?.woff2 || section?.url?.woff;
+      if (url && /^https:\/\//.test(url)) return {url, weight, format: section?.url?.woff2 ? 'woff2' : 'woff'};
+    }
+    throw Error('Font has no compatible web file');
+  }
+  async function ensureFont(face) {
+    if (!face?.web) return;
+    if (face.loaded) return;
+    if (fontPromises.has(face.id)) return fontPromises.get(face.id);
+    const pending = (async () => {
+      const response = await fetch('https://api.fontsource.org/v1/fonts/' + face.id,
+        {mode: 'cors', cache: 'force-cache'});
+      if (!response.ok) throw Error('Font metadata unavailable');
+      const details = await response.json();
+      const {url, weight, format} = closestVariant(details, face.weight);
+      const fontResponse = await fetch(url, {mode:'cors', cache:'force-cache'});
+      if (!fontResponse.ok) throw Error('Font file unavailable');
+      const binary = await fontResponse.arrayBuffer();
+      if (!binary.byteLength || binary.byteLength > 4000000) throw Error('Unexpected font file size');
+      const alias = 'letterpress-web-' + face.id;
+      const fontFace = new FontFace(alias, binary, {style:'normal', weight:String(weight)});
+      await fontFace.load();
+      document.fonts.add(fontFace);
+      face.alias = alias;
+      face.weight = weight;
+      face.binary = binary;
+      face.format = format;
+      face.loaded = true;
+      kerningCache.clear();
+      if (chosenFont().id === face.id) requestPaint();
+    })();
+    fontPromises.set(face.id, pending);
+    try { await pending; }
+    catch (error) { fontPromises.delete(face.id); throw error; }
+  }
   function applyFont() {
-    const selected = fontChoices[fontSelect.value] || fontChoices.helvetica;
+    const face = chosenFont();
+    const selected = renderedFont();
     editor.style.fontFamily = selected.family;
     editor.style.fontWeight = String(selected.weight);
+    if (face.web && !face.loaded && !fontPromises.has(face.id)) {
+      void ensureFont(face).catch(error => {
+        console.warn('Font could not be loaded:', face.label, error);
+        if (chosenFont().id === face.id) note.textContent = 'font unavailable; showing Helvetica';
+      });
+    }
   }
+  rebuildFontList();
 
   let seed = 0;
   let composing = false;
@@ -149,9 +294,9 @@
   if (kerningContext) kerningContext.fontKerning = 'normal';
   function pairKerning(a, b) {
     if (!kerningContext) return 0;
-    const face = fontChoices[fontSelect.value] || fontChoices.helvetica;
+    const face = renderedFont();
     kerningContext.font = `${face.weight} 1000px ${face.family}`;
-    const key = `${fontSelect.value}:${a}${b}`;
+    const key = `${fontSelect.value}:${chosenFont().loaded ? 'ready' : 'fallback'}:${a}${b}`;
     if (!kerningCache.has(key)) {
       const amount = (kerningContext.measureText(a + b).width
         - kerningContext.measureText(a).width
@@ -300,6 +445,7 @@
     launcher.setAttribute('aria-expanded', 'true');
     requestPaint();
     void refillWords();
+    void loadFontCatalog();
     requestAnimationFrame(() => {
       editor.focus({ preventScroll: true });
       restoreSelection(getText().length);
@@ -308,7 +454,9 @@
 
   function reset() {
     seed = 0;
+    fontSearch.value = '';
     fontSelect.value = defaults.font;
+    rebuildFontList();
     ink.value = defaults.ink;
     underprint.value = defaults.underprint;
     paper.value = defaults.paper;
@@ -330,15 +478,36 @@
     'ripple', 'signal', 'spiral', 'static', 'tangent', 'thicket',
     'thread', 'tremor', 'velvet', 'weather'
   ];
-  const inkPalettes = [
-    ['#c1272d', '#fdb913'], ['#006a44', '#e46b32'],
-    ['#164b8a', '#f2ad31'], ['#612c70', '#e4a73b'],
-    ['#a72a43', '#5aaf91'], ['#1e584e', '#df6d35'],
-    ['#272525', '#e0aa1c'], ['#a4313d', '#4f93bd'],
-    ['#563e88', '#e5a43b'], ['#1e4165', '#ea7c49'],
-    ['#a62660', '#44a389'], ['#a84c24', '#367e9d']
-  ];
-  let lastPalette = 0;
+  // Independently generated 24-bit RGB inks, not a rotating palette.
+  // Reject only colors nearly invisible on the current paper, or inks
+  // so similar that the second plate becomes indistinguishable.
+  function srgb(hex) {
+    const values = [1,3,5].map(i => parseInt(hex.slice(i,i+2),16)/255);
+    return values.map(v => v <= .04045 ? v/12.92 : ((v+.055)/1.055)**2.4);
+  }
+  function luminance(hex) {
+    const [r,g,b] = srgb(hex);
+    return r*.2126 + g*.7152 + b*.0722;
+  }
+  function contrast(a,b) {
+    const x=luminance(a),y=luminance(b);
+    return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);
+  }
+  function randomRgb() {
+    const rgb = new Uint8Array(3);
+    if (window.crypto?.getRandomValues) window.crypto.getRandomValues(rgb);
+    else for (let i=0; i<3; i++) rgb[i] = Math.floor(Math.random()*256);
+    return '#' + Array.from(rgb, x=>x.toString(16).padStart(2,'0')).join('');
+  }
+  function randomInk(paperHex, anotherInk, minContrast) {
+    let color = randomRgb();
+    for (let attempt = 0; attempt < 100; attempt++) {
+      if (contrast(color,paperHex) >= minContrast &&
+          (!anotherInk || contrast(color,anotherInk) >= 1.32)) return color;
+      color = randomRgb();
+    }
+    return color;
+  }
   let lastRandomWord = '';
   let wordPool = [];
   let fetchingWords = false;
@@ -404,17 +573,32 @@
       input.value = String(random(...ranges[key]));
     }
     // Each new random print also selects a different typeface.
-    const otherFonts = Object.keys(fontChoices).filter(name => name !== fontSelect.value);
-    fontSelect.value = otherFonts[random(0, otherFonts.length - 1)];
-    // Choose a distinct, readable two-ink combination. Paper is untouched.
-    const next = (lastPalette + 1 + random(0, inkPalettes.length - 2)) % inkPalettes.length;
-    lastPalette = next;
-    [ink.value, underprint.value] = inkPalettes[next];
+    const otherFonts = Object.keys(fontChoices).filter(key =>
+      key !== fontSelect.value && !(fontChoices[key].web && excludedFontIds.has(fontChoices[key].id)));
+    const nextFont = otherFonts[random(0, otherFonts.length - 1)];
+    fontSearch.value = '';
+    rebuildFontList();
+    fontSelect.value = nextFont;
+    // Unbounded RGB color space, subject only to legibility on the chosen paper.
+    // The background/paper color is deliberately never modified here.
+    ink.value = randomInk(paper.value, null, 3.2);
+    underprint.value = randomInk(paper.value, ink.value, 1.6);
     buildLetters(nextWord());
     note.textContent = 'click the word to edit';
     requestPaint();
   }
 
+  // Embed the selected web font inside the exported SVG. An exported SVG
+  // image cannot inherit fonts loaded by the surrounding web page.
+  function fontBase64(face) {
+    if (face.base64) return face.base64;
+    const bytes = new Uint8Array(face.binary);
+    const parts = [];
+    for (let i = 0; i < bytes.length; i += 8192)
+      parts.push(String.fromCharCode(...bytes.subarray(i, i+8192)));
+    face.base64 = btoa(parts.join(''));
+    return face.base64;
+  }
   // Rasterize the actual displayed CSS print when supported by the browser.
   async function exactPrintCanvas() {
     const sheet = Array.from(document.styleSheets).find(item => {
@@ -439,7 +623,13 @@
       ? 'background:transparent!important;' : '';
     const overrides = '#letterpress-preview{min-height:0!important;width:' + width +
       'px!important;height:' + height + 'px!important;' + paperOverride + '}';
-    const safeCSS = (stylesheet + '\n' + overrides).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const face = chosenFont();
+    const embeddedFont = (face.web && face.loaded && face.binary)
+      ? '@font-face{font-family:"' + face.alias + '";src:url("data:font/' + face.format + ';base64,' +
+        fontBase64(face) + '") format("' + face.format + '");font-weight:' + face.weight + ';font-style:normal;}'
+      : '';
+    const safeCSS = (embeddedFont + '\n' + stylesheet + '\n' + overrides)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;');
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;--red:#c1272d;--green:#006a44;--paper:#ece7d7"><style>${safeCSS}</style>${clone.outerHTML}</div></foreignObject></svg>`;
     const image = new Image();
     const loaded = new Promise((resolve, reject) => {
@@ -487,7 +677,7 @@
         const v = parseFloat(css.getPropertyValue(name));
         return Number.isFinite(v) ? v : fallback;
       };
-      const selectedFont = fontChoices[fontSelect.value] || fontChoices.helvetica;
+      const selectedFont = renderedFont();
       ctx.font = `${selectedFont.weight} ${size}px ${selectedFont.family}`;
       ctx.textBaseline = 'alphabetic';
       const draw = (color, alpha, dx, dy, blur) => {
@@ -516,6 +706,11 @@
     }
     exportButton.disabled = true;
     try {
+      const face = chosenFont();
+      if (face.web) {
+        try { await ensureFont(face); }
+        catch (error) { console.warn('Web font unavailable; exporting displayed fallback', error); }
+      }
       if (document.fonts && document.fonts.ready) await document.fonts.ready;
       paint();
       let canvas;
@@ -545,7 +740,21 @@
   closeButton.addEventListener('click', closePanel);
   resetButton.addEventListener('click', reset);
   randomButton.addEventListener('click', randomize);
-  fontSelect.addEventListener('change', requestPaint);
+  fontSelect.addEventListener('change', () => {
+    kerningCache.clear();
+    note.textContent = 'click the word to edit';
+    requestPaint();
+  });
+  fontSearch.addEventListener('input', rebuildFontList);
+  fontSearch.addEventListener('keydown', event => {
+    if (event.key === 'Enter' && fontSelect.options.length) {
+      // Pick the first matching font without leaving the search field.
+      const matches = Array.from(fontSelect.options).filter(option => !option.disabled);
+      const next = matches.find(option => option.value !== fontSelect.value) || matches[0];
+      if (next) { fontSelect.value = next.value; requestPaint(); }
+      event.preventDefault();
+    }
+  });
   exportButton.addEventListener('click', savePng);
   [ink, underprint, paper, transparent, ...Object.values(effects)]
     .forEach(input => {

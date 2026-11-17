@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/misc/style.css?v=20261116-misc-cleanup">
   <link rel="stylesheet" href="/assets/sports/sports.css">
-  <link rel="stylesheet" href="/misc/letterpress.css?v=20261117-r10-fonts">
+  <link rel="stylesheet" href="/misc/letterpress.css?v=20261117-r11-all-fonts">
 
   <style>
     .home {
@@ -2813,8 +2813,9 @@
             <p class="letterpress-note" id="letterpress-note" aria-live="polite">click the word to edit</p>
 
             <div class="letterpress-controls" aria-label="Lettering controls">
-              <label class="letterpress-font" for="letterpress-font">
-                font
+              <div class="letterpress-font">
+                <label for="letterpress-font">font</label>
+                <input id="letterpress-font-search" type="search" placeholder="find a font" aria-label="Search fonts" autocomplete="off" spellcheck="false">
                 <select id="letterpress-font" aria-label="Lettering font">
                   <option value="helvetica">Helvetica</option>
                   <option value="georgia">Georgia</option>
@@ -2823,7 +2824,7 @@
                   <option value="trebuchet">Trebuchet</option>
                   <option value="bodoni">Bodoni</option>
                 </select>
-              </label>
+              </div>
               <label class="letterpress-color" for="letterpress-ink">
                 ink
                 <input id="letterpress-ink" type="color" value="#c1272d" aria-label="Ink color">
@@ -12862,7 +12863,7 @@
 
   <script src="/assets/sports/sports.js" defer></script>
   <script src="/assets/site-nav.js" defer></script>
-  <script src="/misc/letterpress.js?v=20261117-r10-fonts" defer></script>
+  <script src="/misc/letterpress.js?v=20261117-r11-all-fonts" defer></script>
 
 </body>
 </html>

@@ -190,28 +190,36 @@
 }
 /* Font choice is part of the same unframed control system. */
 .letterpress-font {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+  display: flex;
   flex: 0 0 100%;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  min-width: 0;
   color: var(--red, #c1272d);
   font: 700 13px/1.2 Helvetica, Arial, sans-serif;
 }
-.letterpress-font select {
-  min-width: 152px;
-  padding: 4px 22px 5px 2px;
+.letterpress-font label { flex: 0 0 auto; }
+.letterpress-font :is(select, input[type="search"]) {
+  min-width: 0;
+  width: 180px;
+  height: 28px;
+  padding: 3px 4px 5px 2px;
   border: 0;
   border-bottom: 1px solid currentColor;
   border-radius: 0;
-  background-color: transparent;
+  outline: none;
+  background: transparent;
   color: var(--red, #c1272d);
   font: 700 13px/1.2 Helvetica, Arial, sans-serif;
-  cursor: pointer;
 }
-.letterpress-font select:focus-visible {
+.letterpress-font select { width: 220px; cursor: pointer; }
+.letterpress-font input::placeholder { color: var(--red, #c1272d); opacity: .7; }
+.letterpress-font :is(select, input):focus-visible {
   outline: 2px solid var(--green, #006a44);
   outline-offset: 3px;
 }
+
 .letterpress-color,
 .letterpress-transparency {
   display: inline-flex;
@@ -316,7 +324,10 @@
   .letterpress-note { margin: 6px 0 22px; }
   .letterpress-controls { gap: 14px 19px; margin-bottom: 22px; }
   .letterpress-color, .letterpress-transparency, .letterpress-font,
-  .letterpress-font select { font-size: 12px; }
+  .letterpress-font :is(select, input) { font-size: 12px; }
+  .letterpress-font { gap: 8px 12px; }
+  .letterpress-font input[type="search"] { width: min(38%, 155px); }
+  .letterpress-font select { width: min(51%, 220px); }
   .letterpress-effects { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; margin-bottom: 25px; }
   .letterpress-fx { font-size: 12px; }
 }
