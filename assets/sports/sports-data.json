@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-16T22:20:19.459Z",
+  "updatedAt": "2026-11-17T08:09:02.127Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -991,7 +991,7 @@
         {
           "id": "5181811",
           "date": "2026-11-17T19:45:00.000Z",
-          "when": "tomorrow · Tue, Nov 17 · 2:45 PM ET",
+          "when": "today · Tue, Nov 17 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Ukraine",
           "away": "Georgia",
@@ -1021,7 +1021,7 @@
         {
           "id": "5181823",
           "date": "2026-11-17T19:45:00.000Z",
-          "when": "tomorrow · Tue, Nov 17 · 2:45 PM ET",
+          "when": "today · Tue, Nov 17 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Ireland",
           "away": "Kosovo",
