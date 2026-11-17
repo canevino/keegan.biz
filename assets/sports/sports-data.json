@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-17T19:11:31.435Z",
+  "updatedAt": "2026-11-17T21:06:01.099Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -991,8 +991,8 @@
         {
           "id": "5181811",
           "date": "2026-11-17T19:45:00.000Z",
-          "when": "today · Tue, Nov 17 · 2:45 PM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Ukraine",
           "away": "Georgia",
           "competition": "UEFA Nations League B Grp. 2"
@@ -1021,8 +1021,8 @@
         {
           "id": "5181823",
           "date": "2026-11-17T19:45:00.000Z",
-          "when": "today · Tue, Nov 17 · 2:45 PM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Ireland",
           "away": "Kosovo",
           "competition": "UEFA Nations League B Grp. 3"
