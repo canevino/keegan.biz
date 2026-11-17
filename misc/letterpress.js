@@ -123,6 +123,36 @@
   }
 
   const level = name => Number(effects[name].value);
+
+  // The editable word is composed of separate spans for independent ink plates.
+  // Separate spans do not receive the font's normal pair kerning, so restore
+  // that pair-specific spacing before applying the visitor's overlap setting.
+  const kerningContext = document.createElement('canvas').getContext('2d');
+  const kerningCache = new Map();
+  if (kerningContext) {
+    kerningContext.font = '700 1000px Helvetica, Arial, sans-serif';
+    kerningContext.fontKerning = 'normal';
+  }
+  function pairKerning(a, b) {
+    if (!kerningContext) return 0;
+    const pair = a + b;
+    if (!kerningCache.has(pair)) {
+      const amount = (kerningContext.measureText(pair).width
+        - kerningContext.measureText(a).width
+        - kerningContext.measureText(b).width) / 1000;
+      kerningCache.set(pair, amount);
+    }
+    return kerningCache.get(pair);
+  }
+
+  // Left side of the slider opens up spacing; right side brings letters together.
+  // Keep glyph widths unchanged. The adjustment is made to the gaps only.
+  function overlapGap() {
+    const value = level('overlap');
+    return value <= 50 ? (50 - value) / 50 * .10
+      : -(value - 50) / 50 * .14;
+  }
+
   function mixHex(a, b, amount) {
     const t = clamp(amount, 0, 1);
     const rgb = value => [1, 3, 5].map(i => parseInt(value.slice(i, i + 2), 16));
@@ -137,7 +167,21 @@
       input.setAttribute('aria-valuetext', input.value + ' of 100');
     }
 
-    const overlap = (level('overlap') - 50) / 50;
+    editor.style.setProperty('--letter-gap', overlapGap().toFixed(5) + 'em');
+    const letters = Array.from(editor.querySelectorAll('.design-letter'));
+    letters.forEach((span, index) => {
+      const next = letters[index + 1];
+      const currentChar = span.dataset.char || '';
+      const nextChar = next?.dataset.char || '';
+      const join = next && currentChar.trim() && nextChar.trim();
+      span.classList.toggle('design-letter--join', Boolean(join));
+      if (join) {
+        span.style.setProperty('--letter-kern', pairKerning(currentChar, nextChar).toFixed(5) + 'em');
+      } else {
+        span.style.removeProperty('--letter-kern');
+      }
+    });
+
     const bleed = level('spread') / 50;
     const shift = level('register') / 50;
     const roughness = level('roughness') / 50;
@@ -150,9 +194,8 @@
       .forEach((span, index) => {
         const rand = seeded(hash(span.dataset.char || ' ', index) ^ seed);
         const wiggle = () => rand() * 2 - 1;
-        // Overlap modifies ink width, never letter-spacing or margins.
+        // Pooling changes the overprinted ink only, not the letter's width.
         const pool = pooling * (.55 + rand() * .45);
-        span.style.setProperty('--overlap-scale', (1 + overlap * .075 + pool * .028).toFixed(4));
         span.style.setProperty('--jitter-x', (wiggle() * variation * .009).toFixed(4) + 'em');
         span.style.setProperty('--jitter-y', (wiggle() * variation * .012).toFixed(4) + 'em');
         span.style.setProperty('--jitter-angle', (wiggle() * variation * 1.1).toFixed(3) + 'deg');
@@ -195,6 +238,10 @@
     const availableWidth = Math.max(50, stage.clientWidth - 32);
     const availableHeight = Math.max(60, stage.clientHeight - 24);
     let size = Math.min(150, stage.clientWidth * .28);
+    // Fit against the WIDEST slider setting so moving "overlap" never
+    // changes font size or stretches/shrinks the letterforms themselves.
+    const currentGap = editor.style.getPropertyValue('--letter-gap');
+    editor.style.setProperty('--letter-gap', '.10em');
     editor.style.fontSize = size + 'px';
     for (let i = 0; i < 8; i++) {
       const rect = editor.getBoundingClientRect();
@@ -204,6 +251,8 @@
       size = Math.max(11, size * Math.min(.98, factor * .97));
       editor.style.fontSize = size + 'px';
     }
+    if (currentGap) editor.style.setProperty('--letter-gap', currentGap);
+    else editor.style.removeProperty('--letter-gap');
   }
 
   function paint() {

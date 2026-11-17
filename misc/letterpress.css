@@ -44,8 +44,11 @@
   font-family: Helvetica, Arial, sans-serif;
   font-size: clamp(60px, 6.4vw, 96px);
   font-weight: 700;
-  line-height: 1;
+  line-height: .88;
   letter-spacing: 0;
+  /* Visually match the compact Chess and Sports titles without negative tracking. */
+  transform: scaleX(.86);
+  transform-origin: left center;
 }
 .letterpress-close {
   flex: 0 0 52px;
@@ -133,8 +136,11 @@
   isolation: isolate;
   color: var(--letter-face, var(--lp-face));
   transform: translate(var(--jitter-x, 0), var(--jitter-y, 0))
-             rotate(var(--jitter-angle, 0deg))
-             scaleX(var(--overlap-scale, 1));
+             rotate(var(--jitter-angle, 0deg));
+}
+/* True inter-letter spacing. The character's width and print plates stay fixed. */
+#letterpress-editor .design-letter--join {
+  margin-right: calc(var(--letter-kern, 0em) + var(--letter-gap, 0em));
 }
 #letterpress-editor .design-letter::before,
 #letterpress-editor .design-letter::after {
