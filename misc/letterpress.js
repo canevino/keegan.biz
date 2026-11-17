@@ -13,22 +13,34 @@
   const underprint = $('letterpress-underprint');
   const paper = $('letterpress-paper');
   const transparent = $('letterpress-transparent');
-  const spread = $('letterpress-spread');
-  const registration = $('letterpress-register');
-  const variation = $('letterpress-variation');
+  const effects = {
+    overlap: $('letterpress-overlap'),
+    spread: $('letterpress-spread'),
+    register: $('letterpress-register'),
+    roughness: $('letterpress-roughness'),
+    underprintStrength: $('letterpress-underprint-strength'),
+    variation: $('letterpress-variation'),
+    pressure: $('letterpress-pressure'),
+    pooling: $('letterpress-pooling')
+  };
+  const effectOutputs = Object.fromEntries(Object.entries(effects).map(([key, element]) =>
+    [key, $(element.id + '-value')]));
   const randomButton = $('letterpress-randomize');
   const resetButton = $('letterpress-reset');
   const exportButton = $('letterpress-export');
   const note = $('letterpress-note');
 
   const required = [home, launcher, panel, closeButton, stage, editor, ink,
-    underprint, paper, transparent, spread, registration, variation,
-    randomButton, resetButton, exportButton, note];
+    underprint, paper, transparent, ...Object.values(effects),
+    ...Object.values(effectOutputs), randomButton, resetButton, exportButton, note];
   if (!required.every(Boolean)) return;
 
   const defaults = {
     text: 'keegan.biz', ink: '#c1272d', underprint: '#fdb913',
-    paper: '#ece7d7', spread: 50, registration: 50, variation: 50
+    paper: '#ece7d7', effects: {
+      overlap: 50, spread: 50, register: 50, roughness: 50,
+      underprintStrength: 50, variation: 50, pressure: 50, pooling: 0
+    }
   };
 
   let seed = 0;
@@ -110,24 +122,52 @@
       .forEach(el => el.setAttribute('flood-color', underprint.value));
   }
 
+  const level = name => Number(effects[name].value);
+  function mixHex(a, b, amount) {
+    const t = clamp(amount, 0, 1);
+    const rgb = value => [1, 3, 5].map(i => parseInt(value.slice(i, i + 2), 16));
+    const x = rgb(a), y = rgb(b);
+    return '#' + x.map((v, i) => Math.round(v * (1 - t) + y[i] * t)
+      .toString(16).padStart(2, '0')).join('');
+  }
+
   function updateEffects() {
-    const bleed = Number(spread.value) / 50;
-    const shift = Number(registration.value) / 50;
-    const jitter = Number(variation.value) / 100;
+    for (const [key, input] of Object.entries(effects)) {
+      effectOutputs[key].textContent = input.value;
+      input.setAttribute('aria-valuetext', input.value + ' of 100');
+    }
+
+    const overlap = (level('overlap') - 50) / 50;
+    const bleed = level('spread') / 50;
+    const shift = level('register') / 50;
+    const roughness = level('roughness') / 50;
+    const secondStrength = level('underprintStrength') / 50;
+    const variation = level('variation') / 50;
+    const pressure = (level('pressure') - 50) / 50;
+    const pooling = level('pooling') / 100;
 
     editor.querySelectorAll('.design-letter:not(.design-letter--space)')
       .forEach((span, index) => {
         const rand = seeded(hash(span.dataset.char || ' ', index) ^ seed);
         const wiggle = () => rand() * 2 - 1;
-        // Baseline: no negative letter-spacing or margins, only slight plate variation.
-        span.style.setProperty('--jitter-x', (wiggle() * jitter * .009).toFixed(4) + 'em');
-        span.style.setProperty('--jitter-y', (wiggle() * jitter * .012).toFixed(4) + 'em');
-        span.style.setProperty('--jitter-angle', (wiggle() * jitter * 1.1).toFixed(3) + 'deg');
+        // Overlap modifies ink width, never letter-spacing or margins.
+        const pool = pooling * (.55 + rand() * .45);
+        span.style.setProperty('--overlap-scale', (1 + overlap * .075 + pool * .028).toFixed(4));
+        span.style.setProperty('--jitter-x', (wiggle() * variation * .009).toFixed(4) + 'em');
+        span.style.setProperty('--jitter-y', (wiggle() * variation * .012).toFixed(4) + 'em');
+        span.style.setProperty('--jitter-angle', (wiggle() * variation * 1.1).toFixed(3) + 'deg');
         span.style.setProperty('--yellow-x', (shift * (.012 + wiggle() * .006)).toFixed(4) + 'em');
         span.style.setProperty('--yellow-y', (shift * (.016 + wiggle() * .006)).toFixed(4) + 'em');
-        span.style.setProperty('--yellow-scale', (1 + shift * .010).toFixed(4));
-        span.style.setProperty('--red-scale', (1 + bleed * .009).toFixed(4));
-        span.style.setProperty('--underprint-opacity', clamp(.77 + wiggle() * .08, .60, .90).toFixed(3));
+        span.style.setProperty('--yellow-scale', (1 + shift * .010 + pool * .025).toFixed(4));
+        span.style.setProperty('--red-scale', (1 + bleed * .009 + pool * .055).toFixed(4));
+        span.style.setProperty('--red-scale-y', (1 + bleed * .009 + pool * .032).toFixed(4));
+        span.style.setProperty('--red-opacity', clamp(.92 + pressure * .055, .75, 1).toFixed(3));
+        span.style.setProperty('--underprint-opacity',
+          clamp((.77 + wiggle() * .08) * secondStrength * (1 + pressure * .10), 0, 1).toFixed(3));
+        const face = pressure < 0
+          ? mixHex(ink.value, paper.value, -pressure * .58)
+          : mixHex(ink.value, '#190d0b', pressure * .27);
+        span.style.setProperty('--letter-face', face);
       });
 
     stage.querySelectorAll('filter[id^="letterpress-"]').forEach(filter => {
@@ -137,14 +177,15 @@
       if (blur) {
         if (!blur.hasAttribute('data-default'))
           blur.setAttribute('data-default', blur.getAttribute('stdDeviation'));
-        const value = Number(blur.getAttribute('data-default'));
-        blur.setAttribute('stdDeviation', (value * (red ? .28 + bleed * .72 : .75 + bleed * .25)).toFixed(3));
+        const base = Number(blur.getAttribute('data-default'));
+        blur.setAttribute('stdDeviation',
+          (base * (red ? .28 + bleed * .72 : .75 + bleed * .25)).toFixed(3));
       }
       if (displacement) {
         if (!displacement.hasAttribute('data-default'))
           displacement.setAttribute('data-default', displacement.getAttribute('scale'));
-        const value = Number(displacement.getAttribute('data-default'));
-        displacement.setAttribute('scale', (value * (.50 + jitter)).toFixed(3));
+        const base = Number(displacement.getAttribute('data-default'));
+        displacement.setAttribute('scale', (base * (.2 + roughness * .8)).toFixed(3));
       }
     });
   }
@@ -208,9 +249,9 @@
     ink.value = defaults.ink;
     underprint.value = defaults.underprint;
     paper.value = defaults.paper;
-    spread.value = defaults.spread;
-    registration.value = defaults.registration;
-    variation.value = defaults.variation;
+    for (const [key, input] of Object.entries(effects)) {
+      input.value = defaults.effects[key];
+    }
     transparent.checked = false;
     buildLetters(defaults.text);
     note.textContent = 'click the word to edit';
@@ -219,9 +260,14 @@
 
   function randomize() {
     seed = (seed + 1 + random(1, 999999)) >>> 0;
-    spread.value = String(random(24, 78));
-    registration.value = String(random(18, 82));
-    variation.value = String(random(24, 85));
+    const ranges = {
+      overlap: [22, 80], spread: [23, 85], register: [12, 88],
+      roughness: [18, 92], underprintStrength: [22, 94],
+      variation: [25, 88], pressure: [28, 82], pooling: [0, 75]
+    };
+    for (const [key, input] of Object.entries(effects)) {
+      input.value = String(random(...ranges[key]));
+    }
     requestPaint();
   }
 
@@ -310,8 +356,10 @@
       };
       draw(underprint.value, num('--underprint-opacity', .78),
         num('--yellow-x', .014) * size, num('--yellow-y', .015) * size, size * .018);
-      draw(ink.value, .92, 0, 0, size * .022 * Number(spread.value) / 50);
-      draw(ink.value, 1, 0, 0, 0);
+      const face = css.getPropertyValue('--letter-face').trim() || ink.value;
+      draw(ink.value, num('--red-opacity', .92), 0, 0,
+        size * .022 * level('spread') / 50);
+      draw(face, 1, 0, 0, 0);
     });
     return canvas;
   }
@@ -354,7 +402,7 @@
   resetButton.addEventListener('click', reset);
   randomButton.addEventListener('click', randomize);
   exportButton.addEventListener('click', savePng);
-  [ink, underprint, paper, spread, registration, variation, transparent]
+  [ink, underprint, paper, transparent, ...Object.values(effects)]
     .forEach(input => {
       input.addEventListener('input', requestPaint);
       input.addEventListener('change', requestPaint);

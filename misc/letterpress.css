@@ -126,14 +126,15 @@
   flex: 0 0 auto;
   margin: 0;
   padding: 0;
-  color: var(--lp-face);
   font: inherit;
   line-height: inherit;
   letter-spacing: 0;
   white-space: pre;
   isolation: isolate;
+  color: var(--letter-face, var(--lp-face));
   transform: translate(var(--jitter-x, 0), var(--jitter-y, 0))
-             rotate(var(--jitter-angle, 0deg));
+             rotate(var(--jitter-angle, 0deg))
+             scaleX(var(--overlap-scale, 1));
 }
 #letterpress-editor .design-letter::before,
 #letterpress-editor .design-letter::after {
@@ -156,8 +157,8 @@
 #letterpress-editor .design-letter::after {
   z-index: -1;
   color: var(--lp-face);
-  opacity: .92;
-  transform: scale(var(--red-scale, 1.018));
+  opacity: var(--red-opacity, .92);
+  transform: scaleX(var(--red-scale, 1.018)) scaleY(var(--red-scale-y, 1.018));
 }
 #letterpress-editor .design-letter--a::before { filter: url(#letterpress-yellow-a-v74); }
 #letterpress-editor .design-letter--b::before { filter: url(#letterpress-yellow-b-v74); }
@@ -211,17 +212,31 @@
 }
 .letterpress-effects {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-  margin: 0 0 30px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 20px;
+  margin: 0 0 28px;
 }
 .letterpress-fx {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
   color: var(--red, #c1272d);
   font: 700 13px/1.2 Helvetica, Arial, sans-serif;
+}
+.letterpress-fx-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.letterpress-fx output {
+  flex: 0 0 auto;
+  color: var(--green, #006a44);
+  font-size: 11px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
 }
 .letterpress-fx input[type="range"] {
   width: 100%;
@@ -270,11 +285,12 @@
   .letterpress-note { margin: 6px 0 22px; }
   .letterpress-controls { gap: 14px 19px; margin-bottom: 22px; }
   .letterpress-color, .letterpress-transparency { font-size: 12px; }
-  .letterpress-effects { gap: 14px; margin-bottom: 25px; }
+  .letterpress-effects { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; margin-bottom: 25px; }
   .letterpress-fx { font-size: 12px; }
 }
 @media (max-width: 400px) {
-  .letterpress-effects { grid-template-columns: 1fr; gap: 16px; }
+  .letterpress-effects { column-gap: 12px; }
+  .letterpress-fx { font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .letterpress-panel *, .letterpress-panel *::before, .letterpress-panel *::after {

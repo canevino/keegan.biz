@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/misc/style.css?v=20261116-misc-cleanup">
   <link rel="stylesheet" href="/assets/sports/sports.css">
-  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r5-clean">
+  <link rel="stylesheet" href="/misc/letterpress.css?v=20261116-r6-settings">
 
   <style>
     .home {
@@ -2832,17 +2832,37 @@
             </div>
 
             <div class="letterpress-effects" aria-label="Print adjustments">
+              <label class="letterpress-fx" for="letterpress-overlap">
+                <span class="letterpress-fx-head">overlap<output id="letterpress-overlap-value" for="letterpress-overlap">50</output></span>
+                <input id="letterpress-overlap" type="range" min="0" max="100" value="50" step="1">
+              </label>
               <label class="letterpress-fx" for="letterpress-spread">
-                ink bleed
+                <span class="letterpress-fx-head">ink bleed<output id="letterpress-spread-value" for="letterpress-spread">50</output></span>
                 <input id="letterpress-spread" type="range" min="0" max="100" value="50" step="1">
               </label>
               <label class="letterpress-fx" for="letterpress-register">
-                registration
+                <span class="letterpress-fx-head">registration<output id="letterpress-register-value" for="letterpress-register">50</output></span>
                 <input id="letterpress-register" type="range" min="0" max="100" value="50" step="1">
               </label>
+              <label class="letterpress-fx" for="letterpress-roughness">
+                <span class="letterpress-fx-head">edge distortion<output id="letterpress-roughness-value" for="letterpress-roughness">50</output></span>
+                <input id="letterpress-roughness" type="range" min="0" max="100" value="50" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-underprint-strength">
+                <span class="letterpress-fx-head">second ink strength<output id="letterpress-underprint-strength-value" for="letterpress-underprint-strength">50</output></span>
+                <input id="letterpress-underprint-strength" type="range" min="0" max="100" value="50" step="1">
+              </label>
               <label class="letterpress-fx" for="letterpress-variation">
-                irregularity
+                <span class="letterpress-fx-head">letter variation<output id="letterpress-variation-value" for="letterpress-variation">50</output></span>
                 <input id="letterpress-variation" type="range" min="0" max="100" value="50" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-pressure">
+                <span class="letterpress-fx-head">ink pressure<output id="letterpress-pressure-value" for="letterpress-pressure">50</output></span>
+                <input id="letterpress-pressure" type="range" min="0" max="100" value="50" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-pooling">
+                <span class="letterpress-fx-head">join pooling<output id="letterpress-pooling-value" for="letterpress-pooling">0</output></span>
+                <input id="letterpress-pooling" type="range" min="0" max="100" value="0" step="1">
               </label>
             </div>
 
@@ -12831,7 +12851,7 @@
 
   <script src="/assets/sports/sports.js" defer></script>
   <script src="/assets/site-nav.js" defer></script>
-  <script src="/misc/letterpress.js?v=20261116-r5-clean" defer></script>
+  <script src="/misc/letterpress.js?v=20261116-r6-settings" defer></script>
 
 </body>
 </html>
