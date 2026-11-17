@@ -22,6 +22,12 @@
     roughness: $('letterpress-roughness'),
     underprintStrength: $('letterpress-underprint-strength'),
     variation: $('letterpress-variation'),
+    size: $('letterpress-size'),
+    skew: $('letterpress-skew'),
+    stretch: $('letterpress-stretch'),
+    warp: $('letterpress-warp'),
+    noise: $('letterpress-noise'),
+    texture: $('letterpress-texture'),
     pressure: $('letterpress-pressure'),
     pooling: $('letterpress-pooling')
   };
@@ -41,7 +47,8 @@
     text: 'keegan.biz', font: 'helvetica', ink: '#c1272d', underprint: '#fdb913',
     paper: '#ece7d7', effects: {
       overlap: 50, spread: 50, register: 50, roughness: 50,
-      underprintStrength: 50, variation: 50, pressure: 50, pooling: 0
+      underprintStrength: 50, variation: 50, size: 0, skew: 0,
+      stretch: 0, warp: 0, noise: 0, texture: 0, pressure: 50, pooling: 0
     }
   };
 
@@ -339,7 +346,17 @@
     const shift = level('register') / 50;
     const roughness = level('roughness') / 50;
     const secondStrength = level('underprintStrength') / 50;
-    const variation = level('variation') / 50;
+    // Preserve the familiar midpoint, but make the upper half much stronger.
+    // At 50 this is equivalent to the prior variation; at 100 it is 9x wider.
+    const variationValue = level('variation');
+    const variation = variationValue <= 50 ? variationValue / 50
+      : 1 + 8 * ((variationValue - 50) / 50) ** 1.35;
+    const sizeLevel = level('size') / 100;
+    const skewLevel = level('skew') / 100;
+    const stretchLevel = level('stretch') / 100;
+    const warpLevel = level('warp') / 100;
+    const noiseLevel = level('noise') / 100;
+    const textureLevel = level('texture') / 100;
     const pressure = level('pressure');
     // At 50 the print is fully opaque. Lower pressure makes both plates
     // lighter together, rather than exposing a differently-colored outline.
@@ -356,6 +373,19 @@
         span.style.setProperty('--jitter-x', (wiggle() * variation * .009).toFixed(4) + 'em');
         span.style.setProperty('--jitter-y', (wiggle() * variation * .012).toFixed(4) + 'em');
         span.style.setProperty('--jitter-angle', (wiggle() * variation * 1.1).toFixed(3) + 'deg');
+        // Independent glyph scale and skew are deterministic for a given seed:
+        // revisiting a slider value does not change the artwork unexpectedly.
+        const sizeJitter = wiggle() * .32 * sizeLevel;
+        const tallJitter = wiggle() * .31 * sizeLevel;
+        const stretchX = wiggle() * .38 * stretchLevel;
+        const stretchY = wiggle() * .28 * stretchLevel;
+        span.style.setProperty('--letter-scale-x',
+          clamp(1 + sizeJitter + stretchX, .40, 1.95).toFixed(4));
+        span.style.setProperty('--letter-scale-y',
+          clamp(1 + tallJitter + stretchY, .43, 1.85).toFixed(4));
+        span.style.setProperty('--letter-skew-x', (wiggle() * 24 * skewLevel).toFixed(2) + 'deg');
+        span.style.setProperty('--letter-skew-y', (wiggle() * 9 * skewLevel).toFixed(2) + 'deg');
+        span.classList.toggle('has-finish', warpLevel > 0 || noiseLevel > 0 || textureLevel > 0);
         span.style.setProperty('--yellow-x', (shift * (.012 + wiggle() * .006)).toFixed(4) + 'em');
         span.style.setProperty('--yellow-y', (shift * (.016 + wiggle() * .006)).toFixed(4) + 'em');
         span.style.setProperty('--yellow-scale', (1 + shift * .010 + pool * .025).toFixed(4));
@@ -369,7 +399,18 @@
         span.style.removeProperty('--red-opacity');
       });
 
-    stage.querySelectorAll('filter[id^="letterpress-"]').forEach(filter => {
+    // Filter the combined ink plates after geometric transformations. Warp
+    // bends the glyph; noise roughens its outline; texture deposits subtle
+    // dark pigment inside the ink. No masking, pinholes, or paper wear.
+    stage.querySelectorAll('filter[id^="letterpress-finish-"]').forEach(filter => {
+      const warp = filter.querySelector('feDisplacementMap[data-effect="warp"]');
+      const noise = filter.querySelector('feDisplacementMap[data-effect="noise"]');
+      const grain = filter.querySelector('feFuncA[data-effect="texture"]');
+      if (warp) warp.setAttribute('scale', (warpLevel * 15).toFixed(2));
+      if (noise) noise.setAttribute('scale', (noiseLevel * 5).toFixed(2));
+      if (grain) grain.setAttribute('slope', (textureLevel * .44).toFixed(3));
+    });
+    stage.querySelectorAll('filter[id^="letterpress-"]:not([id^="letterpress-finish-"])').forEach(filter => {
       const red = filter.id.includes('-red-');
       const blur = filter.querySelector('feGaussianBlur[in="SourceAlpha"]');
       const displacement = filter.querySelector('feDisplacementMap');
@@ -399,12 +440,25 @@
     const currentGap = editor.style.getPropertyValue('--letter-gap');
     editor.style.setProperty('--letter-gap', '.10em');
     editor.style.fontSize = size + 'px';
-    for (let i = 0; i < 8; i++) {
-      const rect = editor.getBoundingClientRect();
-      if (rect.width <= availableWidth && rect.height <= availableHeight) break;
-      const factor = Math.min(availableWidth / Math.max(1, rect.width),
-        availableHeight / Math.max(1, rect.height));
-      size = Math.max(11, size * Math.min(.98, factor * .97));
+    for (let i = 0; i < 14; i++) {
+      const stageBounds = stage.getBoundingClientRect();
+      const editorBounds = editor.getBoundingClientRect();
+      const pieces = Array.from(editor.querySelectorAll('.design-letter:not(.design-letter--space)'));
+      const rects = pieces.map(element => element.getBoundingClientRect());
+      const left = Math.min(editorBounds.left, ...rects.map(r => r.left));
+      const right = Math.max(editorBounds.right, ...rects.map(r => r.right));
+      const top = Math.min(editorBounds.top, ...rects.map(r => r.top));
+      const bottom = Math.max(editorBounds.bottom, ...rects.map(r => r.bottom));
+      const width = right - left, height = bottom - top;
+      const padX = Math.max(16, stageBounds.width * .025);
+      const padY = 14;
+      if (width <= stageBounds.width - 2 * padX &&
+          height <= stageBounds.height - 2 * padY &&
+          left >= stageBounds.left + padX && right <= stageBounds.right - padX &&
+          top >= stageBounds.top + padY && bottom <= stageBounds.bottom - padY) break;
+      const factor = Math.min((stageBounds.width - padX * 2) / Math.max(1, width),
+        (stageBounds.height - padY * 2) / Math.max(1, height));
+      size = Math.max(11, size * Math.min(.96, factor * .95));
       editor.style.fontSize = size + 'px';
     }
     if (currentGap) editor.style.setProperty('--letter-gap', currentGap);
@@ -567,7 +621,9 @@
     const ranges = {
       overlap: [22, 80], spread: [23, 85], register: [12, 88],
       roughness: [18, 92], underprintStrength: [22, 94],
-      variation: [25, 88], pressure: [28, 82], pooling: [0, 75]
+      variation: [12, 100], size: [0, 94], skew: [0, 95], stretch: [0, 82],
+      warp: [0, 82], noise: [0, 88], texture: [0, 92],
+      pressure: [28, 82], pooling: [0, 75]
     };
     for (const [key, input] of Object.entries(effects)) {
       input.value = String(random(...ranges[key]));
@@ -686,7 +742,15 @@
         ctx.fillStyle = color;
         ctx.shadowColor = color;
         ctx.shadowBlur = blur;
-        ctx.fillText(char, x + dx, y + dy);
+        const px = x + rect.width * .5, py = y - size * .4;
+        ctx.translate(px, py);
+        const rot = parseFloat(css.getPropertyValue('--jitter-angle')) || 0;
+        const skewX = (parseFloat(css.getPropertyValue('--letter-skew-x')) || 0) * Math.PI / 180;
+        const skewY = (parseFloat(css.getPropertyValue('--letter-skew-y')) || 0) * Math.PI / 180;
+        ctx.rotate(rot * Math.PI / 180);
+        ctx.transform(1, Math.tan(skewY), Math.tan(skewX), 1, 0, 0);
+        ctx.scale(num('--letter-scale-x', 1), num('--letter-scale-y', 1));
+        ctx.fillText(char, x + dx - px, y + dy - py);
         ctx.restore();
       };
       const coverage = num('--print-opacity', 1);

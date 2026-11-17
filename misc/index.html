@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/misc/style.css?v=20261116-misc-cleanup">
   <link rel="stylesheet" href="/assets/sports/sports.css">
-  <link rel="stylesheet" href="/misc/letterpress.css?v=20261117-r11-all-fonts">
+  <link rel="stylesheet" href="/misc/letterpress.css?v=20261117-r12-effects">
 
   <style>
     .home {
@@ -2797,6 +2797,39 @@
   <feComposite in="ink" in2="crisp" operator="in"/>
 </filter>
 
+<filter id="letterpress-finish-a-v1" x="-38%" y="-45%" width="176%" height="190%" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency="0.025 0.035" numOctaves="2" seed="27" result="warping"/>
+  <feDisplacementMap data-effect="warp" in="SourceGraphic" in2="warping" scale="0" xChannelSelector="R" yChannelSelector="G" result="curved"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.31 0.39" numOctaves="2" seed="37" result="roughNoise"/>
+  <feDisplacementMap data-effect="noise" in="curved" in2="roughNoise" scale="0" xChannelSelector="R" yChannelSelector="G" result="roughInk"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.72 0.95" numOctaves="2" seed="47" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.8 0 0 0 -0.85" result="blackGrain"/>
+  <feComponentTransfer in="blackGrain" result="grainStrength"><feFuncA data-effect="texture" type="linear" slope="0" intercept="0"/></feComponentTransfer>
+  <feComposite in="grainStrength" in2="roughInk" operator="in" result="pigment"/>
+  <feMerge><feMergeNode in="roughInk"/><feMergeNode in="pigment"/></feMerge>
+</filter>
+<filter id="letterpress-finish-b-v1" x="-38%" y="-45%" width="176%" height="190%" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency="0.032 0.021" numOctaves="2" seed="59" result="warping"/>
+  <feDisplacementMap data-effect="warp" in="SourceGraphic" in2="warping" scale="0" xChannelSelector="R" yChannelSelector="G" result="curved"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.28 0.43" numOctaves="2" seed="69" result="roughNoise"/>
+  <feDisplacementMap data-effect="noise" in="curved" in2="roughNoise" scale="0" xChannelSelector="R" yChannelSelector="G" result="roughInk"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.85 0.69" numOctaves="2" seed="79" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.8 0 0 0 -0.85" result="blackGrain"/>
+  <feComponentTransfer in="blackGrain" result="grainStrength"><feFuncA data-effect="texture" type="linear" slope="0" intercept="0"/></feComponentTransfer>
+  <feComposite in="grainStrength" in2="roughInk" operator="in" result="pigment"/>
+  <feMerge><feMergeNode in="roughInk"/><feMergeNode in="pigment"/></feMerge>
+</filter>
+<filter id="letterpress-finish-c-v1" x="-38%" y="-45%" width="176%" height="190%" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency="0.019 0.039" numOctaves="2" seed="83" result="warping"/>
+  <feDisplacementMap data-effect="warp" in="SourceGraphic" in2="warping" scale="0" xChannelSelector="R" yChannelSelector="G" result="curved"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.35 0.32" numOctaves="2" seed="93" result="roughNoise"/>
+  <feDisplacementMap data-effect="noise" in="curved" in2="roughNoise" scale="0" xChannelSelector="R" yChannelSelector="G" result="roughInk"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.64 0.88" numOctaves="2" seed="103" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.8 0 0 0 -0.85" result="blackGrain"/>
+  <feComponentTransfer in="blackGrain" result="grainStrength"><feFuncA data-effect="texture" type="linear" slope="0" intercept="0"/></feComponentTransfer>
+  <feComposite in="grainStrength" in2="roughInk" operator="in" result="pigment"/>
+  <feMerge><feMergeNode in="roughInk"/><feMergeNode in="pigment"/></feMerge>
+</filter>
 </defs></svg>
               <h3
                 class="letterpress-editor"
@@ -2867,6 +2900,30 @@
               <label class="letterpress-fx" for="letterpress-variation">
                 <span class="letterpress-fx-head">letter variation<output id="letterpress-variation-value" for="letterpress-variation">50</output></span>
                 <input id="letterpress-variation" type="range" min="0" max="100" value="50" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-size">
+                <span class="letterpress-fx-head">size variation<output id="letterpress-size-value" for="letterpress-size">0</output></span>
+                <input id="letterpress-size" type="range" min="0" max="100" value="0" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-skew">
+                <span class="letterpress-fx-head">skew<output id="letterpress-skew-value" for="letterpress-skew">0</output></span>
+                <input id="letterpress-skew" type="range" min="0" max="100" value="0" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-stretch">
+                <span class="letterpress-fx-head">stretch<output id="letterpress-stretch-value" for="letterpress-stretch">0</output></span>
+                <input id="letterpress-stretch" type="range" min="0" max="100" value="0" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-warp">
+                <span class="letterpress-fx-head">warp<output id="letterpress-warp-value" for="letterpress-warp">0</output></span>
+                <input id="letterpress-warp" type="range" min="0" max="100" value="0" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-noise">
+                <span class="letterpress-fx-head">noise<output id="letterpress-noise-value" for="letterpress-noise">0</output></span>
+                <input id="letterpress-noise" type="range" min="0" max="100" value="0" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-texture">
+                <span class="letterpress-fx-head">texture<output id="letterpress-texture-value" for="letterpress-texture">0</output></span>
+                <input id="letterpress-texture" type="range" min="0" max="100" value="0" step="1">
               </label>
               <label class="letterpress-fx" for="letterpress-pressure">
                 <span class="letterpress-fx-head">ink pressure<output id="letterpress-pressure-value" for="letterpress-pressure">50</output></span>
@@ -12863,7 +12920,7 @@
 
   <script src="/assets/sports/sports.js" defer></script>
   <script src="/assets/site-nav.js" defer></script>
-  <script src="/misc/letterpress.js?v=20261117-r11-all-fonts" defer></script>
+  <script src="/misc/letterpress.js?v=20261117-r12-effects" defer></script>
 
 </body>
 </html>

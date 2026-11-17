@@ -137,7 +137,10 @@
   color: var(--lp-face);
   opacity: var(--print-opacity, 1);
   transform: translate(var(--jitter-x, 0), var(--jitter-y, 0))
-             rotate(var(--jitter-angle, 0deg));
+             rotate(var(--jitter-angle, 0deg))
+             skew(var(--letter-skew-x, 0deg), var(--letter-skew-y, 0deg))
+             scale(var(--letter-scale-x, 1), var(--letter-scale-y, 1));
+  transform-origin: center center;
 }
 /* True inter-letter spacing. The character's width and print plates stay fixed. */
 #letterpress-editor .design-letter--join {
@@ -173,6 +176,9 @@
 #letterpress-editor .design-letter--a::after { filter: url(#letterpress-red-a-v74); }
 #letterpress-editor .design-letter--b::after { filter: url(#letterpress-red-b-v74); }
 #letterpress-editor .design-letter--c::after { filter: url(#letterpress-red-c-v74); }
+#letterpress-editor .design-letter.has-finish.design-letter--a { filter: url(#letterpress-finish-a-v1); }
+#letterpress-editor .design-letter.has-finish.design-letter--b { filter: url(#letterpress-finish-b-v1); }
+#letterpress-editor .design-letter.has-finish.design-letter--c { filter: url(#letterpress-finish-c-v1); }
 #letterpress-editor .design-letter--space::before,
 #letterpress-editor .design-letter--space::after { content: none; }
 
