@@ -69,7 +69,11 @@
 .letterpress-workshop { width: 100%; min-width: 0; }
 .letterpress-preview {
   --lp-face: #c1272d;
+  --lp-face-rgb: 193 39 45;
   --lp-underprint: #fdb913;
+  --lp-underprint-rgb: 253 185 19;
+  --lp-highlight: #9adca9;
+  --lp-highlight-rgb: 154 220 169;
   --lp-paper: #ece7d7;
   position: relative;
   display: flex;
@@ -101,6 +105,41 @@
   pointer-events: none;
 }
 /* The filters supply slightly imperfect printed edges, not worn-away ink. */
+
+.letterpress-preview.is-loading-font #letterpress-editor {
+  visibility: hidden;
+}
+.letterpress-preview.is-loading-font::after {
+  content: '…';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--red, #c1272d);
+  font: 700 34px/1 Helvetica, Arial, sans-serif;
+  z-index: 4;
+}
+.letterpress-decoration-layer,
+.letterpress-highlight-layer,
+.letterpress-underline-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.letterpress-decoration-layer { z-index: 1; }
+.letterpress-highlight-layer { z-index: 0; }
+.letterpress-underline-layer { z-index: 1; }
+.letterpress-highlight-mark,
+.letterpress-underline-mark {
+  position: absolute;
+  display: block;
+}
+.letterpress-highlight-mark {
+  background: rgb(var(--lp-highlight-rgb, 154 220 169) / var(--mark-opacity, .82));
+}
+.letterpress-underline-mark {
+  background: rgb(var(--lp-underprint-rgb, 253 185 19) / var(--mark-opacity, .82));
+}
 .letterpress-svg-filters {
   position: absolute;
   width: 0;
@@ -110,7 +149,7 @@
 }
 #letterpress-editor {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   display: inline-flex;
   align-items: baseline;
   flex: 0 0 auto;
@@ -151,8 +190,7 @@
   letter-spacing: 0;
   white-space: pre;
   isolation: isolate;
-  color: var(--lp-face);
-  opacity: var(--print-opacity, 1);
+  color: rgb(var(--lp-face-rgb, 193 39 45) / var(--face-fill-opacity, 1));
   transform: translate(var(--jitter-x, 0), var(--jitter-y, 0))
              rotate(var(--jitter-angle, 0deg))
              skew(var(--letter-skew-x, 0deg), var(--letter-skew-y, 0deg))
@@ -176,15 +214,15 @@
 }
 #letterpress-editor .design-letter::before {
   z-index: -2;
-  color: var(--lp-underprint);
+  color: rgb(var(--lp-underprint-rgb, 253 185 19) / 1);
   opacity: var(--underprint-opacity, .78);
   transform: translate(var(--yellow-x, .014em), var(--yellow-y, .015em))
              scale(var(--yellow-scale, 1.02));
 }
 #letterpress-editor .design-letter::after {
   z-index: -1;
-  color: var(--lp-face);
-  opacity: 1;
+  color: rgb(var(--lp-face-rgb, 193 39 45) / 1);
+  opacity: var(--face-plate-opacity, 1);
   transform: scaleX(var(--red-scale, 1.018)) scaleY(var(--red-scale-y, 1.018));
 }
 #letterpress-editor .design-letter--a::before { filter: url(#letterpress-yellow-a-v74); }

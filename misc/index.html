@@ -2862,9 +2862,25 @@
                 ink
                 <input id="letterpress-ink" type="color" value="#c1272d" aria-label="Ink color">
               </label>
+              <label class="letterpress-transparency" for="letterpress-ink-enabled">
+                <input id="letterpress-ink-enabled" type="checkbox" checked>
+                ink on
+              </label>
               <label class="letterpress-color" for="letterpress-underprint">
                 second ink
                 <input id="letterpress-underprint" type="color" value="#fdb913" aria-label="Second ink color">
+              </label>
+              <label class="letterpress-transparency" for="letterpress-underprint-enabled">
+                <input id="letterpress-underprint-enabled" type="checkbox" checked>
+                second ink on
+              </label>
+              <label class="letterpress-color" for="letterpress-highlight">
+                highlight
+                <input id="letterpress-highlight" type="color" value="#9adca9" aria-label="Highlight color">
+              </label>
+              <label class="letterpress-transparency" for="letterpress-highlight-enabled">
+                <input id="letterpress-highlight-enabled" type="checkbox">
+                highlight on
               </label>
               <label class="letterpress-color" for="letterpress-paper">
                 paper
@@ -2928,6 +2944,14 @@
               <label class="letterpress-fx" for="letterpress-texture">
                 <span class="letterpress-fx-head">texture<output id="letterpress-texture-value" for="letterpress-texture">0</output></span>
                 <input id="letterpress-texture" type="range" min="0" max="100" value="0" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-underline-uniformity">
+                <span class="letterpress-fx-head">underline uniformity<output id="letterpress-underline-uniformity-value" for="letterpress-underline-uniformity">100</output></span>
+                <input id="letterpress-underline-uniformity" type="range" min="0" max="100" value="100" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-highlight-uniformity">
+                <span class="letterpress-fx-head">highlight uniformity<output id="letterpress-highlight-uniformity-value" for="letterpress-highlight-uniformity">100</output></span>
+                <input id="letterpress-highlight-uniformity" type="range" min="0" max="100" value="100" step="1">
               </label>
               <label class="letterpress-fx" for="letterpress-pressure">
                 <span class="letterpress-fx-head">ink pressure<output id="letterpress-pressure-value" for="letterpress-pressure">50</output></span>
@@ -3075,9 +3099,9 @@
         "The site keeps a lightweight saved copy of the data too, so normal browsing does not need to constantly call the feeds."
       ],
       letters: [
-        "Type a word, pick a font, then use the sliders to move it from clean to rough.",
-        "Randomize swaps the word, font, colors, and settings. The more extreme controls are weighted low, so most results stay restrained.",
-        "Save PNG exports the current print. SVG is not included here because the live effects do not export as editable vector shapes."
+        "The word is split into individual spans so each letter can be moved, resized, and inked on its own. CSS handles the stacked color layers, while Canvas is used to measure spacing and help keep the word fitted inside the preview.",
+        "Fonts come from two places: a built-in system list and Fontsource’s open-source catalogue. Random words come from Random Word API, with a small local word list used as a fallback if that request fails.",
+        "Randomize chooses the word, typeface, colors, toggles, and slider values in the browser. Stronger distortions are weighted low, so most outcomes stay restrained, and PNG export saves the current state of the print."
       ]
     };
 

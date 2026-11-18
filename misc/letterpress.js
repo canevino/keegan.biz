@@ -12,7 +12,11 @@
   const fontSelect = $('letterpress-font');
   const fontSearch = $('letterpress-font-search');
   const ink = $('letterpress-ink');
+  const inkEnabled = $('letterpress-ink-enabled');
   const underprint = $('letterpress-underprint');
+  const underprintEnabled = $('letterpress-underprint-enabled');
+  const highlight = $('letterpress-highlight');
+  const highlightEnabled = $('letterpress-highlight-enabled');
   const paper = $('letterpress-paper');
   const transparent = $('letterpress-transparent');
   const underline = $('letterpress-underline');
@@ -29,6 +33,8 @@
     warp: $('letterpress-warp'),
     noise: $('letterpress-noise'),
     texture: $('letterpress-texture'),
+    underlineUniformity: $('letterpress-underline-uniformity'),
+    highlightUniformity: $('letterpress-highlight-uniformity'),
     pressure: $('letterpress-pressure'),
     pooling: $('letterpress-pooling')
   };
@@ -40,16 +46,29 @@
   const note = $('letterpress-note');
 
   const required = [home, launcher, panel, closeButton, stage, editor, fontSelect, fontSearch, ink,
-    underprint, paper, transparent, underline, ...Object.values(effects),
+    inkEnabled, underprint, underprintEnabled, highlight, highlightEnabled,
+    paper, transparent, underline, ...Object.values(effects),
     ...Object.values(effectOutputs), randomButton, resetButton, exportButton, note];
   if (!required.every(Boolean)) return;
 
+  const decorationLayer = document.createElement('div');
+  decorationLayer.className = 'letterpress-decoration-layer';
+  const highlightLayer = document.createElement('div');
+  highlightLayer.className = 'letterpress-highlight-layer';
+  const underlineLayer = document.createElement('div');
+  underlineLayer.className = 'letterpress-underline-layer';
+  decorationLayer.append(highlightLayer, underlineLayer);
+  stage.insertBefore(decorationLayer, editor);
+
   const defaults = {
     text: 'keegan.biz', font: 'helvetica', ink: '#c1272d', underprint: '#fdb913',
-    paper: '#ece7d7', underline: false, effects: {
+    highlight: '#9adca9', paper: '#ece7d7', inkEnabled: true,
+    underprintEnabled: true, highlightEnabled: false, underline: false, effects: {
       overlap: 50, spread: 50, register: 50, roughness: 50,
       underprintStrength: 50, variation: 50, size: 0, skew: 0,
-      stretch: 0, warp: 0, noise: 0, texture: 0, pressure: 50, pooling: 0
+      stretch: 0, warp: 0, noise: 0, texture: 0,
+      underlineUniformity: 100, highlightUniformity: 100,
+      pressure: 50, pooling: 0
     }
   };
 
@@ -247,6 +266,11 @@
   const getText = () => cleanText(editor.textContent);
   const clamp = (x, min, max) => Math.max(min, Math.min(max, x));
   const random = (min, max) => Math.round(min + Math.random() * (max - min));
+  const hexToRgbString = hex => {
+    const value = String(hex || '').replace('#', '');
+    if (!/^[0-9a-f]{6}$/i.test(value)) return '0 0 0';
+    return [0, 2, 4].map(index => parseInt(value.slice(index, index + 2), 16)).join(' ');
+  };
   const hash = (ch, index) => (((ch.codePointAt(0) || 0) * 37) + index * 61 + 17) >>> 0;
   const seeded = n => () => {
     n ^= n << 13; n ^= n >>> 17; n ^= n << 5;
@@ -381,7 +405,11 @@
 
   function applyColors() {
     stage.style.setProperty('--lp-face', ink.value);
+    stage.style.setProperty('--lp-face-rgb', hexToRgbString(ink.value));
     stage.style.setProperty('--lp-underprint', underprint.value);
+    stage.style.setProperty('--lp-underprint-rgb', hexToRgbString(underprint.value));
+    stage.style.setProperty('--lp-highlight', highlight.value);
+    stage.style.setProperty('--lp-highlight-rgb', hexToRgbString(highlight.value));
     stage.style.setProperty('--lp-paper', paper.value);
     stage.querySelectorAll('filter[id^="letterpress-red-"] feFlood')
       .forEach(el => el.setAttribute('flood-color', ink.value));
@@ -426,7 +454,11 @@
     }
 
     editor.style.setProperty('--letter-gap', overlapGap().toFixed(5) + 'em');
-    editor.classList.toggle('is-underlined', underline.checked);
+    const showFirstInk = inkEnabled.checked;
+    const showSecondInk = underprintEnabled.checked;
+    const showHighlight = highlightEnabled.checked;
+    editor.classList.toggle('is-underlined', underline.checked && showSecondInk);
+    stage.classList.toggle('has-highlight', showHighlight);
     const letters = Array.from(editor.querySelectorAll('.design-letter'));
     letters.forEach((span, index) => {
       const next = letters[index + 1];
@@ -534,8 +566,11 @@
         span.style.setProperty('--yellow-scale', (1 + shift * .010 + pool * .025).toFixed(4));
         span.style.setProperty('--red-scale', (1 + bleed * .009 + pool * .055 + extraDeposit * .014).toFixed(4));
         span.style.setProperty('--red-scale-y', (1 + bleed * .009 + pool * .032 + extraDeposit * .010).toFixed(4));
-        span.style.setProperty('--print-opacity', coverage.toFixed(3));
-        span.style.setProperty('--underprint-opacity', clamp((.77 + (wiggle() * 2 - 1) * .08) * secondStrength, 0, 1).toFixed(3));
+        span.style.setProperty('--face-fill-opacity', showFirstInk ? coverage.toFixed(3) : '0');
+        span.style.setProperty('--face-plate-opacity', showFirstInk ? coverage.toFixed(3) : '0');
+        span.style.setProperty('--underprint-opacity', showSecondInk
+          ? clamp((.77 + (wiggle() * 2 - 1) * .08) * secondStrength * coverage, 0, 1).toFixed(3)
+          : '0');
         span.style.removeProperty('--letter-face');
         span.style.removeProperty('--red-opacity');
       });
@@ -558,6 +593,106 @@
         displacement.setAttribute('scale', (base * (.2 + roughness * .8)).toFixed(3));
       }
     });
+  }
+
+
+  function partitionRects(rects, count, rng) {
+    if (!rects.length) return [];
+    const total = rects.length;
+    const target = clamp(Math.round(count), 1, total);
+    const boundaries = [];
+    for (let i = 1; i < target; i++) {
+      const ideal = i * total / target;
+      const drift = (rng() * 2 - 1) * Math.max(.4, (1 - target / total) * 1.2);
+      boundaries.push(clamp(Math.round(ideal + drift), 1, total - 1));
+    }
+    const unique = Array.from(new Set(boundaries)).sort((a, b) => a - b);
+    const groups = [];
+    let start = 0;
+    for (const end of unique) {
+      groups.push(rects.slice(start, end));
+      start = end;
+    }
+    groups.push(rects.slice(start));
+    return groups.filter(group => group.length);
+  }
+
+  function setMarkBox(element, left, top, width, height, opacity) {
+    element.style.left = left.toFixed(2) + 'px';
+    element.style.top = top.toFixed(2) + 'px';
+    element.style.width = Math.max(1, width).toFixed(2) + 'px';
+    element.style.height = Math.max(1, height).toFixed(2) + 'px';
+    element.style.setProperty('--mark-opacity', opacity.toFixed(3));
+  }
+
+  function updateDecorations() {
+    highlightLayer.replaceChildren();
+    underlineLayer.replaceChildren();
+    const liveLetters = Array.from(editor.querySelectorAll('.design-letter:not(.design-letter--space)'));
+    if (!liveLetters.length) return;
+    const stageRect = stage.getBoundingClientRect();
+    const rects = liveLetters.map(letter => {
+      const rect = letter.getBoundingClientRect();
+      return {
+        left: rect.left - stageRect.left,
+        right: rect.right - stageRect.left,
+        top: rect.top - stageRect.top,
+        bottom: rect.bottom - stageRect.top,
+        width: rect.width,
+        height: rect.height
+      };
+    });
+    const fontSize = parseFloat(getComputedStyle(editor).fontSize) || 100;
+    const bounds = {
+      left: Math.min(...rects.map(rect => rect.left)),
+      right: Math.max(...rects.map(rect => rect.right)),
+      top: Math.min(...rects.map(rect => rect.top)),
+      bottom: Math.max(...rects.map(rect => rect.bottom))
+    };
+    const decoRng = seeded((seed ^ 0x5f356495) >>> 0);
+
+    if (highlightEnabled.checked) {
+      const uniformity = level('highlightUniformity') / 100;
+      const segmentCount = 1 + Math.round((1 - uniformity) * Math.min(rects.length - 1, 5));
+      const groups = partitionRects(rects, segmentCount, decoRng);
+      const baseTop = bounds.top + (bounds.bottom - bounds.top) * .47;
+      const baseHeight = Math.max(fontSize * .28, 10);
+      groups.forEach((group, index) => {
+        const first = group[0];
+        const last = group[group.length - 1];
+        const inset = (1 - uniformity) * fontSize * .06;
+        const left = first.left - fontSize * (.03 + decoRng() * .03) + inset * .35;
+        const right = last.right + fontSize * (.03 + decoRng() * .03) - inset * .35;
+        const top = baseTop + (decoRng() * 2 - 1) * (1 - uniformity) * fontSize * .08;
+        const height = baseHeight * (1 + (decoRng() * 2 - 1) * (1 - uniformity) * .22);
+        const mark = document.createElement('span');
+        mark.className = 'letterpress-highlight-mark';
+        const opacity = .72 + (1 - uniformity) * .16;
+        setMarkBox(mark, left, top, right - left, height, opacity);
+        highlightLayer.append(mark);
+      });
+    }
+
+    if (underline.checked && underprintEnabled.checked) {
+      const uniformity = level('underlineUniformity') / 100;
+      const segmentCount = 1 + Math.round((1 - uniformity) * Math.min(rects.length - 1, 6));
+      const groups = partitionRects(rects, segmentCount, decoRng);
+      const baseY = bounds.bottom + fontSize * .05;
+      const thickness = Math.max(2, fontSize * (.045 + level('spread') / 100 * .008));
+      groups.forEach(group => {
+        const first = group[0];
+        const last = group[group.length - 1];
+        const gapInset = (1 - uniformity) * fontSize * (.08 + decoRng() * .06);
+        const left = first.left - fontSize * .015 + gapInset * .5;
+        const right = last.right + fontSize * .015 - gapInset * .5;
+        const top = baseY + (decoRng() * 2 - 1) * (1 - uniformity) * fontSize * .035;
+        const mark = document.createElement('span');
+        mark.className = 'letterpress-underline-mark';
+        const opacity = clamp((level('underprintStrength') / 100) * .92 + .08, 0, 1);
+        setMarkBox(mark, left, top, right - left, thickness, opacity);
+        underlineLayer.append(mark);
+      });
+    }
   }
 
   function fitType() {
@@ -602,6 +737,7 @@
     applyColors();
     updateEffects();
     fitType();
+    updateDecorations();
   }
   function requestPaint() {
     if (paintScheduled) return;
@@ -642,7 +778,11 @@
     fontSelect.value = defaults.font;
     rebuildFontList();
     ink.value = defaults.ink;
+    inkEnabled.checked = defaults.inkEnabled;
     underprint.value = defaults.underprint;
+    underprintEnabled.checked = defaults.underprintEnabled;
+    highlight.value = defaults.highlight;
+    highlightEnabled.checked = defaults.highlightEnabled;
     paper.value = defaults.paper;
     for (const [key, input] of Object.entries(effects)) {
       input.value = defaults.effects[key];
@@ -803,7 +943,16 @@
     const [firstInk, secondInk] = randomInkPair(paper.value);
     ink.value = firstInk;
     underprint.value = secondInk;
-    underline.checked = Math.random() < .28;
+    highlight.value = randomInk(paper.value, firstInk, 1.25);
+    inkEnabled.checked = Math.random() < .94;
+    underprintEnabled.checked = Math.random() < .78;
+    highlightEnabled.checked = Math.random() < .34;
+    underline.checked = Math.random() < .32;
+    effects.underlineUniformity.value = String(random(18, 100));
+    effects.highlightUniformity.value = String(random(20, 100));
+    if (!inkEnabled.checked && !underprintEnabled.checked && !highlightEnabled.checked) {
+      inkEnabled.checked = true;
+    }
     buildLetters(nextWord());
     note.textContent = 'click the word to edit';
     requestPaint();
@@ -888,7 +1037,21 @@
       ctx.fillRect(0, 0, width, height);
     }
     const stageRect = stage.getBoundingClientRect();
-    let boundsLeft = Infinity, boundsRight = -Infinity, baselineY = 0, lineSize = 0;
+    const drawMarks = selector => {
+      stage.querySelectorAll(selector).forEach(mark => {
+        const rect = mark.getBoundingClientRect();
+        const css = getComputedStyle(mark);
+        const bg = css.backgroundColor;
+        const opacity = parseFloat(css.getPropertyValue('--mark-opacity'));
+        ctx.save();
+        ctx.globalAlpha = Number.isFinite(opacity) ? opacity : 1;
+        ctx.fillStyle = bg;
+        ctx.fillRect(rect.left - stageRect.left, rect.top - stageRect.top, rect.width, rect.height);
+        ctx.restore();
+      });
+    };
+    drawMarks('.letterpress-highlight-mark');
+    drawMarks('.letterpress-underline-mark');
     editor.querySelectorAll('.design-letter').forEach(span => {
       if (span.classList.contains('design-letter--space')) return;
       const char = span.textContent;
@@ -921,28 +1084,13 @@
         ctx.fillText(char, x + dx - px, y + dy - py);
         ctx.restore();
       };
-      const coverage = num('--print-opacity', 1);
-      draw(underprint.value, num('--underprint-opacity', .78) * coverage,
+      const faceOpacity = num('--face-fill-opacity', 1);
+      const facePlateOpacity = num('--face-plate-opacity', 1);
+      draw(underprint.value, num('--underprint-opacity', .78),
         num('--yellow-x', .014) * size, num('--yellow-y', .015) * size, size * .018);
-      draw(ink.value, coverage, 0, 0, size * .022 * level('spread') / 50);
-      draw(ink.value, coverage, 0, 0, 0);
-      boundsLeft = Math.min(boundsLeft, rect.left - stageRect.left);
-      boundsRight = Math.max(boundsRight, rect.right - stageRect.left);
-      baselineY = Math.max(baselineY, rect.bottom - stageRect.top);
-      lineSize = Math.max(lineSize, size);
+      draw(ink.value, facePlateOpacity, 0, 0, size * .022 * level('spread') / 50);
+      draw(ink.value, faceOpacity, 0, 0, 0);
     });
-    if (underline.checked && Number.isFinite(boundsLeft) && Number.isFinite(boundsRight) && boundsRight > boundsLeft) {
-      ctx.save();
-      ctx.strokeStyle = ink.value;
-      ctx.lineCap = 'butt';
-      ctx.lineWidth = Math.max(2, lineSize * .06);
-      const y = baselineY + lineSize * .06;
-      ctx.beginPath();
-      ctx.moveTo(boundsLeft, y);
-      ctx.lineTo(boundsRight, y);
-      ctx.stroke();
-      ctx.restore();
-    }
     return canvas;
   }
 
@@ -1004,7 +1152,8 @@
     }
   });
   exportButton.addEventListener('click', savePng);
-  [ink, underprint, paper, transparent, underline, ...Object.values(effects)]
+  [ink, inkEnabled, underprint, underprintEnabled, highlight, highlightEnabled,
+    paper, transparent, underline, ...Object.values(effects)]
     .forEach(input => {
       input.addEventListener('input', requestPaint);
       input.addEventListener('change', requestPaint);
