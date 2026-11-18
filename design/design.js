@@ -21,7 +21,7 @@
   let groupSize = 2;
   let lightboxIndex = -1;
   let lightboxItems = [];
-  let scrollTick = null;
+  let resizeTick = null;
 
   function el(tag, className = '', text) {
     const node = document.createElement(tag);
@@ -247,29 +247,55 @@
     notes.hidden = false;
   }
 
-  // Three-piece editorial compositions on desktop and two-piece groups
-  // on small screens. A remainder is redistributed to avoid isolated images.
+  // Chapter structure drives the groups. A single larger piece or a clear pair
+  // is easier to read than three small thumbnails. Poster series remain together.
   function groupSlides(project) {
     const entries = project.chapters.flatMap((chapter, chapterIndex) =>
       chapter.slides.map(item => ({chapter, chapterIndex, item})));
-    groupSize = matchMedia('(max-width: 700px)').matches ? 2 : 3;
-    const groups = [];
-    let cursor = 0;
-    while (cursor < entries.length) {
-      const left = entries.length - cursor;
-      let count = Math.min(groupSize, left);
-      if (groupSize === 3 && left === 4) count = 2;
-      if (groupSize === 2 && left === 3) count = 3;
-      groups.push(entries.slice(cursor, cursor + count));
-      cursor += count;
+    const mobile = matchMedia('(max-width: 700px)').matches;
+    groupSize = mobile ? 1 : 2;
+    if (mobile) return entries.map(entry => [entry]);
+
+    // Match the actual series, rather than creating arbitrary grids. These
+    // groups keep related artworks together without reducing them to thumbnails.
+    const compositions = {
+      triennial: [[0,1],[2,3],[4,5],[6,7],[8,9]],
+      angels: [[0,1],[2,3],[4,5],[6,7],[8,9],[10,11],[12,13,14]],
+      winter: [[0,1,2]],
+      prx: [[0],[1,2]],
+      college: [[0,1,2],[3,4,5],[6,7],[8,9]]
+    };
+    const planned = compositions[project.id];
+    if (planned && planned.flat().length === entries.length &&
+        planned.flat().every((index, position) => index === position)) {
+      return planned.map(group => group.map(index => entries[index]));
     }
+    // Safe fallback when new artwork is added to the data later.
+    const groups = [];
+    for (let i = 0; i < entries.length; i += 2) groups.push(entries.slice(i,i+2));
     return groups;
+  }
+
+  // The stage moves by an exact group width. No native horizontal momentum,
+  // partial snaps or intermediate stops can leave a group half-visible.
+  function positionSlide(animate = true) {
+    const track = byId('viewer-track');
+    if (!track) return;
+    const group = track.children[slideIndex];
+    if (!group) return;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    track.style.transition = animate && !reduced ? '' : 'none';
+    track.style.transform = `translate3d(${-group.offsetLeft}px, 0, 0)`;
   }
 
   function showCurrentInfo() {
     const group = activeGroups[slideIndex];
     if (!group) return;
-    byId('viewer-track')?.querySelectorAll('.viewer-cluster').forEach((node, i) => node.classList.toggle('is-current', i === slideIndex));
+    byId('viewer-track')?.querySelectorAll('.viewer-cluster').forEach((node, i) => {
+      const current = i === slideIndex;
+      node.classList.toggle('is-current', current);
+      node.querySelectorAll('button').forEach(control => { control.tabIndex = current ? 0 : -1; });
+    });
     const chapter = group[0].chapter;
     byId('viewer-chapter').textContent = activeGroups.length === 1 && projectIndex >= 0 && projects[projectIndex].id === 'prx'
       ? 'Identity and promotion' : chapter.title;
@@ -280,16 +306,10 @@
     byId('viewer-next').disabled = slideIndex === activeGroups.length - 1;
   }
 
-  function moveSlide(index, smooth = true) {
+  function moveSlide(index, animate = true) {
     slideIndex = Math.max(0, Math.min(activeGroups.length - 1, index));
     showCurrentInfo();
-    const track = byId('viewer-track');
-    const target = track.children[slideIndex];
-    if (!target) return;
-    track.scrollTo({
-      left: target.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft,
-      behavior: smooth && !matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'instant'
-    });
+    positionSlide(animate);
   }
 
   function renderProject() {
@@ -323,7 +343,7 @@
     track.tabIndex = activeGroups.length > 1 ? 0 : -1;
     track.setAttribute('role', 'region');
     track.setAttribute('aria-roledescription', 'carousel');
-    track.setAttribute('aria-label', `${project.name} artwork. Scroll sideways or use previous and next.`);
+    track.setAttribute('aria-label', `${project.name} artwork. Swipe sideways or use previous and next.`);
 
     let artworkIndex = 0;
     activeGroups.forEach((entries, groupIndex) => {
@@ -344,32 +364,52 @@
     gallery.append(viewer);
     showCurrentInfo();
 
-    // The track's real slide offsets are used, rather than assuming full-width
-    // slides. This keeps snapping accurate after resize and on mobile.
-    track.addEventListener('scroll', () => {
-      if (scrollTick) cancelAnimationFrame(scrollTick);
-      scrollTick = requestAnimationFrame(() => {
-        const offset = track.scrollLeft;
-        let closest = 0;
-        let distance = Infinity;
-        [...track.children].forEach((node, i) => {
-          const delta = Math.abs(node.getBoundingClientRect().left - track.getBoundingClientRect().left + track.scrollLeft - offset);
-          if (delta < distance) { distance = delta; closest = i; }
-        });
-        if (closest !== slideIndex) { slideIndex = closest; showCurrentInfo(); }
-      });
-    }, {passive: true});
+    // One swipe advances one complete group. Vertical touch scrolling remains native.
+    let gesture = null;
+    visual.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      gesture = {x: event.clientX, y: event.clientY};
+    });
+    visual.addEventListener('pointerup', event => {
+      if (!gesture) return;
+      const dx = event.clientX - gesture.x;
+      const dy = event.clientY - gesture.y;
+      gesture = null;
+      if (Math.abs(dx) > 56 && Math.abs(dx) > Math.abs(dy) * 1.25) {
+        moveSlide(slideIndex + (dx < 0 ? 1 : -1));
+      }
+    });
+    visual.addEventListener('pointercancel', () => { gesture = null; });
+    let lastWheelMove = 0;
+    visual.addEventListener('wheel', event => {
+      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) * 1.15) return;
+      event.preventDefault();
+      if (activeGroups.length <= 1) return;
+      const now = performance.now();
+      if (now - lastWheelMove < 480) return;
+      lastWheelMove = now;
+      moveSlide(slideIndex + (event.deltaX > 0 ? 1 : -1));
+    }, {passive: false});
     track.addEventListener('keydown', event => {
       if (event.key === 'ArrowRight') { event.preventDefault(); moveSlide(slideIndex + 1); }
       if (event.key === 'ArrowLeft') { event.preventDefault(); moveSlide(slideIndex - 1); }
     });
+    requestAnimationFrame(() => positionSlide(false));
     byId('study-next-project').onclick = () => openProject((projectIndex + 1) % projects.length);
   }
 
   window.addEventListener('resize', () => {
     if (projectIndex < 0) return;
-    const needed = matchMedia('(max-width: 700px)').matches ? 2 : 3;
-    if (needed !== groupSize) renderProject();
+    if (resizeTick) cancelAnimationFrame(resizeTick);
+    resizeTick = requestAnimationFrame(() => {
+      const needed = matchMedia('(max-width: 700px)').matches ? 1 : 2;
+      if (needed !== groupSize) {
+        const visiblePiece = activeGroups[slideIndex]?.[0]?.item;
+        renderProject();
+        const recovered = activeGroups.findIndex(group => group.some(entry => entry.item === visiblePiece));
+        moveSlide(Math.max(0, recovered), false);
+      } else positionSlide(false);
+    });
   }, {passive: true});
 
   function updateUrl() {
