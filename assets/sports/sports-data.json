@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-17T21:06:01.099Z",
+  "updatedAt": "2026-11-18T07:43:07.386Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -984,22 +984,12 @@
       }
     },
     "ukraine": {
-      "active": true,
+      "active": false,
       "team": "Ukraine",
       "shortName": "Ukraine",
-      "upcoming": [
-        {
-          "id": "5181811",
-          "date": "2026-11-17T19:45:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Ukraine",
-          "away": "Georgia",
-          "competition": "UEFA Nations League B Grp. 2"
-        }
-      ],
+      "upcoming": [],
       "standings": {
-        "title": "UEFA Nations League B Grp. 2",
+        "title": "",
         "rows": []
       }
     },
@@ -1014,22 +1004,12 @@
       }
     },
     "ireland": {
-      "active": true,
+      "active": false,
       "team": "Ireland",
       "shortName": "Ireland",
-      "upcoming": [
-        {
-          "id": "5181823",
-          "date": "2026-11-17T19:45:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Ireland",
-          "away": "Kosovo",
-          "competition": "UEFA Nations League B Grp. 3"
-        }
-      ],
+      "upcoming": [],
       "standings": {
-        "title": "UEFA Nations League B Grp. 3",
+        "title": "",
         "rows": []
       }
     }
