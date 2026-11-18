@@ -15,8 +15,6 @@
   const inkEnabled = $('letterpress-ink-enabled');
   const underprint = $('letterpress-underprint');
   const underprintEnabled = $('letterpress-underprint-enabled');
-  const highlight = $('letterpress-highlight');
-  const highlightEnabled = $('letterpress-highlight-enabled');
   const paper = $('letterpress-paper');
   const transparent = $('letterpress-transparent');
   const underline = $('letterpress-underline');
@@ -34,7 +32,8 @@
     noise: $('letterpress-noise'),
     texture: $('letterpress-texture'),
     underlineUniformity: $('letterpress-underline-uniformity'),
-    highlightUniformity: $('letterpress-highlight-uniformity'),
+    underlineWeight: $('letterpress-underline-weight'),
+    underlineCurve: $('letterpress-underline-curve'),
     pressure: $('letterpress-pressure'),
     pooling: $('letterpress-pooling')
   };
@@ -46,28 +45,27 @@
   const note = $('letterpress-note');
 
   const required = [home, launcher, panel, closeButton, stage, editor, fontSelect, fontSearch, ink,
-    inkEnabled, underprint, underprintEnabled, highlight, highlightEnabled,
+    inkEnabled, underprint, underprintEnabled,
     paper, transparent, underline, ...Object.values(effects),
     ...Object.values(effectOutputs), randomButton, resetButton, exportButton, note];
   if (!required.every(Boolean)) return;
 
-  const decorationLayer = document.createElement('div');
-  decorationLayer.className = 'letterpress-decoration-layer';
-  const highlightLayer = document.createElement('div');
-  highlightLayer.className = 'letterpress-highlight-layer';
-  const underlineLayer = document.createElement('div');
-  underlineLayer.className = 'letterpress-underline-layer';
-  decorationLayer.append(highlightLayer, underlineLayer);
-  stage.insertBefore(decorationLayer, editor);
+  const svgNamespace = 'http://www.w3.org/2000/svg';
+  const underlineSvg = document.createElementNS(svgNamespace, 'svg');
+  underlineSvg.classList.add('letterpress-underline-art');
+  underlineSvg.setAttribute('aria-hidden', 'true');
+  const underlineGroup = document.createElementNS(svgNamespace, 'g');
+  underlineSvg.append(underlineGroup);
+  stage.insertBefore(underlineSvg, editor);
 
   const defaults = {
     text: 'keegan.biz', font: 'helvetica', ink: '#c1272d', underprint: '#fdb913',
-    highlight: '#9adca9', paper: '#ece7d7', inkEnabled: true,
-    underprintEnabled: true, highlightEnabled: false, underline: false, effects: {
+    paper: '#ece7d7', inkEnabled: true,
+    underprintEnabled: true, underline: false, effects: {
       overlap: 50, spread: 50, register: 50, roughness: 50,
       underprintStrength: 50, variation: 50, size: 0, skew: 0,
       stretch: 0, warp: 0, noise: 0, texture: 0,
-      underlineUniformity: 100, highlightUniformity: 100,
+      underlineUniformity: 100, underlineWeight: 40, underlineCurve: 0,
       pressure: 50, pooling: 0
     }
   };
@@ -334,7 +332,8 @@
     stretch:   { decay: .050, rare: .012 },
     warp:      { decay: .064, rare: .009 },
     noise:     { decay: .094, rare: .004 },
-    texture:   { decay: .060, rare: .009 }
+    texture:   { decay: .060, rare: .009 },
+    underlineCurve: { decay: .054, rare: .012 }
   });
   function lowBiasedSetting(name, rng = Math.random) {
     const { decay, rare } = lowBiasProfiles[name];
@@ -410,8 +409,6 @@
     stage.style.setProperty('--lp-face-rgb', hexToRgbString(ink.value));
     stage.style.setProperty('--lp-underprint', underprint.value);
     stage.style.setProperty('--lp-underprint-rgb', hexToRgbString(underprint.value));
-    stage.style.setProperty('--lp-highlight', highlight.value);
-    stage.style.setProperty('--lp-highlight-rgb', hexToRgbString(highlight.value));
     stage.style.setProperty('--lp-paper', paper.value);
     stage.querySelectorAll('filter[id^="letterpress-red-"] feFlood')
       .forEach(el => el.setAttribute('flood-color', ink.value));
@@ -458,9 +455,7 @@
     editor.style.setProperty('--letter-gap', overlapGap().toFixed(5) + 'em');
     const showFirstInk = inkEnabled.checked;
     const showSecondInk = underprintEnabled.checked;
-    const showHighlight = highlightEnabled.checked;
     editor.classList.remove('is-underlined'); // Underline is drawn only by the independent marker layer.
-    stage.classList.toggle('has-highlight', showHighlight);
     const letters = Array.from(editor.querySelectorAll('.design-letter'));
     letters.forEach((span, index) => {
       const next = letters[index + 1];
@@ -598,111 +593,89 @@
   }
 
 
-  function partitionRects(rects, count) {
-    if (!rects.length) return [];
-    const number = clamp(Math.round(count), 1, rects.length);
-    const groups = [];
-    for (let i = 0; i < number; i++) {
-      const from = Math.floor(i * rects.length / number);
-      const to = Math.floor((i + 1) * rects.length / number);
-      const group = rects.slice(from, to);
-      if (group.length) groups.push(group);
-    }
-    return groups;
-  }
-
-  function setMarkBox(element, left, top, width, height, opacity, angle = 0) {
-    element.style.left = left.toFixed(2) + 'px';
-    element.style.top = top.toFixed(2) + 'px';
-    element.style.width = Math.max(1, width).toFixed(2) + 'px';
-    element.style.height = Math.max(1, height).toFixed(2) + 'px';
-    element.style.setProperty('--mark-opacity', opacity.toFixed(3));
-    element.style.transformOrigin = 'center center';
-    element.style.transform = 'rotate(' + angle.toFixed(2) + 'deg)';
-  }
-
-  function updateDecorations() {
-    highlightLayer.replaceChildren();
-    underlineLayer.replaceChildren();
-    const liveLetters = Array.from(editor.querySelectorAll('.design-letter:not(.design-letter--space)'));
-    if (!liveLetters.length) return;
+  // Underlining is independent of the letter plates: it keeps the second
+  // ink color even when that plate is hidden. Geometry is stable for a given
+  // seed, so adjusting weight or curve never re-randomizes the breaks.
+  function updateUnderline() {
+    underlineGroup.replaceChildren();
+    if (!underline.checked) return;
 
     const stageRect = stage.getBoundingClientRect();
-    const rects = liveLetters.map(letter => {
-      const rect = letter.getBoundingClientRect();
-      return {
-        left: rect.left - stageRect.left,
-        right: rect.right - stageRect.left,
-        top: rect.top - stageRect.top,
-        bottom: rect.bottom - stageRect.top
-      };
-    });
-    const boundsOf = group => ({
-      left: Math.min(...group.map(rect => rect.left)),
-      right: Math.max(...group.map(rect => rect.right)),
-      top: Math.min(...group.map(rect => rect.top)),
-      bottom: Math.max(...group.map(rect => rect.bottom))
-    });
-    const bounds = boundsOf(rects);
+    const glyphs = Array.from(editor.querySelectorAll('.design-letter:not(.design-letter--space)'));
+    if (!glyphs.length) return;
+    const rects = glyphs.map(element => element.getBoundingClientRect());
     const fontSize = parseFloat(getComputedStyle(editor).fontSize) || 100;
-    const height = bounds.bottom - bounds.top;
-    // Fixed seed for a fixed word/settings combination; slider movement does
-    // not shuffle positions or flicker until the next Randomize.
-    const decoRng = seeded((seed ^ 0x5f356495) >>> 0);
+    const left = Math.min(...rects.map(rect => rect.left)) - stageRect.left;
+    const right = Math.max(...rects.map(rect => rect.right)) - stageRect.left;
+    const bottom = Math.max(...rects.map(rect => rect.bottom)) - stageRect.top;
+    const width = Math.max(1, right - left);
+    const uniformity = level('underlineUniformity') / 100;
+    const uneven = 1 - uniformity;
+    const curve = level('underlineCurve') / 100;
+    const weight = level('underlineWeight') / 100;
+    const rng = seeded((seed ^ 0x5f356495) >>> 0);
+    const registrationOffset = level('register') / 100 * fontSize * .009;
+    const baseY = clamp(bottom + fontSize * .055 + registrationOffset,
+      fontSize * .18, stageRect.height - Math.max(5, fontSize * .04));
+    const thickness = Math.max(1.2, fontSize * (.017 + weight ** 1.35 * .112)) *
+      (1 + level('spread') / 100 * .20 + level('pooling') / 100 * .08);
+    const pressure = level('pressure');
+    const opacity = (pressure < 50 ? .42 + pressure / 50 * .58 : 1);
 
-    // A proper full-height highlight behind the text. At 100 it is one
-    // uninterrupted mark spanning the entire word, including its right edge.
-    // At lower settings, split the band into sections with varying placement.
-    if (highlightEnabled.checked) {
-      const uniformity = level('highlightUniformity') / 100;
-      const groups = partitionRects(rects,
-        1 + Math.round((1 - uniformity) * Math.min(rects.length - 1, 7)));
-      const disruption = 1 - uniformity;
-      for (const group of groups) {
-        const groupBounds = boundsOf(group);
-        const jitter = (decoRng() * 2 - 1) * disruption * fontSize * .09;
-        const top = (uniformity === 1 ? bounds.top : groupBounds.top) +
-          fontSize * .055 + jitter;
-        const baseHeight = (uniformity === 1 ? height : groupBounds.bottom - groupBounds.top) -
-          fontSize * .105;
-        const markHeight = Math.max(fontSize * .42, baseHeight * (1 +
-          (decoRng() * 2 - 1) * disruption * .20));
-        const inset = disruption * fontSize * (.04 + decoRng() * .09);
-        const left = groupBounds.left - fontSize * .055 + inset / 2;
-        const right = groupBounds.right + fontSize * .055 - inset / 2;
-        const mark = document.createElement('span');
-        mark.className = 'letterpress-highlight-mark';
-        setMarkBox(mark, left, top, right - left, markHeight,
-          .76 + (decoRng() * 2 - 1) * disruption * .12,
-          (decoRng() * 2 - 1) * disruption * 2.2);
-        highlightLayer.append(mark);
-      }
-    }
+    underlineSvg.setAttribute('viewBox', `0 0 ${stageRect.width} ${stageRect.height}`);
+    underlineSvg.setAttribute('preserveAspectRatio', 'none');
+    const finishEnabled = level('warp') > 0 || level('noise') > 0 || level('texture') > 0;
+    underlineGroup.setAttribute('filter', finishEnabled ? 'url(#letterpress-finish-a-v1)' : 'none');
 
-    // The underline uses second ink's COLOR only. Disabling the second ink
-    // impression does not disable the separate underline. No CSS text-
-    // decoration is layered on top, so only one line ever appears.
-    if (underline.checked) {
-      const uniformity = level('underlineUniformity') / 100;
-      const groups = partitionRects(rects,
-        1 + Math.round((1 - uniformity) * Math.min(rects.length - 1, 7)));
-      const disruption = 1 - uniformity;
-      const y = bounds.bottom + fontSize * .025;
-      const thickness = Math.max(2, fontSize * (.040 + level('spread') / 100 * .009));
-      for (const group of groups) {
-        const groupBounds = boundsOf(group);
-        const inset = disruption * fontSize * (.06 + decoRng() * .09);
-        const left = groupBounds.left - fontSize * .02 + inset / 2;
-        const right = groupBounds.right + fontSize * .02 - inset / 2;
-        const top = y + (decoRng() * 2 - 1) * disruption * fontSize * .045;
-        const mark = document.createElement('span');
-        mark.className = 'letterpress-underline-mark';
-        setMarkBox(mark, left, top, right - left,
-          thickness * (1 + (decoRng() * 2 - 1) * disruption * .3),
-          .96,
-          (decoRng() * 2 - 1) * disruption * 2);
-        underlineLayer.append(mark);
+    // Continuous at 100. Lower values progressively introduce gaps, never
+    // independent lines under only one arbitrary character.
+    const maxPieces = Math.min(Math.max(1, glyphs.length), 8);
+    const pieces = 1 + Math.round(uneven * (maxPieces - 1));
+    for (let index = 0; index < pieces; index++) {
+      const pieceLeft = left + width * index / pieces;
+      const pieceRight = left + width * (index + 1) / pieces;
+      const gap = pieces === 1 ? 0 : Math.min((pieceRight - pieceLeft) * .30,
+        fontSize * uneven * (.025 + rng() * .045));
+      const x0 = pieceLeft + (index ? gap : 0);
+      const x1 = pieceRight - (index + 1 < pieces ? gap : 0);
+      if (x1 <= x0 + 1) continue;
+      const segmentW = x1 - x0;
+      const segmentY = baseY + (rng() * 2 - 1) * uneven * fontSize * .06;
+      const amplitude = curve ** 1.45 * fontSize * .16 + uneven * fontSize * .022;
+      const edgeJitter = level('roughness') / 100 * fontSize * .008;
+      const jitterPhase = rng() * Math.PI * 2;
+      const phase = rng() * Math.PI * 2;
+      const waves = 0.7 + width / Math.max(fontSize * 3.6, 120) + rng() * .60;
+      const steps = Math.max(8, Math.ceil(segmentW / 11));
+      const points = [];
+      for (let step = 0; step <= steps; step++) {
+        const t = step / steps;
+        const x = x0 + t * segmentW;
+        const wave = Math.sin(phase + (x - left) / width * Math.PI * 2 * waves) - Math.sin(phase);
+        const jitter = edgeJitter * Math.sin(x * .39 + jitterPhase) * .4;
+        const y = segmentY + amplitude * wave * .62 + jitter;
+        points.push([x, clamp(y, 2, stageRect.height - 2)]);
       }
+      // Smooth Catmull–Rom-style cubic interpolation, not angular line joins.
+      let data = `M ${points[0][0].toFixed(2)} ${points[0][1].toFixed(2)}`;
+      for (let i = 0; i < points.length - 1; i++) {
+        const previous = points[Math.max(0, i - 1)];
+        const current = points[i];
+        const next = points[i + 1];
+        const following = points[Math.min(points.length - 1, i + 2)];
+        const c1x = current[0] + (next[0] - previous[0]) / 6;
+        const c1y = current[1] + (next[1] - previous[1]) / 6;
+        const c2x = next[0] - (following[0] - current[0]) / 6;
+        const c2y = next[1] - (following[1] - current[1]) / 6;
+        data += ` C ${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${next[0].toFixed(2)} ${next[1].toFixed(2)}`;
+      }
+      const path = document.createElementNS(svgNamespace, 'path');
+      path.setAttribute('d', data);
+      path.setAttribute('filter', thickness >= 4 && level('roughness') > 10
+        ? 'url(#letterpress-yellow-a-v74)' : 'none');
+      path.setAttribute('stroke-width', (thickness * (1 + (rng() * 2 - 1) * uneven * .22)).toFixed(2));
+      path.setAttribute('opacity', (opacity * (1 - rng() * uneven * .16)).toFixed(3));
+      underlineGroup.append(path);
     }
   }
 
@@ -748,7 +721,7 @@
     applyColors();
     updateEffects();
     fitType();
-    updateDecorations();
+    updateUnderline();
   }
   function requestPaint() {
     if (paintScheduled) return;
@@ -792,8 +765,6 @@
     inkEnabled.checked = defaults.inkEnabled;
     underprint.value = defaults.underprint;
     underprintEnabled.checked = defaults.underprintEnabled;
-    highlight.value = defaults.highlight;
-    highlightEnabled.checked = defaults.highlightEnabled;
     paper.value = defaults.paper;
     for (const [key, input] of Object.entries(effects)) {
       input.value = defaults.effects[key];
@@ -936,7 +907,7 @@
       roughness: [18, 92], underprintStrength: [22, 94],
       variation: [12, 100], size: [0, 94], skew: [0, 95], stretch: [0, 82],
       warp: [0, 82], noise: [0, 52], texture: [0, 92],
-      underlineUniformity: [0, 100], highlightUniformity: [0, 100],
+      underlineUniformity: [0, 100], underlineWeight: [10, 85], underlineCurve: [0, 100],
       pressure: [28, 82], pooling: [0, 75]
     };
     for (const [key, input] of Object.entries(effects)) {
@@ -955,13 +926,12 @@
     const [firstInk, secondInk] = randomInkPair(paper.value);
     ink.value = firstInk;
     underprint.value = secondInk;
-    highlight.value = randomInk(paper.value, firstInk, 1.25);
     inkEnabled.checked = Math.random() < .94;
     underprintEnabled.checked = Math.random() < .78;
-    highlightEnabled.checked = Math.random() < .34;
-    underline.checked = Math.random() < .32;
+    underline.checked = Math.random() < .20;
     effects.underlineUniformity.value = String(random(18, 100));
-    effects.highlightUniformity.value = String(random(20, 100));
+    effects.underlineWeight.value = String(random(14, 76));
+    effects.underlineCurve.value = String(lowBiasedSetting('underlineCurve'));
     if (!inkEnabled.checked && !underprintEnabled.checked) {
       if (Math.random() < .5) inkEnabled.checked = true;
       else underprintEnabled.checked = true;
@@ -1000,6 +970,8 @@
     const width = Math.max(1, Math.round(stage.clientWidth));
     const height = Math.max(1, Math.round(stage.clientHeight));
     const clone = stage.cloneNode(true);
+    // The underline is composited directly into the final PNG below.
+    clone.querySelector('.letterpress-underline-art')?.remove();
     clone.style.width = width + 'px';
     clone.style.height = height + 'px';
     const paperOverride = transparent.checked
@@ -1050,19 +1022,6 @@
       ctx.fillRect(0, 0, width, height);
     }
     const stageRect = stage.getBoundingClientRect();
-    const drawMarks = selector => {
-      stage.querySelectorAll(selector).forEach(mark => {
-        const rect = mark.getBoundingClientRect();
-        const css = getComputedStyle(mark);
-        const bg = css.backgroundColor;
-        ctx.save();
-        ctx.fillStyle = bg;
-        ctx.fillRect(rect.left - stageRect.left, rect.top - stageRect.top, rect.width, rect.height);
-        ctx.restore();
-      });
-    };
-    drawMarks('.letterpress-highlight-mark');
-    drawMarks('.letterpress-underline-mark');
     editor.querySelectorAll('.design-letter').forEach(span => {
       if (span.classList.contains('design-letter--space')) return;
       const char = span.textContent;
@@ -1105,6 +1064,28 @@
     return canvas;
   }
 
+  // The word rasterizer does not reliably retain a nested SVG underline.
+  // Add the same path geometry to the final output at its full pixel density.
+  function renderUnderlineToCanvas(canvas) {
+    if (!underline.checked) return;
+    const paths = underlineGroup.querySelectorAll('path');
+    if (!paths.length) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.save();
+    ctx.setTransform(canvas.width / Math.max(1, stage.clientWidth), 0, 0,
+      canvas.height / Math.max(1, stage.clientHeight), 0, 0);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = underprint.value;
+    for (const mark of paths) {
+      ctx.globalAlpha = Number(mark.getAttribute('opacity') || 1);
+      ctx.lineWidth = Number(mark.getAttribute('stroke-width') || 2);
+      ctx.stroke(new Path2D(mark.getAttribute('d') || ''));
+    }
+    ctx.restore();
+  }
+
   async function savePng() {
     if (!getText().trim()) {
       note.textContent = 'type a word first';
@@ -1123,6 +1104,7 @@
       let canvas;
       try { canvas = await exactPrintCanvas(); }
       catch (error) { console.warn('Using compatible PNG export:', error); canvas = fallbackCanvas(); }
+      renderUnderlineToCanvas(canvas);
       const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
       if (!blob) throw Error('PNG could not be generated');
       const url = URL.createObjectURL(blob);
@@ -1163,7 +1145,7 @@
     }
   });
   exportButton.addEventListener('click', savePng);
-  [ink, inkEnabled, underprint, underprintEnabled, highlight, highlightEnabled,
+  [ink, inkEnabled, underprint, underprintEnabled,
     paper, transparent, underline, ...Object.values(effects)]
     .forEach(input => {
       input.addEventListener('input', requestPaint);

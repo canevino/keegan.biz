@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/assets/site.css">
   <link rel="stylesheet" href="/misc/style.css?v=20261116-misc-cleanup">
   <link rel="stylesheet" href="/assets/sports/sports.css">
-  <link rel="stylesheet" href="/misc/letterpress.css?v=20261118-inklayers-fixed">
+  <link rel="stylesheet" href="/misc/letterpress.css?v=20261118-underline-path2">
 
   <style>
     .home {
@@ -2874,14 +2874,6 @@
                 <input id="letterpress-underprint-enabled" type="checkbox" checked>
                 second ink on
               </label>
-              <label class="letterpress-color" for="letterpress-highlight">
-                highlight
-                <input id="letterpress-highlight" type="color" value="#9adca9" aria-label="Highlight color">
-              </label>
-              <label class="letterpress-transparency" for="letterpress-highlight-enabled">
-                <input id="letterpress-highlight-enabled" type="checkbox">
-                highlight on
-              </label>
               <label class="letterpress-color" for="letterpress-paper">
                 paper
                 <input id="letterpress-paper" type="color" value="#ece7d7" aria-label="Paper color">
@@ -2949,9 +2941,13 @@
                 <span class="letterpress-fx-head">underline uniformity<output id="letterpress-underline-uniformity-value" for="letterpress-underline-uniformity">100</output></span>
                 <input id="letterpress-underline-uniformity" type="range" min="0" max="100" value="100" step="1">
               </label>
-              <label class="letterpress-fx" for="letterpress-highlight-uniformity">
-                <span class="letterpress-fx-head">highlight uniformity<output id="letterpress-highlight-uniformity-value" for="letterpress-highlight-uniformity">100</output></span>
-                <input id="letterpress-highlight-uniformity" type="range" min="0" max="100" value="100" step="1">
+              <label class="letterpress-fx" for="letterpress-underline-weight">
+                <span class="letterpress-fx-head">underline weight<output id="letterpress-underline-weight-value" for="letterpress-underline-weight">40</output></span>
+                <input id="letterpress-underline-weight" type="range" min="0" max="100" value="40" step="1">
+              </label>
+              <label class="letterpress-fx" for="letterpress-underline-curve">
+                <span class="letterpress-fx-head">underline curve<output id="letterpress-underline-curve-value" for="letterpress-underline-curve">0</output></span>
+                <input id="letterpress-underline-curve" type="range" min="0" max="100" value="0" step="1">
               </label>
               <label class="letterpress-fx" for="letterpress-pressure">
                 <span class="letterpress-fx-head">ink pressure<output id="letterpress-pressure-value" for="letterpress-pressure">50</output></span>
@@ -3101,7 +3097,7 @@
       letters: [
         "The word is split into individual spans so each letter can be moved, resized, and inked on its own. CSS handles the stacked color layers, while Canvas is used to measure spacing and help keep the word fitted inside the preview.",
         "Fonts come from two places: a built-in system list and Fontsource’s open-source catalogue. Random words come from Random Word API, with a small local word list used as a fallback if that request fails.",
-        "Randomize chooses the word, typeface, colors, toggles, and slider values in the browser. Stronger distortions are weighted low, so most outcomes stay restrained, and PNG export saves the current state of the print."
+        "Randomize chooses the word, typeface, ink colors, underline, and slider values in the browser. The underline is drawn independently in the second ink color, and the finished print is saved as a PNG."
       ]
     };
 
@@ -12961,7 +12957,7 @@
 
   <script src="/assets/sports/sports.js" defer></script>
   <script src="/assets/site-nav.js" defer></script>
-  <script src="/misc/letterpress.js?v=20261118-inklayers-fixed" defer></script>
+  <script src="/misc/letterpress.js?v=20261118-underline-path2" defer></script>
 
 </body>
 </html>
