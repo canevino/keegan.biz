@@ -15,6 +15,7 @@
   const underprint = $('letterpress-underprint');
   const paper = $('letterpress-paper');
   const transparent = $('letterpress-transparent');
+  const underline = $('letterpress-underline');
   const effects = {
     overlap: $('letterpress-overlap'),
     spread: $('letterpress-spread'),
@@ -36,17 +37,16 @@
   const randomButton = $('letterpress-randomize');
   const resetButton = $('letterpress-reset');
   const exportButton = $('letterpress-export');
-  const exportSvgButton = $('letterpress-export-svg');
   const note = $('letterpress-note');
 
   const required = [home, launcher, panel, closeButton, stage, editor, fontSelect, fontSearch, ink,
-    underprint, paper, transparent, ...Object.values(effects),
-    ...Object.values(effectOutputs), randomButton, resetButton, exportButton, exportSvgButton, note];
+    underprint, paper, transparent, underline, ...Object.values(effects),
+    ...Object.values(effectOutputs), randomButton, resetButton, exportButton, note];
   if (!required.every(Boolean)) return;
 
   const defaults = {
     text: 'keegan.biz', font: 'helvetica', ink: '#c1272d', underprint: '#fdb913',
-    paper: '#ece7d7', effects: {
+    paper: '#ece7d7', underline: false, effects: {
       overlap: 50, spread: 50, register: 50, roughness: 50,
       underprintStrength: 50, variation: 50, size: 0, skew: 0,
       stretch: 0, warp: 0, noise: 0, texture: 0, pressure: 50, pooling: 0
@@ -86,9 +86,20 @@
     const id = fontId(name);
     fontChoices['web:' + id] = { web: true, id, label: name, weight: 700, category: 'sans-serif' };
   }
-  // No unsupported typography gets introduced into the letterpress tool.
+  // No unsupported or awkward typefaces get introduced into the letterpress tool.
   const excludedFontIds = new Set(['instrument-serif']);
+  const excludedFontPattern = /\bguide(?:s)?\b|\bunderline\b/i;
+  function isExcludedFont(faceLike) {
+    if (!faceLike) return true;
+    const id = String(faceLike.id || '');
+    const label = String(faceLike.label || faceLike.family || '');
+    return excludedFontIds.has(id) || excludedFontPattern.test(id) || excludedFontPattern.test(label);
+  }
   let fontCatalogPromise = null;
+  let fontLoadSerial = 0;
+  function setFontLoading(isLoading) {
+    stage.classList.toggle('is-loading-font', isLoading);
+  }
   function rebuildFontList() {
     const selected = fontSelect.value || defaults.font;
     const term = fontSearch.value.trim().toLocaleLowerCase();
@@ -97,7 +108,7 @@
     const libraryGroup = document.createElement('optgroup');
     libraryGroup.label = 'Font library';
     for (const [key, face] of Object.entries(fontChoices)) {
-      if (face.web && excludedFontIds.has(face.id)) continue;
+      if (face.web && isExcludedFont(face)) continue;
       if (term && !face.label.toLocaleLowerCase().includes(term) && key !== selected) continue;
       const option = document.createElement('option');
       option.value = key;
@@ -127,7 +138,7 @@
         if (!Array.isArray(catalog)) throw Error('Invalid font catalogue');
         for (const record of catalog) {
           if (!record || !/^[a-z0-9-]+$/.test(record.id || '') ||
-              !record.family || excludedFontIds.has(record.id)) continue;
+              !record.family || isExcludedFont({ id: record.id, label: record.family })) continue;
           if (!record.subsets?.includes('latin')) continue;
           const key = 'web:' + record.id;
           const weights = Array.isArray(record.weights) ? record.weights.map(Number) : [];
@@ -205,12 +216,26 @@
     const selected = renderedFont();
     editor.style.fontFamily = selected.family;
     editor.style.fontWeight = String(selected.weight);
-    if (face.web && !face.loaded && !fontPromises.has(face.id)) {
-      void ensureFont(face).catch(error => {
-        console.warn('Font could not be loaded:', face.label, error);
-        if (chosenFont().id === face.id) note.textContent = 'font unavailable; showing Helvetica';
-      });
+    if (face.web && !face.loaded) {
+      setFontLoading(true);
+      const ticket = ++fontLoadSerial;
+      const onDone = message => {
+        if (ticket !== fontLoadSerial) return;
+        setFontLoading(false);
+        if (message) note.textContent = message;
+        else if (note.textContent === 'loading…') note.textContent = 'click the word to edit';
+        requestPaint();
+      };
+      if (!fontPromises.has(face.id)) {
+        note.textContent = 'loading…';
+        void ensureFont(face).then(() => onDone('')).catch(error => {
+          console.warn('Font could not be loaded:', face.label, error);
+          if (chosenFont().id === face.id) onDone('font unavailable; showing Helvetica');
+        });
+      }
+      return;
     }
+    setFontLoading(false);
   }
   rebuildFontList();
 
@@ -254,6 +279,22 @@
     if (!magnitude) return 0;
     return (rand() < 0.5 ? -1 : 1) * magnitude;
   }
+  function signedWeightedNonZero(rand, amount, options = {}, minimum = .12) {
+    if (amount <= 0) return 0;
+    const magnitude = weightedMagnitude(rand, amount, { ...options, zeroChance: 0 });
+    const floor = Math.min(1, Math.max(0, minimum * amount));
+    return (rand() < 0.5 ? -1 : 1) * Math.max(floor, magnitude || floor);
+  }
+  function balancedSigns(count, rng) {
+    if (count <= 1) return [rng() < .5 ? -1 : 1];
+    const signs = [];
+    for (let i = 0; i < count; i++) signs.push(i < Math.ceil(count / 2) ? -1 : 1);
+    for (let i = signs.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [signs[i], signs[j]] = [signs[j], signs[i]];
+    }
+    return signs;
+  }
 
   // Randomize picks the SLIDER level here, rather than uniformly sampling a
   // middle-heavy range and only tapering the effect per letter. Zero is the
@@ -266,7 +307,7 @@
     skew:      { decay: .057, rare: .010 },
     stretch:   { decay: .050, rare: .012 },
     warp:      { decay: .064, rare: .009 },
-    noise:     { decay: .061, rare: .009 },
+    noise:     { decay: .094, rare: .004 },
     texture:   { decay: .060, rare: .009 }
   });
   function lowBiasedSetting(name, rng = Math.random) {
@@ -385,6 +426,7 @@
     }
 
     editor.style.setProperty('--letter-gap', overlapGap().toFixed(5) + 'em');
+    editor.classList.toggle('is-underlined', underline.checked);
     const letters = Array.from(editor.querySelectorAll('.design-letter'));
     letters.forEach((span, index) => {
       const next = letters[index + 1];
@@ -444,28 +486,34 @@
     editor.style.filter = hasFinish ? 'url(#letterpress-finish-a-v1)' : '';
     // Clear per-letter filters from older renders when recalculating.
     stage.querySelectorAll('filter[data-letter-finish]').forEach(node => node.remove());
-    editor.querySelectorAll('.design-letter:not(.design-letter--space)')
+    const liveLetters = Array.from(editor.querySelectorAll('.design-letter:not(.design-letter--space)'));
+    const sizeSignRng = seeded((seed ^ 0x14ab7c29) >>> 0);
+    const sizeSigns = balancedSigns(liveLetters.length, sizeSignRng);
+    liveLetters
       .forEach((span, index) => {
         const char = span.dataset.char || ' ';
         const letterHash = (hash(char, index) ^ seed) >>> 0;
         const forEffect = name => seeded((letterHash ^ hash(name, index) ^ 0x9e3779b9) >>> 0);
         const wiggle = forEffect('plates');
-        const signed = (name, options = {}) => signedWeighted(forEffect(name), 1, options);
         const pool = pooling * (.55 + wiggle() * .45);
         const variationOptions = {
           flatBand: .09, flatChance: .34, tailPower: 3.1,
-          outlierChance: .105, outlierPower: .25, zeroChance: .18
+          outlierChance: .105, outlierPower: .25, zeroChance: 0
         };
-        span.style.setProperty('--jitter-x', (signed('variation-x', variationOptions) * variation * .019).toFixed(4) + 'em');
-        span.style.setProperty('--jitter-y', (signed('variation-y', variationOptions) * variation * .023).toFixed(4) + 'em');
-        span.style.setProperty('--jitter-angle', (signed('variation-angle', variationOptions) * variation * 1.8).toFixed(3) + 'deg');
-        // Size variation preserves a glyph's proportions. Stretch is a separate
-        // word-level treatment; independent x/y sizes had made words fragment.
+        const jitterX = signedWeightedNonZero(forEffect('variation-x'), 1, variationOptions, .14);
+        const jitterY = signedWeightedNonZero(forEffect('variation-y'), 1, variationOptions, .14);
+        const jitterAngle = signedWeightedNonZero(forEffect('variation-angle'), 1, variationOptions, .10);
+        span.style.setProperty('--jitter-x', (jitterX * variation * .019).toFixed(4) + 'em');
+        span.style.setProperty('--jitter-y', (jitterY * variation * .023).toFixed(4) + 'em');
+        span.style.setProperty('--jitter-angle', (jitterAngle * variation * 1.8).toFixed(3) + 'deg');
+        // Size variation preserves a glyph's proportions. Every letter is adjusted,
+        // with some pushed larger and some smaller when the word has multiple letters.
         const sizeOptions = {
           flatBand: .11, flatChance: .37, tailPower: 3.0,
-          outlierChance: .095, outlierPower: .23, zeroChance: .17
+          outlierChance: .095, outlierPower: .23, zeroChance: 0
         };
-        const sizeRatio = clamp(1 + sizeLevel * signed('size', sizeOptions) * .52, .50, 1.53);
+        const sizeMagnitude = Math.max(.16, weightedMagnitude(forEffect('size-mag'), 1, sizeOptions));
+        const sizeRatio = clamp(1 + sizeLevel * sizeSigns[index] * sizeMagnitude * .52, .50, 1.53);
         const scaleX = clamp(sizeRatio * wordStretch, .26, 2.45);
         const scaleY = sizeRatio;
         span.style.setProperty('--letter-scale-x', scaleX.toFixed(4));
@@ -600,6 +648,7 @@
       input.value = defaults.effects[key];
     }
     transparent.checked = false;
+    underline.checked = defaults.underline;
     buildLetters(defaults.text);
     note.textContent = 'click the word to edit';
     requestPaint();
@@ -735,7 +784,7 @@
       overlap: [22, 80], spread: [23, 85], register: [12, 88],
       roughness: [18, 92], underprintStrength: [22, 94],
       variation: [12, 100], size: [0, 94], skew: [0, 95], stretch: [0, 82],
-      warp: [0, 82], noise: [0, 88], texture: [0, 92],
+      warp: [0, 82], noise: [0, 52], texture: [0, 92],
       pressure: [28, 82], pooling: [0, 75]
     };
     for (const [key, input] of Object.entries(effects)) {
@@ -744,7 +793,7 @@
     }
     // Each new random print also selects a different typeface.
     const otherFonts = Object.keys(fontChoices).filter(key =>
-      key !== fontSelect.value && !(fontChoices[key].web && excludedFontIds.has(fontChoices[key].id)));
+      key !== fontSelect.value && !(fontChoices[key].web && isExcludedFont(fontChoices[key])));
     const nextFont = otherFonts[random(0, otherFonts.length - 1)];
     fontSearch.value = '';
     rebuildFontList();
@@ -754,6 +803,7 @@
     const [firstInk, secondInk] = randomInkPair(paper.value);
     ink.value = firstInk;
     underprint.value = secondInk;
+    underline.checked = Math.random() < .28;
     buildLetters(nextWord());
     note.textContent = 'click the word to edit';
     requestPaint();
@@ -838,6 +888,7 @@
       ctx.fillRect(0, 0, width, height);
     }
     const stageRect = stage.getBoundingClientRect();
+    let boundsLeft = Infinity, boundsRight = -Infinity, baselineY = 0, lineSize = 0;
     editor.querySelectorAll('.design-letter').forEach(span => {
       if (span.classList.contains('design-letter--space')) return;
       const char = span.textContent;
@@ -875,7 +926,23 @@
         num('--yellow-x', .014) * size, num('--yellow-y', .015) * size, size * .018);
       draw(ink.value, coverage, 0, 0, size * .022 * level('spread') / 50);
       draw(ink.value, coverage, 0, 0, 0);
+      boundsLeft = Math.min(boundsLeft, rect.left - stageRect.left);
+      boundsRight = Math.max(boundsRight, rect.right - stageRect.left);
+      baselineY = Math.max(baselineY, rect.bottom - stageRect.top);
+      lineSize = Math.max(lineSize, size);
     });
+    if (underline.checked && Number.isFinite(boundsLeft) && Number.isFinite(boundsRight) && boundsRight > boundsLeft) {
+      ctx.save();
+      ctx.strokeStyle = ink.value;
+      ctx.lineCap = 'butt';
+      ctx.lineWidth = Math.max(2, lineSize * .06);
+      const y = baselineY + lineSize * .06;
+      ctx.beginPath();
+      ctx.moveTo(boundsLeft, y);
+      ctx.lineTo(boundsRight, y);
+      ctx.stroke();
+      ctx.restore();
+    }
     return canvas;
   }
 
@@ -917,62 +984,6 @@
     }
   }
 
-  // Save the appearance-preserving SVG as an image-bearing SVG document.
-  // A flattened image is necessary because Illustrator ignores the browser's
-  // turbulence/displacement SVG filters. No false claim of editable outlines.
-  const svgEscape = value => String(value).replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  function downloadBlob(blob, name) {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = name;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 2500);
-  }
-
-  // Illustrator does not implement the SVG displacement and turbulence
-  // primitives used by the live print. A normal filtered SVG silently loses
-  // those effects there. Embed a high-resolution rendering instead: it is
-  // visually faithful in Illustrator, with an SVG document/artboard, but the
-  // textured art is an embedded image rather than editable Bézier paths.
-  async function saveSvg() {
-    if (!getText().trim()) { note.textContent = 'type a word first'; editor.focus(); return; }
-    exportSvgButton.disabled = true;
-    try {
-      const face = chosenFont();
-      if (face.web) {
-        try { await ensureFont(face); }
-        catch (error) { console.warn('Exporting displayed fallback font:', error); }
-      }
-      if (document.fonts?.ready) await document.fonts.ready;
-      paint();
-      let canvas;
-      try { canvas = await exactPrintCanvas(); }
-      catch (error) { console.warn('Using compatible SVG raster source:', error); canvas = fallbackCanvas(); }
-      const width = Math.max(1, Math.round(stage.clientWidth));
-      const height = Math.max(1, Math.round(stage.clientHeight));
-      const embedded = canvas.toDataURL('image/png');
-      const svg = `<?xml version="1.0" encoding="UTF-8"?>
-` +
-        `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-` +
-        `<title>${svgEscape(getText())}</title>
-` +
-        `<image x="0" y="0" width="${width}" height="${height}" xlink:href="${embedded}"/>
-</svg>`;
-      const filename = (getText().trim().toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'letters') + '-print.svg';
-      downloadBlob(new Blob([svg], {type:'image/svg+xml;charset=utf-8'}), filename);
-      note.textContent = 'svg ready · effects preserved as a high-resolution embedded image';
-    } catch (error) {
-      console.error('SVG export failed:', error);
-      note.textContent = 'could not save svg';
-    } finally { exportSvgButton.disabled = false; }
-  }
-
   launcher.addEventListener('click', openPanel);
   closeButton.addEventListener('click', closePanel);
   resetButton.addEventListener('click', reset);
@@ -993,8 +1004,7 @@
     }
   });
   exportButton.addEventListener('click', savePng);
-  exportSvgButton.addEventListener('click', saveSvg);
-  [ink, underprint, paper, transparent, ...Object.values(effects)]
+  [ink, underprint, paper, transparent, underline, ...Object.values(effects)]
     .forEach(input => {
       input.addEventListener('input', requestPaint);
       input.addEventListener('change', requestPaint);

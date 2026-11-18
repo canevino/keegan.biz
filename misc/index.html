@@ -2874,6 +2874,10 @@
                 <input id="letterpress-transparent" type="checkbox">
                 transparent
               </label>
+              <label class="letterpress-transparency" for="letterpress-underline">
+                <input id="letterpress-underline" type="checkbox">
+                underline
+              </label>
             </div>
 
             <div class="letterpress-effects" aria-label="Print adjustments">
@@ -2939,9 +2943,16 @@
               <button id="letterpress-randomize" type="button">randomize</button>
               <button id="letterpress-reset" type="button">reset</button>
               <button id="letterpress-export" type="button">save png</button>
-              <button id="letterpress-export-svg" type="button">save svg</button>
             </div>
           </section>
+
+          <button
+            class="how-link"
+            type="button"
+            data-how="letters"
+          >
+            how it works
+          </button>
 
         </div>
       </section>
@@ -3062,6 +3073,11 @@
         "Football schedules, results and tables come from FotMob match data and are refreshed automatically in the background.",
         "Yankees scores and postseason information come from MLB’s public StatsAPI. During a live game, the page checks MLB directly while the Sports panel is open.",
         "The site keeps a lightweight saved copy of the data too, so normal browsing does not need to constantly call the feeds."
+      ],
+      letters: [
+        "Type a word, pick a font, then use the sliders to move it from clean to rough.",
+        "Randomize swaps the word, font, colors, and settings. The more extreme controls are weighted low, so most results stay restrained.",
+        "Save PNG exports the current print. SVG is not included here because the live effects do not export as editable vector shapes."
       ]
     };
 

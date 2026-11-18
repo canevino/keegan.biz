@@ -84,6 +84,22 @@
   background: var(--lp-paper);
   isolation: isolate;
 }
+.letterpress-preview.is-loading-font #letterpress-editor {
+  opacity: 0;
+  pointer-events: none;
+}
+.letterpress-preview.is-loading-font::after {
+  content: '…';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--green, #006a44);
+  font: 700 clamp(28px, 3vw, 44px)/1 Helvetica, Arial, sans-serif;
+  letter-spacing: 0;
+  z-index: 3;
+  pointer-events: none;
+}
 /* The filters supply slightly imperfect printed edges, not worn-away ink. */
 .letterpress-svg-filters {
   position: absolute;
@@ -350,4 +366,10 @@
 }
 
 /* Export actions share the same unframed treatment. */
-.letterpress-actions #letterpress-export-svg { color: var(--green, #006a44); }
+
+#letterpress-editor.is-underlined {
+  text-decoration: underline;
+  text-decoration-thickness: max(2px, .06em);
+  text-underline-offset: .11em;
+  text-decoration-skip-ink: none;
+}
