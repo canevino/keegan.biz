@@ -235,26 +235,28 @@
     const selected = renderedFont();
     editor.style.fontFamily = selected.family;
     editor.style.fontWeight = String(selected.weight);
-    if (face.web && !face.loaded) {
-      setFontLoading(true);
-      const ticket = ++fontLoadSerial;
-      const onDone = message => {
-        if (ticket !== fontLoadSerial) return;
-        setFontLoading(false);
-        if (message) note.textContent = message;
-        else if (note.textContent === 'loading…') note.textContent = 'click the word to edit';
-        requestPaint();
-      };
-      if (!fontPromises.has(face.id)) {
-        note.textContent = 'loading…';
-        void ensureFont(face).then(() => onDone('')).catch(error => {
-          console.warn('Font could not be loaded:', face.label, error);
-          if (chosenFont().id === face.id) onDone('font unavailable; showing Helvetica');
-        });
-      }
+
+    if (!face.web || face.loaded || face.failed) {
+      setFontLoading(false);
       return;
     }
-    setFontLoading(false);
+    setFontLoading(true);
+    const ticket = ++fontLoadSerial;
+    note.textContent = 'loading…';
+    // Attach a completion handler even if another caller started this load.
+    void ensureFont(face).then(() => {
+      if (ticket !== fontLoadSerial) return;
+      setFontLoading(false);
+      note.textContent = 'click the word to edit';
+      requestPaint();
+    }).catch(error => {
+      face.failed = true;
+      if (ticket !== fontLoadSerial) return;
+      console.warn('Font could not be loaded:', face.label, error);
+      setFontLoading(false);
+      note.textContent = 'font unavailable; showing Helvetica';
+      requestPaint();
+    });
   }
   rebuildFontList();
 
@@ -457,7 +459,7 @@
     const showFirstInk = inkEnabled.checked;
     const showSecondInk = underprintEnabled.checked;
     const showHighlight = highlightEnabled.checked;
-    editor.classList.toggle('is-underlined', underline.checked && showSecondInk);
+    editor.classList.remove('is-underlined'); // Underline is drawn only by the independent marker layer.
     stage.classList.toggle('has-highlight', showHighlight);
     const letters = Array.from(editor.querySelectorAll('.design-letter'));
     letters.forEach((span, index) => {
@@ -596,33 +598,27 @@
   }
 
 
-  function partitionRects(rects, count, rng) {
+  function partitionRects(rects, count) {
     if (!rects.length) return [];
-    const total = rects.length;
-    const target = clamp(Math.round(count), 1, total);
-    const boundaries = [];
-    for (let i = 1; i < target; i++) {
-      const ideal = i * total / target;
-      const drift = (rng() * 2 - 1) * Math.max(.4, (1 - target / total) * 1.2);
-      boundaries.push(clamp(Math.round(ideal + drift), 1, total - 1));
-    }
-    const unique = Array.from(new Set(boundaries)).sort((a, b) => a - b);
+    const number = clamp(Math.round(count), 1, rects.length);
     const groups = [];
-    let start = 0;
-    for (const end of unique) {
-      groups.push(rects.slice(start, end));
-      start = end;
+    for (let i = 0; i < number; i++) {
+      const from = Math.floor(i * rects.length / number);
+      const to = Math.floor((i + 1) * rects.length / number);
+      const group = rects.slice(from, to);
+      if (group.length) groups.push(group);
     }
-    groups.push(rects.slice(start));
-    return groups.filter(group => group.length);
+    return groups;
   }
 
-  function setMarkBox(element, left, top, width, height, opacity) {
+  function setMarkBox(element, left, top, width, height, opacity, angle = 0) {
     element.style.left = left.toFixed(2) + 'px';
     element.style.top = top.toFixed(2) + 'px';
     element.style.width = Math.max(1, width).toFixed(2) + 'px';
     element.style.height = Math.max(1, height).toFixed(2) + 'px';
     element.style.setProperty('--mark-opacity', opacity.toFixed(3));
+    element.style.transformOrigin = 'center center';
+    element.style.transform = 'rotate(' + angle.toFixed(2) + 'deg)';
   }
 
   function updateDecorations() {
@@ -630,6 +626,7 @@
     underlineLayer.replaceChildren();
     const liveLetters = Array.from(editor.querySelectorAll('.design-letter:not(.design-letter--space)'));
     if (!liveLetters.length) return;
+
     const stageRect = stage.getBoundingClientRect();
     const rects = liveLetters.map(letter => {
       const rect = letter.getBoundingClientRect();
@@ -637,61 +634,75 @@
         left: rect.left - stageRect.left,
         right: rect.right - stageRect.left,
         top: rect.top - stageRect.top,
-        bottom: rect.bottom - stageRect.top,
-        width: rect.width,
-        height: rect.height
+        bottom: rect.bottom - stageRect.top
       };
     });
+    const boundsOf = group => ({
+      left: Math.min(...group.map(rect => rect.left)),
+      right: Math.max(...group.map(rect => rect.right)),
+      top: Math.min(...group.map(rect => rect.top)),
+      bottom: Math.max(...group.map(rect => rect.bottom))
+    });
+    const bounds = boundsOf(rects);
     const fontSize = parseFloat(getComputedStyle(editor).fontSize) || 100;
-    const bounds = {
-      left: Math.min(...rects.map(rect => rect.left)),
-      right: Math.max(...rects.map(rect => rect.right)),
-      top: Math.min(...rects.map(rect => rect.top)),
-      bottom: Math.max(...rects.map(rect => rect.bottom))
-    };
+    const height = bounds.bottom - bounds.top;
+    // Fixed seed for a fixed word/settings combination; slider movement does
+    // not shuffle positions or flicker until the next Randomize.
     const decoRng = seeded((seed ^ 0x5f356495) >>> 0);
 
+    // A proper full-height highlight behind the text. At 100 it is one
+    // uninterrupted mark spanning the entire word, including its right edge.
+    // At lower settings, split the band into sections with varying placement.
     if (highlightEnabled.checked) {
       const uniformity = level('highlightUniformity') / 100;
-      const segmentCount = 1 + Math.round((1 - uniformity) * Math.min(rects.length - 1, 5));
-      const groups = partitionRects(rects, segmentCount, decoRng);
-      const baseTop = bounds.top + (bounds.bottom - bounds.top) * .47;
-      const baseHeight = Math.max(fontSize * .28, 10);
-      groups.forEach((group, index) => {
-        const first = group[0];
-        const last = group[group.length - 1];
-        const inset = (1 - uniformity) * fontSize * .06;
-        const left = first.left - fontSize * (.03 + decoRng() * .03) + inset * .35;
-        const right = last.right + fontSize * (.03 + decoRng() * .03) - inset * .35;
-        const top = baseTop + (decoRng() * 2 - 1) * (1 - uniformity) * fontSize * .08;
-        const height = baseHeight * (1 + (decoRng() * 2 - 1) * (1 - uniformity) * .22);
+      const groups = partitionRects(rects,
+        1 + Math.round((1 - uniformity) * Math.min(rects.length - 1, 7)));
+      const disruption = 1 - uniformity;
+      for (const group of groups) {
+        const groupBounds = boundsOf(group);
+        const jitter = (decoRng() * 2 - 1) * disruption * fontSize * .09;
+        const top = (uniformity === 1 ? bounds.top : groupBounds.top) +
+          fontSize * .055 + jitter;
+        const baseHeight = (uniformity === 1 ? height : groupBounds.bottom - groupBounds.top) -
+          fontSize * .105;
+        const markHeight = Math.max(fontSize * .42, baseHeight * (1 +
+          (decoRng() * 2 - 1) * disruption * .20));
+        const inset = disruption * fontSize * (.04 + decoRng() * .09);
+        const left = groupBounds.left - fontSize * .055 + inset / 2;
+        const right = groupBounds.right + fontSize * .055 - inset / 2;
         const mark = document.createElement('span');
         mark.className = 'letterpress-highlight-mark';
-        const opacity = .72 + (1 - uniformity) * .16;
-        setMarkBox(mark, left, top, right - left, height, opacity);
+        setMarkBox(mark, left, top, right - left, markHeight,
+          .76 + (decoRng() * 2 - 1) * disruption * .12,
+          (decoRng() * 2 - 1) * disruption * 2.2);
         highlightLayer.append(mark);
-      });
+      }
     }
 
-    if (underline.checked && underprintEnabled.checked) {
+    // The underline uses second ink's COLOR only. Disabling the second ink
+    // impression does not disable the separate underline. No CSS text-
+    // decoration is layered on top, so only one line ever appears.
+    if (underline.checked) {
       const uniformity = level('underlineUniformity') / 100;
-      const segmentCount = 1 + Math.round((1 - uniformity) * Math.min(rects.length - 1, 6));
-      const groups = partitionRects(rects, segmentCount, decoRng);
-      const baseY = bounds.bottom + fontSize * .05;
-      const thickness = Math.max(2, fontSize * (.045 + level('spread') / 100 * .008));
-      groups.forEach(group => {
-        const first = group[0];
-        const last = group[group.length - 1];
-        const gapInset = (1 - uniformity) * fontSize * (.08 + decoRng() * .06);
-        const left = first.left - fontSize * .015 + gapInset * .5;
-        const right = last.right + fontSize * .015 - gapInset * .5;
-        const top = baseY + (decoRng() * 2 - 1) * (1 - uniformity) * fontSize * .035;
+      const groups = partitionRects(rects,
+        1 + Math.round((1 - uniformity) * Math.min(rects.length - 1, 7)));
+      const disruption = 1 - uniformity;
+      const y = bounds.bottom + fontSize * .025;
+      const thickness = Math.max(2, fontSize * (.040 + level('spread') / 100 * .009));
+      for (const group of groups) {
+        const groupBounds = boundsOf(group);
+        const inset = disruption * fontSize * (.06 + decoRng() * .09);
+        const left = groupBounds.left - fontSize * .02 + inset / 2;
+        const right = groupBounds.right + fontSize * .02 - inset / 2;
+        const top = y + (decoRng() * 2 - 1) * disruption * fontSize * .045;
         const mark = document.createElement('span');
         mark.className = 'letterpress-underline-mark';
-        const opacity = clamp((level('underprintStrength') / 100) * .92 + .08, 0, 1);
-        setMarkBox(mark, left, top, right - left, thickness, opacity);
+        setMarkBox(mark, left, top, right - left,
+          thickness * (1 + (decoRng() * 2 - 1) * disruption * .3),
+          .96,
+          (decoRng() * 2 - 1) * disruption * 2);
         underlineLayer.append(mark);
-      });
+      }
     }
   }
 
@@ -925,6 +936,7 @@
       roughness: [18, 92], underprintStrength: [22, 94],
       variation: [12, 100], size: [0, 94], skew: [0, 95], stretch: [0, 82],
       warp: [0, 82], noise: [0, 52], texture: [0, 92],
+      underlineUniformity: [0, 100], highlightUniformity: [0, 100],
       pressure: [28, 82], pooling: [0, 75]
     };
     for (const [key, input] of Object.entries(effects)) {
@@ -950,8 +962,9 @@
     underline.checked = Math.random() < .32;
     effects.underlineUniformity.value = String(random(18, 100));
     effects.highlightUniformity.value = String(random(20, 100));
-    if (!inkEnabled.checked && !underprintEnabled.checked && !highlightEnabled.checked) {
-      inkEnabled.checked = true;
+    if (!inkEnabled.checked && !underprintEnabled.checked) {
+      if (Math.random() < .5) inkEnabled.checked = true;
+      else underprintEnabled.checked = true;
     }
     buildLetters(nextWord());
     note.textContent = 'click the word to edit';
@@ -1042,9 +1055,7 @@
         const rect = mark.getBoundingClientRect();
         const css = getComputedStyle(mark);
         const bg = css.backgroundColor;
-        const opacity = parseFloat(css.getPropertyValue('--mark-opacity'));
         ctx.save();
-        ctx.globalAlpha = Number.isFinite(opacity) ? opacity : 1;
         ctx.fillStyle = bg;
         ctx.fillRect(rect.left - stageRect.left, rect.top - stageRect.top, rect.width, rect.height);
         ctx.restore();

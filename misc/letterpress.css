@@ -405,9 +405,4 @@
 
 /* Export actions share the same unframed treatment. */
 
-#letterpress-editor.is-underlined {
-  text-decoration: underline;
-  text-decoration-thickness: max(2px, .06em);
-  text-underline-offset: .11em;
-  text-decoration-skip-ink: none;
-}
+/* The underline is a separate second-color layer, not CSS text-decoration. */
