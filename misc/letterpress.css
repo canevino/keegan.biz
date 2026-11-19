@@ -129,7 +129,6 @@
 }
 .letterpress-underline-art path {
   fill: none;
-  stroke: var(--lp-underprint);
   stroke-linecap: round;
   stroke-linejoin: round;
 }

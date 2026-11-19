@@ -593,9 +593,10 @@
   }
 
 
-  // Underlining is independent of the letter plates: it keeps the second
-  // ink color even when that plate is hidden. Geometry is stable for a given
-  // seed, so adjusting weight or curve never re-randomizes the breaks.
+  // Underlining is a separate two-ink print, independent of whether the
+  // lettering's ink plates are enabled. Both underline plates share the same
+  // geometry and finish effects; registration slightly offsets the lower plate.
+  // Geometry is stable for a given seed when changing weight or curve.
   function updateUnderline() {
     underlineGroup.replaceChildren();
     if (!underline.checked) return;
@@ -614,9 +615,13 @@
     const curve = level('underlineCurve') / 100;
     const weight = level('underlineWeight') / 100;
     const rng = seeded((seed ^ 0x5f356495) >>> 0);
-    const registrationOffset = level('register') / 100 * fontSize * .009;
-    const baseY = clamp(bottom + fontSize * .055 + registrationOffset,
+    const registration = level('register') / 100;
+    const baseY = clamp(bottom + fontSize * .055,
       fontSize * .18, stageRect.height - Math.max(5, fontSize * .04));
+    // Just as on the letters, the underlying ink shows at the edges.
+    // Keep a small visible offset even with registration set to zero.
+    const secondDx = fontSize * (.008 + registration * .024);
+    const secondDy = fontSize * (.012 + registration * .024);
     const thickness = Math.max(1.2, fontSize * (.017 + weight ** 1.35 * .112)) *
       (1 + level('spread') / 100 * .20 + level('pooling') / 100 * .08);
     const pressure = level('pressure');
@@ -669,13 +674,30 @@
         const c2y = next[1] - (following[1] - current[1]) / 6;
         data += ` C ${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${next[0].toFixed(2)} ${next[1].toFixed(2)}`;
       }
-      const path = document.createElementNS(svgNamespace, 'path');
-      path.setAttribute('d', data);
-      path.setAttribute('filter', thickness >= 4 && level('roughness') > 10
-        ? 'url(#letterpress-yellow-a-v74)' : 'none');
-      path.setAttribute('stroke-width', (thickness * (1 + (rng() * 2 - 1) * uneven * .22)).toFixed(2));
-      path.setAttribute('opacity', (opacity * (1 - rng() * uneven * .16)).toFixed(3));
-      underlineGroup.append(path);
+      const segmentThickness = thickness * (1 + (rng() * 2 - 1) * uneven * .22);
+      const segmentOpacity = opacity * (1 - rng() * uneven * .16);
+      // Add the background plate first, then the foreground plate. The line
+      // remains a standalone two-color element even if the lettering toggles
+      // disable one of the main text ink plates.
+      const secondPath = document.createElementNS(svgNamespace, 'path');
+      secondPath.classList.add('underline-second-ink');
+      secondPath.setAttribute('d', data);
+      secondPath.setAttribute('stroke', underprint.value);
+      secondPath.setAttribute('stroke-width', (segmentThickness * 1.08).toFixed(2));
+      secondPath.setAttribute('opacity',
+        (segmentOpacity * clamp(level('underprintStrength') / 65, 0, 1)).toFixed(3));
+      secondPath.setAttribute('transform',
+        `translate(${secondDx.toFixed(2)} ${secondDy.toFixed(2)})`);
+      secondPath.dataset.dx = secondDx.toFixed(2);
+      secondPath.dataset.dy = secondDy.toFixed(2);
+
+      const firstPath = document.createElementNS(svgNamespace, 'path');
+      firstPath.classList.add('underline-first-ink');
+      firstPath.setAttribute('d', data);
+      firstPath.setAttribute('stroke', ink.value);
+      firstPath.setAttribute('stroke-width', segmentThickness.toFixed(2));
+      firstPath.setAttribute('opacity', segmentOpacity.toFixed(3));
+      underlineGroup.append(secondPath, firstPath);
     }
   }
 
@@ -1077,11 +1099,14 @@
       canvas.height / Math.max(1, stage.clientHeight), 0, 0);
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.strokeStyle = underprint.value;
     for (const mark of paths) {
+      ctx.save();
       ctx.globalAlpha = Number(mark.getAttribute('opacity') || 1);
+      ctx.strokeStyle = mark.getAttribute('stroke') || ink.value;
       ctx.lineWidth = Number(mark.getAttribute('stroke-width') || 2);
+      ctx.translate(Number(mark.dataset.dx || 0), Number(mark.dataset.dy || 0));
       ctx.stroke(new Path2D(mark.getAttribute('d') || ''));
+      ctx.restore();
     }
     ctx.restore();
   }
