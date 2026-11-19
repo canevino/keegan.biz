@@ -22,6 +22,9 @@
   let lightboxIndex = -1;
   let lightboxItems = [];
   let resizeTick = null;
+  let galleryScrollTick = null;
+  let navigationRelease = null;
+  let scrollingByControls = false;
 
   function el(tag, className = '', text) {
     const node = document.createElement(tag);
@@ -276,16 +279,18 @@
     return groups;
   }
 
-  // The stage moves by an exact group width. No native horizontal momentum,
-  // partial snaps or intermediate stops can leave a group half-visible.
+  // A regular scroll container replaces the old wheel-driven jump system.
+  // Buttons scroll to group boundaries; touch and trackpad gestures remain native.
   function positionSlide(animate = true) {
+    const viewport = byId('viewer-visual');
     const track = byId('viewer-track');
-    if (!track) return;
-    const group = track.children[slideIndex];
-    if (!group) return;
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    track.style.transition = animate && !reduced ? '' : 'none';
-    track.style.transform = `translate3d(${-group.offsetLeft}px, 0, 0)`;
+    const group = track?.children[slideIndex];
+    if (!viewport || !group) return;
+    viewport.scrollTo({
+      left: group.offsetLeft,
+      behavior: animate && !matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'smooth' : 'instant'
+    });
   }
 
   function showCurrentInfo() {
@@ -294,13 +299,14 @@
     byId('viewer-track')?.querySelectorAll('.viewer-cluster').forEach((node, i) => {
       const current = i === slideIndex;
       node.classList.toggle('is-current', current);
-      node.querySelectorAll('button').forEach(control => { control.tabIndex = current ? 0 : -1; });
+      // Keep peeking images out of the keyboard tab sequence until selected.
+      node.querySelectorAll('button').forEach(control => {
+        control.tabIndex = current ? 0 : -1;
+      });
     });
     const chapter = group[0].chapter;
-    byId('viewer-chapter').textContent = activeGroups.length === 1 && projectIndex >= 0 && projects[projectIndex].id === 'prx'
-      ? 'Identity and promotion' : chapter.title;
-    byId('viewer-summary').textContent = activeGroups.length === 1 && projectIndex >= 0 && projects[projectIndex].id === 'prx'
-      ? 'Cover art, newsletter design, and social graphics.' : chapter.summary || '';
+    byId('viewer-chapter').textContent = chapter.title;
+    byId('viewer-summary').textContent = chapter.summary || '';
     byId('viewer-count').textContent = `${slideIndex + 1} / ${activeGroups.length}`;
     byId('viewer-prev').disabled = slideIndex === 0;
     byId('viewer-next').disabled = slideIndex === activeGroups.length - 1;
@@ -308,8 +314,31 @@
 
   function moveSlide(index, animate = true) {
     slideIndex = Math.max(0, Math.min(activeGroups.length - 1, index));
+    scrollingByControls = true;
+    if (navigationRelease) clearTimeout(navigationRelease);
     showCurrentInfo();
     positionSlide(animate);
+    navigationRelease = setTimeout(() => {
+      scrollingByControls = false;
+      syncVisibleGroup();
+    }, animate ? 700 : 40);
+  }
+
+  function syncVisibleGroup() {
+    const viewport = byId('viewer-visual');
+    const track = byId('viewer-track');
+    if (!viewport || !track || projectIndex < 0) return;
+    const position = viewport.scrollLeft;
+    let closest = slideIndex;
+    let minimum = Infinity;
+    Array.from(track.children).forEach((group, index) => {
+      const distance = Math.abs(group.offsetLeft - position);
+      if (distance < minimum) { minimum = distance; closest = index; }
+    });
+    if (closest !== slideIndex) {
+      slideIndex = closest;
+      showCurrentInfo();
+    }
   }
 
   function renderProject() {
@@ -321,6 +350,9 @@
     lightboxItems = [];
     activeGroups = groupSlides(project);
     slideIndex = 0;
+    if (galleryScrollTick) { clearTimeout(galleryScrollTick); galleryScrollTick = null; }
+    if (navigationRelease) { clearTimeout(navigationRelease); navigationRelease = null; }
+    scrollingByControls = false;
     gallery.replaceChildren();
 
     const viewer = el('div', 'viewer');
@@ -337,6 +369,8 @@
     context.append(chapter, summary, controls);
 
     const visual = el('div', 'viewer-visual');
+    visual.id = 'viewer-visual';
+    visual.setAttribute('aria-label', `${project.name} artwork groups`);
     const track = el('div', 'viewer-track');
     track.id = 'viewer-track';
     track.classList.toggle('is-single', activeGroups.length <= 1);
@@ -364,32 +398,25 @@
     gallery.append(viewer);
     showCurrentInfo();
 
-    // One swipe advances one complete group. Vertical touch scrolling remains native.
-    let gesture = null;
-    visual.addEventListener('pointerdown', event => {
-      if (event.pointerType === 'mouse' && event.button !== 0) return;
-      gesture = {x: event.clientX, y: event.clientY};
-    });
-    visual.addEventListener('pointerup', event => {
-      if (!gesture) return;
-      const dx = event.clientX - gesture.x;
-      const dy = event.clientY - gesture.y;
-      gesture = null;
-      if (Math.abs(dx) > 56 && Math.abs(dx) > Math.abs(dy) * 1.25) {
-        moveSlide(slideIndex + (dx < 0 ? 1 : -1));
-      }
-    });
-    visual.addEventListener('pointercancel', () => { gesture = null; });
-    let lastWheelMove = 0;
-    visual.addEventListener('wheel', event => {
-      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) * 1.15) return;
-      event.preventDefault();
-      if (activeGroups.length <= 1) return;
-      const now = performance.now();
-      if (now - lastWheelMove < 480) return;
-      lastWheelMove = now;
-      moveSlide(slideIndex + (event.deltaX > 0 ? 1 : -1));
-    }, {passive: false});
+    // Do not intercept wheel events. Native momentum and touch are much less
+    // abrupt than treating each tiny delta as a command to change groups.
+    visual.addEventListener('scroll', () => {
+      if (scrollingByControls) return;
+      if (galleryScrollTick) clearTimeout(galleryScrollTick);
+      galleryScrollTick = setTimeout(syncVisibleGroup, 120);
+    }, {passive: true});
+    if ('onscrollend' in window) {
+      visual.addEventListener('scrollend', () => {
+        if (!scrollingByControls) syncVisibleGroup();
+      });
+    }
+    // A manual gesture always takes priority over an in-progress button scroll.
+    const endProgrammaticScroll = () => {
+      scrollingByControls = false;
+      if (navigationRelease) clearTimeout(navigationRelease);
+    };
+    visual.addEventListener('wheel', endProgrammaticScroll, {passive: true});
+    visual.addEventListener('pointerdown', endProgrammaticScroll, {passive: true});
     track.addEventListener('keydown', event => {
       if (event.key === 'ArrowRight') { event.preventDefault(); moveSlide(slideIndex + 1); }
       if (event.key === 'ArrowLeft') { event.preventDefault(); moveSlide(slideIndex - 1); }
@@ -448,15 +475,4 @@
   showPreview(0);
   readHash();
 
-  const wip = byId('wip-dialog');
-  let dismissed = false;
-  try { dismissed = sessionStorage.getItem('keegan-biz-design-wip-dismissed') === '1'; } catch (_) {}
-  if (wip && !dismissed && wip.showModal) {
-    wip.querySelector('[data-wip-dismiss]')?.addEventListener('click', () => wip.close());
-    wip.addEventListener('click', event => { if (event.target === wip) wip.close(); });
-    wip.addEventListener('close', () => {
-      try { sessionStorage.setItem('keegan-biz-design-wip-dismissed', '1'); } catch (_) {}
-    });
-    wip.showModal();
-  }
 })();
