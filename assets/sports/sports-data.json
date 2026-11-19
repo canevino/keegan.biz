@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-18T20:43:13.030Z",
+  "updatedAt": "2026-11-19T07:39:40.951Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -812,7 +812,7 @@
         {
           "id": "5909336",
           "date": "2026-11-20T16:00:00.000Z",
-          "when": "Fri, Nov 20 · 11:00 AM ET",
+          "when": "tomorrow · Fri, Nov 20 · 11:00 AM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "Liviy Bereh",
