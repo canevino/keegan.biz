@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-20T18:38:16.189Z",
+  "updatedAt": "2026-11-20T20:33:20.186Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -810,15 +810,6 @@
       "shortName": "Shakhtar",
       "upcoming": [
         {
-          "id": "5909336",
-          "date": "2026-11-20T16:00:00.000Z",
-          "when": "today · Fri, Nov 20 · 11:00 AM ET",
-          "status": "scheduled",
-          "home": "Shakhtar Donetsk",
-          "away": "Liviy Bereh",
-          "competition": "Premier League"
-        },
-        {
           "id": "6106336",
           "date": "2026-11-25T20:00:00.000Z",
           "when": "Wed, Nov 25 · 3:00 PM ET",
@@ -853,6 +844,15 @@
           "home": "Slovan Bratislava",
           "away": "Shakhtar Donetsk",
           "competition": "Champions League"
+        },
+        {
+          "id": "5909239",
+          "date": "2026-12-12T16:00:00.000Z",
+          "when": "Sat, Dec 12 · 11:00 AM ET",
+          "status": "scheduled",
+          "home": "Kudrivka",
+          "away": "Shakhtar Donetsk",
+          "competition": "Premier League"
         }
       ],
       "standings": {
@@ -861,8 +861,8 @@
           {
             "rank": 1,
             "team": "Shakhtar Donetsk",
-            "points": 29,
-            "played": 12,
+            "points": 30,
+            "played": 13,
             "highlight": true
           },
           {
@@ -923,21 +923,21 @@
           },
           {
             "rank": 10,
-            "team": "Epitsentr Kamianets-Podilskyi",
+            "team": "Liviy Bereh",
             "points": 10,
             "played": 12,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Chornomorets Odesa",
-            "points": 9,
-            "played": 11,
+            "team": "Epitsentr Kamianets-Podilskyi",
+            "points": 10,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Liviy Bereh",
+            "team": "Chornomorets Odesa",
             "points": 9,
             "played": 11,
             "highlight": false
