@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21T19:29:51.994Z",
+  "updatedAt": "2026-11-22T07:07:22.095Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -52,7 +52,7 @@
         {
           "id": "5795521",
           "date": "2026-11-22T16:30:00.000Z",
-          "when": "tomorrow · Sun, Nov 22 · 11:30 AM ET",
+          "when": "today · Sun, Nov 22 · 11:30 AM ET",
           "status": "scheduled",
           "home": "Liverpool",
           "away": "Man United",
@@ -247,15 +247,6 @@
       "shortName": "Hearts",
       "upcoming": [
         {
-          "id": "5793977",
-          "date": "2026-11-21T17:45:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Dundee FC",
-          "away": "Hearts",
-          "competition": "Premiership"
-        },
-        {
           "id": "6112495",
           "date": "2026-11-26T17:45:00.000Z",
           "when": "Thu, Nov 26 · 12:45 PM ET",
@@ -290,6 +281,15 @@
           "home": "St. Mirren",
           "away": "Hearts",
           "competition": "Premiership"
+        },
+        {
+          "id": "6112496",
+          "date": "2026-12-10T20:00:00.000Z",
+          "when": "Thu, Dec 10 · 3:00 PM ET",
+          "status": "scheduled",
+          "home": "Hearts",
+          "away": "Borac Banja Luka",
+          "competition": "Conference League"
         }
       ],
       "standings": {
@@ -305,8 +305,8 @@
           {
             "rank": 2,
             "team": "Rangers",
-            "points": 27,
-            "played": 12,
+            "points": 30,
+            "played": 13,
             "highlight": false
           },
           {
@@ -332,16 +332,16 @@
           },
           {
             "rank": 6,
-            "team": "Dundee FC",
+            "team": "St. Johnstone",
             "points": 17,
-            "played": 13,
+            "played": 14,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "St. Johnstone",
+            "team": "Dundee FC",
             "points": 17,
-            "played": 14,
+            "played": 13,
             "highlight": false
           },
           {
@@ -362,7 +362,7 @@
             "rank": 10,
             "team": "Motherwell",
             "points": 13,
-            "played": 13,
+            "played": 14,
             "highlight": false
           },
           {
@@ -615,7 +615,7 @@
         {
           "id": "5749756",
           "date": "2026-11-23T19:45:00.000Z",
-          "when": "Mon, Nov 23 · 2:45 PM ET",
+          "when": "tomorrow · Mon, Nov 23 · 2:45 PM ET",
           "status": "scheduled",
           "home": "Monza",
           "away": "Fiorentina",
@@ -705,44 +705,44 @@
           },
           {
             "rank": 7,
+            "team": "Napoli",
+            "points": 18,
+            "played": 12,
+            "highlight": false
+          },
+          {
+            "rank": 8,
             "team": "Juventus",
             "points": 18,
             "played": 11,
             "highlight": false
           },
           {
-            "rank": 8,
+            "rank": 9,
             "team": "Bologna",
             "points": 17,
             "played": 11,
             "highlight": false
           },
           {
-            "rank": 9,
+            "rank": 10,
             "team": "Cagliari",
             "points": 16,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 10,
-            "team": "Napoli",
-            "points": 15,
-            "played": 11,
-            "highlight": false
-          },
-          {
             "rank": 11,
-            "team": "Torino",
+            "team": "Atalanta",
             "points": 14,
             "played": 11,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Atalanta",
+            "team": "Torino",
             "points": 14,
-            "played": 11,
+            "played": 12,
             "highlight": false
           },
           {
