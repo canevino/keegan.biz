@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22T17:50:50.080Z",
+  "updatedAt": "2026-11-22T19:51:43.730Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -50,15 +50,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "5795521",
-          "date": "2026-11-22T16:30:00.000Z",
-          "when": "today · Sun, Nov 22 · 11:30 AM ET",
-          "status": "scheduled",
-          "home": "Liverpool",
-          "away": "Man United",
-          "competition": "Premier League"
-        },
-        {
           "id": "6106294",
           "date": "2026-11-25T20:00:00.000Z",
           "when": "Wed, Nov 25 · 3:00 PM ET",
@@ -93,6 +84,15 @@
           "home": "Chelsea",
           "away": "Liverpool",
           "competition": "Premier League"
+        },
+        {
+          "id": "6106247",
+          "date": "2026-12-09T20:00:00.000Z",
+          "when": "Wed, Dec 9 · 3:00 PM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "FC Porto",
+          "competition": "Champions League"
         }
       ],
       "standings": {
@@ -109,7 +109,7 @@
             "rank": 2,
             "team": "Brighton",
             "points": 22,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
@@ -121,17 +121,17 @@
           },
           {
             "rank": 4,
+            "team": "Liverpool",
+            "points": 21,
+            "played": 11,
+            "highlight": true
+          },
+          {
+            "rank": 5,
             "team": "Bournemouth",
             "points": 18,
             "played": 11,
             "highlight": false
-          },
-          {
-            "rank": 5,
-            "team": "Liverpool",
-            "points": 18,
-            "played": 10,
-            "highlight": true
           },
           {
             "rank": 6,
@@ -170,30 +170,30 @@
           },
           {
             "rank": 11,
-            "team": "Aston Villa",
+            "team": "Hull",
             "points": 14,
             "played": 11,
             "highlight": false
           },
           {
             "rank": 12,
+            "team": "Aston Villa",
+            "points": 14,
+            "played": 11,
+            "highlight": false
+          },
+          {
+            "rank": 13,
             "team": "Newcastle",
             "points": 13,
             "played": 11,
             "highlight": false
           },
           {
-            "rank": 13,
+            "rank": 14,
             "team": "Coventry",
             "points": 12,
             "played": 11,
-            "highlight": false
-          },
-          {
-            "rank": 14,
-            "team": "Hull",
-            "points": 11,
-            "played": 10,
             "highlight": false
           },
           {
@@ -228,7 +228,7 @@
             "rank": 19,
             "team": "Man United",
             "points": 8,
-            "played": 10,
+            "played": 11,
             "highlight": false
           },
           {
@@ -523,8 +523,8 @@
           {
             "rank": 13,
             "team": "Blackburn",
-            "points": 21,
-            "played": 15,
+            "points": 22,
+            "played": 16,
             "highlight": false
           },
           {
@@ -586,8 +586,8 @@
           {
             "rank": 22,
             "team": "Burnley",
-            "points": 10,
-            "played": 15,
+            "points": 11,
+            "played": 16,
             "highlight": false
           },
           {
@@ -678,78 +678,78 @@
           {
             "rank": 3,
             "team": "Inter",
-            "points": 28,
-            "played": 11,
+            "points": 29,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 4,
+            "team": "Milan",
+            "points": 27,
+            "played": 12,
+            "highlight": false
+          },
+          {
+            "rank": 5,
             "team": "Como",
             "points": 26,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 5,
-            "team": "Milan",
-            "points": 24,
-            "played": 11,
-            "highlight": false
-          },
-          {
             "rank": 6,
-            "team": "Frosinone",
-            "points": 20,
-            "played": 11,
+            "team": "Juventus",
+            "points": 21,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 7,
+            "team": "Frosinone",
+            "points": 20,
+            "played": 12,
+            "highlight": false
+          },
+          {
+            "rank": 8,
             "team": "Napoli",
             "points": 18,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 8,
-            "team": "Juventus",
-            "points": 18,
-            "played": 11,
-            "highlight": false
-          },
-          {
             "rank": 9,
             "team": "Bologna",
-            "points": 17,
-            "played": 11,
+            "points": 18,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 10,
-            "team": "Cagliari",
+            "team": "Genoa",
             "points": 16,
             "played": 12,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Atalanta",
-            "points": 14,
-            "played": 11,
+            "team": "Cagliari",
+            "points": 16,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 12,
-            "team": "Torino",
-            "points": 14,
+            "team": "Atalanta",
+            "points": 15,
             "played": 12,
             "highlight": false
           },
           {
             "rank": 13,
-            "team": "Genoa",
-            "points": 13,
-            "played": 11,
+            "team": "Torino",
+            "points": 14,
+            "played": 12,
             "highlight": false
           },
           {
@@ -777,7 +777,7 @@
             "rank": 17,
             "team": "Sassuolo",
             "points": 8,
-            "played": 11,
+            "played": 12,
             "highlight": false
           },
           {
@@ -789,16 +789,16 @@
           },
           {
             "rank": 19,
-            "team": "Venezia",
+            "team": "Udinese",
             "points": 6,
-            "played": 11,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 20,
-            "team": "Udinese",
-            "points": 5,
-            "played": 11,
+            "team": "Venezia",
+            "points": 6,
+            "played": 12,
             "highlight": false
           }
         ]
@@ -875,8 +875,8 @@
           {
             "rank": 3,
             "team": "Dynamo Kyiv",
-            "points": 23,
-            "played": 11,
+            "points": 26,
+            "played": 12,
             "highlight": false
           },
           {
@@ -909,16 +909,16 @@
           },
           {
             "rank": 8,
-            "team": "FC Kolos Kovalivka",
-            "points": 15,
-            "played": 11,
+            "team": "Bukovyna Chernivtsi",
+            "points": 16,
+            "played": 13,
             "highlight": false
           },
           {
             "rank": 9,
-            "team": "Bukovyna Chernivtsi",
-            "points": 13,
-            "played": 12,
+            "team": "FC Kolos Kovalivka",
+            "points": 15,
+            "played": 11,
             "highlight": false
           },
           {
@@ -946,14 +946,14 @@
             "rank": 13,
             "team": "Veres Rivne",
             "points": 9,
-            "played": 12,
+            "played": 13,
             "highlight": false
           },
           {
             "rank": 14,
             "team": "Obolon Kyiv",
             "points": 8,
-            "played": 11,
+            "played": 12,
             "highlight": false
           },
           {
