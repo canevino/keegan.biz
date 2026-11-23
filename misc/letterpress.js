@@ -593,13 +593,16 @@
   }
 
 
-  // Underlining is a separate two-ink print, independent of whether the
-  // lettering's ink plates are enabled. Both underline plates share the same
-  // geometry and finish effects; registration slightly offsets the lower plate.
-  // Geometry is stable for a given seed when changing weight or curve.
+  // Underline geometry is stable for a given seed when changing weight or
+  // curve. The underline now follows the same ink toggles as the lettering:
+  // if first ink is off, the top stroke is hidden; if second ink is off, the
+  // offset stroke is hidden.
   function updateUnderline() {
     underlineGroup.replaceChildren();
     if (!underline.checked) return;
+    const showFirstInk = inkEnabled.checked;
+    const showSecondInk = underprintEnabled.checked;
+    if (!showFirstInk && !showSecondInk) return;
 
     const stageRect = stage.getBoundingClientRect();
     const glyphs = Array.from(editor.querySelectorAll('.design-letter:not(.design-letter--space)'));
@@ -618,12 +621,16 @@
     const registration = level('register') / 100;
     const baseY = clamp(bottom + fontSize * .055,
       fontSize * .18, stageRect.height - Math.max(5, fontSize * .04));
-    // Just as on the letters, the underlying ink shows at the edges.
-    // Keep a small visible offset even with registration set to zero.
-    const secondDx = fontSize * (.008 + registration * .024);
-    const secondDy = fontSize * (.012 + registration * .024);
     const thickness = Math.max(1.2, fontSize * (.017 + weight ** 1.35 * .112)) *
       (1 + level('spread') / 100 * .20 + level('pooling') / 100 * .08);
+    // The second plate must move far enough to remain visible under a thick
+    // underline. Scale registration with both font size and underline weight,
+    // instead of using a tiny fixed fraction of the font size that gets
+    // completely covered by the first stroke at larger weights.
+    // At zero the two strokes nearly coincide; at 100 they're visibly offset.
+    const registrationAmount = registration ** 1.3;
+    const secondDx = fontSize * .004 + registrationAmount * (fontSize * .076 + thickness * .33);
+    const secondDy = fontSize * .006 + registrationAmount * (fontSize * .085 + thickness * .42);
     const pressure = level('pressure');
     const opacity = (pressure < 50 ? .42 + pressure / 50 * .58 : 1);
 
@@ -676,28 +683,32 @@
       }
       const segmentThickness = thickness * (1 + (rng() * 2 - 1) * uneven * .22);
       const segmentOpacity = opacity * (1 - rng() * uneven * .16);
-      // Add the background plate first, then the foreground plate. The line
-      // remains a standalone two-color element even if the lettering toggles
-      // disable one of the main text ink plates.
-      const secondPath = document.createElementNS(svgNamespace, 'path');
-      secondPath.classList.add('underline-second-ink');
-      secondPath.setAttribute('d', data);
-      secondPath.setAttribute('stroke', underprint.value);
-      secondPath.setAttribute('stroke-width', (segmentThickness * 1.08).toFixed(2));
-      secondPath.setAttribute('opacity',
-        (segmentOpacity * clamp(level('underprintStrength') / 65, 0, 1)).toFixed(3));
-      secondPath.setAttribute('transform',
-        `translate(${secondDx.toFixed(2)} ${secondDy.toFixed(2)})`);
-      secondPath.dataset.dx = secondDx.toFixed(2);
-      secondPath.dataset.dy = secondDy.toFixed(2);
+      // Add the background plate first, then the foreground plate, but only
+      // when their corresponding ink toggles are enabled.
+      if (showSecondInk) {
+        const secondPath = document.createElementNS(svgNamespace, 'path');
+        secondPath.classList.add('underline-second-ink');
+        secondPath.setAttribute('d', data);
+        secondPath.setAttribute('stroke', underprint.value);
+        secondPath.setAttribute('stroke-width', (segmentThickness * 1.08).toFixed(2));
+        secondPath.setAttribute('opacity',
+          (segmentOpacity * clamp(level('underprintStrength') / 65, 0, 1)).toFixed(3));
+        secondPath.setAttribute('transform',
+          `translate(${secondDx.toFixed(2)} ${secondDy.toFixed(2)})`);
+        secondPath.dataset.dx = secondDx.toFixed(2);
+        secondPath.dataset.dy = secondDy.toFixed(2);
+        underlineGroup.append(secondPath);
+      }
 
-      const firstPath = document.createElementNS(svgNamespace, 'path');
-      firstPath.classList.add('underline-first-ink');
-      firstPath.setAttribute('d', data);
-      firstPath.setAttribute('stroke', ink.value);
-      firstPath.setAttribute('stroke-width', segmentThickness.toFixed(2));
-      firstPath.setAttribute('opacity', segmentOpacity.toFixed(3));
-      underlineGroup.append(secondPath, firstPath);
+      if (showFirstInk) {
+        const firstPath = document.createElementNS(svgNamespace, 'path');
+        firstPath.classList.add('underline-first-ink');
+        firstPath.setAttribute('d', data);
+        firstPath.setAttribute('stroke', ink.value);
+        firstPath.setAttribute('stroke-width', segmentThickness.toFixed(2));
+        firstPath.setAttribute('opacity', segmentOpacity.toFixed(3));
+        underlineGroup.append(firstPath);
+      }
     }
   }
 
