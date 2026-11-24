@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-23T22:03:32.401Z",
+  "updatedAt": "2026-11-24T00:04:46.110Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -135,16 +135,16 @@
           },
           {
             "rank": 6,
-            "team": "Leeds",
+            "team": "Brentford",
             "points": 17,
             "played": 11,
             "highlight": false
           },
           {
             "rank": 7,
-            "team": "Everton",
-            "points": 16,
-            "played": 10,
+            "team": "Leeds",
+            "points": 17,
+            "played": 11,
             "highlight": false
           },
           {
@@ -156,16 +156,16 @@
           },
           {
             "rank": 9,
-            "team": "Tottenham",
-            "points": 15,
+            "team": "Everton",
+            "points": 16,
             "played": 11,
             "highlight": false
           },
           {
             "rank": 10,
-            "team": "Brentford",
-            "points": 14,
-            "played": 10,
+            "team": "Tottenham",
+            "points": 15,
+            "played": 11,
             "highlight": false
           },
           {
@@ -613,15 +613,6 @@
       "shortName": "Fiorentina",
       "upcoming": [
         {
-          "id": "5749756",
-          "date": "2026-11-23T19:45:00.000Z",
-          "when": "today · Mon, Nov 23 · 2:45 PM ET",
-          "status": "scheduled",
-          "home": "Monza",
-          "away": "Fiorentina",
-          "competition": "Serie A"
-        },
-        {
           "id": "5749768",
           "date": "2026-11-29T11:30:00.000Z",
           "when": "Sun, Nov 29 · 6:30 AM ET",
@@ -656,6 +647,15 @@
           "home": "Napoli",
           "away": "Fiorentina",
           "competition": "Coppa Italia"
+        },
+        {
+          "id": "5749793",
+          "date": "2026-12-20T11:30:00.000Z",
+          "when": "Sun, Dec 20 · 6:30 AM ET",
+          "status": "scheduled",
+          "home": "Fiorentina",
+          "away": "Bologna",
+          "competition": "Serie A"
         }
       ],
       "standings": {
@@ -754,37 +754,37 @@
           },
           {
             "rank": 14,
-            "team": "Lecce",
+            "team": "Monza",
             "points": 10,
             "played": 12,
             "highlight": false
           },
           {
             "rank": 15,
-            "team": "Fiorentina",
-            "points": 9,
-            "played": 11,
-            "highlight": true
+            "team": "Lecce",
+            "points": 10,
+            "played": 12,
+            "highlight": false
           },
           {
             "rank": 16,
+            "team": "Fiorentina",
+            "points": 9,
+            "played": 12,
+            "highlight": true
+          },
+          {
+            "rank": 17,
             "team": "Parma",
             "points": 8,
             "played": 12,
             "highlight": false
           },
           {
-            "rank": 17,
+            "rank": 18,
             "team": "Sassuolo",
             "points": 8,
             "played": 12,
-            "highlight": false
-          },
-          {
-            "rank": 18,
-            "team": "Monza",
-            "points": 7,
-            "played": 11,
             "highlight": false
           },
           {
@@ -868,8 +868,8 @@
           {
             "rank": 2,
             "team": "Polissya Zhytomyr",
-            "points": 28,
-            "played": 11,
+            "points": 29,
+            "played": 12,
             "highlight": false
           },
           {
@@ -896,8 +896,8 @@
           {
             "rank": 6,
             "team": "LNZ Cherkasy",
-            "points": 18,
-            "played": 11,
+            "points": 19,
+            "played": 12,
             "highlight": false
           },
           {
@@ -923,14 +923,14 @@
           },
           {
             "rank": 10,
-            "team": "Liviy Bereh",
-            "points": 10,
-            "played": 12,
+            "team": "Epitsentr Kamianets-Podilskyi",
+            "points": 13,
+            "played": 13,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Epitsentr Kamianets-Podilskyi",
+            "team": "Liviy Bereh",
             "points": 10,
             "played": 12,
             "highlight": false
@@ -939,7 +939,7 @@
             "rank": 12,
             "team": "Chornomorets Odesa",
             "points": 9,
-            "played": 11,
+            "played": 12,
             "highlight": false
           },
           {
