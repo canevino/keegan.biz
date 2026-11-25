@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-25T19:57:33.652Z",
+  "updatedAt": "2026-11-25T21:50:35.608Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -52,8 +52,8 @@
         {
           "id": "6106294",
           "date": "2026-11-25T20:00:00.000Z",
-          "when": "today · Wed, Nov 25 · 3:00 PM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Club Brugge",
           "away": "Liverpool",
           "competition": "Champions League"
@@ -445,30 +445,30 @@
           },
           {
             "rank": 2,
+            "team": "Stoke",
+            "points": 35,
+            "played": 17,
+            "highlight": false
+          },
+          {
+            "rank": 3,
             "team": "Wolves",
             "points": 34,
             "played": 17,
             "highlight": false
           },
           {
-            "rank": 3,
-            "team": "Stoke",
-            "points": 32,
-            "played": 16,
-            "highlight": false
-          },
-          {
             "rank": 4,
             "team": "Birmingham",
-            "points": 29,
-            "played": 16,
+            "points": 32,
+            "played": 17,
             "highlight": false
           },
           {
             "rank": 5,
             "team": "West Brom",
-            "points": 29,
-            "played": 16,
+            "points": 32,
+            "played": 17,
             "highlight": false
           },
           {
@@ -515,16 +515,16 @@
           },
           {
             "rank": 12,
-            "team": "West Ham",
-            "points": 24,
+            "team": "Blackburn",
+            "points": 25,
             "played": 17,
             "highlight": false
           },
           {
             "rank": 13,
-            "team": "Blackburn",
-            "points": 22,
-            "played": 16,
+            "team": "West Ham",
+            "points": 24,
+            "played": 17,
             "highlight": false
           },
           {
@@ -559,21 +559,21 @@
             "rank": 18,
             "team": "Millwall",
             "points": 18,
-            "played": 16,
+            "played": 17,
             "highlight": false
           },
           {
             "rank": 19,
             "team": "Bolton",
             "points": 18,
-            "played": 16,
+            "played": 17,
             "highlight": false
           },
           {
             "rank": 20,
             "team": "Watford",
             "points": 15,
-            "played": 16,
+            "played": 17,
             "highlight": false
           },
           {
@@ -594,7 +594,7 @@
             "rank": 23,
             "team": "Burnley",
             "points": 11,
-            "played": 16,
+            "played": 17,
             "highlight": false
           },
           {
@@ -812,8 +812,8 @@
         {
           "id": "6106336",
           "date": "2026-11-25T20:00:00.000Z",
-          "when": "today · Wed, Nov 25 · 3:00 PM ET",
-          "status": "scheduled",
+          "when": "live",
+          "status": "live",
           "home": "Shakhtar Donetsk",
           "away": "Fenerbahçe",
           "competition": "Champions League"
@@ -829,8 +829,8 @@
         },
         {
           "id": "5909231",
-          "date": "2026-12-05T16:00:00.000Z",
-          "when": "Sat, Dec 5 · 11:00 AM ET",
+          "date": "2026-12-04T16:00:00.000Z",
+          "when": "Fri, Dec 4 · 11:00 AM ET",
           "status": "scheduled",
           "home": "Shakhtar Donetsk",
           "away": "Kryvbas",
