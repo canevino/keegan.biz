@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-25T21:50:35.608Z",
+  "updatedAt": "2026-11-26T08:38:03.725Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -50,15 +50,6 @@
       "shortName": "Liverpool",
       "upcoming": [
         {
-          "id": "6106294",
-          "date": "2026-11-25T20:00:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Club Brugge",
-          "away": "Liverpool",
-          "competition": "Champions League"
-        },
-        {
           "id": "5795528",
           "date": "2026-11-29T12:00:00.000Z",
           "when": "Sun, Nov 29 · 7:00 AM ET",
@@ -93,6 +84,15 @@
           "home": "Liverpool",
           "away": "FC Porto",
           "competition": "Champions League"
+        },
+        {
+          "id": "5795562",
+          "date": "2026-12-12T15:00:00.000Z",
+          "when": "Sat, Dec 12 · 10:00 AM ET",
+          "status": "scheduled",
+          "home": "Liverpool",
+          "away": "Leeds",
+          "competition": "Premier League"
         }
       ],
       "standings": {
@@ -249,7 +249,7 @@
         {
           "id": "6112495",
           "date": "2026-11-26T17:45:00.000Z",
-          "when": "tomorrow · Thu, Nov 26 · 12:45 PM ET",
+          "when": "today · Thu, Nov 26 · 12:45 PM ET",
           "status": "scheduled",
           "home": "Hearts",
           "away": "Monaco",
@@ -810,15 +810,6 @@
       "shortName": "Shakhtar",
       "upcoming": [
         {
-          "id": "6106336",
-          "date": "2026-11-25T20:00:00.000Z",
-          "when": "live",
-          "status": "live",
-          "home": "Shakhtar Donetsk",
-          "away": "Fenerbahçe",
-          "competition": "Champions League"
-        },
-        {
           "id": "5909224",
           "date": "2026-11-30T16:00:00.000Z",
           "when": "Mon, Nov 30 · 11:00 AM ET",
@@ -853,6 +844,15 @@
           "home": "Kudrivka",
           "away": "Shakhtar Donetsk",
           "competition": "Premier League"
+        },
+        {
+          "id": "6106324",
+          "date": "2027-01-20T20:00:00.000Z",
+          "when": "Wed, Jan 20 · 3:00 PM ET",
+          "status": "scheduled",
+          "home": "RB Leipzig",
+          "away": "Shakhtar Donetsk",
+          "competition": "Champions League"
         }
       ],
       "standings": {
@@ -881,16 +881,16 @@
           },
           {
             "rank": 4,
-            "team": "Karpaty",
-            "points": 22,
-            "played": 12,
+            "team": "FC Kharkiv",
+            "points": 24,
+            "played": 11,
             "highlight": false
           },
           {
             "rank": 5,
-            "team": "FC Kharkiv",
-            "points": 21,
-            "played": 10,
+            "team": "Karpaty",
+            "points": 22,
+            "played": 12,
             "highlight": false
           },
           {
@@ -967,7 +967,7 @@
             "rank": 16,
             "team": "Kryvbas",
             "points": 7,
-            "played": 10,
+            "played": 11,
             "highlight": false
           }
         ]
