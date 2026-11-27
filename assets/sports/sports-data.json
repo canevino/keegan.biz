@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T21:43:55.455Z",
+  "updatedAt": "2026-11-27T08:49:01.782Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -390,7 +390,7 @@
         {
           "id": "5836963",
           "date": "2026-11-28T12:30:00.000Z",
-          "when": "Sat, Nov 28 · 7:30 AM ET",
+          "when": "tomorrow · Sat, Nov 28 · 7:30 AM ET",
           "status": "scheduled",
           "home": "Preston",
           "away": "Norwich",
