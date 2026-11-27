@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-27T19:29:12.456Z",
+  "updatedAt": "2026-11-27T21:28:00.350Z",
   "baseball": {
     "yankees": {
       "active": true,
@@ -151,7 +151,7 @@
             "rank": 8,
             "team": "Chelsea",
             "points": 16,
-            "played": 11,
+            "played": 12,
             "highlight": false
           },
           {
@@ -191,29 +191,29 @@
           },
           {
             "rank": 14,
+            "team": "Nottm Forest",
+            "points": 12,
+            "played": 12,
+            "highlight": false
+          },
+          {
+            "rank": 15,
             "team": "Coventry",
             "points": 12,
             "played": 11,
             "highlight": false
           },
           {
-            "rank": 15,
+            "rank": 16,
             "team": "Fulham",
             "points": 11,
             "played": 11,
             "highlight": false
           },
           {
-            "rank": 16,
+            "rank": 17,
             "team": "Ipswich",
             "points": 11,
-            "played": 11,
-            "highlight": false
-          },
-          {
-            "rank": 17,
-            "team": "Nottm Forest",
-            "points": 9,
             "played": 11,
             "highlight": false
           },
@@ -440,7 +440,7 @@
             "rank": 1,
             "team": "Middlesbrough",
             "points": 35,
-            "played": 17,
+            "played": 18,
             "highlight": false
           },
           {
@@ -474,8 +474,8 @@
           {
             "rank": 6,
             "team": "Southampton",
-            "points": 28,
-            "played": 17,
+            "points": 31,
+            "played": 18,
             "highlight": false
           },
           {
@@ -712,14 +712,14 @@
           },
           {
             "rank": 8,
-            "team": "Napoli",
-            "points": 18,
-            "played": 12,
+            "team": "Bologna",
+            "points": 19,
+            "played": 13,
             "highlight": false
           },
           {
             "rank": 9,
-            "team": "Bologna",
+            "team": "Napoli",
             "points": 18,
             "played": 12,
             "highlight": false
@@ -789,14 +789,14 @@
           },
           {
             "rank": 19,
-            "team": "Udinese",
-            "points": 6,
-            "played": 12,
+            "team": "Venezia",
+            "points": 7,
+            "played": 13,
             "highlight": false
           },
           {
             "rank": 20,
-            "team": "Venezia",
+            "team": "Udinese",
             "points": 6,
             "played": 12,
             "highlight": false
@@ -918,21 +918,21 @@
             "rank": 9,
             "team": "FC Kolos Kovalivka",
             "points": 15,
-            "played": 11,
+            "played": 12,
             "highlight": false
           },
           {
             "rank": 10,
-            "team": "Epitsentr Kamianets-Podilskyi",
+            "team": "Liviy Bereh",
             "points": 13,
             "played": 13,
             "highlight": false
           },
           {
             "rank": 11,
-            "team": "Liviy Bereh",
-            "points": 10,
-            "played": 12,
+            "team": "Epitsentr Kamianets-Podilskyi",
+            "points": 13,
+            "played": 13,
             "highlight": false
           },
           {
